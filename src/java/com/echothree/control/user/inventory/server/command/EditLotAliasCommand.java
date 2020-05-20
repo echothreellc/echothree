@@ -23,6 +23,7 @@ import com.echothree.control.user.inventory.common.result.EditLotAliasResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.LotAliasSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -89,12 +90,13 @@ public class EditLotAliasCommand
     
     @Override
     public LotAlias getEntity(EditLotAliasResult result) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
         LotAlias lotAlias = null;
         String lotName = spec.getLotName();
-        Lot lot = inventoryControl.getLotByName(lotName);
+        Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             String lotAliasTypeName = spec.getLotAliasTypeName();
 
             lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);

@@ -20,6 +20,7 @@ import com.echothree.control.user.inventory.common.form.GetLotAliasesForm;
 import com.echothree.control.user.inventory.common.result.GetLotAliasesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -65,15 +66,16 @@ public class GetLotAliasesCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
         GetLotAliasesResult result = InventoryResultFactory.getGetLotAliasesResult();
         String lotName = form.getLotName();
-        Lot lot = inventoryControl.getLotByName(lotName);
+        Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             UserVisit userVisit = getUserVisit();
 
-            result.setLot(inventoryControl.getLotTransfer(userVisit, lot));
+            result.setLot(lotControl.getLotTransfer(userVisit, lot));
             result.setLotAliases(inventoryControl.getLotAliasTransfersByLot(userVisit, lot));
         } else {
             addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);

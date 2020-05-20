@@ -18,6 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotAliasForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,41 +69,42 @@ public class CreateLotAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-            String lotName = form.getLotName();
-            Lot lot = inventoryControl.getLotByName(lotName);
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        String lotName = form.getLotName();
+        Lot lot = lotControl.getLotByName(lotName);
 
-            if(lot != null) {
-                String lotAliasTypeName = form.getLotAliasTypeName();
-                LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        if(lot != null) {
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            String lotAliasTypeName = form.getLotAliasTypeName();
+            LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
 
-                if(lotAliasType != null) {
-                    LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
-                    String validationPattern = lotAliasTypeDetail.getValidationPattern();
-                    String alias = form.getAlias();
+            if(lotAliasType != null) {
+                LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
+                String validationPattern = lotAliasTypeDetail.getValidationPattern();
+                String alias = form.getAlias();
 
-                    if(validationPattern != null) {
-                        Pattern pattern = Pattern.compile(validationPattern);
-                        Matcher m = pattern.matcher(alias);
+                if(validationPattern != null) {
+                    Pattern pattern = Pattern.compile(validationPattern);
+                    Matcher m = pattern.matcher(alias);
 
-                        if(!m.matches()) {
-                            addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
-                        }
+                    if(!m.matches()) {
+                        addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
                     }
+                }
 
-                    if(!hasExecutionErrors()) {
-                        if(inventoryControl.getLotAlias(lot, lotAliasType) == null && inventoryControl.getLotAliasByAlias(lotAliasType, alias) == null) {
-                            inventoryControl.createLotAlias(lot, lotAliasType, alias, getPartyPK());
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotName, lotAliasTypeName, alias);
-                        }
+                if(!hasExecutionErrors()) {
+                    if(inventoryControl.getLotAlias(lot, lotAliasType) == null && inventoryControl.getLotAliasByAlias(lotAliasType, alias) == null) {
+                        inventoryControl.createLotAlias(lot, lotAliasType, alias, getPartyPK());
+                    } else {
+                        addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotName, lotAliasTypeName, alias);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
+                addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
             }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
+        }
 
         return null;
     }

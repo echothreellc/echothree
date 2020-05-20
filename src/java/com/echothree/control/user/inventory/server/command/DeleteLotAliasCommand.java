@@ -18,6 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteLotAliasForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -65,11 +66,12 @@ public class DeleteLotAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
         String lotName = form.getLotName();
-        Lot lot = inventoryControl.getLotByName(lotName);
+        Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             String lotAliasTypeName = form.getLotAliasTypeName();
             LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
 

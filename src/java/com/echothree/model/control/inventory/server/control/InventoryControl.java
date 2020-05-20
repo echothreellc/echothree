@@ -3288,20 +3288,6 @@ public class InventoryControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Lots
-    // --------------------------------------------------------------------------------
-
-    public Lot getLotByName(String lotName) {
-        // TODO
-        return null;
-    }
-
-    public LotTransfer getLotTransfer(UserVisit userVisit, Lot lot) {
-        // TODO
-        return null;
-    }
-
-    // --------------------------------------------------------------------------------
     //   Party Inventory Levels
     // --------------------------------------------------------------------------------
     
