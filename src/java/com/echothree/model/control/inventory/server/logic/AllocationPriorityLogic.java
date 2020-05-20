@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.logic;
 
 import com.echothree.model.control.inventory.common.exception.MissingDefaultAllocationPriorityException;
 import com.echothree.model.control.inventory.common.exception.UnknownAllocationPriorityNameException;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

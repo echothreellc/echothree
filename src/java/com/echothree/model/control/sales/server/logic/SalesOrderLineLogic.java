@@ -20,7 +20,7 @@ import com.echothree.model.control.associate.server.logic.AssociateReferralLogic
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemUnitOfMeasureTypeException;

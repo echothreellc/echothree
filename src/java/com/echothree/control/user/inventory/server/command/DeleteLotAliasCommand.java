@@ -17,7 +17,8 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteLotAliasForm;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -65,19 +66,20 @@ public class DeleteLotAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
         String lotName = form.getLotName();
-        Lot lot = inventoryControl.getLotByName(lotName);
+        Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
+            var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
             String lotAliasTypeName = form.getLotAliasTypeName();
-            LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+            LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
             if(lotAliasType != null) {
-                LotAlias lotAlias = inventoryControl.getLotAliasForUpdate(lot, lotAliasType);
+                LotAlias lotAlias = lotAliasControl.getLotAliasForUpdate(lot, lotAliasType);
 
                 if(lotAlias != null) {
-                    inventoryControl.deleteLotAlias(lotAlias, getPartyPK());
+                    lotAliasControl.deleteLotAlias(lotAlias, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLotAlias.name(), lotName, lotAliasTypeName);
                 }

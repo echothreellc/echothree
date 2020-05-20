@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotAliasTypeForm;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -67,9 +67,9 @@ public class CreateLotAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType == null) {
             PartyPK createdBy = getPartyPK();
@@ -78,10 +78,10 @@ public class CreateLotAliasTypeCommand
             Integer sortOrder = Integer.valueOf(form.getSortOrder());
             String description = form.getDescription();
 
-            lotAliasType = inventoryControl.createLotAliasType(lotAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
+            lotAliasType = lotAliasControl.createLotAliasType(lotAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                inventoryControl.createLotAliasTypeDescription(lotAliasType, getPreferredLanguage(), description, createdBy);
+                lotAliasControl.createLotAliasTypeDescription(lotAliasType, getPreferredLanguage(), description, createdBy);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), lotAliasTypeName);

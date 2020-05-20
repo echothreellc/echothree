@@ -14,35 +14,32 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server.control;
+package com.echothree.model.control.inventory.server.control;
 
-import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
+import com.echothree.model.control.inventory.common.transfer.LotTransfer;
+import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.control.BaseModelControl;
-import com.echothree.util.server.persistence.Session;
 
-public abstract class BasePaymentControl
-        extends BaseModelControl {
+public class LotControl
+        extends BaseInventoryControl {
 
-    /** Creates a new instance of BasePaymentControl */
-    protected BasePaymentControl() {
+    /** Creates a new instance of LotControl */
+    public LotControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
-    //   Payment Transfer Caches
+    //   Lots
     // --------------------------------------------------------------------------------
-    
-    private PaymentTransferCaches paymentTransferCaches = null;
-    
-    public PaymentTransferCaches getPaymentTransferCaches(UserVisit userVisit) {
-        if(paymentTransferCaches == null) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
 
-            paymentTransferCaches = new PaymentTransferCaches(userVisit, paymentControl);
-        }
-        
-        return paymentTransferCaches;
+    public Lot getLotByName(String lotName) {
+        // TODO
+        return null;
     }
-    
- }
+
+    public LotTransfer getLotTransfer(UserVisit userVisit, Lot lot) {
+        // TODO
+        return null;
+    }
+
+}

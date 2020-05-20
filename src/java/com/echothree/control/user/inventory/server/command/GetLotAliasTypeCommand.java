@@ -20,7 +20,7 @@ import com.echothree.control.user.inventory.common.form.GetLotAliasTypeForm;
 import com.echothree.control.user.inventory.common.result.GetLotAliasTypeResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -65,13 +65,13 @@ public class GetLotAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         GetLotAliasTypeResult result = InventoryResultFactory.getGetLotAliasTypeResult();
         String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
-            result.setLotAliasType(inventoryControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
+            result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
 
             sendEventUsingNames(lotAliasType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         } else {

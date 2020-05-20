@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelForm;
 import com.echothree.control.user.inventory.common.result.GetPartyInventoryLevelResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;

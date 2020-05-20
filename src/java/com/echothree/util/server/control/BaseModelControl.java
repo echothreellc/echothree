@@ -29,8 +29,7 @@ import java.sql.Connection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class BaseModelControl<C
-        extends BaseModelControl> {
+public abstract class BaseModelControl {
     
     protected Session session;
     protected Connection connection;
@@ -40,7 +39,7 @@ public class BaseModelControl<C
     private WorkflowControl workflowControl;
     
     /** Creates a new instance of BaseModelControl */
-    public BaseModelControl() {
+    protected BaseModelControl() {
         this.session = ThreadSession.currentSession();
         this.connection = session.getConnection();
     }

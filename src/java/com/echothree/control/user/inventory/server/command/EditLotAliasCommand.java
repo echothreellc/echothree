@@ -22,7 +22,8 @@ import com.echothree.control.user.inventory.common.form.EditLotAliasForm;
 import com.echothree.control.user.inventory.common.result.EditLotAliasResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.LotAliasSpec;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -89,25 +90,26 @@ public class EditLotAliasCommand
     
     @Override
     public LotAlias getEntity(EditLotAliasResult result) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
         LotAlias lotAlias = null;
         String lotName = spec.getLotName();
-        Lot lot = inventoryControl.getLotByName(lotName);
+        Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
+            var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
             String lotAliasTypeName = spec.getLotAliasTypeName();
 
-            lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+            lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
             if(lotAliasType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    lotAlias = inventoryControl.getLotAlias(lot, lotAliasType);
+                    lotAlias = lotAliasControl.getLotAlias(lot, lotAliasType);
                 } else { // EditMode.UPDATE
-                    lotAlias = inventoryControl.getLotAliasForUpdate(lot, lotAliasType);
+                    lotAlias = lotAliasControl.getLotAliasForUpdate(lot, lotAliasType);
                 }
 
                 if(lotAlias != null) {
-                    result.setLotAlias(inventoryControl.getLotAliasTransfer(getUserVisit(), lotAlias));
+                    result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLotAlias.name(), lotName, lotAliasTypeName);
                 }
@@ -128,9 +130,9 @@ public class EditLotAliasCommand
 
     @Override
     public void fillInResult(EditLotAliasResult result, LotAlias lotAlias) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
 
-        result.setLotAlias(inventoryControl.getLotAliasTransfer(getUserVisit(), lotAlias));
+        result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
     }
 
     @Override
@@ -140,9 +142,9 @@ public class EditLotAliasCommand
 
     @Override
     public void canUpdate(LotAlias lotAlias) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         String alias = edit.getAlias();
-        LotAlias duplicateLotAlias = inventoryControl.getLotAliasByAlias(lotAliasType, alias);
+        LotAlias duplicateLotAlias = lotAliasControl.getLotAliasByAlias(lotAliasType, alias);
 
         if(duplicateLotAlias != null && !lotAlias.equals(duplicateLotAlias)) {
             LotAliasTypeDetail lotAliasTypeDetail = lotAlias.getLotAliasType().getLastDetail();
@@ -153,12 +155,12 @@ public class EditLotAliasCommand
 
     @Override
     public void doUpdate(LotAlias lotAlias) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        LotAliasValue lotAliasValue = inventoryControl.getLotAliasValue(lotAlias);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        LotAliasValue lotAliasValue = lotAliasControl.getLotAliasValue(lotAlias);
 
         lotAliasValue.setAlias(edit.getAlias());
 
-        inventoryControl.updateLotAliasFromValue(lotAliasValue, getPartyPK());
+        lotAliasControl.updateLotAliasFromValue(lotAliasValue, getPartyPK());
     }
 
 }

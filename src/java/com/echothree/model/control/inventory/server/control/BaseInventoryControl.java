@@ -14,35 +14,36 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server.control;
+package com.echothree.model.control.inventory.server.control;
 
-import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
+import com.echothree.model.control.inventory.server.transfer.InventoryTransferCaches;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.Session;
 
-public abstract class BasePaymentControl
+public abstract class BaseInventoryControl
         extends BaseModelControl {
 
-    /** Creates a new instance of BasePaymentControl */
-    protected BasePaymentControl() {
+    /** Creates a new instance of BaseInventoryControl */
+    protected BaseInventoryControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
-    //   Payment Transfer Caches
+    //   Inventory Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PaymentTransferCaches paymentTransferCaches = null;
+    private InventoryTransferCaches inventoryTransferCaches = null;
     
-    public PaymentTransferCaches getPaymentTransferCaches(UserVisit userVisit) {
-        if(paymentTransferCaches == null) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+    public InventoryTransferCaches getInventoryTransferCaches(UserVisit userVisit) {
+        if(inventoryTransferCaches == null) {
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
-            paymentTransferCaches = new PaymentTransferCaches(userVisit, paymentControl);
+            inventoryTransferCaches = new InventoryTransferCaches(userVisit, inventoryControl);
         }
         
-        return paymentTransferCaches;
+        return inventoryTransferCaches;
     }
-    
- }
+
+}

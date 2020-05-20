@@ -18,13 +18,20 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.common.transfer.LotTransfer;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.data.inventory.server.entity.LotAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class LotAliasTransferCache
         extends BaseInventoryTransferCache<LotAlias, LotAliasTransfer> {
-    
+
+    LotControl lotControl = (LotControl) Session.getModelController(LotControl.class);
+    LotAliasControl lotAliasControl = (LotAliasControl) Session.getModelController(LotAliasControl.class);
+
     /** Creates a new instance of LotAliasTransferCache */
     public LotAliasTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
@@ -35,8 +42,8 @@ public class LotAliasTransferCache
         LotAliasTransfer lotAliasTransfer = get(lotAlias);
         
         if(lotAliasTransfer == null) {
-//            LotTransfer lot = inventoryControl.getLotTransfer(userVisit, lotAlias.getLot());
-            LotAliasTypeTransfer lotAliasType = inventoryControl.getLotAliasTypeTransfer(userVisit, lotAlias.getLotAliasType());
+            //LotTransfer lot = lotControl.getLotTransfer(userVisit, lotAlias.getLot());
+            LotAliasTypeTransfer lotAliasType = lotAliasControl.getLotAliasTypeTransfer(userVisit, lotAlias.getLotAliasType());
             String alias = lotAlias.getAlias();
             
             lotAliasTransfer = new LotAliasTransfer(/*lot,*/ lotAliasType, alias);

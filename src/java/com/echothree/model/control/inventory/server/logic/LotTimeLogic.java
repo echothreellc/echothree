@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.inventory.server.logic;
 
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotDetail;
 import com.echothree.model.data.inventory.server.entity.LotTime;

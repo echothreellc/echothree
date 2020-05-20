@@ -17,7 +17,7 @@
 package com.echothree.model.control.warehouse.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
@@ -37,7 +37,6 @@ import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTra
 import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;

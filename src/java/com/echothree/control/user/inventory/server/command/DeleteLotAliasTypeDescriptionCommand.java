@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteLotAliasTypeDescriptionForm;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,9 +66,9 @@ public class DeleteLotAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -76,10 +76,10 @@ public class DeleteLotAliasTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, language);
+                LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, language);
 
                 if(lotAliasTypeDescription != null) {
-                    inventoryControl.deleteLotAliasTypeDescription(lotAliasTypeDescription, getPartyPK());
+                    lotAliasControl.deleteLotAliasTypeDescription(lotAliasTypeDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLotAliasTypeDescription.name(), lotAliasTypeName, languageIsoName);
                 }
