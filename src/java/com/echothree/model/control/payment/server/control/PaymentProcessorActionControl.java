@@ -34,13 +34,13 @@ import java.util.Map;
 public class PaymentProcessorActionControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentProcessorControl */
+    /** Creates a new instance of PaymentProcessorActionControl */
     public PaymentProcessorActionControl() {
         super();
     }
 
     // --------------------------------------------------------------------------------
-    //   Payment Processor Types
+    //   Payment Processor Actions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorAction createPaymentProcessorAction(final PaymentProcessor paymentProcessor,

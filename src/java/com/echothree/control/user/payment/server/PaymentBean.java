@@ -458,6 +458,20 @@ public class PaymentBean
 //    }
 
     // -------------------------------------------------------------------------
+    //   Payment Processor Transactions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult getPaymentProcessorTransactions(UserVisitPK userVisitPK, GetPaymentProcessorTransactionsForm form) {
+        return new GetPaymentProcessorTransactionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorTransaction(UserVisitPK userVisitPK, GetPaymentProcessorTransactionForm form) {
+        return new GetPaymentProcessorTransactionCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Payment Methods
     // -------------------------------------------------------------------------
     

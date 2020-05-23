@@ -422,5 +422,12 @@
                 <sequenceDescription languageIsoName="en" description="Default Sequence" />
             </sequence>
         </sequenceType>
+        <sequenceType sequenceTypeName="PAYMENT_PROCESSOR_TRANSACTION" prefix="PP" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
+                      isDefault="false" sortOrder="1">
+            <sequenceTypeDescription languageIsoName="en" description="Payment Processor Transaction" />
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
+                <sequenceDescription languageIsoName="en" description="Default Payment Processor Transaction" />
+            </sequence>
+        </sequenceType>
     </sequenceTypes>
 </initialData>
