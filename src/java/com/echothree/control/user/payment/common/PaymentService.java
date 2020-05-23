@@ -234,6 +234,14 @@ public interface PaymentService
 //    CommandResult deletePaymentProcessorAction(UserVisitPK userVisitPK, DeletePaymentProcessorActionForm form);
 
     // -------------------------------------------------------------------------
+    //   Payment Processor Transactions
+    // -------------------------------------------------------------------------
+
+    CommandResult getPaymentProcessorTransactions(UserVisitPK userVisitPK, GetPaymentProcessorTransactionsForm form);
+
+    CommandResult getPaymentProcessorTransaction(UserVisitPK userVisitPK, GetPaymentProcessorTransactionForm form);
+
+    // -------------------------------------------------------------------------
     //   Payment Methods
     // -------------------------------------------------------------------------
     
