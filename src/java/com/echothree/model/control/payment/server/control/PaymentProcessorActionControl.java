@@ -40,7 +40,7 @@ public class PaymentProcessorActionControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Payment Processor Types
+    //   Payment Processor Actions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorAction createPaymentProcessorAction(final PaymentProcessor paymentProcessor,
