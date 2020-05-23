@@ -45,7 +45,7 @@ public class PaymentProcessorTransactionControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Payment Processor Action Types
+    //   Payment Processor Transactions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorTransaction createPaymentProcessorTransaction(final String paymentProcessorTransactionName,
