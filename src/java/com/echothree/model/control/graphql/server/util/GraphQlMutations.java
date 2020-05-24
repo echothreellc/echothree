@@ -33,10 +33,12 @@ import com.echothree.control.user.party.common.result.CreateCustomerWithLoginRes
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.result.CreatePaymentMethodTypeResult;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorActionTypeResult;
+import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResult;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResultCodeResult;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorTypeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentMethodTypeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorActionTypeResult;
+import com.echothree.control.user.payment.common.result.EditPaymentProcessorResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorResultCodeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorTypeResult;
 import com.echothree.control.user.search.common.SearchUtil;
@@ -57,6 +59,116 @@ import javax.naming.NamingException;
 
 @GraphQLName("mutation")
 public class GraphQlMutations {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createPaymentProcessor(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorName") @GraphQLNonNull final String paymentProcessorName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorForm();
+
+            commandForm.setPaymentProcessorName(paymentProcessorName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = PaymentUtil.getHome().createPaymentProcessor(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreatePaymentProcessorResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deletePaymentProcessor(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorName") @GraphQLNonNull final String paymentProcessorName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorForm();
+
+            commandForm.setPaymentProcessorName(paymentProcessorName);
+
+            var commandResult = PaymentUtil.getHome().deletePaymentProcessor(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editPaymentProcessor(final DataFetchingEnvironment env,
+            @GraphQLName("originalPaymentProcessorName") final String originalPaymentProcessorName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("paymentProcessorName") final String paymentProcessorName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            var spec = PaymentUtil.getHome().getPaymentProcessorUniversalSpec();
+
+            spec.setPaymentProcessorName(originalPaymentProcessorName);
+            spec.setUlid(id);
+
+            var commandForm = PaymentUtil.getHome().getEditPaymentProcessorForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = PaymentUtil.getHome().editPaymentProcessor(context.getUserVisitPK(), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditPaymentProcessorResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessor().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("paymentProcessorName"))
+                    edit.setPaymentProcessorName(paymentProcessorName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = PaymentUtil.getHome().editPaymentProcessor(context.getUserVisitPK(), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation
