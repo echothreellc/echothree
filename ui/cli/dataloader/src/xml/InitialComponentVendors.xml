@@ -1192,6 +1192,12 @@
             <entityType entityTypeName="PaymentProcessorDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Description" />
             </entityType>
+            <entityType entityTypeName="PaymentProcessorTransaction" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Transaction" />
+            </entityType>
+            <entityType entityTypeName="PaymentProcessorTransactionCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Transaction Code" />
+            </entityType>
             <entityType entityTypeName="PaymentMethodCheck" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Method Check" />
             </entityType>
