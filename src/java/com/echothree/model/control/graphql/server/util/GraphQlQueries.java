@@ -227,7 +227,8 @@ import java.util.Collections;
 import javax.naming.NamingException;
 
 @GraphQLName("query")
-public final class GraphQlQueries {
+public final class GraphQlQueries
+        extends BaseGraphQl {
 
     @GraphQLField
     @GraphQLName("paymentProcessorTransaction")
@@ -237,13 +238,12 @@ public final class GraphQlQueries {
         PaymentProcessorTransaction paymentProcessorTransaction;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTransactionForm();
 
             commandForm.setPaymentProcessorTransactionName(paymentProcessorTransactionName);
             commandForm.setUlid(id);
 
-            paymentProcessorTransaction = new GetPaymentProcessorTransactionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorTransaction = new GetPaymentProcessorTransactionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -258,10 +258,9 @@ public final class GraphQlQueries {
         Collection<PaymentProcessorTransactionObject> paymentProcessorTransactionObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTransactionsForm();
 
-            paymentProcessorTransactions = new GetPaymentProcessorTransactionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorTransactions = new GetPaymentProcessorTransactionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -289,13 +288,12 @@ public final class GraphQlQueries {
         PaymentProcessor paymentProcessor;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorForm();
 
             commandForm.setPaymentProcessorName(paymentProcessorName);
             commandForm.setUlid(id);
 
-            paymentProcessor = new GetPaymentProcessorCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessor = new GetPaymentProcessorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -310,10 +308,9 @@ public final class GraphQlQueries {
         Collection<PaymentProcessorObject> paymentProcessorObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorsForm();
 
-            paymentProcessors = new GetPaymentProcessorsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessors = new GetPaymentProcessorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -341,13 +338,12 @@ public final class GraphQlQueries {
         PaymentProcessorType paymentProcessorType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeForm();
 
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
             commandForm.setUlid(id);
 
-            paymentProcessorType = new GetPaymentProcessorTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorType = new GetPaymentProcessorTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -362,10 +358,9 @@ public final class GraphQlQueries {
         Collection<PaymentProcessorTypeObject> paymentProcessorTypeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypesForm();
 
-            paymentProcessorTypes = new GetPaymentProcessorTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorTypes = new GetPaymentProcessorTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -393,13 +388,12 @@ public final class GraphQlQueries {
         PaymentMethodType paymentMethodType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentMethodTypeForm();
 
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
             commandForm.setUlid(id);
 
-            paymentMethodType = new GetPaymentMethodTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentMethodType = new GetPaymentMethodTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -414,10 +408,9 @@ public final class GraphQlQueries {
         Collection<PaymentMethodTypeObject> paymentMethodTypeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentMethodTypesForm();
 
-            paymentMethodTypes = new GetPaymentMethodTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentMethodTypes = new GetPaymentMethodTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -445,13 +438,12 @@ public final class GraphQlQueries {
         PaymentProcessorResultCode paymentProcessorResultCode;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorResultCodeForm();
 
             commandForm.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
             commandForm.setUlid(id);
 
-            paymentProcessorResultCode = new GetPaymentProcessorResultCodeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorResultCode = new GetPaymentProcessorResultCodeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -466,10 +458,9 @@ public final class GraphQlQueries {
         Collection<PaymentProcessorResultCodeObject> paymentProcessorResultCodeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorResultCodesForm();
 
-            paymentProcessorResultCodes = new GetPaymentProcessorResultCodesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorResultCodes = new GetPaymentProcessorResultCodesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -497,13 +488,12 @@ public final class GraphQlQueries {
         PaymentProcessorActionType paymentProcessorActionType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorActionTypeForm();
 
             commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
             commandForm.setUlid(id);
 
-            paymentProcessorActionType = new GetPaymentProcessorActionTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorActionType = new GetPaymentProcessorActionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -518,10 +508,9 @@ public final class GraphQlQueries {
         Collection<PaymentProcessorActionTypeObject> paymentProcessorActionTypeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorActionTypesForm();
 
-            paymentProcessorActionTypes = new GetPaymentProcessorActionTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            paymentProcessorActionTypes = new GetPaymentProcessorActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -549,13 +538,12 @@ public final class GraphQlQueries {
         Appearance appearance;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetAppearanceForm();
 
             commandForm.setAppearanceName(appearanceName);
             commandForm.setUlid(id);
 
-            appearance = new GetAppearanceCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            appearance = new GetAppearanceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -570,10 +558,9 @@ public final class GraphQlQueries {
         Collection<AppearanceObject> appearanceObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetAppearancesForm();
 
-            appearances = new GetAppearancesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            appearances = new GetAppearancesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -596,12 +583,11 @@ public final class GraphQlQueries {
         EntityInstance entityInstance;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetEntityInstanceForm();
 
             commandForm.setUlid(id);
 
-            entityInstance = new GetEntityInstanceCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            entityInstance = new GetEntityInstanceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -618,13 +604,12 @@ public final class GraphQlQueries {
         Collection<EntityInstanceObject> entityInstanceObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetEntityInstancesForm();
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            entityInstances = new GetEntityInstancesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            entityInstances = new GetEntityInstancesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -649,14 +634,13 @@ public final class GraphQlQueries {
         EntityType entityType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetEntityTypeForm();
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setUlid(id);
 
-            entityType = new GetEntityTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            entityType = new GetEntityTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -672,12 +656,11 @@ public final class GraphQlQueries {
         Collection<EntityTypeObject> entityTypeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
 
             commandForm.setComponentVendorName(componentVendorName);
 
-            entityTypes = new GetEntityTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            entityTypes = new GetEntityTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -701,13 +684,12 @@ public final class GraphQlQueries {
         ComponentVendor componentVendor;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetComponentVendorForm();
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setUlid(id);
 
-            componentVendor = new GetComponentVendorCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            componentVendor = new GetComponentVendorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -722,10 +704,9 @@ public final class GraphQlQueries {
         Collection<ComponentVendorObject> componentVendorObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetComponentVendorsForm();
 
-            componentVendors = new GetComponentVendorsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            componentVendors = new GetComponentVendorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -749,13 +730,12 @@ public final class GraphQlQueries {
         InventoryCondition inventoryCondition;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = InventoryUtil.getHome().getGetInventoryConditionForm();
 
             commandForm.setInventoryConditionName(inventoryConditionName);
             commandForm.setUlid(id);
         
-            inventoryCondition = new GetInventoryConditionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            inventoryCondition = new GetInventoryConditionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -770,10 +750,9 @@ public final class GraphQlQueries {
         Collection<InventoryConditionObject> inventoryConditionObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
         
-            inventoryConditions = new GetInventoryConditionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            inventoryConditions = new GetInventoryConditionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -801,13 +780,12 @@ public final class GraphQlQueries {
         ContentPageLayout contentPageLayout;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutForm();
 
             commandForm.setContentPageLayoutName(contentPageLayoutName);
             commandForm.setUlid(id);
         
-            contentPageLayout = new GetContentPageLayoutCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageLayout = new GetContentPageLayoutCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -822,10 +800,9 @@ public final class GraphQlQueries {
         Collection<ContentPageLayoutObject> contentPageLayoutObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
         
-            contentPageLayouts = new GetContentPageLayoutsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageLayouts = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -855,7 +832,6 @@ public final class GraphQlQueries {
         ContentPageLayoutArea contentPageLayoutArea;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutAreaForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
@@ -863,7 +839,7 @@ public final class GraphQlQueries {
             commandForm.setContentPageName(contentPageName);
             commandForm.setSortOrder(sortOrder);
         
-            contentPageLayoutArea = new GetContentPageLayoutAreaCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageLayoutArea = new GetContentPageLayoutAreaCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -881,14 +857,13 @@ public final class GraphQlQueries {
         Collection<ContentPageLayoutAreaObject> contentPageLayoutAreaObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
             
-            contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -916,13 +891,12 @@ public final class GraphQlQueries {
         ContentPageAreaType contentPageAreaType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageAreaTypeForm();
 
             commandForm.setContentPageAreaTypeName(contentPageAreaTypeName);
             commandForm.setUlid(id);
         
-            contentPageAreaType = new GetContentPageAreaTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageAreaType = new GetContentPageAreaTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -937,10 +911,9 @@ public final class GraphQlQueries {
         Collection<ContentPageAreaTypeObject> contentPageAreaTypeObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
         
-            contentPageAreaTypes = new GetContentPageAreaTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageAreaTypes = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -967,12 +940,11 @@ public final class GraphQlQueries {
         ContentWebAddress contentWebAddress;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
         
-            contentWebAddress = new GetContentWebAddressCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentWebAddress = new GetContentWebAddressCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -987,10 +959,9 @@ public final class GraphQlQueries {
         Collection<ContentWebAddressObject> contentWebAddressObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
         
-            contentWebAddresses = new GetContentWebAddressesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentWebAddresses = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1017,12 +988,11 @@ public final class GraphQlQueries {
         ContentCollection contentCollection;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCollectionForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
 
-            contentCollection = new GetContentCollectionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCollection = new GetContentCollectionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1037,10 +1007,9 @@ public final class GraphQlQueries {
         Collection<ContentCollectionObject> contentCollectionObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
         
-            contentCollections = new GetContentCollectionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCollections = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1072,7 +1041,6 @@ public final class GraphQlQueries {
         ContentSection contentSection;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentSectionForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1082,7 +1050,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentSection = new GetContentSectionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentSection = new GetContentSectionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1103,7 +1071,6 @@ public final class GraphQlQueries {
         Collection<ContentSectionObject> contentSectionObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentSectionsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1113,7 +1080,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentSections = new GetContentSectionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentSections = new GetContentSectionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1146,7 +1113,6 @@ public final class GraphQlQueries {
         ContentPage contentPage;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1157,7 +1123,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentPage = new GetContentPageCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPage = new GetContentPageCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1178,7 +1144,6 @@ public final class GraphQlQueries {
         Collection<ContentPageObject> contentPageObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPagesForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1188,7 +1153,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentPages = new GetContentPagesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPages = new GetContentPagesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1219,7 +1184,6 @@ public final class GraphQlQueries {
         ContentPageArea contentPageArea;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageAreaForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
@@ -1228,7 +1192,7 @@ public final class GraphQlQueries {
             commandForm.setSortOrder(sortOrder);
             commandForm.setLanguageIsoName(languageIsoName);
 
-            contentPageArea = new GetContentPageAreaCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageArea = new GetContentPageAreaCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1246,14 +1210,13 @@ public final class GraphQlQueries {
         Collection<ContentPageAreaObject> contentPageAreaObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
         
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
 
-            contentPageAreas = new GetContentPageAreasCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentPageAreas = new GetContentPageAreasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1285,7 +1248,6 @@ public final class GraphQlQueries {
         ContentCatalog contentCatalog;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCatalogForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1295,7 +1257,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalog = new GetContentCatalogCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCatalog = new GetContentCatalogCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1315,7 +1277,6 @@ public final class GraphQlQueries {
         Collection<ContentCatalogObject> contentCatalogObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1324,7 +1285,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogs = new GetContentCatalogsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCatalogs = new GetContentCatalogsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1360,7 +1321,6 @@ public final class GraphQlQueries {
         ContentCatalogItem contentCatalogItem;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCatalogItemForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1374,7 +1334,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogItem = new GetContentCatalogItemCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCatalogItem = new GetContentCatalogItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1395,7 +1355,6 @@ public final class GraphQlQueries {
         Collection<ContentCatalogItemObject> contentCatalogItemObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCatalogItemsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1405,7 +1364,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogItems = new GetContentCatalogItemsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCatalogItems = new GetContentCatalogItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1438,7 +1397,6 @@ public final class GraphQlQueries {
         ContentCategory contentCategory;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCategoryForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1449,7 +1407,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategory = new GetContentCategoryCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCategory = new GetContentCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1471,7 +1429,6 @@ public final class GraphQlQueries {
         Collection<ContentCategoryObject> contentCategoryObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1482,7 +1439,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategories = new GetContentCategoriesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCategories = new GetContentCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1519,7 +1476,6 @@ public final class GraphQlQueries {
         ContentCategoryItem contentCategoryItem;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1534,7 +1490,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategoryItem = new GetContentCategoryItemCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCategoryItem = new GetContentCategoryItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1556,7 +1512,6 @@ public final class GraphQlQueries {
         Collection<ContentCategoryItemObject> contentCategoryItemObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
@@ -1567,7 +1522,7 @@ public final class GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategoryItems = new GetContentCategoryItemsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            contentCategoryItems = new GetContentCategoryItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1594,12 +1549,11 @@ public final class GraphQlQueries {
         MimeTypeFileExtension mimeTypeFileExtension;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionForm();
 
             commandForm.setFileExtension(fileExtension);
 
-            mimeTypeFileExtension = new GetMimeTypeFileExtensionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            mimeTypeFileExtension = new GetMimeTypeFileExtensionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1614,10 +1568,9 @@ public final class GraphQlQueries {
         Collection<MimeTypeFileExtensionObject> mimeTypeFileExtensionObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionsForm();
 
-            mimeTypeFileExtensions = new GetMimeTypeFileExtensionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            mimeTypeFileExtensions = new GetMimeTypeFileExtensionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1644,12 +1597,11 @@ public final class GraphQlQueries {
         MimeTypeUsageType mimeTypeUsageType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypeForm();
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            mimeTypeUsageType = new GetMimeTypeUsageTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            mimeTypeUsageType = new GetMimeTypeUsageTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1664,10 +1616,9 @@ public final class GraphQlQueries {
         Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypesForm();
 
-            mimeTypeUsageTypes = new GetMimeTypeUsageTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            mimeTypeUsageTypes = new GetMimeTypeUsageTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1694,12 +1645,11 @@ public final class GraphQlQueries {
         MimeType mimeType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetMimeTypeForm();
 
             commandForm.setMimeTypeName(mimeTypeName);
 
-            mimeType = new GetMimeTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            mimeType = new GetMimeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1715,12 +1665,11 @@ public final class GraphQlQueries {
         Collection<MimeTypeObject> mimeTypeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetMimeTypesForm();
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            mimeTypes = new GetMimeTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            mimeTypes = new GetMimeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1747,12 +1696,11 @@ public final class GraphQlQueries {
         QueueType queueType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = QueueUtil.getHome().getGetQueueTypeForm();
 
             commandForm.setQueueTypeName(queueTypeName);
 
-            queueType = new GetQueueTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            queueType = new GetQueueTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1767,10 +1715,9 @@ public final class GraphQlQueries {
         Collection<QueueTypeObject> queueTypeObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
 
-            queueTypes = new GetQueueTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            queueTypes = new GetQueueTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1798,13 +1745,12 @@ public final class GraphQlQueries {
         UnitOfMeasureKindUse unitOfMeasureKindUse;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseForm();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureKindUse = new GetUnitOfMeasureKindUseCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureKindUse = new GetUnitOfMeasureKindUseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1821,13 +1767,12 @@ public final class GraphQlQueries {
         Collection<UnitOfMeasureKindUseObject> unitOfMeasureKindUseObjects;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUsesForm();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureKindUses = new GetUnitOfMeasureKindUsesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureKindUses = new GetUnitOfMeasureKindUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1855,13 +1800,12 @@ public final class GraphQlQueries {
         UnitOfMeasureType unitOfMeasureType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
         
-            unitOfMeasureType = new GetUnitOfMeasureTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureType = new GetUnitOfMeasureTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1877,12 +1821,11 @@ public final class GraphQlQueries {
         Collection<UnitOfMeasureTypeObject> unitOfMeasureTypeObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
         
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             
-            unitOfMeasureTypes = new GetUnitOfMeasureTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureTypes = new GetUnitOfMeasureTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1909,12 +1852,11 @@ public final class GraphQlQueries {
         UnitOfMeasureKind unitOfMeasureKind;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindForm();
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
         
-            unitOfMeasureKind = new GetUnitOfMeasureKindCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureKind = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1929,10 +1871,9 @@ public final class GraphQlQueries {
         Collection<UnitOfMeasureKindObject> unitOfMeasureKindObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindsForm();
         
-            unitOfMeasureKinds = new GetUnitOfMeasureKindsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureKinds = new GetUnitOfMeasureKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1959,12 +1900,11 @@ public final class GraphQlQueries {
         UnitOfMeasureKindUseType unitOfMeasureKindUseType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeForm();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
         
-            unitOfMeasureKindUseType = new GetUnitOfMeasureKindUseTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureKindUseType = new GetUnitOfMeasureKindUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1979,10 +1919,9 @@ public final class GraphQlQueries {
         Collection<UnitOfMeasureKindUseTypeObject> unitOfMeasureKindUseTypeObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
         
-            unitOfMeasureKindUseTypes = new GetUnitOfMeasureKindUseTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            unitOfMeasureKindUseTypes = new GetUnitOfMeasureKindUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2009,12 +1948,11 @@ public final class GraphQlQueries {
         EntityAttributeType entityAttributeType;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetEntityAttributeTypeForm();
 
             commandForm.setEntityAttributeTypeName(entityAttributeTypeName);
         
-            entityAttributeType = new GetEntityAttributeTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            entityAttributeType = new GetEntityAttributeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2029,10 +1967,9 @@ public final class GraphQlQueries {
         Collection<EntityAttributeTypeObject> entityAttributeTypeObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetEntityAttributeTypesForm();
         
-            entityAttributeTypes = new GetEntityAttributeTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            entityAttributeTypes = new GetEntityAttributeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2059,12 +1996,11 @@ public final class GraphQlQueries {
         CustomerResultsObject customerResultsObject = new CustomerResultsObject();
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
             
-            if(new GetCustomerResultsCommand(context.getUserVisitPK(), commandForm).canGetResultsForGraphQl()) {
+            if(new GetCustomerResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
                 customerResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
@@ -2082,13 +2018,12 @@ public final class GraphQlQueries {
         Color color;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetColorForm();
 
             commandForm.setColorName(colorName);
             commandForm.setUlid(id);
         
-            color = new GetColorCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            color = new GetColorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2103,10 +2038,9 @@ public final class GraphQlQueries {
         Collection<ColorObject> colorObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetColorsForm();
         
-            colors = new GetColorsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            colors = new GetColorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2134,13 +2068,12 @@ public final class GraphQlQueries {
         FontStyle fontStyle;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetFontStyleForm();
 
             commandForm.setFontStyleName(fontStyleName);
             commandForm.setUlid(id);
         
-            fontStyle = new GetFontStyleCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            fontStyle = new GetFontStyleCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2155,10 +2088,9 @@ public final class GraphQlQueries {
         Collection<FontStyleObject> fontStyleObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetFontStylesForm();
         
-            fontStyles = new GetFontStylesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            fontStyles = new GetFontStylesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2186,13 +2118,12 @@ public final class GraphQlQueries {
         FontWeight fontWeight;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetFontWeightForm();
 
             commandForm.setFontWeightName(fontWeightName);
             commandForm.setUlid(id);
         
-            fontWeight = new GetFontWeightCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            fontWeight = new GetFontWeightCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2207,10 +2138,9 @@ public final class GraphQlQueries {
         Collection<FontWeightObject> fontWeightObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
         
-            fontWeights = new GetFontWeightsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            fontWeights = new GetFontWeightsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2238,13 +2168,12 @@ public final class GraphQlQueries {
         TextDecoration textDecoration;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetTextDecorationForm();
 
             commandForm.setTextDecorationName(textDecorationName);
             commandForm.setUlid(id);
         
-            textDecoration = new GetTextDecorationCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            textDecoration = new GetTextDecorationCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2259,10 +2188,9 @@ public final class GraphQlQueries {
         Collection<TextDecorationObject> textDecorationObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
         
-            textDecorations = new GetTextDecorationsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            textDecorations = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2290,13 +2218,12 @@ public final class GraphQlQueries {
         TextTransformation textTransformation;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetTextTransformationForm();
 
             commandForm.setTextTransformationName(textTransformationName);
             commandForm.setUlid(id);
         
-            textTransformation = new GetTextTransformationCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            textTransformation = new GetTextTransformationCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2311,10 +2238,9 @@ public final class GraphQlQueries {
         Collection<TextTransformationObject> textTransformationObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
         
-            textTransformations = new GetTextTransformationsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            textTransformations = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2343,13 +2269,12 @@ public final class GraphQlQueries {
         UserLogin foundByUsernameUserLogin;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getGetUserLoginForm();
 
             commandForm.setUsername(username);
             commandForm.setUlid(partyId);
         
-            GetUserLoginCommand getUserLoginCommand = new GetUserLoginCommand(context.getUserVisitPK(), commandForm);
+            GetUserLoginCommand getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
             userLogin = getUserLoginCommand.runForGraphQl();
             foundByUsernameUserLogin = getUserLoginCommand.foundByUsernameUserLogin;
         } catch (NamingException ex) {
@@ -2368,14 +2293,13 @@ public final class GraphQlQueries {
         RecoveryQuestion recoveryQuestion;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getGetRecoveryQuestionForm();
 
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             commandForm.setUlid(id);
             commandForm.setUsername(username);
         
-            recoveryQuestion = new GetRecoveryQuestionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            recoveryQuestion = new GetRecoveryQuestionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2390,10 +2314,9 @@ public final class GraphQlQueries {
         Collection<RecoveryQuestionObject> recoveryQuestionObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getGetRecoveryQuestionsForm();
         
-            recoveryQuestions = new GetRecoveryQuestionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            recoveryQuestions = new GetRecoveryQuestionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2439,13 +2362,12 @@ public final class GraphQlQueries {
         Currency currency;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = AccountingUtil.getHome().getGetCurrencyForm();
 
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.setUlid(id);
         
-            currency = new GetCurrencyCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            currency = new GetCurrencyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2460,10 +2382,9 @@ public final class GraphQlQueries {
         Collection<CurrencyObject> currencyObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
         
-            currencies = new GetCurrenciesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            currencies = new GetCurrenciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2491,13 +2412,12 @@ public final class GraphQlQueries {
         Language language;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetLanguageForm();
 
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setUlid(id);
         
-            language = new GetLanguageCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            language = new GetLanguageCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2512,10 +2432,9 @@ public final class GraphQlQueries {
         Collection<LanguageObject> languageObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetLanguagesForm();
         
-            languages = new GetLanguagesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            languages = new GetLanguagesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2543,13 +2462,12 @@ public final class GraphQlQueries {
         DateTimeFormat dateTimeFormat;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetDateTimeFormatForm();
 
             commandForm.setDateTimeFormatName(dateTimeFormatName);
             commandForm.setUlid(id);
         
-            dateTimeFormat = new GetDateTimeFormatCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            dateTimeFormat = new GetDateTimeFormatCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2564,10 +2482,9 @@ public final class GraphQlQueries {
         Collection<DateTimeFormatObject> dateTimeFormatObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
         
-            dateTimeFormats = new GetDateTimeFormatsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            dateTimeFormats = new GetDateTimeFormatsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2595,13 +2512,12 @@ public final class GraphQlQueries {
         TimeZone timeZone;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetTimeZoneForm();
 
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
             commandForm.setUlid(id);
         
-            timeZone = new GetTimeZoneCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            timeZone = new GetTimeZoneCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2616,10 +2532,9 @@ public final class GraphQlQueries {
         Collection<TimeZoneObject> timeZoneObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetTimeZonesForm();
         
-            timeZones = new GetTimeZonesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            timeZones = new GetTimeZonesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2648,14 +2563,13 @@ public final class GraphQlQueries {
         Item item;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ItemUtil.getHome().getGetItemForm();
 
             commandForm.setItemName(itemName);
             commandForm.setItemNameOrAlias(itemNameOrAlias);
             commandForm.setUlid(id);
         
-            item = new GetItemCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            item = new GetItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2671,13 +2585,12 @@ public final class GraphQlQueries {
         ItemCategory itemCategory;
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ItemUtil.getHome().getGetItemCategoryForm();
 
             commandForm.setItemCategoryName(itemCategoryName);
             commandForm.setUlid(id);
         
-            itemCategory = new GetItemCategoryCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            itemCategory = new GetItemCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2693,12 +2606,11 @@ public final class GraphQlQueries {
         Collection<ItemCategoryObject> itemCategoryObjects;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ItemUtil.getHome().getGetItemCategoriesForm();
 
             commandForm.setParentItemCategoryName(parentItemCategoryName);
         
-            itemCategories = new GetItemCategoriesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            itemCategories = new GetItemCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2724,10 +2636,9 @@ public final class GraphQlQueries {
         Collection<PersonalTitle> personalTitles;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
         
-            personalTitles = new GetPersonalTitlesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            personalTitles = new GetPersonalTitlesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2749,10 +2660,9 @@ public final class GraphQlQueries {
         Collection<NameSuffix> nameSuffixes;
         
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
         
-            nameSuffixes = new GetNameSuffixesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+            nameSuffixes = new GetNameSuffixesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

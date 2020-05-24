@@ -58,7 +58,8 @@ import java.util.Map;
 import javax.naming.NamingException;
 
 @GraphQLName("mutation")
-public class GraphQlMutations {
+public class GraphQlMutations
+        extends BaseGraphQl {
 
     @GraphQLField
     @GraphQLRelayMutation
@@ -70,7 +71,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorForm();
 
             commandForm.setPaymentProcessorName(paymentProcessorName);
@@ -78,7 +78,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = PaymentUtil.getHome().createPaymentProcessor(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().createPaymentProcessor(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -100,12 +100,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorForm();
 
             commandForm.setPaymentProcessorName(paymentProcessorName);
 
-            var commandResult = PaymentUtil.getHome().deletePaymentProcessor(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().deletePaymentProcessor(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -126,7 +125,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = PaymentUtil.getHome().getPaymentProcessorUniversalSpec();
 
             spec.setPaymentProcessorName(originalPaymentProcessorName);
@@ -137,7 +135,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = PaymentUtil.getHome().editPaymentProcessor(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().editPaymentProcessor(getUserVisitPK(env), commandForm);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -159,7 +157,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
 
-                commandResult = PaymentUtil.getHome().editPaymentProcessor(context.getUserVisitPK(), commandForm);
+                commandResult = PaymentUtil.getHome().editPaymentProcessor(getUserVisitPK(env), commandForm);
             }
 
             commandResultObject.setCommandResult(commandResult);
@@ -180,7 +178,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorTypeForm();
 
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
@@ -188,7 +185,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = PaymentUtil.getHome().createPaymentProcessorType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().createPaymentProcessorType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -210,12 +207,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorTypeForm();
 
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
 
-            var commandResult = PaymentUtil.getHome().deletePaymentProcessorType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().deletePaymentProcessorType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -236,7 +232,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = PaymentUtil.getHome().getPaymentProcessorTypeUniversalSpec();
 
             spec.setPaymentProcessorTypeName(originalPaymentProcessorTypeName);
@@ -247,7 +242,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = PaymentUtil.getHome().editPaymentProcessorType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().editPaymentProcessorType(getUserVisitPK(env), commandForm);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -269,7 +264,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
 
-                commandResult = PaymentUtil.getHome().editPaymentProcessorType(context.getUserVisitPK(), commandForm);
+                commandResult = PaymentUtil.getHome().editPaymentProcessorType(getUserVisitPK(env), commandForm);
             }
 
             commandResultObject.setCommandResult(commandResult);
@@ -287,12 +282,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getSetDefaultPaymentProcessorTypeForm();
 
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
 
-            var commandResult = PaymentUtil.getHome().setDefaultPaymentProcessorType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().setDefaultPaymentProcessorType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -311,7 +305,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getCreatePaymentMethodTypeForm();
 
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
@@ -319,7 +312,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = PaymentUtil.getHome().createPaymentMethodType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().createPaymentMethodType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -341,12 +334,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getDeletePaymentMethodTypeForm();
 
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
 
-            var commandResult = PaymentUtil.getHome().deletePaymentMethodType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().deletePaymentMethodType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -367,7 +359,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = PaymentUtil.getHome().getPaymentMethodTypeUniversalSpec();
 
             spec.setPaymentMethodTypeName(originalPaymentMethodTypeName);
@@ -378,7 +369,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = PaymentUtil.getHome().editPaymentMethodType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().editPaymentMethodType(getUserVisitPK(env), commandForm);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -400,7 +391,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
 
-                commandResult = PaymentUtil.getHome().editPaymentMethodType(context.getUserVisitPK(), commandForm);
+                commandResult = PaymentUtil.getHome().editPaymentMethodType(getUserVisitPK(env), commandForm);
             }
 
             commandResultObject.setCommandResult(commandResult);
@@ -418,12 +409,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getSetDefaultPaymentMethodTypeForm();
 
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
 
-            var commandResult = PaymentUtil.getHome().setDefaultPaymentMethodType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().setDefaultPaymentMethodType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -442,7 +432,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorResultCodeForm();
 
             commandForm.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
@@ -450,7 +439,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = PaymentUtil.getHome().createPaymentProcessorResultCode(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().createPaymentProcessorResultCode(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -472,12 +461,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorResultCodeForm();
 
             commandForm.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
 
-            var commandResult = PaymentUtil.getHome().deletePaymentProcessorResultCode(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().deletePaymentProcessorResultCode(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -498,7 +486,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = PaymentUtil.getHome().getPaymentProcessorResultCodeUniversalSpec();
 
             spec.setPaymentProcessorResultCodeName(originalPaymentProcessorResultCodeName);
@@ -509,7 +496,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = PaymentUtil.getHome().editPaymentProcessorResultCode(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().editPaymentProcessorResultCode(getUserVisitPK(env), commandForm);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -531,7 +518,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
 
-                commandResult = PaymentUtil.getHome().editPaymentProcessorResultCode(context.getUserVisitPK(), commandForm);
+                commandResult = PaymentUtil.getHome().editPaymentProcessorResultCode(getUserVisitPK(env), commandForm);
             }
 
             commandResultObject.setCommandResult(commandResult);
@@ -549,12 +536,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getSetDefaultPaymentProcessorResultCodeForm();
 
             commandForm.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
 
-            var commandResult = PaymentUtil.getHome().setDefaultPaymentProcessorResultCode(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().setDefaultPaymentProcessorResultCode(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -573,7 +559,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorActionTypeForm();
 
             commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
@@ -581,7 +566,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = PaymentUtil.getHome().createPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().createPaymentProcessorActionType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -603,12 +588,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorActionTypeForm();
 
             commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
 
-            var commandResult = PaymentUtil.getHome().deletePaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().deletePaymentProcessorActionType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -629,7 +613,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = PaymentUtil.getHome().getPaymentProcessorActionTypeUniversalSpec();
 
             spec.setPaymentProcessorActionTypeName(originalPaymentProcessorActionTypeName);
@@ -640,7 +623,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = PaymentUtil.getHome().editPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().editPaymentProcessorActionType(getUserVisitPK(env), commandForm);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -662,7 +645,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
 
-                commandResult = PaymentUtil.getHome().editPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+                commandResult = PaymentUtil.getHome().editPaymentProcessorActionType(getUserVisitPK(env), commandForm);
             }
 
             commandResultObject.setCommandResult(commandResult);
@@ -680,12 +663,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PaymentUtil.getHome().getSetDefaultPaymentProcessorActionTypeForm();
 
             commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
 
-            var commandResult = PaymentUtil.getHome().setDefaultPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            var commandResult = PaymentUtil.getHome().setDefaultPaymentProcessorActionType(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -704,7 +686,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = InventoryUtil.getHome().getCreateInventoryConditionForm();
 
             commandForm.setInventoryConditionName(inventoryConditionName);
@@ -712,7 +693,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = InventoryUtil.getHome().createInventoryCondition(context.getUserVisitPK(), commandForm);
+            var commandResult = InventoryUtil.getHome().createInventoryCondition(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -734,12 +715,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
 
             commandForm.setInventoryConditionName(inventoryConditionName);
 
-            var commandResult = InventoryUtil.getHome().deleteInventoryCondition(context.getUserVisitPK(), commandForm);
+            var commandResult = InventoryUtil.getHome().deleteInventoryCondition(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -760,7 +740,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
 
             spec.setInventoryConditionName(originalInventoryConditionName);
@@ -771,7 +750,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = InventoryUtil.getHome().editInventoryCondition(context.getUserVisitPK(), commandForm);
+            var commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(env), commandForm);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -793,7 +772,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
                 
-                commandResult = InventoryUtil.getHome().editInventoryCondition(context.getUserVisitPK(), commandForm);
+                commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(env), commandForm);
             }
             
             commandResultObject.setCommandResult(commandResult);
@@ -811,12 +790,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = InventoryUtil.getHome().getSetDefaultInventoryConditionForm();
 
             commandForm.setInventoryConditionName(inventoryConditionName);
 
-            var commandResult = InventoryUtil.getHome().setDefaultInventoryCondition(context.getUserVisitPK(), commandForm);
+            var commandResult = InventoryUtil.getHome().setDefaultInventoryCondition(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -835,7 +813,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getCreateContentPageLayoutForm();
 
             commandForm.setContentPageLayoutName(contentPageLayoutName);
@@ -843,7 +820,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = ContentUtil.getHome().createContentPageLayout(context.getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().createContentPageLayout(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -865,12 +842,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getDeleteContentPageLayoutForm();
 
             commandForm.setContentPageLayoutName(contentPageLayoutName);
 
-            var commandResult = ContentUtil.getHome().deleteContentPageLayout(context.getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().deleteContentPageLayout(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -891,7 +867,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = ContentUtil.getHome().getContentPageLayoutUniversalSpec();
 
             spec.setContentPageLayoutName(originalContentPageLayoutName);
@@ -902,7 +877,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = ContentUtil.getHome().editContentPageLayout(context.getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().editContentPageLayout(getUserVisitPK(env), commandForm);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -924,7 +899,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
                 
-                commandResult = ContentUtil.getHome().editContentPageLayout(context.getUserVisitPK(), commandForm);
+                commandResult = ContentUtil.getHome().editContentPageLayout(getUserVisitPK(env), commandForm);
             }
             
             commandResultObject.setCommandResult(commandResult);
@@ -942,12 +917,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ContentUtil.getHome().getSetDefaultContentPageLayoutForm();
 
             commandForm.setContentPageLayoutName(contentPageLayoutName);
 
-            var commandResult = ContentUtil.getHome().setDefaultContentPageLayout(context.getUserVisitPK(), commandForm);
+            var commandResult = ContentUtil.getHome().setDefaultContentPageLayout(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -963,12 +937,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredLanguageForm();
 
             commandForm.setLanguageIsoName(languageIsoName);
 
-            var commandResult = UserUtil.getHome().setUserVisitPreferredLanguage(context.getUserVisitPK(), commandForm);
+            var commandResult = UserUtil.getHome().setUserVisitPreferredLanguage(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -984,12 +957,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredCurrencyForm();
 
             commandForm.setCurrencyIsoName(currencyIsoName);
 
-            var commandResult = UserUtil.getHome().setUserVisitPreferredCurrency(context.getUserVisitPK(), commandForm);
+            var commandResult = UserUtil.getHome().setUserVisitPreferredCurrency(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -1005,12 +977,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredTimeZoneForm();
 
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
 
-            var commandResult = UserUtil.getHome().setUserVisitPreferredTimeZone(context.getUserVisitPK(), commandForm);
+            var commandResult = UserUtil.getHome().setUserVisitPreferredTimeZone(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -1026,12 +997,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredDateTimeFormatForm();
 
             commandForm.setDateTimeFormatName(dateTimeFormatName);
 
-            var commandResult = UserUtil.getHome().setUserVisitPreferredDateTimeFormat(context.getUserVisitPK(), commandForm);
+            var commandResult = UserUtil.getHome().setUserVisitPreferredDateTimeFormat(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -1049,14 +1019,13 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getCreateEntityListItemAttributeForm();
 
             commandForm.setUlid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setEntityListItemName(entityListItemName);
 
-            var commandResult = CoreUtil.getHome().createEntityListItemAttribute(context.getUserVisitPK(), commandForm);
+            var commandResult = CoreUtil.getHome().createEntityListItemAttribute(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -1074,14 +1043,13 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getCreateEntityMultipleListItemAttributeForm();
 
             commandForm.setUlid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setEntityListItemName(entityListItemName);
 
-            var commandResult = CoreUtil.getHome().createEntityMultipleListItemAttribute(context.getUserVisitPK(), commandForm);
+            var commandResult = CoreUtil.getHome().createEntityMultipleListItemAttribute(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -1115,7 +1083,6 @@ public class GraphQlMutations {
         SearchCustomersResultObject commandResultObject = new SearchCustomersResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = SearchUtil.getHome().getSearchCustomersForm();
 
             commandForm.setSearchTypeName(searchTypeName);
@@ -1138,7 +1105,7 @@ public class GraphQlMutations {
             commandForm.setCreatedSince(createdSince);
             commandForm.setModifiedSince(modifiedSince);
 
-            var commandResult = SearchUtil.getHome().searchCustomers(context.getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().searchCustomers(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
             commandResultObject.setResult(commandResult.hasErrors() ? null : (SearchCustomersResult)commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
@@ -1155,12 +1122,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = SearchUtil.getHome().getClearCustomerResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            var commandResult = SearchUtil.getHome().clearCustomerResults(context.getUserVisitPK(), commandForm);
+            var commandResult = SearchUtil.getHome().clearCustomerResults(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -1182,7 +1148,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getCreateUserLoginForm();
 
             commandForm.setPartyName(partyName);
@@ -1193,7 +1158,7 @@ public class GraphQlMutations {
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             commandForm.setAnswer(answer);
 
-            var commandResult = UserUtil.getHome().createUserLogin(context.getUserVisitPK(), commandForm);
+            var commandResult = UserUtil.getHome().createUserLogin(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -1211,7 +1176,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = PartyUtil.getHome().getPartyUniversalSpec();
 
             spec.setPartyName(partyName);
@@ -1222,7 +1186,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = UserUtil.getHome().editUserLogin(context.getUserVisitPK(), commandForm);
+            var commandResult = UserUtil.getHome().editUserLogin(getUserVisitPK(env), commandForm);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -1236,7 +1200,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
                 
-                commandResult = UserUtil.getHome().editUserLogin(context.getUserVisitPK(), commandForm);
+                commandResult = UserUtil.getHome().editUserLogin(getUserVisitPK(env), commandForm);
             }
             
             commandResultObject.setCommandResult(commandResult);
@@ -1255,13 +1219,12 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = UserUtil.getHome().getDeleteUserLoginForm();
 
             commandForm.setPartyName(partyName);
             commandForm.setUlid(partyId);
 
-            commandResultObject.setCommandResult(UserUtil.getHome().deleteUserLogin(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(UserUtil.getHome().deleteUserLogin(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1280,7 +1243,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ItemUtil.getHome().getCreateItemCategoryForm();
 
             commandForm.setItemCategoryName(itemCategoryName);
@@ -1289,7 +1251,7 @@ public class GraphQlMutations {
             commandForm.setSortOrder(sortOrder);
             commandForm.setDescription(description);
 
-            var commandResult = ItemUtil.getHome().createItemCategory(context.getUserVisitPK(), commandForm);
+            var commandResult = ItemUtil.getHome().createItemCategory(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
             
             if(!commandResult.hasErrors()) {
@@ -1317,7 +1279,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var spec = ItemUtil.getHome().getItemCategoryUniversalSpec();
 
             spec.setItemCategoryName(originalItemCategoryName);
@@ -1328,7 +1289,7 @@ public class GraphQlMutations {
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
-            var commandResult = ItemUtil.getHome().editItemCategory(context.getUserVisitPK(), commandForm);
+            var commandResult = ItemUtil.getHome().editItemCategory(getUserVisitPK(env), commandForm);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -1352,7 +1313,7 @@ public class GraphQlMutations {
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
                 
-                commandResult = ItemUtil.getHome().editItemCategory(context.getUserVisitPK(), commandForm);
+                commandResult = ItemUtil.getHome().editItemCategory(getUserVisitPK(env), commandForm);
             }
             
             commandResultObject.setCommandResult(commandResult);
@@ -1371,13 +1332,12 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = ItemUtil.getHome().getDeleteItemCategoryForm();
 
             commandForm.setItemCategoryName(itemCategoryName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1392,12 +1352,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getUnlockEntityForm();
 
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().unlockEntity(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(CoreUtil.getHome().unlockEntity(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1412,12 +1371,11 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = CoreUtil.getHome().getLockEntityForm();
 
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().lockEntity(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(CoreUtil.getHome().lockEntity(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1440,7 +1398,7 @@ public class GraphQlMutations {
             commandForm.setPassword(password);
             commandForm.setRemoteInet4Address(context.getRemoteInet4Address());
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().customerLogin(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().customerLogin(context.getUserVisitPK(), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1464,7 +1422,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getCreateCustomerForm();
 
             commandForm.setPersonalTitleId(personalTitleId);
@@ -1478,7 +1435,7 @@ public class GraphQlMutations {
             commandForm.setEmailAddress(emailAddress);
             commandForm.setAllowSolicitation(allowSolicitation);
 
-            var commandResult = PartyUtil.getHome().createCustomer(context.getUserVisitPK(), commandForm);
+            var commandResult = PartyUtil.getHome().createCustomer(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -1514,7 +1471,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = PartyUtil.getHome().getCreateCustomerWithLoginForm();
 
             commandForm.setPersonalTitleId(personalTitleId);
@@ -1533,7 +1489,7 @@ public class GraphQlMutations {
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             commandForm.setAnswer(answer);
 
-            var commandResult = PartyUtil.getHome().createCustomerWithLogin(context.getUserVisitPK(), commandForm);
+            var commandResult = PartyUtil.getHome().createCustomerWithLogin(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
@@ -1565,7 +1521,7 @@ public class GraphQlMutations {
             commandForm.setRemoteInet4Address(context.getRemoteInet4Address());
             commandForm.setCompanyName(companyName);
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().employeeLogin(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().employeeLogin(context.getUserVisitPK(), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1588,7 +1544,7 @@ public class GraphQlMutations {
             commandForm.setPassword(password);
             commandForm.setRemoteInet4Address(context.getRemoteInet4Address());
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().vendorLogin(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().vendorLogin(context.getUserVisitPK(), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1610,7 +1566,6 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = AuthenticationUtil.getHome().getSetPasswordForm();
 
             commandForm.setPartyName(partyName);
@@ -1621,7 +1576,7 @@ public class GraphQlMutations {
             commandForm.setNewPassword1(newPassword1);
             commandForm.setNewPassword2(newPassword2);
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().setPassword(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().setPassword(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1638,14 +1593,13 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = AuthenticationUtil.getHome().getRecoverPasswordForm();
 
             commandForm.setPartyName(partyName);
             commandForm.setUsername(username);
             commandForm.setAnswer(answer);
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().recoverPassword(context.getUserVisitPK(), commandForm));    
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().recoverPassword(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1659,9 +1613,7 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
-
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().idle(context.getUserVisitPK()));    
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().idle(getUserVisitPK(env)));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1675,9 +1627,7 @@ public class GraphQlMutations {
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
-
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().logout(context.getUserVisitPK()));    
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().logout(getUserVisitPK(env)));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
