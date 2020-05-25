@@ -26,7 +26,7 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -118,14 +118,14 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public PartyPaymentMethod getEntity(EditPartyPaymentMethodResult result) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
         PartyPaymentMethod partyPaymentMethod = null;
         String partyPaymentMethodName = spec.getPartyPaymentMethodName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            partyPaymentMethod = paymentControl.getPartyPaymentMethodByName(partyPaymentMethodName);
+            partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
         } else { // EditMode.UPDATE
-            partyPaymentMethod = paymentControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
+            partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
         }
 
         if(partyPaymentMethod != null) {
@@ -144,7 +144,7 @@ public class EditPartyPaymentMethodCommand
         if(partyPaymentMethod == null) {
             addExecutionError(ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
         } else {
-            result.setPartyPaymentMethod(paymentControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
+            result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
         }
 
         return partyPaymentMethod;
@@ -157,14 +157,14 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public void fillInResult(EditPartyPaymentMethodResult result, PartyPaymentMethod partyPaymentMethod) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
 
-        result.setPartyPaymentMethod(paymentControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
+        result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
     }
 
     @Override
     public void doLock(PartyPaymentMethodEdit edit, PartyPaymentMethod partyPaymentMethod) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
         PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
         String paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
@@ -174,8 +174,8 @@ public class EditPartyPaymentMethodCommand
         edit.setSortOrder(partyPaymentMethodDetail.getSortOrder().toString());
 
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-            PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = paymentControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
-            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = paymentControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
+            PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = partyPaymentMethodControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
+            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
             boolean includeCreditCardNumber = SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, getParty(),
                     SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.CreditCard.name());
 
@@ -194,7 +194,7 @@ public class EditPartyPaymentMethodCommand
                 edit.setNameSuffixId(nameSuffix == null? null: nameSuffix.getPrimaryKey().getEntityId().toString());
                 edit.setName(partyPaymentMethodCreditCard.getName());
                 if(includeCreditCardNumber) {
-                    edit.setNumber(paymentControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard));
+                    edit.setNumber(partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard));
                 }
                 edit.setExpirationMonth(expirationMonth == null? null: expirationMonth.toString());
                 edit.setExpirationYear(expirationYear == null? null: expirationYear.toString());
@@ -205,7 +205,7 @@ public class EditPartyPaymentMethodCommand
 
             if(partyPaymentMethodCreditCardSecurityCode != null) {
                 if(includeCreditCardNumber) {
-                    edit.setSecurityCode(paymentControl.decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode));
+                    edit.setSecurityCode(partyPaymentMethodControl.decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode));
                 }
             }
         }
@@ -223,9 +223,9 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public void doUpdate(PartyPaymentMethod partyPaymentMethod) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
         PartyPK executingPartyPK = getPartyPK();
-        PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = paymentControl.getPartyPaymentMethodDetailValueForUpdate(partyPaymentMethod);
+        PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueForUpdate(partyPaymentMethod);
         String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
         partyPaymentMethodDetailValue.setDescription(edit.getDescription());
@@ -233,7 +233,7 @@ public class EditPartyPaymentMethodCommand
         partyPaymentMethodDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         partyPaymentMethodDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        paymentControl.updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, executingPartyPK);
+        partyPaymentMethodControl.updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, executingPartyPK);
 
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
@@ -261,8 +261,8 @@ public class EditPartyPaymentMethodCommand
             String issuerContactMechanismName = edit.getIssuerContactMechanismName();
             ContactMechanism issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
             PartyContactMechanism issuerPartyContactMechanism = issuerContactMechanism == null? null: contactControl.getPartyContactMechanism(party, issuerContactMechanism);
-            PartyPaymentMethodCreditCardValue partyPaymentMethodCreditCardValue = paymentControl.getPartyPaymentMethodCreditCardValueForUpdate(partyPaymentMethod);
-            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = paymentControl.getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
+            PartyPaymentMethodCreditCardValue partyPaymentMethodCreditCardValue = partyPaymentMethodControl.getPartyPaymentMethodCreditCardValueForUpdate(partyPaymentMethod);
+            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
 
             String firstNameSdx;
             try {
@@ -285,7 +285,7 @@ public class EditPartyPaymentMethodCommand
                 lastNameSdx = null;
             }
 
-            partyPaymentMethodCreditCardValue.setNumber(paymentControl.encodePartyPaymentMethodCreditCardNumber(number));
+            partyPaymentMethodCreditCardValue.setNumber(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardNumber(number));
             partyPaymentMethodCreditCardValue.setExpirationMonth(expirationMonth);
             partyPaymentMethodCreditCardValue.setExpirationYear(expirationYear);
             partyPaymentMethodCreditCardValue.setPersonalTitlePK(personalTitle == null? null: personalTitle.getPrimaryKey());
@@ -301,19 +301,19 @@ public class EditPartyPaymentMethodCommand
             partyPaymentMethodCreditCardValue.setIssuerName(issuerName);
             partyPaymentMethodCreditCardValue.setIssuerPartyContactMechanismPK(issuerPartyContactMechanism == null? null: issuerPartyContactMechanism.getPrimaryKey());
 
-            paymentControl.updatePartyPaymentMethodCreditCardFromValue(partyPaymentMethodCreditCardValue, executingPartyPK);
+            partyPaymentMethodControl.updatePartyPaymentMethodCreditCardFromValue(partyPaymentMethodCreditCardValue, executingPartyPK);
 
             if(partyPaymentMethodCreditCardSecurityCode == null && securityCode != null) {
-                paymentControl.createPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod, securityCode, executingPartyPK);
+                partyPaymentMethodControl.createPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod, securityCode, executingPartyPK);
             } else {
                 if(partyPaymentMethodCreditCardSecurityCode != null && securityCode == null) {
-                    paymentControl.deletePartyPaymentMethodCreditCardSecurityCode(partyPaymentMethodCreditCardSecurityCode, executingPartyPK);
+                    partyPaymentMethodControl.deletePartyPaymentMethodCreditCardSecurityCode(partyPaymentMethodCreditCardSecurityCode, executingPartyPK);
                 } else {
                     if(partyPaymentMethodCreditCardSecurityCode != null && securityCode != null) {
-                        PartyPaymentMethodCreditCardSecurityCodeValue partyPaymentMethodCreditCardSecurityCodeValue = paymentControl.getPartyPaymentMethodCreditCardSecurityCodeValueForUpdate(partyPaymentMethod);
+                        PartyPaymentMethodCreditCardSecurityCodeValue partyPaymentMethodCreditCardSecurityCodeValue = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCodeValueForUpdate(partyPaymentMethod);
 
-                        partyPaymentMethodCreditCardSecurityCodeValue.setSecurityCode(paymentControl.encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode));
-                        paymentControl.updatePartyPaymentMethodCreditCardSecurityCodeFromValue(partyPaymentMethodCreditCardSecurityCodeValue, executingPartyPK);
+                        partyPaymentMethodCreditCardSecurityCodeValue.setSecurityCode(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode));
+                        partyPaymentMethodControl.updatePartyPaymentMethodCreditCardSecurityCodeFromValue(partyPaymentMethodCreditCardSecurityCodeValue, executingPartyPK);
                     }
                 }
             }

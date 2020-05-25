@@ -29,6 +29,7 @@ import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -57,6 +58,7 @@ public class PartyPaymentMethodTransferCache
     ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
     CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
     PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
@@ -125,16 +127,16 @@ public class PartyPaymentMethodTransferCache
             EntityInstance entityInstance = null;
             
             if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = paymentControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
+                PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = partyPaymentMethodControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
                 
                 if(partyPaymentMethodCreditCard != null) {
-                    PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = paymentControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
+                    PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
                     
                     if(includeNumber || maskNumberAndSecurityCode) {
-                        String decodedNumber = paymentControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard);
+                        String decodedNumber = partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard);
 
                         if(decodedNumber != null) {
-                            number = includeNumber? paymentControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard): StringUtils.getInstance().mask(decodedNumber, 'X', 4);
+                            number = includeNumber? partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard): StringUtils.getInstance().mask(decodedNumber, 'X', 4);
                         }
                     }
                     
@@ -156,10 +158,10 @@ public class PartyPaymentMethodTransferCache
                     
                     if(partyPaymentMethodCreditCardSecurityCode != null) {
                         if(includeSecurityCode || maskNumberAndSecurityCode) {
-                            String decodedSecurityCode = paymentControl.decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode);
+                            String decodedSecurityCode = partyPaymentMethodControl.decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode);
 
                             if(decodedSecurityCode != null) {
-                                securityCode = includeNumber? paymentControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard): StringUtils.getInstance().mask(decodedSecurityCode, 'X');
+                                securityCode = includeNumber? partyPaymentMethodControl.decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard): StringUtils.getInstance().mask(decodedSecurityCode, 'X');
                             }
                         }
                     }
@@ -178,7 +180,7 @@ public class PartyPaymentMethodTransferCache
             put(partyPaymentMethod, partyPaymentMethodTransfer);
             
             if(includePartyPaymentMethodContactMechanisms) {
-                partyPaymentMethodTransfer.setPartyPaymentMethodContactMechanisms(new ListWrapper<>(paymentControl.getPartyPaymentMethodContactMechanismTransfersByPartyPaymentMethod(userVisit, partyPaymentMethod)));
+                partyPaymentMethodTransfer.setPartyPaymentMethodContactMechanisms(new ListWrapper<>(partyPaymentMethodControl.getPartyPaymentMethodContactMechanismTransfersByPartyPaymentMethod(userVisit, partyPaymentMethod)));
             }
 
             if(includeComments) {

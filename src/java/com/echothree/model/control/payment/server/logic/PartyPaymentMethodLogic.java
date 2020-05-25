@@ -22,6 +22,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.exception.UnknownPartyPaymentMethodNameException;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.user.server.UserControl;
@@ -343,8 +344,8 @@ public class PartyPaymentMethodLogic
 
     private PartyPaymentMethod getPartyPaymentMethodByName(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName,
             final EntityPermission entityPermission) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        var partyPaymentMethod = paymentControl.getPartyPaymentMethodByName(partyPaymentMethodName, entityPermission);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName, entityPermission);
 
         if(partyPaymentMethod == null) {
             handleExecutionError(UnknownPartyPaymentMethodNameException.class, eea, ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
@@ -365,12 +366,12 @@ public class PartyPaymentMethodLogic
 
     public void deletePartyPaymentMethod(final ExecutionErrorAccumulator eea, final PartyPaymentMethod partyPaymentMethod,
             final PartyPK deletedBy) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
 
         // TODO: Check to see if this payment method is in use on any open orders,
         // or orders that currently are allowing returns to be made against them.
         // If that's the case, the PPM shouldn't be deleted.
-        paymentControl.deletePartyPaymentMethod(partyPaymentMethod, deletedBy);
+        partyPaymentMethodControl.deletePartyPaymentMethod(partyPaymentMethod, deletedBy);
     }
 
     public void deletePartyPaymentMethod(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName,

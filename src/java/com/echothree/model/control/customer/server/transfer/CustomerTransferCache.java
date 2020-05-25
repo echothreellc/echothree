@@ -47,7 +47,7 @@ import com.echothree.model.control.party.common.transfer.ProfileTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
@@ -93,7 +93,7 @@ public class CustomerTransferCache
     InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
     OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+    PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
     PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
     ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
     ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
@@ -101,6 +101,7 @@ public class CustomerTransferCache
     TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
     UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
     boolean includePartyAliases;
@@ -300,7 +301,7 @@ public class CustomerTransferCache
             }
 
             if(includePartyPaymentMethods) {
-                customerTransfer.setPartyPaymentMethods(new ListWrapper<>(paymentControl.getPartyPaymentMethodTransfersByParty(userVisit, party)));
+                customerTransfer.setPartyPaymentMethods(new ListWrapper<>(partyPaymentMethodControl.getPartyPaymentMethodTransfersByParty(userVisit, party)));
             }
 
             if(includePartyCancellationPolicies) {

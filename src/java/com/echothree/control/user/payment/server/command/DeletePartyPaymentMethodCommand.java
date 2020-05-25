@@ -18,15 +18,15 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.DeletePartyPaymentMethodForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -74,9 +74,9 @@ public class DeletePartyPaymentMethodCommand
 
             // If the executing Party is a CUSTOMER...
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-                var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+                var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
                 var partyPaymentMethodName = form.getPartyPaymentMethodName();
-                var partyPaymentMethod = paymentControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
+                var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
 
                 if(partyPaymentMethod != null) {
                     // ...and the PartyPaymentMethod isn't for the executing Party, return an

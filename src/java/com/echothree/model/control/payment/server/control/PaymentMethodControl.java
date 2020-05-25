@@ -97,7 +97,7 @@ import java.util.Map;
 public class PaymentMethodControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of PaymentMethodControl */
     public PaymentMethodControl() {
         super();
     }
@@ -427,11 +427,11 @@ public class PaymentMethodControl
     public void deletePaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
         var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
 
         customerControl.deleteCustomerTypePaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
         orderControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);
-        paymentControl.deletePartyPaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
+        partyPaymentMethodControl.deletePartyPaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
         deletePaymentMethodDescriptionsByPaymentMethod(paymentMethod, deletedBy);
         
         PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetailForUpdate();

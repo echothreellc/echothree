@@ -22,6 +22,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardContactMechanismConstants.Workflow_CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
@@ -34,18 +35,15 @@ import com.echothree.util.server.persistence.Session;
 
 public class PartyPaymentMethodContactMechanismTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethodContactMechanism, PartyPaymentMethodContactMechanismTransfer> {
-    
-    ContactControl contactControl;
-    CoreControl coreControl;
-    WorkflowControl workflowControl;
+
+    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PartyPaymentMethodContactMechanismTransferCache */
     public PartyPaymentMethodContactMechanismTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
-        
-        contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     }
 
     @Override
@@ -54,7 +52,7 @@ public class PartyPaymentMethodContactMechanismTransferCache
         
         if(partyPaymentMethodContactMechanismTransfer == null) {
             PartyPaymentMethod partyPaymentMethod = partyPaymentMethodContactMechanism.getPartyPaymentMethod();
-            PartyPaymentMethodTransfer partyPaymentMethodTransfer = paymentControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
+            PartyPaymentMethodTransfer partyPaymentMethodTransfer = partyPaymentMethodControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
             PartyContactMechanismPurposeTransfer partyContactMechanismPurposeTransfer = contactControl.getPartyContactMechanismPurposeTransfer(userVisit, partyPaymentMethodContactMechanism.getPartyContactMechanismPurpose());
             WorkflowEntityStatusTransfer partyPaymentMethodContactMechanismStatusTransfer = null;
             

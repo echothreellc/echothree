@@ -88,7 +88,7 @@ import com.echothree.model.control.party.server.transfer.PartyTypeTransferCache;
 import com.echothree.model.control.party.server.transfer.PersonalTitleTransferCache;
 import com.echothree.model.control.party.server.transfer.TimeZoneDescriptionTransferCache;
 import com.echothree.model.control.party.server.transfer.TimeZoneTransferCache;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
@@ -2132,9 +2132,9 @@ public class PartyControl
         }
 
         if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-            
-            paymentControl.deletePartyPaymentMethodsByParty(party, deletedBy);
+            var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+
+            partyPaymentMethodControl.deletePartyPaymentMethodsByParty(party, deletedBy);
         }
         
         if(partyTypeName.equals(PartyTypes.EMPLOYEE.name())) {

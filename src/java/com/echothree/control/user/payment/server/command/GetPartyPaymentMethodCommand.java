@@ -21,16 +21,16 @@ import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodRes
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,10 +67,10 @@ public class GetPartyPaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
         GetPartyPaymentMethodResult result = PaymentResultFactory.getGetPartyPaymentMethodResult();
         String partyPaymentMethodName = form.getPartyPaymentMethodName();
-        PartyPaymentMethod partyPaymentMethod = paymentControl.getPartyPaymentMethodByName(partyPaymentMethodName);
+        PartyPaymentMethod partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
         
         if(partyPaymentMethod != null) {
             Party party = getParty();
@@ -88,7 +88,7 @@ public class GetPartyPaymentMethodCommand
         if(partyPaymentMethod == null) {
             addExecutionError(ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
         } else {
-            result.setPartyPaymentMethod(paymentControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
+            result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
 
             sendEventUsingNames(partyPaymentMethod.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }

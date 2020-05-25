@@ -19,7 +19,7 @@ package com.echothree.model.control.contact.server.logic;
 import com.echothree.model.control.contact.common.exception.CannotDeleteContactMechanismInUseException;
 import com.echothree.model.control.contact.common.exception.UnknownContactMechanismNameException;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -66,14 +66,14 @@ public class ContactMechanismLogic
     public void deleteContactMechanism(final ExecutionErrorAccumulator eea, final ContactMechanism contactMechanism,
             final PartyPK deletedBy) {
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
         boolean cannotDeleteContactMechanismInUse = false;
 
         // Check if the ContactMechanism is in-use by any PartyPaymentMethodCreditCard.
         var partyContactMechanisms = contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism);
         for(var partyContactMechanism : partyContactMechanisms) {
-            if(paymentControl.countPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(partyContactMechanism) != 0
-                    || paymentControl.countPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(partyContactMechanism) != 0) {
+            if(partyPaymentMethodControl.countPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(partyContactMechanism) != 0
+                    || partyPaymentMethodControl.countPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(partyContactMechanism) != 0) {
                 cannotDeleteContactMechanismInUse = true;
                 break;
             }

@@ -24,7 +24,7 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
@@ -137,7 +137,7 @@ public class CreatePartyPaymentMethodCommand
     }
     
     private PartyPaymentMethodContactMechanism setupPartyPaymentMethodContactMechanism(final ContactControl contactControl,
-            final PaymentControl paymentMethodControl, final PartyContactMechanism partyContactMechanism,
+            final PartyPaymentMethodControl partyPaymentMethodControl, final PartyContactMechanism partyContactMechanism,
             final PartyPaymentMethod partyPaymentMethod, final PartyPK createdBy) {
         ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
         PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism,
@@ -148,7 +148,7 @@ public class CreatePartyPaymentMethodCommand
                     contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
         }
         
-        return paymentMethodControl.createPartyPaymentMethodContactMechanism(partyPaymentMethod, partyContactMechanismPurpose, createdBy);
+        return partyPaymentMethodControl.createPartyPaymentMethodContactMechanism(partyPaymentMethod, partyContactMechanismPurpose, createdBy);
     }
     
     @Override
@@ -187,7 +187,7 @@ public class CreatePartyPaymentMethodCommand
                     String paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
                     if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+                        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
                         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                         Soundex soundex = new Soundex();
                         String personalTitleId = form.getPersonalTitleId();
@@ -239,19 +239,19 @@ public class CreatePartyPaymentMethodCommand
                         Boolean isDefault = Boolean.valueOf(form.getIsDefault());
                         Integer sortOrder = Integer.valueOf(form.getSortOrder());
 
-                        PartyPaymentMethod partyPaymentMethod = paymentControl.createPartyPaymentMethod(party, description,
+                        var partyPaymentMethod = partyPaymentMethodControl.createPartyPaymentMethod(party, description,
                                 paymentMethod, deleteWhenUnused, isDefault, sortOrder, createdBy);
 
-                        paymentControl.createPartyPaymentMethodCreditCard(partyPaymentMethod, number, expirationMonth,
+                        partyPaymentMethodControl.createPartyPaymentMethodCreditCard(partyPaymentMethod, number, expirationMonth,
                                 expirationYear, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName,
                                 lastNameSdx, nameSuffix, name, billingPartyContactMechanism, issuerName, issuerPartyContactMechanism,
                                 createdBy);
 
-                        paymentControl.createPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod, securityCode,
+                        partyPaymentMethodControl.createPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod, securityCode,
                                 createdBy);
 
                         PartyPaymentMethodContactMechanism billingPartyPaymentMethodContactMechanism = billingPartyContactMechanism == null ? null
-                                : setupPartyPaymentMethodContactMechanism(contactControl, paymentControl, billingPartyContactMechanism, partyPaymentMethod,
+                                : setupPartyPaymentMethodContactMechanism(contactControl, partyPaymentMethodControl, billingPartyContactMechanism, partyPaymentMethod,
                                 createdBy);
 
                         setupWorkflows(paymentMethodType, party.getLastDetail().getPartyType(),
