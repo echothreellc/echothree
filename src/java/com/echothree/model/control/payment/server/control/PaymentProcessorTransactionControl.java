@@ -189,6 +189,10 @@ public class PaymentProcessorTransactionControl
     }
 
     public void deletePaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction, final BasePK deletedBy) {
+        var paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+
+        paymentProcessorTransactionCodeControl.deletePaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction, deletedBy);
+
         var paymentProcessorTransactionDetail = paymentProcessorTransaction.getLastDetailForUpdate();
         paymentProcessorTransactionDetail.setThruTime(session.START_TIME_LONG);
         paymentProcessorTransactionDetail.store();
