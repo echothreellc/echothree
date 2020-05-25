@@ -24,6 +24,8 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTransactionDetailFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTransactionFactory;
 import com.echothree.model.data.payment.server.value.PaymentProcessorTransactionDetailValue;
@@ -88,15 +90,17 @@ public class PaymentProcessorTransactionControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrxdt_paymentprocessortransactionname = ? AND pprctrxdt_thrutime = ?",
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_paymentprocessortransactionname = ?",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " + "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrxdt_paymentprocessortransactionname = ? AND pprctrxdt_thrutime = ? " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_paymentprocessortransactionname = ? " +
                     "FOR UPDATE");
 
     public PaymentProcessorTransaction getPaymentProcessorTransactionByName(final String paymentProcessorTransactionName, final EntityPermission entityPermission) {
         return PaymentProcessorTransactionFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorTransactionByNameQueries,
-                paymentProcessorTransactionName, Session.MAX_TIME);
+                paymentProcessorTransactionName);
     }
 
     public PaymentProcessorTransaction getPaymentProcessorTransactionByName(final String paymentProcessorTransactionName) {
@@ -119,17 +123,16 @@ public class PaymentProcessorTransactionControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrxdt_thrutime = ? " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "ORDER BY pprctrxdt_paymentprocessortransactionname",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrxdt_thrutime = ? " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "FOR UPDATE");
 
     private List<PaymentProcessorTransaction> getPaymentProcessorTransactions(final EntityPermission entityPermission) {
-        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsQueries,
-                Session.MAX_TIME);
+        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsQueries);
     }
 
     public List<PaymentProcessorTransaction> getPaymentProcessorTransactions() {
@@ -138,6 +141,90 @@ public class PaymentProcessorTransactionControl
 
     public List<PaymentProcessorTransaction> getPaymentProcessorTransactionsForUpdate() {
         return getPaymentProcessorTransactions(EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getPaymentProcessorTransactionsByPaymentProcessorQueries = Map.of(
+            EntityPermission.READ_ONLY,
+            "SELECT _ALL_ " +
+                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_pprc_paymentprocessorid = ? " +
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+            EntityPermission.READ_WRITE,
+            "SELECT _ALL_ " +
+                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_pprc_paymentprocessorid = ? " +
+                    "FOR UPDATE");
+
+    private List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessor(final PaymentProcessor paymentProcessor,
+            final EntityPermission entityPermission) {
+        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorQueries,
+                paymentProcessor, Session.MAX_TIME);
+    }
+
+    public List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessor(final PaymentProcessor paymentProcessor) {
+        return getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor, EntityPermission.READ_ONLY);
+    }
+
+    public List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorForUpdate(final PaymentProcessor paymentProcessor) {
+        return getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getPaymentProcessorTransactionsByPaymentProcessorActionTypeQueries = Map.of(
+            EntityPermission.READ_ONLY,
+            "SELECT _ALL_ " +
+                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+            EntityPermission.READ_WRITE,
+            "SELECT _ALL_ " +
+                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
+                    "FOR UPDATE");
+
+    private List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType,
+            final EntityPermission entityPermission) {
+        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorActionTypeQueries,
+                paymentProcessorActionType, Session.MAX_TIME);
+    }
+
+    public List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType) {
+        return getPaymentProcessorTransactionsByPaymentProcessorActionType(paymentProcessorActionType, EntityPermission.READ_ONLY);
+    }
+
+    public List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorActionTypeForUpdate(final PaymentProcessorActionType paymentProcessorActionType) {
+        return getPaymentProcessorTransactionsByPaymentProcessorActionType(paymentProcessorActionType, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getPaymentProcessorTransactionsByPaymentProcessorResultCodeQueries = Map.of(
+            EntityPermission.READ_ONLY,
+            "SELECT _ALL_ " +
+                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ? " +
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+            EntityPermission.READ_WRITE,
+            "SELECT _ALL_ " +
+                    "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
+                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ? " +
+                    "FOR UPDATE");
+
+    private List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode,
+            final EntityPermission entityPermission) {
+        return PaymentProcessorTransactionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentProcessorTransactionsByPaymentProcessorResultCodeQueries,
+                paymentProcessorResultCode, Session.MAX_TIME);
+    }
+
+    public List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode) {
+        return getPaymentProcessorTransactionsByPaymentProcessorResultCode(paymentProcessorResultCode, EntityPermission.READ_ONLY);
+    }
+
+    public List<PaymentProcessorTransaction> getPaymentProcessorTransactionsByPaymentProcessorResultCodeForUpdate(final PaymentProcessorResultCode paymentProcessorResultCode) {
+        return getPaymentProcessorTransactionsByPaymentProcessorResultCode(paymentProcessorResultCode, EntityPermission.READ_WRITE);
     }
 
     public PaymentProcessorTransactionTransfer getPaymentProcessorTransactionTransfer(final UserVisit userVisit,
@@ -159,6 +246,11 @@ public class PaymentProcessorTransactionControl
 
     public List<PaymentProcessorTransactionTransfer> getPaymentProcessorTransactionTransfers(final UserVisit userVisit) {
         return getPaymentProcessorTransactionTransfers(userVisit, getPaymentProcessorTransactions());
+    }
+
+    public List<PaymentProcessorTransactionTransfer> getPaymentProcessorTransactionTransfersByPaymentProcessor(final UserVisit userVisit,
+            final PaymentProcessor paymentProcessor) {
+        return getPaymentProcessorTransactionTransfers(userVisit, getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor));
     }
 
     public void updatePaymentProcessorTransactionFromValue(final PaymentProcessorTransactionDetailValue paymentProcessorTransactionDetailValue,
@@ -189,12 +281,32 @@ public class PaymentProcessorTransactionControl
     }
 
     public void deletePaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction, final BasePK deletedBy) {
+        var paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+
+        paymentProcessorTransactionCodeControl.deletePaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction, deletedBy);
+
         var paymentProcessorTransactionDetail = paymentProcessorTransaction.getLastDetailForUpdate();
         paymentProcessorTransactionDetail.setThruTime(session.START_TIME_LONG);
         paymentProcessorTransactionDetail.store();
         paymentProcessorTransaction.setActiveDetail(null);
 
         sendEventUsingNames(paymentProcessorTransaction.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+
+    public void deletePaymentProcessorTransactions(final Collection<PaymentProcessorTransaction> paymentProcessorTransactions, final BasePK deletedBy) {
+        paymentProcessorTransactions.forEach(paymentProcessorTransaction -> deletePaymentProcessorTransaction(paymentProcessorTransaction, deletedBy));
+    }
+
+    public void deletePaymentProcessorTransactionsByPaymentProcessor(final PaymentProcessor paymentProcessor, final BasePK deletedBy) {
+        deletePaymentProcessorTransactions(getPaymentProcessorTransactionsByPaymentProcessorForUpdate(paymentProcessor), deletedBy);
+    }
+
+    public void deletePaymentProcessorTransactionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType, final BasePK deletedBy) {
+        deletePaymentProcessorTransactions(getPaymentProcessorTransactionsByPaymentProcessorActionTypeForUpdate(paymentProcessorActionType), deletedBy);
+    }
+
+    public void deletePaymentProcessorTransactionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK deletedBy) {
+        deletePaymentProcessorTransactions(getPaymentProcessorTransactionsByPaymentProcessorResultCodeForUpdate(paymentProcessorResultCode), deletedBy);
     }
 
 }

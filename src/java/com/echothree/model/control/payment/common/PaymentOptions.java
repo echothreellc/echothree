@@ -29,6 +29,7 @@ public interface PaymentOptions {
     String PaymentProcessorIncludeKey = "PaymentProcessorIncludeKey";
     String PaymentProcessorIncludeGuid = "PaymentProcessorIncludeGuid";
     String PaymentProcessorIncludeComments = "PaymentProcessorIncludeComments";
+    String PaymentProcessorIncludePaymentProcessorTransactions = "PaymentProcessorIncludePaymentProcessorTransactions";
 
     String PaymentMethodIncludeKey = "PaymentMethodIncludeKey";
     String PaymentMethodIncludeGuid = "PaymentMethodIncludeGuid";
@@ -38,5 +39,7 @@ public interface PaymentOptions {
     String PartyPaymentMethodIncludeKey = "PartyPaymentMethodIncludeKey";
     String PartyPaymentMethodIncludeGuid = "PartyPaymentMethodIncludeGuid";
     String PartyPaymentMethodIncludeComments = "PartyPaymentMethodIncludeComments";
+
+    String PaymentProcessorTransactionIncludePaymentProcessorTransactionCodes = "PaymentProcessorTransactionIncludePaymentProcessorTransactionCodes";
 
 }

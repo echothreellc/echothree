@@ -24,12 +24,18 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorTransactionNameException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorTransactionNameException;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
+import com.echothree.model.control.sequence.common.SequenceTypes;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
+import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -52,17 +58,25 @@ public class PaymentProcessorTransactionLogic
         return PaymentProcessorTransactionLogicHolder.instance;
     }
 
-    public PaymentProcessorTransaction createPaymentProcessorTransaction(final ExecutionErrorAccumulator eea, final String paymentProcessorTransactionName,
+    public PaymentProcessorTransaction createPaymentProcessorTransaction(final ExecutionErrorAccumulator eea, String paymentProcessorTransactionName,
             final PaymentProcessor paymentProcessor, final PaymentProcessorActionType paymentProcessorActionType,
             final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK createdBy) {
-        var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl)Session.getModelController(PaymentProcessorTransactionControl.class);
-        PaymentProcessorTransaction paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName);
+        PaymentProcessorTransaction paymentProcessorTransaction = null;
 
-        if(paymentProcessorTransaction == null) {
-            paymentProcessorTransaction = paymentProcessorTransactionControl.createPaymentProcessorTransaction(paymentProcessorTransactionName,
-                    paymentProcessor, paymentProcessorActionType, paymentProcessorResultCode, createdBy);
-        } else {
-            handleExecutionError(DuplicatePaymentProcessorTransactionNameException.class, eea, ExecutionErrors.DuplicatePaymentProcessorTransactionName.name(), paymentProcessorTransactionName);
+        if(paymentProcessorTransactionName == null) {
+            paymentProcessorTransactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.PAYMENT_PROCESSOR_TRANSACTION.name());
+        }
+
+        if(!eea.hasExecutionErrors()) {
+            var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl)Session.getModelController(PaymentProcessorTransactionControl.class);
+
+            paymentProcessorTransaction = paymentProcessorTransactionControl.getPaymentProcessorTransactionByName(paymentProcessorTransactionName);
+            if(paymentProcessorTransaction == null) {
+                paymentProcessorTransaction = paymentProcessorTransactionControl.createPaymentProcessorTransaction(paymentProcessorTransactionName,
+                        paymentProcessor, paymentProcessorActionType, paymentProcessorResultCode, createdBy);
+            } else {
+                handleExecutionError(DuplicatePaymentProcessorTransactionNameException.class, eea, ExecutionErrors.DuplicatePaymentProcessorTransactionName.name(), paymentProcessorTransactionName);
+            }
         }
 
         return paymentProcessorTransaction;

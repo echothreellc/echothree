@@ -718,6 +718,33 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="PaymentProcessorTransactionCodes" nameSingular="PaymentProcessorTransactionCode" columnPrefix="pprctrxc">
+                    <columns>
+                        <column name="PaymentProcessorTransactionCodeId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTransactions" destinationColumn="PaymentProcessorTransactionId" />
+                        <column name="PaymentProcessorTypeCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeCodes" destinationColumn="PaymentProcessorTypeCodeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentProcessorTransactionCodeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PaymentProcessorTransactionId" />
+                            <indexColumn name="PaymentProcessorTypeCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PaymentProcessorTransactionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PaymentProcessorTypeCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="PaymentMethods" nameSingular="PaymentMethod" columnPrefix="pm">
                     <columns>
                         <column name="PaymentMethodId" type="EID" nullAllowed="false" />

@@ -111,6 +111,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -430,19 +431,22 @@ public class PaymentControl
     public PaymentProcessorTransfer getPaymentProcessorTransfer(UserVisit userVisit, PaymentProcessor paymentProcessor) {
         return getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache().getTransfer(paymentProcessor);
     }
-    
-    public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit) {
-        List<PaymentProcessor> paymentProcessors = getPaymentProcessors();
+
+    public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit, Collection<PaymentProcessor> paymentProcessors) {
         List<PaymentProcessorTransfer> paymentProcessorTransfers = new ArrayList<>(paymentProcessors.size());
         PaymentProcessorTransferCache paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
-        
+
         paymentProcessors.stream().forEach((paymentProcessor) -> {
             paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor));
         });
-        
+
         return paymentProcessorTransfers;
     }
-    
+
+    public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit) {
+        return getPaymentProcessorTransfers(userVisit, getPaymentProcessors());
+    }
+
     private void updatePaymentProcessorFromValue(PaymentProcessorDetailValue paymentProcessorDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(paymentProcessorDetailValue.hasBeenModified()) {
@@ -492,9 +496,11 @@ public class PaymentControl
     
     public void deletePaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
         var paymentProcessorActionControl = (PaymentProcessorActionControl) Session.getModelController(PaymentProcessorActionControl.class);
+        var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl) Session.getModelController(PaymentProcessorTransactionControl.class);
 
         paymentProcessorActionControl.deletePaymentProcessorActionsByPaymentProcessor(paymentProcessor, deletedBy);
         deletePaymentMethodsByPaymentProcessor(paymentProcessor, deletedBy);
+        paymentProcessorTransactionControl.deletePaymentProcessorTransactionsByPaymentProcessor(paymentProcessor, deletedBy);
         deletePaymentProcessorDescriptionsByPaymentProcessor(paymentProcessor, deletedBy);
         
         PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetailForUpdate();

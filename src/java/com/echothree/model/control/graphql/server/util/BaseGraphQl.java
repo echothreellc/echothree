@@ -14,13 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.payment.common.form;
+package com.echothree.model.control.graphql.server.util;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorUniversalSpec;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import graphql.schema.DataFetchingEnvironment;
 
-public interface GetPaymentProcessorForm
-        extends PaymentProcessorUniversalSpec {
+public abstract class BaseGraphQl {
 
-    // Nothing additional beyond PaymentProcessorUniversalSpec
-    
+    protected static UserVisitPK getUserVisitPK(final DataFetchingEnvironment env) {
+        GraphQlContext context = env.getContext();
+
+        return context.getUserVisitPK();
+    }
+
 }
