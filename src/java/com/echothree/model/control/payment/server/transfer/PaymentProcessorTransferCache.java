@@ -20,6 +20,7 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -30,6 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class PaymentProcessorTransferCache
         extends BasePaymentTransferCache<PaymentProcessor, PaymentProcessorTransfer> {
 
+    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
     PaymentProcessorTypeControl paymentProcessorTypeControl = (PaymentProcessorTypeControl) Session.getModelController(PaymentProcessorTypeControl.class);
     PaymentProcessorTransactionControl paymentProcessorTransactionControl = (PaymentProcessorTransactionControl) Session.getModelController(PaymentProcessorTransactionControl.class);
 
@@ -61,7 +63,7 @@ public class PaymentProcessorTransferCache
             var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorDetail.getPaymentProcessorType());
             var isDefault = paymentProcessorDetail.getIsDefault();
             var sortOrder = paymentProcessorDetail.getSortOrder();
-            var description = paymentControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage());
+            var description = paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage());
             
             paymentProcessorTransfer = new PaymentProcessorTransfer(paymentProcessorName, paymentProcessorType, isDefault, sortOrder, description);
             put(paymentProcessor, paymentProcessorTransfer);

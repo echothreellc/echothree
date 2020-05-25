@@ -24,6 +24,7 @@ import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTran
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
@@ -36,6 +37,7 @@ import java.util.Set;
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
 
+    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
     PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl) Session.getModelController(PaymentMethodTypeControl.class);
 
     boolean includeComments;
@@ -65,7 +67,7 @@ public class PaymentMethodTransferCache
             PaymentMethodTypeTransfer paymentMethodTypeTransfer = paymentMethodTypeControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodDetail.getPaymentMethodType());
             String paymentMethodTypeName = paymentMethodTypeTransfer.getPaymentMethodTypeName();
             PaymentProcessor paymentProcessor = paymentMethodDetail.getPaymentProcessor();
-            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessor == null? null: paymentControl.getPaymentProcessorTransfer(userVisit, paymentProcessor);
+            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessor == null ? null : paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessor);
             Boolean isDefault = paymentMethodDetail.getIsDefault();
             Integer sortOrder = paymentMethodDetail.getSortOrder();
             String description = paymentControl.getBestPaymentMethodDescription(paymentMethod, getLanguage());

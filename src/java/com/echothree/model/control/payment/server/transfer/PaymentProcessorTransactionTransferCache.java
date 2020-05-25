@@ -20,6 +20,7 @@ import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
@@ -30,6 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class PaymentProcessorTransactionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTransaction, PaymentProcessorTransactionTransfer> {
 
+    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
     PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl) Session.getModelController(PaymentProcessorActionTypeControl.class);
     PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl) Session.getModelController(PaymentProcessorResultCodeControl.class);
     PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl) Session.getModelController(PaymentProcessorTransactionCodeControl.class);
@@ -55,7 +57,7 @@ public class PaymentProcessorTransactionTransferCache
         if(paymentProcessorTransactionTransfer == null) {
             var paymentProcessorTransactionDetail = paymentProcessorTransaction.getLastDetail();
             var paymentProcessorTransactionName = paymentProcessorTransactionDetail.getPaymentProcessorTransactionName();
-            var paymentProcessor = paymentControl.getPaymentProcessorTransfer(userVisit, paymentProcessorTransactionDetail.getPaymentProcessor());
+            var paymentProcessor = paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessorTransactionDetail.getPaymentProcessor());
             var paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfer(userVisit, paymentProcessorTransactionDetail.getPaymentProcessorActionType());
             var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfer(userVisit, paymentProcessorTransactionDetail.getPaymentProcessorResultCode());
             

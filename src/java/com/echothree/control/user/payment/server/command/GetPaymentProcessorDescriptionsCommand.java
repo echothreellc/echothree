@@ -20,15 +20,15 @@ import com.echothree.control.user.payment.common.form.GetPaymentProcessorDescrip
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorDescriptionsResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -64,14 +64,14 @@ public class GetPaymentProcessorDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
         GetPaymentProcessorDescriptionsResult result = PaymentResultFactory.getGetPaymentProcessorDescriptionsResult();
         String paymentProcessorName = form.getPaymentProcessorName();
-        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
+        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor != null) {
-            result.setPaymentProcessor(paymentControl.getPaymentProcessorTransfer(getUserVisit(), paymentProcessor));
-            result.setPaymentProcessorDescriptions(paymentControl.getPaymentProcessorDescriptionTransfers(getUserVisit(), paymentProcessor));
+            result.setPaymentProcessor(paymentProcessorControl.getPaymentProcessorTransfer(getUserVisit(), paymentProcessor));
+            result.setPaymentProcessorDescriptions(paymentProcessorControl.getPaymentProcessorDescriptionTransfers(getUserVisit(), paymentProcessor));
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentProcessorName.name(), paymentProcessorName);
         }

@@ -20,6 +20,7 @@ import com.echothree.control.user.payment.common.form.CreatePaymentProcessorForm
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.logic.PaymentProcessorTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -67,10 +68,10 @@ public class CreatePaymentProcessorCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
         var result = PaymentResultFactory.getCreatePaymentProcessorResult();
         var paymentProcessorName = form.getPaymentProcessorName();
-        var paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
+        var paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor == null) {
             var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
@@ -82,13 +83,13 @@ public class CreatePaymentProcessorCommand
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
                 
-                paymentProcessor = paymentControl.createPaymentProcessor(paymentProcessorName, paymentProcessorType,
+                paymentProcessor = paymentProcessorControl.createPaymentProcessor(paymentProcessorName, paymentProcessorType,
                         isDefault, sortOrder, partyPK);
                 
                 if(description != null) {
                     var language = getPreferredLanguage();
                     
-                    paymentControl.createPaymentProcessorDescription(paymentProcessor, language, description, partyPK);
+                    paymentProcessorControl.createPaymentProcessorDescription(paymentProcessor, language, description, partyPK);
                 }
             }
         } else {

@@ -21,17 +21,17 @@ import com.echothree.control.user.payment.common.result.GetPaymentProcessorDescr
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,10 +68,10 @@ public class GetPaymentProcessorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
         GetPaymentProcessorDescriptionResult result = PaymentResultFactory.getGetPaymentProcessorDescriptionResult();
         String paymentProcessorName = form.getPaymentProcessorName();
-        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
+        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -79,10 +79,10 @@ public class GetPaymentProcessorDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PaymentProcessorDescription paymentProcessorDescription = paymentControl.getPaymentProcessorDescription(paymentProcessor, language);
+                PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescription(paymentProcessor, language);
                 
                 if(paymentProcessorDescription != null) {
-                    result.setPaymentProcessorDescription(paymentControl.getPaymentProcessorDescriptionTransfer(getUserVisit(), paymentProcessorDescription));
+                    result.setPaymentProcessorDescription(paymentProcessorControl.getPaymentProcessorDescriptionTransfer(getUserVisit(), paymentProcessorDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPaymentProcessorDescription.name(), paymentProcessorName, languageIsoName);
                 }
