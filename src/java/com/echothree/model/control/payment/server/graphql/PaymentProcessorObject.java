@@ -16,10 +16,12 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionsCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDetail;
@@ -29,6 +31,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.List;
 
 @GraphQLDescription("payment processor object")
 @GraphQLName("PaymentProcessor")
@@ -68,6 +72,21 @@ public class PaymentProcessorObject
         return hasPaymentProcessorTypeAccess;
     }
 
+    private Boolean hasPaymentProcessorTransactionsAccess;
+
+    private boolean getHasPaymentProcessorTransactionsAccess(final DataFetchingEnvironment env) {
+        if(hasPaymentProcessorTransactionsAccess == null) {
+            GraphQlContext context = env.getContext();
+            var baseMultipleEntitiesCommand = new GetPaymentProcessorTransactionsCommand(context.getUserVisitPK(), null);
+
+            baseMultipleEntitiesCommand.security();
+
+            hasPaymentProcessorTransactionsAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
+        }
+
+        return hasPaymentProcessorTransactionsAccess;
+    }
+
     @GraphQLField
     @GraphQLDescription("payment processor name")
     @GraphQLNonNull
@@ -105,5 +124,24 @@ public class PaymentProcessorObject
         
         return paymentControl.getBestPaymentProcessorDescription(paymentProcessor, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("payment processor transactions")
+    @GraphQLNonNull
+    public List<PaymentProcessorTransactionObject> getPaymentProcessorTransactions(final DataFetchingEnvironment env) {
+        List<PaymentProcessorTransactionObject> paymentProcessorTransactions = null;
+
+        if(getHasPaymentProcessorTransactionsAccess(env)) {
+            var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl)Session.getModelController(PaymentProcessorTransactionControl.class);
+            var entities = paymentProcessorTransactionControl.getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor);
+            var objects = new ArrayList<PaymentProcessorTransactionObject>(entities.size());
+
+            entities.forEach((entity) -> objects.add(new PaymentProcessorTransactionObject(entity)));
+
+            paymentProcessorTransactions = objects;
+        }
+
+        return paymentProcessorTransactions;
+    }
+
 }
