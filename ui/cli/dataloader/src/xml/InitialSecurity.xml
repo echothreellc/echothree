@@ -5028,6 +5028,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Payment Method Type Description" />
             </securityRole>
+            <securityRole securityRoleName="PaymentMethodTypePartyType" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Method Type Party Type" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PaymentMethod" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Payment Method" />
@@ -8367,6 +8370,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentMethodType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentMethodType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentMethodType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentMethodType" securityRoleName="PaymentMethodTypePartyType" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentMethod" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentMethod" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentMethod" securityRoleName="Delete" />

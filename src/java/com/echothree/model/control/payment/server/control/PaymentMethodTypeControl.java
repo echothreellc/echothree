@@ -293,6 +293,9 @@ public class PaymentMethodTypeControl
     }
 
     public void deletePaymentMethodType(final PaymentMethodType paymentMethodType, final BasePK deletedBy) {
+        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl) Session.getModelController(PaymentMethodTypePartyTypeControl.class);
+
+        paymentMethodTypePartyTypeControl.deletePaymentMethodTypePartyTypesByPaymentMethodType(paymentMethodType, deletedBy);
         deletePaymentMethodTypeDescriptionsByPaymentMethodType(paymentMethodType, deletedBy);
 
         var paymentMethodTypeDetail = paymentMethodType.getLastDetailForUpdate();
@@ -464,124 +467,6 @@ public class PaymentMethodTypeControl
         paymentMethodTypeDescriptions.forEach((paymentMethodTypeDescription) -> {
             deletePaymentMethodTypeDescription(paymentMethodTypeDescription, deletedBy);
         });
-    }
-
-    // --------------------------------------------------------------------------------
-    //   Payment Method Type Party Types
-    // --------------------------------------------------------------------------------
-
-    public PaymentMethodTypePartyType createPaymentMethodTypePartyType(PaymentMethodType paymentMethodType, PartyType partyType,
-            Workflow partyPaymentMethodWorkflow, Workflow partyContactMechanismWorkflow) {
-        return PaymentMethodTypePartyTypeFactory.getInstance().create(paymentMethodType, partyType, partyPaymentMethodWorkflow,
-                partyContactMechanismWorkflow);
-    }
-
-    public PaymentMethodTypePartyType getPaymentMethodTypePartyType(PaymentMethodType paymentMethodType, PartyType partyType) {
-        PaymentMethodTypePartyType paymentMethodTypePartyType = null;
-
-        try {
-            PreparedStatement ps = PaymentMethodTypePartyTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM paymentmethodtypepartytypes " +
-                            "WHERE pmtypptyp_pmtyp_paymentmethodtypeid = ? AND pmtypptyp_ptyp_partytypeid = ?");
-
-            ps.setLong(1, paymentMethodType.getPrimaryKey().getEntityId());
-            ps.setLong(2, partyType.getPrimaryKey().getEntityId());
-
-            paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().getEntityFromQuery(session,
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return paymentMethodTypePartyType;
-    }
-
-    private static final Map<EntityPermission, String> getPaymentMethodTypePartyTypesByPaymentMethodTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM paymentmethodtypepartytypes, partytypes " +
-                        "WHERE pmtypptyp_pmtyp_paymentmethodtypeid = ? " +
-                        "AND pmtypptyp_ptyp_partytypeid = ptyp_partytypeid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM paymentmethodtypepartytypes " +
-                        "WHERE pmtypptyp_pmtyp_paymentmethodtypeid = ? " +
-                        "FOR UPDATE");
-        getPaymentMethodTypePartyTypesByPaymentMethodTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPaymentMethodType(PaymentMethodType paymentMethodType, EntityPermission entityPermission) {
-        return PaymentMethodTypePartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPaymentMethodTypeQueries,
-                paymentMethodType);
-    }
-
-    public List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPaymentMethodType(PaymentMethodType paymentMethodType) {
-        return getPaymentMethodTypePartyTypesByPaymentMethodType(paymentMethodType, EntityPermission.READ_ONLY);
-    }
-
-    public List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPaymentMethodTypeForUpdate(PaymentMethodType paymentMethodType) {
-        return getPaymentMethodTypePartyTypesByPaymentMethodType(paymentMethodType, EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getPaymentMethodTypePartyTypesByPartyTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM paymentmethodtypepartytypes, paymentmethodtypes, paymentmethodtypedetails " +
-                        "WHERE pmtypptyp_ptyp_partytypeid = ? " +
-                        "AND pmtypptyp_pmtyp_paymentmethodtypeid = pmtyp_paymentmethodtypeid AND pmtyp_lastdetailid = pmtypdt_paymentmethodtypedetailid " +
-                        "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM paymentmethodtypepartytypes " +
-                        "WHERE pmtypptyp_ptyp_partytypeid = ? " +
-                        "FOR UPDATE");
-        getPaymentMethodTypePartyTypesByPartyTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPartyType(PaymentMethodType paymentMethodType, EntityPermission entityPermission) {
-        return PaymentMethodTypePartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPaymentMethodTypePartyTypesByPartyTypeQueries,
-                paymentMethodType);
-    }
-
-    public List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPartyType(PaymentMethodType paymentMethodType) {
-        return getPaymentMethodTypePartyTypesByPartyType(paymentMethodType, EntityPermission.READ_ONLY);
-    }
-
-    public List<PaymentMethodTypePartyType> getPaymentMethodTypePartyTypesByPartyTypeForUpdate(PaymentMethodType paymentMethodType) {
-        return getPaymentMethodTypePartyTypesByPartyType(paymentMethodType, EntityPermission.READ_WRITE);
-    }
-
-    public PaymentMethodTypePartyTypeTransfer getPaymentMethodTypePartyTypeTransfer(UserVisit userVisit, PaymentMethodTypePartyType paymentMethodTypePartyType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache().getTransfer(paymentMethodTypePartyType);
-    }
-
-    public List<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypeTransfers(UserVisit userVisit, List<PaymentMethodTypePartyType> paymentMethodTypePartyTypes) {
-        List<PaymentMethodTypePartyTypeTransfer> paymentMethodTypePartyTypeTransfers = new ArrayList<>(paymentMethodTypePartyTypes.size());
-        PaymentMethodTypePartyTypeTransferCache paymentMethodTypePartyTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache();
-
-        paymentMethodTypePartyTypes.stream().forEach((paymentMethodTypePartyType) -> {
-            paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType));
-        });
-
-        return paymentMethodTypePartyTypeTransfers;
-    }
-
-    public List<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypeTransfersByPaymentMethodType(UserVisit userVisit, PaymentMethodType paymentMethodType) {
-        return getPaymentMethodTypePartyTypeTransfers(userVisit, getPaymentMethodTypePartyTypesByPaymentMethodType(paymentMethodType));
-    }
-
-    public List<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypeTransfersByPartyType(UserVisit userVisit, PaymentMethodType paymentMethodType) {
-        return getPaymentMethodTypePartyTypeTransfers(userVisit, getPaymentMethodTypePartyTypesByPartyType(paymentMethodType));
     }
 
 }

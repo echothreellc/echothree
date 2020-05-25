@@ -96,27 +96,67 @@
                 <table namePlural="PaymentMethodTypePartyTypes" nameSingular="PaymentMethodTypePartyType" columnPrefix="pmtypptyp">
                     <columns>
                         <column name="PaymentMethodTypePartyTypeId" type="EID" nullAllowed="false" />
-                        <column name="PaymentMethodTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentMethodTypes" destinationColumn="PaymentMethodTypeId" />
-                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
-                        <column name="PartyPaymentMethodWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
-                        <column name="PartyContactMechanismWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentMethodTypePartyTypeDetails" destinationColumn="PaymentMethodTypePartyTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentMethodTypePartyTypeDetails" destinationColumn="PaymentMethodTypePartyTypeDetailId"/>
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
                             <indexColumn name="PaymentMethodTypePartyTypeId" />
                         </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PaymentMethodTypePartyTypeDetails" nameSingular="PaymentMethodTypePartyTypeDetail" columnPrefix="pmtypptypdt">
+                    <columns>
+                        <column name="PaymentMethodTypePartyTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PaymentMethodTypePartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentMethodTypePartyTypes" destinationColumn="PaymentMethodTypePartyTypeId" />
+                        <column name="PaymentMethodTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentMethodTypes" destinationColumn="PaymentMethodTypeId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="PartyPaymentMethodWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="PartyContactMechanismWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentMethodTypePartyTypeDetailId" />
+                        </index>
                         <index type="Unique" name="Index1">
+                            <indexColumn name="PaymentMethodTypePartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
                             <indexColumn name="PaymentMethodTypeId" />
                             <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple">
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PaymentMethodTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple">
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="PartyPaymentMethodWorkflowId" />
+                            <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple">
+                        <index type="Multiple" name="Index6">
                             <indexColumn name="PartyContactMechanismWorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="PaymentMethodTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>
