@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.payment.common.form;
+package com.echothree.control.user.payment.common.spec;
 
-import com.echothree.control.user.payment.common.edit.PaymentMethodTypePartyTypeEdit;
-import com.echothree.control.user.payment.common.spec.PaymentMethodTypePartyTypeSpec;
+import com.echothree.control.user.party.common.spec.PartyTypeSpec;
 
-public interface CreatePaymentMethodTypePartyTypeForm
-        extends PaymentMethodTypePartyTypeSpec, PaymentMethodTypePartyTypeEdit {
+public interface PaymentMethodTypePartyTypeSpec
+        extends PaymentMethodTypeSpec, PartyTypeSpec {
     
-    // Nothing additional beyond PaymentMethodTypePartyTypeSpec, PaymentMethodTypePartyTypeEdit
+    // Nothing additional beyond PaymentMethodTypeSpec, PartyTypeSpec
     
 }

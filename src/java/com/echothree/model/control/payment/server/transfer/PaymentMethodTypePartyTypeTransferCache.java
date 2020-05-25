@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypePartyTypeTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -44,10 +41,11 @@ public class PaymentMethodTypePartyTypeTransferCache
         PaymentMethodTypePartyTypeTransfer paymentMethodTypePartyTypeTransfer = get(paymentMethodTypePartyType);
         
         if(paymentMethodTypePartyTypeTransfer == null) {
-            PaymentMethodTypeTransfer paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodTypePartyType.getPaymentMethodType());
-            PartyTypeTransfer partyType = partyControl.getPartyTypeTransfer(userVisit, paymentMethodTypePartyType.getPartyType());
-            WorkflowTransfer partyPaymentMethodWorkflow = workflowControl.getWorkflowTransfer(userVisit, paymentMethodTypePartyType.getPartyPaymentMethodWorkflow());
-            WorkflowTransfer partyContactMechanismWorkflow = workflowControl.getWorkflowTransfer(userVisit, paymentMethodTypePartyType.getPartyContactMechanismWorkflow());
+            var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getLastDetail();
+            var paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodTypePartyTypeDetail.getPaymentMethodType());
+            var partyType = partyControl.getPartyTypeTransfer(userVisit, paymentMethodTypePartyTypeDetail.getPartyType());
+            var partyPaymentMethodWorkflow = workflowControl.getWorkflowTransfer(userVisit, paymentMethodTypePartyTypeDetail.getPartyPaymentMethodWorkflow());
+            var partyContactMechanismWorkflow = workflowControl.getWorkflowTransfer(userVisit, paymentMethodTypePartyTypeDetail.getPartyContactMechanismWorkflow());
             
             paymentMethodTypePartyTypeTransfer = new PaymentMethodTypePartyTypeTransfer(paymentMethodType, partyType, partyPaymentMethodWorkflow,
                     partyContactMechanismWorkflow);

@@ -14,14 +14,23 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.payment.common.form;
+package com.echothree.control.user.payment.common.edit;
 
-import com.echothree.control.user.payment.common.edit.PaymentMethodTypePartyTypeEdit;
-import com.echothree.control.user.payment.common.spec.PaymentMethodTypePartyTypeSpec;
+import com.echothree.util.common.form.BaseEdit;
 
-public interface CreatePaymentMethodTypePartyTypeForm
-        extends PaymentMethodTypePartyTypeSpec, PaymentMethodTypePartyTypeEdit {
+public interface PaymentMethodTypePartyTypeEdit
+        extends BaseEdit {
+
+    String getPartyPaymentMethodWorkflowName();
+    void setPartyPaymentMethodWorkflowName(String partyPaymentMethodWorkflowName);
+
+    String getContactMechanismWorkflowName();
+    void setContactMechanismWorkflowName(String contactMechanismWorkflowName);
+
+    String getIsDefault();
+    void setIsDefault(String isDefault);
     
-    // Nothing additional beyond PaymentMethodTypePartyTypeSpec, PaymentMethodTypePartyTypeEdit
+    String getSortOrder();
+    void setSortOrder(String sortOrder);
     
 }

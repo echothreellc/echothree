@@ -26,7 +26,7 @@ import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodTypePartyTypeControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -35,7 +35,6 @@ import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
@@ -45,9 +44,7 @@ import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
-import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -109,16 +106,18 @@ public class CreatePartyPaymentMethodCommand
     private void setupWorkflows(final PaymentMethodType paymentMethodType, final PartyType partyType,
             final PartyPaymentMethodContactMechanism billingPartyPaymentMethodContactMechanism,
             final PartyPaymentMethod partyPaymentMethod, final PartyPK createdBy) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl)Session.getModelController(PaymentMethodTypePartyTypeControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        PaymentMethodTypePartyType paymentMethodTypePartyType = paymentMethodTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
+        var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
         
         if(paymentMethodTypePartyType != null) {
+            var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getLastDetail();
+
             if(billingPartyPaymentMethodContactMechanism != null) {
-                Workflow contactMechanismWorkflow = paymentMethodTypePartyType.getPartyContactMechanismWorkflow();
+                var contactMechanismWorkflow = paymentMethodTypePartyTypeDetail.getPartyContactMechanismWorkflow();
 
                 if(contactMechanismWorkflow != null) {
-                    EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(billingPartyPaymentMethodContactMechanism.getPrimaryKey());
+                    var entityInstance = getCoreControl().getEntityInstanceByBasePK(billingPartyPaymentMethodContactMechanism.getPrimaryKey());
 
                     if(!workflowControl.isEntityInWorkflow(contactMechanismWorkflow, entityInstance)) {
                         workflowControl.addEntityToWorkflow(contactMechanismWorkflow, entityInstance, null, null, createdBy);
@@ -126,10 +125,10 @@ public class CreatePartyPaymentMethodCommand
                 }
             }
 
-            Workflow partyPaymentMethodWorkflow = paymentMethodTypePartyType.getPartyPaymentMethodWorkflow();
+            var partyPaymentMethodWorkflow = paymentMethodTypePartyTypeDetail.getPartyPaymentMethodWorkflow();
             
             if(partyPaymentMethodWorkflow != null) {
-                EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(partyPaymentMethod.getPrimaryKey());
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyPaymentMethod.getPrimaryKey());
                 
                 workflowControl.addEntityToWorkflow(partyPaymentMethodWorkflow, entityInstance, null, null, createdBy);
             }

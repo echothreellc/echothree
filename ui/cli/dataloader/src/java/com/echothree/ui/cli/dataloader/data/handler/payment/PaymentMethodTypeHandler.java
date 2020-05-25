@@ -45,7 +45,14 @@ public class PaymentMethodTypeHandler
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        if(localName.equals("paymentMethodTypeDescription")) {
+        if(localName.equals("paymentMethodTypePartyType")) {
+            var commandForm = PaymentFormFactory.getCreatePaymentMethodTypePartyTypeForm();
+
+            commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(paymentService.createPaymentMethodTypePartyType(initialDataParser.getUserVisit(), commandForm));
+        } else if(localName.equals("paymentMethodTypeDescription")) {
             var commandForm = PaymentFormFactory.getCreatePaymentMethodTypeDescriptionForm();
 
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);

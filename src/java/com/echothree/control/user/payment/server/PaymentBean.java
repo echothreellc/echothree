@@ -117,15 +117,45 @@ public class PaymentBean
     public CommandResult deletePaymentMethodTypeDescription(UserVisitPK userVisitPK, DeletePaymentMethodTypeDescriptionForm form) {
         return new DeletePaymentMethodTypeDescriptionCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
-    //   Payment Method Type Party Types
+    //   Payment Method Type PartyTypes
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form) {
         return new CreatePaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
     }
+
+//    @Override
+//    public CommandResult getPaymentMethodTypePartyTypes(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypesForm form) {
+//        return new GetPaymentMethodTypePartyTypesCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult getPaymentMethodTypePartyType(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypeForm form) {
+//        return new GetPaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult getPaymentMethodTypePartyTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypeChoicesForm form) {
+//        return new GetPaymentMethodTypePartyTypeChoicesCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult setDefaultPaymentMethodTypePartyType(UserVisitPK userVisitPK, SetDefaultPaymentMethodTypePartyTypeForm form) {
+//        return new SetDefaultPaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult editPaymentMethodTypePartyType(UserVisitPK userVisitPK, EditPaymentMethodTypePartyTypeForm form) {
+//        return new EditPaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult deletePaymentMethodTypePartyType(UserVisitPK userVisitPK, DeletePaymentMethodTypePartyTypeForm form) {
+//        return new DeletePaymentMethodTypePartyTypeCommand(userVisitPK, form).run();
+//    }
 
     // -------------------------------------------------------------------------
     //   Payment Processor Types

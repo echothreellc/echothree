@@ -74,8 +74,20 @@ public interface PaymentService
     // -------------------------------------------------------------------------
     //   Payment Method Type Party Types
     // -------------------------------------------------------------------------
-    
+
     CommandResult createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form);
+
+//    CommandResult getPaymentMethodTypePartyTypes(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypesForm form);
+//
+//    CommandResult getPaymentMethodTypePartyType(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypeForm form);
+//
+//    CommandResult getPaymentMethodTypePartyTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypePartyTypeChoicesForm form);
+//
+//    CommandResult setDefaultPaymentMethodTypePartyType(UserVisitPK userVisitPK, SetDefaultPaymentMethodTypePartyTypeForm form);
+//
+//    CommandResult editPaymentMethodTypePartyType(UserVisitPK userVisitPK, EditPaymentMethodTypePartyTypeForm form);
+//
+//    CommandResult deletePaymentMethodTypePartyType(UserVisitPK userVisitPK, DeletePaymentMethodTypePartyTypeForm form);
 
     // -------------------------------------------------------------------------
     //   Payment Processor Types

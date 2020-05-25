@@ -14,14 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.payment.common.form;
+package com.echothree.model.control.payment.common.choice;
 
-import com.echothree.control.user.payment.common.edit.PaymentMethodTypePartyTypeEdit;
-import com.echothree.control.user.payment.common.spec.PaymentMethodTypePartyTypeSpec;
+import com.echothree.view.common.BaseChoicesBean;
+import java.util.List;
 
-public interface CreatePaymentMethodTypePartyTypeForm
-        extends PaymentMethodTypePartyTypeSpec, PaymentMethodTypePartyTypeEdit {
-    
-    // Nothing additional beyond PaymentMethodTypePartyTypeSpec, PaymentMethodTypePartyTypeEdit
+public class PaymentMethodTypePartyTypeChoicesBean
+        extends BaseChoicesBean {
+
+    /** Creates a new instance of PaymentMethodTypePartyTypeChoicesBean */
+    public PaymentMethodTypePartyTypeChoicesBean(List<String> labels, List<String> values, String defaultValue) {
+        super(labels, values, defaultValue);
+    }
     
 }

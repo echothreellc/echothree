@@ -1210,8 +1210,11 @@
             <entityType entityTypeName="PaymentMethodTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Method Type Description" />
             </entityType>
-            <entityType entityTypeName="PaymentProcessorType" keepAllHistory="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Payment Processor Type" />
+            <entityType entityTypeName="PaymentMethodTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Method Type Description" />
+            </entityType>
+            <entityType entityTypeName="PaymentMethodTypePartyType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Type Party Type" />
             </entityType>
             <entityType entityTypeName="PaymentProcessorAction" keepAllHistory="false" sortOrder="1">
                 <entityActionDescription languageIsoName="en" description="Payment Processor Action" />
