@@ -496,9 +496,11 @@ public class PaymentControl
     
     public void deletePaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
         var paymentProcessorActionControl = (PaymentProcessorActionControl) Session.getModelController(PaymentProcessorActionControl.class);
+        var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl) Session.getModelController(PaymentProcessorTransactionControl.class);
 
         paymentProcessorActionControl.deletePaymentProcessorActionsByPaymentProcessor(paymentProcessor, deletedBy);
         deletePaymentMethodsByPaymentProcessor(paymentProcessor, deletedBy);
+        paymentProcessorTransactionControl.deletePaymentProcessorTransactionsByPaymentProcessor(paymentProcessor, deletedBy);
         deletePaymentProcessorDescriptionsByPaymentProcessor(paymentProcessor, deletedBy);
         
         PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetailForUpdate();

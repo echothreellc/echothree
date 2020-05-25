@@ -282,6 +282,9 @@ public class PaymentProcessorResultCodeControl
     }
 
     public void deletePaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK deletedBy) {
+        var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl) Session.getModelController(PaymentProcessorTransactionControl.class);
+
+        paymentProcessorTransactionControl.deletePaymentProcessorTransactionsByPaymentProcessorResultCode(paymentProcessorResultCode, deletedBy);
         deletePaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(paymentProcessorResultCode, deletedBy);
 
         var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetailForUpdate();
