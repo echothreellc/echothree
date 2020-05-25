@@ -20,14 +20,16 @@ import com.echothree.model.control.customer.common.transfer.CustomerTypePaymentM
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
 public class CustomerTypePaymentMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypePaymentMethod, CustomerTypePaymentMethodTransfer> {
-    
+
+    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+
     /** Creates a new instance of CustomerTypePaymentMethodTransferCache */
     public CustomerTypePaymentMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
         super(userVisit, customerControl);
@@ -37,9 +39,8 @@ public class CustomerTypePaymentMethodTransferCache
         CustomerTypePaymentMethodTransfer customerTypePaymentMethodTransfer = get(customerTypePaymentMethod);
         
         if(customerTypePaymentMethodTransfer == null) {
-            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
             CustomerTypeTransfer customerType = customerControl.getCustomerTypeTransfer(userVisit, customerTypePaymentMethod.getCustomerType());
-            PaymentMethodTransfer paymentMethod = paymentControl.getPaymentMethodTransfer(userVisit, customerTypePaymentMethod.getPaymentMethod());
+            PaymentMethodTransfer paymentMethod = paymentMethodControl.getPaymentMethodTransfer(userVisit, customerTypePaymentMethod.getPaymentMethod());
             Integer defaultSelectionPriority = customerTypePaymentMethod.getDefaultSelectionPriority();
             Boolean isDefault = customerTypePaymentMethod.getIsDefault();
             Integer sortOrder = customerTypePaymentMethod.getSortOrder();

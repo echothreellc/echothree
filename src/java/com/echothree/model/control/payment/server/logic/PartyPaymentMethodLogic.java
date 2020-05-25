@@ -23,6 +23,7 @@ import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.exception.UnknownPartyPaymentMethodNameException;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
@@ -274,8 +275,8 @@ public class PartyPaymentMethodLogic
 
     public void checkCreditCard(final Session session, final ExecutionErrorAccumulator ema, final Party party, final PaymentMethod paymentMethod,
             final PartyPaymentMethodEdit ppme) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        PaymentMethodCreditCard paymentMethodCreditCard = paymentControl.getPaymentMethodCreditCard(paymentMethod);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        PaymentMethodCreditCard paymentMethodCreditCard = paymentMethodControl.getPaymentMethodCreditCard(paymentMethod);
 
         if(paymentMethodCreditCard.getRequestNameOnCard()) {
             checkNameOnCard(ema, ppme, paymentMethodCreditCard);

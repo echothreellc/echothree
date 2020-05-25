@@ -25,7 +25,7 @@ import com.echothree.control.user.sales.common.spec.SalesOrderBatchSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -39,10 +39,10 @@ import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.sales.server.entity.SalesOrderBatch;
 import com.echothree.model.data.sales.server.value.SalesOrderBatchValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -154,10 +154,10 @@ public class EditSalesOrderBatchCommand
         currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency != null) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-            String paymentMethodName = edit.getPaymentMethodName();
+            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+            var paymentMethodName = edit.getPaymentMethodName();
 
-            paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+            paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod == null) {
                 addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);

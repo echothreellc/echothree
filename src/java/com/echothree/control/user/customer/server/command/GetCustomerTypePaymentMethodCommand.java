@@ -20,15 +20,15 @@ import com.echothree.control.user.customer.common.form.GetCustomerTypePaymentMet
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.GetCustomerTypePaymentMethodResult;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -60,9 +60,9 @@ public class GetCustomerTypePaymentMethodCommand
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
             String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
             
             if(paymentMethod != null) {
                 CustomerTypePaymentMethod customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);

@@ -19,7 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.GetPaymentMethodsForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,16 +62,16 @@ public class GetPaymentMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         var result = PaymentResultFactory.getGetPaymentMethodsResult();
         var paymentMethodTypeName = form.getPaymentMethodTypeName();
         var paymentMethodType = paymentMethodTypeName == null ? null : PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
 
         if(!hasExecutionErrors()) {
             if(paymentMethodType == null) {
-                result.setPaymentMethods(paymentControl.getPaymentMethodTransfers(getUserVisit()));
+                result.setPaymentMethods(paymentMethodControl.getPaymentMethodTransfers(getUserVisit()));
             } else {
-                result.setPaymentMethods(paymentControl.getPaymentMethodTransfersByPaymentMethodType(getUserVisit(), paymentMethodType));
+                result.setPaymentMethods(paymentMethodControl.getPaymentMethodTransfersByPaymentMethodType(getUserVisit(), paymentMethodType));
             }
         }
 

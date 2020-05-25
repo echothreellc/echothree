@@ -22,7 +22,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.SelectorControl;
@@ -286,7 +286,7 @@ public class CreateSelectorNodeCommand
 
     private abstract class PaymentMethodSelectorNodeType
             extends BaseSelectorNodeType {
-        protected PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        protected PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
 
         public PaymentMethodSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -602,7 +602,7 @@ public class CreateSelectorNodeCommand
             if(!hasExecutionErrors()) {
                 String paymentMethodName = form.getPaymentMethodName();
                 
-                paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+                paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
                 
                 if(paymentMethod == null) {
                     addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);

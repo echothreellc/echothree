@@ -25,6 +25,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -136,7 +137,7 @@ public class CreatePartyPaymentMethodCommand
     }
     
     private PartyPaymentMethodContactMechanism setupPartyPaymentMethodContactMechanism(final ContactControl contactControl,
-            final PaymentControl paymentControl, final PartyContactMechanism partyContactMechanism,
+            final PaymentControl paymentMethodControl, final PartyContactMechanism partyContactMechanism,
             final PartyPaymentMethod partyPaymentMethod, final PartyPK createdBy) {
         ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
         PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism,
@@ -147,7 +148,7 @@ public class CreatePartyPaymentMethodCommand
                     contactMechanismPurpose, Boolean.FALSE, 1, createdBy);
         }
         
-        return paymentControl.createPartyPaymentMethodContactMechanism(partyPaymentMethod, partyContactMechanismPurpose, createdBy);
+        return paymentMethodControl.createPartyPaymentMethodContactMechanism(partyPaymentMethod, partyContactMechanismPurpose, createdBy);
     }
     
     @Override
@@ -174,9 +175,9 @@ public class CreatePartyPaymentMethodCommand
         }
 
         if(!hasExecutionErrors()) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
             String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod != null) {
                 PartyPaymentMethodLogic.getInstance().checkPartyPaymentMethod(session, getUserVisit(), this, party, paymentMethod, form);
@@ -186,6 +187,7 @@ public class CreatePartyPaymentMethodCommand
                     String paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
                     if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
+                        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
                         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                         Soundex soundex = new Soundex();
                         String personalTitleId = form.getPersonalTitleId();

@@ -24,7 +24,7 @@ import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.control.user.payment.common.spec.PaymentMethodDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Language;
@@ -32,10 +32,10 @@ import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
 import com.echothree.model.data.payment.server.value.PaymentMethodDescriptionValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -87,10 +87,10 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public PaymentMethodDescription getEntity(EditPaymentMethodDescriptionResult result) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         PaymentMethodDescription paymentMethodDescription = null;
         String paymentMethodName = spec.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
         if(paymentMethod != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -99,9 +99,9 @@ public class EditPaymentMethodDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    paymentMethodDescription = paymentControl.getPaymentMethodDescription(paymentMethod, language);
+                    paymentMethodDescription = paymentMethodControl.getPaymentMethodDescription(paymentMethod, language);
                 } else { // EditMode.UPDATE
-                    paymentMethodDescription = paymentControl.getPaymentMethodDescriptionForUpdate(paymentMethod, language);
+                    paymentMethodDescription = paymentMethodControl.getPaymentMethodDescriptionForUpdate(paymentMethod, language);
                 }
 
                 if(paymentMethodDescription == null) {
@@ -124,9 +124,9 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public void fillInResult(EditPaymentMethodDescriptionResult result, PaymentMethodDescription paymentMethodDescription) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
 
-        result.setPaymentMethodDescription(paymentControl.getPaymentMethodDescriptionTransfer(getUserVisit(), paymentMethodDescription));
+        result.setPaymentMethodDescription(paymentMethodControl.getPaymentMethodDescriptionTransfer(getUserVisit(), paymentMethodDescription));
     }
 
     @Override
@@ -136,11 +136,11 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public void doUpdate(PaymentMethodDescription paymentMethodDescription) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        PaymentMethodDescriptionValue paymentMethodDescriptionValue = paymentControl.getPaymentMethodDescriptionValue(paymentMethodDescription);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        PaymentMethodDescriptionValue paymentMethodDescriptionValue = paymentMethodControl.getPaymentMethodDescriptionValue(paymentMethodDescription);
         paymentMethodDescriptionValue.setDescription(edit.getDescription());
 
-        paymentControl.updatePaymentMethodDescriptionFromValue(paymentMethodDescriptionValue, getPartyPK());
+        paymentMethodControl.updatePaymentMethodDescriptionFromValue(paymentMethodDescriptionValue, getPartyPK());
     }
 
 }

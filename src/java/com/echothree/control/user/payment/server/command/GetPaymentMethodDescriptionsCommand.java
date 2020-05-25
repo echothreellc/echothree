@@ -20,15 +20,15 @@ import com.echothree.control.user.payment.common.form.GetPaymentMethodDescriptio
 import com.echothree.control.user.payment.common.result.GetPaymentMethodDescriptionsResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -64,14 +64,14 @@ public class GetPaymentMethodDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         GetPaymentMethodDescriptionsResult result = PaymentResultFactory.getGetPaymentMethodDescriptionsResult();
         String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
         
         if(paymentMethod != null) {
-            result.setPaymentMethod(paymentControl.getPaymentMethodTransfer(getUserVisit(), paymentMethod));
-            result.setPaymentMethodDescriptions(paymentControl.getPaymentMethodDescriptionTransfers(getUserVisit(), paymentMethod));
+            result.setPaymentMethod(paymentMethodControl.getPaymentMethodTransfer(getUserVisit(), paymentMethod));
+            result.setPaymentMethodDescriptions(paymentMethodControl.getPaymentMethodDescriptionTransfers(getUserVisit(), paymentMethod));
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
         }

@@ -18,15 +18,15 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.DeletePaymentMethodForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -62,12 +62,12 @@ public class DeletePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentControl.getPaymentMethodByNameForUpdate(paymentMethodName);
+        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByNameForUpdate(paymentMethodName);
         
         if(paymentMethod != null) {
-            paymentControl.deletePaymentMethod(paymentMethod, getPartyPK());
+            paymentMethodControl.deletePaymentMethod(paymentMethod, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
         }

@@ -24,7 +24,7 @@ import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCac
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -43,7 +43,7 @@ public class SalesOrderBatchTransferCache
     
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
     CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
     OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
     SalesControl salesControl;
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
@@ -70,7 +70,7 @@ public class SalesOrderBatchTransferCache
             Currency currency = orderBatch.getCurrency();
             CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
             Long count = orderBatch.getCount();
-            PaymentMethodTransfer paymentMethodTransfer = paymentControl.getPaymentMethodTransfer(userVisit, salesOrderBatch.getPaymentMethod());
+            PaymentMethodTransfer paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, salesOrderBatch.getPaymentMethod());
             String amount = AmountUtils.getInstance().formatPriceLine(currency, orderBatch.getAmount());
             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             

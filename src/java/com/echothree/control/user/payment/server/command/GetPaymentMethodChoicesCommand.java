@@ -19,7 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.GetPaymentMethodChoicesForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -63,7 +63,7 @@ public class GetPaymentMethodChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         var result = PaymentResultFactory.getGetPaymentMethodChoicesResult();
         var paymentMethodTypeName = form.getPaymentMethodTypeName();
         var paymentMethodType = paymentMethodTypeName == null ? null : PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
@@ -73,9 +73,9 @@ public class GetPaymentMethodChoicesCommand
             var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             if(paymentMethodType == null) {
-                result.setPaymentMethodChoices(paymentControl.getPaymentMethodChoices(defaultPaymentMethodChoice, getPreferredLanguage(), allowNullChoice));
+                result.setPaymentMethodChoices(paymentMethodControl.getPaymentMethodChoices(defaultPaymentMethodChoice, getPreferredLanguage(), allowNullChoice));
             } else {
-                result.setPaymentMethodChoices(paymentControl.getPaymentMethodChoicesByPaymentMethodType(defaultPaymentMethodChoice, getPreferredLanguage(),
+                result.setPaymentMethodChoices(paymentMethodControl.getPaymentMethodChoicesByPaymentMethodType(defaultPaymentMethodChoice, getPreferredLanguage(),
                         allowNullChoice, paymentMethodType));
             }
         }
