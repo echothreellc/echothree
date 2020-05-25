@@ -23,16 +23,16 @@ import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.EditCustomerTypePaymentMethodResult;
 import com.echothree.control.user.customer.common.spec.CustomerTypePaymentMethodSpec;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.customer.server.value.CustomerTypePaymentMethodValue;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -81,9 +81,9 @@ public class EditCustomerTypePaymentMethodCommand
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
             String paymentMethodName = spec.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

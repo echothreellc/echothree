@@ -18,15 +18,15 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.SetDefaultPaymentMethodForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.value.PaymentMethodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,13 +61,13 @@ public class SetDefaultPaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethodDetailValue paymentMethodDetailValue = paymentControl.getPaymentMethodDetailValueByNameForUpdate(paymentMethodName);
+        PaymentMethodDetailValue paymentMethodDetailValue = paymentMethodControl.getPaymentMethodDetailValueByNameForUpdate(paymentMethodName);
         
         if(paymentMethodDetailValue != null) {
             paymentMethodDetailValue.setIsDefault(Boolean.TRUE);
-            paymentControl.updatePaymentMethodFromValue(paymentMethodDetailValue, getPartyPK());
+            paymentMethodControl.updatePaymentMethodFromValue(paymentMethodDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
         }

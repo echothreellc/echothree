@@ -21,7 +21,7 @@ import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResul
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,10 +29,10 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -78,9 +78,9 @@ public class CreateSalesOrderBatchCommand
         Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency != null) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
             String paymentMethodName = form.getPaymentMethodName();
-            PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+            PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
             if(paymentMethod != null) {
                 String strCount = form.getCount();

@@ -21,7 +21,7 @@ import com.echothree.control.user.payment.common.result.CreatePaymentMethodResul
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -126,10 +126,10 @@ public class CreatePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         CreatePaymentMethodResult result = PaymentResultFactory.getCreatePaymentMethodResult();
         String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
         if(paymentMethod == null) {
             String paymentMethodTypeName = form.getPaymentMethodTypeName();
@@ -158,13 +158,13 @@ public class CreatePaymentMethodCommand
                             Integer sortOrder = Integer.valueOf(form.getSortOrder());
                             String description = form.getDescription();
 
-                            paymentMethod = paymentControl.createPaymentMethod(paymentMethodName, paymentMethodType, paymentProcessor, itemSelector, salesOrderItemSelector,
+                            paymentMethod = paymentMethodControl.createPaymentMethod(paymentMethodName, paymentMethodType, paymentProcessor, itemSelector, salesOrderItemSelector,
                                     isDefault, sortOrder, partyPK);
 
                             if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
                                 Integer holdDays = Integer.valueOf(form.getHoldDays());
 
-                                paymentControl.createPaymentMethodCheck(paymentMethod, holdDays, partyPK);
+                                paymentMethodControl.createPaymentMethodCheck(paymentMethod, holdDays, partyPK);
                             } else {
                                 if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                                     Boolean requestNameOnCard = Boolean.valueOf(form.getRequestNameOnCard());
@@ -184,7 +184,7 @@ public class CreatePaymentMethodCommand
                                     Boolean requestIssuer = Boolean.valueOf(form.getRequestIssuer());
                                     Boolean requireIssuer = Boolean.valueOf(form.getRequireIssuer());
 
-                                    paymentControl.createPaymentMethodCreditCard(paymentMethod, requestNameOnCard, requireNameOnCard,
+                                    paymentMethodControl.createPaymentMethodCreditCard(paymentMethod, requestNameOnCard, requireNameOnCard,
                                             checkCardNumber, requestExpirationDate, requireExpirationDate, checkExpirationDate, requestSecurityCode,
                                             requireSecurityCode, cardNumberValidationPattern, securityCodeValidationPattern, retainCreditCard,
                                             retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer, partyPK);
@@ -194,7 +194,7 @@ public class CreatePaymentMethodCommand
                             if(description != null) {
                                 Language language = getPreferredLanguage();
 
-                                paymentControl.createPaymentMethodDescription(paymentMethod, language, description, partyPK);
+                                paymentMethodControl.createPaymentMethodDescription(paymentMethod, language, description, partyPK);
                             }
                         }
                     }

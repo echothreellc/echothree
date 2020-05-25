@@ -19,17 +19,17 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.CreatePaymentMethodDescriptionForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,9 +67,9 @@ public class CreatePaymentMethodDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
         
         if(paymentMethod != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -77,12 +77,12 @@ public class CreatePaymentMethodDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PaymentMethodDescription paymentMethodDescription = paymentControl.getPaymentMethodDescription(paymentMethod, language);
+                PaymentMethodDescription paymentMethodDescription = paymentMethodControl.getPaymentMethodDescription(paymentMethod, language);
                 
                 if(paymentMethodDescription == null) {
                     String description = form.getDescription();
                     
-                    paymentControl.createPaymentMethodDescription(paymentMethod, language, description, getPartyPK());
+                    paymentMethodControl.createPaymentMethodDescription(paymentMethod, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicatePaymentMethodDescription.name());
                 }

@@ -21,6 +21,7 @@ import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreferenceDetail;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
@@ -30,9 +31,10 @@ import com.echothree.util.server.string.AmountUtils;
 
 public class OrderPaymentPreferenceTransferCache
         extends BaseOrderTransferCache<OrderPaymentPreference, OrderPaymentPreferenceTransfer> {
-    
-    PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);;
-    
+
+    PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
     public OrderPaymentPreferenceTransferCache(UserVisit userVisit, OrderControl orderControl) {
         super(userVisit, orderControl);
@@ -46,7 +48,7 @@ public class OrderPaymentPreferenceTransferCache
         if(orderPaymentPreferenceTransfer == null) {
             OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
             Integer orderPaymentPreferenceSequence = orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence();
-            PaymentMethodTransfer paymentMethodTransfer = paymentControl.getPaymentMethodTransfer(userVisit, orderPaymentPreferenceDetail.getPaymentMethod());
+            PaymentMethodTransfer paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, orderPaymentPreferenceDetail.getPaymentMethod());
             PartyPaymentMethod partyPaymentMethod = orderPaymentPreferenceDetail.getPartyPaymentMethod();
             PartyPaymentMethodTransfer partyPaymentMethodTransfer = partyPaymentMethod == null ? null : paymentControl.getPartyPaymentMethodTransfer(userVisit, partyPaymentMethod);
             Boolean wasPresent = orderPaymentPreferenceDetail.getWasPresent();

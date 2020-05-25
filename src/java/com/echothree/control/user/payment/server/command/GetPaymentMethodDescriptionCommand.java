@@ -21,17 +21,17 @@ import com.echothree.control.user.payment.common.result.GetPaymentMethodDescript
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,10 +68,10 @@ public class GetPaymentMethodDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
         GetPaymentMethodDescriptionResult result = PaymentResultFactory.getGetPaymentMethodDescriptionResult();
         String paymentMethodName = form.getPaymentMethodName();
-        PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+        PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
         
         if(paymentMethod != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -79,10 +79,10 @@ public class GetPaymentMethodDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                PaymentMethodDescription paymentMethodDescription = paymentControl.getPaymentMethodDescription(paymentMethod, language);
+                PaymentMethodDescription paymentMethodDescription = paymentMethodControl.getPaymentMethodDescription(paymentMethod, language);
                 
                 if(paymentMethodDescription != null) {
-                    result.setPaymentMethodDescription(paymentControl.getPaymentMethodDescriptionTransfer(getUserVisit(), paymentMethodDescription));
+                    result.setPaymentMethodDescription(paymentMethodControl.getPaymentMethodDescriptionTransfer(getUserVisit(), paymentMethodDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPaymentMethodDescription.name(), paymentMethodName, languageIsoName);
                 }

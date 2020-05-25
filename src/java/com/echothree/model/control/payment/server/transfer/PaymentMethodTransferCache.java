@@ -23,6 +23,7 @@ import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
@@ -37,8 +38,9 @@ import java.util.Set;
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
 
-    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
     PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl) Session.getModelController(PaymentMethodTypeControl.class);
+    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
 
     boolean includeComments;
 
@@ -70,7 +72,7 @@ public class PaymentMethodTransferCache
             PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessor == null ? null : paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessor);
             Boolean isDefault = paymentMethodDetail.getIsDefault();
             Integer sortOrder = paymentMethodDetail.getSortOrder();
-            String description = paymentControl.getBestPaymentMethodDescription(paymentMethod, getLanguage());
+            String description = paymentMethodControl.getBestPaymentMethodDescription(paymentMethod, getLanguage());
             Boolean requestNameOnCard = null;
             Boolean requireNameOnCard = null;
             Boolean checkCardNumber = null;
@@ -90,11 +92,11 @@ public class PaymentMethodTransferCache
             Integer holdDays = null;
             
             if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
-                PaymentMethodCheck paymentMethodCheck = paymentControl.getPaymentMethodCheck(paymentMethod);
+                PaymentMethodCheck paymentMethodCheck = paymentMethodControl.getPaymentMethodCheck(paymentMethod);
                 
                 holdDays = paymentMethodCheck.getHoldDays();
             } else if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                PaymentMethodCreditCard paymentMethodCreditCard = paymentControl.getPaymentMethodCreditCard(paymentMethod);
+                PaymentMethodCreditCard paymentMethodCreditCard = paymentMethodControl.getPaymentMethodCreditCard(paymentMethod);
                 
                 requestNameOnCard = paymentMethodCreditCard.getRequestNameOnCard();
                 requireNameOnCard = paymentMethodCreditCard.getRequireNameOnCard();

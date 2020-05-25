@@ -20,6 +20,7 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
+import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardPaymentMethodConstants.Workflow_CUSTOMER_CREDIT_CARD_PAYMENT_METHOD;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
@@ -29,11 +30,11 @@ import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.UserControl;
-import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardPaymentMethodConstants.Workflow_CUSTOMER_CREDIT_CARD_PAYMENT_METHOD;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
@@ -53,27 +54,21 @@ import java.util.Set;
 public class PartyPaymentMethodTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethod, PartyPaymentMethodTransfer> {
     
-    ContactControl contactControl;
-    CoreControl coreControl;
-    PartyControl partyControl;
-    WorkflowControl workflowControl;
-    boolean includeKey;
-    boolean includeGuid;
+    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
     boolean includeNumber;
     boolean includeSecurityCode;
     boolean includePartyPaymentMethodContactMechanisms;
-    boolean maskNumberAndSecurityCode;
     boolean includeComments;
-    
+    boolean maskNumberAndSecurityCode;
+
     /** Creates a new instance of PartyPaymentMethodTransferCache */
     public PartyPaymentMethodTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
-        
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        maskNumberAndSecurityCode = false;
 
         Set<String> options = session.getOptions();
         if(options != null) {
@@ -108,7 +103,7 @@ public class PartyPaymentMethodTransferCache
             String partyPaymentMethodName = partyPaymentMethodDetail.getPartyPaymentMethodName();
             PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, partyPaymentMethodDetail.getParty());
             String description = partyPaymentMethodDetail.getDescription();
-            PaymentMethodTransfer paymentMethodTransfer = paymentControl.getPaymentMethodTransfer(userVisit, partyPaymentMethodDetail.getPaymentMethod());
+            PaymentMethodTransfer paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, partyPaymentMethodDetail.getPaymentMethod());
             String paymentMethodTypeName = paymentMethodTransfer.getPaymentMethodType().getPaymentMethodTypeName();
             Boolean deleteWhenUnused = partyPaymentMethodDetail.getDeleteWhenUnused();
             Boolean isDefault = partyPaymentMethodDetail.getIsDefault();
