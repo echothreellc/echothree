@@ -22,6 +22,7 @@ import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -135,8 +136,9 @@ public class CreatePaymentMethodCommand
             PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
 
             if(!hasExecutionErrors()) {
+                var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
                 String paymentProcessorName = form.getPaymentProcessorName();
-                PaymentProcessor paymentProcessor = paymentProcessorName == null ? null : paymentControl.getPaymentProcessorByName(paymentProcessorName);
+                PaymentProcessor paymentProcessor = paymentProcessorName == null ? null : paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
                 if(paymentProcessorName == null || paymentProcessor != null) {
                     var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);

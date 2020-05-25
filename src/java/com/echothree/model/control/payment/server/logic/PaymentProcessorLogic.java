@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorNameException;
 import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorNameException;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -54,15 +54,15 @@ public class PaymentProcessorLogic
     public PaymentProcessor createPaymentProcessor(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             PaymentProcessorType paymentProcessorType, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
         if(paymentProcessor == null) {
-            paymentProcessor = paymentControl.createPaymentProcessor(paymentProcessorName, paymentProcessorType, isDefault,
+            paymentProcessor = paymentProcessorControl.createPaymentProcessor(paymentProcessorName, paymentProcessorType, isDefault,
                     sortOrder, createdBy);
 
             if(description != null) {
-                paymentControl.createPaymentProcessorDescription(paymentProcessor, language, description, createdBy);
+                paymentProcessorControl.createPaymentProcessorDescription(paymentProcessor, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicatePaymentProcessorNameException.class, eea, ExecutionErrors.DuplicatePaymentProcessorName.name(), paymentProcessorName);
@@ -73,8 +73,8 @@ public class PaymentProcessorLogic
 
     public PaymentProcessor getPaymentProcessorByName(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final EntityPermission entityPermission) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName, entityPermission);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName, entityPermission);
 
         if(paymentProcessor == null) {
             handleExecutionError(UnknownPaymentProcessorNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorName.name(), paymentProcessorName);
@@ -94,14 +94,14 @@ public class PaymentProcessorLogic
     public PaymentProcessor getPaymentProcessorByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessor paymentProcessor = null;
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
         String paymentProcessorName = universalSpec.getPaymentProcessorName();
         int parameterCount = (paymentProcessorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:
                 if(allowDefault) {
-                    paymentProcessor = paymentControl.getDefaultPaymentProcessor(entityPermission);
+                    paymentProcessor = paymentProcessorControl.getDefaultPaymentProcessor(entityPermission);
 
                     if(paymentProcessor == null) {
                         handleExecutionError(UnknownDefaultPaymentProcessorException.class, eea, ExecutionErrors.UnknownDefaultPaymentProcessor.name());
@@ -116,7 +116,7 @@ public class PaymentProcessorLogic
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessor.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        paymentProcessor = paymentControl.getPaymentProcessorByEntityInstance(entityInstance, entityPermission);
+                        paymentProcessor = paymentProcessorControl.getPaymentProcessorByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     paymentProcessor = getPaymentProcessorByName(eea, paymentProcessorName, entityPermission);
@@ -142,9 +142,9 @@ public class PaymentProcessorLogic
 
     public void deletePaymentProcessor(final ExecutionErrorAccumulator eea, final PaymentProcessor paymentProcessor,
             final BasePK deletedBy) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
 
-        paymentControl.deletePaymentProcessor(paymentProcessor, deletedBy);
+        paymentProcessorControl.deletePaymentProcessor(paymentProcessor, deletedBy);
     }
 
 }

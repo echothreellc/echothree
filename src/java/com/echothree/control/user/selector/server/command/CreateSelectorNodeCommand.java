@@ -23,6 +23,7 @@ import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.selector.server.logic.SelectorNodeTypeLogic;
@@ -53,11 +54,11 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
@@ -273,16 +274,25 @@ public class CreateSelectorNodeCommand
             super(selectorControl, selectorNodeTypeName);
         }
     }
-    
-    private abstract class PaymentSelectorNodeType
-        extends BaseSelectorNodeType {
-        protected PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        
-        public PaymentSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+
+    private abstract class PaymentProcessorSelectorNodeType
+            extends BaseSelectorNodeType {
+        protected PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+
+        public PaymentProcessorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
-    
+
+    private abstract class PaymentMethodSelectorNodeType
+            extends BaseSelectorNodeType {
+        protected PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+
+        public PaymentMethodSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+            super(selectorControl, selectorNodeTypeName);
+        }
+    }
+
     private abstract class TrainingSelectorNodeType
         extends BaseSelectorNodeType {
         protected TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
@@ -583,7 +593,7 @@ public class CreateSelectorNodeCommand
     }
     
     private class PaymentMethodNodeType
-        extends PaymentSelectorNodeType {
+        extends PaymentMethodSelectorNodeType {
         private PaymentMethod paymentMethod = null;
         
         public PaymentMethodNodeType(SelectorControl selectorControl) {
@@ -607,7 +617,7 @@ public class CreateSelectorNodeCommand
     }
     
     private class PaymentProcessorNodeType
-        extends PaymentSelectorNodeType {
+        extends PaymentProcessorSelectorNodeType {
         private PaymentProcessor paymentProcessor = null;
         
         public PaymentProcessorNodeType(SelectorControl selectorControl) {
@@ -616,7 +626,7 @@ public class CreateSelectorNodeCommand
             if(!hasExecutionErrors()) {
                 String paymentProcessorName = form.getPaymentProcessorName();
                 
-                paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
+                paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
                 
                 if(paymentProcessor == null) {
                     addExecutionError(ExecutionErrors.UnknownPaymentProcessorName.name(), paymentProcessorName);

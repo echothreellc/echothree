@@ -18,6 +18,7 @@ package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorActionTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeActionControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorAction;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,6 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class PaymentProcessorActionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorAction, PaymentProcessorActionTransfer> {
 
+    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
     PaymentProcessorTypeActionControl paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl) Session.getModelController(PaymentProcessorTypeActionControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
@@ -40,7 +42,7 @@ public class PaymentProcessorActionTransferCache
         var paymentProcessorActionTransfer = get(paymentProcessorAction);
         
         if(paymentProcessorActionTransfer == null) {
-            var paymentProcessorTransfer = paymentControl.getPaymentProcessorTransfer(userVisit, paymentProcessorAction.getPaymentProcessor());
+            var paymentProcessorTransfer = paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessorAction.getPaymentProcessor());
             var paymentProcessorTypeActionTransfer = paymentProcessorTypeActionControl.getPaymentProcessorTypeActionTransfer(userVisit, paymentProcessorAction.getPaymentProcessorTypeAction());
 
             paymentProcessorActionTransfer = new PaymentProcessorActionTransfer(paymentProcessorTransfer,

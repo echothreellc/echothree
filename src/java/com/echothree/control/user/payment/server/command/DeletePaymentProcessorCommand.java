@@ -19,6 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.DeletePaymentProcessorForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -62,12 +63,12 @@ public class DeletePaymentProcessorCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
         String paymentProcessorName = form.getPaymentProcessorName();
-        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByNameForUpdate(paymentProcessorName);
+        PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByNameForUpdate(paymentProcessorName);
         
         if(paymentProcessor != null) {
-            paymentControl.deletePaymentProcessor(paymentProcessor, getPartyPK());
+            paymentProcessorControl.deletePaymentProcessor(paymentProcessor, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPaymentProcessorName.name(), paymentProcessorName);
         }
