@@ -58,7 +58,7 @@ public class GetPaymentProcessorTypeCodeTypeCommand
         ));
     }
 
-    /** Creates a new instance of GetPaymentProcessorCommand */
+    /** Creates a new instance of GetPaymentProcessorTypeCodeTypeCommand */
     public GetPaymentProcessorTypeCodeTypeCommand(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
