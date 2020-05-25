@@ -248,6 +248,11 @@ public class PaymentProcessorTransactionControl
         return getPaymentProcessorTransactionTransfers(userVisit, getPaymentProcessorTransactions());
     }
 
+    public List<PaymentProcessorTransactionTransfer> getPaymentProcessorTransactionTransfersByPaymentProcessor(final UserVisit userVisit,
+            final PaymentProcessor paymentProcessor) {
+        return getPaymentProcessorTransactionTransfers(userVisit, getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor));
+    }
+
     public void updatePaymentProcessorTransactionFromValue(final PaymentProcessorTransactionDetailValue paymentProcessorTransactionDetailValue,
             final BasePK updatedBy) {
         if(paymentProcessorTransactionDetailValue.hasBeenModified()) {

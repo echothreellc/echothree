@@ -20,17 +20,21 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 
 public class PaymentProcessorTransferCache
         extends BasePaymentTransferCache<PaymentProcessor, PaymentProcessorTransfer> {
 
     PaymentProcessorTypeControl paymentProcessorTypeControl = (PaymentProcessorTypeControl) Session.getModelController(PaymentProcessorTypeControl.class);
+    PaymentProcessorTransactionControl paymentProcessorTransactionControl = (PaymentProcessorTransactionControl) Session.getModelController(PaymentProcessorTransactionControl.class);
 
     boolean includeComments;
+    boolean includePaymentProcessorTransactions;
 
     /** Creates a new instance of PaymentProcessorTransferCache */
     public PaymentProcessorTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
@@ -41,6 +45,7 @@ public class PaymentProcessorTransferCache
             setIncludeKey(options.contains(PaymentOptions.PaymentProcessorIncludeKey));
             setIncludeGuid(options.contains(PaymentOptions.PaymentProcessorIncludeGuid));
             includeComments = options.contains(PaymentOptions.PaymentProcessorIncludeComments);
+            includePaymentProcessorTransactions = options.contains(PaymentOptions.PaymentProcessorIncludePaymentProcessorTransactions);
         }
         
         setIncludeEntityInstance(true);
@@ -63,6 +68,10 @@ public class PaymentProcessorTransferCache
 
             if(includeComments) {
                 setupComments(paymentProcessor, null, paymentProcessorTransfer, CommentConstants.CommentType_PAYMENT_PROCESSOR);
+            }
+            
+            if(includePaymentProcessorTransactions) {
+                paymentProcessorTransfer.setPaymentProcessorTransactions(new ListWrapper<>(paymentProcessorTransactionControl.getPaymentProcessorTransactionTransfersByPaymentProcessor(userVisit, paymentProcessor)));
             }
         }
 
