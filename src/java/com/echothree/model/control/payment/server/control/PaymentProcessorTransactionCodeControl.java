@@ -28,6 +28,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -152,7 +153,7 @@ public class PaymentProcessorTransactionCodeControl
     }
 
     public List<PaymentProcessorTransactionCodeTransfer> getPaymentProcessorTransactionCodeTransfers(final UserVisit userVisit,
-            final List<PaymentProcessorTransactionCode> paymentProcessorTransactionCodes) {
+            final Collection<PaymentProcessorTransactionCode> paymentProcessorTransactionCodes) {
         var paymentProcessorTransactionCodeTransfers = new ArrayList<PaymentProcessorTransactionCodeTransfer>(paymentProcessorTransactionCodes.size());
         var paymentProcessorTransactionCodeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransactionCodeTransferCache();
 

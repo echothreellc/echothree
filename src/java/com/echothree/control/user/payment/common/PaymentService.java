@@ -242,6 +242,12 @@ public interface PaymentService
     CommandResult getPaymentProcessorTransaction(UserVisitPK userVisitPK, GetPaymentProcessorTransactionForm form);
 
     // -------------------------------------------------------------------------
+    //   Payment Processor Transaction Codes
+    // -------------------------------------------------------------------------
+
+    CommandResult getPaymentProcessorTransactionCodes(UserVisitPK userVisitPK, GetPaymentProcessorTransactionCodesForm form);
+
+    // -------------------------------------------------------------------------
     //   Payment Methods
     // -------------------------------------------------------------------------
     

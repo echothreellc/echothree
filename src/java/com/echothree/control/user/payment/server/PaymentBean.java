@@ -472,6 +472,15 @@ public class PaymentBean
     }
 
     // -------------------------------------------------------------------------
+    //   Payment Processor Transaction Codes
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult getPaymentProcessorTransactionCodes(UserVisitPK userVisitPK, GetPaymentProcessorTransactionCodesForm form) {
+        return new GetPaymentProcessorTransactionCodesCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
     //   Payment Methods
     // -------------------------------------------------------------------------
     
