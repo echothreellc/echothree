@@ -97,6 +97,8 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorResu
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorResultCodesCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionsCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCodeCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCodeTypeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypesCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorsCommand;
@@ -157,6 +159,8 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorAction
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorResultCodeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTransactionObject;
+import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeObject;
+import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
@@ -208,6 +212,8 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -229,6 +235,54 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("paymentProcessorTypeCodeType")
+    public static PaymentProcessorTypeCodeTypeObject paymentProcessorTypeCodeType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
+            @GraphQLName("paymentProcessorTypeCodeTypeName") final String paymentProcessorTypeCodeTypeName,
+            @GraphQLName("id") final String id) {
+        PaymentProcessorTypeCodeType paymentProcessorTypeCodeType;
+
+        try {
+            var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeCodeTypeForm();
+
+            commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
+            commandForm.setPaymentProcessorTypeCodeTypeName(paymentProcessorTypeCodeTypeName);
+            commandForm.setUlid(id);
+
+            paymentProcessorTypeCodeType = new GetPaymentProcessorTypeCodeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return paymentProcessorTypeCodeType == null ? null : new PaymentProcessorTypeCodeTypeObject(paymentProcessorTypeCodeType);
+    }
+
+    @GraphQLField
+    @GraphQLName("paymentProcessorTypeCode")
+    public static PaymentProcessorTypeCodeObject paymentProcessorTypeCode(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
+            @GraphQLName("paymentProcessorTypeCodeTypeName") final String paymentProcessorTypeCodeTypeName,
+            @GraphQLName("paymentProcessorTypeCodeName") final String paymentProcessorTypeCodeName,
+            @GraphQLName("id") final String id) {
+        PaymentProcessorTypeCode paymentProcessorTypeCode;
+
+        try {
+            var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypeCodeForm();
+
+            commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
+            commandForm.setPaymentProcessorTypeCodeTypeName(paymentProcessorTypeCodeTypeName);
+            commandForm.setPaymentProcessorTypeCodeName(paymentProcessorTypeCodeName);
+            commandForm.setUlid(id);
+
+            paymentProcessorTypeCode = new GetPaymentProcessorTypeCodeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return paymentProcessorTypeCode == null ? null : new PaymentProcessorTypeCodeObject(paymentProcessorTypeCode);
+    }
 
     @GraphQLField
     @GraphQLName("paymentProcessorTransaction")
