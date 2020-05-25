@@ -17,6 +17,7 @@
 package com.echothree.model.control.payment.common.transfer;
 
 import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.ListWrapper;
 
 public class PaymentProcessorTransactionTransfer
         extends BaseTransfer {
@@ -25,6 +26,8 @@ public class PaymentProcessorTransactionTransfer
     private PaymentProcessorTransfer paymentProcessor;
     private PaymentProcessorActionTypeTransfer paymentProcessorActionType;
     private PaymentProcessorResultCodeTransfer paymentProcessorResultCode;
+
+    private ListWrapper<PaymentProcessorTransactionCodeTransfer> paymentProcessorTransactionCodes;
 
     /** Creates a new instance of PaymentProcessorTransactionTransfer */
     public PaymentProcessorTransactionTransfer(String paymentProcessorActionTypeName, PaymentProcessorTransfer paymentProcessor,
@@ -65,6 +68,14 @@ public class PaymentProcessorTransactionTransfer
 
     public void setPaymentProcessorResultCode(PaymentProcessorResultCodeTransfer paymentProcessorResultCode) {
         this.paymentProcessorResultCode = paymentProcessorResultCode;
+    }
+
+    public ListWrapper<PaymentProcessorTransactionCodeTransfer> getPaymentProcessorTransactionCodes() {
+        return paymentProcessorTransactionCodes;
+    }
+
+    public void setPaymentProcessorTransactionCodes(final ListWrapper<PaymentProcessorTransactionCodeTransfer> paymentProcessorTransactionCodes) {
+        this.paymentProcessorTransactionCodes = paymentProcessorTransactionCodes;
     }
 
 }

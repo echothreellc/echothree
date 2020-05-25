@@ -40,4 +40,6 @@ public interface PaymentOptions {
     String PartyPaymentMethodIncludeGuid = "PartyPaymentMethodIncludeGuid";
     String PartyPaymentMethodIncludeComments = "PartyPaymentMethodIncludeComments";
 
+    String PaymentProcessorTransactionIncludePaymentProcessorTransactionCodes = "PaymentProcessorTransactionIncludePaymentProcessorTransactionCodes";
+
 }

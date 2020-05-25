@@ -16,12 +16,15 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
+import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionTransfer;
 import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 
 public class PaymentProcessorTransactionTransferCache
@@ -29,11 +32,19 @@ public class PaymentProcessorTransactionTransferCache
 
     PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl) Session.getModelController(PaymentProcessorActionTypeControl.class);
     PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl) Session.getModelController(PaymentProcessorResultCodeControl.class);
+    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl) Session.getModelController(PaymentProcessorTransactionCodeControl.class);
 
+    boolean includePaymentProcessorTransactionCodes;
+    
     /** Creates a new instance of PaymentProcessorTransactionTransferCache */
     public PaymentProcessorTransactionTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
-        
+
+        var options = session.getOptions();
+        if(options != null) {
+            includePaymentProcessorTransactionCodes = options.contains(PaymentOptions.PaymentProcessorTransactionIncludePaymentProcessorTransactionCodes);
+        }
+
         setIncludeEntityInstance(true);
     }
     
@@ -51,6 +62,10 @@ public class PaymentProcessorTransactionTransferCache
             paymentProcessorTransactionTransfer = new PaymentProcessorTransactionTransfer(paymentProcessorTransactionName,
                     paymentProcessor, paymentProcessorActionType, paymentProcessorResultCode);
             put(paymentProcessorTransaction, paymentProcessorTransactionTransfer);
+
+            if(includePaymentProcessorTransactionCodes) {
+                paymentProcessorTransactionTransfer.setPaymentProcessorTransactionCodes(new ListWrapper<>(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfersByPaymentProcessorTransaction(userVisit, paymentProcessorTransaction)));
+            }
         }
         
         return paymentProcessorTransactionTransfer;
