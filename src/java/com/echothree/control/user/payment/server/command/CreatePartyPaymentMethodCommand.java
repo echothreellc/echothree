@@ -25,6 +25,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -104,11 +105,12 @@ public class CreatePartyPaymentMethodCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
-    private void setupWorkflows(final PaymentControl paymentControl, final PaymentMethodType paymentMethodType,
-            final PartyType partyType, final PartyPaymentMethodContactMechanism billingPartyPaymentMethodContactMechanism, final PartyPaymentMethod partyPaymentMethod,
-            final PartyPK createdBy) {
+    private void setupWorkflows(final PaymentMethodType paymentMethodType, final PartyType partyType,
+            final PartyPaymentMethodContactMechanism billingPartyPaymentMethodContactMechanism,
+            final PartyPaymentMethod partyPaymentMethod, final PartyPK createdBy) {
+        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        PaymentMethodTypePartyType paymentMethodTypePartyType = paymentControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
+        PaymentMethodTypePartyType paymentMethodTypePartyType = paymentMethodTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
         
         if(paymentMethodTypePartyType != null) {
             if(billingPartyPaymentMethodContactMechanism != null) {
@@ -250,7 +252,7 @@ public class CreatePartyPaymentMethodCommand
                                 : setupPartyPaymentMethodContactMechanism(contactControl, paymentControl, billingPartyContactMechanism, partyPaymentMethod,
                                 createdBy);
 
-                        setupWorkflows(paymentControl, paymentMethodType, party.getLastDetail().getPartyType(),
+                        setupWorkflows(paymentMethodType, party.getLastDetail().getPartyType(),
                                 billingPartyPaymentMethodContactMechanism, partyPaymentMethod, createdBy);
 
                         result.setEntityRef(partyPaymentMethod.getPrimaryKey().getEntityRef());

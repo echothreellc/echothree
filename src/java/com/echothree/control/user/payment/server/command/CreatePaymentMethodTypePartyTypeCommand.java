@@ -19,6 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.CreatePaymentMethodTypePartyTypeForm;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.party.server.entity.PartyType;
@@ -66,8 +67,8 @@ public class CreatePaymentMethodTypePartyTypeCommand
             PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
             
             if(partyType != null) {
-                var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-                PaymentMethodTypePartyType paymentMethodTypePartyType = paymentControl.getPaymentMethodTypePartyType(paymentMethodType,
+                var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+                PaymentMethodTypePartyType paymentMethodTypePartyType = paymentMethodTypeControl.getPaymentMethodTypePartyType(paymentMethodType,
                         partyType);
                 
                 if(paymentMethodTypePartyType == null) {
@@ -80,7 +81,7 @@ public class CreatePaymentMethodTypePartyTypeCommand
                         Workflow contactMechanismWorkflow = contactMechanismWorkflowName == null? null: workflowControl.getWorkflowByName(contactMechanismWorkflowName);
                         
                         if(contactMechanismWorkflowName == null || contactMechanismWorkflow != null) {
-                            paymentControl.createPaymentMethodTypePartyType(paymentMethodType, partyType, partyPaymentMethodWorkflow,
+                            paymentMethodTypeControl.createPaymentMethodTypePartyType(paymentMethodType, partyType, partyPaymentMethodWorkflow,
                                     contactMechanismWorkflow);
                         } else {
                             addExecutionError(ExecutionErrors.UnknownContactMechanismWorkflowName.name(), contactMechanismWorkflowName);
