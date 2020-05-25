@@ -169,7 +169,7 @@ public class PaymentProcessorTypeActionControl
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessoractiontypes, paymentprocessoractiontypedetails " +
                     "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = pprcacttyp_paymentprocessoractiontypeid AND pprcacttyp_lastdetailid = pprcacttypdt_paymentprocessoractiontypedetailid " +
+                    "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = pprcacttyp_paymentprocessoractiontypeid AND pprcacttyp_activedetailid = pprcacttypdt_paymentprocessoractiontypedetailid " +
                     "AND pprctypactdt_pprctyp_paymentprocessortypeid = ? " +
                     "ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename",
             EntityPermission.READ_WRITE,
@@ -197,7 +197,7 @@ public class PaymentProcessorTypeActionControl
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessortypes, paymentprocessortypedetails " +
                     "WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
-                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = pprctyp_paymentprocessortypeid AND pprctyp_lastdetailid = pprctypdt_paymentprocessortypedetailid " +
+                    "AND pprctypactdt_pprctyp_paymentprocessortypeid = pprctyp_paymentprocessortypeid AND pprctyp_activedetailid = pprctypdt_paymentprocessortypedetailid " +
                     "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
                     "ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename",
             EntityPermission.READ_WRITE,
