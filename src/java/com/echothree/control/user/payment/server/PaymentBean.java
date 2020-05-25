@@ -271,12 +271,12 @@ public class PaymentBean
 //    public CommandResult getPaymentProcessorTypeCodes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodesForm form) {
 //        return new GetPaymentProcessorTypeCodesCommand(userVisitPK, form).run();
 //    }
-//
-//    @Override
-//    public CommandResult getPaymentProcessorTypeCode(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeForm form) {
-//        return new GetPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
-//    }
-//
+
+    @Override
+    public CommandResult getPaymentProcessorTypeCode(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeForm form) {
+        return new GetPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+    }
+
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeChoicesForm form) {
 //        return new GetPaymentProcessorTypeCodeChoicesCommand(userVisitPK, form).run();
