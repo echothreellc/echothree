@@ -17,7 +17,6 @@
 package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionCodeTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactionCode;
@@ -31,8 +30,8 @@ public class PaymentProcessorTransactionCodeTransferCache
     PaymentProcessorTypeCodeControl paymentProcessorTypeCodeControl = (PaymentProcessorTypeCodeControl) Session.getModelController(PaymentProcessorTypeCodeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
-    public PaymentProcessorTransactionCodeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentProcessorTransactionCodeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

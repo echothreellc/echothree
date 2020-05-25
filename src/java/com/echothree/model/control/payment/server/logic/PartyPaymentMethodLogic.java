@@ -23,7 +23,6 @@ import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.exception.UnknownPartyPaymentMethodNameException;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;

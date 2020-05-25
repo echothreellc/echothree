@@ -19,16 +19,19 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PaymentMethodDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentMethodDescription, PaymentMethodDescriptionTransfer> {
-    
+
+    PaymentMethodControl paymentMethodControl = (PaymentMethodControl) Session.getModelController(PaymentMethodControl.class);
+
     /** Creates a new instance of PaymentMethodDescriptionTransferCache */
-    public PaymentMethodDescriptionTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentMethodDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     @Override
@@ -36,8 +39,7 @@ public class PaymentMethodDescriptionTransferCache
         PaymentMethodDescriptionTransfer paymentMethodDescriptionTransfer = get(paymentMethodDescription);
         
         if(paymentMethodDescriptionTransfer == null) {
-            PaymentMethodTransferCache paymentMethodTransferCache = paymentControl.getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
-            PaymentMethodTransfer paymentMethodTransfer = paymentMethodTransferCache.getTransfer(paymentMethodDescription.getPaymentMethod());
+            PaymentMethodTransfer paymentMethodTransfer = paymentMethodControl.getPaymentMethodTransfer(userVisit, paymentMethodDescription.getPaymentMethod());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentMethodDescription.getLanguage());
             
             paymentMethodDescriptionTransfer = new PaymentMethodDescriptionTransfer(languageTransfer, paymentMethodTransfer, paymentMethodDescription.getDescription());

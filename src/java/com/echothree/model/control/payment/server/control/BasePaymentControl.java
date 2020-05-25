@@ -37,9 +37,7 @@ public abstract class BasePaymentControl
     
     public PaymentTransferCaches getPaymentTransferCaches(UserVisit userVisit) {
         if(paymentTransferCaches == null) {
-            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-
-            paymentTransferCaches = new PaymentTransferCaches(userVisit, paymentControl);
+            paymentTransferCaches = new PaymentTransferCaches(userVisit);
         }
         
         return paymentTransferCaches;

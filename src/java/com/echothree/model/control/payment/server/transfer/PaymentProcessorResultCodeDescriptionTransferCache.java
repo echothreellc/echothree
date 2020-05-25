@@ -16,19 +16,22 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorResultCodeDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorResultCodeTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCodeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PaymentProcessorResultCodeDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentProcessorResultCodeDescription, PaymentProcessorResultCodeDescriptionTransfer> {
-    
+
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl) Session.getModelController(PaymentProcessorResultCodeControl.class);
+
     /** Creates a new instance of PaymentProcessorResultCodeDescriptionTransferCache */
-    public PaymentProcessorResultCodeDescriptionTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentProcessorResultCodeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     @Override
@@ -36,8 +39,7 @@ public class PaymentProcessorResultCodeDescriptionTransferCache
         PaymentProcessorResultCodeDescriptionTransfer paymentProcessorResultCodeDescriptionTransfer = get(paymentProcessorResultCodeDescription);
         
         if(paymentProcessorResultCodeDescriptionTransfer == null) {
-            PaymentProcessorResultCodeTransferCache paymentProcessorResultCodeTransferCache = paymentControl.getPaymentTransferCaches(userVisit).getPaymentProcessorResultCodeTransferCache();
-            PaymentProcessorResultCodeTransfer paymentProcessorResultCodeTransfer = paymentProcessorResultCodeTransferCache.getTransfer(paymentProcessorResultCodeDescription.getPaymentProcessorResultCode());
+            PaymentProcessorResultCodeTransfer paymentProcessorResultCodeTransfer = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfer(userVisit, paymentProcessorResultCodeDescription.getPaymentProcessorResultCode());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorResultCodeDescription.getLanguage());
             
             paymentProcessorResultCodeDescriptionTransfer = new PaymentProcessorResultCodeDescriptionTransfer(languageTransfer, paymentProcessorResultCodeTransfer, paymentProcessorResultCodeDescription.getDescription());

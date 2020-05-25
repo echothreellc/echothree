@@ -18,7 +18,6 @@ package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
@@ -39,8 +38,8 @@ public class PaymentProcessorTransactionTransferCache
     boolean includePaymentProcessorTransactionCodes;
     
     /** Creates a new instance of PaymentProcessorTransactionTransferCache */
-    public PaymentProcessorTransactionTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentProcessorTransactionTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         var options = session.getOptions();
         if(options != null) {

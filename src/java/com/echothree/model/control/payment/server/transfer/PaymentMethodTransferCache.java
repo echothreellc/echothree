@@ -22,7 +22,6 @@ import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
@@ -45,8 +44,8 @@ public class PaymentMethodTransferCache
     boolean includeComments;
 
     /** Creates a new instance of PaymentMethodTransferCache */
-    public PaymentMethodTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentMethodTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         Set<String> options = session.getOptions();
         if(options != null) {

@@ -19,16 +19,20 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTypeDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTypeTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeTypeControl;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PaymentProcessorTypeCodeTypeDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentProcessorTypeCodeTypeDescription, PaymentProcessorTypeCodeTypeDescriptionTransfer> {
-    
+
+    PaymentProcessorTypeCodeTypeControl paymentProcessorTypeCodeType = (PaymentProcessorTypeCodeTypeControl) Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+
     /** Creates a new instance of PaymentProcessorTypeDescriptionTransferCache */
-    public PaymentProcessorTypeCodeTypeDescriptionTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentProcessorTypeCodeTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     @Override
@@ -36,8 +40,7 @@ public class PaymentProcessorTypeCodeTypeDescriptionTransferCache
         PaymentProcessorTypeCodeTypeDescriptionTransfer paymentProcessorTypeCodeTypeDescriptionTransfer = get(paymentProcessorTypeCodeTypeDescription);
         
         if(paymentProcessorTypeCodeTypeDescriptionTransfer == null) {
-            PaymentProcessorTypeCodeTypeTransferCache paymentProcessorTypeCodeTypeTransferCache = paymentControl.getPaymentTransferCaches(userVisit).getPaymentProcessorTypeCodeTypeTransferCache();
-            PaymentProcessorTypeCodeTypeTransfer paymentProcessorTypeCodeTypeTransfer = paymentProcessorTypeCodeTypeTransferCache.getTransfer(paymentProcessorTypeCodeTypeDescription.getPaymentProcessorTypeCodeType());
+            PaymentProcessorTypeCodeTypeTransfer paymentProcessorTypeCodeTypeTransfer = paymentProcessorTypeCodeType.getPaymentProcessorTypeCodeTypeTransfer(userVisit, paymentProcessorTypeCodeTypeDescription.getPaymentProcessorTypeCodeType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeCodeTypeDescription.getLanguage());
             
             paymentProcessorTypeCodeTypeDescriptionTransfer = new PaymentProcessorTypeCodeTypeDescriptionTransfer(languageTransfer, paymentProcessorTypeCodeTypeTransfer, paymentProcessorTypeCodeTypeDescription.getDescription());

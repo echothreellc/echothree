@@ -22,7 +22,6 @@ import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
 import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
 import com.echothree.model.control.payment.server.control.BillingControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.model.data.payment.server.entity.BillingAccountDetail;
@@ -40,8 +39,8 @@ public class BillingAccountTransferCache
     boolean includeRoles;
 
     /** Creates a new instance of BillingAccountTransferCache */
-    public BillingAccountTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public BillingAccountTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         Set<String> options = session.getOptions();
         if(options != null) {

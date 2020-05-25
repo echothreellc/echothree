@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -25,13 +24,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BasePaymentTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    PaymentControl paymentControl;
-    
     /** Creates a new instance of BasePaymentTransferCache */
-    public BasePaymentTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
+    public BasePaymentTransferCache(UserVisit userVisit) {
         super(userVisit);
-        
-        this.paymentControl = paymentControl;
     }
 
     public abstract V getTransfer(K key);

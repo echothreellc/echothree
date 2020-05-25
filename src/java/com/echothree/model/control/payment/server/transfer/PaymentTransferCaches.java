@@ -16,15 +16,12 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class PaymentTransferCaches
         extends BaseTransferCaches {
     
-    protected PaymentControl paymentControl;
-
     protected PaymentMethodTypeTransferCache paymentMethodTypeTransferCache;
     protected PaymentMethodTypeDescriptionTransferCache paymentMethodTypeDescriptionTransferCache;
     protected PaymentMethodTypePartyTypeTransferCache paymentMethodTypePartyTypeTransferCache;
@@ -53,190 +50,188 @@ public class PaymentTransferCaches
     protected PaymentProcessorTransactionCodeTransferCache paymentProcessorTransactionCodeTransferCache;
     
     /** Creates a new instance of PaymentTransferCaches */
-    public PaymentTransferCaches(UserVisit userVisit, PaymentControl paymentControl) {
+    public PaymentTransferCaches(UserVisit userVisit) {
         super(userVisit);
-        
-        this.paymentControl = paymentControl;
     }
 
     public PaymentMethodTypeTransferCache getPaymentMethodTypeTransferCache() {
         if(paymentMethodTypeTransferCache == null)
-            paymentMethodTypeTransferCache = new PaymentMethodTypeTransferCache(userVisit, paymentControl);
+            paymentMethodTypeTransferCache = new PaymentMethodTypeTransferCache(userVisit);
 
         return paymentMethodTypeTransferCache;
     }
 
     public PaymentMethodTypeDescriptionTransferCache getPaymentMethodTypeDescriptionTransferCache() {
         if(paymentMethodTypeDescriptionTransferCache == null)
-            paymentMethodTypeDescriptionTransferCache = new PaymentMethodTypeDescriptionTransferCache(userVisit, paymentControl);
+            paymentMethodTypeDescriptionTransferCache = new PaymentMethodTypeDescriptionTransferCache(userVisit);
 
         return paymentMethodTypeDescriptionTransferCache;
     }
 
     public PaymentMethodTypePartyTypeTransferCache getPaymentMethodTypePartyTypeTransferCache() {
         if(paymentMethodTypePartyTypeTransferCache == null)
-            paymentMethodTypePartyTypeTransferCache = new PaymentMethodTypePartyTypeTransferCache(userVisit, paymentControl);
+            paymentMethodTypePartyTypeTransferCache = new PaymentMethodTypePartyTypeTransferCache(userVisit);
 
         return paymentMethodTypePartyTypeTransferCache;
     }
 
     public PaymentMethodTransferCache getPaymentMethodTransferCache() {
         if(paymentMethodTransferCache == null)
-            paymentMethodTransferCache = new PaymentMethodTransferCache(userVisit, paymentControl);
+            paymentMethodTransferCache = new PaymentMethodTransferCache(userVisit);
         
         return paymentMethodTransferCache;
     }
     
     public PaymentMethodDescriptionTransferCache getPaymentMethodDescriptionTransferCache() {
         if(paymentMethodDescriptionTransferCache == null)
-            paymentMethodDescriptionTransferCache = new PaymentMethodDescriptionTransferCache(userVisit, paymentControl);
+            paymentMethodDescriptionTransferCache = new PaymentMethodDescriptionTransferCache(userVisit);
         
         return paymentMethodDescriptionTransferCache;
     }
     
     public BillingAccountTransferCache getBillingAccountTransferCache() {
         if(billingAccountTransferCache == null)
-            billingAccountTransferCache = new BillingAccountTransferCache(userVisit, paymentControl);
+            billingAccountTransferCache = new BillingAccountTransferCache(userVisit);
         
         return billingAccountTransferCache;
     }
     
     public BillingAccountRoleTypeTransferCache getBillingAccountRoleTypeTransferCache() {
         if(billingAccountRoleTypeTransferCache == null)
-            billingAccountRoleTypeTransferCache = new BillingAccountRoleTypeTransferCache(userVisit, paymentControl);
+            billingAccountRoleTypeTransferCache = new BillingAccountRoleTypeTransferCache(userVisit);
         
         return billingAccountRoleTypeTransferCache;
     }
     
     public BillingAccountRoleTransferCache getBillingAccountRoleTransferCache() {
         if(billingAccountRoleTransferCache == null)
-            billingAccountRoleTransferCache = new BillingAccountRoleTransferCache(userVisit, paymentControl);
+            billingAccountRoleTransferCache = new BillingAccountRoleTransferCache(userVisit);
         
         return billingAccountRoleTransferCache;
     }
     
     public PartyPaymentMethodTransferCache getPartyPaymentMethodTransferCache() {
         if(partyPaymentMethodTransferCache == null)
-            partyPaymentMethodTransferCache = new PartyPaymentMethodTransferCache(userVisit, paymentControl);
+            partyPaymentMethodTransferCache = new PartyPaymentMethodTransferCache(userVisit);
         
         return partyPaymentMethodTransferCache;
     }
 
     public PaymentProcessorTypeTransferCache getPaymentProcessorTypeTransferCache() {
         if(paymentProcessorTypeTransferCache == null)
-            paymentProcessorTypeTransferCache = new PaymentProcessorTypeTransferCache(userVisit, paymentControl);
+            paymentProcessorTypeTransferCache = new PaymentProcessorTypeTransferCache(userVisit);
 
         return paymentProcessorTypeTransferCache;
     }
 
     public PaymentProcessorTypeDescriptionTransferCache getPaymentProcessorTypeDescriptionTransferCache() {
         if(paymentProcessorTypeDescriptionTransferCache == null)
-            paymentProcessorTypeDescriptionTransferCache = new PaymentProcessorTypeDescriptionTransferCache(userVisit, paymentControl);
+            paymentProcessorTypeDescriptionTransferCache = new PaymentProcessorTypeDescriptionTransferCache(userVisit);
 
         return paymentProcessorTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorTransferCache getPaymentProcessorTransferCache() {
         if(paymentProcessorTransferCache == null)
-            paymentProcessorTransferCache = new PaymentProcessorTransferCache(userVisit, paymentControl);
+            paymentProcessorTransferCache = new PaymentProcessorTransferCache(userVisit);
         
         return paymentProcessorTransferCache;
     }
     
     public PaymentProcessorDescriptionTransferCache getPaymentProcessorDescriptionTransferCache() {
         if(paymentProcessorDescriptionTransferCache == null)
-            paymentProcessorDescriptionTransferCache = new PaymentProcessorDescriptionTransferCache(userVisit, paymentControl);
+            paymentProcessorDescriptionTransferCache = new PaymentProcessorDescriptionTransferCache(userVisit);
         
         return paymentProcessorDescriptionTransferCache;
     }
     
     public PartyPaymentMethodContactMechanismTransferCache getPartyPaymentMethodContactMechanismTransferCache() {
         if(partyPaymentMethodContactMechanismTransferCache == null)
-            partyPaymentMethodContactMechanismTransferCache = new PartyPaymentMethodContactMechanismTransferCache(userVisit, paymentControl);
+            partyPaymentMethodContactMechanismTransferCache = new PartyPaymentMethodContactMechanismTransferCache(userVisit);
         
         return partyPaymentMethodContactMechanismTransferCache;
     }
 
     public PaymentProcessorActionTypeTransferCache getPaymentProcessorActionTypeTransferCache() {
         if(paymentProcessorActionTypeTransferCache == null)
-            paymentProcessorActionTypeTransferCache = new PaymentProcessorActionTypeTransferCache(userVisit, paymentControl);
+            paymentProcessorActionTypeTransferCache = new PaymentProcessorActionTypeTransferCache(userVisit);
 
         return paymentProcessorActionTypeTransferCache;
     }
 
     public PaymentProcessorActionTypeDescriptionTransferCache getPaymentProcessorActionTypeDescriptionTransferCache() {
         if(paymentProcessorActionTypeDescriptionTransferCache == null)
-            paymentProcessorActionTypeDescriptionTransferCache = new PaymentProcessorActionTypeDescriptionTransferCache(userVisit, paymentControl);
+            paymentProcessorActionTypeDescriptionTransferCache = new PaymentProcessorActionTypeDescriptionTransferCache(userVisit);
 
         return paymentProcessorActionTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorResultCodeTransferCache getPaymentProcessorResultCodeTransferCache() {
         if(paymentProcessorResultCodeTransferCache == null)
-            paymentProcessorResultCodeTransferCache = new PaymentProcessorResultCodeTransferCache(userVisit, paymentControl);
+            paymentProcessorResultCodeTransferCache = new PaymentProcessorResultCodeTransferCache(userVisit);
 
         return paymentProcessorResultCodeTransferCache;
     }
 
     public PaymentProcessorResultCodeDescriptionTransferCache getPaymentProcessorResultCodeDescriptionTransferCache() {
         if(paymentProcessorResultCodeDescriptionTransferCache == null)
-            paymentProcessorResultCodeDescriptionTransferCache = new PaymentProcessorResultCodeDescriptionTransferCache(userVisit, paymentControl);
+            paymentProcessorResultCodeDescriptionTransferCache = new PaymentProcessorResultCodeDescriptionTransferCache(userVisit);
 
         return paymentProcessorResultCodeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeCodeTypeTransferCache getPaymentProcessorTypeCodeTypeTransferCache() {
         if(paymentProcessorTypeCodeTypeTransferCache == null)
-            paymentProcessorTypeCodeTypeTransferCache = new PaymentProcessorTypeCodeTypeTransferCache(userVisit, paymentControl);
+            paymentProcessorTypeCodeTypeTransferCache = new PaymentProcessorTypeCodeTypeTransferCache(userVisit);
 
         return paymentProcessorTypeCodeTypeTransferCache;
     }
 
     public PaymentProcessorTypeCodeTypeDescriptionTransferCache getPaymentProcessorTypeCodeTypeDescriptionTransferCache() {
         if(paymentProcessorTypeCodeTypeDescriptionTransferCache == null)
-            paymentProcessorTypeCodeTypeDescriptionTransferCache = new PaymentProcessorTypeCodeTypeDescriptionTransferCache(userVisit, paymentControl);
+            paymentProcessorTypeCodeTypeDescriptionTransferCache = new PaymentProcessorTypeCodeTypeDescriptionTransferCache(userVisit);
 
         return paymentProcessorTypeCodeTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeCodeTransferCache getPaymentProcessorTypeCodeTransferCache() {
         if(paymentProcessorTypeCodeTransferCache == null)
-            paymentProcessorTypeCodeTransferCache = new PaymentProcessorTypeCodeTransferCache(userVisit, paymentControl);
+            paymentProcessorTypeCodeTransferCache = new PaymentProcessorTypeCodeTransferCache(userVisit);
 
         return paymentProcessorTypeCodeTransferCache;
     }
 
     public PaymentProcessorTypeCodeDescriptionTransferCache getPaymentProcessorTypeCodeDescriptionTransferCache() {
         if(paymentProcessorTypeCodeDescriptionTransferCache == null)
-            paymentProcessorTypeCodeDescriptionTransferCache = new PaymentProcessorTypeCodeDescriptionTransferCache(userVisit, paymentControl);
+            paymentProcessorTypeCodeDescriptionTransferCache = new PaymentProcessorTypeCodeDescriptionTransferCache(userVisit);
 
         return paymentProcessorTypeCodeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeActionTransferCache getPaymentProcessorTypeActionTransferCache() {
         if(paymentProcessorTypeActionTransferCache == null)
-            paymentProcessorTypeActionTransferCache = new PaymentProcessorTypeActionTransferCache(userVisit, paymentControl);
+            paymentProcessorTypeActionTransferCache = new PaymentProcessorTypeActionTransferCache(userVisit);
 
         return paymentProcessorTypeActionTransferCache;
     }
 
     public PaymentProcessorActionTransferCache getPaymentProcessorActionTransferCache() {
         if(paymentProcessorActionTransferCache == null)
-            paymentProcessorActionTransferCache = new PaymentProcessorActionTransferCache(userVisit, paymentControl);
+            paymentProcessorActionTransferCache = new PaymentProcessorActionTransferCache(userVisit);
 
         return paymentProcessorActionTransferCache;
     }
 
     public PaymentProcessorTransactionTransferCache getPaymentProcessorTransactionTransferCache() {
         if(paymentProcessorTransactionTransferCache == null)
-            paymentProcessorTransactionTransferCache = new PaymentProcessorTransactionTransferCache(userVisit, paymentControl);
+            paymentProcessorTransactionTransferCache = new PaymentProcessorTransactionTransferCache(userVisit);
 
         return paymentProcessorTransactionTransferCache;
     }
 
     public PaymentProcessorTransactionCodeTransferCache getPaymentProcessorTransactionCodeTransferCache() {
         if(paymentProcessorTransactionCodeTransferCache == null)
-            paymentProcessorTransactionCodeTransferCache = new PaymentProcessorTransactionCodeTransferCache(userVisit, paymentControl);
+            paymentProcessorTransactionCodeTransferCache = new PaymentProcessorTransactionCodeTransferCache(userVisit);
 
         return paymentProcessorTransactionCodeTransferCache;
     }

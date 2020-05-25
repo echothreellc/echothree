@@ -40,7 +40,6 @@ import com.echothree.model.control.party.common.transfer.PersonTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
@@ -93,7 +92,6 @@ public class VendorTransferCache
     ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
     InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
     PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
     ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
     ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);

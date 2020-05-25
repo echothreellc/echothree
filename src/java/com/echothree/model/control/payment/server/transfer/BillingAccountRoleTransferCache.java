@@ -20,7 +20,6 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
 import com.echothree.model.control.payment.server.control.BillingControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -33,8 +32,8 @@ public class BillingAccountRoleTransferCache
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of BillingAccountRoleTransferCache */
-    public BillingAccountRoleTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public BillingAccountRoleTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     @Override

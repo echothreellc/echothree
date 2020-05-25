@@ -30,7 +30,6 @@ import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,8 +68,8 @@ public class PartyPaymentMethodTransferCache
     boolean maskNumberAndSecurityCode;
 
     /** Creates a new instance of PartyPaymentMethodTransferCache */
-    public PartyPaymentMethodTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PartyPaymentMethodTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         Set<String> options = session.getOptions();
         if(options != null) {

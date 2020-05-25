@@ -17,7 +17,6 @@
 package com.echothree.model.control.inventory.server.control;
 
 import com.echothree.model.control.inventory.server.transfer.InventoryTransferCaches;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.Session;

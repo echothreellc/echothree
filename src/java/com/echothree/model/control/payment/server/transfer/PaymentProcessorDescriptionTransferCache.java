@@ -19,16 +19,19 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PaymentProcessorDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentProcessorDescription, PaymentProcessorDescriptionTransfer> {
-    
+
+    PaymentProcessorControl paymentProcessorControl = (com.echothree.model.control.payment.server.control.PaymentProcessorControl) Session.getModelController(PaymentProcessorControl.class);
+
     /** Creates a new instance of PaymentProcessorDescriptionTransferCache */
-    public PaymentProcessorDescriptionTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentProcessorDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     @Override
@@ -36,8 +39,7 @@ public class PaymentProcessorDescriptionTransferCache
         PaymentProcessorDescriptionTransfer paymentProcessorDescriptionTransfer = get(paymentProcessorDescription);
         
         if(paymentProcessorDescriptionTransfer == null) {
-            PaymentProcessorTransferCache paymentProcessorTransferCache = paymentControl.getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
-            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessorTransferCache.getTransfer(paymentProcessorDescription.getPaymentProcessor());
+            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessorDescription.getPaymentProcessor());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorDescription.getLanguage());
             
             paymentProcessorDescriptionTransfer = new PaymentProcessorDescriptionTransfer(languageTransfer, paymentProcessorTransfer, paymentProcessorDescription.getDescription());

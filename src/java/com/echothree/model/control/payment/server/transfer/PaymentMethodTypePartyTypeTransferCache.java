@@ -20,7 +20,6 @@ import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypePartyTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -36,8 +35,8 @@ public class PaymentMethodTypePartyTypeTransferCache
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of PaymentMethodTypePartyTypeTransferCache */
-    public PaymentMethodTypePartyTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PaymentMethodTypePartyTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     @Override

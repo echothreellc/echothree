@@ -18,7 +18,6 @@ package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
 import com.echothree.model.control.payment.server.control.BillingControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -29,8 +28,8 @@ public class BillingAccountRoleTypeTransferCache
     BillingControl billingControl = (BillingControl) Session.getModelController(BillingControl.class);
 
     /** Creates a new instance of BillingAccountRoleTypeTransferCache */
-    public BillingAccountRoleTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public BillingAccountRoleTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     @Override

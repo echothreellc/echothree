@@ -23,7 +23,6 @@ import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
-import com.echothree.model.control.payment.server.control.PaymentControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardContactMechanismConstants.Workflow_CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -42,8 +41,8 @@ public class PartyPaymentMethodContactMechanismTransferCache
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PartyPaymentMethodContactMechanismTransferCache */
-    public PartyPaymentMethodContactMechanismTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
-        super(userVisit, paymentControl);
+    public PartyPaymentMethodContactMechanismTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     @Override
