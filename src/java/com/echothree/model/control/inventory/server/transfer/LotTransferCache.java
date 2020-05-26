@@ -1,0 +1,114 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2020 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.inventory.server.transfer;
+
+import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.inventory.common.InventoryOptions;
+import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
+import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
+import com.echothree.model.control.inventory.common.transfer.LotTransfer;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
+import com.echothree.model.control.inventory.server.control.LotTimeControl;
+import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.party.common.PartyOptions;
+import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.data.inventory.server.entity.Lot;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.transfer.MapWrapper;
+import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.string.AmountUtils;
+import java.util.Set;
+
+public class LotTransferCache
+        extends BaseInventoryTransferCache<Lot, LotTransfer> {
+
+    AccountingControl accountingControl = (AccountingControl) Session.getModelController(AccountingControl.class);
+    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    LotAliasControl lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+    LotTimeControl lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+
+    boolean includeLotAliases;
+    boolean includeLotTimes;
+
+    /** Creates a new instance of LotTransferCache */
+    public LotTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
+        super(userVisit, inventoryControl);
+
+        Set<String> options = session.getOptions();
+        if(options != null) {
+            setIncludeKey(options.contains(InventoryOptions.LotIncludeKey));
+            setIncludeGuid(options.contains(InventoryOptions.LotIncludeGuid));
+            includeLotAliases = options.contains(InventoryOptions.LotIncludeLotAliases);
+            includeLotTimes = options.contains(InventoryOptions.LotIncludeLotTimes);
+        }
+
+        setIncludeEntityInstance(true);
+    }
+    
+    @Override
+    public LotTransfer getTransfer(Lot lot) {
+        var lotTransfer = get(lot);
+        
+        if(lotTransfer == null) {
+            var lotDetail = lot.getLastDetail();
+
+            var lotName = lotDetail.getLotName();
+            var ownerParty = partyControl.getPartyTransfer(userVisit, lotDetail.getOwnerParty());
+            var item = itemControl.getItemTransfer(userVisit, lotDetail.getItem());
+            var inventoryCondition = inventoryControl.getInventoryConditionTransfer(userVisit, lotDetail.getInventoryCondition());
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, lotDetail.getUnitOfMeasureType());
+            var quantity = lotDetail.getQuantity();
+            var currency = lotDetail.getCurrency();
+            var currencyTransfer = currency == null ? null : accountingControl.getCurrencyTransfer(userVisit, currency);
+            var unformattedUnitCost = lotDetail.getUnitCost();
+            var unitCost = currency == null || unformattedUnitCost == null ? null : AmountUtils.getInstance().formatCostUnit(currency, unformattedUnitCost);
+
+            lotTransfer = new LotTransfer(lotName, ownerParty, item, inventoryCondition, unitOfMeasureType, quantity,
+                    currencyTransfer, unformattedUnitCost, unitCost);
+            put(lot, lotTransfer);
+
+            if(includeLotAliases) {
+                var lotAliasTransfers = lotAliasControl.getLotAliasTransfersByLot(userVisit, lot);
+                var lotAliases = new MapWrapper<LotAliasTransfer>(lotAliasTransfers.size());
+
+                lotAliasTransfers.stream().forEach((lotAliasTransfer) -> {
+                    lotAliases.put(lotAliasTransfer.getLotAliasType().getLotAliasTypeName(), lotAliasTransfer);
+                });
+
+                lotTransfer.setLotAliases(lotAliases);
+            }
+
+            if(includeLotTimes) {
+                var lotTimeTransfers = lotTimeControl.getLotTimeTransfersByLot(userVisit, lot);
+                var lotTimes = new MapWrapper<LotTimeTransfer>(lotTimeTransfers.size());
+
+                lotTimeTransfers.stream().forEach((lotTimeTransfer) -> {
+                    lotTimes.put(lotTimeTransfer.getLotTimeType().getLotTimeTypeName(), lotTimeTransfer);
+                });
+
+                lotTransfer.setLotTimes(lotTimes);
+            }
+        }
+        
+        return lotTransfer;
+    }
+    
+}

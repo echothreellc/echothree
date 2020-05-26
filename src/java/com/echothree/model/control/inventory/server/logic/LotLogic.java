@@ -14,16 +14,20 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.model.control.inventory.server.logic;
 
-public interface InventoryOptions {
-    
-    String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
-    String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
+public class LotLogic {
 
-    String LotIncludeKey = "LotIncludeKey";
-    String LotIncludeGuid = "LotIncludeGuid";
-    String LotIncludeLotAliases = "LotIncludeLotAliases";
-    String LotIncludeLotTimes = "LotIncludeLotTimes";
+    private LotLogic() {
+        super();
+    }
+
+    private static class LotTimeLogicHolder {
+        static LotLogic instance = new LotLogic();
+    }
+
+    public static LotLogic getInstance() {
+        return LotTimeLogicHolder.instance;
+    }
 
 }
