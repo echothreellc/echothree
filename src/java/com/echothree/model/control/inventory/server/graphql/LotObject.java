@@ -21,6 +21,8 @@ import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
+import com.echothree.model.control.party.server.graphql.PartyObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -60,6 +62,14 @@ public class LotObject
     @GraphQLNonNull
     public String getLotName() {
         return getLotDetail().getLotName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("owner party")
+    public PartyObject getOwnerParty(final DataFetchingEnvironment env) {
+        var ownerParty = getLotDetail().getOwnerParty();
+
+        return PartySecurityUtils.getInstance().getHasPartyAccess(env, ownerParty) ? new PartyObject(ownerParty) : null;
     }
 
     @GraphQLField
