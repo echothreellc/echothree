@@ -267,7 +267,21 @@ public class InventoryBean
     public CommandResult deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form) {
         return new DeleteInventoryLocationGroupVolumeCommand(userVisitPK, form).run();
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Lots
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult getLots(UserVisitPK userVisitPK, GetLotsForm form) {
+        return new GetLotsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getLot(UserVisitPK userVisitPK, GetLotForm form) {
+        return new GetLotCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Lot Time Types
     // --------------------------------------------------------------------------------
