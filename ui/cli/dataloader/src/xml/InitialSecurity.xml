@@ -5584,6 +5584,15 @@
                 <securityRoleDescription languageIsoName="en" description="Party Document Choices" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Lot" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Lot" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Lot List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Lot Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="LotTimeType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Lot Time Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8526,6 +8535,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyDocument" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyDocument" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyDocument" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Lot" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Lot" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotTimeType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotTimeType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotTimeType" securityRoleName="Delete" />

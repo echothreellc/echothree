@@ -21,25 +21,25 @@ import com.echothree.util.common.transfer.BaseTransfer;
 public class LotTimeTypeTransfer
         extends BaseTransfer {
     
-    private String orderTimeTypeName;
+    private String lotTimeTypeName;
     private Boolean isDefault;
     private Integer sortOrder;
     private String description;
     
     /** Creates a new instance of LotTimeTypeTransfer */
-    public LotTimeTypeTransfer(String orderTimeTypeName, Boolean isDefault, Integer sortOrder, String description) {
-        this.orderTimeTypeName = orderTimeTypeName;
+    public LotTimeTypeTransfer(String lotTimeTypeName, Boolean isDefault, Integer sortOrder, String description) {
+        this.lotTimeTypeName = lotTimeTypeName;
         this.isDefault = isDefault;
         this.sortOrder = sortOrder;
         this.description = description;
     }
 
-    public String getOrderTimeTypeName() {
-        return orderTimeTypeName;
+    public String getLotTimeTypeName() {
+        return lotTimeTypeName;
     }
 
-    public void setOrderTimeTypeName(String orderTimeTypeName) {
-        this.orderTimeTypeName = orderTimeTypeName;
+    public void setLotTimeTypeName(String lotTimeTypeName) {
+        this.lotTimeTypeName = lotTimeTypeName;
     }
 
     public Boolean getIsDefault() {

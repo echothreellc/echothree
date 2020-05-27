@@ -142,7 +142,15 @@ public interface InventoryService
     CommandResult editInventoryLocationGroupVolume(UserVisitPK userVisitPK, EditInventoryLocationGroupVolumeForm form);
     
     CommandResult deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form);
-    
+
+    // -------------------------------------------------------------------------
+    //   Lots
+    // -------------------------------------------------------------------------
+
+    CommandResult getLots(UserVisitPK userVisitPK, GetLotsForm form);
+
+    CommandResult getLot(UserVisitPK userVisitPK, GetLotForm form);
+
     // --------------------------------------------------------------------------------
     //   Lot Time Types
     // --------------------------------------------------------------------------------

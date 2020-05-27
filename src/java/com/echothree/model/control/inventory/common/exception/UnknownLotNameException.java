@@ -14,16 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.model.control.inventory.common.exception;
 
-public interface InventoryOptions {
+import com.echothree.util.common.message.Message;
+
+public class UnknownLotNameException
+        extends BaseInventoryException {
     
-    String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
-    String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
-
-    String LotIncludeKey = "LotIncludeKey";
-    String LotIncludeGuid = "LotIncludeGuid";
-    String LotIncludeLotAliases = "LotIncludeLotAliases";
-    String LotIncludeLotTimes = "LotIncludeLotTimes";
+    /** Creates a new instance of UnknownLotNameException */
+    public UnknownLotNameException() {
+        super();
+    }
+    
+    /** Creates a new instance of UnknownLotNameException */
+    public UnknownLotNameException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of UnknownLotNameException */
+    public UnknownLotNameException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of UnknownLotNameException */
+    public UnknownLotNameException(Message message) {
+        super(message);
+    }
 
 }

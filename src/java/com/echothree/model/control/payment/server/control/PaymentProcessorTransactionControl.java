@@ -90,11 +90,11 @@ public class PaymentProcessorTransactionControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_paymentprocessortransactionname = ?",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " + "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_paymentprocessortransactionname = ? " +
                     "FOR UPDATE");
 
@@ -123,12 +123,13 @@ public class PaymentProcessorTransactionControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "FOR UPDATE");
 
     private List<PaymentProcessorTransaction> getPaymentProcessorTransactions(final EntityPermission entityPermission) {
@@ -147,13 +148,14 @@ public class PaymentProcessorTransactionControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_pprc_paymentprocessorid = ? " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_pprc_paymentprocessorid = ? " +
                     "FOR UPDATE");
 
@@ -175,13 +177,14 @@ public class PaymentProcessorTransactionControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_pprcacttyp_paymentprocessoractiontypeid = ? " +
                     "FOR UPDATE");
 
@@ -203,13 +206,14 @@ public class PaymentProcessorTransactionControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ? " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactions, paymentprocessortransactiondetails " +
-                    "WHERE pprctrx_paymentprocessortransactionid = pprctrxdt_pprctrx_paymentprocessortransactionid AND pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
+                    "WHERE pprctrx_activedetailid = pprctrxdt_paymentprocessortransactiondetailid " +
                     "AND pprctrxdt_pprcrc_paymentprocessorresultcodeid = ? " +
                     "FOR UPDATE");
 

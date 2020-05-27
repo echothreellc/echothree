@@ -43,7 +43,8 @@ public class InventoryTransferCaches
     protected LotTimeTransferCache lotTimeTransferCache;
     protected AllocationPriorityTransferCache allocationPriorityTransferCache;
     protected AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
-    
+    protected LotTransferCache lotTransferCache;
+
     /** Creates a new instance of InventoryTransferCaches */
     public InventoryTransferCaches(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit);
@@ -175,6 +176,13 @@ public class InventoryTransferCaches
             allocationPriorityDescriptionTransferCache = new AllocationPriorityDescriptionTransferCache(userVisit, inventoryControl);
 
         return allocationPriorityDescriptionTransferCache;
+    }
+
+    public LotTransferCache getLotTransferCache() {
+        if(lotTransferCache == null)
+            lotTransferCache = new LotTransferCache(userVisit, inventoryControl);
+
+        return lotTransferCache;
     }
 
 }

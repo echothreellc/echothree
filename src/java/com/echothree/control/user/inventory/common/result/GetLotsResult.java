@@ -14,16 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.control.user.inventory.common.result;
 
-public interface InventoryOptions {
+import com.echothree.model.control.inventory.common.transfer.LotTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
+
+public interface GetLotsResult
+        extends BaseResult {
     
-    String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
-    String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
-
-    String LotIncludeKey = "LotIncludeKey";
-    String LotIncludeGuid = "LotIncludeGuid";
-    String LotIncludeLotAliases = "LotIncludeLotAliases";
-    String LotIncludeLotTimes = "LotIncludeLotTimes";
-
+    List<LotTransfer> getLots();
+    void setLots(List<LotTransfer> lots);
+    
 }

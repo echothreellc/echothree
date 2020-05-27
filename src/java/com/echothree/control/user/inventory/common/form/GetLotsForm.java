@@ -14,16 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.control.user.inventory.common.form;
 
-public interface InventoryOptions {
+import com.echothree.util.common.form.BaseForm;
+
+public interface GetLotsForm
+        extends BaseForm {
     
-    String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
-    String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
-
-    String LotIncludeKey = "LotIncludeKey";
-    String LotIncludeGuid = "LotIncludeGuid";
-    String LotIncludeLotAliases = "LotIncludeLotAliases";
-    String LotIncludeLotTimes = "LotIncludeLotTimes";
-
+    // Nothing additional beyond BaseForm
+    
 }

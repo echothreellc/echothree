@@ -2205,5 +2205,6 @@ public enum ExecutionErrors {
     UnknownPaymentProcessorTransactionName,
     UnknownPaymentMethodTypePartyType,
     UnknownDefaultPaymentMethodTypePartyType,
+    DuplicateLotName,
 
 }

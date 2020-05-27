@@ -14,79 +14,68 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.party.server.command;
+package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.party.common.form.GetCompanyForm;
-import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.control.user.inventory.common.form.GetLotsForm;
+import com.echothree.control.user.inventory.common.result.GetLotsResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.PartyCompany;
+import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class GetCompanyCommand
-        extends BaseSingleEntityCommand<PartyCompany, GetCompanyForm> {
+public class GetLotsCommand
+        extends BaseMultipleEntitiesCommand<Lot, GetLotsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.Company.name(), SecurityRoles.Review.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.Lot.name(), SecurityRoles.Review.name())
                 )))
         )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-        ));
+                ));
     }
     
-    /** Creates a new instance of GetCompanyCommand */
-    public GetCompanyCommand(UserVisitPK userVisitPK, GetCompanyForm form) {
+    /** Creates a new instance of GetLotsCommand */
+    public GetLotsCommand(UserVisitPK userVisitPK, GetLotsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
+    
     @Override
-    protected PartyCompany getEntity() {
-        var companyName = form.getCompanyName();
-        var partyName = form.getPartyName();
-        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, partyName, true);
-
-        if(partyCompany != null) {
-            sendEventUsingNames(partyCompany.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
-        }
-
-        return partyCompany;
+    protected Collection<Lot> getEntities() {
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        
+        return lotControl.getLots();
     }
-
+    
     @Override
-    protected BaseResult getTransfer(PartyCompany partyCompany) {
-        var result = PartyResultFactory.getGetCompanyResult();
-
-        if(partyCompany != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-
-            result.setCompany(partyControl.getCompanyTransfer(getUserVisit(), partyCompany));
-        }
-
+    protected BaseResult getTransfers(Collection<Lot> entities) {
+        var result = InventoryResultFactory.getGetLotsResult();
+        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        
+        result.setLots(lotControl.getLotTransfers(getUserVisit(), entities));
+        
         return result;
     }
-
+    
 }

@@ -14,16 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.control.user.inventory.common.spec;
 
-public interface InventoryOptions {
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+
+public interface LotUniversalSpec
+        extends LotSpec, UniversalEntitySpec {
     
-    String InventoryLocationGroupIncludeCapacities = "InventoryLocationGroupIncludeCapacities";
-    String InventoryLocationGroupIncludeVolume     = "InventoryLocationGroupIncludeVolume";
-
-    String LotIncludeKey = "LotIncludeKey";
-    String LotIncludeGuid = "LotIncludeGuid";
-    String LotIncludeLotAliases = "LotIncludeLotAliases";
-    String LotIncludeLotTimes = "LotIncludeLotTimes";
-
+    // Nothing additional beyond LotSpec, UniversalEntitySpec
+    
 }
