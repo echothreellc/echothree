@@ -58,7 +58,7 @@ public class LotObject
     }
     
     @GraphQLField
-    @GraphQLDescription("inventory condition name")
+    @GraphQLDescription("lot name")
     @GraphQLNonNull
     public String getLotName() {
         return getLotDetail().getLotName();
@@ -90,6 +90,7 @@ public class LotObject
         return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(getLotDetail().getUnitOfMeasureType()) : null;
     }
 
+    @GraphQLField
     @GraphQLDescription("quantity")
     public Long getQuantity() {
         return getLotDetail().getQuantity();
