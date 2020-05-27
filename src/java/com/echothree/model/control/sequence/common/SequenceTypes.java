@@ -51,6 +51,7 @@ public enum SequenceTypes {
     ITEM,
     ITEM_SERIAL,
     LEAVE,
+    LOT,
     PARTY,
     PARTY_PAYMENT_METHOD,
     PARTY_TRAINING_CLASS,
