@@ -20,5 +20,7 @@ public enum InvoiceTypes {
     
     PURCHASE_INVOICE,
     SALES_INVOICE,
+    CREDIT_MEMO,
+    DEBIT_MEMO,
 
 }
