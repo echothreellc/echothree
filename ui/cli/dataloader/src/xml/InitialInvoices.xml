@@ -104,5 +104,143 @@
                 <invoiceLineTypeDescription languageIsoName="en" description="Invoice Warranty" />
             </invoiceLineType>
         </invoiceType>
+        <invoiceType invoiceTypeName="CREDIT_MEMO" invoiceSequenceTypeName="PURCHASE_INVOICE" isDefault="false" sortOrder="1">
+            <invoiceTypeDescription languageIsoName="en" description="Credit Memo" />
+            <invoiceTimeType invoiceTimeTypeName="INVOICED" isDefault="true" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Invoiced" />
+            </invoiceTimeType>
+            <invoiceLineType invoiceLineTypeName="CRETURN_ADJ" isDefault="true" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Customer Return Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_DISCOUNT_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Discount" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_FEE_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Fee" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_FPROD_ITEM" parentInvoiceLineTypeName="CRT_PROD_ITEM" glAccountName="421000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Finished Good Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_MAN_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Manual Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_MISC_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Miscellaneous Charges" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_MKTG_PKG_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Marketing Package Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_PROD_FEATR_ITEM" parentInvoiceLineTypeName="CRT_PROD_ITEM" glAccountName="421000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Product-Feature Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_PROD_ITEM" glAccountName="421000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Product Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_PROMOTION_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="422000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Promotion" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_REPLACE_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Replacement" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_RPROD_ITEM" parentInvoiceLineTypeName="CRT_PROD_ITEM" glAccountName="421000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Raw Material Good Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_SALES_TAX_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Sales Tax" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_SHIPPING_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Shipping and Handling" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_SPROD_ITEM" parentInvoiceLineTypeName="CRT_PROD_ITEM" glAccountName="421000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Service Product Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_SURCHARGE_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Surcharge" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_TE_ITEM" glAccountName="424000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Time-Entry Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_VAT_PC_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return VAT Price Correct" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_VAT_TAX_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return VAT Tax" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_WARRANTY_ADJ" parentInvoiceLineTypeName="CRETURN_ADJ" glAccountName="423000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Warranty" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="CRT_WE_ITEM" glAccountName="424000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Work-Effort Item" />
+            </invoiceLineType>
+        </invoiceType>
+        <invoiceType invoiceTypeName="DEBIT_MEMO" invoiceSequenceTypeName="PURCHASE_INVOICE" isDefault="false" sortOrder="1">
+            <invoiceTypeDescription languageIsoName="en" description="Debit Memo" />
+            <invoiceTimeType invoiceTimeTypeName="INVOICED" isDefault="true" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Invoiced" />
+            </invoiceTimeType>
+            <invoiceLineType invoiceLineTypeName="SRETURN_ADJ" isDefault="true" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Supplier Return Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_DISCOUNT_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Discount" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_FEE_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Fee" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_FPROD_ITEM" parentInvoiceLineTypeName="SRT_PROD_ITEM" glAccountName="401000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Finished Good Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_MAN_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Manual Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_MISC_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Miscellaneous Charges" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_MKTG_PKG_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Marketing Package Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_PROD_FEATR_ITEM" parentInvoiceLineTypeName="SRT_PROD_ITEM" glAccountName="401000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Product-Feature Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_PROD_ITEM" glAccountName="401000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Product Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_PROMOTION_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="410000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Promotion" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_REPLACE_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Replacement" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_RPROD_ITEM" parentInvoiceLineTypeName="SRT_PROD_ITEM" glAccountName="401000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Raw Material Good Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_SALES_TAX_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Sales Tax" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_SHIPPING_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Shipping and Handling" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_SPROD_ITEM" parentInvoiceLineTypeName="SRT_PROD_ITEM" glAccountName="401000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Service Product Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_SURCHARGE_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Surcharge" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_TE_ITEM" glAccountName="401000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Time-Entry Item" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_VAT_PC_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return VAT Price Correct" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_VAT_TAX_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return VAT Tax" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_WARRANTY_ADJ" parentInvoiceLineTypeName="SRETURN_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Warranty" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="SRT_WE_ITEM" glAccountName="401000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Return Work-Effort Item" />
+            </invoiceLineType>
+        </invoiceType>
     </invoiceTypes>
 </initialData>
