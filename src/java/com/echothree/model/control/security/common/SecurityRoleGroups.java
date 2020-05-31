@@ -125,6 +125,7 @@ public enum SecurityRoleGroups {
     FontWeight,
     Forum,
     ForumGroup,
+    FreeOnBoard,
     GeoCodeAlias,
     GeoCodeAliasType,
     GeoCodeCurrency,

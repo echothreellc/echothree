@@ -19,6 +19,76 @@
     <components>
         <component name="Shipment">
             <tables>
+                <table namePlural="FreeOnBoards" nameSingular="FreeOnBoard" columnPrefix="fob">
+                    <columns>
+                        <column name="FreeOnBoardId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FreeOnBoardDetails" destinationColumn="FreeOnBoardDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FreeOnBoardDetails" destinationColumn="FreeOnBoardDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FreeOnBoardId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FreeOnBoardDetails" nameSingular="FreeOnBoardDetail" columnPrefix="fobdt">
+                    <columns>
+                        <column name="FreeOnBoardDetailId" type="EID" nullAllowed="false" />
+                        <column name="FreeOnBoardId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FreeOnBoards" destinationColumn="FreeOnBoardId" />
+                        <column name="FreeOnBoardName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FreeOnBoardDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FreeOnBoardId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FreeOnBoardName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FreeOnBoardDescriptions" nameSingular="FreeOnBoardDescription" columnPrefix="fobd">
+                    <columns>
+                        <column name="FreeOnBoardDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FreeOnBoardId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FreeOnBoards" destinationColumn="FreeOnBoardId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FreeOnBoardDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FreeOnBoardId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="ShipmentTypes" nameSingular="ShipmentType" columnPrefix="shptyp">
                     <columns>
                         <column name="ShipmentTypeId" type="EID" nullAllowed="false" />
