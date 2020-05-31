@@ -18,8 +18,7 @@ package com.echothree.control.user.shipment.server.command.util;
 
 import com.echothree.control.user.shipment.common.spec.ShipmentTypeSpec;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.shipment.common.ShipmentConstants;
+import com.echothree.model.control.shipment.common.ShipmentTypes;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +40,7 @@ public class ShipmentAliasUtil {
 
     static {
         securityRoleGroupNameByShipmentTypeName = new HashMap<>();
-        securityRoleGroupNameByShipmentTypeName.put(ShipmentConstants.ShipmentType_CUSTOMER_SHIPMENT, SecurityRoleGroups.CustomerShipmentAlias.name());
+        securityRoleGroupNameByShipmentTypeName.put(ShipmentTypes.CUSTOMER_SHIPMENT.name(), SecurityRoleGroups.CustomerShipmentAlias.name());
     }
 
     public String getSecurityRoleGroupNameByShipmentTypeName(String shipmentTypeName) {

@@ -21,7 +21,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.shipment.common.ShipmentConstants;
+import com.echothree.model.control.shipment.common.ShipmentTypes;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
@@ -31,10 +31,10 @@ import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -89,7 +89,7 @@ public class CreateReturnTypeShippingMethodCommand
                 
                 if(shippingMethod != null) {
                     var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
-                    ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(ShipmentConstants.ShipmentType_CUSTOMER_RETURN);
+                    ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(ShipmentTypes.CUSTOMER_RETURN.name());
                     
                     if(shipmentType != null) {
                         ShipmentTypeShippingMethod shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod);
@@ -110,7 +110,7 @@ public class CreateReturnTypeShippingMethodCommand
                             addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name());
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), ShipmentConstants.ShipmentType_CUSTOMER_RETURN);
+                        addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), ShipmentTypes.CUSTOMER_RETURN.name());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownShippingMethodName.name(), shippingMethodName);
