@@ -36,7 +36,70 @@ public class ShipmentBean
     public String ping() {
         return "ShipmentBean is alive!";
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Free On Boards
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form) {
+        return new CreateFreeOnBoardCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form) {
+        return new GetFreeOnBoardsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getFreeOnBoard(UserVisitPK userVisitPK, GetFreeOnBoardForm form) {
+        return new GetFreeOnBoardCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getFreeOnBoardChoices(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form) {
+        return new GetFreeOnBoardChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultFreeOnBoard(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form) {
+        return new SetDefaultFreeOnBoardCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editFreeOnBoard(UserVisitPK userVisitPK, EditFreeOnBoardForm form) {
+        return new EditFreeOnBoardCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteFreeOnBoard(UserVisitPK userVisitPK, DeleteFreeOnBoardForm form) {
+        return new DeleteFreeOnBoardCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Free On Board Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createFreeOnBoardDescription(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form) {
+        return new CreateFreeOnBoardDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getFreeOnBoardDescriptions(UserVisitPK userVisitPK, GetFreeOnBoardDescriptionsForm form) {
+        return new GetFreeOnBoardDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editFreeOnBoardDescription(UserVisitPK userVisitPK, EditFreeOnBoardDescriptionForm form) {
+        return new EditFreeOnBoardDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteFreeOnBoardDescription(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form) {
+        return new DeleteFreeOnBoardDescriptionCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Shipment Types
     // --------------------------------------------------------------------------------

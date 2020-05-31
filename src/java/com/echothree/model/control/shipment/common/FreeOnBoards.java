@@ -17,11 +17,15 @@
 package com.echothree.model.control.shipment.common;
 
 public enum FreeOnBoards {
-    
-    FOB_ORIGIN_COLLECT,
-    FOB_ORIGIN_PREPAID,
-    FOB_DESTINATION_COLLECT,
-    FOB_DESTINATION_COLLECT_ALLOWED,
-    FOB_DESTINATION_PREPAID,
+
+    AUTHORIZED,
+    SUCCESS,
+    CALL,
+    DENIED,
+    DUPLICATE,
+    PICK_UP,
+    RETRY,
+    SETUP,
+    TIMEOUT,
 
 }

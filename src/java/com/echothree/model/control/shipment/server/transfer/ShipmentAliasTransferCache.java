@@ -21,16 +21,20 @@ import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeTra
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ShipmentAliasTransferCache
         extends BaseShipmentTransferCache<ShipmentAlias, ShipmentAliasTransfer> {
-    
+
+    ShipmentControl shipmentControl = (ShipmentControl) Session.getModelController(ShipmentControl.class);
+
     /** Creates a new instance of ShipmentAliasTransferCache */
-    public ShipmentAliasTransferCache(UserVisit userVisit, ShipmentControl shipmentControl) {
-        super(userVisit, shipmentControl);
+    public ShipmentAliasTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public ShipmentAliasTransfer getShipmentAliasTransfer(ShipmentAlias shipmentAlias) {
+
+    @Override
+    public ShipmentAliasTransfer getTransfer(ShipmentAlias shipmentAlias) {
         ShipmentAliasTransfer shipmentAliasTransfer = get(shipmentAlias);
         
         if(shipmentAliasTransfer == null) {

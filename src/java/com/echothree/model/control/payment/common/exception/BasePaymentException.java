@@ -19,7 +19,7 @@ package com.echothree.model.control.payment.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BasePaymentException
+public abstract class BasePaymentException
         extends BaseException {
     
     /** Creates a new instance of BasePaymentException */

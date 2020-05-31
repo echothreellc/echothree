@@ -16,14 +16,11 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class ShipmentTransferCaches
         extends BaseTransferCaches {
-    
-    protected ShipmentControl shipmentControl;
     
     protected ShipmentTypeTransferCache shipmentTypeTransferCache;
     protected ShipmentTypeDescriptionTransferCache shipmentTypeDescriptionTransferCache;
@@ -34,75 +31,89 @@ public class ShipmentTransferCaches
     protected ShipmentTimeTypeTransferCache shipmentTimeTypeTransferCache;
     protected ShipmentTimeTypeDescriptionTransferCache shipmentTimeTypeDescriptionTransferCache;
     protected ShipmentTimeTransferCache shipmentTimeTransferCache;
+    protected FreeOnBoardTransferCache freeOnBoardTransferCache;
+    protected FreeOnBoardDescriptionTransferCache freeOnBoardDescriptionTransferCache;
     
     /** Creates a new instance of ShipmentTransferCaches */
-    public ShipmentTransferCaches(UserVisit userVisit, ShipmentControl shipmentControl) {
+    public ShipmentTransferCaches(UserVisit userVisit) {
         super(userVisit);
-        
-        this.shipmentControl = shipmentControl;
     }
     
     public ShipmentTypeTransferCache getShipmentTypeTransferCache() {
         if(shipmentTypeTransferCache == null)
-            shipmentTypeTransferCache = new ShipmentTypeTransferCache(userVisit, shipmentControl);
+            shipmentTypeTransferCache = new ShipmentTypeTransferCache(userVisit);
         
         return shipmentTypeTransferCache;
     }
     
     public ShipmentTypeDescriptionTransferCache getShipmentTypeDescriptionTransferCache() {
         if(shipmentTypeDescriptionTransferCache == null)
-            shipmentTypeDescriptionTransferCache = new ShipmentTypeDescriptionTransferCache(userVisit, shipmentControl);
+            shipmentTypeDescriptionTransferCache = new ShipmentTypeDescriptionTransferCache(userVisit);
 
         return shipmentTypeDescriptionTransferCache;
     }
 
     public ShipmentTypeShippingMethodTransferCache getShipmentTypeShippingMethodTransferCache() {
         if(shipmentTypeShippingMethodTransferCache == null)
-            shipmentTypeShippingMethodTransferCache = new ShipmentTypeShippingMethodTransferCache(userVisit, shipmentControl);
+            shipmentTypeShippingMethodTransferCache = new ShipmentTypeShippingMethodTransferCache(userVisit);
 
         return shipmentTypeShippingMethodTransferCache;
     }
 
     public ShipmentAliasTypeTransferCache getShipmentAliasTypeTransferCache() {
         if(shipmentAliasTypeTransferCache == null)
-            shipmentAliasTypeTransferCache = new ShipmentAliasTypeTransferCache(userVisit, shipmentControl);
+            shipmentAliasTypeTransferCache = new ShipmentAliasTypeTransferCache(userVisit);
         
         return shipmentAliasTypeTransferCache;
     }
     
     public ShipmentAliasTypeDescriptionTransferCache getShipmentAliasTypeDescriptionTransferCache() {
         if(shipmentAliasTypeDescriptionTransferCache == null)
-            shipmentAliasTypeDescriptionTransferCache = new ShipmentAliasTypeDescriptionTransferCache(userVisit, shipmentControl);
+            shipmentAliasTypeDescriptionTransferCache = new ShipmentAliasTypeDescriptionTransferCache(userVisit);
         
         return shipmentAliasTypeDescriptionTransferCache;
     }
     
     public ShipmentAliasTransferCache getShipmentAliasTransferCache() {
         if(shipmentAliasTransferCache == null)
-            shipmentAliasTransferCache = new ShipmentAliasTransferCache(userVisit, shipmentControl);
+            shipmentAliasTransferCache = new ShipmentAliasTransferCache(userVisit);
         
         return shipmentAliasTransferCache;
     }
     
     public ShipmentTimeTypeTransferCache getShipmentTimeTypeTransferCache() {
         if(shipmentTimeTypeTransferCache == null)
-            shipmentTimeTypeTransferCache = new ShipmentTimeTypeTransferCache(userVisit, shipmentControl);
+            shipmentTimeTypeTransferCache = new ShipmentTimeTypeTransferCache(userVisit);
 
         return shipmentTimeTypeTransferCache;
     }
 
     public ShipmentTimeTransferCache getShipmentTimeTransferCache() {
         if(shipmentTimeTransferCache == null)
-            shipmentTimeTransferCache = new ShipmentTimeTransferCache(userVisit, shipmentControl);
+            shipmentTimeTransferCache = new ShipmentTimeTransferCache(userVisit);
 
         return shipmentTimeTransferCache;
     }
 
     public ShipmentTimeTypeDescriptionTransferCache getShipmentTimeTypeDescriptionTransferCache() {
         if(shipmentTimeTypeDescriptionTransferCache == null)
-            shipmentTimeTypeDescriptionTransferCache = new ShipmentTimeTypeDescriptionTransferCache(userVisit, shipmentControl);
+            shipmentTimeTypeDescriptionTransferCache = new ShipmentTimeTypeDescriptionTransferCache(userVisit);
 
         return shipmentTimeTypeDescriptionTransferCache;
+    }
+
+    public FreeOnBoardTransferCache getFreeOnBoardTransferCache() {
+        if(freeOnBoardTransferCache == null)
+            freeOnBoardTransferCache = new FreeOnBoardTransferCache(userVisit);
+
+        return freeOnBoardTransferCache;
+    }
+
+    public FreeOnBoardDescriptionTransferCache getFreeOnBoardDescriptionTransferCache() {
+        if(freeOnBoardDescriptionTransferCache == null)
+            freeOnBoardDescriptionTransferCache = new FreeOnBoardDescriptionTransferCache(userVisit);
+
+        return freeOnBoardDescriptionTransferCache;
     }
 
 }

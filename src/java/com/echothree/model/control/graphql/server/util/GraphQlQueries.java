@@ -109,6 +109,9 @@ import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
+import com.echothree.control.user.shipment.common.ShipmentUtil;
+import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
+import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseCommand;
@@ -167,6 +170,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
+import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
@@ -219,6 +223,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
@@ -239,6 +244,56 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("freeOnBoard")
+    public static FreeOnBoardObject freeOnBoard(final DataFetchingEnvironment env,
+            @GraphQLName("freeOnBoardName") final String freeOnBoardName,
+            @GraphQLName("id") final String id) {
+        FreeOnBoard freeOnBoard;
+
+        try {
+            var commandForm = ShipmentUtil.getHome().getGetFreeOnBoardForm();
+
+            commandForm.setFreeOnBoardName(freeOnBoardName);
+            commandForm.setUlid(id);
+
+            freeOnBoard = new GetFreeOnBoardCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return freeOnBoard == null ? null : new FreeOnBoardObject(freeOnBoard);
+    }
+
+    @GraphQLField
+    @GraphQLName("freeOnBoards")
+    public static Collection<FreeOnBoardObject> freeOnBoards(final DataFetchingEnvironment env) {
+        Collection<FreeOnBoard> freeOnBoards;
+        Collection<FreeOnBoardObject> freeOnBoardObjects;
+
+        try {
+            var commandForm = ShipmentUtil.getHome().getGetFreeOnBoardsForm();
+
+            freeOnBoards = new GetFreeOnBoardsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(freeOnBoards == null) {
+            freeOnBoardObjects = Collections.EMPTY_LIST;
+        } else {
+            freeOnBoardObjects = new ArrayList<>(freeOnBoards.size());
+
+            freeOnBoards.stream().map((freeOnBoard) -> {
+                return new FreeOnBoardObject(freeOnBoard);
+            }).forEachOrdered((freeOnBoardObject) -> {
+                freeOnBoardObjects.add(freeOnBoardObject);
+            });
+        }
+
+        return freeOnBoardObjects;
+    }
 
     @GraphQLField
     @GraphQLName("paymentProcessorTypeCodeType")
