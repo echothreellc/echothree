@@ -1,5 +1,21 @@
 # Changelog
 
+## 2020-05-31-01
+
+* Add Payment Processor Transactions [9](https://gitlab.echothree.com/echothree/echothree/-/issues/9)
+* Add Payment Processor Transaction Codes [10](https://gitlab.echothree.com/echothree/echothree/-/issues/10)
+* Convert Payment Method Type Party Types to Versioned Entity [26](https://gitlab.echothree.com/echothree/echothree/-/issues/26)
+* Separate Lot Aliases from InventoryControl [53](https://gitlab.echothree.com/echothree/echothree/-/issues/53)
+* Basic Lot Implementation With Controller and TOs [54](https://gitlab.echothree.com/echothree/echothree/-/issues/54)
+* Separate Lot Times from InventoryControl [55](https://gitlab.echothree.com/echothree/echothree/-/issues/55)
+* Separate Payment Processors from PaymentControl [56](https://gitlab.echothree.com/echothree/echothree/-/issues/56)
+* Move Payment Method Type Party Types to PaymentMethodTypeControl from PaymentControl [57](https://gitlab.echothree.com/echothree/echothree/-/issues/57)
+* Separate Payment Methods from PaymentControl [58](https://gitlab.echothree.com/echothree/echothree/-/issues/58)
+* Separate Party Payment Methods from PaymentControl [59](https://gitlab.echothree.com/echothree/echothree/-/issues/59)
+* MySQL Connector/J 8.0.20 Upgrade [60](https://gitlab.echothree.com/echothree/echothree/-/issues/60)
+* Add FOB Terms and Conditions [61](https://gitlab.echothree.com/echothree/echothree/-/issues/61)
+* Additional Invoice Types [64](https://gitlab.echothree.com/echothree/echothree/-/issues/64)
+
 ## 2020-05-17-01
 
 * Add Payment Processor Type Actions [8](https://gitlab.echothree.com/echothree/echothree/-/issues/8)
