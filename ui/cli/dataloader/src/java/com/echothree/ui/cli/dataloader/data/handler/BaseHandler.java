@@ -17,9 +17,8 @@
 package com.echothree.ui.cli.dataloader.data.handler;
 
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
-import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.string.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -77,7 +76,7 @@ public abstract class BaseHandler {
     
     protected void checkCommandResult(CommandResult commandResult) {
         if(doVerbose || (commandResult.hasErrors() && doErrors)) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
+            var executionResult = commandResult.getExecutionResult();
             
             if(commandResult.hasErrors())
                 getLog().error(executionResult);
@@ -95,10 +94,10 @@ public abstract class BaseHandler {
     }
     
     protected Map<String, Object> getAttrsMap(final Attributes attrs) {
-        Map<String, Object> attrsMap = new HashMap<>();
-        int count = attrs.getLength();
-        
-        for (int i = 0; i < count; i++) {
+        var attrsMap = new HashMap<String, Object>();
+        var count = attrs.getLength();
+
+        for(var i = 0 ; i < count ; i++) {
             attrsMap.put(StringUtils.getInstance().upperCaseFirstCharacter(attrs.getQName(i)), attrs.getValue(i));
         }
         

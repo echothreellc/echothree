@@ -28,7 +28,37 @@ public interface ShipmentService
     // -------------------------------------------------------------------------
     
     String ping();
-    
+
+    // -------------------------------------------------------------------------
+    //   Free On Boards
+    // -------------------------------------------------------------------------
+
+    CommandResult createFreeOnBoard(UserVisitPK userVisitPK, CreateFreeOnBoardForm form);
+
+    CommandResult getFreeOnBoards(UserVisitPK userVisitPK, GetFreeOnBoardsForm form);
+
+    CommandResult getFreeOnBoard(UserVisitPK userVisitPK, GetFreeOnBoardForm form);
+
+    CommandResult getFreeOnBoardChoices(UserVisitPK userVisitPK, GetFreeOnBoardChoicesForm form);
+
+    CommandResult setDefaultFreeOnBoard(UserVisitPK userVisitPK, SetDefaultFreeOnBoardForm form);
+
+    CommandResult editFreeOnBoard(UserVisitPK userVisitPK, EditFreeOnBoardForm form);
+
+    CommandResult deleteFreeOnBoard(UserVisitPK userVisitPK, DeleteFreeOnBoardForm form);
+
+    // -------------------------------------------------------------------------
+    //   Free On Board Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult createFreeOnBoardDescription(UserVisitPK userVisitPK, CreateFreeOnBoardDescriptionForm form);
+
+    CommandResult getFreeOnBoardDescriptions(UserVisitPK userVisitPK, GetFreeOnBoardDescriptionsForm form);
+
+    CommandResult editFreeOnBoardDescription(UserVisitPK userVisitPK, EditFreeOnBoardDescriptionForm form);
+
+    CommandResult deleteFreeOnBoardDescription(UserVisitPK userVisitPK, DeleteFreeOnBoardDescriptionForm form);
+
     // --------------------------------------------------------------------------------
     //   Shipment Types
     // --------------------------------------------------------------------------------

@@ -44,6 +44,9 @@ import com.echothree.control.user.payment.common.result.EditPaymentProcessorType
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.server.graphql.SearchCustomersResultObject;
+import com.echothree.control.user.shipment.common.ShipmentUtil;
+import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
+import com.echothree.control.user.shipment.common.result.EditFreeOnBoardResult;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
@@ -60,6 +63,133 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createFreeOnBoard(final DataFetchingEnvironment env,
+            @GraphQLName("freeOnBoardName") @GraphQLNonNull final String freeOnBoardName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = ShipmentUtil.getHome().getCreateFreeOnBoardForm();
+
+            commandForm.setFreeOnBoardName(freeOnBoardName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = ShipmentUtil.getHome().createFreeOnBoard(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateFreeOnBoardResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteFreeOnBoard(final DataFetchingEnvironment env,
+            @GraphQLName("freeOnBoardName") @GraphQLNonNull final String freeOnBoardName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ShipmentUtil.getHome().getDeleteFreeOnBoardForm();
+
+            commandForm.setFreeOnBoardName(freeOnBoardName);
+
+            var commandResult = ShipmentUtil.getHome().deleteFreeOnBoard(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editFreeOnBoard(final DataFetchingEnvironment env,
+            @GraphQLName("originalFreeOnBoardName") final String originalFreeOnBoardName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("freeOnBoardName") final String freeOnBoardName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = ShipmentUtil.getHome().getFreeOnBoardUniversalSpec();
+
+            spec.setFreeOnBoardName(originalFreeOnBoardName);
+            spec.setUlid(id);
+
+            var commandForm = ShipmentUtil.getHome().getEditFreeOnBoardForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ShipmentUtil.getHome().editFreeOnBoard(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditFreeOnBoardResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getFreeOnBoard().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("freeOnBoardName"))
+                    edit.setFreeOnBoardName(freeOnBoardName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ShipmentUtil.getHome().editFreeOnBoard(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultFreeOnBoard(final DataFetchingEnvironment env,
+            @GraphQLName("freeOnBoardName") @GraphQLNonNull final String freeOnBoardName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ShipmentUtil.getHome().getSetDefaultFreeOnBoardForm();
+
+            commandForm.setFreeOnBoardName(freeOnBoardName);
+
+            var commandResult = ShipmentUtil.getHome().setDefaultFreeOnBoard(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation

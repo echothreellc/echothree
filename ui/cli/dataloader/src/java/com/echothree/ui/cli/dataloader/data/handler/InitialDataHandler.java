@@ -180,6 +180,7 @@ import com.echothree.ui.cli.dataloader.data.handler.selector.SelectorTextSearchT
 import com.echothree.ui.cli.dataloader.data.handler.sequence.SequenceChecksumTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.sequence.SequenceEncoderTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.sequence.SequenceTypesHandler;
+import com.echothree.ui.cli.dataloader.data.handler.shipment.FreeOnBoardsHandler;
 import com.echothree.ui.cli.dataloader.data.handler.shipment.ShipmentTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.shipping.ShippingMethodsHandler;
 import com.echothree.ui.cli.dataloader.data.handler.subscription.SubscriptionKindsHandler;
@@ -414,6 +415,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new LotAliasTypesHandler(initialDataParser, this));
         } else if(localName.equals("lotTimeTypes")) {
             initialDataParser.pushHandler(new LotTimeTypesHandler(initialDataParser, this));
+        } else if(localName.equals("freeOnBoards")) {
+            initialDataParser.pushHandler(new FreeOnBoardsHandler(initialDataParser, this));
         } else if(localName.equals("shipmentTypes")) {
             initialDataParser.pushHandler(new ShipmentTypesHandler(initialDataParser, this));
         } else if(localName.equals("picklistTypes")) {

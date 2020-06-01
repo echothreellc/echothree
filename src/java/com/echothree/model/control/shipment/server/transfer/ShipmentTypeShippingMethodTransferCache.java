@@ -27,17 +27,17 @@ import com.echothree.util.server.persistence.Session;
 
 public class ShipmentTypeShippingMethodTransferCache
         extends BaseShipmentTransferCache<ShipmentTypeShippingMethod, ShipmentTypeShippingMethodTransfer> {
-    
-    ShippingControl shippingControl;
-    
+
+    ShipmentControl shipmentControl = (ShipmentControl) Session.getModelController(ShipmentControl.class);
+    ShippingControl shippingControl = (ShippingControl) Session.getModelController(ShippingControl.class);
+
     /** Creates a new instance of ShipmentTypeShippingMethodTransferCache */
-    public ShipmentTypeShippingMethodTransferCache(UserVisit userVisit, ShipmentControl shipmentControl) {
-        super(userVisit, shipmentControl);
-        
-        shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+    public ShipmentTypeShippingMethodTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public ShipmentTypeShippingMethodTransfer getShipmentTypeShippingMethodTransfer(ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
+
+    @Override
+    public ShipmentTypeShippingMethodTransfer getTransfer(ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
         ShipmentTypeShippingMethodTransfer shipmentTypeShippingMethodTransfer = get(shipmentTypeShippingMethod);
         
         if(shipmentTypeShippingMethodTransfer == null) {

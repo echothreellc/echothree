@@ -15,6 +15,23 @@
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
 <initialData>
+    <freeOnBoards>
+        <freeOnBoard freeOnBoardName="FOB_ORIGIN_COLLECT" isDefault="false" sortOrder="1">
+            <freeOnBoardDescription languageIsoName="en" description="FOB Origin, Freight Collect" />
+        </freeOnBoard>
+        <freeOnBoard freeOnBoardName="FOB_ORIGIN_PREPAID" isDefault="false" sortOrder="1">
+            <freeOnBoardDescription languageIsoName="en" description="FOB Origin, Freight Prepaid" />
+        </freeOnBoard>
+        <freeOnBoard freeOnBoardName="FOB_DESTINATION_COLLECT" isDefault="false" sortOrder="1">
+            <freeOnBoardDescription languageIsoName="en" description="FOB Destination, Freight Collect" />
+        </freeOnBoard>
+        <freeOnBoard freeOnBoardName="FOB_DESTINATION_COLLECT_ALLOWED" isDefault="false" sortOrder="1">
+            <freeOnBoardDescription languageIsoName="en" description="FOB Destination, Freight Collect/Allowed" />
+        </freeOnBoard>
+        <freeOnBoard freeOnBoardName="FOB_DESTINATION_PREPAID" isDefault="true" sortOrder="1">
+            <freeOnBoardDescription languageIsoName="en" description="FOB Destination, Freight Prepaid" />
+        </freeOnBoard>
+    </freeOnBoards>
     <shippingMethods>
         <shippingMethod shippingMethodName="TEST_SHIPPING_METHOD_1" sortOrder="1">
             <shippingMethodDescription languageIsoName="en" description="Test Shipping Method 1" />

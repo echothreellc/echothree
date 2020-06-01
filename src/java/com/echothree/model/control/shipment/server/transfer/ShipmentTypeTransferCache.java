@@ -33,25 +33,27 @@ import com.echothree.util.server.persistence.Session;
 
 public class ShipmentTypeTransferCache
         extends BaseShipmentTransferCache<ShipmentType, ShipmentTypeTransfer> {
-    
+
     SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ShipmentTypeTransferCache */
-    public ShipmentTypeTransferCache(UserVisit userVisit, ShipmentControl shipmentControl) {
-        super(userVisit, shipmentControl);
+    public ShipmentTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public ShipmentTypeTransfer getShipmentTypeTransfer(ShipmentType shipmentType) {
+
+    @Override
+    public ShipmentTypeTransfer getTransfer(ShipmentType shipmentType) {
         ShipmentTypeTransfer shipmentTypeTransfer = get(shipmentType);
         
         if(shipmentTypeTransfer == null) {
             ShipmentTypeDetail shipmentTypeDetail = shipmentType.getLastDetail();
             String shipmentTypeName = shipmentTypeDetail.getShipmentTypeName();
             ShipmentType parentShipmentType = shipmentTypeDetail.getParentShipmentType();
-            ShipmentTypeTransfer parentShipmentTypeTransfer = parentShipmentType == null? null: getShipmentTypeTransfer(parentShipmentType);
+            ShipmentTypeTransfer parentShipmentTypeTransfer = parentShipmentType == null? null: getTransfer(parentShipmentType);
             SequenceType shipmentSequenceType = shipmentTypeDetail.getShipmentSequenceType();
             SequenceTypeTransfer shipmentSequenceTypeTransfer = shipmentSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, shipmentSequenceType);
             Workflow shipmentWorkflow = shipmentTypeDetail.getShipmentWorkflow();

@@ -19,7 +19,7 @@ package com.echothree.ui.web.main.action.returnpolicy.returntypeshippingmethod;
 import com.echothree.control.user.shipping.common.ShippingUtil;
 import com.echothree.control.user.shipping.common.form.GetShippingMethodChoicesForm;
 import com.echothree.control.user.shipping.common.result.GetShippingMethodChoicesResult;
-import com.echothree.model.control.shipment.common.ShipmentConstants;
+import com.echothree.model.control.shipment.common.ShipmentTypes;
 import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -48,7 +48,7 @@ public class AddActionForm
             try {
                 GetShippingMethodChoicesForm form = ShippingUtil.getHome().getGetShippingMethodChoicesForm();
                 
-                form.setShipmentTypeName(ShipmentConstants.ShipmentType_CUSTOMER_RETURN);
+                form.setShipmentTypeName(ShipmentTypes.CUSTOMER_RETURN.name());
                 form.setDefaultShippingMethodChoice(shippingMethodChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
                 

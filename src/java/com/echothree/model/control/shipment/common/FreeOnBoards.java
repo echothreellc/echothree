@@ -16,19 +16,16 @@
 
 package com.echothree.model.control.shipment.common;
 
-public interface ShipmentConstants {
-    
-    String ShipmentType_INCOMING_SHIPMENT = "INCOMING_SHIPMENT";
-    String ShipmentType_OUTGOING_SHIPMENT = "OUTGOING_SHIPMENT";
-    String ShipmentType_DROP_SHIPMENT     = "DROP_SHIPMENT";
-    String ShipmentType_TRANSFER          = "TRANSFER";
-    String ShipmentType_CUSTOMER_RETURN   = "CUSTOMER_RETURN";
-    String ShipmentType_PURCHASE_SHIPMENT = "PURCHASE_SHIPMENT";
-    String ShipmentType_CUSTOMER_SHIPMENT = "CUSTOMER_SHIPMENT";
-    String ShipmentType_PURCHASE_RETURN   = "PURCHASE_RETURN";
+public enum FreeOnBoards {
 
-    String ShipmentTimeType_ESTIMATED_READY = "ESTIMATED_READY";
-    String ShipmentTimeType_ESTIMATED_SHIP = "ESTIMATED_SHIP";
-    String ShipmentTimeType_ESTIMATED_DELIVERY = "ESTIMATED_DELIVERY";
+    AUTHORIZED,
+    SUCCESS,
+    CALL,
+    DENIED,
+    DUPLICATE,
+    PICK_UP,
+    RETRY,
+    SETUP,
+    TIMEOUT,
 
 }

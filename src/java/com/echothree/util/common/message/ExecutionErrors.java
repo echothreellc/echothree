@@ -2206,5 +2206,10 @@ public enum ExecutionErrors {
     UnknownPaymentMethodTypePartyType,
     UnknownDefaultPaymentMethodTypePartyType,
     DuplicateLotName,
+    DuplicateFreeOnBoardName,
+    UnknownFreeOnBoardName,
+    UnknownDefaultFreeOnBoard,
+    DuplicateFreeOnBoardDescription,
+    UnknownFreeOnBoardDescription,
 
 }

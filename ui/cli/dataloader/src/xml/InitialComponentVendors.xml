@@ -2023,6 +2023,12 @@
             <entityType entityTypeName="OrderTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Order Type Description" />
             </entityType>
+            <entityType entityTypeName="FreeOnBoard" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Free On Board" />
+            </entityType>
+            <entityType entityTypeName="FreeOnBoardDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Free On Board Description" />
+            </entityType>
             <entityType entityTypeName="ShipmentType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Shipment Type" />
             </entityType>

@@ -3637,6 +3637,30 @@
         <securityRoleGroup securityRoleGroupName="ShipmentComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Shipment Component" />
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="FreeOnBoard" parentSecurityRoleGroupName="ShipmentComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Free On Board" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Free On Board Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Free On Board Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Free On Board Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Free On Board List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Free On Board Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Free On Board Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Free On Board Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ShipmentType" parentSecurityRoleGroupName="ShipmentComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Shipment Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -7995,6 +8019,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PicklistAliasType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PicklistAliasType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PicklistAliasType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FreeOnBoard" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FreeOnBoard" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FreeOnBoard" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FreeOnBoard" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FreeOnBoard" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FreeOnBoard" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FreeOnBoard" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShipmentType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShipmentType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShipmentType" securityRoleName="Delete" />

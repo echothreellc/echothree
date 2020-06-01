@@ -22,16 +22,20 @@ import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTypeTran
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ShipmentTimeTypeDescriptionTransferCache
         extends BaseShipmentDescriptionTransferCache<ShipmentTimeTypeDescription, ShipmentTimeTypeDescriptionTransfer> {
-    
+
+    ShipmentControl shipmentControl = (ShipmentControl) Session.getModelController(ShipmentControl.class);
+
     /** Creates a new instance of ShipmentTimeTypeDescriptionTransferCache */
-    public ShipmentTimeTypeDescriptionTransferCache(UserVisit userVisit, ShipmentControl shipmentControl) {
-        super(userVisit, shipmentControl);
+    public ShipmentTimeTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public ShipmentTimeTypeDescriptionTransfer getShipmentTimeTypeDescriptionTransfer(ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
+
+    @Override
+    public ShipmentTimeTypeDescriptionTransfer getTransfer(ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
         ShipmentTimeTypeDescriptionTransfer shipmentTimeTypeDescriptionTransfer = get(shipmentTimeTypeDescription);
         
         if(shipmentTimeTypeDescriptionTransfer == null) {
