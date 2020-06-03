@@ -72,6 +72,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.PartyTerm;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -210,7 +211,7 @@ public class SalesOrderLogic
      */
     public Order createSalesOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Batch batch, Source source,
             final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
-            Boolean allowCombiningShipments, final String reference, Term term, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
+            Boolean allowCombiningShipments, final String reference, Term term, FreeOnBoard freeOnBoard, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         var orderType = getOrderTypeByName(eea, OrderTypes.SALES_ORDER.name());
         var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
@@ -354,7 +355,8 @@ public class SalesOrderLogic
                         }
 
                         order = createOrder(eea, orderType, sequence, orderPriority, currency, holdUntilComplete, allowBackorders,
-                                allowSubstitutions, allowCombiningShipments, term, reference, null, cancellationPolicy, returnPolicy, taxable, createdBy);
+                                allowSubstitutions, allowCombiningShipments, term, freeOnBoard, reference, null,
+                                cancellationPolicy, returnPolicy, taxable, createdBy);
 
                         if(eea == null || !eea.hasExecutionErrors()) {
                             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
@@ -414,7 +416,7 @@ public class SalesOrderLogic
 
             order = createSalesOrder(session, eea, userVisit, batch, source, billToParty, orderPriority, currency,
                     holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference, term,
-                    taxable, workflowEntranceName, createdByParty);
+                    null, taxable, workflowEntranceName, createdByParty);
 
         }
 

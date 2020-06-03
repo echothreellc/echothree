@@ -202,6 +202,8 @@ import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.shipment.common.pk.FreeOnBoardPK;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.term.common.pk.TermPK;
@@ -3217,12 +3219,14 @@ public class OrderControl
     // --------------------------------------------------------------------------------
     
     public Order createOrder(OrderType orderType, String orderName, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete,
-            Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Term term, String reference, String description,
-            CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable, BasePK createdBy) {
+            Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Term term, FreeOnBoard freeOnBoard,
+            String reference, String description, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable,
+            BasePK createdBy) {
         Order order = OrderFactory.getInstance().create();
-        OrderDetail orderDetail = OrderDetailFactory.getInstance().create(order, orderType, orderName, orderPriority, currency, holdUntilComplete,
-                allowBackorders, allowSubstitutions, allowCombiningShipments, term, reference, description, cancellationPolicy, returnPolicy, taxable,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        OrderDetail orderDetail = OrderDetailFactory.getInstance().create(order, orderType, orderName, orderPriority,
+                currency, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, term,
+                freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, session.START_TIME_LONG,
+                Session.MAX_TIME_LONG);
         
         // Convert to R/W
         order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, order.getPrimaryKey());
@@ -3384,6 +3388,7 @@ public class OrderControl
             Boolean allowSubstitutions = orderDetailValue.getAllowSubstitutions();
             Boolean allowCombiningShipments = orderDetailValue.getAllowCombiningShipments();
             TermPK termPK = orderDetailValue.getTermPK();
+            FreeOnBoardPK freeOnBoardPK = orderDetailValue.getFreeOnBoardPK();
             String reference = orderDetailValue.getReference();
             String description = orderDetailValue.getDescription();
             CancellationPolicyPK cancellationPolicyPK = orderDetailValue.getCancellationPolicyPK();
@@ -3391,8 +3396,8 @@ public class OrderControl
             Boolean taxable = orderDetailValue.getTaxable();
             
             orderDetail = OrderDetailFactory.getInstance().create(orderPK, orderTypePK, orderName, orderPriorityPK, currencyPK, holdUntilComplete,
-                    allowBackorders, allowSubstitutions, allowCombiningShipments, termPK, reference, description, cancellationPolicyPK, returnPolicyPK,
-                    taxable, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    allowBackorders, allowSubstitutions, allowCombiningShipments, termPK, freeOnBoardPK, reference, description, cancellationPolicyPK,
+                    returnPolicyPK, taxable, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             order.setActiveDetail(orderDetail);
             order.setLastDetail(orderDetail);

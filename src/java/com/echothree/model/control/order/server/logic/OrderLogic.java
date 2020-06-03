@@ -58,6 +58,7 @@ import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -173,7 +174,7 @@ public class OrderLogic
 
     public Order createOrder(final ExecutionErrorAccumulator eea, OrderType orderType, Sequence sequence, final OrderPriority orderPriority,
             final Currency currency, final Boolean holdUntilComplete, final Boolean allowBackorders, final Boolean allowSubstitutions,
-            final Boolean allowCombiningShipments, final Term term, final String reference, final String description,
+            final Boolean allowCombiningShipments, final Term term, final FreeOnBoard freeOnBoard, final String reference, final String description,
             final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final Boolean taxable, final BasePK createdBy) {
         Order order = null;
         String orderName = getOrderName(eea, orderType, sequence);
@@ -182,7 +183,7 @@ public class OrderLogic
             var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             
             order = orderControl.createOrder(orderType, orderName, orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
-                    allowCombiningShipments, term, reference, description, cancellationPolicy, returnPolicy, taxable, createdBy);
+                    allowCombiningShipments, term, freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, createdBy);
         }
 
         return order;
