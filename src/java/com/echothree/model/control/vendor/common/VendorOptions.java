@@ -27,6 +27,7 @@ public interface VendorOptions {
     String VendorIncludePurchasingComments = "VendorIncludePurchasingComments";
     String VendorIncludePartyCreditLimits = "VendorIncludePartyCreditLimits";
     String VendorIncludePartyTerm = "VendorIncludePartyTerm";
+    String VendorIncludePartyFreeOnBoard = "VendorIncludePartyFreeOnBoard";
     String VendorIncludeSubscriptions = "VendorIncludeSubscriptions";
     String VendorIncludeCommunicationEvents = "VendorIncludeCommunicationEvents";
     String VendorIncludeEntityAttributeGroups = "VendorIncludeEntityAttributeGroups";
