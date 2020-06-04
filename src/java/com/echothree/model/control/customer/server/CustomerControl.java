@@ -147,7 +147,7 @@ public class CustomerControl
 
         CustomerType customerType = CustomerTypeFactory.getInstance().create();
         CustomerTypeDetail customerTypeDetail = CustomerTypeDetailFactory.getInstance().create(customerType, customerTypeName, customerSequence,
-                defaultOfferUse, defaultTerm, defaultCancellationPolicy, defaultReturnPolicy, defaultCustomerStatus, defaultCustomerCreditStatus,
+                defaultOfferUse, defaultTerm, null, defaultCancellationPolicy, defaultReturnPolicy, defaultCustomerStatus, defaultCustomerCreditStatus,
                 defaultArGlAccount, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                 defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, defaultTaxable, allocationPriority, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -369,7 +369,7 @@ public class CustomerControl
             }
 
             customerTypeDetail = CustomerTypeDetailFactory.getInstance().create(customerTypePK, customerTypeName, customerSequencePK, defaultOfferUsePK,
-                    defaultTermPK, defaultCancellationPolicyPK, defaultReturnPolicyPK, defaultCustomerStatusPK, defaultCustomerCreditStatusPK,
+                    defaultTermPK, null, defaultCancellationPolicyPK, defaultReturnPolicyPK, defaultCustomerStatusPK, defaultCustomerCreditStatusPK,
                     defaultArGlAccountPK, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, defaultTaxable, allocationPriority, isDefault,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
