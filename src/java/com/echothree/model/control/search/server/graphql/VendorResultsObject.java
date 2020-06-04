@@ -75,10 +75,9 @@ public class VendorResultsObject {
     @GraphQLNonNull
     public List<VendorResultObject> getVendors(final DataFetchingEnvironment env) {
         List<VendorResultObject> objects = null;
-        UserVisitSearch userVisitSearch = getUserVisitSearch(env);
+        var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
-            GraphQlContext context = env.getContext();
             var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
             objects = searchControl.getVendorResultObjects(userVisitSearch);
