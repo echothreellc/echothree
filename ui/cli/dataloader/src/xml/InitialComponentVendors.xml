@@ -1159,6 +1159,9 @@
             <entityType entityTypeName="PartyTerm" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Term" />
             </entityType>
+            <entityType entityTypeName="PartyFreeOnBoard" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Free On Board" />
+            </entityType>
             <entityType entityTypeName="PartyType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party Type" />
             </entityType>
