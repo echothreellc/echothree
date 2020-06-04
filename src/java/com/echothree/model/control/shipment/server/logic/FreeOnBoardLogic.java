@@ -17,17 +17,17 @@
 package com.echothree.model.control.shipment.server.logic;
 
 import com.echothree.control.user.shipment.common.spec.FreeOnBoardUniversalSpec;
-import com.echothree.model.control.shipment.common.exception.DuplicateFreeOnBoardNameException;
-import com.echothree.model.control.shipment.common.exception.UnknownFreeOnBoardNameException;
-import com.echothree.model.control.shipment.common.exception.UnknownDefaultFreeOnBoardException;
-import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.control.shipment.common.exception.DuplicateFreeOnBoardNameException;
+import com.echothree.model.control.shipment.common.exception.UnknownDefaultFreeOnBoardException;
+import com.echothree.model.control.shipment.common.exception.UnknownFreeOnBoardNameException;
+import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -36,7 +36,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class FreeOnBoardLogic
-    extends BaseLogic {
+        extends BaseLogic {
     
     private FreeOnBoardLogic() {
         super();
@@ -54,7 +54,7 @@ public class FreeOnBoardLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-        FreeOnBoard freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
+        var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
 
         if(freeOnBoard == null) {
             freeOnBoard = freeOnBoardControl.createFreeOnBoard(freeOnBoardName, isDefault, sortOrder, createdBy);
@@ -72,7 +72,7 @@ public class FreeOnBoardLogic
     public FreeOnBoard getFreeOnBoardByName(final ExecutionErrorAccumulator eea, final String freeOnBoardName,
             final EntityPermission entityPermission) {
         var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-        FreeOnBoard freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName, entityPermission);
+        var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName, entityPermission);
 
         if(freeOnBoard == null) {
             handleExecutionError(UnknownFreeOnBoardNameException.class, eea, ExecutionErrors.UnknownFreeOnBoardName.name(), freeOnBoardName);
@@ -93,7 +93,7 @@ public class FreeOnBoardLogic
             final FreeOnBoardUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         FreeOnBoard freeOnBoard = null;
         var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-        String freeOnBoardName = universalSpec.getFreeOnBoardName();
+        var freeOnBoardName = universalSpec.getFreeOnBoardName();
         int parameterCount = (freeOnBoardName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
@@ -136,6 +136,17 @@ public class FreeOnBoardLogic
     public FreeOnBoard getFreeOnBoardByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final FreeOnBoardUniversalSpec universalSpec, boolean allowDefault) {
         return getFreeOnBoardByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public FreeOnBoard getDefaultFreeOnBoard(final ExecutionErrorAccumulator eea) {
+        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoard = freeOnBoardControl.getDefaultFreeOnBoard();
+
+        if(freeOnBoard == null) {
+            handleExecutionError(UnknownDefaultFreeOnBoardException.class, eea, ExecutionErrors.UnknownDefaultFreeOnBoard.name());
+        }
+
+        return freeOnBoard;
     }
 
     public void deleteFreeOnBoard(final ExecutionErrorAccumulator eea, final FreeOnBoard freeOnBoard,
