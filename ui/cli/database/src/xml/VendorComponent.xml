@@ -42,6 +42,8 @@
                         <column name="VendorTypeDetailId" type="EID" nullAllowed="false" />
                         <column name="VendorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="VendorTypes" destinationColumn="VendorTypeId" />
                         <column name="VendorTypeName" type="Name" nullAllowed="false" />
+                        <column name="DefaultTermId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="DefaultFreeOnBoardId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FreeOnBoards" destinationColumn="FreeOnBoardId" />
                         <column name="DefaultCancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
                         <column name="DefaultReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
                         <column name="DefaultApGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
@@ -70,18 +72,26 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="DefaultCancellationPolicyId" />
+                            <indexColumn name="DefaultTermId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
-                            <indexColumn name="DefaultReturnPolicyId" />
+                            <indexColumn name="DefaultFreeOnBoardId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="DefaultApGlAccountId" />
+                            <indexColumn name="DefaultCancellationPolicyId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index6">
+                            <indexColumn name="DefaultReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="DefaultApGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
                         </index>

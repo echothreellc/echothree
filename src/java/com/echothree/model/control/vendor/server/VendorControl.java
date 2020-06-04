@@ -154,7 +154,7 @@ public class VendorControl
         }
         
         VendorType vendorType = VendorTypeFactory.getInstance().create();
-        VendorTypeDetail vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorType, vendorTypeName, defaultCancellationPolicy,
+        VendorTypeDetail vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorType, vendorTypeName, null, null, defaultCancellationPolicy,
                 defaultReturnPolicy, defaultApGlAccount, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions,
                 defaultAllowCombiningShipments, defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -372,7 +372,7 @@ public class VendorControl
                 }
             }
             
-            vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorTypePK, vendorTypeName, defaultCancellationPolicyPK, defaultReturnPolicyPK,
+            vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorTypePK, vendorTypeName, null, null, defaultCancellationPolicyPK, defaultReturnPolicyPK,
                     defaultApGlAccountPK, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
