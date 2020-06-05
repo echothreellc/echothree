@@ -17,8 +17,7 @@
 package com.echothree.model.control.term.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import static com.echothree.model.control.term.common.TermConstants.TermType_DATE_DRIVEN;
-import static com.echothree.model.control.term.common.TermConstants.TermType_STANDARD;
+import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.common.choice.TermChoicesBean;
 import com.echothree.model.control.term.common.choice.TermTypeChoicesBean;
 import com.echothree.model.control.term.common.transfer.CustomerTypeCreditLimitTransfer;
@@ -468,9 +467,9 @@ public class TermControl
         term.store();
         
         String termTypeName = termDetail.getTermType().getTermTypeName();
-        if(termTypeName.equals(TermType_STANDARD)) {
+        if(termTypeName.equals(TermTypes.STANDARD.name())) {
             deleteStandardTermByTerm(term, deletedBy);
-        } else if(termTypeName.equals(TermType_DATE_DRIVEN)) {
+        } else if(termTypeName.equals(TermTypes.DATE_DRIVEN.name())) {
             deleteDateDrivenTermByTerm(term, deletedBy);
         }
         

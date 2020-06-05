@@ -16,8 +16,7 @@
 
 package com.echothree.model.control.term.server.transfer;
 
-import static com.echothree.model.control.term.common.TermConstants.TermType_DATE_DRIVEN;
-import static com.echothree.model.control.term.common.TermConstants.TermType_STANDARD;
+import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
 import com.echothree.model.control.term.server.TermControl;
@@ -57,13 +56,13 @@ public class TermTransferCache
             String discountBeforeDayOfMonth = null;
             
             String termTypeName = termDetail.getTermType().getTermTypeName();
-            if(termTypeName.equals(TermType_STANDARD)) {
+            if(termTypeName.equals(TermTypes.STANDARD.name())) {
                 StandardTerm standardTerm = termControl.getStandardTerm(term);
                 
                 netDueDays = standardTerm.getNetDueDays().toString();
                 discountPercentage = PercentUtils.getInstance().formatFractionalPercent(standardTerm.getDiscountPercentage());
                 discountDays = standardTerm.getDiscountDays().toString();
-            } else if(termTypeName.equals(TermType_DATE_DRIVEN)) {
+            } else if(termTypeName.equals(TermTypes.DATE_DRIVEN.name())) {
                 DateDrivenTerm dateDrivenTerm = termControl.getDateDrivenTerm(term);
                 
                 netDueDayOfMonth = dateDrivenTerm.getNetDueDayOfMonth().toString();
