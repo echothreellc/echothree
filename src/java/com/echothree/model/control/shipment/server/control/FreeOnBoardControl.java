@@ -282,6 +282,9 @@ public class FreeOnBoardControl
     }
 
     public void deleteFreeOnBoard(final FreeOnBoard freeOnBoard, final BasePK deletedBy) {
+        var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
+
+        partyFreeOnBoardControl.deletePartyFreeOnBoardsByFreeOnBoard(freeOnBoard, deletedBy);
         deleteFreeOnBoardDescriptionsByFreeOnBoard(freeOnBoard, deletedBy);
 
         var freeOnBoardDetail = freeOnBoard.getLastDetailForUpdate();

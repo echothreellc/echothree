@@ -60,6 +60,7 @@ public class CreateSalesOrderCommand
                 new FieldDefinition("AllowSubstitutions", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("AllowCombiningShipments", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("Reference", FieldType.STRING, false, 1L, 40L),
+                new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Taxable", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null)
                 ));
@@ -84,12 +85,14 @@ public class CreateSalesOrderCommand
         var allowSubstitutions = form.getAllowSubstitutions();
         var allowCombiningShipments = form.getAllowCombiningShipments();
         var reference = form.getReference();
+        var freeOnBoardName = form.getFreeOnBoardName();
         var strTaxable = form.getTaxable();
         var workflowEntranceName = form.getWorkflowEntranceName();
 
         var order = SalesOrderLogic.getInstance().createSalesOrder(session, this, getUserVisit(), batchName, sourceName,
                 billToPartyName, orderPriorityName, currencyIsoName, termName, holdUntilComplete, allowBackorders,
-                allowSubstitutions, allowCombiningShipments, reference, strTaxable, workflowEntranceName, getParty());
+                allowSubstitutions, allowCombiningShipments, reference, freeOnBoardName, strTaxable, workflowEntranceName,
+                getParty());
 
         if(!hasExecutionErrors()) {
             result.setOrderName(order.getLastDetail().getOrderName());

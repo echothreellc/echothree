@@ -33,7 +33,8 @@ public class ShipmentTransferCaches
     protected ShipmentTimeTransferCache shipmentTimeTransferCache;
     protected FreeOnBoardTransferCache freeOnBoardTransferCache;
     protected FreeOnBoardDescriptionTransferCache freeOnBoardDescriptionTransferCache;
-    
+    protected PartyFreeOnBoardTransferCache partyFreeOnBoardTransferCache;
+
     /** Creates a new instance of ShipmentTransferCaches */
     public ShipmentTransferCaches(UserVisit userVisit) {
         super(userVisit);
@@ -114,6 +115,13 @@ public class ShipmentTransferCaches
             freeOnBoardDescriptionTransferCache = new FreeOnBoardDescriptionTransferCache(userVisit);
 
         return freeOnBoardDescriptionTransferCache;
+    }
+
+    public PartyFreeOnBoardTransferCache getPartyFreeOnBoardTransferCache() {
+        if(partyFreeOnBoardTransferCache == null)
+            partyFreeOnBoardTransferCache = new PartyFreeOnBoardTransferCache(userVisit);
+
+        return partyFreeOnBoardTransferCache;
     }
 
 }

@@ -25,10 +25,12 @@ import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.value.ShipmentTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 
-public class ShipmentTimeLogic {
+public class ShipmentTimeLogic
+        extends BaseLogic {
 
     private ShipmentTimeLogic() {
         super();

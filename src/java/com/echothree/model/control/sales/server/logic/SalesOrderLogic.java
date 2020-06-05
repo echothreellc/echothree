@@ -47,6 +47,9 @@ import com.echothree.model.control.sales.common.exception.SalesOrderReferenceReq
 import com.echothree.model.control.sales.common.exception.UnknownSalesOrderStatusChoiceException;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
+import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
+import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -62,7 +65,6 @@ import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDetail;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
-import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderPriority;
@@ -71,8 +73,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.term.server.entity.PartyTerm;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
@@ -210,7 +211,7 @@ public class SalesOrderLogic
      */
     public Order createSalesOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Batch batch, Source source,
             final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
-            Boolean allowCombiningShipments, final String reference, Term term, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
+            Boolean allowCombiningShipments, final String reference, Term term, FreeOnBoard freeOnBoard, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         var orderType = getOrderTypeByName(eea, OrderTypes.SALES_ORDER.name());
         var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
@@ -219,7 +220,7 @@ public class SalesOrderLogic
 
         if(batch != null) {
             if(SalesOrderBatchLogic.getInstance().checkBatchAvailableForEntry(eea, batch)) {
-                Currency orderBatchCurrency = orderControl.getOrderBatch(batch).getCurrency();
+                var orderBatchCurrency = orderControl.getOrderBatch(batch).getCurrency();
 
                 if(currency == null) {
                     currency = orderBatchCurrency;
@@ -276,27 +277,29 @@ public class SalesOrderLogic
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-                Customer billToCustomer = billToParty == null ? null : customerControl.getCustomer(billToParty);
-                OfferUse offerUse = source.getLastDetail().getOfferUse();
-                CustomerType customerType = getCustomerType(eea, offerUse.getLastDetail().getOffer(), billToCustomer);
+                var billToCustomer = billToParty == null ? null : customerControl.getCustomer(billToParty);
+                var offerUse = source.getLastDetail().getOfferUse();
+                var customerType = getCustomerType(eea, offerUse.getLastDetail().getOffer(), billToCustomer);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    PartyTerm partyTerm = billToParty == null ? null : TermLogic.getInstance().getPartyTerm(eea, billToParty);
-                    CancellationPolicy cancellationPolicy = getCancellationPolicy(eea, customerType, billToCustomer);
-                    ReturnPolicy returnPolicy = getReturnPolicy(eea, customerType, billToCustomer);
+                    var cancellationPolicy = getCancellationPolicy(eea, customerType, billToCustomer);
+                    var returnPolicy = getReturnPolicy(eea, customerType, billToCustomer);
                     
                     if(billToCustomer != null) {
                         validateSalesOrderReference(eea, reference, customerType, billToCustomer);
                     }
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
-                        Sequence sequence = offerUse.getLastDetail().getSalesOrderSequence();
-                        PartyPK createdBy = createdByParty == null ? null : createdByParty.getPrimaryKey();
+                        var customerTypeDetail = customerType.getLastDetail();
+                        var sequence = offerUse.getLastDetail().getSalesOrderSequence();
+                        var createdBy = createdByParty == null ? null : createdByParty.getPrimaryKey();
 
                         // If term or taxable were not set, then try to come up with sensible defaults, first from a PartyTerm if it
                         // was available, and then falling back on the CustomerType.
                         if(term == null || taxable == null) {
+                            var termControl = (TermControl)Session.getModelController(TermControl.class);
+                            var partyTerm = billToParty == null ? null : termControl.getPartyTerm(billToParty);
+
                             if(partyTerm == null) {
                                 if(term == null) {
                                     term = customerTypeDetail.getDefaultTerm();
@@ -313,6 +316,38 @@ public class SalesOrderLogic
                                 if(taxable == null) {
                                     taxable = partyTerm.getTaxable();
                                 }
+                            }
+
+                            // If no better answer was found, use the default Term.
+                            if(term == null) {
+                                termControl.getDefaultTerm();
+                            }
+
+                            // If no better answer was found, the order is taxable.
+                            if(taxable == null) {
+                                taxable = true;
+                            }
+                        }
+
+                        // If FreeOnBoard wasn't specified, using the bill to Party, fir look for a preference for the Party,
+                        // and then check the CustomerType.
+                        if(freeOnBoard == null) {
+                            var partFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
+                            var partyFreeOnBoard = billToParty == null ? null : partFreeOnBoardControl.getPartyFreeOnBoard(billToParty);
+
+                            if(partyFreeOnBoard == null) {
+                                if(freeOnBoard == null) {
+                                    freeOnBoard = customerTypeDetail.getDefaultFreeOnBoard();
+                                }
+                            } else {
+                                if(freeOnBoard == null) {
+                                    freeOnBoard = partyFreeOnBoard.getFreeOnBoard();
+                                }
+                            }
+
+                            // If no better answer was found, use the default FreeOnBoard.
+                            if(freeOnBoard == null) {
+                                freeOnBoard = FreeOnBoardLogic.getInstance().getDefaultFreeOnBoard(eea);
                             }
                         }
 
@@ -354,7 +389,8 @@ public class SalesOrderLogic
                         }
 
                         order = createOrder(eea, orderType, sequence, orderPriority, currency, holdUntilComplete, allowBackorders,
-                                allowSubstitutions, allowCombiningShipments, term, reference, null, cancellationPolicy, returnPolicy, taxable, createdBy);
+                                allowSubstitutions, allowCombiningShipments, term, freeOnBoard, reference, null,
+                                cancellationPolicy, returnPolicy, taxable, createdBy);
 
                         if(eea == null || !eea.hasExecutionErrors()) {
                             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
@@ -395,14 +431,15 @@ public class SalesOrderLogic
     public Order createSalesOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
             final String batchName, final String sourceName, final String billToPartyName, final String orderPriorityName,
             final String currencyIsoName, final String termName, final String strHoldUntilComplete, final String strAllowBackorders,
-            final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String strTaxable,
-            final String workflowEntranceName, final Party createdByParty) {
+            final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String freeOnBoardName,
+            final String strTaxable, final String workflowEntranceName, final Party createdByParty) {
         var batch = batchName == null ? null : SalesOrderBatchLogic.getInstance().getBatchByName(eea, batchName);
         var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
         var billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(eea, billToPartyName, PartyTypes.CUSTOMER.name());
         var orderPriority = orderPriorityName == null ? null : SalesOrderLogic.getInstance().getOrderPriorityByName(eea, orderPriorityName);
         var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
         var term = termName == null ? null : TermLogic.getInstance().getTermByName(eea, termName);
+        var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(eea, freeOnBoardName);
         Order order = null;
 
         if(!eea.hasExecutionErrors()) {
@@ -414,7 +451,7 @@ public class SalesOrderLogic
 
             order = createSalesOrder(session, eea, userVisit, batch, source, billToParty, orderPriority, currency,
                     holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference, term,
-                    taxable, workflowEntranceName, createdByParty);
+                    freeOnBoard, taxable, workflowEntranceName, createdByParty);
 
         }
 

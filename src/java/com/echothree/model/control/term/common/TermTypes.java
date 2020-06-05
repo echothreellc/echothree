@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.term.common;
 
-public interface TermConstants {
+public enum TermTypes {
     
-    String TermType_DATE_DRIVEN = "DATE_DRIVEN";
-    String TermType_PREPAID     = "PREPAID";
-    String TermType_STANDARD    = "STANDARD";
+    DATE_DRIVEN,
+    PREPAID,
+    STANDARD,
     
 }

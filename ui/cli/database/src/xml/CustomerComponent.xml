@@ -45,6 +45,7 @@
                         <column name="CustomerSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
                         <column name="DefaultOfferUseId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
                         <column name="DefaultTermId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="DefaultFreeOnBoardId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FreeOnBoards" destinationColumn="FreeOnBoardId" />
                         <column name="DefaultCancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
                         <column name="DefaultReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
                         <column name="DefaultCustomerStatusId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
@@ -93,26 +94,30 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index7">
-                            <indexColumn name="DefaultCancellationPolicyId" />
+                            <indexColumn name="DefaultFreeOnBoardId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index8">
-                            <indexColumn name="DefaultReturnPolicyId" />
+                            <indexColumn name="DefaultCancellationPolicyId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index9">
-                            <indexColumn name="DefaultCustomerStatusId" />
+                            <indexColumn name="DefaultReturnPolicyId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index10">
-                            <indexColumn name="DefaultCustomerCreditStatusId" />
+                            <indexColumn name="DefaultCustomerStatusId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index11">
-                            <indexColumn name="DefaultArGlAccountId" />
+                            <indexColumn name="DefaultCustomerCreditStatusId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index12">
+                            <indexColumn name="DefaultArGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index13">
                             <indexColumn name="AllocationPriorityId" />
                             <indexColumn name="ThruTime" />
                         </index>

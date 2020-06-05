@@ -30,7 +30,7 @@ import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.logic.BillingAccountLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.term.common.TermConstants;
+import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -178,11 +178,11 @@ public class InvoiceLogic
         var termControl = (TermControl)Session.getModelController(TermControl.class);
         Long dueTime;
         
-        if(termTypeName.equals(TermConstants.TermType_STANDARD)) {
+        if(termTypeName.equals(TermTypes.STANDARD.name())) {
             dueTime = invoicedTime + termControl.getStandardTerm(term).getNetDueDays() * (1000 * 60 * 60 * 24);
-        } else if(termTypeName.equals(TermConstants.TermType_PREPAID)) {
+        } else if(termTypeName.equals(TermTypes.PREPAID.name())) {
             dueTime = null;
-        } else { // TODO: TermConstants.TermType_DATE_DRIVEN
+        } else { // TODO: TermTypes.DATE_DRIVEN.name()
             dueTime = session.START_TIME_LONG;
         }
         
@@ -192,7 +192,7 @@ public class InvoiceLogic
     public Long getPaidTime(final Session session, final String termTypeName) {
         Long paidTime;
         
-        if(termTypeName.equals(TermConstants.TermType_PREPAID)) {
+        if(termTypeName.equals(TermTypes.PREPAID.name())) {
             paidTime = session.START_TIME_LONG;
         } else {
             paidTime = null;

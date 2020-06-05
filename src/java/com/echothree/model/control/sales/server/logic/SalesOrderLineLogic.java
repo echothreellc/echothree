@@ -122,7 +122,7 @@ public class SalesOrderLineLogic
         // Create a new Sales Order if there was not one supplied. Defaults will be used for nearly all options.
         if(order == null) {
             order = SalesOrderLogic.getInstance().createSalesOrder(session, eea, userVisit, (Batch)null, null, null,
-                    null, null, null, null, null, null, null, null, null, null, createdByParty);
+                    null, null, null, null, null, null, null, null, null, null, null, createdByParty);
         }
 
         salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdByPartyPK);

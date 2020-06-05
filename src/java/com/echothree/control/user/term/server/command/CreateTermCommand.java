@@ -17,17 +17,17 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.CreateTermForm;
-import com.echothree.model.control.term.common.TermConstants;
+import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
@@ -77,9 +77,9 @@ public class CreateTermCommand
         if(!validationResult.getHasErrors()) {
             String termTypeName = form.getTermTypeName();
             
-            if(termTypeName.equals(TermConstants.TermType_STANDARD)) {
+            if(termTypeName.equals(TermTypes.STANDARD.name())) {
                 validationResult = validator.validate(form, standardFieldDefinitions);
-            } else if(termTypeName.equals(TermConstants.TermType_DATE_DRIVEN)) {
+            } else if(termTypeName.equals(TermTypes.DATE_DRIVEN.name())) {
                 validationResult = validator.validate(form, dateDrivenFieldDefinitions);
             }
         }
@@ -106,13 +106,13 @@ public class CreateTermCommand
                 termTypeName = termType.getTermTypeName();
                 term = termControl.createTerm(termName, termType, isDefault, sortOrder, partyPK);
                 
-                if(termTypeName.equals(TermConstants.TermType_STANDARD)) {
+                if(termTypeName.equals(TermTypes.STANDARD.name())) {
                     Integer netDueDays = Integer.valueOf(form.getNetDueDays());
                     Integer discountPercentage = Integer.valueOf(form.getDiscountPercentage());
                     Integer discountDays = Integer.valueOf(form.getDiscountDays());
                     
                     termControl.createStandardTerm(term, netDueDays, discountPercentage, discountDays, partyPK);
-                } else if(termTypeName.equals(TermConstants.TermType_DATE_DRIVEN)) {
+                } else if(termTypeName.equals(TermTypes.DATE_DRIVEN.name())) {
                     Integer netDueDayOfMonth = Integer.valueOf(form.getNetDueDayOfMonth());
                     Integer dueNextMonthDays = Integer.valueOf(form.getDueNextMonthDays());
                     Integer discountPercentage = Integer.valueOf(form.getDiscountPercentage());

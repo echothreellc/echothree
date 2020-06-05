@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.term.server.logic;
 
+import com.echothree.model.control.term.common.exception.UnknownDefaultTermException;
 import com.echothree.model.control.term.common.exception.UnknownPartyTermException;
 import com.echothree.model.control.term.common.exception.UnknownTermNameException;
 import com.echothree.model.control.term.server.TermControl;
@@ -62,6 +63,17 @@ public class TermLogic
         }
 
         return partyTerm;
+    }
+    
+    public Term getDefaultTerm(final ExecutionErrorAccumulator eea) {
+        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var term = termControl.getDefaultTerm();
+
+        if(term == null) {
+            handleExecutionError(UnknownDefaultTermException.class, eea, ExecutionErrors.UnknownDefaultTerm.name());
+        }
+
+        return term;
     }
 
 }

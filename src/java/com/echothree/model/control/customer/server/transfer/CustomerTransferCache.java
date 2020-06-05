@@ -52,6 +52,7 @@ import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.user.server.UserControl;
@@ -94,6 +95,7 @@ public class CustomerTransferCache
     OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+    PartyFreeOnBoardControl partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
     PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
     ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
     ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
@@ -120,6 +122,7 @@ public class CustomerTransferCache
     boolean hasInvoiceLimits;
     boolean includePartyCreditLimits;
     boolean includePartyTerm;
+    boolean includePartyFreeOnBoard;
     boolean includePartyPaymentMethods;
     boolean includePartyCancellationPolicies;
     boolean includePartyReturnPolicies;
@@ -152,6 +155,7 @@ public class CustomerTransferCache
             includeInvoicesTo = options.contains(CustomerOptions.CustomerIncludeInvoicesTo);
             includePartyCreditLimits = options.contains(CustomerOptions.CustomerIncludePartyCreditLimits);
             includePartyTerm = options.contains(CustomerOptions.CustomerIncludePartyTerm);
+            includePartyFreeOnBoard = options.contains(CustomerOptions.CustomerIncludePartyFreeOnBoard);
             includePartyPaymentMethods = options.contains(CustomerOptions.CustomerIncludePartyPaymentMethods);
             includePartyCancellationPolicies = options.contains(CustomerOptions.CustomerIncludePartyCancellationPolicies);
             includePartyReturnPolicies = options.contains(CustomerOptions.CustomerIncludePartyReturnPolicies);
@@ -298,6 +302,10 @@ public class CustomerTransferCache
 
             if(includePartyTerm) {
                 customerTransfer.setPartyTerm(termControl.getPartyTermTransfer(userVisit, party));
+            }
+
+            if(includePartyFreeOnBoard) {
+                customerTransfer.setPartyFreeOnBoard(partyFreeOnBoardControl.getPartyFreeOnBoardTransfer(userVisit, party));
             }
 
             if(includePartyPaymentMethods) {

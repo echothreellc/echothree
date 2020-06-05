@@ -44,6 +44,7 @@ import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.user.server.UserControl;
@@ -92,6 +93,7 @@ public class VendorTransferCache
     ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
     InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyFreeOnBoardControl partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
     PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
     ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
     ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
@@ -99,6 +101,7 @@ public class VendorTransferCache
     TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
     UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
     boolean includePartyContactMechanisms;
@@ -115,6 +118,7 @@ public class VendorTransferCache
     boolean includePurchasingComments;
     boolean includePartyCreditLimits;
     boolean includePartyTerm;
+    boolean includePartyFreeOnBoard;
     boolean includeSubscriptions;
     boolean includeCommunicationEvents;
     boolean hasVendorItemsLimits;
@@ -145,6 +149,7 @@ public class VendorTransferCache
             includePurchasingComments = options.contains(VendorOptions.VendorIncludePurchasingComments);
             includePartyCreditLimits = options.contains(VendorOptions.VendorIncludePartyCreditLimits);
             includePartyTerm = options.contains(VendorOptions.VendorIncludePartyTerm);
+            includePartyFreeOnBoard = options.contains(VendorOptions.VendorIncludePartyFreeOnBoard);
             includeSubscriptions = options.contains(VendorOptions.VendorIncludeSubscriptions);
             includeCommunicationEvents = options.contains(VendorOptions.VendorIncludeCommunicationEvents);
             setIncludeEntityAttributeGroups(options.contains(VendorOptions.VendorIncludeEntityAttributeGroups));
@@ -294,6 +299,10 @@ public class VendorTransferCache
 
             if(includePartyTerm) {
                 vendorTransfer.setPartyTerm(termControl.getPartyTermTransfer(userVisit, party));
+            }
+
+            if(includePartyFreeOnBoard) {
+                vendorTransfer.setPartyFreeOnBoard(partyFreeOnBoardControl.getPartyFreeOnBoardTransfer(userVisit, party));
             }
 
             if(includeSubscriptions) {

@@ -627,6 +627,7 @@
                         <column name="AllowSubstitutions" type="Boolean" nullAllowed="true" />
                         <column name="AllowCombiningShipments" type="Boolean" nullAllowed="true" />
                         <column name="TermId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="FreeOnBoardId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FreeOnBoards" destinationColumn="FreeOnBoardId" />
                         <column name="Reference" type="Reference" nullAllowed="true" />
                         <column name="Description" type="Description" nullAllowed="true" />
                         <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
@@ -666,10 +667,14 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index7">
-                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="FreeOnBoardId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index8">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
                             <indexColumn name="ReturnPolicyId" />
                             <indexColumn name="ThruTime" />
                         </index>

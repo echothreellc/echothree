@@ -67,6 +67,7 @@ public class PartyTransferCache
     ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
     TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
     UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
     boolean includeDescription;

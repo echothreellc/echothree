@@ -89,6 +89,28 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="PartyFreeOnBoards" nameSingular="PartyFreeOnBoard" columnPrefix="pfob">
+                    <columns>
+                        <column name="PartyFreeOnBoardId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="FreeOnBoardId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FreeOnBoards" destinationColumn="FreeOnBoardId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyFreeOnBoardId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FreeOnBoardId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="ShipmentTypes" nameSingular="ShipmentType" columnPrefix="shptyp">
                     <columns>
                         <column name="ShipmentTypeId" type="EID" nullAllowed="false" />

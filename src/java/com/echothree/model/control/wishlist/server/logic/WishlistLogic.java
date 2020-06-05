@@ -109,7 +109,7 @@ public class WishlistLogic
                 OrderType orderType = orderLogic.getOrderTypeByName(ema, OrderTypes.WISHLIST.name());
 
                 if(!ema.hasExecutionErrors()) {
-                    order = orderLogic.createOrder(ema, orderType, null, null, currency, null, null, null, null, null, null, null, null, null, null, createdBy);
+                    order = orderLogic.createOrder(ema, orderType, null, null, currency, null, null, null, null, null, null, null, null, null, null, null, createdBy);
 
                     if(!ema.hasExecutionErrors()) {
                         wishlistControl.createWishlist(order, getOrderOfferUse(userVisit, offerUse, companyParty), wishlistType, createdBy);

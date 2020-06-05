@@ -715,6 +715,7 @@ public enum ExecutionErrors {
     UnknownPartyCreditLimit,
     InvalidPartyType,
     UnknownPartyTerm,
+    UnknownPartyFreeOnBoard,
     DuplicatePartyInventoryLevel,
     UnknownPartyInventoryLevel,
     InvalidItemDescriptionType,

@@ -27,6 +27,7 @@ public interface CustomerOptions {
     String CustomerIncludeInvoicesTo = "CustomerIncludeInvoicesTo";
     String CustomerIncludePartyCreditLimits = "CustomerIncludePartyCreditLimits";
     String CustomerIncludePartyTerm = "CustomerIncludePartyTerm";
+    String CustomerIncludePartyFreeOnBoard = "CustomerIncludePartyFreeOnBoard";
     String CustomerIncludePartyPaymentMethods = "CustomerIncludePartyPaymentMethods";
     String CustomerIncludePartyCancellationPolicies = "CustomerIncludePartyCancellationPolicies";
     String CustomerIncludePartyReturnPolicies = "CustomerIncludePartyReturnPolicies";

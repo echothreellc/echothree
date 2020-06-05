@@ -75,10 +75,9 @@ public class ItemResultsObject {
     @GraphQLNonNull
     public List<ItemResultObject> getItems(final DataFetchingEnvironment env) {
         List<ItemResultObject> objects = null;
-        UserVisitSearch userVisitSearch = getUserVisitSearch(env);
+        var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
-            GraphQlContext context = env.getContext();
             var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
             objects = searchControl.getItemResultObjects(userVisitSearch);

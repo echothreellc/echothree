@@ -38,6 +38,7 @@ import com.echothree.model.control.printer.common.transfer.PartyPrinterGroupUseT
 import com.echothree.model.control.returnpolicy.common.transfer.PartyReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.scale.common.transfer.PartyScaleUseTransfer;
+import com.echothree.model.control.shipment.common.transfer.PartyFreeOnBoardTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTransfer;
 import com.echothree.model.control.term.common.transfer.PartyCreditLimitTransfer;
 import com.echothree.model.control.term.common.transfer.PartyTermTransfer;
@@ -77,6 +78,7 @@ public class PartyTransfer
 
     private ListWrapper<PartyCreditLimitTransfer> partyCreditLimits;
     private PartyTermTransfer partyTerm;
+    private PartyFreeOnBoardTransfer partyFreeOnBoard;
     private ListWrapper<PartyPaymentMethodTransfer> partyPaymentMethods;
 
     private CancellationPolicyTransfer cancellationPolicy;
@@ -441,6 +443,20 @@ public class PartyTransfer
      */
     public void setPartyTerm(PartyTermTransfer partyTerm) {
         this.partyTerm = partyTerm;
+    }
+
+    /**
+     * @return the partyFreeOnBoard
+     */
+    public PartyFreeOnBoardTransfer getPartyFreeOnBoard() {
+        return partyFreeOnBoard;
+    }
+
+    /**
+     * @param partyFreeOnBoard the partyFreeOnBoard to set
+     */
+    public void setPartyFreeOnBoard(final PartyFreeOnBoardTransfer partyFreeOnBoard) {
+        this.partyFreeOnBoard = partyFreeOnBoard;
     }
 
     /**
