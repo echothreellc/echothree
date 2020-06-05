@@ -431,14 +431,15 @@ public class SalesOrderLogic
     public Order createSalesOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
             final String batchName, final String sourceName, final String billToPartyName, final String orderPriorityName,
             final String currencyIsoName, final String termName, final String strHoldUntilComplete, final String strAllowBackorders,
-            final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String strTaxable,
-            final String workflowEntranceName, final Party createdByParty) {
+            final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String freeOnBoardName,
+            final String strTaxable, final String workflowEntranceName, final Party createdByParty) {
         var batch = batchName == null ? null : SalesOrderBatchLogic.getInstance().getBatchByName(eea, batchName);
         var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
         var billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(eea, billToPartyName, PartyTypes.CUSTOMER.name());
         var orderPriority = orderPriorityName == null ? null : SalesOrderLogic.getInstance().getOrderPriorityByName(eea, orderPriorityName);
         var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
         var term = termName == null ? null : TermLogic.getInstance().getTermByName(eea, termName);
+        var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(eea, freeOnBoardName);
         Order order = null;
 
         if(!eea.hasExecutionErrors()) {
@@ -450,7 +451,7 @@ public class SalesOrderLogic
 
             order = createSalesOrder(session, eea, userVisit, batch, source, billToParty, orderPriority, currency,
                     holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference, term,
-                    null, taxable, workflowEntranceName, createdByParty);
+                    freeOnBoard, taxable, workflowEntranceName, createdByParty);
 
         }
 

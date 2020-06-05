@@ -19,11 +19,12 @@ package com.echothree.control.user.sales.common.edit;
 import com.echothree.control.user.accounting.common.spec.CurrencySpec;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.control.user.sales.common.spec.SalesOrderBatchSpec;
+import com.echothree.control.user.shipment.common.spec.FreeOnBoardSpec;
 import com.echothree.control.user.term.common.spec.TermSpec;
 import com.echothree.util.common.form.BaseEdit;
 
 public interface SalesOrderEdit
-        extends BaseEdit, SalesOrderBatchSpec, SourceSpec, CurrencySpec, TermSpec {
+        extends BaseEdit, SalesOrderBatchSpec, SourceSpec, CurrencySpec, TermSpec, FreeOnBoardSpec {
     
     String getBillToPartyName();
     void setBillToPartyName(String billToPartyName);
