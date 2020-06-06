@@ -17,30 +17,26 @@
 package com.echothree.control.user.purchase.server.command;
 
 import com.echothree.control.user.purchase.common.form.CreatePurchaseInvoiceForm;
-import com.echothree.control.user.purchase.common.result.CreatePurchaseInvoiceResult;
 import com.echothree.control.user.purchase.common.result.PurchaseResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.invoice.server.logic.PurchaseInvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
+import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -76,6 +72,7 @@ public class CreatePurchaseInvoiceCommand
                 new FieldDefinition("DueTime", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("PaidTime", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("TermName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Reference", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
                 ));
@@ -88,22 +85,23 @@ public class CreatePurchaseInvoiceCommand
     
     @Override
     protected BaseResult execute() {
-        CreatePurchaseInvoiceResult result = PurchaseResultFactory.getCreatePurchaseInvoiceResult();
+        var result = PurchaseResultFactory.getCreatePurchaseInvoiceResult();
         Invoice invoice = null;
         var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        String currencyIsoName = form.getCurrencyIsoName();
-        Currency currency = currencyIsoName == null ? null : accountingControl.getCurrencyByIsoName(currencyIsoName);
+        var currencyIsoName = form.getCurrencyIsoName();
+        var currency = currencyIsoName == null ? null : accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currencyIsoName == null || currency != null) {
-            var termControl = (TermControl)Session.getModelController(TermControl.class);
-            String termName = form.getTermName();
-            Term term = termName == null ? null : termControl.getTermByName(termName);
+            var termName = form.getTermName();
+            var freeOnBoardName = form.getFreeOnBoardName();
+            var term = termName == null ? null : TermLogic.getInstance().getTermByName(this, termName);
+            var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, freeOnBoardName);
 
-            if(termName == null || term != null) {
+            if(!hasExecutionErrors()) {
                 var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-                String vendorName = form.getVendorName();
-                String billFromPartyName = form.getBillFromPartyName();
-                int parameterCount = (vendorName == null? 0: 1) + (billFromPartyName == null? 0: 1);
+                var vendorName = form.getVendorName();
+                var billFromPartyName = form.getBillFromPartyName();
+                var parameterCount = (vendorName == null? 0: 1) + (billFromPartyName == null? 0: 1);
 
                 if(parameterCount == 1) {
                     var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -131,12 +129,12 @@ public class CreatePurchaseInvoiceCommand
                     
                     if(!hasExecutionErrors()) {
                         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-                        String billFromContactMechanismName = form.getBillFromContactMechanismName();
-                        PartyContactMechanism billFromContactMechanism = billFromContactMechanismName == null? null: contactControl.getPartyContactMechanismByContactMechanismName(this, billFrom, billFromContactMechanismName);
+                        var billFromContactMechanismName = form.getBillFromContactMechanismName();
+                        var billFromContactMechanism = billFromContactMechanismName == null? null: contactControl.getPartyContactMechanismByContactMechanismName(this, billFrom, billFromContactMechanismName);
                         
                         if(billFromContactMechanismName == null || billFromContactMechanism != null) {
-                            String companyName = form.getCompanyName();
-                            String billToPartyName = form.getBillToPartyName();
+                            var companyName = form.getCompanyName();
+                            var billToPartyName = form.getBillToPartyName();
 
                             parameterCount = (companyName == null? 0: 1) + (billToPartyName == null? 0: 1);
 
@@ -144,7 +142,7 @@ public class CreatePurchaseInvoiceCommand
                                 Party billTo = null;
 
                                 if(companyName != null) {
-                                    PartyCompany partyCompany = companyName == null ? null : partyControl.getPartyCompanyByName(companyName);
+                                    var partyCompany = partyControl.getPartyCompanyByName(companyName);
 
                                     if(partyCompany != null) {
                                         billTo = partyCompany.getParty();
@@ -166,21 +164,21 @@ public class CreatePurchaseInvoiceCommand
                                 }
 
                                 if(!hasExecutionErrors()) {
-                                    String billToContactMechanismName = form.getBillToContactMechanismName();
-                                    PartyContactMechanism billToContactMechanism = billToContactMechanismName == null? null: contactControl.getPartyContactMechanismByContactMechanismName(this, billTo, billToContactMechanismName);
+                                    var billToContactMechanismName = form.getBillToContactMechanismName();
+                                    var billToContactMechanism = billToContactMechanismName == null ? null : contactControl.getPartyContactMechanismByContactMechanismName(this, billTo, billToContactMechanismName);
                                     
                                     if(billToContactMechanismName == null || billToContactMechanism != null) {
-                                        String strInvoicedTime = form.getInvoicedTime();
-                                        Long invoicedTime = strInvoicedTime == null ? null : Long.valueOf(strInvoicedTime);
-                                        String strDueTime = form.getDueTime();
-                                        Long dueTime = strDueTime == null ? null : Long.valueOf(strDueTime);
-                                        String strPaidTime = form.getPaidTime();
-                                        Long paidTime = strPaidTime == null ? null : Long.valueOf(strPaidTime);
-                                        String reference = form.getReference();
-                                        String description = form.getDescription();
+                                        var strInvoicedTime = form.getInvoicedTime();
+                                        var invoicedTime = strInvoicedTime == null ? null : Long.valueOf(strInvoicedTime);
+                                        var strDueTime = form.getDueTime();
+                                        var dueTime = strDueTime == null ? null : Long.valueOf(strDueTime);
+                                        var strPaidTime = form.getPaidTime();
+                                        var paidTime = strPaidTime == null ? null : Long.valueOf(strPaidTime);
+                                        var reference = form.getReference();
+                                        var description = form.getDescription();
 
                                         invoice = PurchaseInvoiceLogic.getInstance().createInvoice(session, this, billFrom, billFromContactMechanism, billTo,
-                                                billToContactMechanism, currency, term, reference, description, invoicedTime, dueTime, paidTime,
+                                                billToContactMechanism, currency, term, freeOnBoard, reference, description, invoicedTime, dueTime, paidTime,
                                                 PurchaseInvoiceStatusConstants.WorkflowEntrance_NEW_ENTRY, getPartyPK());
                                     }
                                 }
@@ -192,8 +190,6 @@ public class CreatePurchaseInvoiceCommand
                 } else {
                     addExecutionError(ExecutionErrors.InvalidParameterCount.name());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTermName.name(), termName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);

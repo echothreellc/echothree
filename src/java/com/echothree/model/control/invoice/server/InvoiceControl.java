@@ -141,6 +141,7 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
@@ -2505,11 +2506,11 @@ public class InvoiceControl
     //   Invoices
     // --------------------------------------------------------------------------------
     
-    public Invoice createInvoice(InvoiceType invoiceType, String invoiceName, BillingAccount billingAccount, GlAccount glAccount, Term term, String reference,
-            String description, BasePK createdBy) {
+    public Invoice createInvoice(InvoiceType invoiceType, String invoiceName, BillingAccount billingAccount, GlAccount glAccount,
+            Term term, FreeOnBoard freeOnBoard, String reference, String description, BasePK createdBy) {
         Invoice invoice = InvoiceFactory.getInstance().create();
-        InvoiceDetail invoiceDetail = InvoiceDetailFactory.getInstance().create(invoice, invoiceType, invoiceName, billingAccount, glAccount, term,
-                reference, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        InvoiceDetail invoiceDetail = InvoiceDetailFactory.getInstance().create(invoice, invoiceType, invoiceName, billingAccount,
+                glAccount, term, freeOnBoard, reference, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
         invoice = InvoiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, invoice.getPrimaryKey());

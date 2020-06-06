@@ -30,6 +30,7 @@ import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.logic.BillingAccountLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -43,9 +44,9 @@ import com.echothree.model.data.invoice.server.entity.InvoiceRoleType;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.invoice.server.entity.InvoiceTypeDetail;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermDetail;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -151,23 +152,37 @@ public class InvoiceLogic
         
         return invoiceName;
     }
-    
-    public Term getInvoiceTerm(final ExecutionErrorAccumulator eea, final Party billFrom, final Term term) {
-        Term result = term;
-        
+
+    public Term getInvoiceTerm(final ExecutionErrorAccumulator eea, final Party billFrom, Term term) {
         if(term == null) {
             var termControl = (TermControl)Session.getModelController(TermControl.class);
-            
-            result = termControl.getPartyTerm(billFrom).getTerm();
+
+            term = termControl.getPartyTerm(billFrom).getTerm();
         }
-        
-        if(result == null) {
+
+        if(term == null) {
             eea.addExecutionError(ExecutionErrors.UnknownPartyTerm.name(), billFrom.getLastDetail().getPartyName());
         }
-        
-        return result;
+
+        return term;
     }
-    
+
+    public FreeOnBoard getInvoiceFreeOnBoard(final ExecutionErrorAccumulator eea, final Party billFrom, FreeOnBoard freeOnBoard) {
+        if(freeOnBoard == null) {
+            var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
+
+            freeOnBoard = partyFreeOnBoardControl.getPartyFreeOnBoard(billFrom).getFreeOnBoard();
+        }
+
+
+        // TODO: This is dependent on type of Invoice, not all require FOB.
+//        if(freeOnBoard == null) {
+//            eea.addExecutionError(ExecutionErrors.UnknownPartyFreeOnBoard.name(), billFrom.getLastDetail().getPartyName());
+//        }
+
+        return freeOnBoard;
+    }
+
     public String getTermTypeName(final Term term) {
         TermDetail termDetail = term.getLastDetail();
         
@@ -203,36 +218,37 @@ public class InvoiceLogic
     
     public Invoice createInvoice(final Session session, final ExecutionErrorAccumulator eea, final String invoiceTypeName, final Party billFrom,
             final PartyContactMechanism billFromPartyContactMechanism, final Party billTo, final PartyContactMechanism billToPartyContactMechanism, Currency currency, final GlAccount glAccount,
-            Term term, final String reference, final String description, Long invoicedTime, Long dueTime, Long paidTime, final BasePK createdBy) {
+            Term term, FreeOnBoard freeOnBoard, final String reference, final String description, Long invoicedTime, Long dueTime, Long paidTime, final BasePK createdBy) {
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         Invoice invoice = null;
         
-        currency = currency == null? partyControl.getPreferredCurrency(billFrom): currency;
-        BillingAccount billingAccount = BillingAccountLogic.getInstance().getBillingAccount(eea, billFrom, billFromPartyContactMechanism, billTo, billToPartyContactMechanism, currency, null,
+        currency = currency == null ? partyControl.getPreferredCurrency(billFrom) : currency;
+        var billingAccount = BillingAccountLogic.getInstance().getBillingAccount(eea, billFrom, billFromPartyContactMechanism, billTo, billToPartyContactMechanism, currency, null,
                 null, createdBy);
         
         if(eea == null || !eea.hasExecutionErrors()) {
             var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-            InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
+            var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
             
             if(invoiceType != null) {
-                String invoiceName = getInvoiceName(eea, invoiceType);
+                var invoiceName = getInvoiceName(eea, invoiceType);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     term = getInvoiceTerm(eea, billFrom, term);
-                    
+                    freeOnBoard = getInvoiceFreeOnBoard(eea, billFrom, freeOnBoard);
+
                     if(eea == null || !eea.hasExecutionErrors()) {
                         var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
-                        InvoiceTimeLogic invoicedTimeLogic = InvoiceTimeLogic.getInstance();
-                        PartyContactMechanism billFromContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, BillingAccountRoleTypes.BILL_FROM.name()).getPartyContactMechanism();
-                        PartyContactMechanism billToContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, BillingAccountRoleTypes.BILL_TO.name()).getPartyContactMechanism();
-                        String termTypeName = getTermTypeName(term);
+                        var invoicedTimeLogic = InvoiceTimeLogic.getInstance();
+                        var billFromContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, BillingAccountRoleTypes.BILL_FROM.name()).getPartyContactMechanism();
+                        var billToContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, BillingAccountRoleTypes.BILL_TO.name()).getPartyContactMechanism();
+                        var termTypeName = getTermTypeName(term);
 
                         invoicedTime = invoicedTime == null ? session.START_TIME_LONG : invoicedTime;
                         dueTime = dueTime == null ? getDueTime(session, term, termTypeName, invoicedTime) : dueTime;
                         paidTime = paidTime == null ? getPaidTime(session, termTypeName) : paidTime;
 
-                        invoice = invoiceControl.createInvoice(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, createdBy);
+                        invoice = invoiceControl.createInvoice(invoiceType, invoiceName, billingAccount, glAccount, term, freeOnBoard, reference, description, createdBy);
                         invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.INVOICED.name(), invoicedTime, createdBy);
                         invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.DUE.name(), dueTime, createdBy);
                         invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.PAID.name(), paidTime, createdBy);

@@ -16,10 +16,11 @@
 
 package com.echothree.control.user.purchase.common.edit;
 
+import com.echothree.control.user.shipment.common.spec.FreeOnBoardSpec;
 import com.echothree.control.user.term.common.spec.TermSpec;
 
 public interface PurchaseInvoiceEdit
-        extends TermSpec {
+        extends TermSpec, FreeOnBoardSpec {
     
     String getBillFromContactMechanismName();
     void setBillFromContactMechanismName(String billFromContactMechanismName);

@@ -472,6 +472,7 @@
                         <column name="BillingAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BillingAccounts" destinationColumn="BillingAccountId" />
                         <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
                         <column name="TermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="FreeOnBoardId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FreeOnBoards" destinationColumn="FreeOnBoardId" />
                         <column name="Reference" type="Reference" nullAllowed="true" />
                         <column name="Description" type="Description" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -507,6 +508,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index7">
+                            <indexColumn name="FreeOnBoardId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
                             <indexColumn name="InvoiceTypeId" />
                             <indexColumn name="ThruTime" />
                             <indexColumn name="Reference" />
