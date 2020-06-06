@@ -112,6 +112,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/httpcore.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/httpmime.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/infinispan-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/icu4j.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -231,6 +232,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/guava-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/graphql-java-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/jstl-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/icu4j-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

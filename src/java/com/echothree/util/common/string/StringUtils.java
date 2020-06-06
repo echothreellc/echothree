@@ -18,6 +18,7 @@ package com.echothree.util.common.string;
 
 import com.echothree.model.control.core.common.MimeTypes;
 import com.google.common.html.HtmlEscapers;
+import com.ibm.icu.text.Transliterator;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -34,7 +35,13 @@ public class StringUtils {
     public static StringUtils getInstance() {
         return StringUtilsHolder.instance;
     }
-    
+
+    private Transliterator transliterator = Transliterator.getInstance("Any-Latin; Latin-ASCII; NFKD; [:Nonspacing Mark:] Remove; NFKC", Transliterator.FORWARD);
+
+    public String toAscii7(String text) {
+        return transliterator.transliterate(text);
+    }
+
     public String getIndent(int indentAmount, int indentCount) {
         return String.format("%" + indentAmount * indentCount + "s", "");
     }
