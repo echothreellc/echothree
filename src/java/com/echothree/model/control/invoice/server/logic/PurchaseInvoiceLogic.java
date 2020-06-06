@@ -35,6 +35,7 @@ import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
@@ -95,7 +96,8 @@ public class PurchaseInvoiceLogic {
     
     public Invoice createInvoice(final Session session, final ExecutionErrorAccumulator eea, final Party billFrom,
             final PartyContactMechanism billFromPartyContactMechanism, final Party billTo, final PartyContactMechanism billToPartyContactMechanism,
-            final Currency currency, final Term term, final String reference, final String description, final Long invoicedTime, final Long dueTime,
+            final Currency currency, final Term term, final FreeOnBoard freeOnBoard, final String reference,
+            final String description, final Long invoicedTime, final Long dueTime,
             final Long paidTime, final String workflowEntranceName, final BasePK createdBy) {
         Invoice invoice = null;
         var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
@@ -106,8 +108,8 @@ public class PurchaseInvoiceLogic {
         
         if(eea == null || !eea.hasExecutionErrors()) {
             invoice = InvoiceLogic.getInstance().createInvoice(session, eea, InvoiceTypes.PURCHASE_INVOICE.name(), billFrom,
-                    billFromPartyContactMechanism, billTo, billToPartyContactMechanism, currency, glAccount, term, reference, description, invoicedTime,
-                    dueTime, paidTime, createdBy);
+                    billFromPartyContactMechanism, billTo, billToPartyContactMechanism, currency, glAccount, term,
+                    freeOnBoard, reference, description, invoicedTime, dueTime, paidTime, createdBy);
 
             if(!eea.hasExecutionErrors() && workflowEntranceName != null) {
                 var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
