@@ -113,6 +113,10 @@
     </module>
 
     <module>
+        <ejb>icu4j.jar</ejb>
+    </module>
+
+    <module>
         <ejb>echothree-server.jar</ejb>
     </module>
     
