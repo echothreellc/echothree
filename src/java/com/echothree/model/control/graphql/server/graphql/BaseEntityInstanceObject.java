@@ -69,7 +69,9 @@ public abstract class BaseEntityInstanceObject {
     public String getId() {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
-        return coreControl.generateUlidForEntityInstance(getEntityInstanceByBasePK(), false);
+        entityInstance = coreControl.ensureUlidForEntityInstance(getEntityInstanceByBasePK(), false);
+
+        return entityInstance.getUlid();
     }
     
     @GraphQLField

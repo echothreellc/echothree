@@ -18,14 +18,12 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GenerateKeyForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GenerateKeyResult;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,11 +59,11 @@ public class GenerateKeyCommand
     
     @Override
     protected BaseResult execute() {
-        GenerateKeyResult result = CoreResultFactory.getGenerateKeyResult();
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
+        var result = CoreResultFactory.getGenerateKeyResult();
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
         
         if(!hasExecutionErrors()) {
-            result.setKey(getCoreControl().generateKeyForEntityInstance(entityInstance, Boolean.valueOf(form.getForceRegeneration())));
+            result.setKey(getCoreControl().ensureKeyForEntityInstance(entityInstance, Boolean.valueOf(form.getForceRegeneration())).getKey());
         }
         
         return result;

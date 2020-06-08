@@ -2510,8 +2510,8 @@ public class CoreControl
         return getEntityInstanceByKey(key, EntityPermission.READ_WRITE);
     }
     
-    public String generateKeyForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
-        String key = entityInstance.getKey();
+    public EntityInstance ensureKeyForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
+        var key = entityInstance.getKey();
         
         if(key == null || forceRegeneration) {
             // Convert to READ_WRITE if necessary...
@@ -2531,7 +2531,7 @@ public class CoreControl
             entityInstance.store();
         }
         
-        return key;
+        return entityInstance;
     }
     
     private EntityInstance getEntityInstanceByGuid(String guid, EntityPermission entityPermission) {
@@ -2571,8 +2571,8 @@ public class CoreControl
         return getEntityInstanceByGuid(guid, EntityPermission.READ_WRITE);
     }
     
-    public String generateGuidForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
-        String guid = entityInstance.getGuid();
+    public EntityInstance ensureGuidForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
+        var guid = entityInstance.getGuid();
         
         if(guid == null || forceRegeneration) {
             // Convert to READ_WRITE if necessary...
@@ -2592,7 +2592,7 @@ public class CoreControl
             entityInstance.store();
         }
         
-        return guid;
+        return entityInstance;
     }
     
     private EntityInstance getEntityInstanceByUlid(String ulid, EntityPermission entityPermission) {
@@ -2632,8 +2632,8 @@ public class CoreControl
         return getEntityInstanceByUlid(ulid, EntityPermission.READ_WRITE);
     }
     
-    public String generateUlidForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
-        String ulid = entityInstance.getUlid();
+    public EntityInstance ensureUlidForEntityInstance(EntityInstance entityInstance, boolean forceRegeneration) {
+        var ulid = entityInstance.getUlid();
         
         if(ulid == null || forceRegeneration) {
             // Convert to READ_WRITE if necessary...
@@ -2653,7 +2653,7 @@ public class CoreControl
             entityInstance.store();
         }
         
-        return ulid;
+        return entityInstance;
     }
     
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
