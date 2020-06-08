@@ -48,7 +48,9 @@ public class CommandResultWithIdObject
         if(entityInstance != null) {
             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
-            id = coreControl.generateUlidForEntityInstance(entityInstance, false);
+            entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
+
+            id = entityInstance.getUlid();
         }
         
         return id;

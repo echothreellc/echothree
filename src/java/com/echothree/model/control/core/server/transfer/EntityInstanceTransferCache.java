@@ -256,7 +256,8 @@ public class EntityInstanceTransferCache
                 key = entityInstance.getKey();
                 
                 if(includeKey && key == null) {
-                    key = coreControl.generateKeyForEntityInstance(entityInstance, false);
+                    entityInstance = coreControl.ensureKeyForEntityInstance(entityInstance, false);
+                    key = entityInstance.getKey();
                 }
             }
             
@@ -264,7 +265,8 @@ public class EntityInstanceTransferCache
                 guid = entityInstance.getGuid();
                 
                 if(includeGuid && guid == null) {
-                    guid = coreControl.generateGuidForEntityInstance(entityInstance, false);
+                    entityInstance = coreControl.ensureGuidForEntityInstance(entityInstance, false);
+                    guid = entityInstance.getGuid();
                 }
             }
             
@@ -272,7 +274,8 @@ public class EntityInstanceTransferCache
                 ulid = entityInstance.getUlid();
                 
                 if(includeUlid && ulid == null) {
-                    ulid = coreControl.generateUlidForEntityInstance(entityInstance, false);
+                    entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
+                    ulid = entityInstance.getUlid();
                 }
             }
             

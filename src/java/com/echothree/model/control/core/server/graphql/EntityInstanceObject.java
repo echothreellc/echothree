@@ -37,7 +37,7 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 @GraphQLName("EntityInstance")
 public class EntityInstanceObject {
     
-    private final EntityInstance entityInstance; // Always Present
+    private EntityInstance entityInstance; // Always Present
     
     public EntityInstanceObject(EntityInstance entityInstance) {
         this.entityInstance = entityInstance;
@@ -63,7 +63,9 @@ public class EntityInstanceObject {
     public String getKey() {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
-        return coreControl.generateKeyForEntityInstance(entityInstance, false);
+        entityInstance = coreControl.ensureKeyForEntityInstance(entityInstance, false);
+
+        return entityInstance.getKey();
     }
     
     @GraphQLField
@@ -72,7 +74,9 @@ public class EntityInstanceObject {
     public String getGuid() {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
-        return coreControl.generateGuidForEntityInstance(entityInstance, false);
+        entityInstance = coreControl.ensureGuidForEntityInstance(entityInstance, false);
+
+        return entityInstance.getGuid();
     }
     
     @GraphQLField
@@ -81,7 +85,9 @@ public class EntityInstanceObject {
     public String getUlid() {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
-        return coreControl.generateUlidForEntityInstance(entityInstance, false);
+        entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
+
+        return entityInstance.getUlid();
     }
     
     @GraphQLField

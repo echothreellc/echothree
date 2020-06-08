@@ -273,6 +273,7 @@
                 <include name="failureaccess.jar" />
                 <include name="httpclient.jar" />
                 <include name="httpcore.jar" />
+                <include name="icu4j.jar" />
                 <include name="itext.jar" />
                 <include name="java-dataloader.jar"/>
                 <include name="jooq.jar"/>

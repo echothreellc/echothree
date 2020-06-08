@@ -112,6 +112,10 @@
             <lib dir="${build.lib.dir}">
                 <include name="classgraph.jar"/>
             </lib>
+            <!-- ICU4J -->
+            <lib dir="${build.lib.dir}">
+                <include name="icu4j.jar"/>
+            </lib>
             <!-- Struts -->
             <lib dir="${build.lib.dir}">
                 <include name="commons-beanutils.jar"/>

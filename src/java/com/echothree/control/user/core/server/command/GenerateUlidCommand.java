@@ -18,14 +18,12 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GenerateUlidForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GenerateUlidResult;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,11 +59,11 @@ public class GenerateUlidCommand
     
     @Override
     protected BaseResult execute() {
-        GenerateUlidResult result = CoreResultFactory.getGenerateUlidResult();
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
+        var result = CoreResultFactory.getGenerateUlidResult();
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
         
         if(!hasExecutionErrors()) {
-            result.setUlid(getCoreControl().generateUlidForEntityInstance(entityInstance, Boolean.valueOf(form.getForceRegeneration())));
+            result.setUlid(getCoreControl().ensureUlidForEntityInstance(entityInstance, Boolean.valueOf(form.getForceRegeneration())).getUlid());
         }
         
         return result;
