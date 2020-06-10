@@ -16,9 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.workflow;
 
-import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
+import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -28,29 +27,26 @@ import org.xml.sax.SAXException;
 
 public class WorkflowsHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
     
     /** Creates a new instance of WorkflowsHandler */
     public WorkflowsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
-            throws SAXException {
+            throws SAXException, NamingException {
         super(initialDataParser, parentHandler);
         
-        try {
-            workflowService = WorkflowUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
+        workflowService = WorkflowUtil.getHome();
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflow")) {
-            CreateWorkflowForm commandForm = WorkflowFormFactory.getCreateWorkflowForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowForm();
             
             commandForm.set(getAttrsMap(attrs));
-            
-            workflowService.createWorkflow(initialDataParser.getUserVisit(), commandForm);
+
+            checkCommandResult(workflowService.createWorkflow(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new WorkflowHandler(initialDataParser, this, commandForm.getWorkflowName()));
         }

@@ -1645,6 +1645,15 @@
                 <securityRoleDescription languageIsoName="en" description="Purchase Order Search" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PurchaseOrderStatus" parentSecurityRoleGroupName="PurchaseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Purchase Order Status" />
+            <securityRole securityRoleName="Choices" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Purchase Order Status Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Entry" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Purchase Order Entry" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SelectorComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Selector Component" />
         </securityRoleGroup>

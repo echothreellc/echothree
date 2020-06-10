@@ -15,6 +15,17 @@
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
 <initialData>
+    <orderTypes>
+        <orderType orderTypeName="WISHLIST" orderSequenceTypeName="WISHLIST" isDefault="false" sortOrder="1">
+            <orderTypeDescription languageIsoName="en" description="Wish List" />
+            <orderAdjustmentType orderAdjustmentTypeName="TEST_ORDER_ADJUSTMENT_TYPE" isDefault="false" sortOrder="1">
+                <orderAdjustmentTypeDescription languageIsoName="en" description="Test Order Adjustment Type" />
+            </orderAdjustmentType>
+            <orderLineAdjustmentType orderLineAdjustmentTypeName="TEST_ORDER_LINE_ADJUSTMENT_TYPE" isDefault="false" sortOrder="1">
+                <orderLineAdjustmentTypeDescription languageIsoName="en" description="Test Order Line Adjustment Type" />
+            </orderLineAdjustmentType>
+        </orderType>
+    </orderTypes>
     <wishlistTypes>
         <wishlistType wishlistTypeName="WISHLIST_EXAMPLE_1" isDefault="true" sortOrder="1">
             <wishlistTypeDescription languageIsoName="en" description="Wishlist Example 1" />

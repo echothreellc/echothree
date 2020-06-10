@@ -126,7 +126,7 @@ public class CreateWorkflowCommand
                 addExecutionError(ExecutionErrors.UnknownWorkflowTypeName.name(), workflowTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+            addExecutionError(ExecutionErrors.DuplicateWorkflowName.name(), workflowName);
         }
         
         return null;

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2020 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <orderTypes>
+        <orderType orderTypeName="SALES_ORDER" orderSequenceTypeName="SALES_ORDER" isDefault="false" sortOrder="1">
+            <orderTypeDescription languageIsoName="en" description="Sales Order" />
+            <orderTimeType orderTimeTypeName="CANCEL_AFTER" isDefault="true" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Cancel After" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="DELIVERY_REQUESTED" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Delivery Requested" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="REQUESTED_SHIP" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Requested Ship" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="SHIP_NOT_BEFORE" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Ship Not Before" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="SHIP_NO_LATER" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Ship No Later" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="DO_NOT_DELIVER_AFTER" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Do Not Deliver After" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="DO_NOT_DELIVER_BEFORE" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Do Not Deliver Before" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="CURRENT_SCHEDULE_DELIVERY" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Current Schedule Delivery" />
+            </orderTimeType>
+            <orderTimeType orderTimeTypeName="CURRENT_SCHEDULE_SHIP" isDefault="false" sortOrder="1">
+                <orderTimeTypeDescription languageIsoName="en" description="Current Schedule Ship" />
+            </orderTimeType>
+            <orderPriority orderPriorityName="NORMAL" priority="0" isDefault="true" sortOrder="1">
+                <orderPriorityDescription languageIsoName="en" description="Normal" />
+            </orderPriority>
+            <orderPriority orderPriorityName="EXPEDITED" priority="1" isDefault="false" sortOrder="1">
+                <orderPriorityDescription languageIsoName="en" description="Expedited" />
+            </orderPriority>
+            <orderAliasType orderAliasTypeName="TEST_ORDER_ALIAS_TYPE" isDefault="true" sortOrder="1">
+                <orderAliasTypeDescription languageIsoName="en" description="Test Order Alias Type" />
+            </orderAliasType>
+        </orderType>
+    </orderTypes>
+    <workflows>
+        <workflow workflowName="SALES_ORDER_BATCH_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="SalesOrderBatchStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Sales Order Batch Status" />
+            <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry" />
+            </workflowStep>
+            <workflowStep workflowStepName="AUDIT" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Audit" />
+            </workflowStep>
+            <workflowStep workflowStepName="COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Complete" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_AUDIT" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Audit" />
+                <workflowDestinationStep destinationWorkflowStepName="AUDIT" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Audit" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="AUDIT" workflowDestinationName="AUDIT_TO_ENTRY" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Audit to Entry" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Entry" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="AUDIT" workflowDestinationName="AUDIT_TO_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Audit to Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="COMPLETE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Complete" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="ENTRY" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Batch" />
+        </workflow>
+        <workflow workflowName="SALES_ORDER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="SalesOrderStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Sales Order Status" />
+            <workflowStep workflowStepName="ENTRY_ALLOCATED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry (Inventory Allocated)" />
+            </workflowStep>
+            <workflowStep workflowStepName="ENTRY_UNALLOCATED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry (Inventory Not Allocated)" />
+            </workflowStep>
+            <workflowStep workflowStepName="BATCH_AUDIT" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Batch Audit" />
+            </workflowStep>
+            <workflowStep workflowStepName="ENTRY_COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry Complete" />
+            </workflowStep>
+            <workflowEntrance workflowEntranceName="ENTRY_ALLOCATED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry (Inventory Allocated)" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY_ALLOCATED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="ENTRY_UNALLOCATED" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry (Inventory Not Allocated)" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY_UNALLOCATED" />
+            </workflowEntrance>
+            <workflowDestination workflowStepName="ENTRY_ALLOCATED" workflowDestinationName="ENTRY_ALLOCATED_TO_UNALLOCATED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Allocated to Unallocated" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_UNALLOCATED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY_UNALLOCATED" workflowDestinationName="ENTRY_UNALLOCATED_TO_ALLOCATED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Unallocated to Allocated" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_ALLOCATED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY_ALLOCATED" workflowDestinationName="ENTRY_ALLOCATED_TO_BATCH_AUDIT" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Allocated to Batch Audit" />
+                <workflowDestinationStep destinationWorkflowStepName="BATCH_AUDIT" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY_ALLOCATED" workflowDestinationName="ENTRY_ALLOCATED_TO_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Allocated to Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_COMPLETE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="BATCH_AUDIT" workflowDestinationName="BATCH_AUDIT_TO_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Batch Audit to Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_COMPLETE" />
+            </workflowDestination>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
+        </workflow>
+    </workflows>
+</initialData>

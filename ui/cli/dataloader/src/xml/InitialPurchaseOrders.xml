@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2020 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <orderTypes>
+        <orderType orderTypeName="PURCHASE_ORDER" orderSequenceTypeName="PURCHASE_ORDER" isDefault="false" sortOrder="1">
+            <orderTypeDescription languageIsoName="en" description="Purchase Order" />
+        </orderType>
+=    </orderTypes>
+    <workflows>
+        <workflow workflowName="PURCHASE_ORDER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PurchaseOrderStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Purchase Order Status" />
+            <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry" />
+            </workflowStep>
+            <workflowStep workflowStepName="COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Complete" />
+            </workflowStep>
+            <workflowEntrance workflowEntranceName="ENTRY" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="COMPLETE" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Complete" />
+                <workflowEntranceStep entranceWorkflowStepName="COMPLETE" />
+            </workflowEntrance>
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="COMPLETE" />
+            </workflowDestination>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
+        </workflow>
+    </workflows>
+</initialData>
