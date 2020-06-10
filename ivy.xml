@@ -51,11 +51,11 @@
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="sources->sources" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="sources->sources" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.1" conf="sources->sources" />
-        <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.10" conf="sources->sources" />
-        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.10" conf="sources->sources" />
-        <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.10" conf="sources->sources" />
-        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.12" conf="sources->sources" />
-        <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.10" conf="sources->sources" />
+        <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.12" conf="sources->sources" />
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.12" conf="sources->sources" />
+        <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.12" conf="sources->sources" />
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.13" conf="sources->sources" />
+        <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.12" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.5.2" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.5.2" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="8.5.2" conf="sources->sources" />
@@ -65,8 +65,8 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="sources->sources" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.29" conf="sources->sources" />
-        <dependency org="org.infinispan" name="infinispan-commons" rev="9.4.17.Final" conf="sources->sources" />
-        <dependency org="org.infinispan" name="infinispan-core" rev="9.4.17.Final" conf="sources->sources" />
+        <dependency org="org.infinispan" name="infinispan-commons" rev="10.1.8.Final" conf="sources->sources" />
+        <dependency org="org.infinispan" name="infinispan-core" rev="10.1.8.Final" conf="sources->sources" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.5" conf="sources->sources" />
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.5" conf="sources->sources" />
         <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.5" conf="sources->sources" />
@@ -84,7 +84,7 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="sources->sources" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="19.1.0.Final" conf="sources->sources" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.0.Final" conf="sources->sources" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
@@ -132,11 +132,11 @@
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="javadoc->javadoc" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="javadoc->javadoc" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.10" conf="javadoc->javadoc" />
-        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.10" conf="javadoc->javadoc" />
-        <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.10" conf="javadoc->javadoc" />
-        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.12" conf="javadoc->javadoc" />
-        <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.10" conf="javadoc->javadoc" />
+        <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.12" conf="javadoc->javadoc" />
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.12" conf="javadoc->javadoc" />
+        <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.12" conf="javadoc->javadoc" />
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.13" conf="javadoc->javadoc" />
+        <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.12" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.5.2" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.5.2" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="8.5.2" conf="javadoc->javadoc" />
@@ -146,8 +146,8 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="javadoc->javadoc" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.29" conf="javadoc->javadoc" />
-        <dependency org="org.infinispan" name="infinispan-commons" rev="9.4.17.Final" conf="javadoc->javadoc" />
-        <dependency org="org.infinispan" name="infinispan-core" rev="9.4.17.Final" conf="javadoc->javadoc" />
+        <dependency org="org.infinispan" name="infinispan-commons" rev="10.1.8.Final" conf="javadoc->javadoc" />
+        <dependency org="org.infinispan" name="infinispan-core" rev="10.1.8.Final" conf="javadoc->javadoc" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.5" conf="javadoc->javadoc" />
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.5" conf="javadoc->javadoc" />
         <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.5" conf="javadoc->javadoc" />
@@ -165,7 +165,7 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="19.1.0.Final" conf="javadoc->javadoc" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.0.Final" conf="javadoc->javadoc" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="javadoc->javadoc" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
@@ -218,11 +218,11 @@
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="binaries->default" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="binaries->default" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.1" conf="binaries->default" />
-        <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.10" conf="binaries->default" />
-        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.10" conf="binaries->default" />
-        <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.10" conf="binaries->default" />
-        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.12" conf="binaries->default" />
-        <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.10" conf="binaries->default" />
+        <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.12" conf="binaries->default" />
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.12" conf="binaries->default" />
+        <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.12" conf="binaries->default" />
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.13" conf="binaries->default" />
+        <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.12" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.5.2" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.5.2" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="8.5.2" conf="binaries->default" />
@@ -232,8 +232,8 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="binaries->default" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.29" conf="binaries->default" />
-        <dependency org="org.infinispan" name="infinispan-commons" rev="9.4.17.Final" conf="binaries->default" />
-        <dependency org="org.infinispan" name="infinispan-core" rev="9.4.17.Final" conf="binaries->default" />
+        <dependency org="org.infinispan" name="infinispan-commons" rev="10.1.8.Final" conf="binaries->default" />
+        <dependency org="org.infinispan" name="infinispan-core" rev="10.1.8.Final" conf="binaries->default" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.5" conf="binaries->default">
             <artifact name="org.jacoco.agent" e:classifier="runtime" ext="jar"/>
         </dependency>
@@ -255,7 +255,7 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="binaries->default" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="19.1.0.Final" conf="binaries->default" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.0.Final" conf="binaries->default" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="binaries->default" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="binaries->default" />

@@ -23,7 +23,7 @@ import org.infinispan.Cache;
 @Singleton
 public class DataCacheBean {
 
-    @Resource(lookup = "java:app/infinispan/EchoThree/Data")
+    @Resource(lookup = "java:app/infinispan/echothree/data")
     Cache<String, Object> cache;
 
     public Cache<String, Object> getCache() {
