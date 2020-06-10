@@ -76,6 +76,9 @@
         <file name="src/xml/InitialTerms.xml" />
         <file name="src/xml/InitialPaymentMethods.xml" />
         <file name="src/xml/InitialOrders.xml" />
+        <file name="src/xml/InitialSalesOrders.xml" />
+        <file name="src/xml/InitialPurchaseOrders.xml" />
+        <file name="src/xml/InitialWishlists.xml" />
         <file name="src/xml/InitialCarriers.xml" />
         <file name="src/xml/InitialShipments.xml" />
         <file name="src/xml/InitialReturnPolicy.xml" />
@@ -90,7 +93,6 @@
         <file name="src/xml/InitialChainKinds.xml" />
         <file name="src/xml/InitialSubscriptions.xml" />
         <file name="src/xml/InitialOffers.xml" />
-        <file name="src/xml/InitialWishlists.xml" />
         <file name="src/xml/InitialAssociates.xml" />
         <file name="src/xml/InitialCustomers.xml" />
         <file name="src/xml/InitialVendors.xml" />
