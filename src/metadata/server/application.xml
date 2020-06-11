@@ -3,13 +3,13 @@
     <display-name>EchoThree Core</display-name>
 
     <resource-ref>
-        <lookup-name>java:jboss/infinispan/cache/EchoThree/Security</lookup-name>
-        <res-ref-name>java:app/infinispan/EchoThree/Security</res-ref-name>
+        <lookup-name>java:jboss/infinispan/cache/echothree/security</lookup-name>
+        <res-ref-name>java:app/infinispan/echothree/security</res-ref-name>
     </resource-ref>
 
     <resource-ref>
-        <lookup-name>java:jboss/infinispan/cache/EchoThree/Data</lookup-name>
-        <res-ref-name>java:app/infinispan/EchoThree/Data</res-ref-name>
+        <lookup-name>java:jboss/infinispan/cache/echothree/data</lookup-name>
+        <res-ref-name>java:app/infinispan/echothree/data</res-ref-name>
     </resource-ref>
 
     <module>

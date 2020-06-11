@@ -20,9 +20,9 @@
          version="3.1">
     <distributable />
     <resource-env-ref>
-        <resource-env-ref-name>java:app/infinispan/EchoThree/Cms</resource-env-ref-name>
+        <resource-env-ref-name>java:app/infinispan/echothree/cms</resource-env-ref-name>
         <resource-env-ref-type>org.infinispan.Cache</resource-env-ref-type>
-        <lookup-name>java:jboss/infinispan/cache/EchoThree/Cms</lookup-name>
+        <lookup-name>java:jboss/infinispan/cache/echothree/cms</lookup-name>
     </resource-env-ref>
     <session-config>
         <session-timeout>15</session-timeout>

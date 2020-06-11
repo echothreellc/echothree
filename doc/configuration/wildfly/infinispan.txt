@@ -1,14 +1,15 @@
-            <cache-container name="EchoThree">
+            <cache-container name="echothree">
                 <transport/>
-                <replicated-cache name="Cms">
-                    <transaction locking="OPTIMISTIC" mode="FULL_XA"/>
-                    <object-memory size="5242880"/>
+                <replicated-cache name="cms">
+                    <transaction mode="FULL_XA"/>
+                    <expiration lifespan="480000" max-idle="240000"/>
                 </replicated-cache>
-                <replicated-cache name="Data">
-                    <transaction locking="OPTIMISTIC" mode="FULL_XA"/>
-                    <object-memory size="5242880"/>
+                <replicated-cache name="data">
+                    <transaction mode="FULL_XA"/>
+                    <expiration lifespan="480000" max-idle="240000"/>
                 </replicated-cache>
-                <replicated-cache name="Security">
-                    <transaction locking="OPTIMISTIC" mode="FULL_XA"/>
+                <replicated-cache name="security">
+                    <transaction mode="FULL_XA"/>
+                    <expiration lifespan="480000" max-idle="240000"/>
                 </replicated-cache>
             </cache-container>

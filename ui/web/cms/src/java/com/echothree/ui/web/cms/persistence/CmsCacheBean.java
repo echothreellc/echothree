@@ -23,7 +23,7 @@ import javax.ejb.Singleton;
 @Singleton
 public class CmsCacheBean {
 
-    @Resource(lookup = "java:app/infinispan/EchoThree/Cms")
+    @Resource(lookup = "java:app/infinispan/echothree/cms")
     Cache<String, Object> cache;
 
     public Cache<String, Object> getCache() {
