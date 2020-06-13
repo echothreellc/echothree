@@ -28,6 +28,8 @@ import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeDescriptionTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
+import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
+import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
 import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryDescriptionTransferCache;
 import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryTransferCache;
 import com.echothree.model.control.vendor.server.transfer.VendorItemCostTransferCache;
@@ -35,9 +37,6 @@ import com.echothree.model.control.vendor.server.transfer.VendorItemTransferCach
 import com.echothree.model.control.vendor.server.transfer.VendorTransferCaches;
 import com.echothree.model.control.vendor.server.transfer.VendorTypeDescriptionTransferCache;
 import com.echothree.model.control.vendor.server.transfer.VendorTypeTransferCache;
-import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
-import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
@@ -58,6 +57,8 @@ import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -137,12 +138,13 @@ public class VendorControl
     //   Vendor Types
     // --------------------------------------------------------------------------------
     
-    public VendorType createVendorType(String vendorTypeName, CancellationPolicy defaultCancellationPolicy, ReturnPolicy defaultReturnPolicy,
+    public VendorType createVendorType(String vendorTypeName, Term defaultTerm, FreeOnBoard defaultFreeOnBoard,
+            CancellationPolicy defaultCancellationPolicy, ReturnPolicy defaultReturnPolicy,
             GlAccount defaultApGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders, Boolean defaultAllowSubstitutions,
             Boolean defaultAllowCombiningShipments, Boolean defaultRequireReference, Boolean defaultAllowReferenceDuplicates,
             String defaultReferenceValidationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        VendorType defaultVendorType = getDefaultVendorType();
-        boolean defaultFound = defaultVendorType != null;
+        var defaultVendorType = getDefaultVendorType();
+        var defaultFound = defaultVendorType != null;
         
         if(defaultFound && isDefault) {
             VendorTypeDetailValue defaultVendorTypeDetailValue = getDefaultVendorTypeDetailValueForUpdate();
@@ -152,11 +154,12 @@ public class VendorControl
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
-        
-        VendorType vendorType = VendorTypeFactory.getInstance().create();
-        VendorTypeDetail vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorType, vendorTypeName, null, null, defaultCancellationPolicy,
-                defaultReturnPolicy, defaultApGlAccount, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions,
-                defaultAllowCombiningShipments, defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
+
+        var vendorType = VendorTypeFactory.getInstance().create();
+        var vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorType, vendorTypeName, defaultTerm,
+                defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount,
+                defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
+                defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -334,27 +337,29 @@ public class VendorControl
     private void updateVendorTypeFromValue(VendorTypeDetailValue vendorTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(vendorTypeDetailValue.hasBeenModified()) {
-            VendorType vendorType = VendorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var vendorType = VendorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorTypeDetailValue.getVendorTypePK());
-            VendorTypeDetail vendorTypeDetail = vendorType.getActiveDetailForUpdate();
+            var vendorTypeDetail = vendorType.getActiveDetailForUpdate();
             
             vendorTypeDetail.setThruTime(session.START_TIME_LONG);
             vendorTypeDetail.store();
-            
-            VendorTypePK vendorTypePK = vendorTypeDetail.getVendorTypePK();
-            String vendorTypeName = vendorTypeDetailValue.getVendorTypeName();
-            CancellationPolicyPK defaultCancellationPolicyPK = vendorTypeDetailValue.getDefaultCancellationPolicyPK();
-            ReturnPolicyPK defaultReturnPolicyPK = vendorTypeDetailValue.getDefaultReturnPolicyPK();
-            GlAccountPK defaultApGlAccountPK = vendorTypeDetailValue.getDefaultApGlAccountPK();
-            Boolean defaultHoldUntilComplete = vendorTypeDetailValue.getDefaultHoldUntilComplete();
-            Boolean defaultAllowBackorders = vendorTypeDetailValue.getDefaultAllowBackorders();
-            Boolean defaultAllowSubstitutions = vendorTypeDetailValue.getDefaultAllowSubstitutions();
-            Boolean defaultAllowCombiningShipments = vendorTypeDetailValue.getDefaultAllowCombiningShipments();
-            Boolean defaultRequireReference = vendorTypeDetailValue.getDefaultRequireReference();
-            Boolean defaultAllowReferenceDuplicates = vendorTypeDetailValue.getDefaultAllowReferenceDuplicates();
-            String defaultReferenceValidationPattern = vendorTypeDetailValue.getDefaultReferenceValidationPattern();
-            Boolean isDefault = vendorTypeDetailValue.getIsDefault();
-            Integer sortOrder = vendorTypeDetailValue.getSortOrder();
+
+            var vendorTypePK = vendorTypeDetail.getVendorTypePK();
+            var vendorTypeName = vendorTypeDetailValue.getVendorTypeName();
+            var termPK = vendorTypeDetailValue.getDefaultTermPK();
+            var defaultFreeOnBoardPK = vendorTypeDetailValue.getDefaultFreeOnBoardPK();
+            var defaultCancellationPolicyPK = vendorTypeDetailValue.getDefaultCancellationPolicyPK();
+            var defaultReturnPolicyPK = vendorTypeDetailValue.getDefaultReturnPolicyPK();
+            var defaultApGlAccountPK = vendorTypeDetailValue.getDefaultApGlAccountPK();
+            var defaultHoldUntilComplete = vendorTypeDetailValue.getDefaultHoldUntilComplete();
+            var defaultAllowBackorders = vendorTypeDetailValue.getDefaultAllowBackorders();
+            var defaultAllowSubstitutions = vendorTypeDetailValue.getDefaultAllowSubstitutions();
+            var defaultAllowCombiningShipments = vendorTypeDetailValue.getDefaultAllowCombiningShipments();
+            var defaultRequireReference = vendorTypeDetailValue.getDefaultRequireReference();
+            var defaultAllowReferenceDuplicates = vendorTypeDetailValue.getDefaultAllowReferenceDuplicates();
+            var defaultReferenceValidationPattern = vendorTypeDetailValue.getDefaultReferenceValidationPattern();
+            var isDefault = vendorTypeDetailValue.getIsDefault();
+            var sortOrder = vendorTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
                 VendorType defaultVendorType = getDefaultVendorType();
@@ -372,10 +377,11 @@ public class VendorControl
                 }
             }
             
-            vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorTypePK, vendorTypeName, null, null, defaultCancellationPolicyPK, defaultReturnPolicyPK,
-                    defaultApGlAccountPK, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
-                    defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            vendorTypeDetail = VendorTypeDetailFactory.getInstance().create(vendorTypePK, vendorTypeName, termPK,
+                    defaultFreeOnBoardPK, defaultCancellationPolicyPK, defaultReturnPolicyPK, defaultApGlAccountPK,
+                    defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
+                    defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
+                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             vendorType.setActiveDetail(vendorTypeDetail);
             vendorType.setLastDetail(vendorTypeDetail);

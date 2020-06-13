@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.form.CreateVendorTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.util.common.command.CommandResult;
@@ -57,9 +56,11 @@ public class AddAction
                 AddActionForm actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateVendorTypeForm commandForm = VendorUtil.getHome().getCreateVendorTypeForm();
+                    var commandForm = VendorUtil.getHome().getCreateVendorTypeForm();
                     
                     commandForm.setVendorTypeName(actionForm.getVendorTypeName());
+                    commandForm.setDefaultTermName(actionForm.getDefaultTermChoice());
+                    commandForm.setDefaultFreeOnBoardName(actionForm.getDefaultFreeOnBoardChoice());
                     commandForm.setDefaultCancellationPolicyName(actionForm.getDefaultCancellationPolicyChoice());
                     commandForm.setDefaultReturnPolicyName(actionForm.getDefaultReturnPolicyChoice());
                     commandForm.setDefaultApGlAccountName(actionForm.getDefaultApGlAccountChoice());
