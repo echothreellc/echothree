@@ -16,20 +16,18 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
+import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.model.data.vendor.server.entity.VendorTypeDetail;
 import com.echothree.util.server.persistence.Session;
 
 public class VendorTypeTransferCache
@@ -37,8 +35,10 @@ public class VendorTypeTransferCache
     
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
     CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+    FreeOnBoardControl freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
     ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-    
+    TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+
     /** Creates a new instance of VendorTypeTransferCache */
     public VendorTypeTransferCache(UserVisit userVisit, VendorControl vendorControl) {
         super(userVisit, vendorControl);
@@ -47,29 +47,33 @@ public class VendorTypeTransferCache
     }
     
     public VendorTypeTransfer getVendorTypeTransfer(VendorType vendorType) {
-        VendorTypeTransfer vendorTypeTransfer = get(vendorType);
+        var vendorTypeTransfer = get(vendorType);
         
         if(vendorTypeTransfer == null) {
-            VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
-            String vendorTypeName = vendorTypeDetail.getVendorTypeName();
-            CancellationPolicy defaultCancellationPolicy = vendorTypeDetail.getDefaultCancellationPolicy();
-            CancellationPolicyTransfer defaultCancellationPolicyTransfer = defaultCancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, defaultCancellationPolicy);
-            ReturnPolicy defaultReturnPolicy = vendorTypeDetail.getDefaultReturnPolicy();
-            ReturnPolicyTransfer defaultReturnPolicyTransfer = defaultReturnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, defaultReturnPolicy);
-            GlAccount defaultApGlAccount = vendorTypeDetail.getDefaultApGlAccount();
-            GlAccountTransfer defaultApGlAccountTransfer = defaultApGlAccount == null ? null : accountingControl.getGlAccountTransfer(userVisit, defaultApGlAccount);
-            Boolean defaultHoldUntilComplete = vendorTypeDetail.getDefaultHoldUntilComplete();
-            Boolean defaultAllowBackorders = vendorTypeDetail.getDefaultAllowBackorders();
-            Boolean defaultAllowSubstitutions = vendorTypeDetail.getDefaultAllowSubstitutions();
-            Boolean defaultAllowCombiningShipments = vendorTypeDetail.getDefaultAllowCombiningShipments();
-            Boolean defaultRequireReference = vendorTypeDetail.getDefaultRequireReference();
-            Boolean defaultAllowReferenceDuplicates = vendorTypeDetail.getDefaultAllowReferenceDuplicates();
-            String defaultReferenceValidationPattern = vendorTypeDetail.getDefaultReferenceValidationPattern();
-            Boolean isDefault = vendorTypeDetail.getIsDefault();
-            Integer sortOrder = vendorTypeDetail.getSortOrder();
-            String description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage());
+            var vendorTypeDetail = vendorType.getLastDetail();
+            var vendorTypeName = vendorTypeDetail.getVendorTypeName();
+            var defaultTerm = vendorTypeDetail.getDefaultTerm();
+            var defaultTermTransfer = defaultTerm == null ? null : termControl.getTermTransfer(userVisit, defaultTerm);
+            var defaultFreeOnBoard = vendorTypeDetail.getDefaultFreeOnBoard();
+            var defaultFreeOnBoardTransfer = defaultFreeOnBoard == null ? null : freeOnBoardControl.getFreeOnBoardTransfer(userVisit, defaultFreeOnBoard);
+            var defaultCancellationPolicy = vendorTypeDetail.getDefaultCancellationPolicy();
+            var defaultCancellationPolicyTransfer = defaultCancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, defaultCancellationPolicy);
+            var defaultReturnPolicy = vendorTypeDetail.getDefaultReturnPolicy();
+            var defaultReturnPolicyTransfer = defaultReturnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, defaultReturnPolicy);
+            var defaultApGlAccount = vendorTypeDetail.getDefaultApGlAccount();
+            var defaultApGlAccountTransfer = defaultApGlAccount == null ? null : accountingControl.getGlAccountTransfer(userVisit, defaultApGlAccount);
+            var defaultHoldUntilComplete = vendorTypeDetail.getDefaultHoldUntilComplete();
+            var defaultAllowBackorders = vendorTypeDetail.getDefaultAllowBackorders();
+            var defaultAllowSubstitutions = vendorTypeDetail.getDefaultAllowSubstitutions();
+            var defaultAllowCombiningShipments = vendorTypeDetail.getDefaultAllowCombiningShipments();
+            var defaultRequireReference = vendorTypeDetail.getDefaultRequireReference();
+            var defaultAllowReferenceDuplicates = vendorTypeDetail.getDefaultAllowReferenceDuplicates();
+            var defaultReferenceValidationPattern = vendorTypeDetail.getDefaultReferenceValidationPattern();
+            var isDefault = vendorTypeDetail.getIsDefault();
+            var sortOrder = vendorTypeDetail.getSortOrder();
+            var description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage());
             
-            vendorTypeTransfer = new VendorTypeTransfer(vendorTypeName, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
+            vendorTypeTransfer = new VendorTypeTransfer(vendorTypeName, defaultTermTransfer, defaultFreeOnBoardTransfer, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
                     defaultApGlAccountTransfer, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault, sortOrder, description);
             put(vendorType, vendorTypeTransfer);
