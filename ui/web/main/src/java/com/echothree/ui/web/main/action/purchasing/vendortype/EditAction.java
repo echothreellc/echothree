@@ -79,6 +79,8 @@ public class EditAction
                     commandForm.setEdit(edit);
                     
                     edit.setVendorTypeName(actionForm.getVendorTypeName());
+                    edit.setDefaultTermName(actionForm.getDefaultTermChoice());
+                    edit.setDefaultFreeOnBoardName(actionForm.getDefaultFreeOnBoardChoice());
                     edit.setDefaultCancellationPolicyName(actionForm.getDefaultCancellationPolicyChoice());
                     edit.setDefaultReturnPolicyName(actionForm.getDefaultReturnPolicyChoice());
                     edit.setDefaultApGlAccountName(actionForm.getDefaultApGlAccountChoice());
@@ -123,6 +125,8 @@ public class EditAction
                         if(edit != null) {
                             actionForm.setOriginalVendorTypeName(edit.getVendorTypeName());
                             actionForm.setVendorTypeName(edit.getVendorTypeName());
+                            actionForm.setDefaultTermChoice(edit.getDefaultTermName());
+                            actionForm.setDefaultFreeOnBoardChoice(edit.getDefaultFreeOnBoardName());
                             actionForm.setDefaultCancellationPolicyChoice(edit.getDefaultCancellationPolicyName());
                             actionForm.setDefaultReturnPolicyChoice(edit.getDefaultReturnPolicyName());
                             actionForm.setDefaultApGlAccountChoice(edit.getDefaultApGlAccountName());

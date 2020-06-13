@@ -17,22 +17,23 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetGlAccountChoicesForm;
 import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyChoicesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
+import com.echothree.control.user.shipment.common.ShipmentUtil;
+import com.echothree.control.user.shipment.common.result.GetFreeOnBoardChoicesResult;
+import com.echothree.control.user.term.common.TermUtil;
+import com.echothree.control.user.term.common.result.GetTermChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.model.control.shipment.common.choice.FreeOnBoardChoicesBean;
+import com.echothree.model.control.term.common.choice.TermChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,12 +45,16 @@ import org.apache.struts.util.LabelValueBean;
 @SproutForm(name="VendorTypeAdd")
 public class AddActionForm
         extends BaseActionForm {
-    
+
+    private TermChoicesBean defaultTermChoices;
+    private FreeOnBoardChoicesBean defaultFreeOnBoardChoices;
     private CancellationPolicyChoicesBean defaultCancellationPolicyChoices;
     private ReturnPolicyChoicesBean defaultReturnPolicyChoices;
     private GlAccountChoicesBean defaultApGlAccountChoices;
     
     private String vendorTypeName;
+    private String defaultTermChoice;
+    private String defaultFreeOnBoardChoice;
     private String defaultCancellationPolicyChoice;
     private String defaultReturnPolicyChoice;
     private String defaultApGlAccountChoice;
@@ -63,73 +68,97 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     private String description;
-    
-    public void setupDefaultCancellationPolicyChoices() {
+
+    public void setupDefaultTermChoices()
+            throws NamingException {
+        if(defaultTermChoices == null) {
+            var form = TermUtil.getHome().getGetTermChoicesForm();
+
+            form.setDefaultTermChoice(defaultTermChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetTermChoicesResult)executionResult.getResult();
+            defaultTermChoices = result.getTermChoices();
+
+            if(defaultTermChoice == null)
+                defaultTermChoice = defaultTermChoices.getDefaultValue();
+        }
+    }
+
+    public void setupDefaultFreeOnBoardChoices()
+            throws NamingException {
+        if(defaultFreeOnBoardChoices == null) {
+            var form = ShipmentUtil.getHome().getGetFreeOnBoardChoicesForm();
+
+            form.setDefaultFreeOnBoardChoice(defaultFreeOnBoardChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = ShipmentUtil.getHome().getFreeOnBoardChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFreeOnBoardChoicesResult)executionResult.getResult();
+            defaultFreeOnBoardChoices = result.getFreeOnBoardChoices();
+
+            if(defaultFreeOnBoardChoice == null)
+                defaultFreeOnBoardChoice = defaultFreeOnBoardChoices.getDefaultValue();
+        }
+    }
+
+    public void setupDefaultCancellationPolicyChoices()
+            throws NamingException {
         if(defaultCancellationPolicyChoices == null) {
-            try {
-                GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+            var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
-                form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
-                form.setDefaultCancellationPolicyChoice(defaultCancellationPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
+            form.setDefaultCancellationPolicyChoice(defaultCancellationPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
-                defaultCancellationPolicyChoices = result.getCancellationPolicyChoices();
+            var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            defaultCancellationPolicyChoices = result.getCancellationPolicyChoices();
 
-                if(defaultCancellationPolicyChoice == null)
-                    defaultCancellationPolicyChoice = defaultCancellationPolicyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultCancellationPolicyChoices remains null, no default
-            }
+            if(defaultCancellationPolicyChoice == null)
+                defaultCancellationPolicyChoice = defaultCancellationPolicyChoices.getDefaultValue();
         }
     }
 
-    public void setupDefaultReturnPolicyChoices() {
+    public void setupDefaultReturnPolicyChoices()
+            throws NamingException {
         if(defaultReturnPolicyChoices == null) {
-            try {
-                GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+            var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
-                form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
-                form.setDefaultReturnPolicyChoice(defaultReturnPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+            form.setDefaultReturnPolicyChoice(defaultReturnPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
-                defaultReturnPolicyChoices = result.getReturnPolicyChoices();
+            var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            defaultReturnPolicyChoices = result.getReturnPolicyChoices();
 
-                if(defaultReturnPolicyChoice == null)
-                    defaultReturnPolicyChoice = defaultReturnPolicyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultReturnPolicyChoices remains null, no default
-            }
+            if(defaultReturnPolicyChoice == null)
+                defaultReturnPolicyChoice = defaultReturnPolicyChoices.getDefaultValue();
         }
     }
 
-    private void setupDefaultApGlAccountChoices() {
+    private void setupDefaultApGlAccountChoices()
+            throws NamingException {
         if(defaultApGlAccountChoices == null) {
-            try {
-                GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
-                
-                form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE);
-                form.setDefaultGlAccountChoice(defaultApGlAccountChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
-                defaultApGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
-                
-                if(defaultApGlAccountChoice == null) {
-                    defaultApGlAccountChoice = defaultApGlAccountChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultApGlAccountChoices remains null, no default
+            var form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+            
+            form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE);
+            form.setDefaultGlAccountChoice(defaultApGlAccountChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            defaultApGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
+            
+            if(defaultApGlAccountChoice == null) {
+                defaultApGlAccountChoice = defaultApGlAccountChoices.getDefaultValue();
             }
         }
     }
@@ -141,8 +170,53 @@ public class AddActionForm
     public String getVendorTypeName() {
         return vendorTypeName;
     }
-    
-    public List<LabelValueBean> getDefaultCancellationPolicyChoices() {
+
+    public List<LabelValueBean> getDefaultTermChoices()
+            throws NamingException {
+        List<LabelValueBean> choices = null;
+
+        setupDefaultTermChoices();
+        if(defaultTermChoices != null)
+            choices = convertChoices(defaultTermChoices);
+
+        return choices;
+    }
+
+    public void setDefaultTermChoice(String defaultTermChoice) {
+        this.defaultTermChoice = defaultTermChoice;
+    }
+
+    public String getDefaultTermChoice()
+            throws NamingException {
+        setupDefaultTermChoices();
+
+        return defaultTermChoice;
+    }
+
+    public List<LabelValueBean> getDefaultFreeOnBoardChoices()
+            throws NamingException {
+        List<LabelValueBean> choices = null;
+
+        setupDefaultFreeOnBoardChoices();
+        if(defaultFreeOnBoardChoices != null)
+            choices = convertChoices(defaultFreeOnBoardChoices);
+
+        return choices;
+    }
+
+    public void setDefaultFreeOnBoardChoice(String defaultFreeOnBoardChoice) {
+        this.defaultFreeOnBoardChoice = defaultFreeOnBoardChoice;
+    }
+
+    public String getDefaultFreeOnBoardChoice()
+            throws NamingException {
+        setupDefaultFreeOnBoardChoices();
+
+        return defaultFreeOnBoardChoice;
+    }
+
+    public List<LabelValueBean> getDefaultCancellationPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupDefaultCancellationPolicyChoices();
@@ -156,13 +230,15 @@ public class AddActionForm
         this.defaultCancellationPolicyChoice = defaultCancellationPolicyChoice;
     }
 
-    public String getDefaultCancellationPolicyChoice() {
+    public String getDefaultCancellationPolicyChoice()
+            throws NamingException {
         setupDefaultCancellationPolicyChoices();
 
         return defaultCancellationPolicyChoice;
     }
 
-    public List<LabelValueBean> getDefaultReturnPolicyChoices() {
+    public List<LabelValueBean> getDefaultReturnPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupDefaultReturnPolicyChoices();
@@ -176,13 +252,15 @@ public class AddActionForm
         this.defaultReturnPolicyChoice = defaultReturnPolicyChoice;
     }
 
-    public String getDefaultReturnPolicyChoice() {
+    public String getDefaultReturnPolicyChoice()
+            throws NamingException {
         setupDefaultReturnPolicyChoices();
 
         return defaultReturnPolicyChoice;
     }
 
-    public String getDefaultApGlAccountChoice() {
+    public String getDefaultApGlAccountChoice()
+            throws NamingException {
         setupDefaultApGlAccountChoices();
         
         return defaultApGlAccountChoice;
@@ -192,7 +270,8 @@ public class AddActionForm
         this.defaultApGlAccountChoice = defaultApGlAccountChoice;
     }
     
-    public List<LabelValueBean> getDefaultApGlAccountChoices() {
+    public List<LabelValueBean> getDefaultApGlAccountChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultApGlAccountChoices();
