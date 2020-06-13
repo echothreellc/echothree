@@ -20,7 +20,13 @@ import com.echothree.control.user.vendor.common.spec.VendorTypeSpec;
 
 public interface VendorTypeEdit
         extends VendorTypeSpec, VendorTypeDescriptionEdit {
-    
+
+    String getDefaultTermName();
+    void setDefaultTermName(String DefaultTermName);
+
+    String getDefaultFreeOnBoardName();
+    void setDefaultFreeOnBoardName(String defaultFreeOnBoardName);
+
     String getDefaultCancellationPolicyName();
     void setDefaultCancellationPolicyName(String defaultCancellationPolicyName);
 

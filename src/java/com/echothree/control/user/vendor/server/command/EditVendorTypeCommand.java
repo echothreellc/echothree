@@ -19,7 +19,6 @@ package com.echothree.control.user.vendor.server.command;
 import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
 import com.echothree.control.user.vendor.common.edit.VendorTypeEdit;
 import com.echothree.control.user.vendor.common.form.EditVendorTypeForm;
-import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.control.user.vendor.common.spec.VendorTypeSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
@@ -31,24 +30,18 @@ import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
+import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.model.data.vendor.server.entity.VendorTypeDescription;
-import com.echothree.model.data.vendor.server.entity.VendorTypeDetail;
 import com.echothree.model.data.vendor.server.value.VendorTypeDescriptionValue;
-import com.echothree.model.data.vendor.server.value.VendorTypeDetailValue;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -79,6 +72,8 @@ public class EditVendorTypeCommand
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("DefaultTermName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultFreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultCancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultApGlAccountName", FieldType.ENTITY_NAME, false, null, null),
@@ -103,25 +98,29 @@ public class EditVendorTypeCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-        EditVendorTypeResult result = VendorResultFactory.getEditVendorTypeResult();
+        var result = VendorResultFactory.getEditVendorTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String vendorTypeName = spec.getVendorTypeName();
-            VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+            var vendorTypeName = spec.getVendorTypeName();
+            var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
             
             if(vendorType != null) {
                 result.setVendorType(vendorControl.getVendorTypeTransfer(getUserVisit(), vendorType));
                 
                 if(lockEntity(vendorType)) {
-                    VendorTypeDescription vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, getPreferredLanguage());
-                    VendorTypeEdit edit = VendorEditFactory.getVendorTypeEdit();
-                    VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
-                    CancellationPolicy defaultCancellationPolicy = vendorTypeDetail.getDefaultCancellationPolicy();
-                    ReturnPolicy defaultReturnPolicy = vendorTypeDetail.getDefaultReturnPolicy();
-                    GlAccount defaultApGlAccount = vendorTypeDetail.getDefaultApGlAccount();
+                    var vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, getPreferredLanguage());
+                    var edit = VendorEditFactory.getVendorTypeEdit();
+                    var vendorTypeDetail = vendorType.getLastDetail();
+                    var defaultTerm = vendorTypeDetail.getDefaultTerm();
+                    var defaultFreeOnBoard = vendorTypeDetail.getDefaultFreeOnBoard();
+                    var defaultCancellationPolicy = vendorTypeDetail.getDefaultCancellationPolicy();
+                    var defaultReturnPolicy = vendorTypeDetail.getDefaultReturnPolicy();
+                    var defaultApGlAccount = vendorTypeDetail.getDefaultApGlAccount();
                     
                     result.setEdit(edit);
                     edit.setVendorTypeName(vendorTypeDetail.getVendorTypeName());
+                    edit.setDefaultTermName(defaultTerm == null ? null : defaultTerm.getLastDetail().getTermName());
+                    edit.setDefaultFreeOnBoardName(defaultFreeOnBoard == null ? null : defaultFreeOnBoard.getLastDetail().getFreeOnBoardName());
                     edit.setDefaultCancellationPolicyName(defaultCancellationPolicy == null? null: defaultCancellationPolicy.getLastDetail().getCancellationPolicyName());
                     edit.setDefaultReturnPolicyName(defaultReturnPolicy == null? null: defaultReturnPolicy.getLastDetail().getReturnPolicyName());
                     edit.setDefaultApGlAccountName(defaultApGlAccount == null? null: defaultApGlAccount.getLastDetail().getGlAccountName());
@@ -146,98 +145,105 @@ public class EditVendorTypeCommand
                 addExecutionError(ExecutionErrors.UnknownVendorTypeName.name(), vendorTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String vendorTypeName = spec.getVendorTypeName();
-            VendorType vendorType = vendorControl.getVendorTypeByNameForUpdate(vendorTypeName);
+            var vendorTypeName = spec.getVendorTypeName();
+            var vendorType = vendorControl.getVendorTypeByNameForUpdate(vendorTypeName);
             
             if(vendorType != null) {
                 vendorTypeName = edit.getVendorTypeName();
-                VendorType duplicateVendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+                var duplicateVendorType = vendorControl.getVendorTypeByName(vendorTypeName);
                 
                 if(duplicateVendorType == null || vendorType.equals(duplicateVendorType)) {
-                    String defaultCancellationPolicyName = edit.getDefaultCancellationPolicyName();
-                    CancellationPolicy defaultCancellationPolicy = null;
+                    var defaultTerm = TermLogic.getInstance().getTermByName(this, edit.getDefaultTermName());
+                    var defaultFreeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, edit.getDefaultFreeOnBoardName());
 
-                    if(defaultCancellationPolicyName != null) {
-                        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-                        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
+                    if(!hasExecutionErrors()) {
+                        var defaultCancellationPolicyName = edit.getDefaultCancellationPolicyName();
+                        CancellationPolicy defaultCancellationPolicy = null;
 
-                        defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, defaultCancellationPolicyName);
-                    }
+                        if(defaultCancellationPolicyName != null) {
+                            var cancellationPolicyControl = (CancellationPolicyControl) Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
-                    if(defaultCancellationPolicyName == null || defaultCancellationPolicy != null) {
-                        String defaultReturnPolicyName = edit.getDefaultReturnPolicyName();
-                        ReturnPolicy defaultReturnPolicy = null;
-
-                        if(defaultReturnPolicyName != null) {
-                            var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-                            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
-
-                            defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
+                            defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, defaultCancellationPolicyName);
                         }
 
-                        if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-                            String defaultApGlAccountName = edit.getDefaultApGlAccountName();
-                            GlAccount defaultApGlAccount = defaultApGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultApGlAccountName);
+                        if(defaultCancellationPolicyName == null || defaultCancellationPolicy != null) {
+                            var defaultReturnPolicyName = edit.getDefaultReturnPolicyName();
+                            ReturnPolicy defaultReturnPolicy = null;
 
-                            if(defaultApGlAccountName == null || defaultApGlAccount != null) {
-                                String glAccountCategoryName = defaultApGlAccount == null ? null : defaultApGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
+                            if(defaultReturnPolicyName != null) {
+                                var returnPolicyControl = (ReturnPolicyControl) Session.getModelController(ReturnPolicyControl.class);
+                                var returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
-                                if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                    if(lockEntityForUpdate(vendorType)) {
-                                        try {
-                                            PartyPK partyPK = getPartyPK();
-                                            VendorTypeDetailValue vendorTypeDetailValue = vendorControl.getVendorTypeDetailValueForUpdate(vendorType);
-                                            VendorTypeDescription vendorTypeDescription = vendorControl.getVendorTypeDescriptionForUpdate(vendorType, getPreferredLanguage());
-                                            String description = edit.getDescription();
+                                defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
+                            }
 
-                                            vendorTypeDetailValue.setVendorTypeName(edit.getVendorTypeName());
-                                            vendorTypeDetailValue.setDefaultCancellationPolicyPK(defaultCancellationPolicy == null ? null : defaultCancellationPolicy.getPrimaryKey());
-                                            vendorTypeDetailValue.setDefaultReturnPolicyPK(defaultReturnPolicy == null ? null : defaultReturnPolicy.getPrimaryKey());
-                                            vendorTypeDetailValue.setDefaultApGlAccountPK(defaultApGlAccount == null ? null : defaultApGlAccount.getPrimaryKey());
-                                            vendorTypeDetailValue.setDefaultHoldUntilComplete(Boolean.valueOf(edit.getDefaultHoldUntilComplete()));
-                                            vendorTypeDetailValue.setDefaultAllowBackorders(Boolean.valueOf(edit.getDefaultAllowBackorders()));
-                                            vendorTypeDetailValue.setDefaultAllowSubstitutions(Boolean.valueOf(edit.getDefaultAllowSubstitutions()));
-                                            vendorTypeDetailValue.setDefaultAllowCombiningShipments(Boolean.valueOf(edit.getDefaultAllowCombiningShipments()));
-                                            vendorTypeDetailValue.setDefaultRequireReference(Boolean.valueOf(edit.getDefaultRequireReference()));
-                                            vendorTypeDetailValue.setDefaultAllowReferenceDuplicates(Boolean.valueOf(edit.getDefaultAllowReferenceDuplicates()));
-                                            vendorTypeDetailValue.setDefaultReferenceValidationPattern(edit.getDefaultReferenceValidationPattern());
-                                            vendorTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                            vendorTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+                            if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
+                                var accountingControl = (AccountingControl) Session.getModelController(AccountingControl.class);
+                                var defaultApGlAccountName = edit.getDefaultApGlAccountName();
+                                var defaultApGlAccount = defaultApGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultApGlAccountName);
 
-                                            vendorControl.updateVendorTypeFromValue(vendorTypeDetailValue, partyPK);
+                                if(defaultApGlAccountName == null || defaultApGlAccount != null) {
+                                    var glAccountCategoryName = defaultApGlAccount == null ? null : defaultApGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
-                                            if(vendorTypeDescription == null && description != null) {
-                                                vendorControl.createVendorTypeDescription(vendorType, getPreferredLanguage(), description, partyPK);
-                                            } else {
-                                                if(vendorTypeDescription != null && description == null) {
-                                                    vendorControl.deleteVendorTypeDescription(vendorTypeDescription, partyPK);
+                                    if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
+                                        if(lockEntityForUpdate(vendorType)) {
+                                            try {
+                                                var partyPK = getPartyPK();
+                                                var vendorTypeDetailValue = vendorControl.getVendorTypeDetailValueForUpdate(vendorType);
+                                                var vendorTypeDescription = vendorControl.getVendorTypeDescriptionForUpdate(vendorType, getPreferredLanguage());
+                                                var description = edit.getDescription();
+
+                                                vendorTypeDetailValue.setVendorTypeName(edit.getVendorTypeName());
+                                                vendorTypeDetailValue.setDefaultTermPK(defaultTerm == null ? null : defaultTerm.getPrimaryKey());
+                                                vendorTypeDetailValue.setDefaultFreeOnBoardPK(defaultFreeOnBoard == null ? null : defaultFreeOnBoard.getPrimaryKey());
+                                                vendorTypeDetailValue.setDefaultCancellationPolicyPK(defaultCancellationPolicy == null ? null : defaultCancellationPolicy.getPrimaryKey());
+                                                vendorTypeDetailValue.setDefaultReturnPolicyPK(defaultReturnPolicy == null ? null : defaultReturnPolicy.getPrimaryKey());
+                                                vendorTypeDetailValue.setDefaultApGlAccountPK(defaultApGlAccount == null ? null : defaultApGlAccount.getPrimaryKey());
+                                                vendorTypeDetailValue.setDefaultHoldUntilComplete(Boolean.valueOf(edit.getDefaultHoldUntilComplete()));
+                                                vendorTypeDetailValue.setDefaultAllowBackorders(Boolean.valueOf(edit.getDefaultAllowBackorders()));
+                                                vendorTypeDetailValue.setDefaultAllowSubstitutions(Boolean.valueOf(edit.getDefaultAllowSubstitutions()));
+                                                vendorTypeDetailValue.setDefaultAllowCombiningShipments(Boolean.valueOf(edit.getDefaultAllowCombiningShipments()));
+                                                vendorTypeDetailValue.setDefaultRequireReference(Boolean.valueOf(edit.getDefaultRequireReference()));
+                                                vendorTypeDetailValue.setDefaultAllowReferenceDuplicates(Boolean.valueOf(edit.getDefaultAllowReferenceDuplicates()));
+                                                vendorTypeDetailValue.setDefaultReferenceValidationPattern(edit.getDefaultReferenceValidationPattern());
+                                                vendorTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+                                                vendorTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+                                                vendorControl.updateVendorTypeFromValue(vendorTypeDetailValue, partyPK);
+
+                                                if(vendorTypeDescription == null && description != null) {
+                                                    vendorControl.createVendorTypeDescription(vendorType, getPreferredLanguage(), description, partyPK);
                                                 } else {
-                                                    if(vendorTypeDescription != null && description != null) {
-                                                        VendorTypeDescriptionValue vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValue(vendorTypeDescription);
+                                                    if(vendorTypeDescription != null && description == null) {
+                                                        vendorControl.deleteVendorTypeDescription(vendorTypeDescription, partyPK);
+                                                    } else {
+                                                        if(vendorTypeDescription != null && description != null) {
+                                                            VendorTypeDescriptionValue vendorTypeDescriptionValue = vendorControl.getVendorTypeDescriptionValue(vendorTypeDescription);
 
-                                                        vendorTypeDescriptionValue.setDescription(description);
-                                                        vendorControl.updateVendorTypeDescriptionFromValue(vendorTypeDescriptionValue, partyPK);
+                                                            vendorTypeDescriptionValue.setDescription(description);
+                                                            vendorControl.updateVendorTypeDescriptionFromValue(vendorTypeDescriptionValue, partyPK);
+                                                        }
                                                     }
                                                 }
+                                            } finally {
+                                                unlockEntity(vendorType);
                                             }
-                                        } finally {
-                                            unlockEntity(vendorType);
+                                        } else {
+                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
                                         }
                                     } else {
-                                        addExecutionError(ExecutionErrors.EntityLockStale.name());
+                                        addExecutionError(ExecutionErrors.InvalidGlAccountCategory.name(), glAccountCategoryName);
                                     }
                                 } else {
-                                    addExecutionError(ExecutionErrors.InvalidGlAccountCategory.name(), glAccountCategoryName);
+                                    addExecutionError(ExecutionErrors.UnknownDefaultApGlAccountName.name(), defaultApGlAccountName);
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownDefaultApGlAccountName.name(), defaultApGlAccountName);
+                                addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), defaultReturnPolicyName);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), defaultReturnPolicyName);
+                            addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), defaultCancellationPolicyName);
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), defaultCancellationPolicyName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateVendorTypeName.name(), vendorTypeName);
