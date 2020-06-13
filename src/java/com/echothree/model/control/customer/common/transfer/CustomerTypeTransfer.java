@@ -22,6 +22,7 @@ import com.echothree.model.control.inventory.common.transfer.AllocationPriorityT
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
+import com.echothree.model.control.shipment.common.transfer.FreeOnBoardTransfer;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
@@ -32,6 +33,7 @@ public class CustomerTypeTransfer
     private SequenceTransfer customerSequence;
     private OfferUseTransfer defaultOfferUse;
     private TermTransfer defaultTerm;
+    private FreeOnBoardTransfer defaultFreeOnBoardTransfer;
     private CancellationPolicyTransfer defaultCancellationPolicy;
     private ReturnPolicyTransfer defaultReturnPolicy;
     private GlAccountTransfer defaultArGlAccount;
@@ -50,7 +52,7 @@ public class CustomerTypeTransfer
 
     /** Creates a new instance of CustomerTypeTransfer */
     public CustomerTypeTransfer(String customerTypeName, SequenceTransfer customerSequence, OfferUseTransfer defaultOfferUse, TermTransfer defaultTerm,
-            CancellationPolicyTransfer defaultCancellationPolicy, ReturnPolicyTransfer defaultReturnPolicy, GlAccountTransfer defaultArGlAccount,
+            FreeOnBoardTransfer defaultFreeOnBoardTransfer, CancellationPolicyTransfer defaultCancellationPolicy, ReturnPolicyTransfer defaultReturnPolicy, GlAccountTransfer defaultArGlAccount,
             Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders, Boolean defaultAllowSubstitutions, Boolean defaultAllowCombiningShipments,
             Boolean defaultRequireReference, Boolean defaultAllowReferenceDuplicates, String defaultReferenceValidationPattern, Boolean defaultTaxable,
             AllocationPriorityTransfer allocationPriority, Boolean isDefault, Integer sortOrder, String description) {
@@ -58,6 +60,7 @@ public class CustomerTypeTransfer
         this.customerSequence = customerSequence;
         this.defaultOfferUse = defaultOfferUse;
         this.defaultTerm = defaultTerm;
+        this.defaultFreeOnBoardTransfer = defaultFreeOnBoardTransfer;
         this.defaultCancellationPolicy = defaultCancellationPolicy;
         this.defaultReturnPolicy = defaultReturnPolicy;
         this.defaultArGlAccount = defaultArGlAccount;
@@ -129,6 +132,14 @@ public class CustomerTypeTransfer
      */
     public void setDefaultTerm(TermTransfer defaultTerm) {
         this.defaultTerm = defaultTerm;
+    }
+
+    public FreeOnBoardTransfer getDefaultFreeOnBoardTransfer() {
+        return defaultFreeOnBoardTransfer;
+    }
+
+    public void setDefaultFreeOnBoardTransfer(final FreeOnBoardTransfer defaultFreeOnBoardTransfer) {
+        this.defaultFreeOnBoardTransfer = defaultFreeOnBoardTransfer;
     }
 
     /**
