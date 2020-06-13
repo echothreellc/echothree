@@ -91,8 +91,10 @@ public class CreateVendorTypeCommand
         var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
 
         if(vendorType == null) {
-            var defaultTerm = TermLogic.getInstance().getTermByName(this, form.getDefaultTermName());
-            var defaultFreeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, form.getDefaultFreeOnBoardName());
+            var defaultTermName = form.getDefaultTermName();
+            var defaultFreeOnBoardName = form.getDefaultFreeOnBoardName();
+            var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
+            var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
 
             if(!hasExecutionErrors()) {
                 var defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();

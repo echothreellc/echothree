@@ -153,8 +153,10 @@ public class EditVendorTypeCommand
                 var duplicateVendorType = vendorControl.getVendorTypeByName(vendorTypeName);
                 
                 if(duplicateVendorType == null || vendorType.equals(duplicateVendorType)) {
-                    var defaultTerm = TermLogic.getInstance().getTermByName(this, edit.getDefaultTermName());
-                    var defaultFreeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, edit.getDefaultFreeOnBoardName());
+                    var defaultTermName = edit.getDefaultTermName();
+                    var defaultFreeOnBoardName = edit.getDefaultFreeOnBoardName();
+                    var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
+                    var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
 
                     if(!hasExecutionErrors()) {
                         var defaultCancellationPolicyName = edit.getDefaultCancellationPolicyName();
