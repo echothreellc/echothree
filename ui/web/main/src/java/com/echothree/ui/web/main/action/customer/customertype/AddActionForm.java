@@ -39,6 +39,9 @@ import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoi
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
+import com.echothree.control.user.shipment.common.ShipmentUtil;
+import com.echothree.control.user.shipment.common.form.GetFreeOnBoardChoicesForm;
+import com.echothree.control.user.shipment.common.result.GetFreeOnBoardChoicesResult;
 import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.form.GetTermChoicesForm;
 import com.echothree.control.user.term.common.result.GetTermChoicesResult;
@@ -54,6 +57,7 @@ import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
+import com.echothree.model.control.shipment.common.choice.FreeOnBoardChoicesBean;
 import com.echothree.model.control.term.common.choice.TermChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -72,6 +76,7 @@ public class AddActionForm
     private SequenceChoicesBean customerSequenceChoices;
     private SourceChoicesBean defaultSourceChoices;
     private TermChoicesBean defaultTermChoices;
+    private FreeOnBoardChoicesBean defaultFreeOnBoardChoices;
     private CancellationPolicyChoicesBean defaultCancellationPolicyChoices;
     private ReturnPolicyChoicesBean defaultReturnPolicyChoices;
     private CustomerStatusChoicesBean defaultCustomerStatusChoices;
@@ -83,6 +88,7 @@ public class AddActionForm
     private String customerSequenceChoice;
     private String defaultSourceChoice;
     private String defaultTermChoice;
+    private String defaultFreeOnBoardChoice;
     private String defaultCancellationPolicyChoice;
     private String defaultReturnPolicyChoice;
     private String defaultCustomerStatusChoice;
@@ -137,7 +143,7 @@ public class AddActionForm
                 defaultSourceChoice = defaultSourceChoices.getDefaultValue();
         }
     }
-    
+
     public void setupDefaultTermChoices()
             throws NamingException {
         if(defaultTermChoices == null) {
@@ -155,7 +161,25 @@ public class AddActionForm
                 defaultTermChoice = defaultTermChoices.getDefaultValue();
         }
     }
-    
+
+    public void setupDefaultFreeOnBoardChoices()
+            throws NamingException {
+        if(defaultFreeOnBoardChoices == null) {
+            GetFreeOnBoardChoicesForm form = ShipmentUtil.getHome().getGetFreeOnBoardChoicesForm();
+
+            form.setDefaultFreeOnBoardChoice(defaultFreeOnBoardChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = ShipmentUtil.getHome().getFreeOnBoardChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetFreeOnBoardChoicesResult result = (GetFreeOnBoardChoicesResult)executionResult.getResult();
+            defaultFreeOnBoardChoices = result.getFreeOnBoardChoices();
+
+            if(defaultFreeOnBoardChoice == null)
+                defaultFreeOnBoardChoice = defaultFreeOnBoardChoices.getDefaultValue();
+        }
+    }
+
     public void setupDefaultCancellationPolicyChoices()
             throws NamingException {
         if(defaultCancellationPolicyChoices == null) {
@@ -320,29 +344,51 @@ public class AddActionForm
         
         return defaultSourceChoice;
     }
-    
+
     public List<LabelValueBean> getDefaultTermChoices()
             throws NamingException {
         List<LabelValueBean> choices = null;
-        
+
         setupDefaultTermChoices();
         if(defaultTermChoices != null)
             choices = convertChoices(defaultTermChoices);
-        
+
         return choices;
     }
-    
+
     public void setDefaultTermChoice(String defaultTermChoice) {
         this.defaultTermChoice = defaultTermChoice;
     }
-    
+
     public String getDefaultTermChoice()
             throws NamingException {
         setupDefaultTermChoices();
-        
+
         return defaultTermChoice;
     }
-    
+
+    public List<LabelValueBean> getDefaultFreeOnBoardChoices()
+            throws NamingException {
+        List<LabelValueBean> choices = null;
+
+        setupDefaultFreeOnBoardChoices();
+        if(defaultFreeOnBoardChoices != null)
+            choices = convertChoices(defaultFreeOnBoardChoices);
+
+        return choices;
+    }
+
+    public void setDefaultFreeOnBoardChoice(String defaultFreeOnBoardChoice) {
+        this.defaultFreeOnBoardChoice = defaultFreeOnBoardChoice;
+    }
+
+    public String getDefaultFreeOnBoardChoice()
+            throws NamingException {
+        setupDefaultFreeOnBoardChoices();
+
+        return defaultFreeOnBoardChoice;
+    }
+
     public List<LabelValueBean> getDefaultCancellationPolicyChoices()
             throws NamingException {
         List<LabelValueBean> choices = null;

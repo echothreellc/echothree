@@ -89,6 +89,17 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td align=right><fmt:message key="label.defaultFreeOnBoard" />:</td>
+                                <td>
+                                    <html:select property="defaultFreeOnBoardChoice">
+                                        <html:optionsCollection property="defaultFreeOnBoardChoices" />
+                                    </html:select>
+                                    <et:validationErrors id="errorMessage" property="DefaultFreeOnBoardName">
+                                        <p><c:out value="${errorMessage}" /></p>
+                                    </et:validationErrors>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td align=right><fmt:message key="label.defaultCancellationPolicy" />:</td>
                                 <td>
                                     <html:select property="defaultCancellationPolicyChoice">

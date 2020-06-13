@@ -63,6 +63,7 @@ public class AddAction
                     commandForm.setCustomerSequenceName(actionForm.getCustomerSequenceChoice());
                     commandForm.setDefaultSourceName(actionForm.getDefaultSourceChoice());
                     commandForm.setDefaultTermName(actionForm.getDefaultTermChoice());
+                    commandForm.setDefaultFreeOnBoardName(actionForm.getDefaultFreeOnBoardChoice());
                     commandForm.setDefaultCancellationPolicyName(actionForm.getDefaultCancellationPolicyChoice());
                     commandForm.setDefaultReturnPolicyName(actionForm.getDefaultReturnPolicyChoice());
                     commandForm.setDefaultCustomerStatusChoice(actionForm.getDefaultCustomerStatusChoice());
