@@ -32,9 +32,11 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
+import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
@@ -88,6 +90,7 @@ public class CreateCustomerTypeCommand
                 new FieldDefinition("DefaultUseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSourceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultTermName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultFreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultCancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultCustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
@@ -174,16 +177,12 @@ public class CreateCustomerTypeCommand
                 }
                 
                 if(!invalidDefaultOfferOrSourceSpecification) {
-                    String defaultTermName = form.getDefaultTermName();
-                    Term defaultTerm = null;
-                    
-                    if(defaultTermName != null) {
-                        var termControl = (TermControl)Session.getModelController(TermControl.class);
-                        
-                        defaultTerm = termControl.getTermByName(defaultTermName);
-                    }
-                    
-                    if(defaultTermName == null || defaultTerm != null) {
+                    var defaultTermName = form.getDefaultTermName();
+                    var defaultFreeOnBoardName = form.getDefaultFreeOnBoardName();
+                    var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
+                    var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
+
+                    if(!hasExecutionErrors()) {
                         String defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();
                         CancellationPolicy defaultCancellationPolicy = null;
                         
@@ -252,7 +251,7 @@ public class CreateCustomerTypeCommand
                                                     String description = form.getDescription();
 
                                                     customerType = customerControl.createCustomerType(customerTypeName, customerSequence, defaultOfferUse,
-                                                            defaultTerm, defaultCancellationPolicy, defaultReturnPolicy, defaultCustomerStatus,
+                                                            defaultTerm, defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy, defaultCustomerStatus,
                                                             defaultCustomerCreditStatus, defaultArGlAccount, defaultHoldUntilComplete, defaultAllowBackorders,
                                                             defaultAllowSubstitutions, defaultAllowCombiningShipments, defaultRequireReference,
                                                             defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, defaultTaxable,
@@ -280,8 +279,6 @@ public class CreateCustomerTypeCommand
                         } else {
                             addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), defaultCancellationPolicyName);
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownTermName.name(), defaultTermName);
                     }
                 }
             } else {

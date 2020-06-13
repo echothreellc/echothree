@@ -26,6 +26,8 @@ import com.echothree.model.control.customer.common.transfer.CustomerTypeDescript
 import com.echothree.model.control.customer.common.transfer.CustomerTypePaymentMethodTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeShippingMethodTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
+import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.transfer.CustomerTransferCaches;
 import com.echothree.model.control.customer.server.transfer.CustomerTypeDescriptionTransferCache;
 import com.echothree.model.control.customer.server.transfer.CustomerTypePaymentMethodTransferCache;
@@ -35,10 +37,7 @@ import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
-import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
@@ -62,7 +61,6 @@ import com.echothree.model.data.customer.server.value.CustomerTypeDetailValue;
 import com.echothree.model.data.customer.server.value.CustomerTypePaymentMethodValue;
 import com.echothree.model.data.customer.server.value.CustomerTypeShippingMethodValue;
 import com.echothree.model.data.customer.server.value.CustomerValue;
-import com.echothree.model.data.inventory.common.pk.AllocationPriorityPK;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.offer.common.pk.OfferUsePK;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -73,15 +71,13 @@ import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
-import com.echothree.model.data.term.common.pk.TermPK;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
@@ -127,17 +123,18 @@ public class CustomerControl
     //   Customer Types
     // --------------------------------------------------------------------------------
     
-    public CustomerType createCustomerType(String customerTypeName, Sequence customerSequence, OfferUse defaultOfferUse, Term defaultTerm,
-            CancellationPolicy defaultCancellationPolicy, ReturnPolicy defaultReturnPolicy, WorkflowEntrance defaultCustomerStatus,
-            WorkflowEntrance defaultCustomerCreditStatus, GlAccount defaultArGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders,
-            Boolean defaultAllowSubstitutions, Boolean defaultAllowCombiningShipments, Boolean defaultRequireReference, Boolean defaultAllowReferenceDuplicates,
-            String defaultReferenceValidationPattern, Boolean defaultTaxable, AllocationPriority allocationPriority, Boolean isDefault, Integer sortOrder,
-            BasePK createdBy) {
-        CustomerType defaultCustomerType = getDefaultCustomerType();
-        boolean defaultFound = defaultCustomerType != null;
+    public CustomerType createCustomerType(String customerTypeName, Sequence customerSequence, OfferUse defaultOfferUse,
+            Term defaultTerm, FreeOnBoard defaultFreeOnBoard, CancellationPolicy defaultCancellationPolicy,
+            ReturnPolicy defaultReturnPolicy, WorkflowEntrance defaultCustomerStatus, WorkflowEntrance defaultCustomerCreditStatus,
+            GlAccount defaultArGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders,
+            Boolean defaultAllowSubstitutions, Boolean defaultAllowCombiningShipments, Boolean defaultRequireReference,
+            Boolean defaultAllowReferenceDuplicates, String defaultReferenceValidationPattern, Boolean defaultTaxable,
+            AllocationPriority allocationPriority, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var defaultCustomerType = getDefaultCustomerType();
+        var defaultFound = defaultCustomerType != null;
 
         if(defaultFound && isDefault) {
-            CustomerTypeDetailValue defaultCustomerTypeDetailValue = getDefaultCustomerTypeDetailValueForUpdate();
+            var defaultCustomerTypeDetailValue = getDefaultCustomerTypeDetailValueForUpdate();
 
             defaultCustomerTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateCustomerTypeFromValue(defaultCustomerTypeDetailValue, false, createdBy);
@@ -145,12 +142,13 @@ public class CustomerControl
             isDefault = Boolean.TRUE;
         }
 
-        CustomerType customerType = CustomerTypeFactory.getInstance().create();
-        CustomerTypeDetail customerTypeDetail = CustomerTypeDetailFactory.getInstance().create(customerType, customerTypeName, customerSequence,
-                defaultOfferUse, defaultTerm, null, defaultCancellationPolicy, defaultReturnPolicy, defaultCustomerStatus, defaultCustomerCreditStatus,
-                defaultArGlAccount, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
-                defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, defaultTaxable, allocationPriority, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var customerType = CustomerTypeFactory.getInstance().create();
+        var customerTypeDetail = CustomerTypeDetailFactory.getInstance().create(customerType, customerTypeName,
+                customerSequence, defaultOfferUse, defaultTerm, defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy,
+                defaultCustomerStatus, defaultCustomerCreditStatus, defaultArGlAccount, defaultHoldUntilComplete, defaultAllowBackorders,
+                defaultAllowSubstitutions, defaultAllowCombiningShipments, defaultRequireReference, defaultAllowReferenceDuplicates,
+                defaultReferenceValidationPattern, defaultTaxable, allocationPriority, isDefault, sortOrder, session.START_TIME_LONG,
+                Session.MAX_TIME_LONG);
 
         // Convert to R/W
         customerType = CustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerType.getPrimaryKey());
@@ -324,41 +322,42 @@ public class CustomerControl
     
     private void updateCustomerTypeFromValue(CustomerTypeDetailValue customerTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(customerTypeDetailValue.hasBeenModified()) {
-            CustomerType customerType = CustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerTypeDetailValue.getCustomerTypePK());
-            CustomerTypeDetail customerTypeDetail = customerType.getActiveDetailForUpdate();
+            var customerType = CustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerTypeDetailValue.getCustomerTypePK());
+            var customerTypeDetail = customerType.getActiveDetailForUpdate();
 
             customerTypeDetail.setThruTime(session.START_TIME_LONG);
             customerTypeDetail.store();
 
-            CustomerTypePK customerTypePK = customerTypeDetail.getCustomerTypePK();
-            String customerTypeName = customerTypeDetailValue.getCustomerTypeName();
-            SequencePK customerSequencePK = customerTypeDetailValue.getCustomerSequencePK();
-            OfferUsePK defaultOfferUsePK = customerTypeDetailValue.getDefaultOfferUsePK();
-            TermPK defaultTermPK = customerTypeDetailValue.getDefaultTermPK();
-            CancellationPolicyPK defaultCancellationPolicyPK = customerTypeDetailValue.getDefaultCancellationPolicyPK();
-            ReturnPolicyPK defaultReturnPolicyPK = customerTypeDetailValue.getDefaultReturnPolicyPK();
-            WorkflowEntrancePK defaultCustomerStatusPK = customerTypeDetailValue.getDefaultCustomerStatusPK();
-            WorkflowEntrancePK defaultCustomerCreditStatusPK = customerTypeDetailValue.getDefaultCustomerCreditStatusPK();
-            GlAccountPK defaultArGlAccountPK = customerTypeDetailValue.getDefaultArGlAccountPK();
-            Boolean defaultHoldUntilComplete = customerTypeDetailValue.getDefaultHoldUntilComplete();
-            Boolean defaultAllowBackorders = customerTypeDetailValue.getDefaultAllowBackorders();
-            Boolean defaultAllowSubstitutions = customerTypeDetailValue.getDefaultAllowSubstitutions();
-            Boolean defaultAllowCombiningShipments = customerTypeDetailValue.getDefaultAllowCombiningShipments();
-            Boolean defaultRequireReference = customerTypeDetailValue.getDefaultRequireReference();
-            Boolean defaultAllowReferenceDuplicates = customerTypeDetailValue.getDefaultAllowReferenceDuplicates();
-            String defaultReferenceValidationPattern = customerTypeDetailValue.getDefaultReferenceValidationPattern();
-            Boolean defaultTaxable = customerTypeDetailValue.getDefaultTaxable();
-            AllocationPriorityPK allocationPriority = customerTypeDetailValue.getAllocationPriorityPK();
-            Boolean isDefault = customerTypeDetailValue.getIsDefault();
-            Integer sortOrder = customerTypeDetailValue.getSortOrder();
+            var customerTypePK = customerTypeDetail.getCustomerTypePK();
+            var customerTypeName = customerTypeDetailValue.getCustomerTypeName();
+            var customerSequencePK = customerTypeDetailValue.getCustomerSequencePK();
+            var defaultOfferUsePK = customerTypeDetailValue.getDefaultOfferUsePK();
+            var defaultTermPK = customerTypeDetailValue.getDefaultTermPK();
+            var defaultFreeOnBoardPK = customerTypeDetailValue.getDefaultFreeOnBoardPK();
+            var defaultCancellationPolicyPK = customerTypeDetailValue.getDefaultCancellationPolicyPK();
+            var defaultReturnPolicyPK = customerTypeDetailValue.getDefaultReturnPolicyPK();
+            var defaultCustomerStatusPK = customerTypeDetailValue.getDefaultCustomerStatusPK();
+            var defaultCustomerCreditStatusPK = customerTypeDetailValue.getDefaultCustomerCreditStatusPK();
+            var defaultArGlAccountPK = customerTypeDetailValue.getDefaultArGlAccountPK();
+            var defaultHoldUntilComplete = customerTypeDetailValue.getDefaultHoldUntilComplete();
+            var defaultAllowBackorders = customerTypeDetailValue.getDefaultAllowBackorders();
+            var defaultAllowSubstitutions = customerTypeDetailValue.getDefaultAllowSubstitutions();
+            var defaultAllowCombiningShipments = customerTypeDetailValue.getDefaultAllowCombiningShipments();
+            var defaultRequireReference = customerTypeDetailValue.getDefaultRequireReference();
+            var defaultAllowReferenceDuplicates = customerTypeDetailValue.getDefaultAllowReferenceDuplicates();
+            var defaultReferenceValidationPattern = customerTypeDetailValue.getDefaultReferenceValidationPattern();
+            var defaultTaxable = customerTypeDetailValue.getDefaultTaxable();
+            var allocationPriority = customerTypeDetailValue.getAllocationPriorityPK();
+            var isDefault = customerTypeDetailValue.getIsDefault();
+            var sortOrder = customerTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                CustomerType defaultCustomerType = getDefaultCustomerType();
-                boolean defaultFound = defaultCustomerType != null && !defaultCustomerType.equals(customerType);
+                var defaultCustomerType = getDefaultCustomerType();
+                var defaultFound = defaultCustomerType != null && !defaultCustomerType.equals(customerType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    CustomerTypeDetailValue defaultCustomerTypeDetailValue = getDefaultCustomerTypeDetailValueForUpdate();
+                    var defaultCustomerTypeDetailValue = getDefaultCustomerTypeDetailValueForUpdate();
 
                     defaultCustomerTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateCustomerTypeFromValue(defaultCustomerTypeDetailValue, false, updatedBy);
@@ -368,11 +367,12 @@ public class CustomerControl
                 }
             }
 
-            customerTypeDetail = CustomerTypeDetailFactory.getInstance().create(customerTypePK, customerTypeName, customerSequencePK, defaultOfferUsePK,
-                    defaultTermPK, null, defaultCancellationPolicyPK, defaultReturnPolicyPK, defaultCustomerStatusPK, defaultCustomerCreditStatusPK,
-                    defaultArGlAccountPK, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
-                    defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, defaultTaxable, allocationPriority, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            customerTypeDetail = CustomerTypeDetailFactory.getInstance().create(customerTypePK, customerTypeName, customerSequencePK,
+                    defaultOfferUsePK, defaultTermPK, defaultFreeOnBoardPK, defaultCancellationPolicyPK, defaultReturnPolicyPK,
+                    defaultCustomerStatusPK, defaultCustomerCreditStatusPK, defaultArGlAccountPK, defaultHoldUntilComplete,
+                    defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments, defaultRequireReference,
+                    defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, defaultTaxable, allocationPriority,
+                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             customerType.setActiveDetail(customerTypeDetail);
             customerType.setLastDetail(customerTypeDetail);
