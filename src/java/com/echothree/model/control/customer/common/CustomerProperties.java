@@ -34,6 +34,7 @@ public interface CustomerProperties {
     String DEFAULT_RETURN_POLICY = "defaultReturnPolicy";
     String DEFAULT_TAXABLE = "defaultTaxable";
     String DEFAULT_TERM = "defaultTerm";
+    String DEFAULT_FREE_ON_BOARD = "defaultFreeOnBoard";
     String DESCRIPTION = "description";
     String ENTITY_INSTANCE = "entityInstance";
     String IS_DEFAULT = "isDefault";

@@ -33,10 +33,13 @@ public interface CustomerTypeEdit
     
     String getDefaultSourceName();
     void setDefaultSourceName(String defaultSourceName);
-    
+
     String getDefaultTermName();
     void setDefaultTermName(String defaultTermName);
-    
+
+    String getDefaultFreeOnBoardName();
+    void setDefaultFreeOnBoardName(String defaultFreeOnBoardName);
+
     String getDefaultCancellationPolicyName();
     void setDefaultCancellationPolicyName(String defaultCancellationPolicyName);
     

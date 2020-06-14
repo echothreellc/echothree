@@ -16,13 +16,11 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.vendor;
 
-import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.TermService;
-import com.echothree.control.user.term.common.form.CreatePartyCreditLimitForm;
+import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.form.TermFormFactory;
-import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.VendorService;
-import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -37,24 +35,20 @@ import org.xml.sax.SAXException;
 
 public class VendorHandler
         extends BaseHandler {
-    TermService termService;
-    VendorService vendorService;
+
+    TermService termService = TermUtil.getHome();
+    VendorService vendorService = VendorUtil.getHome();
+
     String partyName;
     String vendorName;
     String entityRef;
     
     /** Creates a new instance of VendorHandler */
     public VendorHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName, String vendorName,
-            String entityRef) {
+            String entityRef)
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            termService = TermUtil.getHome();
-            vendorService = VendorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
-        
+
         this.partyName = partyName;
         this.vendorName = vendorName;
         this.entityRef = entityRef;
@@ -62,16 +56,16 @@ public class VendorHandler
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("partyCreditLimit")) {
-            CreatePartyCreditLimitForm form = TermFormFactory.getCreatePartyCreditLimitForm();
+            var form = TermFormFactory.getCreatePartyCreditLimitForm();
             
             form.setPartyName(partyName);
             form.set(getAttrsMap(attrs));
             
             termService.createPartyCreditLimit(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("vendorItem")) {
-            CreateVendorItemForm form = VendorFormFactory.getCreateVendorItemForm();
+            var form = VendorFormFactory.getCreateVendorItemForm();
             
             form.setVendorName(vendorName);
             form.set(getAttrsMap(attrs));

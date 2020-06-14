@@ -19,12 +19,16 @@ package com.echothree.model.control.vendor.common.transfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
+import com.echothree.model.control.shipment.common.transfer.FreeOnBoardTransfer;
+import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
 public class VendorTypeTransfer
         extends BaseTransfer {
     
     private String vendorTypeName;
+    private TermTransfer defaultTern;
+    private FreeOnBoardTransfer defaultFreeOnBoardTransfer;
     private CancellationPolicyTransfer defaultCancellationPolicy;
     private ReturnPolicyTransfer defaultReturnPolicy;
     private GlAccountTransfer defaultApGlAccount;
@@ -40,11 +44,15 @@ public class VendorTypeTransfer
     private String description;
     
     /** Creates a new instance of VendorTypeTransfer */
-    public VendorTypeTransfer(String vendorTypeName, CancellationPolicyTransfer defaultCancellationPolicy, ReturnPolicyTransfer defaultReturnPolicy,
-            GlAccountTransfer defaultApGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders, Boolean defaultAllowSubstitutions,
-            Boolean defaultAllowCombiningShipments, Boolean defaultRequireReference, Boolean defaultAllowReferenceDuplicates,
-            String defaultReferenceValidationPattern, Boolean isDefault, Integer sortOrder, String description) {
+    public VendorTypeTransfer(String vendorTypeName, TermTransfer defaultTern, FreeOnBoardTransfer defaultFreeOnBoardTransfer,
+            CancellationPolicyTransfer defaultCancellationPolicy, ReturnPolicyTransfer defaultReturnPolicy,
+            GlAccountTransfer defaultApGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders,
+            Boolean defaultAllowSubstitutions, Boolean defaultAllowCombiningShipments, Boolean defaultRequireReference,
+            Boolean defaultAllowReferenceDuplicates, String defaultReferenceValidationPattern, Boolean isDefault,
+            Integer sortOrder, String description) {
         this.vendorTypeName = vendorTypeName;
+        this.defaultTern = defaultTern;
+        this.defaultFreeOnBoardTransfer = defaultFreeOnBoardTransfer;
         this.defaultCancellationPolicy = defaultCancellationPolicy;
         this.defaultReturnPolicy = defaultReturnPolicy;
         this.defaultApGlAccount = defaultApGlAccount;
@@ -72,6 +80,22 @@ public class VendorTypeTransfer
      */
     public void setVendorTypeName(String vendorTypeName) {
         this.vendorTypeName = vendorTypeName;
+    }
+
+    public TermTransfer getDefaultTern() {
+        return defaultTern;
+    }
+
+    public void setDefaultTern(final TermTransfer defaultTern) {
+        this.defaultTern = defaultTern;
+    }
+
+    public FreeOnBoardTransfer getDefaultFreeOnBoardTransfer() {
+        return defaultFreeOnBoardTransfer;
+    }
+
+    public void setDefaultFreeOnBoardTransfer(final FreeOnBoardTransfer defaultFreeOnBoardTransfer) {
+        this.defaultFreeOnBoardTransfer = defaultFreeOnBoardTransfer;
     }
 
     /**

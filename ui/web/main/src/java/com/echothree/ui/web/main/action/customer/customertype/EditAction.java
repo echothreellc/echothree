@@ -82,6 +82,7 @@ public class EditAction
                     edit.setCustomerSequenceName(actionForm.getCustomerSequenceChoice());
                     edit.setDefaultSourceName(actionForm.getDefaultSourceChoice());
                     edit.setDefaultTermName(actionForm.getDefaultTermChoice());
+                    edit.setDefaultFreeOnBoardName(actionForm.getDefaultFreeOnBoardChoice());
                     edit.setDefaultCancellationPolicyName(actionForm.getDefaultCancellationPolicyChoice());
                     edit.setDefaultReturnPolicyName(actionForm.getDefaultReturnPolicyChoice());
                     edit.setDefaultCustomerStatusChoice(actionForm.getDefaultCustomerStatusChoice());
@@ -133,6 +134,7 @@ public class EditAction
                             actionForm.setCustomerSequenceChoice(edit.getCustomerSequenceName());
                             actionForm.setDefaultSourceChoice(edit.getDefaultSourceName());
                             actionForm.setDefaultTermChoice(edit.getDefaultTermName());
+                            actionForm.setDefaultFreeOnBoardChoice(edit.getDefaultFreeOnBoardName());
                             actionForm.setDefaultCancellationPolicyChoice(edit.getDefaultCancellationPolicyName());
                             actionForm.setDefaultReturnPolicyChoice(edit.getDefaultReturnPolicyName());
                             actionForm.setDefaultCustomerStatusChoice(edit.getDefaultCustomerStatusChoice());

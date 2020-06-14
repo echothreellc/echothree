@@ -20,12 +20,13 @@ import com.echothree.control.user.customer.common.edit.CustomerEditFactory;
 import com.echothree.control.user.customer.common.edit.CustomerTypeEdit;
 import com.echothree.control.user.customer.common.form.EditCustomerTypeForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
 import com.echothree.control.user.customer.common.spec.CustomerTypeSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
+import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.offer.server.OfferControl;
@@ -36,46 +37,27 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.term.server.TermControl;
-import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
-import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
+import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
+import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.customer.server.entity.CustomerTypeDescription;
-import com.echothree.model.data.customer.server.entity.CustomerTypeDetail;
-import com.echothree.model.data.customer.server.value.CustomerTypeDescriptionValue;
-import com.echothree.model.data.customer.server.value.CustomerTypeDetailValue;
-import com.echothree.model.data.inventory.server.entity.AllocationPriority;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class EditCustomerTypeCommand
@@ -104,6 +86,7 @@ public class EditCustomerTypeCommand
                 new FieldDefinition("DefaultUseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSourceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultTermName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DefaultFreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultCancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultCustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
@@ -133,38 +116,40 @@ public class EditCustomerTypeCommand
     protected BaseResult execute() {
         var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        EditCustomerTypeResult result = CustomerResultFactory.getEditCustomerTypeResult();
+        var result = CustomerResultFactory.getEditCustomerTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            String customerTypeName = spec.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerTypeName = spec.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
             
             if(customerType != null) {
                 result.setCustomerType(customerControl.getCustomerTypeTransfer(getUserVisit(), customerType));
                 
                 if(lockEntity(customerType)) {
-                    CustomerTypeDescription customerTypeDescription = customerControl.getCustomerTypeDescription(customerType, getPreferredLanguage());
-                    CustomerTypeEdit edit = CustomerEditFactory.getCustomerTypeEdit();
-                    CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
-                    Sequence customerSequence = customerTypeDetail.getCustomerSequence();
-                    OfferUse defaultOfferUse = customerTypeDetail.getDefaultOfferUse();
-                    Term defaultTerm = customerTypeDetail.getDefaultTerm();
-                    CancellationPolicy defaultCancellationPolicy = customerTypeDetail.getDefaultCancellationPolicy();
-                    ReturnPolicy defaultReturnPolicy = customerTypeDetail.getDefaultReturnPolicy();
-                    WorkflowEntrance defaultCustomerStatusChoice = customerTypeDetail.getDefaultCustomerStatus();
-                    WorkflowEntrance defaultCustomerCreditStatusChoice = customerTypeDetail.getDefaultCustomerCreditStatus();
-                    GlAccount defaultArGlAccount = customerTypeDetail.getDefaultArGlAccount();
-                    AllocationPriority allocationPriority = customerTypeDetail.getAllocationPriority();
-                    
-                    Collection<Source> sources = defaultOfferUse == null ? null : offerControl.getSourcesByOfferUse(defaultOfferUse);
-                    Iterator<Source> sourcesIterator = sources == null ? null : sources.iterator();
-                    Source defaultSource = sourcesIterator == null ? null : sourcesIterator.hasNext() ? sourcesIterator.next() : null;
+                    var customerTypeDescription = customerControl.getCustomerTypeDescription(customerType, getPreferredLanguage());
+                    var edit = CustomerEditFactory.getCustomerTypeEdit();
+                    var customerTypeDetail = customerType.getLastDetail();
+                    var customerSequence = customerTypeDetail.getCustomerSequence();
+                    var defaultOfferUse = customerTypeDetail.getDefaultOfferUse();
+                    var defaultTerm = customerTypeDetail.getDefaultTerm();
+                    var defaultFreeOnBoard = customerTypeDetail.getDefaultFreeOnBoard();
+                    var defaultCancellationPolicy = customerTypeDetail.getDefaultCancellationPolicy();
+                    var defaultReturnPolicy = customerTypeDetail.getDefaultReturnPolicy();
+                    var defaultCustomerStatusChoice = customerTypeDetail.getDefaultCustomerStatus();
+                    var defaultCustomerCreditStatusChoice = customerTypeDetail.getDefaultCustomerCreditStatus();
+                    var defaultArGlAccount = customerTypeDetail.getDefaultArGlAccount();
+                    var allocationPriority = customerTypeDetail.getAllocationPriority();
+
+                    var sources = defaultOfferUse == null ? null : offerControl.getSourcesByOfferUse(defaultOfferUse);
+                    var sourcesIterator = sources == null ? null : sources.iterator();
+                    var defaultSource = sourcesIterator == null ? null : sourcesIterator.hasNext() ? sourcesIterator.next() : null;
 
                     result.setEdit(edit);
                     edit.setCustomerTypeName(customerTypeDetail.getCustomerTypeName());
                     edit.setCustomerSequenceName(customerSequence == null ? null : customerSequence.getLastDetail().getSequenceName());
                     edit.setDefaultSourceName(defaultSource == null ? null : defaultSource.getLastDetail().getSourceName());
                     edit.setDefaultTermName(defaultTerm == null ? null : defaultTerm.getLastDetail().getTermName());
+                    edit.setDefaultFreeOnBoardName(defaultFreeOnBoard == null ? null : defaultFreeOnBoard.getLastDetail().getFreeOnBoardName());
                     edit.setDefaultCancellationPolicyName(defaultCancellationPolicy == null ? null : defaultCancellationPolicy.getLastDetail().getCancellationPolicyName());
                     edit.setDefaultReturnPolicyName(defaultReturnPolicy == null ? null : defaultReturnPolicy.getLastDetail().getReturnPolicyName());
                     edit.setDefaultCustomerStatusChoice(defaultCustomerStatusChoice == null ? null : defaultCustomerStatusChoice.getLastDetail().getWorkflowEntranceName());
@@ -193,20 +178,20 @@ public class EditCustomerTypeCommand
                 addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            String customerTypeName = spec.getCustomerTypeName();
-            CustomerType customerType = customerControl.getCustomerTypeByNameForUpdate(customerTypeName);
+            var customerTypeName = spec.getCustomerTypeName();
+            var customerType = customerControl.getCustomerTypeByNameForUpdate(customerTypeName);
             
             if(customerType != null) {
                 customerTypeName = edit.getCustomerTypeName();
-                CustomerType duplicateCustomerType = customerControl.getCustomerTypeByName(customerTypeName);
+                var duplicateCustomerType = customerControl.getCustomerTypeByName(customerTypeName);
                 
                 if(duplicateCustomerType == null || customerType.equals(duplicateCustomerType)) {
-                    String customerSequenceName = edit.getCustomerSequenceName();
+                    var customerSequenceName = edit.getCustomerSequenceName();
                     Sequence customerSequence = null;
                     
                     if(customerSequenceName != null) {
                         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
+                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
                         
                         if(sequenceType != null) {
                             customerSequence = sequenceControl.getSequenceByName(sequenceType, customerSequenceName);
@@ -214,17 +199,17 @@ public class EditCustomerTypeCommand
                     }
                     
                     if(customerSequenceName == null || customerSequence != null) {
-                        String defaultOfferName = edit.getDefaultOfferName();
-                        String defaultUseName = edit.getDefaultUseName();
-                        String defaultSourceName = edit.getDefaultSourceName();
+                        var defaultOfferName = edit.getDefaultOfferName();
+                        var defaultUseName = edit.getDefaultUseName();
+                        var defaultSourceName = edit.getDefaultSourceName();
                         OfferUse defaultOfferUse = null;
-                        boolean invalidDefaultOfferOrSourceSpecification = false;
+                        var invalidDefaultOfferOrSourceSpecification = false;
                         
                         if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                            Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
+                            var defaultOffer = offerControl.getOfferByName(defaultOfferName);
                             
                             if(defaultOffer != null) {
-                                Use defaultUse = offerControl.getUseByName(defaultUseName);
+                                var defaultUse = offerControl.getUseByName(defaultUseName);
                                 
                                 if(defaultUse != null) {
                                     defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
@@ -239,7 +224,7 @@ public class EditCustomerTypeCommand
                                 addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                             }
                         } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                            Source source = offerControl.getSourceByName(defaultSourceName);
+                            var source = offerControl.getSourceByName(defaultSourceName);
                             
                             if(source != null) {
                                 defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -254,81 +239,78 @@ public class EditCustomerTypeCommand
                         }
                         
                         if(!invalidDefaultOfferOrSourceSpecification) {
-                            String defaultTermName = edit.getDefaultTermName();
-                            Term defaultTerm = null;
-                            
-                            if(defaultTermName != null) {
-                                var termControl = (TermControl)Session.getModelController(TermControl.class);
-                                
-                                defaultTerm = termControl.getTermByName(defaultTermName);
-                            }
-                            
-                            if(defaultTermName == null || defaultTerm != null) {
-                                String defaultCancellationPolicyName = edit.getDefaultCancellationPolicyName();
+                            var defaultTermName = edit.getDefaultTermName();
+                            var defaultFreeOnBoardName = edit.getDefaultFreeOnBoardName();
+                            var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
+                            var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
+
+                            if(!hasExecutionErrors()) {
+                                var defaultCancellationPolicyName = edit.getDefaultCancellationPolicyName();
                                 CancellationPolicy defaultCancellationPolicy = null;
                                 
                                 if(defaultCancellationPolicyName != null) {
                                     var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-                                    CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
+                                    var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
                                     
                                     defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, defaultCancellationPolicyName);
                                 }
                                 
                                 if(defaultCancellationPolicyName == null || defaultCancellationPolicy != null) {
-                                    String defaultReturnPolicyName = edit.getDefaultReturnPolicyName();
+                                    var defaultReturnPolicyName = edit.getDefaultReturnPolicyName();
                                     ReturnPolicy defaultReturnPolicy = null;
                                     
                                     if(defaultReturnPolicyName != null) {
                                         var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-                                        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                                        var returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
                                         
                                         defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                                     }
                                     
                                     if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
                                         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-                                        String defaultCustomerStatusChoice = edit.getDefaultCustomerStatusChoice();
+                                        var defaultCustomerStatusChoice = edit.getDefaultCustomerStatusChoice();
                                         WorkflowEntrance defaultCustomerStatus = null;
                                         
                                         if(defaultCustomerStatusChoice != null) {
-                                            Workflow workflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
+                                            var workflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
                                             defaultCustomerStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultCustomerStatusChoice);
                                         }
                                         
                                         if(defaultCustomerStatusChoice == null || defaultCustomerStatus != null) {
-                                            String defaultCustomerCreditStatusChoice = edit.getDefaultCustomerCreditStatusChoice();
+                                            var defaultCustomerCreditStatusChoice = edit.getDefaultCustomerCreditStatusChoice();
                                             WorkflowEntrance defaultCustomerCreditStatus = null;
                                             
                                             if(defaultCustomerCreditStatusChoice != null) {
-                                                Workflow workflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
+                                                var workflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
                                                 defaultCustomerCreditStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultCustomerCreditStatusChoice);
                                             }
                                             
                                             if(defaultCustomerCreditStatusChoice == null || defaultCustomerCreditStatus != null) {
                                                 var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-                                                String defaultArGlAccountName = edit.getDefaultArGlAccountName();
-                                                GlAccount defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
+                                                var defaultArGlAccountName = edit.getDefaultArGlAccountName();
+                                                var defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
 
                                                 if(defaultArGlAccountName == null || defaultArGlAccount != null) {
-                                                    String glAccountCategoryName = defaultArGlAccount == null ? null
+                                                    var glAccountCategoryName = defaultArGlAccount == null ? null
                                                             : defaultArGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                                                     if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
-                                                        String allocationPriorityName = edit.getAllocationPriorityName();
-                                                        AllocationPriority allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
+                                                        var allocationPriorityName = edit.getAllocationPriorityName();
+                                                        var allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
 
                                                         if(!hasExecutionErrors()) {
                                                             if(lockEntityForUpdate(customerType)) {
                                                                 try {
-                                                                    PartyPK partyPK = getPartyPK();
-                                                                    CustomerTypeDetailValue customerTypeDetailValue = customerControl.getCustomerTypeDetailValueForUpdate(customerType);
-                                                                    CustomerTypeDescription customerTypeDescription = customerControl.getCustomerTypeDescriptionForUpdate(customerType, getPreferredLanguage());
-                                                                    String description = edit.getDescription();
+                                                                    var partyPK = getPartyPK();
+                                                                    var customerTypeDetailValue = customerControl.getCustomerTypeDetailValueForUpdate(customerType);
+                                                                    var customerTypeDescription = customerControl.getCustomerTypeDescriptionForUpdate(customerType, getPreferredLanguage());
+                                                                    var description = edit.getDescription();
 
                                                                     customerTypeDetailValue.setCustomerTypeName(edit.getCustomerTypeName());
                                                                     customerTypeDetailValue.setCustomerSequencePK(customerSequence == null ? null : customerSequence.getPrimaryKey());
                                                                     customerTypeDetailValue.setDefaultOfferUsePK(defaultOfferUse == null ? null : defaultOfferUse.getPrimaryKey());
                                                                     customerTypeDetailValue.setDefaultTermPK(defaultTerm == null ? null : defaultTerm.getPrimaryKey());
+                                                                    customerTypeDetailValue.setDefaultFreeOnBoardPK(defaultFreeOnBoard == null ? null : defaultFreeOnBoard.getPrimaryKey());
                                                                     customerTypeDetailValue.setDefaultCancellationPolicyPK(defaultCancellationPolicy == null ? null : defaultCancellationPolicy.getPrimaryKey());
                                                                     customerTypeDetailValue.setDefaultReturnPolicyPK(defaultReturnPolicy == null ? null : defaultReturnPolicy.getPrimaryKey());
                                                                     customerTypeDetailValue.setDefaultCustomerStatusPK(defaultCustomerStatus == null ? null : defaultCustomerStatus.getPrimaryKey());
@@ -353,7 +335,7 @@ public class EditCustomerTypeCommand
                                                                     } else if(customerTypeDescription != null && description == null) {
                                                                         customerControl.deleteCustomerTypeDescription(customerTypeDescription, partyPK);
                                                                     } else if(customerTypeDescription != null && description != null) {
-                                                                        CustomerTypeDescriptionValue customerTypeDescriptionValue = customerControl.getCustomerTypeDescriptionValue(customerTypeDescription);
+                                                                        var customerTypeDescriptionValue = customerControl.getCustomerTypeDescriptionValue(customerTypeDescription);
 
                                                                         customerTypeDescriptionValue.setDescription(description);
                                                                         customerControl.updateCustomerTypeDescriptionFromValue(customerTypeDescriptionValue, partyPK);
@@ -383,8 +365,6 @@ public class EditCustomerTypeCommand
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), defaultCancellationPolicyName);
                                 }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownTermName.name(), defaultTermName);
                             }
                         }
                     } else {
