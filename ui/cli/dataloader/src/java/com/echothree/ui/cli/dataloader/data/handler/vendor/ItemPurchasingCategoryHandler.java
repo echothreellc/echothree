@@ -16,8 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.vendor;
 
-import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.VendorService;
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.form.CreateItemPurchasingCategoryDescriptionForm;
 import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
@@ -28,19 +28,18 @@ import org.xml.sax.SAXException;
 
 public class ItemPurchasingCategoryHandler
         extends BaseHandler {
+
     VendorService vendorService;
+
     String itemPurchasingCategoryName;
     
     /** Creates a new instance of ItemPurchasingCategoryHandler */
-    public ItemPurchasingCategoryHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemPurchasingCategoryName) {
+    public ItemPurchasingCategoryHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemPurchasingCategoryName)
+            throws NamingException {
         super(initialDataParser, parentHandler);
         
-        try {
-            vendorService = VendorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
-        
+        vendorService = VendorUtil.getHome();
+
         this.itemPurchasingCategoryName = itemPurchasingCategoryName;
     }
     

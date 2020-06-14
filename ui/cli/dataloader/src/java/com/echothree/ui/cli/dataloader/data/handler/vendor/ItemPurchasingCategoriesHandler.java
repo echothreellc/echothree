@@ -16,9 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.vendor;
 
-import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.VendorService;
-import com.echothree.control.user.vendor.common.form.CreateItemPurchasingCategoryForm;
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -28,24 +27,20 @@ import org.xml.sax.SAXException;
 
 public class ItemPurchasingCategoriesHandler
         extends BaseHandler {
-    VendorService vendorService;
+
+    VendorService vendorService = VendorUtil.getHome();
     
     /** Creates a new instance of ItemPurchasingCategoriesHandler */
-    public ItemPurchasingCategoriesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ItemPurchasingCategoriesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            vendorService = VendorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("itemPurchasingCategory")) {
-            CreateItemPurchasingCategoryForm form = VendorFormFactory.getCreateItemPurchasingCategoryForm();
+            var form = VendorFormFactory.getCreateItemPurchasingCategoryForm();
             
             form.set(getAttrsMap(attrs));
             

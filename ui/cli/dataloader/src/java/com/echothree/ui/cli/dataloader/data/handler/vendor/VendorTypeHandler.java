@@ -16,9 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.vendor;
 
-import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.VendorService;
-import com.echothree.control.user.vendor.common.form.CreateVendorTypeDescriptionForm;
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -28,20 +27,16 @@ import org.xml.sax.SAXException;
 
 public class VendorTypeHandler
         extends BaseHandler {
-    VendorService vendorService;
+
+    VendorService vendorService = VendorUtil.getHome();
+
     String vendorTypeName;
     
     /** Creates a new instance of VendorTypeHandler */
     public VendorTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String vendorTypeName)
-            throws SAXException {
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            vendorService = VendorUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
-        
+
         this.vendorTypeName = vendorTypeName;
     }
     
@@ -49,7 +44,7 @@ public class VendorTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("vendorTypeDescription")) {
-            CreateVendorTypeDescriptionForm commandForm = VendorFormFactory.getCreateVendorTypeDescriptionForm();
+            var commandForm = VendorFormFactory.getCreateVendorTypeDescriptionForm();
             
             commandForm.setVendorTypeName(vendorTypeName);
             commandForm.set(getAttrsMap(attrs));

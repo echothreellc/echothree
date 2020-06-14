@@ -16,9 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.vendor;
 
-import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.VendorService;
-import com.echothree.control.user.vendor.common.form.CreateVendorItemCostForm;
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -28,21 +27,18 @@ import org.xml.sax.SAXException;
 
 public class VendorItemHandler
         extends BaseHandler {
-    VendorService vendorService;
+
+    VendorService vendorService = VendorUtil.getHome();
+
     String vendorName;
     String vendorItemName;
     
     /** Creates a new instance of VendorItemHandler */
     public VendorItemHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String vendorName,
-            String vendorItemName) {
+            String vendorItemName)
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            vendorService = VendorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
-        
+
         this.vendorName = vendorName;
         this.vendorItemName = vendorItemName;
     }
@@ -51,7 +47,7 @@ public class VendorItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("vendorItemCost")) {
-            CreateVendorItemCostForm form = VendorFormFactory.getCreateVendorItemCostForm();
+            var form = VendorFormFactory.getCreateVendorItemCostForm();
             
             form.setVendorName(vendorName);
             form.setVendorItemName(vendorItemName);
