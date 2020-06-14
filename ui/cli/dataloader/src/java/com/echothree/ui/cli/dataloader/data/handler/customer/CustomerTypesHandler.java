@@ -16,9 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.customer;
 
-import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.CustomerService;
-import com.echothree.control.user.customer.common.form.CreateCustomerTypeForm;
+import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.form.CustomerFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -28,25 +27,20 @@ import org.xml.sax.SAXException;
 
 public class CustomerTypesHandler
         extends BaseHandler {
-    CustomerService customerService;
+
+    CustomerService customerService = CustomerUtil.getHome();
     
     /** Creates a new instance of CustomerTypesHandler */
     public CustomerTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
-            throws SAXException {
+            throws SAXException, NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            customerService = CustomerUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("customerType")) {
-            CreateCustomerTypeForm commandForm = CustomerFormFactory.getCreateCustomerTypeForm();
+            var commandForm = CustomerFormFactory.getCreateCustomerTypeForm();
             
             commandForm.set(getAttrsMap(attrs));
             

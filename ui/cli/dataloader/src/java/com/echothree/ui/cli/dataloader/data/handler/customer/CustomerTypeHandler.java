@@ -16,24 +16,17 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.customer;
 
-import com.echothree.control.user.contactlist.common.ContactListUtil;
 import com.echothree.control.user.contactlist.common.ContactListService;
+import com.echothree.control.user.contactlist.common.ContactListUtil;
 import com.echothree.control.user.contactlist.common.form.ContactListFormFactory;
-import com.echothree.control.user.contactlist.common.form.CreateCustomerTypeContactListForm;
-import com.echothree.control.user.contactlist.common.form.CreateCustomerTypeContactListGroupForm;
-import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.CustomerService;
-import com.echothree.control.user.customer.common.form.CreateCustomerTypeDescriptionForm;
-import com.echothree.control.user.customer.common.form.CreateCustomerTypePaymentMethodForm;
-import com.echothree.control.user.customer.common.form.CreateCustomerTypeShippingMethodForm;
+import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.form.CustomerFormFactory;
-import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.OfferService;
-import com.echothree.control.user.offer.common.form.CreateOfferCustomerTypeForm;
+import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
-import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.TermService;
-import com.echothree.control.user.term.common.form.CreateCustomerTypeCreditLimitForm;
+import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -44,27 +37,18 @@ import org.xml.sax.SAXException;
 public class CustomerTypeHandler
         extends BaseHandler {
     
-    ContactListService contactListService;
-    CustomerService customerService;
-    OfferService offerService;
-    TermService termService;
+    ContactListService contactListService = ContactListUtil.getHome();
+    CustomerService customerService = CustomerUtil.getHome();
+    OfferService offerService = OfferUtil.getHome();
+    TermService termService = TermUtil.getHome();
     
     String customerTypeName;
     
     /** Creates a new instance of CustomerTypeHandler */
     public CustomerTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String customerTypeName)
-            throws SAXException {
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            contactListService = ContactListUtil.getHome();
-            customerService = CustomerUtil.getHome();
-            offerService = OfferUtil.getHome();
-            termService = TermUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
-        
+
         this.customerTypeName = customerTypeName;
     }
     
@@ -72,49 +56,49 @@ public class CustomerTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("customerTypeDescription")) {
-            CreateCustomerTypeDescriptionForm commandForm = CustomerFormFactory.getCreateCustomerTypeDescriptionForm();
+            var commandForm = CustomerFormFactory.getCreateCustomerTypeDescriptionForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             customerService.createCustomerTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("customerTypePaymentMethod")) {
-            CreateCustomerTypePaymentMethodForm commandForm = CustomerFormFactory.getCreateCustomerTypePaymentMethodForm();
+            var commandForm = CustomerFormFactory.getCreateCustomerTypePaymentMethodForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             customerService.createCustomerTypePaymentMethod(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("customerTypeShippingMethod")) {
-            CreateCustomerTypeShippingMethodForm commandForm = CustomerFormFactory.getCreateCustomerTypeShippingMethodForm();
+            var commandForm = CustomerFormFactory.getCreateCustomerTypeShippingMethodForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             customerService.createCustomerTypeShippingMethod(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("customerTypeCreditLimit")) {
-            CreateCustomerTypeCreditLimitForm commandForm = TermFormFactory.getCreateCustomerTypeCreditLimitForm();
+            var commandForm = TermFormFactory.getCreateCustomerTypeCreditLimitForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             termService.createCustomerTypeCreditLimit(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("offerCustomerType")) {
-            CreateOfferCustomerTypeForm commandForm = OfferFormFactory.getCreateOfferCustomerTypeForm();
+            var commandForm = OfferFormFactory.getCreateOfferCustomerTypeForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
             offerService.createOfferCustomerType(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("customerTypeContactListGroup")) {
-            CreateCustomerTypeContactListGroupForm commandForm = ContactListFormFactory.getCreateCustomerTypeContactListGroupForm();
+            var commandForm = ContactListFormFactory.getCreateCustomerTypeContactListGroupForm();
 
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
 
             contactListService.createCustomerTypeContactListGroup(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("customerTypeContactList")) {
-            CreateCustomerTypeContactListForm commandForm = ContactListFormFactory.getCreateCustomerTypeContactListForm();
+            var commandForm = ContactListFormFactory.getCreateCustomerTypeContactListForm();
 
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));

@@ -16,24 +16,17 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.customer;
 
-import com.echothree.control.user.associate.common.AssociateUtil;
 import com.echothree.control.user.associate.common.AssociateService;
+import com.echothree.control.user.associate.common.AssociateUtil;
 import com.echothree.control.user.associate.common.form.AssociateFormFactory;
-import com.echothree.control.user.associate.common.form.CreateAssociateForm;
-import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.CustomerService;
-import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
-import com.echothree.control.user.party.common.form.CreatePartyAliasForm;
-import com.echothree.control.user.party.common.form.CreateProfileForm;
+import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
-import com.echothree.control.user.subscription.common.SubscriptionUtil;
 import com.echothree.control.user.subscription.common.SubscriptionService;
-import com.echothree.control.user.subscription.common.form.CreateSubscriptionForm;
+import com.echothree.control.user.subscription.common.SubscriptionUtil;
 import com.echothree.control.user.subscription.common.form.SubscriptionFormFactory;
-import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.TermService;
-import com.echothree.control.user.term.common.form.CreatePartyCreditLimitForm;
+import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -49,30 +42,21 @@ import org.xml.sax.SAXException;
 
 public class CustomerHandler
         extends BaseHandler {
-    AssociateService associateService;
-    CustomerService customerService;
-    PartyService partyService;
-    SubscriptionService subscriptionService;
-    TermService termService;
+
+    AssociateService associateService = AssociateUtil.getHome();
+    PartyService partyService = PartyUtil.getHome();
+    SubscriptionService subscriptionService = SubscriptionUtil.getHome();
+    TermService termService = TermUtil.getHome();
+
     String partyName;
     String customerName;
     String entityRef;
     
     /** Creates a new instance of CustomerHandler */
     public CustomerHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName, String customerName, String entityRef)
-            throws SAXException{
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            associateService = AssociateUtil.getHome();
-            customerService = CustomerUtil.getHome();
-            partyService = PartyUtil.getHome();
-            subscriptionService = SubscriptionUtil.getHome();
-            termService = TermUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
-        
+
         this.partyName = partyName;
         this.customerName = customerName;
         this.entityRef = entityRef;
@@ -82,28 +66,28 @@ public class CustomerHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyAlias")) {
-            CreatePartyAliasForm commandForm = PartyFormFactory.getCreatePartyAliasForm();
+            var commandForm = PartyFormFactory.getCreatePartyAliasForm();
 
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
             partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("partyCreditLimit")) {
-            CreatePartyCreditLimitForm commandForm = TermFormFactory.getCreatePartyCreditLimitForm();
+            var commandForm = TermFormFactory.getCreatePartyCreditLimitForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
             
             termService.createPartyCreditLimit(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("subscription")) {
-            CreateSubscriptionForm commandForm = SubscriptionFormFactory.getCreateSubscriptionForm();
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
             
             subscriptionService.createSubscription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("associate")) {
-            CreateAssociateForm commandForm = AssociateFormFactory.getCreateAssociateForm();
+            var commandForm = AssociateFormFactory.getCreateAssociateForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
@@ -112,7 +96,7 @@ public class CustomerHandler
 
             initialDataParser.pushHandler(new AssociateHandler(initialDataParser, this, commandForm.getAssociateProgramName(),commandForm.getAssociateName()));
         } else if(localName.equals("profile")) {
-            CreateProfileForm commandForm = PartyFormFactory.getCreateProfileForm();
+            var commandForm = PartyFormFactory.getCreateProfileForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
