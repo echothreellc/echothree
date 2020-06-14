@@ -1,5 +1,20 @@
 # Changelog
 
+## 2020-06-14-01
+
+* Add FOB Terms and Conditions to OrderDetails [62](https://gitlab.echothree.com/echothree/echothree/-/issues/62)
+* Add FOB Terms and Conditions to InvoiceDetails [63](https://gitlab.echothree.com/echothree/echothree/-/issues/63)
+* Different ULIDs for Same Object When Generated [65](https://gitlab.echothree.com/echothree/echothree/-/issues/65)
+* WildFly 20.0.0 Upgrade [66](https://gitlab.echothree.com/echothree/echothree/-/issues/66)
+* Add Workflow for Purchase Orders [67](https://gitlab.echothree.com/echothree/echothree/-/issues/67)
+* Apache Lucene 8.5.2 Upgrade [68](https://gitlab.echothree.com/echothree/echothree/-/issues/68)
+* Implement DefaultFreeOnBoard for Customer Types [69](https://gitlab.echothree.com/echothree/echothree/-/issues/69)
+* Implement DefaultFreeOnBoard for Vendor Types [70](https://gitlab.echothree.com/echothree/echothree/-/issues/70)
+* jOOQ 3.13.2 Upgrade [72](https://gitlab.echothree.com/echothree/echothree/-/issues/72)
+* ICU4J 67.1 Upgrade [73](https://gitlab.echothree.com/echothree/echothree/-/issues/73)
+* ClassGraph 4.8.83 Upgrade [74](https://gitlab.echothree.com/echothree/echothree/-/issues/74)
+* graphql-java 15.0 Upgrade [75](https://gitlab.echothree.com/echothree/echothree/-/issues/75)
+
 ## 2020-05-31-01
 
 * Add Payment Processor Transactions [9](https://gitlab.echothree.com/echothree/echothree/-/issues/9)
