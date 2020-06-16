@@ -29,6 +29,21 @@
             <workflowStep workflowStepName="ENTRY_COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Entry Complete" />
             </workflowStep>
+            <workflowStep workflowStepName="RELEASED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Released" />
+            </workflowStep>
+            <workflowStep workflowStepName="RECEIVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Received" />
+            </workflowStep>
+            <workflowStep workflowStepName="CHANGE_ORDER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Change Order" />
+            </workflowStep>
+            <workflowStep workflowStepName="CANCELED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Canceled" />
+            </workflowStep>
+            <workflowStep workflowStepName="CLOSED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Closed" />
+            </workflowStep>
             <workflowEntrance workflowEntranceName="ENTRY" isDefault="true" sortOrder="0">
                 <workflowEntranceDescription languageIsoName="en" description="Entry" />
                 <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
