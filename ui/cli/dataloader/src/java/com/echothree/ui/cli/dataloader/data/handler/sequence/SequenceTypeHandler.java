@@ -16,22 +16,16 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.sequence;
 
-import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.SequenceService;
+import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.edit.SequenceTypeDescriptionEdit;
-import com.echothree.control.user.sequence.common.form.CreateSequenceForm;
-import com.echothree.control.user.sequence.common.form.CreateSequenceTypeDescriptionForm;
-import com.echothree.control.user.sequence.common.form.EditSequenceTypeDescriptionForm;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.control.user.sequence.common.result.EditSequenceTypeDescriptionResult;
 import com.echothree.control.user.sequence.common.spec.SequenceSpecFactory;
-import com.echothree.control.user.sequence.common.spec.SequenceTypeDescriptionSpec;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -60,20 +54,20 @@ public class SequenceTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceTypeDescription")) {
-            SequenceTypeDescriptionSpec spec = SequenceSpecFactory.getSequenceTypeDescriptionSpec();
-            EditSequenceTypeDescriptionForm editForm = SequenceFormFactory.getEditSequenceTypeDescriptionForm();
+            var spec = SequenceSpecFactory.getSequenceTypeDescriptionSpec();
+            var editForm = SequenceFormFactory.getEditSequenceTypeDescriptionForm();
 
             spec.setSequenceTypeName(sequenceTypeName);
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = sequenceService.editSequenceTypeDescription(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = sequenceService.editSequenceTypeDescription(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSequenceTypeDescription.name())) {
-                    CreateSequenceTypeDescriptionForm createForm = SequenceFormFactory.getCreateSequenceTypeDescriptionForm();
+                    var createForm = SequenceFormFactory.getCreateSequenceTypeDescriptionForm();
 
                     createForm.setSequenceTypeName(sequenceTypeName);
                     createForm.set(getAttrsMap(attrs));
@@ -87,13 +81,13 @@ public class SequenceTypeHandler
                     getLog().error(commandResult);
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditSequenceTypeDescriptionResult result = (EditSequenceTypeDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSequenceTypeDescriptionResult)executionResult.getResult();
 
                 if(result != null) {
-                    SequenceTypeDescriptionEdit edit = (SequenceTypeDescriptionEdit)result.getEdit();
-                    String description = attrs.getValue("description");
-                    boolean changed = false;
+                    var edit = (SequenceTypeDescriptionEdit)result.getEdit();
+                    var description = attrs.getValue("description");
+                    var changed = false;
                     
                     if(!edit.getDescription().equals(description)) {
                         edit.setDescription(description);
@@ -122,12 +116,12 @@ public class SequenceTypeHandler
                 }
             }
         } else if(localName.equals("sequence")) {
-            CreateSequenceForm commandForm = SequenceFormFactory.getCreateSequenceForm();
+            var commandForm = SequenceFormFactory.getCreateSequenceForm();
 
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            CommandResult commandResult = sequenceService.createSequence(initialDataParser.getUserVisit(), commandForm);
+            var commandResult = sequenceService.createSequence(initialDataParser.getUserVisit(), commandForm);
 
             if(!commandResult.hasErrors()) {
                 initialDataParser.pushHandler(new SequenceHandler(initialDataParser, this, sequenceTypeName, commandForm.getSequenceName()));

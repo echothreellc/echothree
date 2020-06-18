@@ -74,14 +74,14 @@
         </sequenceType>
         <sequenceType sequenceTypeName="SALES_INVOICE" prefix="IN" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
-            <sequenceTypeDescription languageIsoName="en" description="Invoice" />
+            <sequenceTypeDescription languageIsoName="en" description="Sales Invoice" />
             <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Sales Invoice" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="PURCHASE_INVOICE" prefix="PI" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
-            <sequenceTypeDescription languageIsoName="en" description="Invoice" />
+            <sequenceTypeDescription languageIsoName="en" description="Purchase Invoice" />
             <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Purchase Invoice" />
             </sequence>
