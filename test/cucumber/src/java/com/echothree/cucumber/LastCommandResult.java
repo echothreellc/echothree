@@ -34,16 +34,16 @@ public class LastCommandResult implements En {
         Then("^no error should occur$", () -> {
             assertThat(commandResult).isNotNull();
 
-//        if(commandResult.hasErrors()) {
-//            var executionResult = commandResult.getExecutionResult();
-//            var executionErrors = executionResult.getExecutionErrors().get();
-//
-//            while(executionErrors.hasNext()) {
-//                var message = executionErrors.next();
-//
-//                scenario.write(message.getKey() + ": " + message.getMessage());
-//            }
-//        }
+            if(commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var executionErrors = executionResult.getExecutionErrors().get();
+
+                while(executionErrors.hasNext()) {
+                    var message = executionErrors.next();
+
+                    scenario.write(message.getKey() + ": " + message.getMessage());
+                }
+            }
 
             assertThat(commandResult.hasErrors()).isFalse();
         });
