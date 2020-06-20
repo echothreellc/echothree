@@ -36,7 +36,17 @@ import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttribut
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
+import com.echothree.control.user.item.common.edit.ItemEdit;
+import com.echothree.control.user.item.common.edit.ItemPriceEdit;
+import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
 import com.echothree.control.user.item.common.form.CreateItemForm;
+import com.echothree.control.user.item.common.form.CreateItemPriceForm;
+import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
+import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.spec.ItemPriceSpec;
+import com.echothree.control.user.item.common.spec.ItemSpec;
+import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
 import com.echothree.cucumber.authentication.UserVisits;
@@ -98,6 +108,18 @@ public class BasePersona {
 
     // Item
     public CreateItemForm createItemForm;
+    public ItemSpec itemSpec;
+    public ItemEdit itemEdit;
+
+    public CreateItemPriceForm createItemPriceForm;
+    public DeleteItemPriceForm deleteItemPriceForm;
+    public ItemPriceSpec itemPriceSpec;
+    public ItemPriceEdit itemPriceEdit;
+
+    public CreateItemUnitOfMeasureTypeForm createItemUnitOfMeasureTypeForm;
+    public DeleteItemUnitOfMeasureTypeForm deleteItemUnitOfMeasureTypeForm;
+    public ItemUnitOfMeasureTypeSpec itemUnitOfMeasureTypeSpec;
+    public ItemUnitOfMeasureTypeEdit itemUnitOfMeasureTypeEdit;
 
     public String lastItemName;
 
