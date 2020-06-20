@@ -48,6 +48,7 @@ Feature: Employee item unit of measure type
     And the user begins editing the item unit of measure type
     Then no error should occur
     And the user sets the item unit of measure type to be the default
+    And the user finishes editing the item unit of measure type
     Then no error should occur
     And the user begins deleting an item unit of measure type
     And the user sets the item unit of measure type's item to the last item added
