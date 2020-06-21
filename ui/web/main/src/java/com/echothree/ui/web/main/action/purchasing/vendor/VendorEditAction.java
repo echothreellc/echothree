@@ -25,7 +25,6 @@ import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -52,22 +51,17 @@ public class VendorEditAction
     @Override
     protected VendorSpec getSpec(HttpServletRequest request, VendorEditActionForm actionForm)
             throws NamingException {
-        VendorSpec spec = VendorUtil.getHome().getVendorSpec();
-        String originalVendorName = request.getParameter(ParameterConstants.ORIGINAL_VENDOR_NAME);
+        var spec = VendorUtil.getHome().getVendorSpec();
 
-        if(originalVendorName == null) {
-            originalVendorName = actionForm.getOriginalVendorName();
-        }
+        spec.setVendorName(findParameter(request, ParameterConstants.ORIGINAL_VENDOR_NAME, actionForm.getOriginalVendorName()));
 
-        spec.setVendorName(originalVendorName);
-        
         return spec;
     }
     
     @Override
     protected VendorEdit getEdit(HttpServletRequest request, VendorEditActionForm actionForm)
             throws NamingException {
-        VendorEdit edit = VendorUtil.getHome().getVendorEdit();
+        var edit = VendorUtil.getHome().getVendorEdit();
 
         edit.setVendorName(actionForm.getVendorName());
         edit.setVendorTypeName(actionForm.getVendorTypeChoice());
@@ -143,18 +137,17 @@ public class VendorEditAction
     @Override
     protected CommandResult doEdit(HttpServletRequest request, EditVendorForm commandForm)
             throws Exception {
-        CommandResult commandResult = VendorUtil.getHome().editVendor(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditVendorResult result = (EditVendorResult)executionResult.getResult();
-
-        request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
-        
-        return commandResult;
+        return VendorUtil.getHome().editVendor(getUserVisitPK(request), commandForm);
     }
     
     @Override
     public void setupForwardParameters(VendorEditActionForm actionForm, Map<String, String> parameters) {
         parameters.put(ParameterConstants.VENDOR_NAME, actionForm.getVendorName());
     }
-    
+
+    @Override
+    protected void setupTransferForForm(HttpServletRequest request, VendorEditActionForm actionForm, EditVendorResult result) {
+        request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
+    }
+
 }
