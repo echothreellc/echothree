@@ -598,20 +598,15 @@ public class CustomerControl
     //   Customers
     // --------------------------------------------------------------------------------
     
-    public Customer createCustomer(Party party, CustomerType customerType, OfferUse initialOfferUse, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, GlAccount arGlAccount, Boolean holdUntilComplete,
-            Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
+    public Customer createCustomer(Party party, CustomerType customerType, OfferUse initialOfferUse,
+            CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, GlAccount arGlAccount,
+            Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
+            Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
             String referenceValidationPattern, BasePK createdBy) {
-        Sequence sequence = customerType.getLastDetail().getCustomerSequence();
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-
-        if(sequence == null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
-            sequence = sequenceControl.getDefaultSequence(sequenceType);
-        }
-
-        String customerName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
-        Customer customer = CustomerFactory.getInstance().create(party, customerName, customerType, initialOfferUse, cancellationPolicy, returnPolicy, arGlAccount, holdUntilComplete,
-                allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
+        var customerName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CUSTOMER.name());
+        var customer = CustomerFactory.getInstance().create(party, customerName, customerType, initialOfferUse,
+                cancellationPolicy, returnPolicy, arGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions,
+                allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), customer.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
