@@ -32,28 +32,18 @@ import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
-import com.echothree.model.data.employee.server.value.PartyEmployeeValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyDetail;
-import com.echothree.model.data.party.server.entity.Person;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.party.server.value.PartyDetailValue;
-import com.echothree.model.data.party.server.value.PersonValue;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
-import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateUse;
-import com.echothree.model.data.security.server.value.PartySecurityRoleTemplateUseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -65,7 +55,7 @@ import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 
 public class EditEmployeeCommand
-        extends BaseEditCommand<EmployeeSpec, EmployeeEdit> {
+        extends BaseAbstractEditCommand<EmployeeSpec, EmployeeEdit, EditEmployeeResult, Party, Party> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -102,163 +92,190 @@ public class EditEmployeeCommand
     public EditEmployeeCommand(UserVisitPK userVisitPK, EditEmployeeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    public EditEmployeeResult getResult() {
+        return PartyResultFactory.getEditEmployeeResult();
+    }
+
+    @Override
+    public EmployeeEdit getEdit() {
+        return PartyEditFactory.getEmployeeEdit();
+    }
+
+    @Override
+    public Party getEntity(EditEmployeeResult result) {
         var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-        EditEmployeeResult result = PartyResultFactory.getEditEmployeeResult();
-        String employeeName = spec.getEmployeeName();
-        PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByNameForUpdate(employeeName);
-        
+        PartyEmployee partyEmployee;
+        var employeeName = spec.getEmployeeName();
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
+        } else { // EditMode.UPDATE
+            partyEmployee = employeeControl.getPartyEmployeeByNameForUpdate(employeeName);
+        }
+
         if(partyEmployee != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-            Party party = partyEmployee.getParty();
-            
-            if(editMode.equals(EditMode.LOCK)) {
-                result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), party));
-                
-                if(lockEntity(party)) {
-                    EmployeeEdit edit = PartyEditFactory.getEmployeeEdit();
-                    PartyDetail partyDetail = party.getLastDetail();
-                    Language preferredLanguage = partyDetail.getPreferredLanguage();
-                    Currency preferredCurrency = partyDetail.getPreferredCurrency();
-                    TimeZone preferredTimeZone = partyDetail.getPreferredTimeZone();
-                    DateTimeFormat dateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-                    Person person = partyControl.getPerson(party);
-                    PersonalTitle personalTitle = person.getPersonalTitle();
-                    NameSuffix nameSuffix = person.getNameSuffix();
-                    PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = securityControl.getPartySecurityRoleTemplateUse(party);
-                    
-                    result.setEdit(edit);
-                    edit.setEmployeeTypeName(partyEmployee.getEmployeeType().getLastDetail().getEmployeeTypeName());
-                    edit.setPersonalTitleId(personalTitle == null? null: personalTitle.getPrimaryKey().getEntityId().toString());
-                    edit.setFirstName(person.getFirstName());
-                    edit.setMiddleName(person.getMiddleName());
-                    edit.setLastName(person.getLastName());
-                    edit.setNameSuffixId(nameSuffix == null? null: nameSuffix.getPrimaryKey().getEntityId().toString());
-                    edit.setPreferredLanguageIsoName(preferredLanguage == null? null: preferredLanguage.getLanguageIsoName());
-                    edit.setPreferredCurrencyIsoName(preferredCurrency == null? null: preferredCurrency.getCurrencyIsoName());
-                    edit.setPreferredJavaTimeZoneName(preferredTimeZone == null? null: preferredTimeZone.getLastDetail().getJavaTimeZoneName());
-                    edit.setPreferredDateTimeFormatName(dateTimeFormat == null? null: dateTimeFormat.getLastDetail().getDateTimeFormatName());
-                    edit.setPartySecurityRoleTemplateName(partySecurityRoleTemplateUse.getPartySecurityRoleTemplate().getLastDetail().getPartySecurityRoleTemplateName());
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(party));
-            } else if(editMode.equals(EditMode.ABANDON)) {
-                unlockEntity(party);
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                PartyEmployeeValue partyEmployeeValue = employeeControl.getPartyEmployeeValue(partyEmployee);
-
-                String employeeTypeName = edit.getEmployeeTypeName();
-                EmployeeType employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
-
-                if(employeeType != null) {
-                    String preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
-                    Language preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
-
-                    if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                        String preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
-                        TimeZone preferredTimeZone = preferredJavaTimeZoneName == null ? null : partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
-
-                        if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                            String preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
-                            DateTimeFormat preferredDateTimeFormat = preferredDateTimeFormatName == null ? null : partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
-
-                            if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                String preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
-                                Currency preferredCurrency;
-
-                                if(preferredCurrencyIsoName == null) {
-                                    preferredCurrency = null;
-                                } else {
-                                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-                                    preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
-                                }
-
-                                if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                    String partySecurityRoleTemplateName = edit.getPartySecurityRoleTemplateName();
-                                    PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
-
-                                    if(partySecurityRoleTemplate != null) {
-                                        if(lockEntityForUpdate(party)) {
-                                            try {
-                                                Soundex soundex = new Soundex();
-                                                PartyDetailValue partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
-                                                PersonValue personValue = partyControl.getPersonValueForUpdate(party);
-                                                String personalTitleId = edit.getPersonalTitleId();
-                                                PersonalTitle personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
-                                                String firstName = edit.getFirstName();
-                                                String firstNameSdx = soundex.encode(firstName);
-                                                String middleName = edit.getMiddleName();
-                                                String middleNameSdx = middleName == null ? null : soundex.encode(middleName);
-                                                String lastName = edit.getLastName();
-                                                String lastNameSdx = soundex.encode(lastName);
-                                                String nameSuffixId = edit.getNameSuffixId();
-                                                NameSuffix nameSuffix = nameSuffixId == null ? null
-                                                        : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
-                                                PartySecurityRoleTemplateUseValue partySecurityRoleTemplateUseValue = securityControl.getPartySecurityRoleTemplateUseValueForUpdate(party);
-
-                                                partyEmployeeValue.setEmployeeTypePK(employeeType.getPrimaryKey());
-
-                                                partyDetailValue.setPreferredLanguagePK(preferredLanguage == null? null: preferredLanguage.getPrimaryKey());
-                                                partyDetailValue.setPreferredTimeZonePK(preferredTimeZone == null? null: preferredTimeZone.getPrimaryKey());
-                                                partyDetailValue.setPreferredDateTimeFormatPK(preferredDateTimeFormat == null? null: preferredDateTimeFormat.getPrimaryKey());
-                                                partyDetailValue.setPreferredCurrencyPK(preferredCurrency == null? null: preferredCurrency.getPrimaryKey());
-                                                
-                                                personValue.setPersonalTitlePK(personalTitle == null? null: personalTitle.getPrimaryKey());
-                                                personValue.setFirstName(firstName);
-                                                personValue.setFirstNameSdx(firstNameSdx);
-                                                personValue.setMiddleName(middleName);
-                                                personValue.setMiddleNameSdx(middleNameSdx);
-                                                personValue.setLastName(lastName);
-                                                personValue.setLastNameSdx(lastNameSdx);
-                                                personValue.setNameSuffixPK(nameSuffix == null? null: nameSuffix.getPrimaryKey());
-
-                                                partySecurityRoleTemplateUseValue.setPartySecurityRoleTemplatePK(partySecurityRoleTemplate.getPrimaryKey());
-
-                                                PartyPK updatedBy = getPartyPK();
-                                                employeeControl.updatePartyEmployeeFromValue(partyEmployeeValue, updatedBy);
-                                                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
-                                                partyControl.updatePersonFromValue(personValue, updatedBy);
-                                                securityControl.updatePartySecurityRoleTemplateUseFromValue(partySecurityRoleTemplateUseValue, updatedBy);
-                                            } finally {
-                                                unlockEntity(party);
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownPartySecurityRoleTemplateName.name(), partySecurityRoleTemplateName);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), preferredCurrencyIsoName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownDateTimeFormatName.name(), preferredDateTimeFormatName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownJavaTimeZoneName.name(), preferredJavaTimeZoneName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), preferredLanguageIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEmployeeTypeName.name(), employeeTypeName);
-                }
-
-                if(hasExecutionErrors()) {
-                    result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), party));
-                    result.setEntityLock(getEntityLockTransfer(party));
-                }
-            }
+            result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), partyEmployee.getParty()));
         } else {
             addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
         }
-        
-        return result;
+
+        return partyEmployee.getParty();
     }
-    
+
+    @Override
+    public Party getLockEntity(Party party) {
+        return party;
+    }
+
+    @Override
+    public void fillInResult(EditEmployeeResult result, Party party) {
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+
+        result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), party));
+    }
+
+    @Override
+    public void doLock(EmployeeEdit edit, Party party) {
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var partyEmployee = employeeControl.getPartyEmployee(party);
+        var partyDetail = party.getLastDetail();
+        var preferredLanguage = partyDetail.getPreferredLanguage();
+        var preferredCurrency = partyDetail.getPreferredCurrency();
+        var preferredTimeZone = partyDetail.getPreferredTimeZone();
+        var dateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+        var person = partyControl.getPerson(party);
+        var personalTitle = person.getPersonalTitle();
+        var nameSuffix = person.getNameSuffix();
+        var partySecurityRoleTemplateUse = securityControl.getPartySecurityRoleTemplateUse(party);
+
+        edit.setEmployeeTypeName(partyEmployee.getEmployeeType().getLastDetail().getEmployeeTypeName());
+        edit.setPersonalTitleId(personalTitle == null? null: personalTitle.getPrimaryKey().getEntityId().toString());
+        edit.setFirstName(person.getFirstName());
+        edit.setMiddleName(person.getMiddleName());
+        edit.setLastName(person.getLastName());
+        edit.setNameSuffixId(nameSuffix == null? null: nameSuffix.getPrimaryKey().getEntityId().toString());
+        edit.setPreferredLanguageIsoName(preferredLanguage == null? null: preferredLanguage.getLanguageIsoName());
+        edit.setPreferredCurrencyIsoName(preferredCurrency == null? null: preferredCurrency.getCurrencyIsoName());
+        edit.setPreferredJavaTimeZoneName(preferredTimeZone == null? null: preferredTimeZone.getLastDetail().getJavaTimeZoneName());
+        edit.setPreferredDateTimeFormatName(dateTimeFormat == null? null: dateTimeFormat.getLastDetail().getDateTimeFormatName());
+        edit.setPartySecurityRoleTemplateName(partySecurityRoleTemplateUse.getPartySecurityRoleTemplate().getLastDetail().getPartySecurityRoleTemplateName());
+    }
+
+    EmployeeType employeeType;
+    Language preferredLanguage;
+    TimeZone preferredTimeZone;
+    DateTimeFormat preferredDateTimeFormat;
+    Currency preferredCurrency;
+    PartySecurityRoleTemplate partySecurityRoleTemplate;
+
+    @Override
+    public void canUpdate(Party party) {
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var employeeTypeName = edit.getEmployeeTypeName();
+
+        employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
+
+        if(employeeType != null) {
+            var preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
+
+            preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
+
+            if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
+                var preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
+
+                preferredTimeZone = preferredJavaTimeZoneName == null ? null : partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
+
+                if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
+                    var preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
+
+                    preferredDateTimeFormat = preferredDateTimeFormatName == null ? null : partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
+
+                    if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
+                        var preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
+
+                        if(preferredCurrencyIsoName == null) {
+                            preferredCurrency = null;
+                        } else {
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
+                        }
+
+                        if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
+                            var partySecurityRoleTemplateName = edit.getPartySecurityRoleTemplateName();
+
+                            partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
+
+                            if(partySecurityRoleTemplate == null) {
+                                addExecutionError(ExecutionErrors.UnknownPartySecurityRoleTemplateName.name(), partySecurityRoleTemplateName);
+                            }
+                        } else {
+                            addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), preferredCurrencyIsoName);
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownDateTimeFormatName.name(), preferredDateTimeFormatName);
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownJavaTimeZoneName.name(), preferredJavaTimeZoneName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), preferredLanguageIsoName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownEmployeeTypeName.name(), employeeTypeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(Party party) {
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var soundex = new Soundex();
+        var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
+        var partyEmployee = employeeControl.getPartyEmployeeForUpdate(party);
+        var partyEmployeeValue = employeeControl.getPartyEmployeeValue(partyEmployee);
+        var personValue = partyControl.getPersonValueForUpdate(party);
+        var personalTitleId = edit.getPersonalTitleId();
+        var personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
+        var firstName = edit.getFirstName();
+        var firstNameSdx = soundex.encode(firstName);
+        var middleName = edit.getMiddleName();
+        var middleNameSdx = middleName == null ? null : soundex.encode(middleName);
+        var lastName = edit.getLastName();
+        var lastNameSdx = soundex.encode(lastName);
+        var nameSuffixId = edit.getNameSuffixId();
+        var nameSuffix = nameSuffixId == null ? null : partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
+        var partySecurityRoleTemplateUseValue = securityControl.getPartySecurityRoleTemplateUseValueForUpdate(party);
+
+        partyEmployeeValue.setEmployeeTypePK(employeeType.getPrimaryKey());
+
+        partyDetailValue.setPreferredLanguagePK(preferredLanguage == null? null: preferredLanguage.getPrimaryKey());
+        partyDetailValue.setPreferredTimeZonePK(preferredTimeZone == null? null: preferredTimeZone.getPrimaryKey());
+        partyDetailValue.setPreferredDateTimeFormatPK(preferredDateTimeFormat == null? null: preferredDateTimeFormat.getPrimaryKey());
+        partyDetailValue.setPreferredCurrencyPK(preferredCurrency == null? null: preferredCurrency.getPrimaryKey());
+
+        personValue.setPersonalTitlePK(personalTitle == null? null: personalTitle.getPrimaryKey());
+        personValue.setFirstName(firstName);
+        personValue.setFirstNameSdx(firstNameSdx);
+        personValue.setMiddleName(middleName);
+        personValue.setMiddleNameSdx(middleNameSdx);
+        personValue.setLastName(lastName);
+        personValue.setLastNameSdx(lastNameSdx);
+        personValue.setNameSuffixPK(nameSuffix == null? null: nameSuffix.getPrimaryKey());
+
+        partySecurityRoleTemplateUseValue.setPartySecurityRoleTemplatePK(partySecurityRoleTemplate.getPrimaryKey());
+
+        PartyPK updatedBy = getPartyPK();
+        employeeControl.updatePartyEmployeeFromValue(partyEmployeeValue, updatedBy);
+        partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
+        partyControl.updatePersonFromValue(personValue, updatedBy);
+        securityControl.updatePartySecurityRoleTemplateUseFromValue(partySecurityRoleTemplateUseValue, updatedBy);
+    }
+
 }
