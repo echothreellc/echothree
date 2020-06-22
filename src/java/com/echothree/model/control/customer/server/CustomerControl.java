@@ -614,26 +614,45 @@ public class CustomerControl
         return customer;
     }
     
-    public Customer getCustomer(Party party) {
-        Customer customer = null;
+    public Customer getCustomer(Party party, EntityPermission entityPermission) {
+        Customer customer;
         
         try {
-            PreparedStatement ps = CustomerFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM customers " +
-                    "WHERE cu_par_partyid = ? AND cu_thrutime = ?");
-            
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM customers " +
+                        "WHERE cu_par_partyid = ? AND cu_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM customers " +
+                        "WHERE cu_par_partyid = ? AND cu_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = CustomerFactory.getInstance().prepareStatement(query);
+
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
-            customer = CustomerFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+
+            customer = CustomerFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
         return customer;
     }
-    
+
+    public Customer getCustomer(Party party) {
+        return getCustomer(party, EntityPermission.READ_ONLY);
+    }
+
+    public Customer getCustomerForUpdate(Party party) {
+        return getCustomer(party, EntityPermission.READ_WRITE);
+    }
+
+
     private Customer getCustomerByName(String customerName, EntityPermission entityPermission) {
         Customer customer = null;
         
