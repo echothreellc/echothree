@@ -48,7 +48,18 @@ import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
+import com.echothree.control.user.party.common.form.CreateVendorForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
+import com.echothree.control.user.vendor.common.edit.VendorEdit;
+import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
+import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
+import com.echothree.control.user.vendor.common.form.CreateVendorItemCostForm;
+import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
+import com.echothree.control.user.vendor.common.form.DeleteVendorItemCostForm;
+import com.echothree.control.user.vendor.common.form.DeleteVendorItemForm;
+import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
+import com.echothree.control.user.vendor.common.spec.VendorSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -135,5 +146,22 @@ public class BasePersona {
     public String lastSalesOrderBatchName;
     public String lastSalesOrderName;
     public String lastSalesOrderLineSequence;
+    
+    // Vendor
+    public CreateVendorForm createVendorForm;
+    public VendorSpec vendorSpec;
+    public VendorEdit vendorEdit;
+
+    public CreateVendorItemForm createVendorItemForm;
+    public DeleteVendorItemForm deleteVendorItemForm;
+    public VendorItemSpec vendorItemSpec;
+    public VendorItemEdit vendorItemEdit;
+
+    public CreateVendorItemCostForm createVendorItemCostForm;
+    public DeleteVendorItemCostForm deleteVendorItemCostForm;
+    public VendorItemCostSpec vendorItemCostSpec;
+    public VendorItemCostEdit vendorItemCostEdit;
+
+    public String lastVendorName;
 
 }
