@@ -24,9 +24,9 @@ import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ItemUnitOfMeasureTypes implements En {
+public class ItemUnitOfMeasureTypeSteps implements En {
 
-    public ItemUnitOfMeasureTypes() {
+    public ItemUnitOfMeasureTypeSteps() {
         When("^the user begins entering a new item unit of measure type$",
                 () -> {
                     var persona = CurrentPersona.persona;
