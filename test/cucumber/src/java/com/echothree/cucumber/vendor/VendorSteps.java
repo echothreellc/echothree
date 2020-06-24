@@ -120,6 +120,47 @@ public class VendorSteps implements En {
                 });
         
         // TODO: everything for forms
+
+        When("^the user sets the vendor's name to ([a-zA-Z0-9-_]*)$",
+                (String vendorName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorSpec = persona.vendorSpec;
+
+                    assertThat(createVendorForm != null || vendorSpec != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setVendorName(vendorName);
+                    } else {
+                        vendorSpec.setVendorName(vendorName);
+                    }
+                });
+
+        When("^the user sets the vendor's new name to ([a-zA-Z0-9-_]*)$",
+                (String vendorName) -> {
+                    var persona = CurrentPersona.persona;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(vendorEdit != null).isTrue();
+
+                    vendorEdit.setVendorName(vendorName);
+                });
+
+        When("^the user sets the vendor's type to ([a-zA-Z0-9-_]*)$",
+                (String vendorTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setVendorTypeName(vendorTypeName);
+                    } else {
+                        vendorEdit.setVendorTypeName(vendorTypeName);
+                    }
+                });
+
     }
 
     private void setVendorStatus(BasePersona persona, String vendorName, String vendorStatusChoice)
