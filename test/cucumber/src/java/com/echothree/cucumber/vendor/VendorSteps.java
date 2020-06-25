@@ -17,12 +17,20 @@
 package com.echothree.cucumber.vendor;
 
 import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.user.common.UserService;
+import com.echothree.control.user.user.common.UserUtil;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredCurrencyForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguageForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -121,7 +129,7 @@ public class VendorSteps implements En {
         
         // TODO: everything for forms
 
-        When("^the user sets the vendor's name to ([a-zA-Z0-9-_]*)$",
+        When("^the user sets the vendor's vendor name to ([a-zA-Z0-9-_]*)$",
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -136,7 +144,7 @@ public class VendorSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor's new name to ([a-zA-Z0-9-_]*)$",
+        When("^the user sets the vendor's new vendor name to ([a-zA-Z0-9-_]*)$",
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var vendorEdit = persona.vendorEdit;
@@ -160,6 +168,303 @@ public class VendorSteps implements En {
                         vendorEdit.setVendorTypeName(vendorTypeName);
                     }
                 });
+
+        When("^the user sets the vendor's cancellation policy to ([a-zA-Z0-9-_]*)$",
+                (String cancellationPolicyName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setCancellationPolicyName(cancellationPolicyName);
+                    } else {
+                        vendorEdit.setCancellationPolicyName(cancellationPolicyName);
+                    }
+                });
+
+        When("^the user sets the vendor's return policy to ([a-zA-Z0-9-_]*)$",
+                (String returnPolicyName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setReturnPolicyName(returnPolicyName);
+                    } else {
+                        vendorEdit.setReturnPolicyName(returnPolicyName);
+                    }
+                });
+
+        When("^the user sets the vendor's AP GL account to ([a-zA-Z0-9-_]*)$",
+                (String apGlAccountName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setApGlAccountName(apGlAccountName);
+                    } else {
+                        vendorEdit.setApGlAccountName(apGlAccountName);
+                    }
+                });
+
+        When("^the user sets the vendor's minimum purchase order lines to ([a-zA-Z0-9-_]*)$",
+                (String minimumPurchaseOrderLines) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setMinimumPurchaseOrderLines(minimumPurchaseOrderLines);
+                    } else {
+                        vendorEdit.setMinimumPurchaseOrderLines(minimumPurchaseOrderLines);
+                    }
+                });
+
+        When("^the user sets the vendor's maximum purchase order lines to ([a-zA-Z0-9-_]*)$",
+                (String maximumPurchaseOrderLines) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setMinimumPurchaseOrderLines(maximumPurchaseOrderLines);
+                    } else {
+                        vendorEdit.setMinimumPurchaseOrderLines(maximumPurchaseOrderLines);
+                    }
+                });
+
+        When("^the user sets the vendor's minimum purchase order amount to ([^\"]*)$",
+                (String minimumPurchaseOrderAmountName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setVendorTypeName(minimumPurchaseOrderAmountName);
+                    } else {
+                        vendorEdit.setVendorTypeName(minimumPurchaseOrderAmountName);
+                    }
+                });
+
+        When("^the user sets the vendor's maximum purchase order amount to ([^\"]*)$",
+                (String maximumPurchaseOrderAmountName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setVendorTypeName(maximumPurchaseOrderAmountName);
+                    } else {
+                        vendorEdit.setVendorTypeName(maximumPurchaseOrderAmountName);
+                    }
+                });
+
+        When("^the user sets the vendor to (use|not use) use item purchasing categories$",
+                (String useItemPurchasingCategories) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    useItemPurchasingCategories = Boolean.valueOf(useItemPurchasingCategories.equals("use")).toString();
+                    if(createVendorForm != null) {
+                        createVendorForm.setUseItemPurchasingCategories(useItemPurchasingCategories);
+                    } else {
+                        vendorEdit.setUseItemPurchasingCategories(useItemPurchasingCategories);
+                    }
+                });
+
+        When("^the user sets the vendor's default item alias type to ([a-zA-Z0-9-_]*)$",
+                (String defaultItemAliasTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setDefaultItemAliasTypeName(defaultItemAliasTypeName);
+                    } else {
+                        vendorEdit.setDefaultItemAliasTypeName(defaultItemAliasTypeName);
+                    }
+                });
+
+        When("^the user sets the vendor's first name to \"([^\"]*)\"$",
+                (String firstName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setFirstName(firstName);
+                    } else {
+                        vendorEdit.setFirstName(firstName);
+                    }
+                });
+
+        When("^the user sets the vendor's middle name to \"([^\"]*)\"$",
+                (String middleName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setMiddleName(middleName);
+                    } else {
+                        vendorEdit.setMiddleName(middleName);
+                    }
+                });
+
+        When("^the user sets the vendor's last name to \"([^\"]*)\"$",
+                (String lastName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setLastName(lastName);
+                    } else {
+                        vendorEdit.setLastName(lastName);
+                    }
+                });
+
+        When("^the user sets the vendor's name to \"([^\"]*)\"$",
+                (String name) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setName(name);
+                    } else {
+                        vendorEdit.setName(name);
+                    }
+                });
+
+        When("^the user sets the vendor's preferred language to \"([^\"]*)\"$",
+                (String preferredLanguageIsoName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setPreferredLanguageIsoName(preferredLanguageIsoName);
+                    } else {
+                        vendorEdit.setPreferredLanguageIsoName(preferredLanguageIsoName);
+                    }
+                });
+
+        When("^the user sets the vendor's preferred currency to \"([^\"]*)\"$",
+                (String preferredCurrencyIsoName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setPreferredCurrencyIsoName(preferredCurrencyIsoName);
+                    } else {
+                        vendorEdit.setPreferredCurrencyIsoName(preferredCurrencyIsoName);
+                    }
+                });
+
+        When("^the user sets the vendor's preferred time zone to \"([^\"]*)\"$",
+                (String preferredJavaTimeZoneName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setPreferredJavaTimeZoneName(preferredJavaTimeZoneName);
+                    } else {
+                        vendorEdit.setPreferredJavaTimeZoneName(preferredJavaTimeZoneName);
+                    }
+                });
+
+        When("^the user sets the vendor's preferred date time format to \"([^\"]*)\"$",
+                (String preferredDateTimeFormatName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(createVendorForm != null || vendorEdit != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setPreferredDateTimeFormatName(preferredDateTimeFormatName);
+                    } else {
+                        vendorEdit.setPreferredDateTimeFormatName(preferredDateTimeFormatName);
+                    }
+                });
+
+        When("^the user sets the vendor email address to \"([^\"]*)\"$",
+                (String emailAddress) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    createVendorForm.setEmailAddress(emailAddress);
+                });
+
+        When("^the user indicates the vendor (does|does not) allow solicitations to the email address$",
+                (String allowSolicitation) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    allowSolicitation = Boolean.valueOf(allowSolicitation.equals("does")).toString();
+                    createVendorForm.setAllowSolicitation(allowSolicitation);
+                });
+
+        When("^the user sets the vendor to (be|not be) taxable",
+                (String taxable) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    taxable = Boolean.valueOf(taxable.equals("does")).toString();
+                    createVendorForm.setTaxable(taxable);
+                });
+
+        // Edit Only
+//                new FieldDefinition("HoldUntilComplete", FieldType.BOOLEAN, true, null, null),
+//                new FieldDefinition("AllowBackorders", FieldType.BOOLEAN, true, null, null),
+//                new FieldDefinition("AllowSubstitutions", FieldType.BOOLEAN, true, null, null),
+//                new FieldDefinition("AllowCombiningShipments", FieldType.BOOLEAN, true, null, null),
+//                new FieldDefinition("RequireReference", FieldType.BOOLEAN, true, null, null),
+//                new FieldDefinition("AllowReferenceDuplicates", FieldType.BOOLEAN, true, null, null),
+//                new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
 
     }
 
