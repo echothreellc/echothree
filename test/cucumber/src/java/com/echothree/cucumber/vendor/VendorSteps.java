@@ -17,25 +17,18 @@
 package com.echothree.cucumber.vendor;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.user.common.UserService;
-import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredCurrencyForm;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguageForm;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VendorSteps implements En {
+public class VendorSteps
+        implements En {
 
     public VendorSteps() {
         When("^the user begins entering a new vendor$",
@@ -457,15 +450,81 @@ public class VendorSteps implements En {
                     createVendorForm.setTaxable(taxable);
                 });
 
-        // Edit Only
-//                new FieldDefinition("HoldUntilComplete", FieldType.BOOLEAN, true, null, null),
-//                new FieldDefinition("AllowBackorders", FieldType.BOOLEAN, true, null, null),
-//                new FieldDefinition("AllowSubstitutions", FieldType.BOOLEAN, true, null, null),
-//                new FieldDefinition("AllowCombiningShipments", FieldType.BOOLEAN, true, null, null),
-//                new FieldDefinition("RequireReference", FieldType.BOOLEAN, true, null, null),
-//                new FieldDefinition("AllowReferenceDuplicates", FieldType.BOOLEAN, true, null, null),
-//                new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
+        When("^the user indicates the vendor default hold until complete should be (set|not set)$",
+                (String holdUntilComplete) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
 
+                    assertThat(createVendorForm).isNotNull();
+
+                    holdUntilComplete = Boolean.valueOf(holdUntilComplete.equals("set")).toString();
+                    createVendorForm.setHoldUntilComplete(holdUntilComplete);
+                });
+
+        When("^the user indicates the vendor default for allow backorders should be (set|not set)$",
+                (String allowBackorders) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    allowBackorders = Boolean.valueOf(allowBackorders.equals("set")).toString();
+                    createVendorForm.setAllowBackorders(allowBackorders);
+                });
+
+        When("^the user indicates the vendor default for allow substitutions should be (set|not set)$",
+                (String allowSubstitutions) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    allowSubstitutions = Boolean.valueOf(allowSubstitutions.equals("set")).toString();
+                    createVendorForm.setAllowSubstitutions(allowSubstitutions);
+                });
+
+        When("^the user indicates the vendor default for allow combining shipments should be (set|not set)$",
+                (String allowCombiningShipments) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    allowCombiningShipments = Boolean.valueOf(allowCombiningShipments.equals("set")).toString();
+                    createVendorForm.setAllowCombiningShipments(allowCombiningShipments);
+                });
+
+        When("^the user indicates the vendor default for allow reference duplicates should be (set|not set)$",
+                (String allowReferenceDuplicates) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    allowReferenceDuplicates = Boolean.valueOf(allowReferenceDuplicates.equals("set")).toString();
+                    createVendorForm.setAllowReferenceDuplicates(allowReferenceDuplicates);
+                });
+
+        When("^the user indicates the vendor default for hold until complete should be (set|not set)$",
+                (String holdUntilComplete) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    holdUntilComplete = Boolean.valueOf(holdUntilComplete.equals("set")).toString();
+                    createVendorForm.setHoldUntilComplete(holdUntilComplete);
+                });
+
+        When("^the user sets the vendor's reference validation pattern to \"([^\"]*)\"$",
+                (String referenceValidationPattern) -> {
+                    var persona = CurrentPersona.persona;
+                    var vendorEdit = persona.vendorEdit;
+
+                    assertThat(vendorEdit).isNotNull();
+
+                    vendorEdit.setReferenceValidationPattern(referenceValidationPattern);
+                });
     }
 
     private void setVendorStatus(BasePersona persona, String vendorName, String vendorStatusChoice)
