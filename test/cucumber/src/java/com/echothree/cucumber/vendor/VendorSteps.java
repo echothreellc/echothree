@@ -17,6 +17,7 @@
 package com.echothree.cucumber.vendor;
 
 import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.cucumber.BasePersona;
@@ -55,7 +56,9 @@ public class VendorSteps
                     var commandResult = partyUtil.createVendor(persona.userVisitPK, createVendorForm);
 
                     LastCommandResult.commandResult = commandResult;
+                    var result = (CreateVendorResult)commandResult.getExecutionResult().getResult();
 
+                    persona.lastVendorName = commandResult.getHasErrors() ? null : result.getVendorName();
                     persona.createVendorForm = null;
                 });
 
@@ -66,7 +69,7 @@ public class VendorSteps
                     setVendorStatus(persona, persona.lastVendorName, vendorStatusChoice);
                 });
         
-        When("^the user begins specifying an vendor to edit$",
+        When("^the user begins specifying a vendor to edit$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,15 +94,15 @@ public class VendorSteps
                     var commandResult = VendorUtil.getHome().editVendor(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = (EditVendorResult)executionResult.getResult();
+                    if(!commandResult.getHasErrors()) {
+                        var executionResult = commandResult.getExecutionResult();
+                        var result = (EditVendorResult)executionResult.getResult();
 
-                    if(!executionResult.getHasErrors()) {
                         persona.vendorEdit = result.getEdit();
                     }
                 });
 
-        When("^the user finishes editing the vendor",
+        When("^the user finishes editing the vendor$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorSpec;
@@ -119,8 +122,6 @@ public class VendorSteps
                     persona.vendorSpec = null;
                     persona.vendorEdit = null;
                 });
-        
-        // TODO: everything for forms
 
         When("^the user sets the vendor's vendor name to ([a-zA-Z0-9-_]*)$",
                 (String vendorName) -> {
@@ -134,6 +135,21 @@ public class VendorSteps
                         createVendorForm.setVendorName(vendorName);
                     } else {
                         vendorSpec.setVendorName(vendorName);
+                    }
+                });
+
+        When("^the user sets the vendor's vendor name to the last vendor added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+                    var vendorSpec = persona.vendorSpec;
+
+                    assertThat(createVendorForm != null || vendorSpec != null).isTrue();
+
+                    if(createVendorForm != null) {
+                        createVendorForm.setVendorName(persona.lastVendorName);
+                    } else {
+                        vendorSpec.setVendorName(persona.lastVendorName);
                     }
                 });
 
@@ -439,7 +455,7 @@ public class VendorSteps
                     createVendorForm.setAllowSolicitation(allowSolicitation);
                 });
 
-        When("^the user sets the vendor to (be|not be) taxable",
+        When("^the user sets the vendor to (be|not be) taxable$",
                 (String taxable) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
