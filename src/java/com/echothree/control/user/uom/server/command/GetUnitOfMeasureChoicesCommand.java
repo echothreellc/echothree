@@ -39,7 +39,7 @@ public class GetUnitOfMeasureChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("DefaultUnitOfMeasureChoice", FieldType.ENTITY_NAME2, Boolean.FALSE, null, null),
+                new FieldDefinition("DefaultUnitOfMeasureChoice", FieldType.ENTITY_NAME2, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }

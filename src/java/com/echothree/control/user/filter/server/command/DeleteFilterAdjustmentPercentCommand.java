@@ -48,7 +48,7 @@ public class DeleteFilterAdjustmentPercentCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("UnitOfMeasureName", FieldType.ENTITY_NAME2, Boolean.FALSE, null, null),
+                new FieldDefinition("UnitOfMeasureName", FieldType.ENTITY_NAME2, false, null, null),
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)

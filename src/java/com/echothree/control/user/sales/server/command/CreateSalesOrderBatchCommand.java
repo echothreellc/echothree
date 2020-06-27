@@ -60,7 +60,7 @@ public class CreateSalesOrderBatchCommand
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Count", FieldType.UNSIGNED_LONG, false, null, null),
-                new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_LINE, Boolean.FALSE, null, null)
+                new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
                 ));
     }
     
