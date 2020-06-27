@@ -79,7 +79,7 @@ public class VendorSteps
                     persona.vendorSpec = VendorUtil.getHome().getVendorSpec();
                 });
 
-        When("^the user begins editing the vendor",
+        When("^the user begins editing the vendor$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorSpec;
