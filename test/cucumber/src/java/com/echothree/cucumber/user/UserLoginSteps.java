@@ -30,7 +30,7 @@ public class UserLoginSteps implements En {
         When("^the user deletes the user login added by the anonymous user ([^\"]*)$",
                 (String anonymous) -> {
                     var persona = CurrentPersona.persona;
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(anonymous);
+                    var anonymousPersona = AnonymousPersonas.getPersona(anonymous);
 
                     deleteUserLogin(persona, anonymousPersona.lastPartyName);
                 });

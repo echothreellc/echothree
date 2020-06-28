@@ -18,8 +18,6 @@ package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.util.LastCommandResultSteps;
-import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.cucumber.util.persona.AnonymousPersona;
 import com.echothree.cucumber.util.persona.AnonymousPersonas;
 import com.echothree.util.common.command.CommandResult;
@@ -31,7 +29,7 @@ public class AnonymousSteps implements En {
 
     public AnonymousSteps() {
         After(() -> {
-                    for(Map.Entry<String, AnonymousPersona> anonymousPersona : AnonymousPersonas.getPersonas()) {
+                    for(Map.Entry<String, AnonymousPersona> anonymousPersona : AnonymousPersonas.getPersonaEntries()) {
                         AuthenticationService authenticationService = AuthenticationUtil.getHome();
                         CommandResult commandResult = authenticationService.logout(anonymousPersona.getValue().userVisitPK);
 

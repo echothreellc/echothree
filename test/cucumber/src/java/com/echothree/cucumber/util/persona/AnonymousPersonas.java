@@ -21,25 +21,26 @@ import java.util.Map;
 import java.util.Set;
 import javax.naming.NamingException;
 
-public class AnonymousPersonas {
+public class AnonymousPersonas
+        implements BasePersonas<AnonymousPersona> {
 
     private AnonymousPersonas() {
     }
 
-    private static Map<String, AnonymousPersona> anonymousPersonas = new HashMap<>();
+    private static Map<String, AnonymousPersona> personas = new HashMap<>();
 
-    public static Set<Map.Entry<String, AnonymousPersona>> getAnonymousPersonas() {
-        return anonymousPersonas.entrySet();
+    public static Set<Map.Entry<String, AnonymousPersona>> getPersonaEntries() {
+        return personas.entrySet();
     }
 
-    public static AnonymousPersona getAnonymousPersona(String persona)
+    public static AnonymousPersona getPersona(String persona)
             throws NamingException {
-        var anonymousPersona = anonymousPersonas.get(persona);
+        var anonymousPersona = AnonymousPersonas.personas.get(persona);
 
         if(anonymousPersona == null) {
             anonymousPersona = new AnonymousPersona(persona);
 
-            anonymousPersonas.put(persona, anonymousPersona);
+            AnonymousPersonas.personas.put(persona, anonymousPersona);
         }
 
         return anonymousPersona;

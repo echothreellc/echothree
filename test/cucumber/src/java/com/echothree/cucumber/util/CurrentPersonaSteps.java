@@ -31,17 +31,17 @@ public class CurrentPersonaSteps implements En {
     public CurrentPersonaSteps() {
         Then("^the customer ([^\"]*) begins using the application$",
                 (String persona) -> {
-                    CurrentPersona.persona = CustomerPersonas.getCustomerPersona(persona);
+                    CurrentPersona.persona = CustomerPersonas.getPersona(persona);
                 });
 
         Then("^the employee ([^\"]*) begins using the application$",
                 (String persona) -> {
-                    CurrentPersona.persona = EmployeePersonas.getEmployeePersona(persona);
+                    CurrentPersona.persona = EmployeePersonas.getPersona(persona);
                 });
 
         Then("^the anonymous user ([^\"]*) begins using the application$",
                 (String persona) -> {
-                    CurrentPersona.persona = AnonymousPersonas.getAnonymousPersona(persona);
+                    CurrentPersona.persona = AnonymousPersonas.getPersona(persona);
                 });
 
         Given("^the user is not currently logged in$",

@@ -29,7 +29,7 @@ public class CustomerLoginSteps implements En {
 
     public CustomerLoginSteps() {
         After(() -> {
-                    for(Map.Entry<String, CustomerPersona> customerPersona : CustomerPersonas.getCustomerPersonas()) {
+                    for(Map.Entry<String, CustomerPersona> customerPersona : CustomerPersonas.getPersonaEntries()) {
                         var authenticationService = AuthenticationUtil.getHome();
                         var commandResult = authenticationService.logout(customerPersona.getValue().userVisitPK);
 

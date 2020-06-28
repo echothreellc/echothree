@@ -21,25 +21,26 @@ import java.util.Map;
 import java.util.Set;
 import javax.naming.NamingException;
 
-public class EmployeePersonas {
+public class EmployeePersonas
+        implements BasePersonas<EmployeePersona> {
 
     private EmployeePersonas() {
     }
 
-    private static Map<String, EmployeePersona> employeePersonas = new HashMap<>();
+    private static Map<String, EmployeePersona> personas = new HashMap<>();
 
-    public static Set<Map.Entry<String, EmployeePersona>> getEmployeePersonas() {
-        return employeePersonas.entrySet();
+    public static Set<Map.Entry<String, EmployeePersona>> getPersonaEntries() {
+        return personas.entrySet();
     }
 
-    public static EmployeePersona getEmployeePersona(String persona)
+    public static EmployeePersona getPersona(String persona)
             throws NamingException {
-        var employeePersona = employeePersonas.get(persona);
+        var employeePersona = personas.get(persona);
 
         if(employeePersona == null) {
             employeePersona = new EmployeePersona(persona);
 
-            employeePersonas.put(persona, employeePersona);
+            personas.put(persona, employeePersona);
         }
 
         return employeePersona;
