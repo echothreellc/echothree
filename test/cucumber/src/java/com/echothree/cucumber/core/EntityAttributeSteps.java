@@ -19,7 +19,7 @@ package com.echothree.cucumber.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -47,7 +47,7 @@ public class EntityAttributeSteps implements En {
                     assertThat(createEntityAttributeForm).isNotNull();
 
                     var commandResult = CoreUtil.getHome().createEntityAttribute(persona.userVisitPK, createEntityAttributeForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (CreateEntityAttributeResult)executionResult.getResult();
@@ -74,7 +74,7 @@ public class EntityAttributeSteps implements En {
 
                     assertThat(deleteEntityAttributeForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = CoreUtil.getHome().deleteEntityAttribute(persona.userVisitPK, deleteEntityAttributeForm);
+                    LastCommandResult.commandResult = CoreUtil.getHome().deleteEntityAttribute(persona.userVisitPK, deleteEntityAttributeForm);
 
                     persona.deleteEntityAttributeForm = null;
                 });
@@ -103,7 +103,7 @@ public class EntityAttributeSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = CoreUtil.getHome().editEntityAttribute(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditEntityAttributeResult)executionResult.getResult();
@@ -128,7 +128,7 @@ public class EntityAttributeSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = CoreUtil.getHome().editEntityAttribute(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     persona.entityAttributeSpec = null;
                     persona.entityAttributeEdit = null;

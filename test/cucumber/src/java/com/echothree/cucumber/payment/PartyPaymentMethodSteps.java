@@ -19,7 +19,7 @@ package com.echothree.cucumber.payment;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.result.CreatePartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.result.EditPartyPaymentMethodResult;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -36,7 +36,7 @@ public class PartyPaymentMethodSteps implements En {
                     
                     deletePartyPaymentMethodForm.setPartyPaymentMethodName(persona.lastPartyPaymentMethodName);
 
-                    LastCommandResultSteps.commandResult = paymentService.deletePartyPaymentMethod(persona.userVisitPK, deletePartyPaymentMethodForm);
+                    LastCommandResult.commandResult = paymentService.deletePartyPaymentMethod(persona.userVisitPK, deletePartyPaymentMethodForm);
                 });
 
         When("^the user begins entering a new payment method$",
@@ -166,7 +166,7 @@ public class PartyPaymentMethodSteps implements En {
                     var paymentUtil = PaymentUtil.getHome();
                     var commandResult = paymentUtil.createPartyPaymentMethod(persona.userVisitPK, createPartyPaymentMethodForm);
 
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
                     var result = (CreatePartyPaymentMethodResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastPartyPaymentMethodName = commandResult.getHasErrors() ? null : result.getPartyPaymentMethodName();
@@ -189,7 +189,7 @@ public class PartyPaymentMethodSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = paymentUtil.editPartyPaymentMethod(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditPartyPaymentMethodResult)executionResult.getResult();
@@ -219,7 +219,7 @@ public class PartyPaymentMethodSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = paymentUtil.editPartyPaymentMethod(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     persona.createPartyPaymentMethodForm = null;
                 });

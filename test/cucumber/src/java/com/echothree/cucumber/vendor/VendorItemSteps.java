@@ -18,7 +18,7 @@ package com.echothree.cucumber.vendor;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -46,7 +46,7 @@ public class VendorItemSteps implements En {
 
                     assertThat(createVendorItemForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = VendorUtil.getHome().createVendorItem(persona.userVisitPK, createVendorItemForm);
+                    LastCommandResult.commandResult = VendorUtil.getHome().createVendorItem(persona.userVisitPK, createVendorItemForm);
 
                     persona.createVendorItemForm = null;
                 });
@@ -70,7 +70,7 @@ public class VendorItemSteps implements En {
 
                     assertThat(setVendorItemStatusForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = VendorUtil.getHome().setVendorItemStatus(persona.userVisitPK, setVendorItemStatusForm);
+                    LastCommandResult.commandResult = VendorUtil.getHome().setVendorItemStatus(persona.userVisitPK, setVendorItemStatusForm);
 
                     persona.setVendorItemStatusForm = null;
                 });
@@ -94,7 +94,7 @@ public class VendorItemSteps implements En {
 
                     assertThat(deleteVendorItemForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = VendorUtil.getHome().deleteVendorItem(persona.userVisitPK, deleteVendorItemForm);
+                    LastCommandResult.commandResult = VendorUtil.getHome().deleteVendorItem(persona.userVisitPK, deleteVendorItemForm);
 
                     persona.deleteVendorItemForm = null;
                 });
@@ -124,7 +124,7 @@ public class VendorItemSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = VendorUtil.getHome().editVendorItem(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditVendorItemResult)executionResult.getResult();
@@ -149,7 +149,7 @@ public class VendorItemSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = VendorUtil.getHome().editVendorItem(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     persona.vendorItemSpec = null;
                     persona.vendorItemEdit = null;

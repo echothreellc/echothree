@@ -20,7 +20,7 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.EditItemResult;
 import com.echothree.cucumber.util.persona.BasePersona;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -196,7 +196,7 @@ public class ItemSteps implements En {
 
                     var commandResult = itemService.createItem(persona.userVisitPK, createItemForm);
 
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
                     var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastItemName = commandResult.getHasErrors() ? null : result.getItemName();
@@ -225,7 +225,7 @@ public class ItemSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = ItemUtil.getHome().editItem(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditItemResult)executionResult.getResult();
@@ -251,7 +251,7 @@ public class ItemSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = ItemUtil.getHome().editItem(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
                 });
     }
 
@@ -265,7 +265,7 @@ public class ItemSteps implements En {
 
         var commandResult = itemService.setItemStatus(persona.userVisitPK, setItemStatusForm);
 
-        LastCommandResultSteps.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
     }
 
 }

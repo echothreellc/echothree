@@ -19,7 +19,7 @@ package com.echothree.cucumber.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -47,7 +47,7 @@ public class EntityAttributeGroupSteps implements En {
                     assertThat(createEntityAttributeGroupForm).isNotNull();
 
                     var commandResult = CoreUtil.getHome().createEntityAttributeGroup(persona.userVisitPK, createEntityAttributeGroupForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (CreateEntityAttributeGroupResult)executionResult.getResult();
@@ -78,7 +78,7 @@ public class EntityAttributeGroupSteps implements En {
 
                     assertThat(deleteEntityAttributeGroupForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = CoreUtil.getHome().deleteEntityAttributeGroup(persona.userVisitPK, deleteEntityAttributeGroupForm);
+                    LastCommandResult.commandResult = CoreUtil.getHome().deleteEntityAttributeGroup(persona.userVisitPK, deleteEntityAttributeGroupForm);
 
                     persona.deleteEntityAttributeGroupForm = null;
                 });
@@ -107,7 +107,7 @@ public class EntityAttributeGroupSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = CoreUtil.getHome().editEntityAttributeGroup(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditEntityAttributeGroupResult)executionResult.getResult();
@@ -132,7 +132,7 @@ public class EntityAttributeGroupSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = CoreUtil.getHome().editEntityAttributeGroup(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     persona.entityAttributeGroupSpec = null;
                     persona.entityAttributeGroupEdit = null;

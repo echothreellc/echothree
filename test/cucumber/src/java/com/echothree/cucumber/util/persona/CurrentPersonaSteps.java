@@ -14,14 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber.util;
+package com.echothree.cucumber.util.persona;
 
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.util.persona.AnonymousPersonas;
-import com.echothree.cucumber.util.persona.CurrentPersona;
-import com.echothree.cucumber.util.persona.CustomerPersonas;
-import com.echothree.cucumber.util.persona.EmployeePersonas;
 import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -20,7 +20,7 @@ import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.cucumber.util.persona.EmployeePersona;
 import com.echothree.cucumber.util.persona.EmployeePersonas;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
@@ -49,7 +49,7 @@ public class EmployeeLoginSteps implements En {
                     employeeLoginForm.setCompanyName(companyName);
                     employeeLoginForm.setRemoteInet4Address("0.0.0.0");
 
-                    LastCommandResultSteps.commandResult = authenticationService.employeeLogin(CurrentPersona.persona.userVisitPK, employeeLoginForm);
+                    LastCommandResult.commandResult = authenticationService.employeeLogin(CurrentPersona.persona.userVisitPK, employeeLoginForm);
                 });
     }
 

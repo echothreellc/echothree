@@ -18,7 +18,7 @@ package com.echothree.cucumber.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.EditItemUnitOfMeasureTypeResult;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -51,7 +51,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
 
                     var commandResult = itemService.createItemUnitOfMeasureType(persona.userVisitPK, createItemUnitOfMeasureTypeForm);
 
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     persona.createItemUnitOfMeasureTypeForm = null;
                 });
@@ -74,7 +74,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
 
                     assertThat(deleteItemUnitOfMeasureTypeForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = ItemUtil.getHome().deleteItemUnitOfMeasureType(persona.userVisitPK, deleteItemUnitOfMeasureTypeForm);
+                    LastCommandResult.commandResult = ItemUtil.getHome().deleteItemUnitOfMeasureType(persona.userVisitPK, deleteItemUnitOfMeasureTypeForm);
 
                     persona.deleteItemUnitOfMeasureTypeForm = null;
                 });
@@ -103,7 +103,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = ItemUtil.getHome().editItemUnitOfMeasureType(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditItemUnitOfMeasureTypeResult)executionResult.getResult();
@@ -128,7 +128,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = ItemUtil.getHome().editItemUnitOfMeasureType(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     persona.itemUnitOfMeasureTypeSpec = null;
                     persona.itemUnitOfMeasureTypeEdit = null;

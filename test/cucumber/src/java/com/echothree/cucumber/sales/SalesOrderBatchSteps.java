@@ -19,7 +19,7 @@ package com.echothree.cucumber.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.cucumber.util.persona.BasePersona;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
@@ -54,7 +54,7 @@ public class SalesOrderBatchSteps implements En {
 
         var commandResult = salesService.createSalesOrderBatch(persona.userVisitPK, createSalesOrderBatchForm);
 
-        LastCommandResultSteps.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
         var result = (CreateSalesOrderBatchResult)commandResult.getExecutionResult().getResult();
 
         persona.lastSalesOrderBatchName = commandResult.getHasErrors() ? null : result.getBatchName();
@@ -69,7 +69,7 @@ public class SalesOrderBatchSteps implements En {
 
         var commandResult = salesService.deleteSalesOrderBatch(persona.userVisitPK, deleteSalesOrderBatchForm);
 
-        LastCommandResultSteps.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
     }
 
 }

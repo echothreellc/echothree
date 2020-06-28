@@ -19,7 +19,7 @@ package com.echothree.cucumber.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
 import com.echothree.control.user.core.common.result.EditEntityListItemResult;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -47,7 +47,7 @@ public class EntityListItemSteps implements En {
                     assertThat(createEntityListItemForm).isNotNull();
 
                     var commandResult = CoreUtil.getHome().createEntityListItem(persona.userVisitPK, createEntityListItemForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (CreateEntityListItemResult)executionResult.getResult();
@@ -78,7 +78,7 @@ public class EntityListItemSteps implements En {
 
                     assertThat(deleteEntityListItemForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = CoreUtil.getHome().deleteEntityListItem(persona.userVisitPK, deleteEntityListItemForm);
+                    LastCommandResult.commandResult = CoreUtil.getHome().deleteEntityListItem(persona.userVisitPK, deleteEntityListItemForm);
 
                     persona.deleteEntityListItemForm = null;
                 });
@@ -107,7 +107,7 @@ public class EntityListItemSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = CoreUtil.getHome().editEntityListItem(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditEntityListItemResult)executionResult.getResult();
@@ -132,7 +132,7 @@ public class EntityListItemSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = CoreUtil.getHome().editEntityListItem(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     persona.entityListItemSpec = null;
                     persona.entityListItemEdit = null;

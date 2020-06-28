@@ -18,7 +18,7 @@ package com.echothree.cucumber.vendor;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -45,7 +45,7 @@ public class VendorItemCostSteps implements En {
 
                     assertThat(createVendorItemCostForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = VendorUtil.getHome().createVendorItemCost(persona.userVisitPK, createVendorItemCostForm);
+                    LastCommandResult.commandResult = VendorUtil.getHome().createVendorItemCost(persona.userVisitPK, createVendorItemCostForm);
 
                     persona.createVendorItemCostForm = null;
                 });
@@ -68,7 +68,7 @@ public class VendorItemCostSteps implements En {
 
                     assertThat(deleteVendorItemCostForm).isNotNull();
 
-                    LastCommandResultSteps.commandResult = VendorUtil.getHome().deleteVendorItemCost(persona.userVisitPK, deleteVendorItemCostForm);
+                    LastCommandResult.commandResult = VendorUtil.getHome().deleteVendorItemCost(persona.userVisitPK, deleteVendorItemCostForm);
 
                     persona.deleteVendorItemCostForm = null;
                 });
@@ -97,7 +97,7 @@ public class VendorItemCostSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = VendorUtil.getHome().editVendorItemCost(persona.userVisitPK, commandForm);
-                    LastCommandResultSteps.commandResult = commandResult;
+                    LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditVendorItemCostResult)executionResult.getResult();
@@ -121,7 +121,7 @@ public class VendorItemCostSteps implements En {
                     commandForm.setEdit(edit);
                     commandForm.setEditMode(EditMode.UPDATE);
 
-                    LastCommandResultSteps.commandResult = VendorUtil.getHome().editVendorItemCost(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = VendorUtil.getHome().editVendorItemCost(persona.userVisitPK, commandForm);
 
                     persona.vendorItemCostSpec = null;
                     persona.vendorItemCostEdit = null;

@@ -19,7 +19,7 @@ package com.echothree.cucumber.authentication;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.cucumber.util.persona.CustomerPersona;
 import com.echothree.cucumber.util.persona.CustomerPersonas;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import java.util.Map;
@@ -46,7 +46,7 @@ public class CustomerLoginSteps implements En {
                     customerLoginForm.setPassword(password);
                     customerLoginForm.setRemoteInet4Address("0.0.0.0");
 
-                    LastCommandResultSteps.commandResult = authenticationService.customerLogin(CurrentPersona.persona.userVisitPK, customerLoginForm);
+                    LastCommandResult.commandResult = authenticationService.customerLogin(CurrentPersona.persona.userVisitPK, customerLoginForm);
                 });
     }
 

@@ -19,7 +19,7 @@ package com.echothree.cucumber.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.cucumber.util.persona.BasePersona;
-import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
@@ -64,7 +64,7 @@ public class SalesOrderLineSteps implements En {
 
         var commandResult = salesService.createSalesOrderLine(persona.userVisitPK, createSalesOrderLineForm);
 
-        LastCommandResultSteps.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
         var result = (CreateSalesOrderLineResult)commandResult.getExecutionResult().getResult();
 
         persona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
