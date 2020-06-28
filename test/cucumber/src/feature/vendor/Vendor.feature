@@ -1,4 +1,4 @@
-Feature: Employee item price
+Feature: Employee vendor
   An employee wants to add, edit, and delete a vendor
 
   Background:
