@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.util;
 
 import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;

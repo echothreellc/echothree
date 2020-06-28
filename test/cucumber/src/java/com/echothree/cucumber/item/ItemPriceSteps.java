@@ -18,8 +18,8 @@ package com.echothree.cucumber.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
-import com.echothree.cucumber.LastCommandResultSteps;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.LastCommandResultSteps;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;

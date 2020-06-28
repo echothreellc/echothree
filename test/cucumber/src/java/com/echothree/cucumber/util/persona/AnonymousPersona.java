@@ -14,34 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.util.persona;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import javax.naming.NamingException;
 
-public class AnonymousPersonas {
+public class AnonymousPersona extends BasePersona {
 
-    private AnonymousPersonas() {
-    }
-
-    private static Map<String, AnonymousPersona> anonymousPersonas = new HashMap<>();
-
-    public static Set<Map.Entry<String, AnonymousPersona>> getAnonymousPersonas() {
-        return anonymousPersonas.entrySet();
-    }
-
-    public static AnonymousPersona getAnonymousPersona(String persona)
+    public AnonymousPersona(String persona)
             throws NamingException {
-        var anonymousPersona = anonymousPersonas.get(persona);
-
-        if(anonymousPersona == null) {
-            anonymousPersona = new AnonymousPersona(persona);
-
-            anonymousPersonas.put(persona, anonymousPersona);
-        }
-
-        return anonymousPersona;
+        super(persona);
     }
+
 }

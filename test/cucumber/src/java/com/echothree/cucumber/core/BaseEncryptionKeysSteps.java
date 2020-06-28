@@ -17,7 +17,7 @@
 package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.client.helper.BaseKeysHelper;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 

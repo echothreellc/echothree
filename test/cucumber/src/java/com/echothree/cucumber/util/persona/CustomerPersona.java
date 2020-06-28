@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.util.persona;
 
 import javax.naming.NamingException;
 
-public class AnonymousPersona extends BasePersona {
+public class CustomerPersona extends BasePersona {
 
-    public AnonymousPersona(String persona)
+    public CustomerPersona(String persona)
             throws NamingException {
         super(persona);
     }

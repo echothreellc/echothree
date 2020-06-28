@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.util.persona;
 
 import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
