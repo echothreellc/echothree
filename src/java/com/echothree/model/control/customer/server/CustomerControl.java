@@ -598,20 +598,15 @@ public class CustomerControl
     //   Customers
     // --------------------------------------------------------------------------------
     
-    public Customer createCustomer(Party party, CustomerType customerType, OfferUse initialOfferUse, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, GlAccount arGlAccount, Boolean holdUntilComplete,
-            Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
+    public Customer createCustomer(Party party, CustomerType customerType, OfferUse initialOfferUse,
+            CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, GlAccount arGlAccount,
+            Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
+            Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
             String referenceValidationPattern, BasePK createdBy) {
-        Sequence sequence = customerType.getLastDetail().getCustomerSequence();
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-
-        if(sequence == null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
-            sequence = sequenceControl.getDefaultSequence(sequenceType);
-        }
-
-        String customerName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
-        Customer customer = CustomerFactory.getInstance().create(party, customerName, customerType, initialOfferUse, cancellationPolicy, returnPolicy, arGlAccount, holdUntilComplete,
-                allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
+        var customerName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CUSTOMER.name());
+        var customer = CustomerFactory.getInstance().create(party, customerName, customerType, initialOfferUse,
+                cancellationPolicy, returnPolicy, arGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions,
+                allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), customer.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
@@ -619,26 +614,45 @@ public class CustomerControl
         return customer;
     }
     
-    public Customer getCustomer(Party party) {
-        Customer customer = null;
+    public Customer getCustomer(Party party, EntityPermission entityPermission) {
+        Customer customer;
         
         try {
-            PreparedStatement ps = CustomerFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM customers " +
-                    "WHERE cu_par_partyid = ? AND cu_thrutime = ?");
-            
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM customers " +
+                        "WHERE cu_par_partyid = ? AND cu_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM customers " +
+                        "WHERE cu_par_partyid = ? AND cu_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = CustomerFactory.getInstance().prepareStatement(query);
+
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
-            customer = CustomerFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+
+            customer = CustomerFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
         return customer;
     }
-    
+
+    public Customer getCustomer(Party party) {
+        return getCustomer(party, EntityPermission.READ_ONLY);
+    }
+
+    public Customer getCustomerForUpdate(Party party) {
+        return getCustomer(party, EntityPermission.READ_WRITE);
+    }
+
+
     private Customer getCustomerByName(String customerName, EntityPermission entityPermission) {
         Customer customer = null;
         

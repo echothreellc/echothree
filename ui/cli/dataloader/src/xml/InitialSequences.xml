@@ -107,6 +107,13 @@
                 <sequenceDescription languageIsoName="en" description="Default Customer" />
             </sequence>
         </sequenceType>
+        <sequenceType sequenceTypeName="VENDOR" prefix="VN" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
+                      isDefault="false" sortOrder="1">
+            <sequenceTypeDescription languageIsoName="en" description="Vendor" />
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
+                <sequenceDescription languageIsoName="en" description="Default Vendor" />
+            </sequence>
+        </sequenceType>
         <sequenceType sequenceTypeName="EMPLOYEE" prefix="EP" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Employee" />

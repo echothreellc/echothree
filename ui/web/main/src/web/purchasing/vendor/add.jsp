@@ -42,7 +42,7 @@
                     <tr>
                         <td align=right><fmt:message key="label.vendorName" />:</td>
                         <td>
-                            <html:text property="vendorName" size="40" maxlength="40" /> (*)
+                            <html:text property="vendorName" size="40" maxlength="40" />
                             <et:validationErrors id="errorMessage" property="VendorName">
                                 <p><c:out value="${errorMessage}" /></p>
                             </et:validationErrors>

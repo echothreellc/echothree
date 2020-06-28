@@ -38,6 +38,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
+import com.echothree.model.control.vendor.server.logic.VendorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -89,15 +90,15 @@ public class CreateVendorCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ApGlAccountName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("MinimumPurchaseOrderLines", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MaximumPurchaseOrderLines", FieldType.UNSIGNED_INTEGER, false, null, null),
-                new FieldDefinition("MinimumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName", FieldType.UNSIGNED_COST_LINE, Boolean.FALSE, null, null),
-                new FieldDefinition("MaximumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName", FieldType.UNSIGNED_COST_LINE, Boolean.FALSE, null, null),
+                new FieldDefinition("MinimumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName", FieldType.UNSIGNED_COST_LINE, false, null, null),
+                new FieldDefinition("MaximumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName", FieldType.UNSIGNED_COST_LINE, false, null, null),
                 new FieldDefinition("UseItemPurchasingCategories", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("DefaultItemAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
@@ -126,7 +127,7 @@ public class CreateVendorCommand
         CreateVendorResult result = PartyResultFactory.getCreateVendorResult();
         var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        Vendor vendor = vendorName == null ? null : vendorControl.getVendorByName(vendorName);
 
         if(vendor == null) {
             String vendorTypeName = form.getVendorTypeName();
@@ -259,7 +260,7 @@ public class CreateVendorCommand
                                                             partyControl.createPartyGroup(party, name, createdBy);
                                                         }
 
-                                                        vendor = vendorControl.createVendor(party, vendorName, vendorType, minimumPurchaseOrderLines,
+                                                        vendor = VendorLogic.getInstance().createVendor(this, party, vendorName, vendorType, minimumPurchaseOrderLines,
                                                                 maximumPurchaseOrderLines, minimumPurchaseOrderAmount, maximumPurchaseOrderAmount,
                                                                 useItemPurchasingCategories, defaultItemAliasType, cancellationPolicy, returnPolicy, apGlAccount,
                                                                 vendorTypeDetail.getDefaultHoldUntilComplete(), vendorTypeDetail.getDefaultAllowBackorders(),
@@ -325,6 +326,7 @@ public class CreateVendorCommand
             Party party = vendor.getParty();
 
             result.setEntityRef(party.getPrimaryKey().getEntityRef());
+            result.setVendorName(vendor.getVendorName());
             result.setPartyName(party.getLastDetail().getPartyName());
         }
 
