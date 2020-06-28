@@ -19,10 +19,8 @@ package com.echothree.cucumber.party;
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
-import com.echothree.cucumber.AnonymousPersonas;
 import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.EmployeePersonas;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
@@ -131,7 +129,7 @@ public class CustomerSteps implements En {
                     var partyService = PartyUtil.getHome();
                     var commandResult = partyService.createCustomerWithLogin(persona.userVisitPK, persona.createCustomerWithLoginForm);
 
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
                     var result = (CreateCustomerWithLoginResult)commandResult.getExecutionResult().getResult();
 
 
@@ -160,7 +158,7 @@ public class CustomerSteps implements En {
 
         var commandResult = customerService.setCustomerStatus(persona.userVisitPK, setCustomerStatusForm);
 
-        LastCommandResult.commandResult = commandResult;
+        LastCommandResultSteps.commandResult = commandResult;
     }
 
 }

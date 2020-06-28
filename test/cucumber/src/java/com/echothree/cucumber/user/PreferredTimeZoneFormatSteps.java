@@ -19,9 +19,7 @@ package com.echothree.cucumber.user;
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
-import com.echothree.cucumber.CustomerPersona;
-import com.echothree.cucumber.CustomerPersonas;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import io.cucumber.java8.En;
 
 public class PreferredTimeZoneFormatSteps implements En {
@@ -35,7 +33,7 @@ public class PreferredTimeZoneFormatSteps implements En {
 
                     userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
 
-                    LastCommandResult.commandResult = userService.setUserVisitPreferredTimeZone(persona.userVisitPK,
+                    LastCommandResultSteps.commandResult = userService.setUserVisitPreferredTimeZone(persona.userVisitPK,
                             userVisitPreferredTimeZoneForm);
                 });
     }

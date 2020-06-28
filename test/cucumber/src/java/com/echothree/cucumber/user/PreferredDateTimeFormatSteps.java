@@ -19,9 +19,7 @@ package com.echothree.cucumber.user;
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
-import com.echothree.cucumber.CustomerPersona;
-import com.echothree.cucumber.CustomerPersonas;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import io.cucumber.java8.En;
 
 public class PreferredDateTimeFormatSteps implements En {
@@ -35,7 +33,7 @@ public class PreferredDateTimeFormatSteps implements En {
 
                     userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);
 
-                    LastCommandResult.commandResult = userService.setUserVisitPreferredDateTimeFormat(persona.userVisitPK,
+                    LastCommandResultSteps.commandResult = userService.setUserVisitPreferredDateTimeFormat(persona.userVisitPK,
                             userVisitPreferredDateTimeFormatForm);
                 });
     }

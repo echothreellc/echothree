@@ -18,15 +18,15 @@ package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EntityAttributeEntityAttributeGroup implements En {
+public class EntityAttributeEntityAttributeGroupSteps implements En {
 
-    public EntityAttributeEntityAttributeGroup() {
+    public EntityAttributeEntityAttributeGroupSteps() {
         When("^the user begins entering a new entity attribute entity attribute group$",
                 () -> {
                     var persona = CurrentPersona.persona;
@@ -46,7 +46,7 @@ public class EntityAttributeEntityAttributeGroup implements En {
                     assertThat(createEntityAttributeEntityAttributeGroupForm).isNotNull();
 
                     var commandResult = CoreUtil.getHome().createEntityAttributeEntityAttributeGroup(persona.userVisitPK, createEntityAttributeEntityAttributeGroupForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.createEntityAttributeEntityAttributeGroupForm = null;
                 });
@@ -69,7 +69,7 @@ public class EntityAttributeEntityAttributeGroup implements En {
 
                     assertThat(deleteEntityAttributeEntityAttributeGroupForm).isNotNull();
 
-                    LastCommandResult.commandResult = CoreUtil.getHome().deleteEntityAttributeEntityAttributeGroup(persona.userVisitPK, deleteEntityAttributeEntityAttributeGroupForm);
+                    LastCommandResultSteps.commandResult = CoreUtil.getHome().deleteEntityAttributeEntityAttributeGroup(persona.userVisitPK, deleteEntityAttributeEntityAttributeGroupForm);
 
                     persona.deleteEntityAttributeEntityAttributeGroupForm = null;
                 });
@@ -98,7 +98,7 @@ public class EntityAttributeEntityAttributeGroup implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = CoreUtil.getHome().editEntityAttributeEntityAttributeGroup(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
@@ -123,7 +123,7 @@ public class EntityAttributeEntityAttributeGroup implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = CoreUtil.getHome().editEntityAttributeEntityAttributeGroup(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.entityAttributeEntityAttributeGroupSpec = null;
                     persona.entityAttributeEntityAttributeGroupEdit = null;

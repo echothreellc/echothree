@@ -19,15 +19,15 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartyEmailAddress implements En {
+public class PartyEmailAddressSteps implements En {
 
-    public PartyEmailAddress() {
+    public PartyEmailAddressSteps() {
         When("^the user deletes the last email address added$",
                 () -> {
                     var contactService = ContactUtil.getHome();
@@ -36,7 +36,7 @@ public class PartyEmailAddress implements En {
 
                     deleteContactEmailAddressForm.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
 
-                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactEmailAddressForm);
+                    LastCommandResultSteps.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactEmailAddressForm);
                 });
 
         When("^the user begins entering a new email address$",
@@ -88,7 +88,7 @@ public class PartyEmailAddress implements En {
 
                     var commandResult = contactService.createContactEmailAddress(persona.userVisitPK, createContactEmailAddressForm);
 
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
                     var result = (CreateContactEmailAddressResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
@@ -110,7 +110,7 @@ public class PartyEmailAddress implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = ContactUtil.getHome().editContactEmailAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditContactEmailAddressResult)executionResult.getResult();
@@ -137,7 +137,7 @@ public class PartyEmailAddress implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = ContactUtil.getHome().editContactEmailAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.contactEmailAddressEdit = null;
                 });

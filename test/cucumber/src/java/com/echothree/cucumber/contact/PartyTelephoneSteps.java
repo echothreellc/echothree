@@ -19,15 +19,15 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
 import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartyTelephone implements En {
+public class PartyTelephoneSteps implements En {
 
-    public PartyTelephone() {
+    public PartyTelephoneSteps() {
         When("^the user deletes the last telephone number added$",
                 () -> {
                     var contactService = ContactUtil.getHome();
@@ -36,7 +36,7 @@ public class PartyTelephone implements En {
 
                     deleteContactTelephoneForm.setContactMechanismName(persona.lastTelephoneContactMechanismName);
 
-                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactTelephoneForm);
+                    LastCommandResultSteps.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactTelephoneForm);
                 });
 
         When("^the user begins entering a new telephone number$",
@@ -115,7 +115,7 @@ public class PartyTelephone implements En {
 
                     var commandResult = contactService.createContactTelephone(persona.userVisitPK, createContactTelephoneForm);
 
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
                     var result = (CreateContactTelephoneResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
@@ -137,7 +137,7 @@ public class PartyTelephone implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = ContactUtil.getHome().editContactTelephone(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditContactTelephoneResult)executionResult.getResult();
@@ -164,7 +164,7 @@ public class PartyTelephone implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = ContactUtil.getHome().editContactTelephone(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.contactTelephoneEdit = null;
                 });

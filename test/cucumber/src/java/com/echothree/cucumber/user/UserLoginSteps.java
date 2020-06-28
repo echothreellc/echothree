@@ -19,8 +19,7 @@ package com.echothree.cucumber.user;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.cucumber.AnonymousPersonas;
 import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.EmployeePersonas;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
@@ -45,7 +44,7 @@ public class UserLoginSteps implements En {
 
         var commandResult = userService.deleteUserLogin(persona.userVisitPK, deleteUserLoginForm);
 
-        LastCommandResult.commandResult = commandResult;
+        LastCommandResultSteps.commandResult = commandResult;
     }
     
 }

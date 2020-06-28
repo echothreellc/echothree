@@ -21,7 +21,7 @@ import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
@@ -55,7 +55,7 @@ public class VendorSteps
 
                     var commandResult = partyUtil.createVendor(persona.userVisitPK, createVendorForm);
 
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
                     var result = (CreateVendorResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastVendorName = commandResult.getHasErrors() ? null : result.getVendorName();
@@ -92,7 +92,7 @@ public class VendorSteps
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = VendorUtil.getHome().editVendor(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     if(!commandResult.getHasErrors()) {
                         var executionResult = commandResult.getExecutionResult();
@@ -117,7 +117,7 @@ public class VendorSteps
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = VendorUtil.getHome().editVendor(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.vendorSpec = null;
                     persona.vendorEdit = null;
@@ -553,7 +553,7 @@ public class VendorSteps
 
         var commandResult = partyUtil.setVendorStatus(persona.userVisitPK, setVendorStatusForm);
 
-        LastCommandResult.commandResult = commandResult;
+        LastCommandResultSteps.commandResult = commandResult;
     }
 
 }

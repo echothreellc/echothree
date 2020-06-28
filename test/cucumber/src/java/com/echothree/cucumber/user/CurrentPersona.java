@@ -16,45 +16,11 @@
 
 package com.echothree.cucumber.user;
 
-import com.echothree.control.user.authentication.common.AuthenticationService;
-import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.AnonymousPersonas;
 import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.CustomerPersonas;
-import com.echothree.cucumber.EmployeePersonas;
-import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class CurrentPersona implements En {
 
     public static BasePersona persona;
-
-    public CurrentPersona() {
-        Then("^the customer ([^\"]*) begins using the application$",
-                (String persona) -> {
-                    CurrentPersona.persona = CustomerPersonas.getCustomerPersona(persona);
-                });
-
-        Then("^the employee ([^\"]*) begins using the application$",
-                (String persona) -> {
-                    CurrentPersona.persona = EmployeePersonas.getEmployeePersona(persona);
-                });
-
-        Then("^the anonymous user ([^\"]*) begins using the application$",
-                (String persona) -> {
-                    CurrentPersona.persona = AnonymousPersonas.getAnonymousPersona(persona);
-                });
-
-        Given("^the user is not currently logged in$",
-                () -> {
-                    if(persona != null) {
-                        AuthenticationService authenticationService = AuthenticationUtil.getHome();
-                        CommandResult commandResult = authenticationService.logout(persona.userVisitPK);
-
-                        assertThat(commandResult.hasErrors()).isFalse();
-                    }
-                });
-    }
 
 }

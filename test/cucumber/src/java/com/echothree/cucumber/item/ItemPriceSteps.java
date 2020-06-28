@@ -16,18 +16,12 @@
 
 package com.echothree.cucumber.item;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.EditEntityListItemResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
-import com.echothree.control.user.item.common.result.EditItemResult;
-import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
-import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ItemPriceSteps implements En {
@@ -57,7 +51,7 @@ public class ItemPriceSteps implements En {
 
                     var commandResult = itemService.createItemPrice(persona.userVisitPK, createItemPriceForm);
 
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.createItemPriceForm = null;
                 });
@@ -80,7 +74,7 @@ public class ItemPriceSteps implements En {
 
                     assertThat(deleteItemPriceForm).isNotNull();
 
-                    LastCommandResult.commandResult = ItemUtil.getHome().deleteItemPrice(persona.userVisitPK, deleteItemPriceForm);
+                    LastCommandResultSteps.commandResult = ItemUtil.getHome().deleteItemPrice(persona.userVisitPK, deleteItemPriceForm);
 
                     persona.deleteItemPriceForm = null;
                 });
@@ -109,7 +103,7 @@ public class ItemPriceSteps implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = ItemUtil.getHome().editItemPrice(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditItemPriceResult)executionResult.getResult();
@@ -134,7 +128,7 @@ public class ItemPriceSteps implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = ItemUtil.getHome().editItemPrice(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.itemPriceSpec = null;
                     persona.itemPriceEdit = null;

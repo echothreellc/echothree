@@ -19,15 +19,15 @@ package com.echothree.cucumber.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EntityAttribute implements En {
+public class EntityAttributeSteps implements En {
 
-    public EntityAttribute() {
+    public EntityAttributeSteps() {
         When("^the user begins entering a new entity attribute$",
                 () -> {
                     var persona = CurrentPersona.persona;
@@ -47,7 +47,7 @@ public class EntityAttribute implements En {
                     assertThat(createEntityAttributeForm).isNotNull();
 
                     var commandResult = CoreUtil.getHome().createEntityAttribute(persona.userVisitPK, createEntityAttributeForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (CreateEntityAttributeResult)executionResult.getResult();
@@ -74,7 +74,7 @@ public class EntityAttribute implements En {
 
                     assertThat(deleteEntityAttributeForm).isNotNull();
 
-                    LastCommandResult.commandResult = CoreUtil.getHome().deleteEntityAttribute(persona.userVisitPK, deleteEntityAttributeForm);
+                    LastCommandResultSteps.commandResult = CoreUtil.getHome().deleteEntityAttribute(persona.userVisitPK, deleteEntityAttributeForm);
 
                     persona.deleteEntityAttributeForm = null;
                 });
@@ -103,7 +103,7 @@ public class EntityAttribute implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = CoreUtil.getHome().editEntityAttribute(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditEntityAttributeResult)executionResult.getResult();
@@ -128,7 +128,7 @@ public class EntityAttribute implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = CoreUtil.getHome().editEntityAttribute(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.entityAttributeSpec = null;
                     persona.entityAttributeEdit = null;

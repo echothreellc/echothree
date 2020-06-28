@@ -19,15 +19,15 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartyWebAddress implements En {
+public class PartyWebAddressSteps implements En {
 
-    public PartyWebAddress() {
+    public PartyWebAddressSteps() {
         When("^the user deletes the last web address added$",
                 () -> {
                     var contactService = ContactUtil.getHome();
@@ -36,7 +36,7 @@ public class PartyWebAddress implements En {
 
                     deleteContactWebAddressForm.setContactMechanismName(persona.lastWebAddressContactMechanismName);
 
-                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactWebAddressForm);
+                    LastCommandResultSteps.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactWebAddressForm);
                 });
 
         When("^the user begins entering a new web address$",
@@ -79,7 +79,7 @@ public class PartyWebAddress implements En {
 
                     var commandResult = contactService.createContactWebAddress(persona.userVisitPK, createContactWebAddressForm);
 
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
                     var result = (CreateContactWebAddressResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
@@ -101,7 +101,7 @@ public class PartyWebAddress implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = ContactUtil.getHome().editContactWebAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditContactWebAddressResult)executionResult.getResult();
@@ -128,7 +128,7 @@ public class PartyWebAddress implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = ContactUtil.getHome().editContactWebAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.contactWebAddressEdit = null;
                 });

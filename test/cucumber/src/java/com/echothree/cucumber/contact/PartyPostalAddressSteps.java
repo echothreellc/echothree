@@ -19,15 +19,15 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.LastCommandResultSteps;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartyPostalAddress implements En {
+public class PartyPostalAddressSteps implements En {
 
-    public PartyPostalAddress() {
+    public PartyPostalAddressSteps() {
         When("^the user deletes the last postal address added$",
                 () -> {
                     var contactService = ContactUtil.getHome();
@@ -36,7 +36,7 @@ public class PartyPostalAddress implements En {
 
                     deleteContactPostalAddressForm.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
 
-                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactPostalAddressForm);
+                    LastCommandResultSteps.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactPostalAddressForm);
                 });
 
         When("^the user begins entering a new postal address$",
@@ -169,7 +169,7 @@ public class PartyPostalAddress implements En {
 
                     var commandResult = contactService.createContactPostalAddress(persona.userVisitPK, createContactPostalAddressForm);
 
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
                     var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
@@ -191,7 +191,7 @@ public class PartyPostalAddress implements En {
                     commandForm.setEditMode(EditMode.LOCK);
 
                     var commandResult = ContactUtil.getHome().editContactPostalAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditContactPostalAddressResult)executionResult.getResult();
@@ -218,7 +218,7 @@ public class PartyPostalAddress implements En {
                     commandForm.setEditMode(EditMode.UPDATE);
 
                     var commandResult = ContactUtil.getHome().editContactPostalAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResultSteps.commandResult = commandResult;
 
                     persona.contactPostalAddressEdit = null;
                 });

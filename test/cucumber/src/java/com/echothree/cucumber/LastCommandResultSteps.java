@@ -21,12 +21,12 @@ import io.cucumber.java8.En;
 import io.cucumber.java8.Scenario;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LastCommandResult implements En {
+public class LastCommandResultSteps implements En {
 
     private Scenario scenario;
     public static CommandResult commandResult;
 
-    public LastCommandResult () {
+    public LastCommandResultSteps() {
         Before((Scenario scenario) ->
                 this.scenario = scenario
         );
