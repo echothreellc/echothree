@@ -21,8 +21,6 @@ import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,6 +32,7 @@ public class VendorItemSteps implements En {
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createVendorItemForm).isNull();
+                    assertThat(persona.setVendorItemStatusForm).isNull();
                     assertThat(persona.deleteVendorItemForm).isNull();
                     assertThat(persona.vendorItemSpec).isNull();
 
@@ -52,11 +51,36 @@ public class VendorItemSteps implements En {
                     persona.createVendorItemForm = null;
                 });
 
+        When("^the user begins setting the status of a vendor item$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.createVendorItemForm).isNull();
+                    assertThat(persona.setVendorItemStatusForm).isNull();
+                    assertThat(persona.deleteVendorItemForm).isNull();
+                    assertThat(persona.vendorItemSpec).isNull();
+
+                    persona.setVendorItemStatusForm = VendorUtil.getHome().getSetVendorItemStatusForm();
+                });
+
+        When("^the user sets the status of the vendor item$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var setVendorItemStatusForm = persona.setVendorItemStatusForm;
+
+                    assertThat(setVendorItemStatusForm).isNotNull();
+
+                    LastCommandResult.commandResult = VendorUtil.getHome().setVendorItemStatus(persona.userVisitPK, setVendorItemStatusForm);
+
+                    persona.setVendorItemStatusForm = null;
+                });
+
         When("^the user begins deleting a vendor item$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createVendorItemForm).isNull();
+                    assertThat(persona.setVendorItemStatusForm).isNull();
                     assertThat(persona.deleteVendorItemForm).isNull();
                     assertThat(persona.vendorItemSpec).isNull();
 
@@ -80,6 +104,7 @@ public class VendorItemSteps implements En {
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createVendorItemForm).isNull();
+                    assertThat(persona.setVendorItemStatusForm).isNull();
                     assertThat(persona.deleteVendorItemForm).isNull();
                     assertThat(persona.vendorItemSpec).isNull();
 
@@ -154,13 +179,17 @@ public class VendorItemSteps implements En {
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
+                    var setVendorItemStatusForm = persona.setVendorItemStatusForm;
                     var deleteVendorItemForm = persona.deleteVendorItemForm;
                     var vendorItemSpec = persona.vendorItemSpec;
 
-                    assertThat(createVendorItemForm != null || deleteVendorItemForm != null || vendorItemSpec != null).isTrue();
+                    assertThat(createVendorItemForm != null || setVendorItemStatusForm != null || deleteVendorItemForm != null
+                            || vendorItemSpec != null).isTrue();
 
                     if(createVendorItemForm != null) {
                         createVendorItemForm.setVendorName(vendorName);
+                    } else if(setVendorItemStatusForm != null) {
+                        setVendorItemStatusForm.setVendorName(vendorName);
                     } else if(deleteVendorItemForm != null) {
                         deleteVendorItemForm.setVendorName(vendorName);
                     } else {
@@ -172,13 +201,17 @@ public class VendorItemSteps implements En {
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
+                    var setVendorItemStatusForm = persona.setVendorItemStatusForm;
                     var deleteVendorItemForm = persona.deleteVendorItemForm;
                     var vendorItemSpec = persona.vendorItemSpec;
 
-                    assertThat(createVendorItemForm != null || deleteVendorItemForm != null || vendorItemSpec != null).isTrue();
+                    assertThat(createVendorItemForm != null || setVendorItemStatusForm != null || deleteVendorItemForm != null
+                            || vendorItemSpec != null).isTrue();
 
                     if(createVendorItemForm != null) {
                         createVendorItemForm.setVendorName(persona.lastVendorName);
+                    } else if(setVendorItemStatusForm != null) {
+                        setVendorItemStatusForm.setVendorName(persona.lastVendorName);
                     } else if(deleteVendorItemForm != null) {
                         deleteVendorItemForm.setVendorName(persona.lastVendorName);
                     } else {
@@ -190,13 +223,17 @@ public class VendorItemSteps implements En {
                 (String vendorItemName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
+                    var setVendorItemStatusForm = persona.setVendorItemStatusForm;
                     var deleteVendorItemForm = persona.deleteVendorItemForm;
                     var vendorItemSpec = persona.vendorItemSpec;
 
-                    assertThat(createVendorItemForm != null || deleteVendorItemForm != null || vendorItemSpec != null).isTrue();
+                    assertThat(createVendorItemForm != null || setVendorItemStatusForm != null || deleteVendorItemForm != null
+                            || vendorItemSpec != null).isTrue();
 
                     if(createVendorItemForm != null) {
                         createVendorItemForm.setVendorItemName(vendorItemName);
+                    } else if(setVendorItemStatusForm != null) {
+                        setVendorItemStatusForm.setVendorItemName(vendorItemName);
                     } else if(deleteVendorItemForm != null) {
                         deleteVendorItemForm.setVendorItemName(vendorItemName);
                     } else {
@@ -212,6 +249,16 @@ public class VendorItemSteps implements En {
                     assertThat(vendorItemEdit).isNotNull();
 
                     vendorItemEdit.setVendorItemName(vendorItemName);
+                });
+
+        When("^the user sets the vendor item's status to ([a-zA-Z0-9-_]*)$",
+                (String vendorItemStatusChoice) -> {
+                    var persona = CurrentPersona.persona;
+                    var setVendorItemStatusForm = persona.setVendorItemStatusForm;
+
+                    assertThat(setVendorItemStatusForm).isNotNull();
+
+                    setVendorItemStatusForm.setVendorItemStatusChoice(vendorItemStatusChoice);
                 });
 
         When("^the user sets the vendor item's description to \"([^\"]*)\"$",

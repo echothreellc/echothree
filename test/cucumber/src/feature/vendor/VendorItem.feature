@@ -27,7 +27,11 @@ Feature: Employee vendor item
     And the user begins editing the vendor item
     And the user sets the vendor item's description to "That Minimal Item"
     And the user finishes editing the vendor item
-    # TODO: Test setting the Vendor Item's Status
+    And the user begins setting the status of a vendor item
+    And the user sets the vendor item's vendor name to the last vendor added
+    And the user sets the vendor item's vendor item name to vend-minimal
+    And the user sets the vendor item's status to ACTIVE_TO_INACTIVE
+    And the user sets the status of the vendor item
     And the user begins deleting a vendor item
     And the user sets the vendor item's vendor name to the last vendor added
     And the user sets the vendor item's vendor item name to vend-minimal
