@@ -18,7 +18,9 @@ Feature: Employee vendor
     And the user begins specifying a vendor to edit
     And the user sets the vendor's vendor name to the last vendor added
     And the user begins editing the vendor
+    Then no error should occur
     And the user sets the vendor's name to "Cucumber Vendor"
     And the user finishes editing the vendor
+    Then no error should occur
     And the user sets the status of the last vendor added to ACTIVE_TO_INACTIVE
     Then no error should occur

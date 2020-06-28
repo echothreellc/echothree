@@ -21,20 +21,25 @@ Feature: Employee vendor item
     And the user sets the vendor item's vendor item name to vend-minimal
     And the user sets the vendor item's priority to "1"
     And the user adds the new vendor item
+    Then no error should occur
     And the user begins specifying a vendor item to edit
     And the user sets the vendor item's vendor name to the last vendor added
     And the user sets the vendor item's vendor item name to vend-minimal
     And the user begins editing the vendor item
+    Then no error should occur
     And the user sets the vendor item's description to "That Minimal Item"
     And the user finishes editing the vendor item
+    Then no error should occur
     And the user begins setting the status of a vendor item
     And the user sets the vendor item's vendor name to the last vendor added
     And the user sets the vendor item's vendor item name to vend-minimal
     And the user sets the vendor item's status to ACTIVE_TO_INACTIVE
     And the user sets the status of the vendor item
+    Then no error should occur
     And the user begins deleting a vendor item
     And the user sets the vendor item's vendor name to the last vendor added
     And the user sets the vendor item's vendor item name to vend-minimal
     And the user deletes the vendor item
+    Then no error should occur
     And the user sets the status of the last vendor added to ACTIVE_TO_INACTIVE
     Then no error should occur
