@@ -19,15 +19,15 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartyPostalAddress implements En {
+public class PartyPostalAddressSteps implements En {
 
-    public PartyPostalAddress() {
+    public PartyPostalAddressSteps() {
         When("^the user deletes the last postal address added$",
                 () -> {
                     var contactService = ContactUtil.getHome();

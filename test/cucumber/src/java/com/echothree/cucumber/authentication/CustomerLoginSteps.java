@@ -17,10 +17,10 @@
 package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.CustomerPersona;
-import com.echothree.cucumber.CustomerPersonas;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.persona.CustomerPersona;
+import com.echothree.cucumber.util.persona.CustomerPersonas;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +29,7 @@ public class CustomerLoginSteps implements En {
 
     public CustomerLoginSteps() {
         After(() -> {
-                    for(Map.Entry<String, CustomerPersona> customerPersona : CustomerPersonas.getCustomerPersonas()) {
+                    for(Map.Entry<String, CustomerPersona> customerPersona : CustomerPersonas.getPersonaEntries()) {
                         var authenticationService = AuthenticationUtil.getHome();
                         var commandResult = authenticationService.logout(customerPersona.getValue().userVisitPK);
 

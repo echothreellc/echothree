@@ -18,9 +18,9 @@ package com.echothree.cucumber.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
-import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.persona.BasePersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 

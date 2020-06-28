@@ -16,18 +16,12 @@
 
 package com.echothree.cucumber.item;
 
-import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.EditEntityListItemResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
-import com.echothree.control.user.item.common.result.EditItemResult;
-import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
-import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ItemPriceSteps implements En {

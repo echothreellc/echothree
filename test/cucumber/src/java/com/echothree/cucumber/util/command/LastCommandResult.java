@@ -14,15 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.util.command;
 
-import javax.naming.NamingException;
+import com.echothree.util.common.command.CommandResult;
+import io.cucumber.java8.En;
 
-public class CustomerPersona extends BasePersona {
+public class LastCommandResult implements En {
 
-    public CustomerPersona(String persona)
-            throws NamingException {
-        super(persona);
-    }
+    public static CommandResult commandResult;
 
 }

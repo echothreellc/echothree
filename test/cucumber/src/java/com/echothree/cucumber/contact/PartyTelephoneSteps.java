@@ -19,15 +19,15 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
 import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartyTelephone implements En {
+public class PartyTelephoneSteps implements En {
 
-    public PartyTelephone() {
+    public PartyTelephoneSteps() {
         When("^the user deletes the last telephone number added$",
                 () -> {
                     var contactService = ContactUtil.getHome();

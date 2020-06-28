@@ -19,15 +19,15 @@ package com.echothree.cucumber.payment;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.result.CreatePartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.result.EditPartyPaymentMethodResult;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PartyPaymentMethod implements En {
+public class PartyPaymentMethodSteps implements En {
 
-    public PartyPaymentMethod() {
+    public PartyPaymentMethodSteps() {
         When("^the user deletes the last payment method added$",
                 () -> {
                     var paymentService = PaymentUtil.getHome();
