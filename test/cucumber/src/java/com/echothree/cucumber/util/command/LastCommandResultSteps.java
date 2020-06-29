@@ -14,71 +14,85 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.util.command;
 
-import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
 import io.cucumber.java8.Scenario;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LastCommandResult implements En {
+public class LastCommandResultSteps implements En {
 
     private Scenario scenario;
-    public static CommandResult commandResult;
 
-    public LastCommandResult () {
+    public LastCommandResultSteps() {
         Before((Scenario scenario) ->
                 this.scenario = scenario
         );
 
         Then("^no error should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
 
-//        if(commandResult.hasErrors()) {
-//            var executionResult = commandResult.getExecutionResult();
-//            var executionErrors = executionResult.getExecutionErrors().get();
-//
-//            while(executionErrors.hasNext()) {
-//                var message = executionErrors.next();
-//
-//                scenario.write(message.getKey() + ": " + message.getMessage());
-//            }
-//        }
+            if(commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var executionErrors = executionResult.getExecutionErrors().get();
+
+                while(executionErrors.hasNext()) {
+                    var message = executionErrors.next();
+
+                    scenario.write(message.getKey() + ": " + message.getMessage());
+                }
+            }
 
             assertThat(commandResult.hasErrors()).isFalse();
         });
 
         Then("^an error should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasErrors()).isTrue();
         });
 
         Then("^no validation error should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasValidationErrors()).isFalse();
         });
 
         Then("^a validation error should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasValidationErrors()).isTrue();
         });
 
         Then("^no execution warning should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionWarnings()).isFalse();
         });
 
         Then("^an execution warning should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionWarnings()).isTrue();
         });
 
         Then("^no execution error should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionErrors()).isFalse();
         });
 
         Then("^an execution error should occur$", () -> {
+            var commandResult = LastCommandResult.commandResult;
+
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionErrors()).isTrue();
         });

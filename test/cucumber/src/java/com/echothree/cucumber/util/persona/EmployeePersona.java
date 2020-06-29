@@ -14,20 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.party.common.result;
+package com.echothree.cucumber.util.persona;
 
-import com.echothree.util.common.command.BaseResult;
+import javax.naming.NamingException;
 
-public interface CreateVendorResult
-        extends BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+public class EmployeePersona extends BasePersona {
 
-    String getVendorName();
-    void setVendorName(String vendorName);
+    public EmployeePersona(String persona)
+            throws NamingException {
+        super(persona);
+    }
 
-    String getPartyName();
-    void setPartyName(String partyName);
-    
 }

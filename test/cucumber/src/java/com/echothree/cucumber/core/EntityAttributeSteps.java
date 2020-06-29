@@ -19,15 +19,15 @@ package com.echothree.cucumber.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EntityAttribute implements En {
+public class EntityAttributeSteps implements En {
 
-    public EntityAttribute() {
+    public EntityAttributeSteps() {
         When("^the user begins entering a new entity attribute$",
                 () -> {
                     var persona = CurrentPersona.persona;

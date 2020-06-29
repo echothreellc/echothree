@@ -1,5 +1,13 @@
 # Changelog
 
+## 2020-06-22-01
+
+* Add Vendor Tests [76](https://gitlab.echothree.com/echothree/echothree/-/issues/76)
+* Add Vendor Item Tests [77](https://gitlab.echothree.com/echothree/echothree/-/issues/77)
+* Sales Invoices and Purchase Invoices Have Same Description [82](https://gitlab.echothree.com/echothree/echothree/-/issues/82)
+* Add Item Price Tests [83](https://gitlab.echothree.com/echothree/echothree/-/issues/83)
+* Add Vendor Item Cost Tests [87](https://gitlab.echothree.com/echothree/echothree/-/issues/87)
+
 ## 2020-06-14-01
 
 * Add FOB Terms and Conditions to OrderDetails [62](https://gitlab.echothree.com/echothree/echothree/-/issues/62)

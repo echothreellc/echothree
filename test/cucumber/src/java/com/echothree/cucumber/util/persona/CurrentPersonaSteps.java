@@ -14,43 +14,37 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber.user;
+package com.echothree.cucumber.util.persona;
 
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.AnonymousPersonas;
-import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.CustomerPersonas;
-import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CurrentPersona implements En {
+public class CurrentPersonaSteps implements En {
 
-    public static BasePersona persona;
-
-    public CurrentPersona() {
+    public CurrentPersonaSteps() {
         Then("^the customer ([^\"]*) begins using the application$",
                 (String persona) -> {
-                    CurrentPersona.persona = CustomerPersonas.getCustomerPersona(persona);
+                    CurrentPersona.persona = CustomerPersonas.getPersona(persona);
                 });
 
         Then("^the employee ([^\"]*) begins using the application$",
                 (String persona) -> {
-                    CurrentPersona.persona = EmployeePersonas.getEmployeePersona(persona);
+                    CurrentPersona.persona = EmployeePersonas.getPersona(persona);
                 });
 
         Then("^the anonymous user ([^\"]*) begins using the application$",
                 (String persona) -> {
-                    CurrentPersona.persona = AnonymousPersonas.getAnonymousPersona(persona);
+                    CurrentPersona.persona = AnonymousPersonas.getPersona(persona);
                 });
 
         Given("^the user is not currently logged in$",
                 () -> {
-                    if(persona != null) {
+                    if(CurrentPersona.persona != null) {
                         AuthenticationService authenticationService = AuthenticationUtil.getHome();
-                        CommandResult commandResult = authenticationService.logout(persona.userVisitPK);
+                        CommandResult commandResult = authenticationService.logout(CurrentPersona.persona.userVisitPK);
 
                         assertThat(commandResult.hasErrors()).isFalse();
                     }

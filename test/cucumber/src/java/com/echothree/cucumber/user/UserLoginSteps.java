@@ -17,10 +17,10 @@
 package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.cucumber.AnonymousPersonas;
-import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.EmployeePersonas;
-import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.util.persona.AnonymousPersonas;
+import com.echothree.cucumber.util.persona.BasePersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
@@ -30,7 +30,7 @@ public class UserLoginSteps implements En {
         When("^the user deletes the user login added by the anonymous user ([^\"]*)$",
                 (String anonymous) -> {
                     var persona = CurrentPersona.persona;
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(anonymous);
+                    var anonymousPersona = AnonymousPersonas.getPersona(anonymous);
 
                     deleteUserLogin(persona, anonymousPersona.lastPartyName);
                 });

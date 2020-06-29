@@ -17,6 +17,9 @@
 package com.echothree.model.control.vendor.server;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.sequence.common.SequenceTypes;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.vendor.common.choice.ItemPurchasingCategoryChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorItemStatusChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorStatusChoicesBean;
@@ -57,6 +60,7 @@ import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
+import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
@@ -602,15 +606,18 @@ public class VendorControl
     //   Vendors
     // --------------------------------------------------------------------------------
     
-    public Vendor createVendor(Party party, String vendorName, VendorType vendorType, Integer minimumPurchaseOrderLines, Integer maximumPurchaseOrderLines,
-            Long minimumPurchaseOrderAmount, Long maximumPurchaseOrderAmount, Boolean useItemPurchasingCategories, ItemAliasType defaultItemAliasType,
-            CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, GlAccount apGlAccount, Boolean holdUntilComplete, Boolean allowBackorders,
+    public Vendor createVendor(Party party, String vendorName, VendorType vendorType, Integer minimumPurchaseOrderLines,
+            Integer maximumPurchaseOrderLines, Long minimumPurchaseOrderAmount, Long maximumPurchaseOrderAmount,
+            Boolean useItemPurchasingCategories, ItemAliasType defaultItemAliasType, CancellationPolicy cancellationPolicy,
+            ReturnPolicy returnPolicy, GlAccount apGlAccount, Boolean holdUntilComplete, Boolean allowBackorders,
             Boolean allowSubstitutions, Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
             String referenceValidationPattern, Selector vendorItemSelector, Filter vendorItemCostFilter, BasePK createdBy) {
-        Vendor vendor = VendorFactory.getInstance().create(party, vendorName, vendorType, minimumPurchaseOrderLines, maximumPurchaseOrderLines,
-                minimumPurchaseOrderAmount, maximumPurchaseOrderAmount, useItemPurchasingCategories, defaultItemAliasType, cancellationPolicy, returnPolicy,
-                apGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates,
-                referenceValidationPattern, vendorItemSelector, vendorItemCostFilter, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var vendor = VendorFactory.getInstance().create(party, vendorName, vendorType, minimumPurchaseOrderLines,
+                maximumPurchaseOrderLines, minimumPurchaseOrderAmount, maximumPurchaseOrderAmount,
+                useItemPurchasingCategories, defaultItemAliasType, cancellationPolicy, returnPolicy,
+                apGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments,
+                requireReference, allowReferenceDuplicates, referenceValidationPattern, vendorItemSelector,
+                vendorItemCostFilter, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), vendor.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
         

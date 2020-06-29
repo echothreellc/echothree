@@ -19,15 +19,15 @@ package com.echothree.cucumber.core;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
 import com.echothree.control.user.core.common.result.EditEntityListItemResult;
-import com.echothree.cucumber.LastCommandResult;
-import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.cucumber.util.command.LastCommandResult;
+import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EntityListItem implements En {
+public class EntityListItemSteps implements En {
 
-    public EntityListItem() {
+    public EntityListItemSteps() {
         When("^the user begins entering a new entity list item$",
                 () -> {
                     var persona = CurrentPersona.persona;

@@ -21,25 +21,36 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
+import com.echothree.model.control.sequence.common.SequenceTypes;
+import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.control.vendor.common.exception.CannotSpecifyVendorNameAndPartyNameException;
 import com.echothree.model.control.vendor.common.exception.MustSpecifyVendorNameOrPartyNameException;
 import com.echothree.model.control.vendor.common.exception.UnknownVendorNameException;
 import com.echothree.model.control.vendor.common.exception.UnknownVendorStatusChoiceException;
-import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
+import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.data.accounting.server.entity.GlAccount;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.filter.server.entity.Filter;
+import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
@@ -59,6 +70,42 @@ public class VendorLogic
     
     public static VendorLogic getInstance() {
         return VendorLogicHolder.instance;
+    }
+
+    private String getVendorName(final ExecutionErrorAccumulator eea) {
+        String vendorName = null;
+        var vendorSequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.VENDOR.name());
+
+        if(!hasExecutionErrors(eea)) {
+            vendorName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, vendorSequence);
+        } else {
+            handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
+                    SequenceTypes.VENDOR.name());
+        }
+
+        return vendorName;
+    }
+    
+    public Vendor createVendor(final ExecutionErrorAccumulator eea, final Party party, String vendorName,
+            final VendorType vendorType, final Integer minimumPurchaseOrderLines, final Integer maximumPurchaseOrderLines,
+            final Long minimumPurchaseOrderAmount, final Long maximumPurchaseOrderAmount,
+            final Boolean useItemPurchasingCategories, final ItemAliasType defaultItemAliasType,
+            final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final GlAccount apGlAccount,
+            final Boolean holdUntilComplete, final Boolean allowBackorders, final Boolean allowSubstitutions,
+            final Boolean allowCombiningShipments, final Boolean requireReference, final Boolean allowReferenceDuplicates,
+            final String referenceValidationPattern, final Selector vendorItemSelector, final Filter vendorItemCostFilter,
+            final BasePK createdBy) {
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+
+        if(vendorName == null) {
+            vendorName = getVendorName(eea);
+        }
+
+        return vendorControl.createVendor(party, vendorName, vendorType, minimumPurchaseOrderLines, maximumPurchaseOrderLines,
+                minimumPurchaseOrderAmount, maximumPurchaseOrderAmount, useItemPurchasingCategories, defaultItemAliasType,
+                cancellationPolicy, returnPolicy, apGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions,
+                allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
+                vendorItemSelector, vendorItemCostFilter, createdBy);
     }
 
     public Vendor getVendorByName(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName) {
