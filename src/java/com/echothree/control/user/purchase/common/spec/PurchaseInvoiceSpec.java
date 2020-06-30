@@ -14,15 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.purchase.common.result;
+package com.echothree.control.user.purchase.common.spec;
 
-import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.purchase.common.spec.PurchaseInvoiceLineSpec;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface CreatePurchaseInvoiceLineResult
-        extends PurchaseInvoiceLineSpec, EntityRefSpec, BaseResult {
+public interface PurchaseInvoiceSpec
+        extends BaseSpec {
     
-    // Nothing additional beyond PurchaseInvoiceLineSpec, EntityRefSpec, BaseResult
+    String getInvoiceName();
+    void setInvoiceName(String invoiceName);
     
 }

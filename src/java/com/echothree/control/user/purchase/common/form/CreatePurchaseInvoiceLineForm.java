@@ -19,11 +19,11 @@ package com.echothree.control.user.purchase.common.form;
 import com.echothree.control.user.accounting.common.spec.GlAccountSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
 import com.echothree.control.user.invoice.common.spec.InvoiceLineTypeSpec;
-import com.echothree.control.user.invoice.common.spec.InvoiceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
+import com.echothree.control.user.purchase.common.spec.PurchaseInvoiceSpec;
 
 public interface CreatePurchaseInvoiceLineForm
-        extends InvoiceSpec, InvoiceLineTypeSpec, GlAccountSpec, ItemSpec, InventoryConditionSpec {
+        extends PurchaseInvoiceSpec, InvoiceLineTypeSpec, GlAccountSpec, ItemSpec, InventoryConditionSpec {
     
     String getInvoiceLineSequence();
     void setInvoiceLineSequence(String invoiceLineSequence);
