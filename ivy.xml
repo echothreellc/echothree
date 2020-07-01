@@ -8,7 +8,7 @@
     </configurations>
     <dependencies>
         <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="sources->sources" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="sources->sources" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.4.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="guava" rev="29.0-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="15.0" conf="sources->sources" />
@@ -84,13 +84,14 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="sources->sources" />
+        <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="sources->sources" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.0.Final" conf="sources->sources" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="javadoc->javadoc" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="javadoc->javadoc" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.4.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="guava" rev="29.0-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="15.0" conf="javadoc->javadoc" />
@@ -165,13 +166,14 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
+        <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="javadoc->javadoc" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.0.Final" conf="javadoc->javadoc" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="javadoc->javadoc" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="binaries->default" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="binaries->default">
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.4.0" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="binaries->default" />
@@ -255,6 +257,7 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="binaries->default" />
+        <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="binaries->default" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.0.Final" conf="binaries->default" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="binaries->default" />

@@ -32,6 +32,7 @@
             <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
             <pathelement location="${build.lib.dir}/failureaccess.jar"/>
             <pathelement location="${build.lib.dir}/jFormatString.jar"/>
+            <pathelement location="${build.lib.dir}/threeten-extra.jar"/>
         </path>
         <javac
             debug="true"
