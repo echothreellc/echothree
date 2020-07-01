@@ -28,7 +28,7 @@ public abstract class BaseWishlistTransferCache<K extends BaseEntity, V extends 
     WishlistControl wishlistControl;
     
     /** Creates a new instance of BaseWishlistTransferCache */
-    public BaseWishlistTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
+    protected BaseWishlistTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
         super(userVisit);
         
         this.wishlistControl = wishlistControl;

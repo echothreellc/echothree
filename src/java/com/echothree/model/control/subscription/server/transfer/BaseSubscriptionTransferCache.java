@@ -28,7 +28,7 @@ public abstract class BaseSubscriptionTransferCache<K extends BaseEntity, V exte
     SubscriptionControl subscriptionControl;
     
     /** Creates a new instance of BaseSubscriptionTransferCache */
-    public BaseSubscriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
+    protected BaseSubscriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
         super(userVisit);
         
         this.subscriptionControl = subscriptionControl;

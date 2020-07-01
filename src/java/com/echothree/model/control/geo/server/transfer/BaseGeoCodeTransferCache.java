@@ -29,11 +29,11 @@ public abstract class BaseGeoCodeTransferCache<K extends BaseEntity, V extends B
         extends BaseGeoTransferCache<K, V> {
 
     /** Creates a new instance of BaseGeoCodeTransferCache */
-    public BaseGeoCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
+    protected BaseGeoCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
         super(userVisit, geoControl);
     }
 
-    public void setupGeoCodeAliasTransfers(GeoCode geoCode, BaseGeoCodeTransfer baseGeoCodeTransfer) {
+    protected void setupGeoCodeAliasTransfers(GeoCode geoCode, BaseGeoCodeTransfer baseGeoCodeTransfer) {
         List<GeoCodeAliasTransfer> geoCodeAliasTransfers = geoControl.getGeoCodeAliasTransfersByGeoCode(userVisit, geoCode);
         MapWrapper<GeoCodeAliasTransfer> geoCodeAliases = new MapWrapper<>(geoCodeAliasTransfers.size());
 

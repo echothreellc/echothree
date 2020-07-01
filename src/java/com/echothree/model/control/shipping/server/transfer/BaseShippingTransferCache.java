@@ -28,7 +28,7 @@ public abstract class BaseShippingTransferCache<K extends BaseEntity, V extends 
     ShippingControl shippingControl;
     
     /** Creates a new instance of BaseShippingTransferCache */
-    public BaseShippingTransferCache(UserVisit userVisit, ShippingControl shippingControl) {
+    protected BaseShippingTransferCache(UserVisit userVisit, ShippingControl shippingControl) {
         super(userVisit);
         
         this.shippingControl = shippingControl;

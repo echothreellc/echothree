@@ -31,7 +31,7 @@ public abstract class GenericBatchTransfer
     private ListWrapper<BatchEntityTransfer> batchEntities;
     
     /** Creates a new instance of GenericBatchTransfer */
-    public GenericBatchTransfer(BatchTypeTransfer batchType, String batchName, WorkflowEntityStatusTransfer batchStatus) {
+    protected GenericBatchTransfer(BatchTypeTransfer batchType, String batchName, WorkflowEntityStatusTransfer batchStatus) {
         this.batchType = batchType;
         this.batchName = batchName;
         this.batchStatus = batchStatus;

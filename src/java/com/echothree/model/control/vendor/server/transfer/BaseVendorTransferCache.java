@@ -28,7 +28,7 @@ public abstract class BaseVendorTransferCache<K extends BaseEntity, V extends Ba
     VendorControl vendorControl;
     
     /** Creates a new instance of BaseVendorTransferCache */
-    public BaseVendorTransferCache(UserVisit userVisit, VendorControl vendorControl) {
+    protected BaseVendorTransferCache(UserVisit userVisit, VendorControl vendorControl) {
         super(userVisit);
         
         this.vendorControl = vendorControl;

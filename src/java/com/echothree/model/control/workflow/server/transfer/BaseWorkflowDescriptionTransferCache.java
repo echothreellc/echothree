@@ -29,7 +29,7 @@ public abstract class BaseWorkflowDescriptionTransferCache<K extends BaseEntity,
     PartyControl partyControl;
     
     /** Creates a new instance of BaseWorkflowDescriptionTransferCache */
-    public BaseWorkflowDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
+    protected BaseWorkflowDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
         super(userVisit, workflowControl);
         
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);

@@ -29,7 +29,7 @@ public abstract class BaseIndexDescriptionTransferCache<K extends BaseEntity, V 
     PartyControl partyControl;
     
     /** Creates a new instance of BaseIndexDescriptionTransferCache */
-    public BaseIndexDescriptionTransferCache(UserVisit userVisit, IndexControl indexControl) {
+    protected BaseIndexDescriptionTransferCache(UserVisit userVisit, IndexControl indexControl) {
         super(userVisit, indexControl);
         
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);

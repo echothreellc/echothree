@@ -29,7 +29,7 @@ public abstract class BasePrinterDescriptionTransferCache<K extends BaseEntity, 
     PartyControl partyControl;
     
     /** Creates a new instance of BasePrinterDescriptionTransferCache */
-    public BasePrinterDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
+    protected BasePrinterDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
         super(userVisit, printerControl);
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     }

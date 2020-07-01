@@ -28,7 +28,7 @@ public abstract class BaseTagTransferCache<K extends BaseEntity, V extends BaseT
     TagControl tagControl;
     
     /** Creates a new instance of BaseTagTransferCache */
-    public BaseTagTransferCache(UserVisit userVisit, TagControl tagControl) {
+    protected BaseTagTransferCache(UserVisit userVisit, TagControl tagControl) {
         super(userVisit);
         
         this.tagControl = tagControl;

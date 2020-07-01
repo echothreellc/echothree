@@ -29,7 +29,7 @@ public abstract class BaseUomDescriptionTransferCache<K extends BaseEntity, V ex
     PartyControl partyControl;
     
     /** Creates a new instance of BaseUomDescriptionTransferCache */
-    public BaseUomDescriptionTransferCache(UserVisit userVisit, UomControl uomControl) {
+    protected BaseUomDescriptionTransferCache(UserVisit userVisit, UomControl uomControl) {
         super(userVisit, uomControl);
         
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);

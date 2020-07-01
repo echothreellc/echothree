@@ -28,7 +28,7 @@ public abstract class BaseOrderTransferCache<K extends BaseEntity, V extends Bas
     OrderControl orderControl;
     
     /** Creates a new instance of BaseOrderTransferCache */
-    public BaseOrderTransferCache(UserVisit userVisit, OrderControl orderControl) {
+    protected BaseOrderTransferCache(UserVisit userVisit, OrderControl orderControl) {
         super(userVisit);
         
         this.orderControl = orderControl;

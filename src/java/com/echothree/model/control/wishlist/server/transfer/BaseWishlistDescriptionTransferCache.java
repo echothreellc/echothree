@@ -29,7 +29,7 @@ public abstract class BaseWishlistDescriptionTransferCache<K extends BaseEntity,
     PartyControl partyControl;
     
     /** Creates a new instance of BaseWishlistDescriptionTransferCache */
-    public BaseWishlistDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
+    protected BaseWishlistDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
         super(userVisit, wishlistControl);
         
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);
