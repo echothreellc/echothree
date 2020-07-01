@@ -38,7 +38,7 @@ public class BaseEncryptionKeyTransferCache
         setIncludeEntityInstance(true);
     }
     
-    protected BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(BaseEncryptionKey baseEncryptionKey) {
+    public BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(BaseEncryptionKey baseEncryptionKey) {
         BaseEncryptionKeyTransfer baseEncryptionKeyTransfer = get(baseEncryptionKey);
         
         if(baseEncryptionKeyTransfer == null) {
