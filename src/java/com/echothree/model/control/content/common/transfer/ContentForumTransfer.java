@@ -34,6 +34,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Returns the contentCollection.
      * @return the contentCollection
      */
     public ContentCollectionTransfer getContentCollection() {
@@ -48,6 +49,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Returns the forum.
      * @return the forum
      */
     public ForumTransfer getForum() {
@@ -62,6 +64,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {

@@ -36,6 +36,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -50,6 +51,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the document.
      * @return the document
      */
     public DocumentTransfer getDocument() {
@@ -64,6 +66,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -78,6 +81,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

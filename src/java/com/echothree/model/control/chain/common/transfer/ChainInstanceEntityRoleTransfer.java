@@ -34,6 +34,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Returns the chainInstance.
      * @return the chainInstance
      */
     public ChainInstanceTransfer getChainInstance() {
@@ -48,6 +49,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Returns the chainEntityRoleType.
      * @return the chainEntityRoleType
      */
     public ChainEntityRoleTypeTransfer getChainEntityRoleType() {
@@ -62,6 +64,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override

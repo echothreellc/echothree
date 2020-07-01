@@ -35,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the partyAliasTypeName.
      * @return the partyAliasTypeName
      */
     public String getPartyAliasTypeName() {

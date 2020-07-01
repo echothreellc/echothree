@@ -26,6 +26,7 @@ public class DeleteActionForm
     private String offerName;
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {

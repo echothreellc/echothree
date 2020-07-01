@@ -45,6 +45,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClass.
      * @return the partyTrainingClass
      */
     public PartyTrainingClassTransfer getPartyTrainingClass() {
@@ -59,6 +60,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionSequence.
      * @return the partyTrainingClassSessionSequence
      */
     public Integer getPartyTrainingClassSessionSequence() {
@@ -73,6 +75,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the lastPartyTrainingClassSessionSection.
      * @return the lastPartyTrainingClassSessionSection
      */
     public PartyTrainingClassSessionSectionTransfer getLastPartyTrainingClassSessionSection() {
@@ -87,6 +90,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the lastPartyTrainingClassSessionPage.
      * @return the lastPartyTrainingClassSessionPage
      */
     public PartyTrainingClassSessionPageTransfer getLastPartyTrainingClassSessionPage() {
@@ -101,6 +105,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the lastPartyTrainingClassSessionQuestion.
      * @return the lastPartyTrainingClassSessionQuestion
      */
     public PartyTrainingClassSessionQuestionTransfer getLastPartyTrainingClassSessionQuestion() {
@@ -115,6 +120,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionPages.
      * @return the partyTrainingClassSessionPages
      */
     public ListWrapper<PartyTrainingClassSessionPageTransfer> getPartyTrainingClassSessionPages() {
@@ -129,6 +135,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionQuestions.
      * @return the partyTrainingClassSessionQuestions
      */
     public ListWrapper<PartyTrainingClassSessionQuestionTransfer> getPartyTrainingClassSessionQuestions() {

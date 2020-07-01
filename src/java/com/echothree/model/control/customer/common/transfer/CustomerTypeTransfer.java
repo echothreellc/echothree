@@ -79,6 +79,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the customerTypeName.
      * @return the customerTypeName
      */
     public String getCustomerTypeName() {
@@ -93,6 +94,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the customerSequence.
      * @return the customerSequence
      */
     public SequenceTransfer getCustomerSequence() {
@@ -107,6 +109,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultOfferUse.
      * @return the defaultOfferUse
      */
     public OfferUseTransfer getDefaultOfferUse() {
@@ -121,6 +124,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultTerm.
      * @return the defaultTerm
      */
     public TermTransfer getDefaultTerm() {
@@ -143,6 +147,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultCancellationPolicy.
      * @return the defaultCancellationPolicy
      */
     public CancellationPolicyTransfer getDefaultCancellationPolicy() {
@@ -157,6 +162,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultReturnPolicy.
      * @return the defaultReturnPolicy
      */
     public ReturnPolicyTransfer getDefaultReturnPolicy() {
@@ -171,6 +177,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultArGlAccount.
      * @return the defaultArGlAccount
      */
     public GlAccountTransfer getDefaultArGlAccount() {
@@ -185,6 +192,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultHoldUntilComplete.
      * @return the defaultHoldUntilComplete
      */
     public Boolean getDefaultHoldUntilComplete() {
@@ -199,6 +207,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowBackorders.
      * @return the defaultAllowBackorders
      */
     public Boolean getDefaultAllowBackorders() {
@@ -213,6 +222,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowSubstitutions.
      * @return the defaultAllowSubstitutions
      */
     public Boolean getDefaultAllowSubstitutions() {
@@ -227,6 +237,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowCombiningShipments.
      * @return the defaultAllowCombiningShipments
      */
     public Boolean getDefaultAllowCombiningShipments() {
@@ -241,6 +252,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultRequireReference.
      * @return the defaultRequireReference
      */
     public Boolean getDefaultRequireReference() {
@@ -255,6 +267,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowReferenceDuplicates.
      * @return the defaultAllowReferenceDuplicates
      */
     public Boolean getDefaultAllowReferenceDuplicates() {
@@ -269,6 +282,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultReferenceValidationPattern.
      * @return the defaultReferenceValidationPattern
      */
     public String getDefaultReferenceValidationPattern() {
@@ -283,6 +297,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultTaxable.
      * @return the defaultTaxable
      */
     public Boolean getDefaultTaxable() {
@@ -297,6 +312,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the allocationPriority.
      * @return the allocationPriority
      */
     public AllocationPriorityTransfer getAllocationPriority() {
@@ -311,6 +327,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -325,6 +342,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -339,6 +357,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

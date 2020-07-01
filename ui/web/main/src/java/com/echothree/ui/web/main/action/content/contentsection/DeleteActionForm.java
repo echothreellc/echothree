@@ -28,6 +28,7 @@ public class DeleteActionForm
     private String parentContentSectionName;
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {
@@ -42,6 +43,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the contentSectionName.
      * @return the contentSectionName
      */
     public String getContentSectionName() {
@@ -56,6 +58,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the parentContentSectionName.
      * @return the parentContentSectionName
      */
     public String getParentContentSectionName() {

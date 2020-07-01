@@ -33,6 +33,7 @@ public class TagTransfer
     }
 
     /**
+     * Returns the tagScope.
      * @return the tagScope
      */
     public TagScopeTransfer getTagScope() {
@@ -47,6 +48,7 @@ public class TagTransfer
     }
 
     /**
+     * Returns the tagName.
      * @return the tagName
      */
     public String getTagName() {
@@ -61,6 +63,7 @@ public class TagTransfer
     }
 
     /**
+     * Returns the usageCount.
      * @return the usageCount
      */
     public Long getUsageCount() {

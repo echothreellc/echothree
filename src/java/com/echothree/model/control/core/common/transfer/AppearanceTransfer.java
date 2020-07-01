@@ -48,6 +48,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the appearanceName.
      * @return the appearanceName
      */
     public String getAppearanceName() {
@@ -62,6 +63,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the textColor.
      * @return the textColor
      */
     public ColorTransfer getTextColor() {
@@ -76,6 +78,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the backgroundColor.
      * @return the backgroundColor
      */
     public ColorTransfer getBackgroundColor() {
@@ -90,6 +93,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the fontStyle.
      * @return the fontStyle
      */
     public FontStyleTransfer getFontStyle() {
@@ -104,6 +108,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the fontWeight.
      * @return the fontWeight
      */
     public FontWeightTransfer getFontWeight() {
@@ -118,6 +123,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -132,6 +138,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -146,6 +153,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -160,6 +168,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the appearanceTextDecorations.
      * @return the appearanceTextDecorations
      */
     public ListWrapper<AppearanceTextDecorationTransfer> getAppearanceTextDecorations() {
@@ -174,6 +183,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Returns the appearanceTextTransformations.
      * @return the appearanceTextTransformations
      */
     public ListWrapper<AppearanceTextTransformationTransfer> getAppearanceTextTransformations() {

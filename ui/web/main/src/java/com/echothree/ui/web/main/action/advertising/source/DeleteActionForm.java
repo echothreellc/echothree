@@ -26,6 +26,7 @@ public class DeleteActionForm
     private String sourceName;
 
     /**
+     * Returns the sourceName.
      * @return the sourceName
      */
     public String getSourceName() {

@@ -40,6 +40,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the filterAdjustment.
      * @return the filterAdjustment
      */
     public FilterAdjustmentTransfer getFilterAdjustment() {
@@ -54,6 +55,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -68,6 +70,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -82,6 +85,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the unformattedAmount.
      * @return the unformattedAmount
      */
     public Long getUnformattedAmount() {
@@ -96,6 +100,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the amount.
      * @return the amount
      */
     public String getAmount() {

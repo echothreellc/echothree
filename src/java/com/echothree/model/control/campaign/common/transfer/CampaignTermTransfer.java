@@ -43,6 +43,7 @@ public class CampaignTermTransfer
     }
 
     /**
+     * Returns the campaignTermName.
      * @return the campaignTermName
      */
     public String getCampaignTermName() {
@@ -57,6 +58,7 @@ public class CampaignTermTransfer
     }
 
     /**
+     * Returns the valueSha1Hash.
      * @return the valueSha1Hash
      */
     public String getValueSha1Hash() {
@@ -71,6 +73,7 @@ public class CampaignTermTransfer
     }
 
     /**
+     * Returns the value.
      * @return the value
      */
     public String getValue() {
@@ -85,6 +88,7 @@ public class CampaignTermTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -99,6 +103,7 @@ public class CampaignTermTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -113,6 +118,7 @@ public class CampaignTermTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -127,6 +133,7 @@ public class CampaignTermTransfer
     }
 
     /**
+     * Returns the campaignTermStatus.
      * @return the campaignTermStatus
      */
     public WorkflowEntityStatusTransfer getCampaignTermStatus() {

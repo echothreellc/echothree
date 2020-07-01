@@ -41,6 +41,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the returnKind.
      * @return the returnKind
      */
     public ReturnKindTransfer getReturnKind() {
@@ -55,6 +56,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the returnTypeName.
      * @return the returnTypeName
      */
     public String getReturnTypeName() {
@@ -69,6 +71,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the returnSequence.
      * @return the returnSequence
      */
     public SequenceTransfer getReturnSequence() {
@@ -83,6 +86,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -97,6 +101,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -111,6 +116,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

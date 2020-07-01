@@ -34,6 +34,7 @@ public class AddActionForm
     private String description;
     
     /**
+     * Returns the geoCodeTypeName.
      * @return the geoCodeTypeName
      */
     public String getGeoCodeTypeName() {
@@ -48,6 +49,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the geoCodeAliasTypeName.
      * @return the geoCodeAliasTypeName
      */
     public String getGeoCodeAliasTypeName() {
@@ -62,6 +64,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the validationPattern.
      * @return the validationPattern
      */
     public String getValidationPattern() {
@@ -76,6 +79,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the isRequired.
      * @return the isRequired
      */
     public Boolean getIsRequired() {
@@ -90,6 +94,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -104,6 +109,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public String getSortOrder() {
@@ -118,6 +124,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

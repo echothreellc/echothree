@@ -35,6 +35,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -49,6 +50,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Returns the contentWebAddress.
      * @return the contentWebAddress
      */
     public ContentWebAddressTransfer getContentWebAddress() {
@@ -63,6 +65,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -58,6 +58,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -72,6 +73,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the username.
      * @return the username
      */
     public String getUsername() {
@@ -86,6 +88,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the unformattedLastLoginTime.
      * @return the unformattedLastLoginTime
      */
     public Long getUnformattedLastLoginTime() {
@@ -100,6 +103,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the lastLoginTime.
      * @return the lastLoginTime
      */
     public String getLastLoginTime() {
@@ -114,6 +118,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the failureCount.
      * @return the failureCount
      */
     public Integer getFailureCount() {
@@ -128,6 +133,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the unformattedFirstFailureTime.
      * @return the unformattedFirstFailureTime
      */
     public Long getUnformattedFirstFailureTime() {
@@ -142,6 +148,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the firstFailureTime.
      * @return the firstFailureTime
      */
     public String getFirstFailureTime() {
@@ -156,6 +163,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the unformattedLastFailureTime.
      * @return the unformattedLastFailureTime
      */
     public Long getUnformattedLastFailureTime() {
@@ -170,6 +178,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the lastFailureTime.
      * @return the lastFailureTime
      */
     public String getLastFailureTime() {
@@ -184,6 +193,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the expiredCount.
      * @return the expiredCount
      */
     public Integer getExpiredCount() {
@@ -198,6 +208,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the forceChange.
      * @return the forceChange
      */
     public Boolean getForceChange() {
@@ -212,6 +223,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the userLoginPasswords.
      * @return the userLoginPasswords
      */
     public MapWrapper<UserLoginPasswordTransfer> getUserLoginPasswords() {

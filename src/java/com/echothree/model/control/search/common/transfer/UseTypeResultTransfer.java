@@ -32,6 +32,7 @@ public class UseTypeResultTransfer
     }
 
     /**
+     * Returns the useTypeName.
      * @return the useTypeName
      */
     public String getUseTypeName() {
@@ -46,6 +47,7 @@ public class UseTypeResultTransfer
     }
 
     /**
+     * Returns the useType.
      * @return the useType
      */
     public UseTypeTransfer getUseType() {

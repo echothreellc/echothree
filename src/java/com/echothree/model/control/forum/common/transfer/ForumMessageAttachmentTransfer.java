@@ -44,6 +44,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the forumMessage.
      * @return the forumMessage
      */
     public ForumMessageTransfer getForumMessage() {
@@ -58,6 +59,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the forumMessageAttachmentSequence.
      * @return the forumMessageAttachmentSequence
      */
     public Integer getForumMessageAttachmentSequence() {
@@ -72,6 +74,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -86,6 +89,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -100,6 +104,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -114,6 +119,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -128,6 +134,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String geteTag() {

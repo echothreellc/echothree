@@ -34,6 +34,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Returns the campaignContent.
      * @return the campaignContent
      */
     public CampaignContentTransfer getCampaignContent() {
@@ -62,6 +64,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

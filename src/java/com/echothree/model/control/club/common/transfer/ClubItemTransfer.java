@@ -39,6 +39,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the club.
      * @return the club
      */
     public ClubTransfer getClub() {
@@ -53,6 +54,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the clubItemType.
      * @return the clubItemType
      */
     public ClubItemTypeTransfer getClubItemType() {
@@ -67,6 +69,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -81,6 +84,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the unformattedSubscriptionTime.
      * @return the unformattedSubscriptionTime
      */
     public Long getUnformattedSubscriptionTime() {
@@ -95,6 +99,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the subscriptionTime.
      * @return the subscriptionTime
      */
     public String getSubscriptionTime() {

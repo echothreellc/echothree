@@ -37,6 +37,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {
@@ -51,6 +52,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCatalogName.
      * @return the contentCatalogName
      */
     public String getContentCatalogName() {
@@ -65,6 +67,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCategoryName.
      * @return the contentCategoryName
      */
     public String getContentCategoryName() {
@@ -79,6 +82,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCategory.
      * @return the contentCategory
      */
     public ContentCategoryTransfer getContentCategory() {

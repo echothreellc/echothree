@@ -35,6 +35,7 @@ public class HarmonizedTariffScheduleCodeResultTransfer
     }
 
     /**
+     * Returns the countryGeoCodeName.
      * @return the countryGeoCodeName
      */
     public String getCountryGeoCodeName() {
@@ -49,6 +50,7 @@ public class HarmonizedTariffScheduleCodeResultTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCodeName.
      * @return the harmonizedTariffScheduleCodeName
      */
     public String getHarmonizedTariffScheduleCodeName() {
@@ -63,6 +65,7 @@ public class HarmonizedTariffScheduleCodeResultTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCode.
      * @return the harmonizedTariffScheduleCode
      */
     public HarmonizedTariffScheduleCodeTransfer getHarmonizedTariffScheduleCode() {

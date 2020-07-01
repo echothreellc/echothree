@@ -44,6 +44,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -58,6 +59,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -74,6 +76,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the unformattedLatitude.
      * @return the unformattedLatitude
      */
     public Integer getUnformattedLatitude() {
@@ -88,6 +91,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the latitude.
      * @return the latitude
      */
     public String getLatitude() {
@@ -102,6 +106,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the unformattedLongitude.
      * @return the unformattedLongitude
      */
     public Integer getUnformattedLongitude() {
@@ -116,6 +121,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the longitude.
      * @return the longitude
      */
     public String getLongitude() {
@@ -130,6 +136,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the elevation.
      * @return the elevation
      */
     public String getElevation() {
@@ -144,6 +151,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the altitude.
      * @return the altitude
      */
     public String getAltitude() {

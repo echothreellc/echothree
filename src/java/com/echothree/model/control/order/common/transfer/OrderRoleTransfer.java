@@ -32,6 +32,7 @@ public class OrderRoleTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -46,6 +47,7 @@ public class OrderRoleTransfer
     }
 
     /**
+     * Returns the orderRoleType.
      * @return the orderRoleType
      */
     public OrderRoleTypeTransfer getOrderRoleType() {

@@ -35,6 +35,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the application.
      * @return the application
      */
     public ApplicationTransfer getApplication() {
@@ -49,6 +50,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the editor.
      * @return the editor
      */
     public EditorTransfer getEditor() {
@@ -63,6 +65,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -77,6 +80,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

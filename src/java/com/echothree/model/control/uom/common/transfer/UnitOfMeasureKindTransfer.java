@@ -37,6 +37,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKindName.
      * @return the unitOfMeasureKindName
      */
     public String getUnitOfMeasureKindName() {
@@ -51,6 +52,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the fractionDigits.
      * @return the fractionDigits
      */
     public Integer getFractionDigits() {
@@ -65,6 +67,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -79,6 +82,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -93,6 +97,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

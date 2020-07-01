@@ -51,6 +51,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workRequirementName.
      * @return the workRequirementName
      */
     public String getWorkRequirementName() {
@@ -65,6 +66,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workEffort.
      * @return the workEffort
      */
     public WorkEffortTransfer getWorkEffort() {
@@ -79,6 +81,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workRequirementScope.
      * @return the workRequirementScope
      */
     public WorkRequirementScopeTransfer getWorkRequirementScope() {
@@ -93,6 +96,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -107,6 +111,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -121,6 +126,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the unformattedRequiredTime.
      * @return the unformattedRequiredTime
      */
     public Long getUnformattedRequiredTime() {
@@ -135,6 +141,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the requiredTime.
      * @return the requiredTime
      */
     public String getRequiredTime() {
@@ -149,6 +156,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workRequirementStatus.
      * @return the workRequirementStatus
      */
     public WorkflowEntityStatusTransfer getWorkRequirementStatus() {
@@ -163,6 +171,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workAssignments.
      * @return the workAssignments
      */
     public ListWrapper<WorkAssignmentTransfer> getWorkAssignments() {
@@ -177,6 +186,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workTimes.
      * @return the workTimes
      */
     public ListWrapper<WorkTimeTransfer> getWorkTimes() {

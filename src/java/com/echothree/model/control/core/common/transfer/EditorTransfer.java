@@ -50,6 +50,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the editorName.
      * @return the editorName
      */
     public String getEditorName() {
@@ -64,6 +65,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the hasDimensions.
      * @return the hasDimensions
      */
     public Boolean getHasDimensions() {
@@ -78,6 +80,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the minimumHeight.
      * @return the minimumHeight
      */
     public Integer getMinimumHeight() {
@@ -92,6 +95,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the minimumWidth.
      * @return the minimumWidth
      */
     public Integer getMinimumWidth() {
@@ -106,6 +110,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the maximumHeight.
      * @return the maximumHeight
      */
     public Integer getMaximumHeight() {
@@ -120,6 +125,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the maximumWidth.
      * @return the maximumWidth
      */
     public Integer getMaximumWidth() {
@@ -134,6 +140,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the defaultHeight.
      * @return the defaultHeight
      */
     public Integer getDefaultHeight() {
@@ -148,6 +155,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the defaultWidth.
      * @return the defaultWidth
      */
     public Integer getDefaultWidth() {
@@ -162,6 +170,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -176,6 +185,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -190,6 +200,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -39,6 +39,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the componentVendorName.
      * @return the componentVendorName
      */
     public String getComponentVendorName() {
@@ -53,6 +54,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityTypeName.
      * @return the entityTypeName
      */
     public String getEntityTypeName() {
@@ -67,6 +69,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityAttributeName.
      * @return the entityAttributeName
      */
     public String getEntityAttributeName() {
@@ -81,6 +84,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityListItemName.
      * @return the entityListItemName
      */
     public String getEntityListItemName() {
@@ -95,6 +99,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityListItem.
      * @return the entityListItem
      */
     public EntityListItemTransfer getEntityListItem() {

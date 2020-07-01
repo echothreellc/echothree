@@ -36,6 +36,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the commandMessageType.
      * @return the commandMessageType
      */
     public CommandMessageTypeTransfer getCommandMessageType() {
@@ -50,6 +51,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the commandMessageKey.
      * @return the commandMessageKey
      */
     public String getCommandMessageKey() {
@@ -64,6 +66,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the translation.
      * @return the translation
      */
     public String getTranslation() {
@@ -78,6 +81,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the commandMessageTranslations.
      * @return the commandMessageTranslations
      */
     public MapWrapper<CommandMessageTranslationTransfer> getCommandMessageTranslations() {

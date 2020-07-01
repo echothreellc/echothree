@@ -39,6 +39,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
     
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -53,6 +54,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -67,6 +69,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the singularDescription.
      * @return the singularDescription
      */
     public String getSingularDescription() {
@@ -81,6 +84,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the pluralDescription.
      * @return the pluralDescription
      */
     public String getPluralDescription() {
@@ -95,6 +99,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the symbol.
      * @return the symbol
      */
     public String getSymbol() {

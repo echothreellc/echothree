@@ -35,6 +35,7 @@ public class PrinterGroupUseTypeTransfer
     }
 
     /**
+     * Returns the printerGroupUseTypeName.
      * @return the printerGroupUseTypeName
      */
     public String getPrinterGroupUseTypeName() {
@@ -49,6 +50,7 @@ public class PrinterGroupUseTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -63,6 +65,7 @@ public class PrinterGroupUseTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -77,6 +80,7 @@ public class PrinterGroupUseTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -48,6 +48,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the cacheEntryKey.
      * @return the cacheEntryKey
      */
     public String getCacheEntryKey() {
@@ -62,6 +63,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -76,6 +78,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the createdTime.
      * @return the createdTime
      */
     public String getCreatedTime() {
@@ -90,6 +93,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the unformattedCreatedTime.
      * @return the unformattedCreatedTime
      */
     public Long getUnformattedCreatedTime() {
@@ -104,6 +108,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the validUntilTime.
      * @return the validUntilTime
      */
     public String getValidUntilTime() {
@@ -118,6 +123,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the unformattedValidUntilTime.
      * @return the unformattedValidUntilTime
      */
     public Long getUnformattedValidUntilTime() {
@@ -132,6 +138,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -146,6 +153,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -160,6 +168,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the cacheEntryDependencies.
      * @return the cacheEntryDependencies
      */
     public ListWrapper<CacheEntryDependencyTransfer> getCacheEntryDependencies() {

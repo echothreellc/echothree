@@ -435,6 +435,7 @@ public abstract class BaseSearchEvaluator
     }
 
     /**
+     * Returns the createdSince.
      * @return the createdSince
      */
     public Long getCreatedSince() {
@@ -449,6 +450,7 @@ public abstract class BaseSearchEvaluator
     }
 
     /**
+     * Returns the modifiedSince.
      * @return the modifiedSince
      */
     public Long getModifiedSince() {

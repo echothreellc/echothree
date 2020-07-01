@@ -38,6 +38,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchType.
      * @return the batchType
      */
     public BatchTypeTransfer getBatchType() {
@@ -52,6 +53,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchName.
      * @return the batchName
      */
     public String getBatchName() {
@@ -66,6 +68,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchStatus.
      * @return the batchStatus
      */
     public WorkflowEntityStatusTransfer getBatchStatus() {
@@ -80,6 +83,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchAliases.
      * @return the batchAliases
      */
     public ListWrapper<BatchAliasTransfer> getBatchAliases() {
@@ -94,6 +98,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchEntities.
      * @return the batchEntities
      */
     public ListWrapper<BatchEntityTransfer> getBatchEntities() {

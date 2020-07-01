@@ -46,6 +46,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the printerGroupName.
      * @return the printerGroupName
      */
     public String getPrinterGroupName() {
@@ -60,6 +61,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the unformattedKeepPrintedJobsTime.
      * @return the unformattedKeepPrintedJobsTime
      */
     public Long getUnformattedKeepPrintedJobsTime() {
@@ -74,6 +76,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the keepPrintedJobsTime.
      * @return the keepPrintedJobsTime
      */
     public String getKeepPrintedJobsTime() {
@@ -88,6 +91,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -102,6 +106,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -116,6 +121,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the printerGroupStatus.
      * @return the printerGroupStatus
      */
     public WorkflowEntityStatusTransfer getPrinterGroupStatus() {
@@ -130,6 +136,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -144,6 +151,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the printers.
      * @return the printers
      */
     public ListWrapper<PrinterTransfer> getPrinters() {

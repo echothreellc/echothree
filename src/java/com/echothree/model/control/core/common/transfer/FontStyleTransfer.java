@@ -35,6 +35,7 @@ public class FontStyleTransfer
     }
 
     /**
+     * Returns the fontStyleName.
      * @return the fontStyleName
      */
     public String getFontStyleName() {
@@ -49,6 +50,7 @@ public class FontStyleTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -63,6 +65,7 @@ public class FontStyleTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -77,6 +80,7 @@ public class FontStyleTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

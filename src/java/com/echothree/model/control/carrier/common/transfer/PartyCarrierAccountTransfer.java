@@ -36,6 +36,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -50,6 +51,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the carrier.
      * @return the carrier
      */
     public CarrierTransfer getCarrier() {
@@ -64,6 +66,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the account.
      * @return the account
      */
     public String getAccount() {
@@ -78,6 +81,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the alwaysUseThirdPartyBilling.
      * @return the alwaysUseThirdPartyBilling
      */
     public Boolean getAlwaysUseThirdPartyBilling() {

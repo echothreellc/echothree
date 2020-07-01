@@ -31,6 +31,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Returns the itemDescriptionType.
      * @return the itemDescriptionType
      */
     public ItemDescriptionTypeTransfer getItemDescriptionType() {
@@ -45,6 +46,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Returns the itemDescriptionTypeUseType.
      * @return the itemDescriptionTypeUseType
      */
     public ItemDescriptionTypeUseTypeTransfer getItemDescriptionTypeUseType() {

@@ -84,6 +84,7 @@ public class PartyTypeTransfer
     }
     
     /**
+     * Returns the allowPartyAliases.
      * @return the allowPartyAliases
      */
     public Boolean getAllowPartyAliases() {
@@ -146,6 +147,7 @@ public class PartyTypeTransfer
     }
 
     /**
+     * Returns the partyAliasTypes.
      * @return the partyAliasTypes
      */
     public ListWrapper<PartyAliasTypeTransfer> getPartyAliasTypes() {

@@ -32,6 +32,7 @@ public class UserVisitSearchFacetIntegerTransfer
     }
 
     /**
+     * Returns the entityIntegerRange.
      * @return the entityIntegerRange
      */
     public EntityIntegerRangeTransfer getEntityIntegerRange() {
@@ -46,6 +47,7 @@ public class UserVisitSearchFacetIntegerTransfer
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Integer getCount() {

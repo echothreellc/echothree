@@ -35,6 +35,7 @@ public class SearchSortDirectionTransfer
     }
 
     /**
+     * Returns the searchSortDirectionName.
      * @return the searchSortDirectionName
      */
     public String getSearchSortDirectionName() {
@@ -49,6 +50,7 @@ public class SearchSortDirectionTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -63,6 +65,7 @@ public class SearchSortDirectionTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -77,6 +80,7 @@ public class SearchSortDirectionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

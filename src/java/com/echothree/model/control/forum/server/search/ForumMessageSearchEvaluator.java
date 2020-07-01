@@ -119,6 +119,7 @@ public class ForumMessageSearchEvaluator
     }
 
     /**
+     * Returns the includeFutureForumThreads.
      * @return the includeFutureForumThreads
      */
     public boolean isIncludeFutureForumThreads() {

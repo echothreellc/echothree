@@ -27,6 +27,7 @@ public class DescriptionDeleteActionForm
     private String languageIsoName;
 
     /**
+     * Returns the geoCodeName.
      * @return the geoCodeName
      */
     public String getGeoCodeName() {
@@ -41,6 +42,7 @@ public class DescriptionDeleteActionForm
     }
 
     /**
+     * Returns the languageIsoName.
      * @return the languageIsoName
      */
     public String getLanguageIsoName() {

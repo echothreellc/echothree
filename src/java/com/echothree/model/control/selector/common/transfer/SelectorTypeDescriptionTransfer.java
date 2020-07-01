@@ -34,6 +34,7 @@ public class SelectorTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class SelectorTypeDescriptionTransfer
     }
 
     /**
+     * Returns the selectorType.
      * @return the selectorType
      */
     public SelectorTypeTransfer getSelectorType() {
@@ -62,6 +64,7 @@ public class SelectorTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

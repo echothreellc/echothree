@@ -33,6 +33,7 @@ public class OrderLineTimeTransfer
     }
 
     /**
+     * Returns the orderTimeType.
      * @return the orderTimeType
      */
     public OrderTimeTypeTransfer getOrderTimeType() {
@@ -47,6 +48,7 @@ public class OrderLineTimeTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -61,6 +63,7 @@ public class OrderLineTimeTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {

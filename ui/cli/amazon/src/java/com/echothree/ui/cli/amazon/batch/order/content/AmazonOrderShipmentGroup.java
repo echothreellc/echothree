@@ -60,6 +60,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the order.
      * @return the order
      */
     public AmazonOrder getOrder() {
@@ -74,6 +75,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the recipientName.
      * @return the recipientName
      */
     public String getRecipientName() {
@@ -88,6 +90,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipAddress1.
      * @return the shipAddress1
      */
     public String getShipAddress1() {
@@ -102,6 +105,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipAddress2.
      * @return the shipAddress2
      */
     public String getShipAddress2() {
@@ -116,6 +120,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipCity.
      * @return the shipCity
      */
     public String getShipCity() {
@@ -130,6 +135,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipState.
      * @return the shipState
      */
     public String getShipState() {
@@ -144,6 +150,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipZip.
      * @return the shipZip
      */
     public String getShipZip() {
@@ -158,6 +165,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipCountry.
      * @return the shipCountry
      */
     public String getShipCountry() {
@@ -172,6 +180,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipMethod.
      * @return the shipMethod
      */
     public String getShipMethod() {
@@ -186,6 +195,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the amazonOrderLines.
      * @return the amazonOrderLines
      */
     public Map<String, AmazonOrderLine> getAmazonOrderLines() {
@@ -204,6 +214,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the recipientNameResult.
      * @return the recipientNameResult
      */
     public NameResult getRecipientNameResult() {
@@ -218,6 +229,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the contactMechanismName.
      * @return the contactMechanismName
      */
     public String getContactMechanismName() {

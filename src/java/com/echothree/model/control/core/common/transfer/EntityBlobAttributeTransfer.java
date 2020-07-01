@@ -42,6 +42,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -56,6 +57,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -72,6 +74,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -86,6 +89,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Returns the blobAttribute.
      * @return the blobAttribute
      */
     public ByteArray getBlobAttribute() {
@@ -100,6 +104,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -114,6 +119,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String geteTag() {

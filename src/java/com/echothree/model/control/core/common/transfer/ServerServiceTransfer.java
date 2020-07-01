@@ -31,6 +31,7 @@ public class ServerServiceTransfer
     }
 
     /**
+     * Returns the server.
      * @return the server
      */
     public ServerTransfer getServer() {
@@ -45,6 +46,7 @@ public class ServerServiceTransfer
     }
 
     /**
+     * Returns the service.
      * @return the service
      */
     public ServiceTransfer getService() {

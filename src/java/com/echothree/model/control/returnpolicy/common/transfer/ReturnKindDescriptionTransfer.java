@@ -34,6 +34,7 @@ public class ReturnKindDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class ReturnKindDescriptionTransfer
     }
 
     /**
+     * Returns the returnKind.
      * @return the returnKind
      */
     public ReturnKindTransfer getReturnKind() {
@@ -62,6 +64,7 @@ public class ReturnKindDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

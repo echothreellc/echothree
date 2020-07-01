@@ -60,6 +60,7 @@ public class PartyContactListStatusActionForm
     }
     
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -74,6 +75,7 @@ public class PartyContactListStatusActionForm
     }
 
     /**
+     * Returns the contactListName.
      * @return the contactListName
      */
     public String getContactListName() {

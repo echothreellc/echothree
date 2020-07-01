@@ -59,6 +59,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the nickname.
      * @return the nickname
      */
     public String getNickname() {
@@ -73,6 +74,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the icon.
      * @return the icon
      */
     public IconTransfer getIcon() {
@@ -87,6 +89,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the gender.
      * @return the gender
      */
     public GenderTransfer getGender() {
@@ -101,6 +104,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the mood.
      * @return the mood
      */
     public MoodTransfer getMood() {
@@ -115,6 +119,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the birthday.
      * @return the birthday
      */
     public String getBirthday() {
@@ -129,6 +134,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the unformattedBirthday.
      * @return the unformattedBirthday
      */
     public Integer getUnformattedBirthday() {
@@ -143,6 +149,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the birthdayFormat.
      * @return the birthdayFormat
      */
     public BirthdayFormatTransfer getBirthdayFormat() {
@@ -157,6 +164,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the occupation.
      * @return the occupation
      */
     public String getOccupation() {
@@ -171,6 +179,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the hobbies.
      * @return the hobbies
      */
     public String getHobbies() {
@@ -185,6 +194,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the location.
      * @return the location
      */
     public String getLocation() {
@@ -199,6 +209,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the bioMimeType.
      * @return the bioMimeType
      */
     public MimeTypeTransfer getBioMimeType() {
@@ -213,6 +224,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the bio.
      * @return the bio
      */
     public String getBio() {
@@ -227,6 +239,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the signatureMimeType.
      * @return the signatureMimeType
      */
     public MimeTypeTransfer getSignatureMimeType() {
@@ -241,6 +254,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the signature.
      * @return the signature
      */
     public String getSignature() {

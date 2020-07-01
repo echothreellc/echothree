@@ -37,6 +37,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -51,6 +52,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the contactList.
      * @return the contactList
      */
     public ContactListTransfer getContactList() {
@@ -65,6 +67,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the preferredContactListContactMechanismPurpose.
      * @return the preferredContactListContactMechanismPurpose
      */
     public ContactListContactMechanismPurposeTransfer getPreferredContactListContactMechanismPurpose() {
@@ -79,6 +82,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the partyContactListStatus.
      * @return the partyContactListStatus
      */
     public WorkflowEntityStatusTransfer getPartyContactListStatus() {

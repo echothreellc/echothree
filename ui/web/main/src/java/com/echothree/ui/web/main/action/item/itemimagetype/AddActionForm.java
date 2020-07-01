@@ -96,6 +96,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the quality.
      * @return the quality
      */
     public String getQuality() {

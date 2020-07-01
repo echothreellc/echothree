@@ -74,6 +74,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityType.
      * @return the entityType
      */
     public EntityTypeTransfer getEntityType() {
@@ -88,6 +89,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityAttributeName.
      * @return the entityAttributeName
      */
     public String getEntityAttributeName() {
@@ -102,6 +104,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityAttributeType.
      * @return the entityAttributeType
      */
     public EntityAttributeTypeTransfer getEntityAttributeType() {
@@ -116,6 +119,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the trackRevisions.
      * @return the trackRevisions
      */
     public boolean getTrackRevisions() {
@@ -130,6 +134,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -144,6 +149,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -158,6 +164,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the checkContentWebAddress.
      * @return the checkContentWebAddress
      */
     public boolean isCheckContentWebAddress() {
@@ -172,6 +179,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the validationPattern.
      * @return the validationPattern
      */
     public String getValidationPattern() {
@@ -186,6 +194,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the upperRangeIntegerValue.
      * @return the upperRangeIntegerValue
      */
     public Integer getUpperRangeIntegerValue() {
@@ -200,6 +209,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the upperLimitIntegerValue.
      * @return the upperLimitIntegerValue
      */
     public Integer getUpperLimitIntegerValue() {
@@ -214,6 +224,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the lowerLimitIntegerValue.
      * @return the lowerLimitIntegerValue
      */
     public Integer getLowerLimitIntegerValue() {
@@ -228,6 +239,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the lowerRangeIntegerValue.
      * @return the lowerRangeIntegerValue
      */
     public Integer getLowerRangeIntegerValue() {
@@ -242,6 +254,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the upperRangeLongValue.
      * @return the upperRangeLongValue
      */
     public Long getUpperRangeLongValue() {
@@ -256,6 +269,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the upperLimitLongValue.
      * @return the upperLimitLongValue
      */
     public Long getUpperLimitLongValue() {
@@ -270,6 +284,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the lowerLimitLongValue.
      * @return the lowerLimitLongValue
      */
     public Long getLowerLimitLongValue() {
@@ -284,6 +299,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the lowerRangeLongValue.
      * @return the lowerRangeLongValue
      */
     public Long getLowerRangeLongValue() {
@@ -298,6 +314,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -312,6 +329,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityListItemSequence.
      * @return the entityListItemSequence
      */
     public SequenceTransfer getEntityListItemSequence() {
@@ -326,6 +344,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityBooleanAttribute.
      * @return the entityBooleanAttribute
      */
     public EntityBooleanAttributeTransfer getEntityBooleanAttribute() {
@@ -340,6 +359,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityNameAttribute.
      * @return the entityNameAttribute
      */
     public EntityNameAttributeTransfer getEntityNameAttribute() {
@@ -354,6 +374,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityIntegerAttribute.
      * @return the entityIntegerAttribute
      */
     public EntityIntegerAttributeTransfer getEntityIntegerAttribute() {
@@ -368,6 +389,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityLongAttribute.
      * @return the entityLongAttribute
      */
     public EntityLongAttributeTransfer getEntityLongAttribute() {
@@ -382,6 +404,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityStringAttribute.
      * @return the entityStringAttribute
      */
     public EntityStringAttributeTransfer getEntityStringAttribute() {
@@ -396,6 +419,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityGeoPointAttribute.
      * @return the entityGeoPointAttribute
      */
     public EntityGeoPointAttributeTransfer getEntityGeoPointAttribute() {
@@ -410,6 +434,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityBlobAttribute.
      * @return the entityBlobAttribute
      */
     public EntityBlobAttributeTransfer getEntityBlobAttribute() {
@@ -424,6 +449,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityClobAttribute.
      * @return the entityClobAttribute
      */
     public EntityClobAttributeTransfer getEntityClobAttribute() {
@@ -438,6 +464,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityEntityAttribute.
      * @return the entityEntityAttribute
      */
     public EntityEntityAttributeTransfer getEntityEntityAttribute() {
@@ -452,6 +479,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityCollectionAttributes.
      * @return the entityCollectionAttributes
      */
     public ListWrapper<EntityCollectionAttributeTransfer> getEntityCollectionAttributes() {
@@ -466,6 +494,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityDateAttribute.
      * @return the entityDateAttribute
      */
     public EntityDateAttributeTransfer getEntityDateAttribute() {
@@ -480,6 +509,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityTimeAttribute.
      * @return the entityTimeAttribute
      */
     public EntityTimeAttributeTransfer getEntityTimeAttribute() {
@@ -494,6 +524,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityListItemAttribute.
      * @return the entityListItemAttribute
      */
     public EntityListItemAttributeTransfer getEntityListItemAttribute() {
@@ -508,6 +539,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityMultipleListItemAttributes.
      * @return the entityMultipleListItemAttributes
      */
     public ListWrapper<EntityMultipleListItemAttributeTransfer> getEntityMultipleListItemAttributes() {
@@ -522,6 +554,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityListItems.
      * @return the entityListItems
      */
     public ListWrapper<EntityListItemTransfer> getEntityListItems() {
@@ -536,6 +569,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Returns the entityAttributeEntityTypes.
      * @return the entityAttributeEntityTypes
      */
     public ListWrapper<EntityAttributeEntityTypeTransfer> getEntityAttributeEntityTypes() {

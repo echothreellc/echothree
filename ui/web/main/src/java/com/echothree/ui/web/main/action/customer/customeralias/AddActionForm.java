@@ -60,6 +60,7 @@ public class AddActionForm
     }
     
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -95,6 +96,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the alias.
      * @return the alias
      */
     public String getAlias() {

@@ -61,6 +61,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the workEffortName.
      * @return the workEffortName
      */
     public String getWorkEffortName() {
@@ -75,6 +76,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the owningEntityInstance.
      * @return the owningEntityInstance
      */
     public EntityInstanceTransfer getOwningEntityInstance() {
@@ -89,6 +91,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the workEffortScope.
      * @return the workEffortScope
      */
     public WorkEffortScopeTransfer getWorkEffortScope() {
@@ -103,6 +106,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the unformattedScheduledTime.
      * @return the unformattedScheduledTime
      */
     public Long getUnformattedScheduledTime() {
@@ -117,6 +121,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the scheduledTime.
      * @return the scheduledTime
      */
     public String getScheduledTime() {
@@ -131,6 +136,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the unformattedScheduledStartTime.
      * @return the unformattedScheduledStartTime
      */
     public Long getUnformattedScheduledStartTime() {
@@ -145,6 +151,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the scheduledStartTime.
      * @return the scheduledStartTime
      */
     public String getScheduledStartTime() {
@@ -159,6 +166,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the unformattedScheduledEndTime.
      * @return the unformattedScheduledEndTime
      */
     public Long getUnformattedScheduledEndTime() {
@@ -173,6 +181,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the scheduledEndTime.
      * @return the scheduledEndTime
      */
     public String getScheduledEndTime() {
@@ -187,6 +196,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the unformattedEstimatedTimeAllowed.
      * @return the unformattedEstimatedTimeAllowed
      */
     public Long getUnformattedEstimatedTimeAllowed() {
@@ -201,6 +211,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the estimatedTimeAllowed.
      * @return the estimatedTimeAllowed
      */
     public String getEstimatedTimeAllowed() {
@@ -215,6 +226,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the unformattedMaximumTimeAllowed.
      * @return the unformattedMaximumTimeAllowed
      */
     public Long getUnformattedMaximumTimeAllowed() {
@@ -229,6 +241,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the maximumTimeAllowed.
      * @return the maximumTimeAllowed
      */
     public String getMaximumTimeAllowed() {
@@ -243,6 +256,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Returns the workRequirements.
      * @return the workRequirements
      */
     public ListWrapper<WorkRequirementTransfer> getWorkRequirements() {

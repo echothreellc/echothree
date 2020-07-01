@@ -41,6 +41,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the commodity.
      * @return the commodity
      */
     public String getCommodity() {
@@ -55,6 +56,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the descrip1.
      * @return the descrip1
      */
     public String getDescrip1() {
@@ -69,6 +71,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the quantity1.
      * @return the quantity1
      */
     public String getQuantity1() {
@@ -83,6 +86,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the quantity2.
      * @return the quantity2
      */
     public String getQuantity2() {

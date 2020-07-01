@@ -43,6 +43,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the queueTypeName.
      * @return the queueTypeName
      */
     public String getQueueTypeName() {
@@ -57,6 +58,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -71,6 +73,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -85,6 +88,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -99,6 +103,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the queuedEntityCount.
      * @return the queuedEntityCount
      */
     public Long getQueuedEntityCount() {
@@ -113,6 +118,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the unformattedOldestQueuedEntityTime.
      * @return the unformattedOldestQueuedEntityTime
      */
     public Long getUnformattedOldestQueuedEntityTime() {
@@ -127,6 +133,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the oldestQueuedEntityTime.
      * @return the oldestQueuedEntityTime
      */
     public String getOldestQueuedEntityTime() {
@@ -141,6 +148,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the unformattedLatestQueuedEntityTime.
      * @return the unformattedLatestQueuedEntityTime
      */
     public Long getUnformattedLatestQueuedEntityTime() {
@@ -155,6 +163,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the latestQueuedEntityTime.
      * @return the latestQueuedEntityTime
      */
     public String getLatestQueuedEntityTime() {
@@ -169,6 +178,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the queuedEntities.
      * @return the queuedEntities
      */
     public ListWrapper<QueuedEntityTransfer> getQueuedEntities() {

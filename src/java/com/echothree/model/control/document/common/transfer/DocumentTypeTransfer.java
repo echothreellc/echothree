@@ -43,6 +43,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the documentTypeName.
      * @return the documentTypeName
      */
     public String getDocumentTypeName() {
@@ -57,6 +58,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the parentDocumentType.
      * @return the parentDocumentType
      */
     public DocumentTypeTransfer getParentDocumentType() {
@@ -71,6 +73,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeUsageType.
      * @return the mimeTypeUsageType
      */
     public MimeTypeUsageTypeTransfer getMimeTypeUsageType() {
@@ -85,6 +88,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the maximumPages.
      * @return the maximumPages
      */
     public Integer getMaximumPages() {
@@ -99,6 +103,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -113,6 +118,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -127,6 +133,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

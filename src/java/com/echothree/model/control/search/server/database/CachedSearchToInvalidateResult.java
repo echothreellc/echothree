@@ -25,6 +25,7 @@ public class CachedSearchToInvalidateResult
     private CachedSearchStatus cachedSearchStatus;
 
     /**
+     * Returns the cachedSearchStatus.
      * @return the cachedSearchStatus
      */
     public CachedSearchStatus getCachedSearchStatus() {

@@ -124,6 +124,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -138,6 +139,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -152,6 +154,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredLanguage.
      * @return the preferredLanguage
      */
     public LanguageTransfer getPreferredLanguage() {
@@ -166,6 +169,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredCurrency.
      * @return the preferredCurrency
      */
     public CurrencyTransfer getPreferredCurrency() {
@@ -180,6 +184,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredTimeZone.
      * @return the preferredTimeZone
      */
     public TimeZoneTransfer getPreferredTimeZone() {
@@ -194,6 +199,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredDateTimeFormat.
      * @return the preferredDateTimeFormat
      */
     public DateTimeFormatTransfer getPreferredDateTimeFormat() {
@@ -208,6 +214,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the person.
      * @return the person
      */
     public PersonTransfer getPerson() {
@@ -222,6 +229,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyGroup.
      * @return the partyGroup
      */
     public PartyGroupTransfer getPartyGroup() {
@@ -236,6 +244,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the profile.
      * @return the profile
      */
     public ProfileTransfer getProfile() {
@@ -250,6 +259,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the userLogin.
      * @return the userLogin
      */
     public UserLoginTransfer getUserLogin() {
@@ -264,6 +274,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the recoveryAnswer.
      * @return the recoveryAnswer
      */
     public RecoveryAnswerTransfer getRecoveryAnswer() {
@@ -278,6 +289,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -292,6 +304,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyAliases.
      * @return the partyAliases
      */
     public ListWrapper<PartyAliasTransfer> getPartyAliases() {
@@ -306,6 +319,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyRelationships.
      * @return the partyRelationships
      */
     public ListWrapper<PartyRelationshipTransfer> getPartyRelationships() {
@@ -320,6 +334,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyContactMechanisms.
      * @return the partyContactMechanisms
      */
     public ListWrapper<PartyContactMechanismTransfer> getPartyContactMechanisms() {
@@ -334,6 +349,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyContactLists.
      * @return the partyContactLists
      */
     public ListWrapper<PartyContactListTransfer> getPartyContactLists() {
@@ -348,6 +364,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the billingAccounts.
      * @return the billingAccounts
      */
     public ListWrapper<BillingAccountTransfer> getBillingAccounts() {
@@ -362,6 +379,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesFromCount.
      * @return the invoicesFromCount
      */
     public Long getInvoicesFromCount() {
@@ -376,6 +394,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesFrom.
      * @return the invoicesFrom
      */
     public ListWrapper<InvoiceTransfer> getInvoicesFrom() {
@@ -390,6 +409,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesToCount.
      * @return the invoicesToCount
      */
     public Long getInvoicesToCount() {
@@ -404,6 +424,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesTo.
      * @return the invoicesTo
      */
     public ListWrapper<InvoiceTransfer> getInvoicesTo() {
@@ -418,6 +439,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCreditLimits.
      * @return the partyCreditLimits
      */
     public ListWrapper<PartyCreditLimitTransfer> getPartyCreditLimits() {
@@ -432,6 +454,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyTerm.
      * @return the partyTerm
      */
     public PartyTermTransfer getPartyTerm() {
@@ -446,6 +469,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyFreeOnBoard.
      * @return the partyFreeOnBoard
      */
     public PartyFreeOnBoardTransfer getPartyFreeOnBoard() {
@@ -460,6 +484,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyPaymentMethods.
      * @return the partyPaymentMethods
      */
     public ListWrapper<PartyPaymentMethodTransfer> getPartyPaymentMethods() {
@@ -474,6 +499,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -488,6 +514,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -502,6 +529,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCancellationPolicies.
      * @return the partyCancellationPolicies
      */
     public ListWrapper<PartyCancellationPolicyTransfer> getPartyCancellationPolicies() {
@@ -516,6 +544,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyReturnPolicies.
      * @return the partyReturnPolicies
      */
     public ListWrapper<PartyReturnPolicyTransfer> getPartyReturnPolicies() {
@@ -530,6 +559,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the subscriptions.
      * @return the subscriptions
      */
     public ListWrapper<SubscriptionTransfer> getSubscriptions() {
@@ -544,6 +574,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the communicationEventsCount.
      * @return the communicationEventsCount
      */
     public Long getCommunicationEventsCount() {
@@ -558,6 +589,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the communicationEvents.
      * @return the communicationEvents
      */
     public ListWrapper<CommunicationEventTransfer> getCommunicationEvents() {
@@ -572,6 +604,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyDocuments.
      * @return the partyDocuments
      */
     public ListWrapper<PartyDocumentTransfer> getPartyDocuments() {
@@ -586,6 +619,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyPrinterGroupUses.
      * @return the partyPrinterGroupUses
      */
     public ListWrapper<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUses() {
@@ -600,6 +634,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyScaleUses.
      * @return the partyScaleUses
      */
     public ListWrapper<PartyScaleUseTransfer> getPartyScaleUses() {
@@ -614,6 +649,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyEntityTypes.
      * @return the partyEntityTypes
      */
     public ListWrapper<PartyEntityTypeTransfer> getPartyEntityTypes() {
@@ -628,6 +664,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyApplicationEditorUses.
      * @return the partyApplicationEditorUses
      */
     public ListWrapper<PartyApplicationEditorUseTransfer> getPartyApplicationEditorUses() {
@@ -642,6 +679,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCarriers.
      * @return the partyCarriers
      */
     public ListWrapper<PartyCarrierTransfer> getPartyCarriers() {
@@ -656,6 +694,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCarrierAccounts.
      * @return the partyCarrierAccounts
      */
     public ListWrapper<PartyCarrierAccountTransfer> getPartyCarrierAccounts() {
@@ -670,6 +709,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the employments.
      * @return the employments
      */
     public ListWrapper<EmploymentTransfer> getEmployments() {
@@ -684,6 +724,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the leaves.
      * @return the leaves
      */
     public ListWrapper<LeaveTransfer> getLeaves() {
@@ -698,6 +739,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyResponsibilities.
      * @return the partyResponsibilities
      */
     public ListWrapper<PartyResponsibilityTransfer> getPartyResponsibilities() {
@@ -712,6 +754,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyTrainingClasses.
      * @return the partyTrainingClasses
      */
     public ListWrapper<PartyTrainingClassTransfer> getPartyTrainingClasses() {
@@ -726,6 +769,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partySkills.
      * @return the partySkills
      */
     public ListWrapper<PartySkillTransfer> getPartySkills() {

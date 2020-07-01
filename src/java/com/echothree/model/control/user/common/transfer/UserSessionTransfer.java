@@ -40,6 +40,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the userVisit.
      * @return the userVisit
      */
     public UserVisitTransfer getUserVisit() {
@@ -54,6 +55,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -68,6 +70,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the partyRelationship.
      * @return the partyRelationship
      */
     public PartyRelationshipTransfer getPartyRelationship() {
@@ -82,6 +85,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the unformattedPasswordVerifiedTime.
      * @return the unformattedPasswordVerifiedTime
      */
     public Long getUnformattedPasswordVerifiedTime() {
@@ -96,6 +100,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the passwordVerifiedTime.
      * @return the passwordVerifiedTime
      */
     public String getPasswordVerifiedTime() {

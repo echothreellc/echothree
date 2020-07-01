@@ -34,6 +34,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Returns the indexField.
      * @return the indexField
      */
     public IndexFieldTransfer getIndexField() {
@@ -62,6 +64,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -44,6 +44,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the unformattedEventTime.
      * @return the unformattedEventTime
      */
     public Long getUnformattedEventTime() {
@@ -58,6 +59,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the eventTime.
      * @return the eventTime
      */
     public String getEventTime() {
@@ -72,6 +74,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the eventTimeSequence.
      * @return the eventTimeSequence
      */
     public Integer getEventTimeSequence() {
@@ -86,6 +89,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -102,6 +106,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the eventType.
      * @return the eventType
      */
     public EventTypeTransfer getEventType() {
@@ -116,6 +121,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the relatedEntityInstance.
      * @return the relatedEntityInstance
      */
     public EntityInstanceTransfer getRelatedEntityInstance() {
@@ -130,6 +136,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the relatedEventType.
      * @return the relatedEventType
      */
     public EventTypeTransfer getRelatedEventType() {
@@ -144,6 +151,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the createdBy.
      * @return the createdBy
      */
     public EntityInstanceTransfer getCreatedBy() {

@@ -37,6 +37,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -51,6 +52,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -65,6 +67,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCodeUseType.
      * @return the harmonizedTariffScheduleCodeUseType
      */
     public HarmonizedTariffScheduleCodeUseTypeTransfer getHarmonizedTariffScheduleCodeUseType() {
@@ -79,6 +82,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCode.
      * @return the harmonizedTariffScheduleCode
      */
     public HarmonizedTariffScheduleCodeTransfer getHarmonizedTariffScheduleCode() {

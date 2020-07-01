@@ -43,6 +43,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the subscriptionName.
      * @return the subscriptionName
      */
     public String getSubscriptionName() {
@@ -57,6 +58,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the subscriptionType.
      * @return the subscriptionType
      */
     public SubscriptionTypeTransfer getSubscriptionType() {
@@ -71,6 +73,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -85,6 +88,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -99,6 +103,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -113,6 +118,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -127,6 +133,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {

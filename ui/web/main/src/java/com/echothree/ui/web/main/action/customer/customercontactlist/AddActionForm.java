@@ -82,6 +82,7 @@ public class AddActionForm
     }
     
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {

@@ -41,6 +41,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the scaleName.
      * @return the scaleName
      */
     public String getScaleName() {
@@ -55,6 +56,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the scaleType.
      * @return the scaleType
      */
     public ScaleTypeTransfer getScaleType() {
@@ -69,6 +71,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the serverService.
      * @return the serverService
      */
     public ServerServiceTransfer getServerService() {
@@ -83,6 +86,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -97,6 +101,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -111,6 +116,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

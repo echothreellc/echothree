@@ -32,6 +32,7 @@ public class SalesOrderBatchResultTransfer
     }
 
     /**
+     * Returns the batchName.
      * @return the batchName
      */
     public String getBatchName() {
@@ -46,6 +47,7 @@ public class SalesOrderBatchResultTransfer
     }
 
     /**
+     * Returns the salesOrderBatch.
      * @return the salesOrderBatch
      */
     public SalesOrderBatchTransfer getSalesOrderBatch() {

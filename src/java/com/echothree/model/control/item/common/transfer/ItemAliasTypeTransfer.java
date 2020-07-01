@@ -58,6 +58,7 @@ public class ItemAliasTypeTransfer
     }
     
     /**
+     * Returns the itemAliasChecksumType.
      * @return the itemAliasChecksumType
      */
     public ItemAliasChecksumTypeTransfer getItemAliasChecksumType() {

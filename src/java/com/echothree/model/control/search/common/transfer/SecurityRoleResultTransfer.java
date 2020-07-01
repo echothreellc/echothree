@@ -34,6 +34,7 @@ public class SecurityRoleResultTransfer
     }
 
     /**
+     * Returns the securityRoleGroupName.
      * @return the securityRoleGroupName
      */
     public String getSecurityRoleGroupName() {
@@ -48,6 +49,7 @@ public class SecurityRoleResultTransfer
     }
 
     /**
+     * Returns the securityRoleName.
      * @return the securityRoleName
      */
     public String getSecurityRoleName() {
@@ -62,6 +64,7 @@ public class SecurityRoleResultTransfer
     }
 
     /**
+     * Returns the securityRole.
      * @return the securityRole
      */
     public SecurityRoleTransfer getSecurityRole() {

@@ -38,6 +38,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Returns the paymentProcessorType.
      * @return the paymentProcessorType
      */
     public PaymentProcessorTypeTransfer getPaymentProcessorType() {
@@ -52,6 +53,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -66,6 +68,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Returns the partyPaymentMethodWorkflow.
      * @return the partyPaymentMethodWorkflow
      */
     public WorkflowTransfer getPartyPaymentMethodWorkflow() {
@@ -80,6 +83,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Returns the partyContactMechanismWorkflow.
      * @return the partyContactMechanismWorkflow
      */
     public WorkflowTransfer getPartyContactMechanismWorkflow() {

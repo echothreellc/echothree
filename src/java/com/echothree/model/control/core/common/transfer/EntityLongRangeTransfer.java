@@ -42,6 +42,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -56,6 +57,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Returns the entityLongRangeName.
      * @return the entityLongRangeName
      */
     public String getEntityLongRangeName() {
@@ -70,6 +72,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Returns the minimumLongValue.
      * @return the minimumLongValue
      */
     public Long getMinimumLongValue() {
@@ -84,6 +87,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Returns the maximumLongValue.
      * @return the maximumLongValue
      */
     public Long getMaximumLongValue() {
@@ -98,6 +102,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -112,6 +117,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -126,6 +132,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

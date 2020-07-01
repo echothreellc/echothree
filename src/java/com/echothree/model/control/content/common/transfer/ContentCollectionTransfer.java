@@ -39,6 +39,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {
@@ -53,6 +54,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the defaultOfferUse.
      * @return the defaultOfferUse
      */
     public OfferUseTransfer getDefaultOfferUse() {
@@ -67,6 +69,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -81,6 +84,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentCatalogs.
      * @return the contentCatalogs
      */
     public ListWrapper<ContentCatalogTransfer> getContentCatalogs() {
@@ -95,6 +99,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentForums.
      * @return the contentForums
      */
     public ListWrapper<ContentForumTransfer> getContentForums() {
@@ -109,6 +114,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentSections.
      * @return the contentSections
      */
     public ListWrapper<ContentSectionTransfer> getContentSections() {

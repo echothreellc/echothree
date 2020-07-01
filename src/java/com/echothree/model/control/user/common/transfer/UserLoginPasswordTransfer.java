@@ -43,6 +43,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -57,6 +58,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the userLoginPasswordType.
      * @return the userLoginPasswordType
      */
     public UserLoginPasswordTypeTransfer getUserLoginPasswordType() {
@@ -71,6 +73,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the password.
      * @return the password
      */
     public String getPassword() {
@@ -85,6 +88,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the unformattedChangedTime.
      * @return the unformattedChangedTime
      */
     public Long getUnformattedChangedTime() {
@@ -99,6 +103,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the changedTime.
      * @return the changedTime
      */
     public String getChangedTime() {
@@ -113,6 +118,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the wasReset.
      * @return the wasReset
      */
     public Boolean getWasReset() {

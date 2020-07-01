@@ -43,6 +43,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentSection.
      * @return the contentSection
      */
     public ContentSectionTransfer getContentSection() {
@@ -57,6 +58,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentPageName.
      * @return the contentPageName
      */
     public String getContentPageName() {
@@ -71,6 +73,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentPageLayout.
      * @return the contentPageLayout
      */
     public ContentPageLayoutTransfer getContentPageLayout() {
@@ -85,6 +88,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -99,6 +103,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -113,6 +118,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -127,6 +133,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentPageAreas.
      * @return the contentPageAreas
      */
     public MapWrapper<ContentPageAreaTransfer> getContentPageAreas() {

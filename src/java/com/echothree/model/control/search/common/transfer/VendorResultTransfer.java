@@ -32,6 +32,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -46,6 +47,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Returns the vendor.
      * @return the vendor
      */
     public VendorTransfer getVendor() {

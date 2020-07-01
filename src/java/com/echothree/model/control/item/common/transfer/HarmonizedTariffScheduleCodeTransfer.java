@@ -47,6 +47,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -61,6 +62,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
     
     /**
+     * Returns the harmonizedTariffScheduleCodeName.
      * @return the harmonizedTariffScheduleCodeName
      */
     public String getHarmonizedTariffScheduleCodeName() {
@@ -75,6 +77,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the firstHarmonizedTariffScheduleCodeUnit.
      * @return the firstHarmonizedTariffScheduleCodeUnit
      */
     public HarmonizedTariffScheduleCodeUnitTransfer getFirstHarmonizedTariffScheduleCodeUnit() {
@@ -89,6 +92,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the secondHarmonizedTariffScheduleCodeUnit.
      * @return the secondHarmonizedTariffScheduleCodeUnit
      */
     public HarmonizedTariffScheduleCodeUnitTransfer getSecondHarmonizedTariffScheduleCodeUnit() {
@@ -103,6 +107,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -117,6 +122,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -131,6 +137,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -145,6 +152,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCodeUses.
      * @return the harmonizedTariffScheduleCodeUses
      */
     public MapWrapper<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUses() {

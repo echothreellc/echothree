@@ -106,6 +106,7 @@ public class ItemSearchEvaluator
     }
  
     /**
+     * Returns the itemNameOrAlias.
      * @return the itemNameOrAlias
      */
     public String getItemNameOrAlias() {
@@ -120,6 +121,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Returns the itemType.
      * @return the itemType
      */
     public ItemType getItemType() {
@@ -134,6 +136,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Returns the itemUseType.
      * @return the itemUseType
      */
     public ItemUseType getItemUseType() {
@@ -148,6 +151,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Returns the itemStatusWorkflowStep.
      * @return the itemStatusWorkflowStep
      */
     public WorkflowStep getItemStatusWorkflowStep() {

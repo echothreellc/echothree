@@ -36,6 +36,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the offer.
      * @return the offer
      */
     public OfferTransfer getOffer() {
@@ -50,6 +51,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -64,6 +66,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -78,6 +81,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

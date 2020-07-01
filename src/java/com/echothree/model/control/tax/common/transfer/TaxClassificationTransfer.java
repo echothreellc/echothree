@@ -38,6 +38,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -52,6 +53,7 @@ public class TaxClassificationTransfer
     }
     
     /**
+     * Returns the taxClassificationName.
      * @return the taxClassificationName
      */
     public String getTaxClassificationName() {
@@ -66,6 +68,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -80,6 +83,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -94,6 +98,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

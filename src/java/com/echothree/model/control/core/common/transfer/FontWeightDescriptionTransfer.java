@@ -34,6 +34,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Returns the fontWeight.
      * @return the fontWeight
      */
     public FontWeightTransfer getFontWeight() {
@@ -62,6 +64,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

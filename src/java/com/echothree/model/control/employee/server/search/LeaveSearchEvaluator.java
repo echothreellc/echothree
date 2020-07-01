@@ -99,6 +99,7 @@ public class LeaveSearchEvaluator
     }
  
     /**
+     * Returns the leaveName.
      * @return the leaveName
      */
     public String getLeaveName() {
@@ -113,6 +114,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public Party getParty() {
@@ -127,6 +129,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the companyParty.
      * @return the companyParty
      */
     public Party getCompanyParty() {
@@ -141,6 +144,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the leaveType.
      * @return the leaveType
      */
     public LeaveType getLeaveType() {
@@ -155,6 +159,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the leaveReason.
      * @return the leaveReason
      */
     public LeaveReason getLeaveReason() {
@@ -169,6 +174,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the leaveStatusWorkflowStep.
      * @return the leaveStatusWorkflowStep
      */
     public WorkflowStep getLeaveStatusWorkflowStep() {

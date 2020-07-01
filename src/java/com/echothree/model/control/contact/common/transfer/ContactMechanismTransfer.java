@@ -40,6 +40,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactMechanismName.
      * @return the contactMechanismName
      */
     public String getContactMechanismName() {
@@ -54,6 +55,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactMechanismType.
      * @return the contactMechanismType
      */
     public ContactMechanismTypeTransfer getContactMechanismType() {
@@ -68,6 +70,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the allowSolicitation.
      * @return the allowSolicitation
      */
     public Boolean getAllowSolicitation() {
@@ -82,6 +85,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactEmailAddress.
      * @return the contactEmailAddress
      */
     public ContactEmailAddressTransfer getContactEmailAddress() {
@@ -96,6 +100,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactPostalAddress.
      * @return the contactPostalAddress
      */
     public ContactPostalAddressTransfer getContactPostalAddress() {
@@ -110,6 +115,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactTelephone.
      * @return the contactTelephone
      */
     public ContactTelephoneTransfer getContactTelephone() {
@@ -124,6 +130,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactWebAddress.
      * @return the contactWebAddress
      */
     public ContactWebAddressTransfer getContactWebAddress() {
@@ -138,6 +145,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactInet4Address.
      * @return the contactInet4Address
      */
     public ContactInet4AddressTransfer getContactInet4Address() {

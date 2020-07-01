@@ -60,6 +60,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the contentCatalog.
      * @return the contentCatalog
      */
     public ContentCatalogTransfer getContentCatalog() {
@@ -74,6 +75,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -88,6 +90,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -102,6 +105,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -116,6 +120,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -130,6 +135,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the unformattedUnitPrice.
      * @return the unformattedUnitPrice
      */
     public Long getUnformattedUnitPrice() {
@@ -144,6 +150,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the unitPrice.
      * @return the unitPrice
      */
     public String getUnitPrice() {
@@ -158,6 +165,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the unformattedMinimumUnitPrice.
      * @return the unformattedMinimumUnitPrice
      */
     public Long getUnformattedMinimumUnitPrice() {
@@ -172,6 +180,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the minimumUnitPrice.
      * @return the minimumUnitPrice
      */
     public String getMinimumUnitPrice() {
@@ -186,6 +195,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the unformattedMaximumUnitPrice.
      * @return the unformattedMaximumUnitPrice
      */
     public Long getUnformattedMaximumUnitPrice() {
@@ -200,6 +210,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the maximumUnitPrice.
      * @return the maximumUnitPrice
      */
     public String getMaximumUnitPrice() {
@@ -214,6 +225,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the unformattedUnitPriceIncrement.
      * @return the unformattedUnitPriceIncrement
      */
     public Long getUnformattedUnitPriceIncrement() {
@@ -228,6 +240,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Returns the unitPriceIncrement.
      * @return the unitPriceIncrement
      */
     public String getUnitPriceIncrement() {

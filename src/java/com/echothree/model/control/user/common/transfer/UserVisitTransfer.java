@@ -61,6 +61,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the userKey.
      * @return the userKey
      */
     public UserKeyTransfer getUserKey() {
@@ -75,6 +76,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredLanguage.
      * @return the preferredLanguage
      */
     public LanguageTransfer getPreferredLanguage() {
@@ -89,6 +91,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredCurrency.
      * @return the preferredCurrency
      */
     public CurrencyTransfer getPreferredCurrency() {
@@ -103,6 +106,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredTimeZone.
      * @return the preferredTimeZone
      */
     public TimeZoneTransfer getPreferredTimeZone() {
@@ -117,6 +121,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredDateTimeFormat.
      * @return the preferredDateTimeFormat
      */
     public DateTimeFormatTransfer getPreferredDateTimeFormat() {
@@ -131,6 +136,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the unformattedLastCommandTime.
      * @return the unformattedLastCommandTime
      */
     public Long getUnformattedLastCommandTime() {
@@ -145,6 +151,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the lastCommandTime.
      * @return the lastCommandTime
      */
     public String getLastCommandTime() {
@@ -159,6 +166,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the offerUse.
      * @return the offerUse
      */
     public OfferUseTransfer getOfferUse() {
@@ -173,6 +181,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the associateReferral.
      * @return the associateReferral
      */
     public AssociateReferralTransfer getAssociateReferral() {
@@ -187,6 +196,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the unformattedRetainUntilTime.
      * @return the unformattedRetainUntilTime
      */
     public Long getUnformattedRetainUntilTime() {
@@ -201,6 +211,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the retainUntilTime.
      * @return the retainUntilTime
      */
     public String getRetainUntilTime() {
@@ -215,6 +226,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the userVisitCampaigns.
      * @return the userVisitCampaigns
      */
     public ListWrapper<UserVisitCampaignTransfer> getUserVisitCampaigns() {

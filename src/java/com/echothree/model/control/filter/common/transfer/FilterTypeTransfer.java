@@ -37,6 +37,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the filterKind.
      * @return the filterKind
      */
     public FilterKindTransfer getFilterKind() {
@@ -51,6 +52,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the filterTypeName.
      * @return the filterTypeName
      */
     public String getFilterTypeName() {
@@ -65,6 +67,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -79,6 +82,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -93,6 +97,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

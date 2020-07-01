@@ -43,6 +43,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Returns the contentType.
      * @return the contentType
      */
     @Override
@@ -58,6 +59,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Returns the inputStream.
      * @return the inputStream
      */
     @Override
@@ -73,6 +75,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Returns the lastModified.
      * @return the lastModified
      */
     @Override

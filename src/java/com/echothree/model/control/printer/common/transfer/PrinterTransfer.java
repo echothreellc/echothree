@@ -39,6 +39,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Returns the printerName.
      * @return the printerName
      */
     public String getPrinterName() {
@@ -53,6 +54,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Returns the printerGroup.
      * @return the printerGroup
      */
     public PrinterGroupTransfer getPrinterGroup() {
@@ -67,6 +69,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Returns the priority.
      * @return the priority
      */
     public Integer getPriority() {
@@ -81,6 +84,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Returns the printerStatus.
      * @return the printerStatus
      */
     public WorkflowEntityStatusTransfer getPrinterStatus() {
@@ -95,6 +99,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

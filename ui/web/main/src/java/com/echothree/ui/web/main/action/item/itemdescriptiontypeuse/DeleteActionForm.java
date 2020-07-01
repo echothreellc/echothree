@@ -27,6 +27,7 @@ public class DeleteActionForm
     private String itemDescriptionTypeUseTypeName;
 
     /**
+     * Returns the itemDescriptionTypeName.
      * @return the itemDescriptionTypeName
      */
     public String getItemDescriptionTypeName() {
@@ -41,6 +42,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the itemDescriptionTypeUseTypeName.
      * @return the itemDescriptionTypeUseTypeName
      */
     public String getItemDescriptionTypeUseTypeName() {

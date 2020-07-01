@@ -61,6 +61,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the workflowName.
      * @return the workflowName
      */
     public String getWorkflowName() {
@@ -75,6 +76,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the workflowStepName.
      * @return the workflowStepName
      */
     public String getWorkflowStepName() {
@@ -89,6 +91,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the workflowDestinationName.
      * @return the workflowDestinationName
      */
     public String getWorkflowDestinationName() {
@@ -103,6 +106,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the destinationWorkflowName.
      * @return the destinationWorkflowName
      */
     public String getDestinationWorkflowName() {

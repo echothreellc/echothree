@@ -36,6 +36,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -50,6 +51,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -64,6 +66,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Returns the unformattedPercent.
      * @return the unformattedPercent
      */
     public Integer getUnformattedPercent() {
@@ -78,6 +81,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Returns the percent.
      * @return the percent
      */
     public String getPercent() {

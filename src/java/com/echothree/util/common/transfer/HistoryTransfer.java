@@ -37,6 +37,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Returns the snapshot.
      * @return the snapshot
      */
     public T getSnapshot() {
@@ -51,6 +52,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Returns the unformattedFromTime.
      * @return the unformattedFromTime
      */
     public Long getUnformattedFromTime() {
@@ -65,6 +67,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Returns the fromTime.
      * @return the fromTime
      */
     public String getFromTime() {
@@ -79,6 +82,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Returns the unformattedThruTime.
      * @return the unformattedThruTime
      */
     public Long getUnformattedThruTime() {
@@ -93,6 +97,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Returns the thruTime.
      * @return the thruTime
      */
     public String getThruTime() {

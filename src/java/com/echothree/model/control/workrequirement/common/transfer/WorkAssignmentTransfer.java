@@ -47,6 +47,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the workRequirement.
      * @return the workRequirement
      */
     public WorkRequirementTransfer getWorkRequirement() {
@@ -61,6 +62,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the workAssignmentSequence.
      * @return the workAssignmentSequence
      */
     public Integer getWorkAssignmentSequence() {
@@ -75,6 +77,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -89,6 +92,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -103,6 +107,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -117,6 +122,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -131,6 +137,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -145,6 +152,7 @@ public class WorkAssignmentTransfer
     }
 
     /**
+     * Returns the workAssignmentStatus.
      * @return the workAssignmentStatus
      */
     public WorkflowEntityStatusTransfer getWorkAssignmentStatus() {

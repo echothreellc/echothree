@@ -33,6 +33,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Returns the contentWebAddressName.
      * @return the contentWebAddressName
      */
     public String getContentWebAddressName() {
@@ -47,6 +48,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Returns the contentCollection.
      * @return the contentCollection
      */
     public ContentCollectionTransfer getContentCollection() {
@@ -61,6 +63,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

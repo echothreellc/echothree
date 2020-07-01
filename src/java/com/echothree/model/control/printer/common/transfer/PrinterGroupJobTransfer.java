@@ -42,6 +42,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the printerGroupJobName.
      * @return the printerGroupJobName
      */
     public String getPrinterGroupJobName() {
@@ -56,6 +57,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the printerGroup.
      * @return the printerGroup
      */
     public PrinterGroupTransfer getPrinterGroup() {
@@ -70,6 +72,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the document.
      * @return the document
      */
     public DocumentTransfer getDocument() {
@@ -84,6 +87,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the copies.
      * @return the copies
      */
     public Integer getCopies() {
@@ -98,6 +102,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the priority.
      * @return the priority
      */
     public Integer getPriority() {
@@ -112,6 +117,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the printerGroupJobStatus.
      * @return the printerGroupJobStatus
      */
     public WorkflowEntityStatusTransfer getPrinterGroupJobStatus() {

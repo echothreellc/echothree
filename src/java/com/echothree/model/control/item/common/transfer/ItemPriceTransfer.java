@@ -56,6 +56,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -70,6 +71,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -84,6 +86,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -98,6 +101,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -112,6 +116,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedUnitPrice.
      * @return the unformattedUnitPrice
      */
     public Long getUnformattedUnitPrice() {
@@ -126,6 +131,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unitPrice.
      * @return the unitPrice
      */
     public String getUnitPrice() {
@@ -140,6 +146,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedMinimumUnitPrice.
      * @return the unformattedMinimumUnitPrice
      */
     public Long getUnformattedMinimumUnitPrice() {
@@ -154,6 +161,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the minimumUnitPrice.
      * @return the minimumUnitPrice
      */
     public String getMinimumUnitPrice() {
@@ -168,6 +176,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedMaximumUnitPrice.
      * @return the unformattedMaximumUnitPrice
      */
     public Long getUnformattedMaximumUnitPrice() {
@@ -182,6 +191,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the maximumUnitPrice.
      * @return the maximumUnitPrice
      */
     public String getMaximumUnitPrice() {
@@ -196,6 +206,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedUnitPriceIncrement.
      * @return the unformattedUnitPriceIncrement
      */
     public Long getUnformattedUnitPriceIncrement() {
@@ -210,6 +221,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unitPriceIncrement.
      * @return the unitPriceIncrement
      */
     public String getUnitPriceIncrement() {

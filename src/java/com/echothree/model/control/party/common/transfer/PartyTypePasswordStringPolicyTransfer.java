@@ -71,6 +71,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -85,6 +86,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the forceChangeAfterCreate.
      * @return the forceChangeAfterCreate
      */
     public Boolean getForceChangeAfterCreate() {
@@ -99,6 +101,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the forceChangeAfterReset.
      * @return the forceChangeAfterReset
      */
     public Boolean getForceChangeAfterReset() {
@@ -113,6 +116,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the allowChange.
      * @return the allowChange
      */
     public Boolean getAllowChange() {
@@ -127,6 +131,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the passwordHistory.
      * @return the passwordHistory
      */
     public Integer getPasswordHistory() {
@@ -141,6 +146,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the unformattedMinimumPasswordLifetime.
      * @return the unformattedMinimumPasswordLifetime
      */
     public Long getUnformattedMinimumPasswordLifetime() {
@@ -155,6 +161,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the minimumPasswordLifetime.
      * @return the minimumPasswordLifetime
      */
     public String getMinimumPasswordLifetime() {
@@ -169,6 +176,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the unformattedMaximumPasswordLifetime.
      * @return the unformattedMaximumPasswordLifetime
      */
     public Long getUnformattedMaximumPasswordLifetime() {
@@ -183,6 +191,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the maximumPasswordLifetime.
      * @return the maximumPasswordLifetime
      */
     public String getMaximumPasswordLifetime() {
@@ -197,6 +206,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the unformattedExpirationWarningTime.
      * @return the unformattedExpirationWarningTime
      */
     public Long getUnformattedExpirationWarningTime() {
@@ -211,6 +221,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the expirationWarningTime.
      * @return the expirationWarningTime
      */
     public String getExpirationWarningTime() {
@@ -225,6 +236,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the expiredLoginsPermitted.
      * @return the expiredLoginsPermitted
      */
     public Integer getExpiredLoginsPermitted() {
@@ -239,6 +251,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the minimumLength.
      * @return the minimumLength
      */
     public Integer getMinimumLength() {
@@ -253,6 +266,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the maximumLength.
      * @return the maximumLength
      */
     public Integer getMaximumLength() {
@@ -267,6 +281,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the requiredDigitCount.
      * @return the requiredDigitCount
      */
     public Integer getRequiredDigitCount() {
@@ -281,6 +296,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the requiredLetterCount.
      * @return the requiredLetterCount
      */
     public Integer getRequiredLetterCount() {
@@ -295,6 +311,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the requiredUpperCaseCount.
      * @return the requiredUpperCaseCount
      */
     public Integer getRequiredUpperCaseCount() {
@@ -309,6 +326,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the requiredLowerCaseCount.
      * @return the requiredLowerCaseCount
      */
     public Integer getRequiredLowerCaseCount() {
@@ -323,6 +341,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the maximumRepeated.
      * @return the maximumRepeated
      */
     public Integer getMaximumRepeated() {
@@ -337,6 +356,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Returns the minimumCharacterTypes.
      * @return the minimumCharacterTypes
      */
     public Integer getMinimumCharacterTypes() {

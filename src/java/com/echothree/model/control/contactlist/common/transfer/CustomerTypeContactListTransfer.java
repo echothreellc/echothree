@@ -34,6 +34,7 @@ public class CustomerTypeContactListTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -48,6 +49,7 @@ public class CustomerTypeContactListTransfer
     }
 
     /**
+     * Returns the contactList.
      * @return the contactList
      */
     public ContactListTransfer getContactList() {
@@ -62,6 +64,7 @@ public class CustomerTypeContactListTransfer
     }
 
     /**
+     * Returns the addWhenCreated.
      * @return the addWhenCreated
      */
     public Boolean getAddWhenCreated() {

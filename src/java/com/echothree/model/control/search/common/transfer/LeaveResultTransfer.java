@@ -32,6 +32,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Returns the leaveName.
      * @return the leaveName
      */
     public String getLeaveName() {
@@ -46,6 +47,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Returns the leave.
      * @return the leave
      */
     public LeaveTransfer getLeave() {

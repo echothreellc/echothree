@@ -34,6 +34,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Returns the entityIntegerRange.
      * @return the entityIntegerRange
      */
     public EntityIntegerRangeTransfer getEntityIntegerRange() {
@@ -62,6 +64,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

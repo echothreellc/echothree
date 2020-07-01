@@ -35,6 +35,7 @@ public class ProtocolTransfer
     }
 
     /**
+     * Returns the protocolName.
      * @return the protocolName
      */
     public String getProtocolName() {
@@ -49,6 +50,7 @@ public class ProtocolTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -63,6 +65,7 @@ public class ProtocolTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -77,6 +80,7 @@ public class ProtocolTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

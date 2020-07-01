@@ -41,6 +41,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -55,6 +56,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -71,6 +73,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -85,6 +88,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the clobAttribute.
      * @return the clobAttribute
      */
     public String getClobAttribute() {
@@ -99,6 +103,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -113,6 +118,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String geteTag() {

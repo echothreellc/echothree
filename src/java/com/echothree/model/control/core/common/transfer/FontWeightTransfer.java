@@ -35,6 +35,7 @@ public class FontWeightTransfer
     }
 
     /**
+     * Returns the fontWeightName.
      * @return the fontWeightName
      */
     public String getFontWeightName() {
@@ -49,6 +50,7 @@ public class FontWeightTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -63,6 +65,7 @@ public class FontWeightTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -77,6 +80,7 @@ public class FontWeightTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

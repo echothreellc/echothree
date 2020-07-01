@@ -38,6 +38,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -52,6 +53,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Long getCount() {
@@ -66,6 +68,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Returns the amount.
      * @return the amount
      */
     public String getAmount() {

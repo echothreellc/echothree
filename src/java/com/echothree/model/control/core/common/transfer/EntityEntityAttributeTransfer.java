@@ -34,6 +34,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -48,6 +49,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -64,6 +66,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Returns the entityInstanceAttribute.
      * @return the entityInstanceAttribute
      */
     public EntityInstanceTransfer getEntityInstanceAttribute() {

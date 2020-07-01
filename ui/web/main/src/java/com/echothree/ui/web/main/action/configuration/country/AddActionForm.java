@@ -85,6 +85,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the countryName.
      * @return the countryName
      */
     public String getCountryName() {
@@ -99,6 +100,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the iso3Number.
      * @return the iso3Number
      */
     public String getIso3Number() {
@@ -113,6 +115,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the iso3Letter.
      * @return the iso3Letter
      */
     public String getIso3Letter() {
@@ -127,6 +130,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the iso2Letter.
      * @return the iso2Letter
      */
     public String getIso2Letter() {
@@ -141,6 +145,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the telephoneCode.
      * @return the telephoneCode
      */
     public String getTelephoneCode() {
@@ -155,6 +160,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the areaCodePattern.
      * @return the areaCodePattern
      */
     public String getAreaCodePattern() {
@@ -169,6 +175,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the areaCodeRequired.
      * @return the areaCodeRequired
      */
     public Boolean getAreaCodeRequired() {
@@ -183,6 +190,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the areaCodeExample.
      * @return the areaCodeExample
      */
     public String getAreaCodeExample() {
@@ -197,6 +205,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the telephoneNumberPattern.
      * @return the telephoneNumberPattern
      */
     public String getTelephoneNumberPattern() {
@@ -211,6 +220,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the telephoneNumberExample.
      * @return the telephoneNumberExample
      */
     public String getTelephoneNumberExample() {
@@ -244,6 +254,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the cityRequired.
      * @return the cityRequired
      */
     public Boolean getCityRequired() {
@@ -258,6 +269,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the cityGeoCodeRequired.
      * @return the cityGeoCodeRequired
      */
     public Boolean getCityGeoCodeRequired() {
@@ -272,6 +284,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the stateRequired.
      * @return the stateRequired
      */
     public Boolean getStateRequired() {
@@ -286,6 +299,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the stateGeoCodeRequired.
      * @return the stateGeoCodeRequired
      */
     public Boolean getStateGeoCodeRequired() {
@@ -300,6 +314,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the postalCodePattern.
      * @return the postalCodePattern
      */
     public String getPostalCodePattern() {
@@ -314,6 +329,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the postalCodeRequired.
      * @return the postalCodeRequired
      */
     public Boolean getPostalCodeRequired() {
@@ -328,6 +344,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the postalCodeGeoCodeRequired.
      * @return the postalCodeGeoCodeRequired
      */
     public Boolean getPostalCodeGeoCodeRequired() {
@@ -342,6 +359,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the postalCodeLength.
      * @return the postalCodeLength
      */
     public String getPostalCodeLength() {
@@ -356,6 +374,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the postalCodeGeoCodeLength.
      * @return the postalCodeGeoCodeLength
      */
     public String getPostalCodeGeoCodeLength() {
@@ -370,6 +389,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the postalCodeExample.
      * @return the postalCodeExample
      */
     public String getPostalCodeExample() {
@@ -384,6 +404,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -398,6 +419,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public String getSortOrder() {
@@ -412,6 +434,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

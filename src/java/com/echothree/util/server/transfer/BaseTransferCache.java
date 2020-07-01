@@ -238,6 +238,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeEntityAttributeGroups.
      * @return the includeEntityAttributeGroups
      */
     public boolean getIncludeEntityAttributeGroups() {
@@ -263,6 +264,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeTagScopes.
      * @return the includeTagScopes
      */
     public boolean getIncludeTagScopes() {
@@ -297,6 +299,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
 
     /**
+     * Returns the includeEntityInstance.
      * @return the includeEntityInstance
      */
     public boolean getIncludeEntityInstance() {
@@ -311,6 +314,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeEntityAppearance.
      * @return the includeEntityAppearance
      */
     public boolean getIncludeEntityAppearance() {
@@ -325,6 +329,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeNames.
      * @return the includeNames
      */
     public boolean getIncludeNames() {
@@ -339,6 +344,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeKey.
      * @return the includeKey
      */
     public boolean getIncludeKey() {
@@ -353,6 +359,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeGuid.
      * @return the includeGuid
      */
     public boolean getIncludeGuid() {

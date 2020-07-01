@@ -133,6 +133,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {
@@ -147,6 +148,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemType.
      * @return the itemType
      */
     public ItemTypeTransfer getItemType() {
@@ -161,6 +163,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUseType.
      * @return the itemUseType
      */
     public ItemUseTypeTransfer getItemUseType() {
@@ -175,6 +178,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemCategory.
      * @return the itemCategory
      */
     public ItemCategoryTransfer getItemCategory() {
@@ -189,6 +193,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemAccountingCategory.
      * @return the itemAccountingCategory
      */
     public ItemAccountingCategoryTransfer getItemAccountingCategory() {
@@ -203,6 +208,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPurchasingCategory.
      * @return the itemPurchasingCategory
      */
     public ItemPurchasingCategoryTransfer getItemPurchasingCategory() {
@@ -217,6 +223,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the company.
      * @return the company
      */
     public CompanyTransfer getCompany() {
@@ -231,6 +238,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemDeliveryType.
      * @return the itemDeliveryType
      */
     public ItemDeliveryTypeTransfer getItemDeliveryType() {
@@ -245,6 +253,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemInventoryType.
      * @return the itemInventoryType
      */
     public ItemInventoryTypeTransfer getItemInventoryType() {
@@ -259,6 +268,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the inventorySerialized.
      * @return the inventorySerialized
      */
     public Boolean getInventorySerialized() {
@@ -273,6 +283,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the serialNumberSequence.
      * @return the serialNumberSequence
      */
     public SequenceTransfer getSerialNumberSequence() {
@@ -287,6 +298,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the shippingChargeExempt.
      * @return the shippingChargeExempt
      */
     public Boolean getShippingChargeExempt() {
@@ -301,6 +313,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedShippingStartTime.
      * @return the unformattedShippingStartTime
      */
     public Long getUnformattedShippingStartTime() {
@@ -315,6 +328,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the shippingStartTime.
      * @return the shippingStartTime
      */
     public String getShippingStartTime() {
@@ -329,6 +343,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedShippingEndTime.
      * @return the unformattedShippingEndTime
      */
     public Long getUnformattedShippingEndTime() {
@@ -343,6 +358,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the shippingEndTime.
      * @return the shippingEndTime
      */
     public String getShippingEndTime() {
@@ -357,6 +373,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedSalesOrderStartTime.
      * @return the unformattedSalesOrderStartTime
      */
     public Long getUnformattedSalesOrderStartTime() {
@@ -371,6 +388,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the salesOrderStartTime.
      * @return the salesOrderStartTime
      */
     public String getSalesOrderStartTime() {
@@ -385,6 +403,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedSalesOrderEndTime.
      * @return the unformattedSalesOrderEndTime
      */
     public Long getUnformattedSalesOrderEndTime() {
@@ -399,6 +418,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the salesOrderEndTime.
      * @return the salesOrderEndTime
      */
     public String getSalesOrderEndTime() {
@@ -413,6 +433,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedPurchaseOrderStartTime.
      * @return the unformattedPurchaseOrderStartTime
      */
     public Long getUnformattedPurchaseOrderStartTime() {
@@ -427,6 +448,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the purchaseOrderStartTime.
      * @return the purchaseOrderStartTime
      */
     public String getPurchaseOrderStartTime() {
@@ -441,6 +463,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedPurchaseOrderEndTime.
      * @return the unformattedPurchaseOrderEndTime
      */
     public Long getUnformattedPurchaseOrderEndTime() {
@@ -455,6 +478,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the purchaseOrderEndTime.
      * @return the purchaseOrderEndTime
      */
     public String getPurchaseOrderEndTime() {
@@ -469,6 +493,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the allowClubDiscounts.
      * @return the allowClubDiscounts
      */
     public Boolean getAllowClubDiscounts() {
@@ -483,6 +508,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the allowCouponDiscounts.
      * @return the allowCouponDiscounts
      */
     public Boolean getAllowCouponDiscounts() {
@@ -497,6 +523,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the allowAssociatePayments.
      * @return the allowAssociatePayments
      */
     public Boolean getAllowAssociatePayments() {
@@ -511,6 +538,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKind.
      * @return the unitOfMeasureKind
      */
     public UnitOfMeasureKindTransfer getUnitOfMeasureKind() {
@@ -525,6 +553,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPriceType.
      * @return the itemPriceType
      */
     public ItemPriceTypeTransfer getItemPriceType() {
@@ -539,6 +568,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -553,6 +583,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -567,6 +598,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -581,6 +613,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemStatus.
      * @return the itemStatus
      */
     public WorkflowEntityStatusTransfer getItemStatus() {
@@ -595,6 +628,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemShippingTimes.
      * @return the itemShippingTimes
      */
     public ListWrapper<ItemShippingTimeTransfer> getItemShippingTimes() {
@@ -609,6 +643,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemAliases.
      * @return the itemAliases
      */
     public ListWrapper<ItemAliasTransfer> getItemAliases() {
@@ -623,6 +658,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPrices.
      * @return the itemPrices
      */
     public ListWrapper<ItemPriceTransfer> getItemPrices() {
@@ -637,6 +673,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitOfMeasureTypes.
      * @return the itemUnitOfMeasureTypes
      */
     public ListWrapper<ItemUnitOfMeasureTypeTransfer> getItemUnitOfMeasureTypes() {
@@ -651,6 +688,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemDescriptions.
      * @return the itemDescriptions
      */
     public ListWrapper<ItemDescriptionTransfer> getItemDescriptions() {
@@ -665,6 +703,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemVolumes.
      * @return the itemVolumes
      */
     public ListWrapper<ItemVolumeTransfer> getItemVolumes() {
@@ -679,6 +718,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemWeights.
      * @return the itemWeights
      */
     public ListWrapper<ItemWeightTransfer> getItemWeights() {
@@ -693,6 +733,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the offerItems.
      * @return the offerItems
      */
     public ListWrapper<OfferItemTransfer> getOfferItems() {
@@ -707,6 +748,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the vendorItems.
      * @return the vendorItems
      */
     public ListWrapper<VendorItemTransfer> getVendorItems() {
@@ -721,6 +763,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemCountryOfOrigins.
      * @return the itemCountryOfOrigins
      */
     public MapWrapper<ItemCountryOfOriginTransfer> getItemCountryOfOrigins() {
@@ -735,6 +778,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemKitMembers.
      * @return the itemKitMembers
      */
     public ListWrapper<ItemKitMemberTransfer> getItemKitMembers() {
@@ -749,6 +793,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPackCheckRequirements.
      * @return the itemPackCheckRequirements
      */
     public ListWrapper<ItemPackCheckRequirementTransfer> getItemPackCheckRequirements() {
@@ -763,6 +808,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitCustomerTypeLimits.
      * @return the itemUnitCustomerTypeLimits
      */
     public ListWrapper<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimits() {
@@ -777,6 +823,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitLimits.
      * @return the itemUnitLimits
      */
     public ListWrapper<ItemUnitLimitTransfer> getItemUnitLimits() {
@@ -791,6 +838,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitPriceLimits.
      * @return the itemUnitPriceLimits
      */
     public ListWrapper<ItemUnitPriceLimitTransfer> getItemUnitPriceLimits() {
@@ -805,6 +853,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the relatedItems.
      * @return the relatedItems
      */
     public MapWrapper<ListWrapper<RelatedItemTransfer>> getRelatedItems() {
@@ -819,6 +868,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemHarmonizedTariffScheduleCodes.
      * @return the itemHarmonizedTariffScheduleCodes
      */
     public ListWrapper<ItemHarmonizedTariffScheduleCodeTransfer> getItemHarmonizedTariffScheduleCodes() {
@@ -833,6 +883,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemTaxClassifications.
      * @return the itemTaxClassifications
      */
     public ListWrapper<ItemTaxClassificationTransfer> getItemTaxClassifications() {

@@ -26,6 +26,7 @@ public class EditActionForm
     private String partyPaymentMethodName;
 
     /**
+     * Returns the partyPaymentMethodName.
      * @return the partyPaymentMethodName
      */
     public String getPartyPaymentMethodName() {

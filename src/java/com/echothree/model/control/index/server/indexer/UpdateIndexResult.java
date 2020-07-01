@@ -29,6 +29,7 @@ public class UpdateIndexResult {
     }
 
     /**
+     * Returns the remainingTime.
      * @return the remainingTime
      */
     public long getRemainingTime() {
@@ -43,6 +44,7 @@ public class UpdateIndexResult {
     }
 
     /**
+     * Returns the indexModified.
      * @return the indexModified
      */
     public boolean getIndexModified() {
@@ -57,6 +59,7 @@ public class UpdateIndexResult {
     }
     
     /**
+     * Returns the indexingComplete.
      * @return the indexingComplete
      */
     public boolean getIndexingComplete() {

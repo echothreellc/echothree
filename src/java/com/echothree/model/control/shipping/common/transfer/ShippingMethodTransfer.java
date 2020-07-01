@@ -39,6 +39,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the shippingMethodName.
      * @return the shippingMethodName
      */
     public String getShippingMethodName() {
@@ -53,6 +54,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the geoCodeSelector.
      * @return the geoCodeSelector
      */
     public SelectorTransfer getGeoCodeSelector() {
@@ -67,6 +69,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the itemSelector.
      * @return the itemSelector
      */
     public SelectorTransfer getItemSelector() {
@@ -81,6 +84,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -95,6 +99,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

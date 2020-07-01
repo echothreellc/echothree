@@ -58,6 +58,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the workEffortTypeName.
      * @return the workEffortTypeName
      */
     public String getWorkEffortTypeName() {
@@ -72,6 +73,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the entityType.
      * @return the entityType
      */
     public EntityTypeTransfer getEntityType() {
@@ -86,6 +88,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the workEffortSequence.
      * @return the workEffortSequence
      */
     public SequenceTransfer getWorkEffortSequence() {
@@ -100,6 +103,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the unformattedScheduledTime.
      * @return the unformattedScheduledTime
      */
     public Long getUnformattedScheduledTime() {
@@ -114,6 +118,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the scheduledTime.
      * @return the scheduledTime
      */
     public String getScheduledTime() {
@@ -128,6 +133,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the unformattedEstimatedTimeAllowed.
      * @return the unformattedEstimatedTimeAllowed
      */
     public Long getUnformattedEstimatedTimeAllowed() {
@@ -142,6 +148,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the estimatedTimeAllowed.
      * @return the estimatedTimeAllowed
      */
     public String getEstimatedTimeAllowed() {
@@ -156,6 +163,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the unformattedMaximumTimeAllowed.
      * @return the unformattedMaximumTimeAllowed
      */
     public Long getUnformattedMaximumTimeAllowed() {
@@ -170,6 +178,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the maximumTimeAllowed.
      * @return the maximumTimeAllowed
      */
     public String getMaximumTimeAllowed() {
@@ -184,6 +193,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -198,6 +208,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -212,6 +223,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the workEffortScopes.
      * @return the workEffortScopes
      */
     public ListWrapper<WorkEffortScopeTransfer> getWorkEffortScopes() {
@@ -226,6 +238,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Returns the workRequirementTypes.
      * @return the workRequirementTypes
      */
     public ListWrapper<WorkRequirementTypeTransfer> getWorkRequirementTypes() {

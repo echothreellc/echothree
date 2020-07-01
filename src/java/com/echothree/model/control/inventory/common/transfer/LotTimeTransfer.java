@@ -33,6 +33,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Returns the lotTimeType.
      * @return the lotTimeType
      */
     public LotTimeTypeTransfer getLotTimeType() {
@@ -47,6 +48,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -61,6 +63,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {

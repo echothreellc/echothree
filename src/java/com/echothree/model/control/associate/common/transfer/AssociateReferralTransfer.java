@@ -41,6 +41,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Returns the associateReferralName.
      * @return the associateReferralName
      */
     public String getAssociateReferralName() {
@@ -55,6 +56,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Returns the associate.
      * @return the associate
      */
     public AssociateTransfer getAssociate() {
@@ -69,6 +71,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Returns the associateContactMechanism.
      * @return the associateContactMechanism
      */
     public AssociatePartyContactMechanismTransfer getAssociateContactMechanism() {
@@ -83,6 +86,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Returns the targetEntityInstance.
      * @return the targetEntityInstance
      */
     public EntityInstanceTransfer getTargetEntityInstance() {
@@ -97,6 +101,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Returns the unformattedAssociateReferralTime.
      * @return the unformattedAssociateReferralTime
      */
     public Long getUnformattedAssociateReferralTime() {
@@ -111,6 +116,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Returns the associateReferralTime.
      * @return the associateReferralTime
      */
     public String getAssociateReferralTime() {

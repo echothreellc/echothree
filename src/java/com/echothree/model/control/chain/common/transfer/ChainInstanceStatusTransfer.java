@@ -38,6 +38,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Returns the chainInstance.
      * @return the chainInstance
      */
     public ChainInstanceTransfer getChainInstance() {
@@ -52,6 +53,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Returns the nextChainActionSet.
      * @return the nextChainActionSet
      */
     public ChainActionSetTransfer getNextChainActionSet() {
@@ -66,6 +68,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Returns the unformattedNextChainActionSetTime.
      * @return the unformattedNextChainActionSetTime
      */
     public Long getUnformattedNextChainActionSetTime() {
@@ -80,6 +83,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Returns the nextChainActionSetTime.
      * @return the nextChainActionSetTime
      */
     public String getNextChainActionSetTime() {
@@ -94,6 +98,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Returns the queuedLetterSequence.
      * @return the queuedLetterSequence
      */
     public Integer getQueuedLetterSequence() {

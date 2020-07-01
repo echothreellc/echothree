@@ -34,6 +34,7 @@ public class AppearanceDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class AppearanceDescriptionTransfer
     }
 
     /**
+     * Returns the appearance.
      * @return the appearance
      */
     public AppearanceTransfer getAppearance() {
@@ -62,6 +64,7 @@ public class AppearanceDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

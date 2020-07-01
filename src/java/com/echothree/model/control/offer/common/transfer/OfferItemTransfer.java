@@ -35,6 +35,7 @@ public class OfferItemTransfer
     }
 
     /**
+     * Returns the offer.
      * @return the offer
      */
     public OfferTransfer getOffer() {
@@ -49,6 +50,7 @@ public class OfferItemTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -63,6 +65,7 @@ public class OfferItemTransfer
     }
 
     /**
+     * Returns the offerItemPrices.
      * @return the offerItemPrices
      */
     public ListWrapper<OfferItemPriceTransfer> getOfferItemPrices() {

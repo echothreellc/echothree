@@ -56,6 +56,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the orderShipmentGroup.
      * @return the orderShipmentGroup
      */
     public AmazonOrderShipmentGroup getOrderShipmentGroup() {
@@ -70,6 +71,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the orderItemId.
      * @return the orderItemId
      */
     public String getOrderItemId() {
@@ -84,6 +86,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {
@@ -98,6 +101,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the listingId.
      * @return the listingId
      */
     public String getListingId() {
@@ -112,6 +116,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the sku.
      * @return the sku
      */
     public String getSku() {
@@ -126,6 +131,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the price.
      * @return the price
      */
     public String getPrice() {
@@ -140,6 +146,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the shippingFee.
      * @return the shippingFee
      */
     public String getShippingFee() {
@@ -154,6 +161,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the quantityPurchased.
      * @return the quantityPurchased
      */
     public String getQuantityPurchased() {
@@ -168,6 +176,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the totalPrice.
      * @return the totalPrice
      */
     public String getTotalPrice() {
@@ -182,6 +191,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the upc.
      * @return the upc
      */
     public String getUpc() {
@@ -196,6 +206,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Returns the orderLineSequence.
      * @return the orderLineSequence
      */
     public String getOrderLineSequence() {

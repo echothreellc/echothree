@@ -32,6 +32,7 @@ public class SalesOrderResultTransfer
     }
 
     /**
+     * Returns the orderName.
      * @return the orderName
      */
     public String getOrderName() {
@@ -46,6 +47,7 @@ public class SalesOrderResultTransfer
     }
 
     /**
+     * Returns the orderStatus.
      * @return the orderStatus
      */
     public WorkflowEntityStatusTransfer getOrderStatus() {

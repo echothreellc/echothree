@@ -32,6 +32,7 @@ public class CustomerResultTransfer
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -46,6 +47,7 @@ public class CustomerResultTransfer
     }
     
     /**
+     * Returns the customer.
      * @return the customer
      */
     public CustomerTransfer getCustomer() {

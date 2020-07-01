@@ -43,6 +43,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Returns the campaignMediumName.
      * @return the campaignMediumName
      */
     public String getCampaignMediumName() {
@@ -57,6 +58,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Returns the valueSha1Hash.
      * @return the valueSha1Hash
      */
     public String getValueSha1Hash() {
@@ -71,6 +73,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Returns the value.
      * @return the value
      */
     public String getValue() {
@@ -85,6 +88,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -99,6 +103,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -113,6 +118,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -127,6 +133,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Returns the campaignMediumStatus.
      * @return the campaignMediumStatus
      */
     public WorkflowEntityStatusTransfer getCampaignMediumStatus() {

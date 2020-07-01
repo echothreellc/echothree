@@ -34,6 +34,7 @@ public class ContentPageDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class ContentPageDescriptionTransfer
     }
 
     /**
+     * Returns the contentPage.
      * @return the contentPage
      */
     public ContentPageTransfer getContentPage() {
@@ -62,6 +64,7 @@ public class ContentPageDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

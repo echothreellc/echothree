@@ -37,6 +37,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the chainKind.
      * @return the chainKind
      */
     public ChainKindTransfer getChainKind() {
@@ -51,6 +52,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the chainTypeName.
      * @return the chainTypeName
      */
     public String getChainTypeName() {
@@ -65,6 +67,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -79,6 +82,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -93,6 +97,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

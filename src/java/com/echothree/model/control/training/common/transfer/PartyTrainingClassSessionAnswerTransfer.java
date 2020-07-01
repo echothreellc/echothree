@@ -43,6 +43,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionQuestion.
      * @return the partyTrainingClassSessionQuestion
      */
     public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestion() {
@@ -57,6 +58,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionAnswerSequence.
      * @return the partyTrainingClassSessionAnswerSequence
      */
     public Integer getPartyTrainingClassSessionAnswerSequence() {
@@ -71,6 +73,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the trainingClassAnswer.
      * @return the trainingClassAnswer
      */
     public TrainingClassAnswerTransfer getTrainingClassAnswer() {
@@ -85,6 +88,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the unformattedQuestionStartTime.
      * @return the unformattedQuestionStartTime
      */
     public Long getUnformattedQuestionStartTime() {
@@ -99,6 +103,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the questionStartTime.
      * @return the questionStartTime
      */
     public String getQuestionStartTime() {
@@ -113,6 +118,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the unformattedQuestionEndTime.
      * @return the unformattedQuestionEndTime
      */
     public Long getUnformattedQuestionEndTime() {
@@ -127,6 +133,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the questionEndTime.
      * @return the questionEndTime
      */
     public String getQuestionEndTime() {

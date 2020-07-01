@@ -26,6 +26,7 @@ public class DeleteActionForm
     private String contentCollectionName;
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {

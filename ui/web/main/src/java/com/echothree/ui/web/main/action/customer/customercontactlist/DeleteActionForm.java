@@ -35,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the contactListName.
      * @return the contactListName
      */
     public String getContactListName() {

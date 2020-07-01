@@ -34,6 +34,7 @@ public class SearchKindDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class SearchKindDescriptionTransfer
     }
 
     /**
+     * Returns the searchKind.
      * @return the searchKind
      */
     public SearchKindTransfer getSearchKind() {
@@ -62,6 +64,7 @@ public class SearchKindDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

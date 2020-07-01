@@ -37,6 +37,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the selectorKind.
      * @return the selectorKind
      */
     public SelectorKindTransfer getSelectorKind() {
@@ -51,6 +52,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the selectorTypeName.
      * @return the selectorTypeName
      */
     public String getSelectorTypeName() {
@@ -65,6 +67,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -79,6 +82,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -93,6 +97,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

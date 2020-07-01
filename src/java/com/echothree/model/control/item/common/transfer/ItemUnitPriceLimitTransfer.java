@@ -48,6 +48,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -62,6 +63,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -76,6 +78,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -90,6 +93,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -104,6 +108,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the unformattedMinimumUnitPrice.
      * @return the unformattedMinimumUnitPrice
      */
     public Long getUnformattedMinimumUnitPrice() {
@@ -118,6 +123,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the minimumUnitPrice.
      * @return the minimumUnitPrice
      */
     public String getMinimumUnitPrice() {
@@ -132,6 +138,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the unformattedMaximumUnitPrice.
      * @return the unformattedMaximumUnitPrice
      */
     public Long getUnformattedMaximumUnitPrice() {
@@ -146,6 +153,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Returns the maximumUnitPrice.
      * @return the maximumUnitPrice
      */
     public String getMaximumUnitPrice() {

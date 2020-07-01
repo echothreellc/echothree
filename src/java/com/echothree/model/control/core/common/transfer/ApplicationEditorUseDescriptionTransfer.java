@@ -34,6 +34,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Returns the applicationEditorUse.
      * @return the applicationEditorUse
      */
     public ApplicationEditorUseTransfer getApplicationEditorUse() {
@@ -62,6 +64,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

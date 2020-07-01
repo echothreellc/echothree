@@ -32,6 +32,7 @@ public class QueuedEntityTransfer
     }
 
     /**
+     * Returns the queueType.
      * @return the queueType
      */
     public QueueTypeTransfer getQueueType() {
@@ -46,6 +47,7 @@ public class QueuedEntityTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override

@@ -25,6 +25,7 @@ public class EntityInstanceResult
     private EntityInstancePK entityInstancePK;
 
     /**
+     * Returns the entityInstancePK.
      * @return the entityInstancePK
      */
     public EntityInstancePK getEntityInstancePK() {

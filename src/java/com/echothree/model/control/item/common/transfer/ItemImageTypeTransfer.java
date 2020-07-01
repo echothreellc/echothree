@@ -48,6 +48,7 @@ public class ItemImageTypeTransfer
     }
     
     /**
+     * Returns the preferredMimeType.
      * @return the preferredMimeType
      */
     public MimeTypeTransfer getPreferredMimeType() {
@@ -62,6 +63,7 @@ public class ItemImageTypeTransfer
     }
 
     /**
+     * Returns the quality.
      * @return the quality
      */
     public Integer getQuality() {

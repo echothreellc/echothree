@@ -29,6 +29,7 @@ public class AddActionForm
     private String tagName;
 
     /**
+     * Returns the tagScopeName.
      * @return the tagScopeName
      */
     public String getTagScopeName() {
@@ -43,6 +44,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the entityRef.
      * @return the entityRef
      */
     public String getEntityRef() {
@@ -57,6 +59,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the returnUrl.
      * @return the returnUrl
      */
     public String getReturnUrl() {
@@ -71,6 +74,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the tagName.
      * @return the tagName
      */
     public String getTagName() {

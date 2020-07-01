@@ -70,6 +70,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the itemDescriptionTypeName.
      * @return the itemDescriptionTypeName
      */
     public String getItemDescriptionTypeName() {
@@ -84,6 +85,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the parentItemDescriptionType.
      * @return the parentItemDescriptionType
      */
     public ItemDescriptionTypeTransfer getParentItemDescriptionType() {
@@ -98,6 +100,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the useParentIfMissing.
      * @return the useParentIfMissing
      */
     public Boolean getUseParentIfMissing() {
@@ -112,6 +115,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeUsageType.
      * @return the mimeTypeUsageType
      */
     public MimeTypeUsageTypeTransfer getMimeTypeUsageType() {
@@ -126,6 +130,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the checkContentWebAddress.
      * @return the checkContentWebAddress
      */
     public Boolean getCheckContentWebAddress() {
@@ -140,6 +145,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the includeInIndex.
      * @return the includeInIndex
      */
     public Boolean getIncludeInIndex() {
@@ -154,6 +160,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the indexDefault.
      * @return the indexDefault
      */
     public Boolean getIndexDefault() {
@@ -168,6 +175,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -182,6 +190,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -196,6 +205,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -210,6 +220,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the minimumHeight.
      * @return the minimumHeight
      */
     public Integer getMinimumHeight() {
@@ -224,6 +235,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the minimumWidth.
      * @return the minimumWidth
      */
     public Integer getMinimumWidth() {
@@ -238,6 +250,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the maximumHeight.
      * @return the maximumHeight
      */
     public Integer getMaximumHeight() {
@@ -252,6 +265,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the maximumWidth.
      * @return the maximumWidth
      */
     public Integer getMaximumWidth() {
@@ -266,6 +280,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the preferredHeight.
      * @return the preferredHeight
      */
     public Integer getPreferredHeight() {
@@ -280,6 +295,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the preferredWidth.
      * @return the preferredWidth
      */
     public Integer getPreferredWidth() {
@@ -294,6 +310,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the preferredMimeType.
      * @return the preferredMimeType
      */
     public MimeTypeTransfer getPreferredMimeType() {
@@ -308,6 +325,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the quality.
      * @return the quality
      */
     public Integer getQuality() {
@@ -322,6 +340,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the scaleFromParent.
      * @return the scaleFromParent
      */
     public Boolean getScaleFromParent() {

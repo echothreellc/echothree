@@ -49,6 +49,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the periodKind.
      * @return the periodKind
      */
     public PeriodKindTransfer getPeriodKind() {
@@ -63,6 +64,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the periodName.
      * @return the periodName
      */
     public String getPeriodName() {
@@ -77,6 +79,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the parentPeriod.
      * @return the parentPeriod
      */
     public PeriodTransfer getParentPeriod() {
@@ -91,6 +94,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the periodType.
      * @return the periodType
      */
     public PeriodTypeTransfer getPeriodType() {
@@ -105,6 +109,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -119,6 +124,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -133,6 +139,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -147,6 +154,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -161,6 +169,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -175,6 +184,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the status.
      * @return the status
      */
     public WorkflowEntityStatusTransfer getStatus() {

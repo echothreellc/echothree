@@ -36,6 +36,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Returns the subscriptionType.
      * @return the subscriptionType
      */
     public SubscriptionTypeTransfer getSubscriptionType() {
@@ -50,6 +51,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Returns the chain.
      * @return the chain
      */
     public ChainTransfer getChain() {
@@ -64,6 +66,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Returns the unformattedRemainingTime.
      * @return the unformattedRemainingTime
      */
     public Long getUnformattedRemainingTime() {
@@ -78,6 +81,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Returns the remainingTime.
      * @return the remainingTime
      */
     public String getRemainingTime() {

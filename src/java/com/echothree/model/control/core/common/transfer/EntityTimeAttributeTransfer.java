@@ -36,6 +36,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -50,6 +51,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -66,6 +68,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Returns the timeAttribute.
      * @return the timeAttribute
      */
     public String getTimeAttribute() {
@@ -80,6 +83,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Returns the unformattedTimeAttribute.
      * @return the unformattedTimeAttribute
      */
     public Long getUnformattedTimeAttribute() {

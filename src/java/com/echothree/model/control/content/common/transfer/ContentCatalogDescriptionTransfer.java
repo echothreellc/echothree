@@ -34,6 +34,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Returns the contentCatalog.
      * @return the contentCatalog
      */
     public ContentCatalogTransfer getContentCatalog() {
@@ -62,6 +64,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

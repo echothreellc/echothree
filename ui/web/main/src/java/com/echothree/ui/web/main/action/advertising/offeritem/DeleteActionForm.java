@@ -27,6 +27,7 @@ public class DeleteActionForm
     private String itemName;
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {
@@ -41,6 +42,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {

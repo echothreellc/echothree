@@ -34,6 +34,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Returns the indexType.
      * @return the indexType
      */
     public IndexTypeTransfer getIndexType() {
@@ -62,6 +64,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

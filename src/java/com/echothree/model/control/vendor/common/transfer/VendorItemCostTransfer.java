@@ -40,6 +40,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the vendorItem.
      * @return the vendorItem
      */
     public VendorItemTransfer getVendorItem() {
@@ -54,6 +55,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -68,6 +70,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -82,6 +85,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the unformattedUnitCost.
      * @return the unformattedUnitCost
      */
     public Long getUnformattedUnitCost() {
@@ -96,6 +100,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the unitCost.
      * @return the unitCost
      */
     public String getUnitCost() {

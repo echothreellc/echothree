@@ -34,6 +34,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Returns the subscriptionKind.
      * @return the subscriptionKind
      */
     public SubscriptionKindTransfer getSubscriptionKind() {
@@ -62,6 +64,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

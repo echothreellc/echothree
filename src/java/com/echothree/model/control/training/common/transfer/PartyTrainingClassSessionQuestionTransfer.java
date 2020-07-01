@@ -37,6 +37,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSession.
      * @return the partyTrainingClassSession
      */
     public PartyTrainingClassSessionTransfer getPartyTrainingClassSession() {
@@ -51,6 +52,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the trainingClassQuestion.
      * @return the trainingClassQuestion
      */
     public TrainingClassQuestionTransfer getTrainingClassQuestion() {
@@ -65,6 +67,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -79,6 +82,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionAnswers.
      * @return the partyTrainingClassSessionAnswers
      */
     public ListWrapper<PartyTrainingClassSessionAnswerTransfer> getPartyTrainingClassSessionAnswers() {

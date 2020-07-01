@@ -38,6 +38,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -52,6 +53,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the userVisitSearchFacetListItems.
      * @return the userVisitSearchFacetListItems
      */
     public ListWrapper<UserVisitSearchFacetListItemTransfer> getUserVisitSearchFacetListItems() {
@@ -66,6 +68,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the userVisitSearchFacetIntegers.
      * @return the userVisitSearchFacetIntegers
      */
     public ListWrapper<UserVisitSearchFacetIntegerTransfer> getUserVisitSearchFacetIntegers() {
@@ -80,6 +83,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the userVisitSearchFacetLongs.
      * @return the userVisitSearchFacetLongs
      */
     public ListWrapper<UserVisitSearchFacetLongTransfer> getUserVisitSearchFacetLongs() {

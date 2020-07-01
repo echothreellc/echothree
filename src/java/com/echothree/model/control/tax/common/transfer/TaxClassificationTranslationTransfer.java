@@ -40,6 +40,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -54,6 +55,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the taxClassification.
      * @return the taxClassification
      */
     public TaxClassificationTransfer getTaxClassification() {
@@ -68,6 +70,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -82,6 +85,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the overviewMimeType.
      * @return the overviewMimeType
      */
     public MimeTypeTransfer getOverviewMimeType() {
@@ -96,6 +100,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the overview.
      * @return the overview
      */
     public String getOverview() {

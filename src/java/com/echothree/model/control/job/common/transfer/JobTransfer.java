@@ -48,6 +48,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the jobName.
      * @return the jobName
      */
     public String getJobName() {
@@ -62,6 +63,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the runAsParty.
      * @return the runAsParty
      */
     public PartyTransfer getRunAsParty() {
@@ -76,6 +78,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -90,6 +93,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -104,6 +108,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the jobStatus.
      * @return the jobStatus
      */
     public WorkflowEntityStatusTransfer getJobStatus() {
@@ -118,6 +123,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the unformattedLastStartTime.
      * @return the unformattedLastStartTime
      */
     public Long getUnformattedLastStartTime() {
@@ -132,6 +138,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the lastStartTime.
      * @return the lastStartTime
      */
     public String getLastStartTime() {
@@ -146,6 +153,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the unformattedLastEndTime.
      * @return the unformattedLastEndTime
      */
     public Long getUnformattedLastEndTime() {
@@ -160,6 +168,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the lastEndTime.
      * @return the lastEndTime
      */
     public String getLastEndTime() {

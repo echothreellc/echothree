@@ -38,6 +38,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the contentPageLayout.
      * @return the contentPageLayout
      */
     public ContentPageLayoutTransfer getContentPageLayout() {
@@ -52,6 +53,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the contentPageAreaType.
      * @return the contentPageAreaType
      */
     public ContentPageAreaTypeTransfer getContentPageAreaType() {
@@ -66,6 +68,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the showDescriptionField.
      * @return the showDescriptionField
      */
     public Boolean getShowDescriptionField() {
@@ -80,6 +83,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -94,6 +98,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

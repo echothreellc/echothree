@@ -34,6 +34,7 @@ public class UserLoginPasswordTypeTransfer
     }
 
     /**
+     * Returns the userLoginPasswordTypeName.
      * @return the userLoginPasswordTypeName
      */
     public String getUserLoginPasswordTypeName() {
@@ -48,6 +49,7 @@ public class UserLoginPasswordTypeTransfer
     }
 
     /**
+     * Returns the userLoginPasswordEncoderType.
      * @return the userLoginPasswordEncoderType
      */
     public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderType() {
@@ -62,6 +64,7 @@ public class UserLoginPasswordTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

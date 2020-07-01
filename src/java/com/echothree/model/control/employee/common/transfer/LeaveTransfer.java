@@ -56,6 +56,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveName.
      * @return the leaveName
      */
     public String getLeaveName() {
@@ -70,6 +71,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -84,6 +86,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the company.
      * @return the company
      */
     public CompanyTransfer getCompany() {
@@ -98,6 +101,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveType.
      * @return the leaveType
      */
     public LeaveTypeTransfer getLeaveType() {
@@ -112,6 +116,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveReason.
      * @return the leaveReason
      */
     public LeaveReasonTransfer getLeaveReason() {
@@ -126,6 +131,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -140,6 +146,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -154,6 +161,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -168,6 +176,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -182,6 +191,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the unformattedTotalTime.
      * @return the unformattedTotalTime
      */
     public Long getUnformattedTotalTime() {
@@ -196,6 +206,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the totalTime.
      * @return the totalTime
      */
     public String getTotalTime() {
@@ -210,6 +221,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveStatus.
      * @return the leaveStatus
      */
     public WorkflowEntityStatusTransfer getLeaveStatus() {

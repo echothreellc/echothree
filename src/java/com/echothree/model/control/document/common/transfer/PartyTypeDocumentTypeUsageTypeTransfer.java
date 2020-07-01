@@ -37,6 +37,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -51,6 +52,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the documentTypeUsageType.
      * @return the documentTypeUsageType
      */
     public DocumentTypeUsageTypeTransfer getDocumentTypeUsageType() {
@@ -65,6 +67,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -79,6 +82,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

@@ -36,6 +36,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -50,6 +51,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -66,6 +68,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the dateAttribute.
      * @return the dateAttribute
      */
     public String getDateAttribute() {
@@ -80,6 +83,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the unformattedDateAttribute.
      * @return the unformattedDateAttribute
      */
     public Integer getUnformattedDateAttribute() {

@@ -33,6 +33,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Returns the orderRoleTypeName.
      * @return the orderRoleTypeName
      */
     public String getOrderRoleTypeName() {
@@ -47,6 +48,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -61,6 +63,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

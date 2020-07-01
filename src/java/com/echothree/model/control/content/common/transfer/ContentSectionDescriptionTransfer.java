@@ -34,6 +34,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Returns the contentSection.
      * @return the contentSection
      */
     public ContentSectionTransfer getContentSection() {
@@ -62,6 +64,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

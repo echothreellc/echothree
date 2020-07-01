@@ -41,6 +41,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the colorName.
      * @return the colorName
      */
     public String getColorName() {
@@ -55,6 +56,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the red.
      * @return the red
      */
     public Integer getRed() {
@@ -69,6 +71,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the green.
      * @return the green
      */
     public Integer getGreen() {
@@ -83,6 +86,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the blue.
      * @return the blue
      */
     public Integer getBlue() {
@@ -97,6 +101,7 @@ public class ColorTransfer
     }
     
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -111,6 +116,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -125,6 +131,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -25,6 +25,7 @@ public class EditActionForm
     private String geoCodeName;
 
     /**
+     * Returns the geoCodeName.
      * @return the geoCodeName
      */
     public String getGeoCodeName() {

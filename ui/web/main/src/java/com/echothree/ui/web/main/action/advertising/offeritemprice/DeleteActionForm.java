@@ -30,6 +30,7 @@ public class DeleteActionForm
     private String currencyIsoName;
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {
@@ -44,6 +45,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {
@@ -58,6 +60,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the inventoryConditionName.
      * @return the inventoryConditionName
      */
     public String getInventoryConditionName() {
@@ -72,6 +75,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the unitOfMeasureTypeName.
      * @return the unitOfMeasureTypeName
      */
     public String getUnitOfMeasureTypeName() {
@@ -86,6 +90,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the currencyIsoName.
      * @return the currencyIsoName
      */
     public String getCurrencyIsoName() {

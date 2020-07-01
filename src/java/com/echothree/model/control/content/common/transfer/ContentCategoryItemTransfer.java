@@ -35,6 +35,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Returns the contentCategory.
      * @return the contentCategory
      */
     public ContentCategoryTransfer getContentCategory() {
@@ -49,6 +50,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Returns the contentCatalogItem.
      * @return the contentCatalogItem
      */
     public ContentCatalogItemTransfer getContentCatalogItem() {
@@ -63,6 +65,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -77,6 +80,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

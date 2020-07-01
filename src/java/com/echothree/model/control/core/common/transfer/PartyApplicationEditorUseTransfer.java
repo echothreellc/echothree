@@ -39,6 +39,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -53,6 +54,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the applicationEditorUse.
      * @return the applicationEditorUse
      */
     public ApplicationEditorUseTransfer getApplicationEditorUse() {
@@ -67,6 +69,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the applicationEditor.
      * @return the applicationEditor
      */
     public ApplicationEditorTransfer getApplicationEditor() {
@@ -81,6 +84,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the preferredHeight.
      * @return the preferredHeight
      */
     public Integer getPreferredHeight() {
@@ -95,6 +99,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the preferredWidth.
      * @return the preferredWidth
      */
     public Integer getPreferredWidth() {

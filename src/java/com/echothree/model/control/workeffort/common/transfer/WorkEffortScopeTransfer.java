@@ -59,6 +59,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the workEffortType.
      * @return the workEffortType
      */
     public WorkEffortTypeTransfer getWorkEffortType() {
@@ -73,6 +74,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the workEffortScopeName.
      * @return the workEffortScopeName
      */
     public String getWorkEffortScopeName() {
@@ -87,6 +89,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the workEffortSequence.
      * @return the workEffortSequence
      */
     public SequenceTransfer getWorkEffortSequence() {
@@ -101,6 +104,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the unformattedScheduledTime.
      * @return the unformattedScheduledTime
      */
     public Long getUnformattedScheduledTime() {
@@ -115,6 +119,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the scheduledTime.
      * @return the scheduledTime
      */
     public String getScheduledTime() {
@@ -129,6 +134,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the unformattedEstimatedTimeAllowed.
      * @return the unformattedEstimatedTimeAllowed
      */
     public Long getUnformattedEstimatedTimeAllowed() {
@@ -143,6 +149,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the estimatedTimeAllowed.
      * @return the estimatedTimeAllowed
      */
     public String getEstimatedTimeAllowed() {
@@ -157,6 +164,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the unformattedMaximumTimeAllowed.
      * @return the unformattedMaximumTimeAllowed
      */
     public Long getUnformattedMaximumTimeAllowed() {
@@ -171,6 +179,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the maximumTimeAllowed.
      * @return the maximumTimeAllowed
      */
     public String getMaximumTimeAllowed() {
@@ -185,6 +194,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -199,6 +209,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -213,6 +224,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -227,6 +239,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the workRequirementScopes.
      * @return the workRequirementScopes
      */
     public ListWrapper<WorkRequirementScopeTransfer> getWorkRequirementScopes() {
@@ -241,6 +254,7 @@ public class WorkEffortScopeTransfer
     }
 
     /**
+     * Returns the workEfforts.
      * @return the workEfforts
      */
     public ListWrapper<WorkEffortTransfer> getWorkEfforts() {

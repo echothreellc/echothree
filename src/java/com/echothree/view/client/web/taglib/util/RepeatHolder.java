@@ -28,6 +28,7 @@ public class RepeatHolder {
     }
 
     /**
+     * Returns the broken.
      * @return the broken
      */
     public boolean isBroken() {
@@ -42,6 +43,7 @@ public class RepeatHolder {
     }
 
     /**
+     * Returns the previousRepeatHolder.
      * @return the previousRepeatHolder
      */
     public RepeatHolder getPreviousRepeatHolder() {

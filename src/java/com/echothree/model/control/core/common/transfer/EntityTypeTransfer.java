@@ -70,6 +70,7 @@ public final class EntityTypeTransfer
     }
     
     /**
+     * Returns the keepAllHistory.
      * @return the keepAllHistory
      */
     public Boolean getKeepAllHistory() {
@@ -84,6 +85,7 @@ public final class EntityTypeTransfer
     }
     
     /**
+     * Returns the unformattedLockTimeout.
      * @return the unformattedLockTimeout
      */
     public Long getUnformattedLockTimeout() {
@@ -98,6 +100,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Returns the lockTimeout.
      * @return the lockTimeout
      */
     public String getLockTimeout() {
@@ -128,6 +131,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Returns the indexTypesCount.
      * @return the indexTypesCount
      */
     public Long getIndexTypesCount() {
@@ -142,6 +146,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Returns the indexTypes.
      * @return the indexTypes
      */
     public ListWrapper<IndexTypeTransfer> getIndexTypes() {

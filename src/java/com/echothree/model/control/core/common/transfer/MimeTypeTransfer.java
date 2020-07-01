@@ -41,6 +41,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeName.
      * @return the mimeTypeName
      */
     public String getMimeTypeName() {
@@ -55,6 +56,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the entityAttributeType.
      * @return the entityAttributeType
      */
     public EntityAttributeTypeTransfer getEntityAttributeType() {
@@ -69,6 +71,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -83,6 +86,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -97,6 +101,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -111,6 +116,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeFileExtensions.
      * @return the mimeTypeFileExtensions
      */
     public ListWrapper<MimeTypeFileExtensionTransfer> getMimeTypeFileExtensions() {

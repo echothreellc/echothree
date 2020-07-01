@@ -53,6 +53,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the amazonOrders.
      * @return the amazonOrders
      */
     public AmazonOrders getAmazonOrders() {
@@ -67,6 +68,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the orderId.
      * @return the orderId
      */
     public String getOrderId() {
@@ -81,6 +83,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the purchaseDate.
      * @return the purchaseDate
      */
     public String getPurchaseDate() {
@@ -95,6 +98,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the paymentsDate.
      * @return the paymentsDate
      */
     public String getPaymentsDate() {
@@ -109,6 +113,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the buyerName.
      * @return the buyerName
      */
     public String getBuyerName() {
@@ -123,6 +128,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the buyerEmail.
      * @return the buyerEmail
      */
     public String getBuyerEmail() {
@@ -137,6 +143,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the amazonOrderShipmentGroups.
      * @return the amazonOrderShipmentGroups
      */
     public Map<String, AmazonOrderShipmentGroup> getAmazonOrderShipmentGroups() {
@@ -155,6 +162,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the customerName.
      * @return the customerName
      */
     public String getCustomerName() {
@@ -169,6 +177,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -183,6 +192,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the orderName.
      * @return the orderName
      */
     public String getOrderName() {

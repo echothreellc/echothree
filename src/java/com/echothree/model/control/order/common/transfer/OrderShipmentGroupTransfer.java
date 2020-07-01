@@ -43,6 +43,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Returns the orderShipmentGroupSequence.
      * @return the orderShipmentGroupSequence
      */
     public Integer getOrderShipmentGroupSequence() {
@@ -57,6 +58,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Returns the itemDeliveryType.
      * @return the itemDeliveryType
      */
     public ItemDeliveryTypeTransfer getItemDeliveryType() {
@@ -71,6 +73,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -85,6 +88,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Returns the partyContactMechanism.
      * @return the partyContactMechanism
      */
     public PartyContactMechanismTransfer getPartyContactMechanism() {
@@ -99,6 +103,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Returns the shippingMethod.
      * @return the shippingMethod
      */
     public ShippingMethodTransfer getShippingMethod() {
@@ -113,6 +118,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Returns the holdUntilComplete.
      * @return the holdUntilComplete
      */
     public Boolean getHoldUntilComplete() {

@@ -34,6 +34,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the licenseType.
      * @return the licenseType
      */
     public LicenseTypeTransfer getLicenseType() {
@@ -62,6 +64,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

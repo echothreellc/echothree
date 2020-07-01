@@ -32,6 +32,7 @@ public class OfferResultTransfer
     }
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {
@@ -46,6 +47,7 @@ public class OfferResultTransfer
     }
 
     /**
+     * Returns the offer.
      * @return the offer
      */
     public OfferTransfer getOffer() {

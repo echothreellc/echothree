@@ -37,6 +37,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the indexType.
      * @return the indexType
      */
     public IndexTypeTransfer getIndexType() {
@@ -51,6 +52,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the indexFieldName.
      * @return the indexFieldName
      */
     public String getIndexFieldName() {
@@ -65,6 +67,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -79,6 +82,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -93,6 +97,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

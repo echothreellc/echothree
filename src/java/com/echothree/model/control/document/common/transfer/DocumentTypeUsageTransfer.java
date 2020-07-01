@@ -38,6 +38,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Returns the documentTypeUsageType.
      * @return the documentTypeUsageType
      */
     public DocumentTypeUsageTypeTransfer getDocumentTypeUsageType() {
@@ -52,6 +53,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Returns the documentType.
      * @return the documentType
      */
     public DocumentTypeTransfer getDocumentType() {
@@ -66,6 +68,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -80,6 +83,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -94,6 +98,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Returns the maximumInstances.
      * @return the maximumInstances
      */
     public Integer getMaximumInstances() {

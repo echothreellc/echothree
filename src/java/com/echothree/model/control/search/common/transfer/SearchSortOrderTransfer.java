@@ -37,6 +37,7 @@ public class SearchSortOrderTransfer
     }
 
     /**
+     * Returns the searchKind.
      * @return the searchKind
      */
     public SearchKindTransfer getSearchKind() {
@@ -51,6 +52,7 @@ public class SearchSortOrderTransfer
     }
 
     /**
+     * Returns the searchSortOrderName.
      * @return the searchSortOrderName
      */
     public String getSearchSortOrderName() {
@@ -65,6 +67,7 @@ public class SearchSortOrderTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -79,6 +82,7 @@ public class SearchSortOrderTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -93,6 +97,7 @@ public class SearchSortOrderTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -51,6 +51,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -65,6 +66,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendor.
      * @return the vendor
      */
     public VendorTransfer getVendor() {
@@ -79,6 +81,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendorItemName.
      * @return the vendorItemName
      */
     public String getVendorItemName() {
@@ -93,6 +96,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -107,6 +111,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the priority.
      * @return the priority
      */
     public Integer getPriority() {
@@ -121,6 +126,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -135,6 +141,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -149,6 +156,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendorItemStatus.
      * @return the vendorItemStatus
      */
     public WorkflowEntityStatusTransfer getVendorItemStatus() {
@@ -163,6 +171,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendorItemCosts.
      * @return the vendorItemCosts
      */
     public ListWrapper<VendorItemCostTransfer> getVendorItemCosts() {

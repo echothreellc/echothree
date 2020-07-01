@@ -32,6 +32,7 @@ public class ItemResultTransfer
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {
@@ -46,6 +47,7 @@ public class ItemResultTransfer
     }
     
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {

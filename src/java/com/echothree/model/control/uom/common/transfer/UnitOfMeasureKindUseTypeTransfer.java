@@ -40,6 +40,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKindUseTypeName.
      * @return the unitOfMeasureKindUseTypeName
      */
     public String getUnitOfMeasureKindUseTypeName() {
@@ -54,6 +55,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the allowMultiple.
      * @return the allowMultiple
      */
     public Boolean getAllowMultiple() {
@@ -68,6 +70,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the allowFractionDigits.
      * @return the allowFractionDigits
      */
     public Boolean getAllowFractionDigits() {
@@ -82,6 +85,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -96,6 +100,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -110,6 +115,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

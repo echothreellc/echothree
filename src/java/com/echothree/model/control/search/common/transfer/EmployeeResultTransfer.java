@@ -32,6 +32,7 @@ public class EmployeeResultTransfer
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -46,6 +47,7 @@ public class EmployeeResultTransfer
     }
     
     /**
+     * Returns the employee.
      * @return the employee
      */
     public EmployeeTransfer getEmployee() {

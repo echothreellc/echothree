@@ -48,6 +48,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the employmentName.
      * @return the employmentName
      */
     public String getEmploymentName() {
@@ -62,6 +63,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -76,6 +78,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the company.
      * @return the company
      */
     public CompanyTransfer getCompany() {
@@ -90,6 +93,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -104,6 +108,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -118,6 +123,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -132,6 +138,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -146,6 +153,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the terminationType.
      * @return the terminationType
      */
     public TerminationTypeTransfer getTerminationType() {
@@ -160,6 +168,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the terminationReason.
      * @return the terminationReason
      */
     public TerminationReasonTransfer getTerminationReason() {

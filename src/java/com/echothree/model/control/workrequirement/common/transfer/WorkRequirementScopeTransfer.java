@@ -105,6 +105,7 @@ public class WorkRequirementScopeTransfer
     }
 
     /**
+     * Returns the workRequirements.
      * @return the workRequirements
      */
     public ListWrapper<WorkRequirementTransfer> getWorkRequirements() {

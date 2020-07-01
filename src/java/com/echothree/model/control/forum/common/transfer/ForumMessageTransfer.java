@@ -49,6 +49,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageName.
      * @return the forumMessageName
      */
     public String getForumMessageName() {
@@ -63,6 +64,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumThread.
      * @return the forumThread
      */
     public ForumThreadTransfer getForumThread() {
@@ -77,6 +79,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageType.
      * @return the forumMessageType
      */
     public ForumMessageTypeTransfer getForumMessageType() {
@@ -91,6 +94,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the parentForumMessage.
      * @return the parentForumMessage
      */
     public ForumMessageTransfer getParentForumMessage() {
@@ -105,6 +109,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the icon.
      * @return the icon
      */
     public IconTransfer getIcon() {
@@ -119,6 +124,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the unformattedPostedTime.
      * @return the unformattedPostedTime
      */
     public Long getUnformattedPostedTime() {
@@ -133,6 +139,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the postedTime.
      * @return the postedTime
      */
     public String getPostedTime() {
@@ -147,6 +154,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageRoles.
      * @return the forumMessageRoles
      */
     public ListWrapper<ForumMessageRoleTransfer> getForumMessageRoles() {
@@ -161,6 +169,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageParts.
      * @return the forumMessageParts
      */
     public MapWrapper<ForumMessagePartTransfer> getForumMessageParts() {
@@ -175,6 +184,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageAttachments.
      * @return the forumMessageAttachments
      */
     public ListWrapper<ForumMessageAttachmentTransfer> getForumMessageAttachments() {

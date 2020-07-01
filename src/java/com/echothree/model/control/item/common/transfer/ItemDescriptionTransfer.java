@@ -112,6 +112,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the itemImageType.
      * @return the itemImageType
      */
     public ItemImageTypeTransfer getItemImageType() {
@@ -126,6 +127,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the height.
      * @return the height
      */
     public Integer getHeight() {
@@ -140,6 +142,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the width.
      * @return the width
      */
     public Integer getWidth() {
@@ -154,6 +157,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the scaledFromParent.
      * @return the scaledFromParent
      */
     public Boolean getScaledFromParent() {
@@ -168,6 +172,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String getETag() {

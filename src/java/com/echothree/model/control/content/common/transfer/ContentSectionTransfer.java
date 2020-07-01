@@ -43,6 +43,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Returns the contentCollection.
      * @return the contentCollection
      */
     public ContentCollectionTransfer getContentCollection() {
@@ -57,6 +58,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Returns the contentSectionName.
      * @return the contentSectionName
      */
     public String getContentSectionName() {
@@ -71,6 +73,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Returns the parentContentSection.
      * @return the parentContentSection
      */
     public ContentSectionTransfer getParentContentSection() {
@@ -85,6 +88,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -99,6 +103,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -113,6 +118,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -127,6 +133,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Returns the contentPages.
      * @return the contentPages
      */
     public ListWrapper<ContentPageTransfer> getContentPages() {

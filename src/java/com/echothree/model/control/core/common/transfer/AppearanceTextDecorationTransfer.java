@@ -31,6 +31,7 @@ public class AppearanceTextDecorationTransfer
     }
 
     /**
+     * Returns the appearance.
      * @return the appearance
      */
     public AppearanceTransfer getAppearance() {
@@ -45,6 +46,7 @@ public class AppearanceTextDecorationTransfer
     }
 
     /**
+     * Returns the textDecoration.
      * @return the textDecoration
      */
     public TextDecorationTransfer getTextDecoration() {

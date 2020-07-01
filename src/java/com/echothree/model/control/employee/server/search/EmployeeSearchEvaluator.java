@@ -66,6 +66,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Returns the partyEmployeeName.
      * @return the partyEmployeeName
      */
     public String getPartyEmployeeName() {
@@ -80,6 +81,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Returns the employeeStatusWorkflowStep.
      * @return the employeeStatusWorkflowStep
      */
     public WorkflowStep getEmployeeStatusWorkflowStep() {
@@ -94,6 +96,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Returns the employeeAvailabilityWorkflowStep.
      * @return the employeeAvailabilityWorkflowStep
      */
     public WorkflowStep getEmployeeAvailabilityWorkflowStep() {

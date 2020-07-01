@@ -39,6 +39,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the serviceName.
      * @return the serviceName
      */
     public String getServiceName() {
@@ -53,6 +54,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the port.
      * @return the port
      */
     public Integer getPort() {
@@ -67,6 +69,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the protocol.
      * @return the protocol
      */
     public ProtocolTransfer getProtocol() {
@@ -81,6 +84,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -95,6 +99,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -109,6 +114,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

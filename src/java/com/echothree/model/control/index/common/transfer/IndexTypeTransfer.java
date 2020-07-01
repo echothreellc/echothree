@@ -38,6 +38,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the indexTypeName.
      * @return the indexTypeName
      */
     public String getIndexTypeName() {
@@ -52,6 +53,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the entityType.
      * @return the entityType
      */
     public EntityTypeTransfer getEntityType() {
@@ -66,6 +68,7 @@ public class IndexTypeTransfer
     }
     
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -80,6 +83,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -94,6 +98,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

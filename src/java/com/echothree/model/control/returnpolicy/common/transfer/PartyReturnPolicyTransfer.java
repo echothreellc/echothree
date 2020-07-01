@@ -35,6 +35,7 @@ public class PartyReturnPolicyTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -49,6 +50,7 @@ public class PartyReturnPolicyTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -63,6 +65,7 @@ public class PartyReturnPolicyTransfer
     }
 
     /**
+     * Returns the partyReturnPolicyStatus.
      * @return the partyReturnPolicyStatus
      */
     public WorkflowEntityStatusTransfer getPartyReturnPolicyStatus() {

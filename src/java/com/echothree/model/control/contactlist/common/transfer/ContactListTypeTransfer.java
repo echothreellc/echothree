@@ -45,6 +45,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the contactListTypeName.
      * @return the contactListTypeName
      */
     public String getContactListTypeName() {
@@ -59,6 +60,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the confirmationRequestChain.
      * @return the confirmationRequestChain
      */
     public ChainTransfer getConfirmationRequestChain() {
@@ -73,6 +75,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the subscribeChain.
      * @return the subscribeChain
      */
     public ChainTransfer getSubscribeChain() {
@@ -87,6 +90,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the unsubscribeChain.
      * @return the unsubscribeChain
      */
     public ChainTransfer getUnsubscribeChain() {
@@ -101,6 +105,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the usedForSolicitation.
      * @return the usedForSolicitation
      */
     public Boolean getUsedForSolicitation() {
@@ -115,6 +120,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -129,6 +135,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -143,6 +150,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

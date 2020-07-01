@@ -75,6 +75,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerName.
      * @return the customerName
      */
     public String getCustomerName() {
@@ -89,6 +90,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -103,6 +105,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the initialOfferUse.
      * @return the initialOfferUse
      */
     public OfferUseTransfer getInitialOfferUse() {
@@ -117,6 +120,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the arGlAccount.
      * @return the arGlAccount
      */
     public GlAccountTransfer getArGlAccount() {
@@ -131,6 +135,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the holdUntilComplete.
      * @return the holdUntilComplete
      */
     public Boolean getHoldUntilComplete() {
@@ -145,6 +150,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowBackorders.
      * @return the allowBackorders
      */
     public Boolean getAllowBackorders() {
@@ -159,6 +165,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowSubstitutions.
      * @return the allowSubstitutions
      */
     public Boolean getAllowSubstitutions() {
@@ -173,6 +180,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowCombiningShipments.
      * @return the allowCombiningShipments
      */
     public Boolean getAllowCombiningShipments() {
@@ -187,6 +195,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the requireReference.
      * @return the requireReference
      */
     public Boolean getRequireReference() {
@@ -201,6 +210,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowReferenceDuplicates.
      * @return the allowReferenceDuplicates
      */
     public Boolean getAllowReferenceDuplicates() {
@@ -215,6 +225,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the referenceValidationPattern.
      * @return the referenceValidationPattern
      */
     public String getReferenceValidationPattern() {
@@ -229,6 +240,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerStatus.
      * @return the customerStatus
      */
     public WorkflowEntityStatusTransfer getCustomerStatus() {
@@ -243,6 +255,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerCreditStatus.
      * @return the customerCreditStatus
      */
     public WorkflowEntityStatusTransfer getCustomerCreditStatus() {

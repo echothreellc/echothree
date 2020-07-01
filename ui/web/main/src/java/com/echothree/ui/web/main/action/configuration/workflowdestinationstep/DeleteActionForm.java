@@ -30,6 +30,7 @@ public class DeleteActionForm
     private String destinationWorkflowStepName;
 
     /**
+     * Returns the workflowName.
      * @return the workflowName
      */
     public String getWorkflowName() {
@@ -44,6 +45,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the workflowStepName.
      * @return the workflowStepName
      */
     public String getWorkflowStepName() {
@@ -58,6 +60,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the workflowDestinationName.
      * @return the workflowDestinationName
      */
     public String getWorkflowDestinationName() {
@@ -72,6 +75,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the destinationWorkflowName.
      * @return the destinationWorkflowName
      */
     public String getDestinationWorkflowName() {
@@ -86,6 +90,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the destinationWorkflowStepName.
      * @return the destinationWorkflowStepName
      */
     public String getDestinationWorkflowStepName() {

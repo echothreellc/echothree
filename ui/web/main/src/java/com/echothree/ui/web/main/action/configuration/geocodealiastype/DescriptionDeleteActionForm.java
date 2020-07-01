@@ -28,6 +28,7 @@ public class DescriptionDeleteActionForm
     private String languageIsoName;
 
     /**
+     * Returns the geoCodeTypeName.
      * @return the geoCodeTypeName
      */
     public String getGeoCodeTypeName() {
@@ -42,6 +43,7 @@ public class DescriptionDeleteActionForm
     }
 
     /**
+     * Returns the geoCodeAliasTypeName.
      * @return the geoCodeAliasTypeName
      */
     public String getGeoCodeAliasTypeName() {
@@ -56,6 +58,7 @@ public class DescriptionDeleteActionForm
     }
 
     /**
+     * Returns the languageIsoName.
      * @return the languageIsoName
      */
     public String getLanguageIsoName() {

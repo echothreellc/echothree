@@ -44,6 +44,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the orderPaymentPreferenceSequence.
      * @return the orderPaymentPreferenceSequence
      */
     public Integer getOrderPaymentPreferenceSequence() {
@@ -58,6 +59,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the paymentMethod.
      * @return the paymentMethod
      */
     public PaymentMethodTransfer getPaymentMethod() {
@@ -72,6 +74,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the partyPaymentMethod.
      * @return the partyPaymentMethod
      */
     public PartyPaymentMethodTransfer getPartyPaymentMethod() {
@@ -86,6 +89,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the wasPresent.
      * @return the wasPresent
      */
     public Boolean getWasPresent() {
@@ -100,6 +104,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the unformattedMaximumAmount.
      * @return the unformattedMaximumAmount
      */
     public Long getUnformattedMaximumAmount() {
@@ -114,6 +119,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the maximumAmount.
      * @return the maximumAmount
      */
     public String getMaximumAmount() {
@@ -128,6 +134,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

@@ -101,6 +101,7 @@ public class WorkRequirementTypeTransfer
     }
     
     /**
+     * Returns the allowReassignment.
      * @return the allowReassignment
      */
     public Boolean getAllowReassignment() {
@@ -131,6 +132,7 @@ public class WorkRequirementTypeTransfer
     }
 
     /**
+     * Returns the workRequirementScopes.
      * @return the workRequirementScopes
      */
     public ListWrapper<WorkRequirementScopeTransfer> getWorkRequirementScopes() {

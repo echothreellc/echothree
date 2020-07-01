@@ -35,6 +35,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Returns the chainInstanceName.
      * @return the chainInstanceName
      */
     public String getChainInstanceName() {
@@ -49,6 +50,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Returns the chain.
      * @return the chain
      */
     public ChainTransfer getChain() {
@@ -63,6 +65,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Returns the chainInstanceStatus.
      * @return the chainInstanceStatus
      */
     public ChainInstanceStatusTransfer getChainInstanceStatus() {
@@ -77,6 +80,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Returns the chainInstanceEntityRoles.
      * @return the chainInstanceEntityRoles
      */
     public MapWrapper<ChainInstanceEntityRoleTransfer> getChainInstanceEntityRoles() {

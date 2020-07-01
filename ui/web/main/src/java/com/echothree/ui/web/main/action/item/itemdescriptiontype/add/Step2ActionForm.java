@@ -137,6 +137,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the useParentIfMissing.
      * @return the useParentIfMissing
      */
     public Boolean getUseParentIfMissing() {
@@ -159,6 +160,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the checkContentWebAddress.
      * @return the checkContentWebAddress
      */
     public Boolean getCheckContentWebAddress() {
@@ -173,6 +175,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the includeInIndex.
      * @return the includeInIndex
      */
     public Boolean getIncludeInIndex() {
@@ -187,6 +190,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the indexDefault.
      * @return the indexDefault
      */
     public Boolean getIndexDefault() {
@@ -225,6 +229,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the minimumHeight.
      * @return the minimumHeight
      */
     public String getMinimumHeight() {
@@ -239,6 +244,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the minimumWidth.
      * @return the minimumWidth
      */
     public String getMinimumWidth() {
@@ -253,6 +259,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the maximumHeight.
      * @return the maximumHeight
      */
     public String getMaximumHeight() {
@@ -267,6 +274,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the maximumWidth.
      * @return the maximumWidth
      */
     public String getMaximumWidth() {
@@ -281,6 +289,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the preferredHeight.
      * @return the preferredHeight
      */
     public String getPreferredHeight() {
@@ -295,6 +304,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the preferredWidth.
      * @return the preferredWidth
      */
     public String getPreferredWidth() {
@@ -328,6 +338,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the quality.
      * @return the quality
      */
     public String getQuality() {
@@ -342,6 +353,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the scaleFromParent.
      * @return the scaleFromParent
      */
     public Boolean getScaleFromParent() {

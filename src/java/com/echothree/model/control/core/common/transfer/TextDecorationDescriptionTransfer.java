@@ -34,6 +34,7 @@ public class TextDecorationDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class TextDecorationDescriptionTransfer
     }
 
     /**
+     * Returns the textDecoration.
      * @return the textDecoration
      */
     public TextDecorationTransfer getTextDecoration() {
@@ -62,6 +64,7 @@ public class TextDecorationDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

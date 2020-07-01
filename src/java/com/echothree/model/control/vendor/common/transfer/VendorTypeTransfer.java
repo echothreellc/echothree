@@ -69,6 +69,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the vendorTypeName.
      * @return the vendorTypeName
      */
     public String getVendorTypeName() {
@@ -99,6 +100,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultCancellationPolicy.
      * @return the defaultCancellationPolicy
      */
     public CancellationPolicyTransfer getDefaultCancellationPolicy() {
@@ -113,6 +115,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultReturnPolicy.
      * @return the defaultReturnPolicy
      */
     public ReturnPolicyTransfer getDefaultReturnPolicy() {
@@ -127,6 +130,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultApGlAccount.
      * @return the defaultApGlAccount
      */
     public GlAccountTransfer getDefaultApGlAccount() {
@@ -141,6 +145,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultHoldUntilComplete.
      * @return the defaultHoldUntilComplete
      */
     public Boolean getDefaultHoldUntilComplete() {
@@ -155,6 +160,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowBackorders.
      * @return the defaultAllowBackorders
      */
     public Boolean getDefaultAllowBackorders() {
@@ -169,6 +175,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowSubstitutions.
      * @return the defaultAllowSubstitutions
      */
     public Boolean getDefaultAllowSubstitutions() {
@@ -183,6 +190,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowCombiningShipments.
      * @return the defaultAllowCombiningShipments
      */
     public Boolean getDefaultAllowCombiningShipments() {
@@ -197,6 +205,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultRequireReference.
      * @return the defaultRequireReference
      */
     public Boolean getDefaultRequireReference() {
@@ -211,6 +220,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowReferenceDuplicates.
      * @return the defaultAllowReferenceDuplicates
      */
     public Boolean getDefaultAllowReferenceDuplicates() {
@@ -225,6 +235,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultReferenceValidationPattern.
      * @return the defaultReferenceValidationPattern
      */
     public String getDefaultReferenceValidationPattern() {
@@ -239,6 +250,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -253,6 +265,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -267,6 +280,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

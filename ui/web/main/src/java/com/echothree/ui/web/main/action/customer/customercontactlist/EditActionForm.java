@@ -59,6 +59,7 @@ public class EditActionForm
     }
     
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -73,6 +74,7 @@ public class EditActionForm
     }
 
     /**
+     * Returns the contactListName.
      * @return the contactListName
      */
     public String getContactListName() {

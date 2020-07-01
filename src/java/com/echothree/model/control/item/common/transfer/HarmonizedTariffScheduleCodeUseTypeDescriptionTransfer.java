@@ -34,6 +34,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCodeUseType.
      * @return the harmonizedTariffScheduleCodeUseType
      */
     public HarmonizedTariffScheduleCodeUseTypeTransfer getHarmonizedTariffScheduleCodeUseType() {
@@ -62,6 +64,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

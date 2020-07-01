@@ -60,6 +60,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the order.
      * @return the order
      */
     public O getOrder() {
@@ -74,6 +75,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the orderLineSequence.
      * @return the orderLineSequence
      */
     public Integer getOrderLineSequence() {
@@ -88,6 +90,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -102,6 +105,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -116,6 +120,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -130,6 +135,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the quantity.
      * @return the quantity
      */
     public Long getQuantity() {
@@ -144,6 +150,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the unformattedUnitAmount.
      * @return the unformattedUnitAmount
      */
     public Long getUnformattedUnitAmount() {
@@ -158,6 +165,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the unitAmount.
      * @return the unitAmount
      */
     public String getUnitAmount() {
@@ -172,6 +180,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -186,6 +195,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -200,6 +210,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -214,6 +225,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the taxable.
      * @return the taxable
      */
     public Boolean getTaxable() {
@@ -228,6 +240,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the orderTimes.
      * @return the orderTimes
      */
     public MapWrapper<OrderLineTimeTransfer> getOrderTimes() {

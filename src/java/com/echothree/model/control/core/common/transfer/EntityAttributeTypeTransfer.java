@@ -31,6 +31,7 @@ public class EntityAttributeTypeTransfer
     }
 
     /**
+     * Returns the entityAttributeTypeName.
      * @return the entityAttributeTypeName
      */
     public String getEntityAttributeTypeName() {
@@ -45,6 +46,7 @@ public class EntityAttributeTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

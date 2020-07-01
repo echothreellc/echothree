@@ -54,6 +54,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Returns the carrierName.
      * @return the carrierName
      */
     public String getCarrierName() {
@@ -68,6 +69,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Returns the carrierType.
      * @return the carrierType
      */
     public CarrierTypeTransfer getCarrierType() {
@@ -82,6 +84,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Returns the geoCodeSelector.
      * @return the geoCodeSelector
      */
     public SelectorTransfer getGeoCodeSelector() {
@@ -96,6 +99,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Returns the itemSelector.
      * @return the itemSelector
      */
     public SelectorTransfer getItemSelector() {
@@ -110,6 +114,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Returns the accountValidationPattern.
      * @return the accountValidationPattern
      */
     public String getAccountValidationPattern() {
@@ -124,6 +129,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -138,6 +144,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

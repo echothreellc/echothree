@@ -45,6 +45,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCollection.
      * @return the contentCollection
      */
     public ContentCollectionTransfer getContentCollection() {
@@ -59,6 +60,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCatalogName.
      * @return the contentCatalogName
      */
     public String getContentCatalogName() {
@@ -73,6 +75,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the defaultOfferUse.
      * @return the defaultOfferUse
      */
     public OfferUseTransfer getDefaultOfferUse() {
@@ -87,6 +90,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -101,6 +105,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -115,6 +120,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -129,6 +135,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCatalogItems.
      * @return the contentCatalogItems
      */
     public ListWrapper<ContentCatalogItemTransfer> getContentCatalogItems() {
@@ -143,6 +150,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCategories.
      * @return the contentCategories
      */
     public ListWrapper<ContentCategoryTransfer> getContentCategories() {

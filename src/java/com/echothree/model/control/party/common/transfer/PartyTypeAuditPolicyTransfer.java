@@ -35,6 +35,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -49,6 +50,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Returns the auditCommands.
      * @return the auditCommands
      */
     public Boolean getAuditCommands() {
@@ -63,6 +65,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Returns the unformattedRetainUserVisitsTime.
      * @return the unformattedRetainUserVisitsTime
      */
     public Long getUnformattedRetainUserVisitsTime() {
@@ -77,6 +80,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Returns the retainUserVisitsTime.
      * @return the retainUserVisitsTime
      */
     public String getRetainUserVisitsTime() {

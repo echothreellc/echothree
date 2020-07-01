@@ -35,6 +35,7 @@ public class CheckSpellingWordTransfer
     }
 
     /**
+     * Returns the word.
      * @return the word
      */
     public String getWord() {
@@ -49,6 +50,7 @@ public class CheckSpellingWordTransfer
     }
 
     /**
+     * Returns the searchCheckSpellingActionType.
      * @return the searchCheckSpellingActionType
      */
     public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionType() {
@@ -63,6 +65,7 @@ public class CheckSpellingWordTransfer
     }
 
     /**
+     * Returns the checkSpellingSuggestions.
      * @return the checkSpellingSuggestions
      */
     public ListWrapper<CheckSpellingSuggestionTransfer> getCheckSpellingSuggestions() {

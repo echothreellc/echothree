@@ -32,6 +32,7 @@ public class EntityTagTransfer
     }
 
     /**
+     * Returns the taggedEntityInstance.
      * @return the taggedEntityInstance
      */
     public EntityInstanceTransfer getTaggedEntityInstance() {
@@ -46,6 +47,7 @@ public class EntityTagTransfer
     }
 
     /**
+     * Returns the tag.
      * @return the tag
      */
     public TagTransfer getTag() {

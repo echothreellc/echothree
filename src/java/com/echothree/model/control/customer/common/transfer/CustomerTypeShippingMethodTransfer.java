@@ -39,6 +39,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -53,6 +54,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the shippingMethod.
      * @return the shippingMethod
      */
     public ShippingMethodTransfer getShippingMethod() {
@@ -67,6 +69,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the defaultSelectionPriority.
      * @return the defaultSelectionPriority
      */
     public Integer getDefaultSelectionPriority() {
@@ -81,6 +84,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -95,6 +99,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

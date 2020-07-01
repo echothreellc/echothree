@@ -34,6 +34,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Returns the commandMessage.
      * @return the commandMessage
      */
     public CommandMessageTransfer getCommandMessage() {
@@ -48,6 +49,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -62,6 +64,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Returns the translation.
      * @return the translation
      */
     public String getTranslation() {

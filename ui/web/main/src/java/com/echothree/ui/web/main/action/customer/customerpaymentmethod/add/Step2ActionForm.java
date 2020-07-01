@@ -171,6 +171,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the deleteWhenUnused.
      * @return the deleteWhenUnused
      */
     public Boolean getDeleteWhenUnused() {
@@ -271,6 +272,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the name.
      * @return the name
      */
     public String getName() {
@@ -285,6 +287,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the number.
      * @return the number
      */
     public String getNumber() {
@@ -299,6 +302,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the securityCode.
      * @return the securityCode
      */
     public String getSecurityCode() {
@@ -313,6 +317,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the expirationMonth.
      * @return the expirationMonth
      */
     public String getExpirationMonth() {
@@ -327,6 +332,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the expirationYear.
      * @return the expirationYear
      */
     public String getExpirationYear() {
@@ -364,6 +370,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the issuerName.
      * @return the issuerName
      */
     public String getIssuerName() {

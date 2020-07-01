@@ -41,6 +41,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -55,6 +56,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -69,6 +71,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the unformattedShippingStartTime.
      * @return the unformattedShippingStartTime
      */
     public Long getUnformattedShippingStartTime() {
@@ -83,6 +86,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the shippingStartTime.
      * @return the shippingStartTime
      */
     public String getShippingStartTime() {
@@ -97,6 +101,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the unformattedShippingEndTime.
      * @return the unformattedShippingEndTime
      */
     public Long getUnformattedShippingEndTime() {
@@ -111,6 +116,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the shippingEndTime.
      * @return the shippingEndTime
      */
     public String getShippingEndTime() {

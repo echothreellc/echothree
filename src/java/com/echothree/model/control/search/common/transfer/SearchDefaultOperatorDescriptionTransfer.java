@@ -34,6 +34,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Returns the searchDefaultOperator.
      * @return the searchDefaultOperator
      */
     public SearchDefaultOperatorTransfer getSearchDefaultOperator() {
@@ -62,6 +64,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

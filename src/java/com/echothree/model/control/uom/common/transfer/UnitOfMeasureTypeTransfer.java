@@ -47,6 +47,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKind.
      * @return the unitOfMeasureKind
      */
     public UnitOfMeasureKindTransfer getUnitOfMeasureKind() {
@@ -61,6 +62,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureTypeName.
      * @return the unitOfMeasureTypeName
      */
     public String getUnitOfMeasureTypeName() {
@@ -75,6 +77,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the symbolPosition.
      * @return the symbolPosition
      */
     public SymbolPositionTransfer getSymbolPosition() {
@@ -89,6 +92,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the suppressSymbolSeparator.
      * @return the suppressSymbolSeparator
      */
     public Boolean getSuppressSymbolSeparator() {
@@ -103,6 +107,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -117,6 +122,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -131,6 +137,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -145,6 +152,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureTypeVolume.
      * @return the unitOfMeasureTypeVolume
      */
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolume() {
@@ -159,6 +167,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureTypeWeight.
      * @return the unitOfMeasureTypeWeight
      */
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeight() {

@@ -33,6 +33,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Returns the shipmentTimeType.
      * @return the shipmentTimeType
      */
     public ShipmentTimeTypeTransfer getShipmentTimeType() {
@@ -47,6 +48,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -61,6 +63,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {

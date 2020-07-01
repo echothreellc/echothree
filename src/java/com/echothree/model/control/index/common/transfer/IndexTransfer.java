@@ -49,6 +49,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the indexName.
      * @return the indexName
      */
     public String getIndexName() {
@@ -63,6 +64,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the indexType.
      * @return the indexType
      */
     public IndexTypeTransfer getIndexType() {
@@ -77,6 +79,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -91,6 +94,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the directory.
      * @return the directory
      */
     public String getDirectory() {
@@ -105,6 +109,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -119,6 +124,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -133,6 +139,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -147,6 +154,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the unformattedCreatedTime.
      * @return the unformattedCreatedTime
      */
     public Long getUnformattedCreatedTime() {
@@ -161,6 +169,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the createdTime.
      * @return the createdTime
      */
     public String getCreatedTime() {

@@ -43,6 +43,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -57,6 +58,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the contactMechanism.
      * @return the contactMechanism
      */
     public ContactMechanismTransfer getContactMechanism() {
@@ -71,6 +73,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -85,6 +88,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -99,6 +103,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -113,6 +118,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the partyContactMechanismPurposes.
      * @return the partyContactMechanismPurposes
      */
     public ListWrapper<PartyContactMechanismPurposeTransfer> getPartyContactMechanismPurposes() {
@@ -127,6 +133,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the partyContactMechanismRelationships.
      * @return the partyContactMechanismRelationships
      */
     public ListWrapper<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationships() {

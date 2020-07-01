@@ -46,6 +46,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the documentName.
      * @return the documentName
      */
     public String getDocumentName() {
@@ -60,6 +61,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the documentType.
      * @return the documentType
      */
     public DocumentTypeTransfer getDocumentType() {
@@ -74,6 +76,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -88,6 +91,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the pages.
      * @return the pages
      */
     public Integer getPages() {
@@ -102,6 +106,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -116,6 +121,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -130,6 +136,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -144,6 +151,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String geteTag() {

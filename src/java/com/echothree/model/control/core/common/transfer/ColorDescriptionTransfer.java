@@ -34,6 +34,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Returns the color.
      * @return the color
      */
     public ColorTransfer getColor() {
@@ -62,6 +64,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

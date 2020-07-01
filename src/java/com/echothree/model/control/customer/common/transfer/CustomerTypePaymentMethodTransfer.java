@@ -39,6 +39,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -53,6 +54,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the paymentMethod.
      * @return the paymentMethod
      */
     public PaymentMethodTransfer getPaymentMethod() {
@@ -67,6 +69,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the defaultSelectionPriority.
      * @return the defaultSelectionPriority
      */
     public Integer getDefaultSelectionPriority() {
@@ -81,6 +84,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -95,6 +99,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

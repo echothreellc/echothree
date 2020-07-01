@@ -35,6 +35,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -49,6 +50,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -63,6 +65,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Returns the taxClassification.
      * @return the taxClassification
      */
     public TaxClassificationTransfer getTaxClassification() {

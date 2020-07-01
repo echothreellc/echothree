@@ -48,6 +48,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the userVisit.
      * @return the userVisit
      */
     public UserVisitTransfer getUserVisit() {
@@ -62,6 +63,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the userVisitCampaignSequence.
      * @return the userVisitCampaignSequence
      */
     public Integer getUserVisitCampaignSequence() {
@@ -76,6 +78,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -90,6 +93,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {
@@ -104,6 +108,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaign.
      * @return the campaign
      */
     public CampaignTransfer getCampaign() {
@@ -118,6 +123,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignSource.
      * @return the campaignSource
      */
     public CampaignSourceTransfer getCampaignSource() {
@@ -132,6 +138,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignMedium.
      * @return the campaignMedium
      */
     public CampaignMediumTransfer getCampaignMedium() {
@@ -146,6 +153,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignTerm.
      * @return the campaignTerm
      */
     public CampaignTermTransfer getCampaignTerm() {
@@ -160,6 +168,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignContent.
      * @return the campaignContent
      */
     public CampaignContentTransfer getCampaignContent() {

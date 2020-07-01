@@ -61,6 +61,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the carrier.
      * @return the carrier
      */
     public CarrierTransfer getCarrier() {
@@ -75,6 +76,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the carrierOptionName.
      * @return the carrierOptionName
      */
     public String getCarrierOptionName() {
@@ -89,6 +91,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the isRecommended.
      * @return the isRecommended
      */
     public Boolean getIsRecommended() {
@@ -103,6 +106,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the isRequired.
      * @return the isRequired
      */
     public Boolean getIsRequired() {
@@ -117,6 +121,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedGeoCodeSelector.
      * @return the recommendedGeoCodeSelector
      */
     public SelectorTransfer getRecommendedGeoCodeSelector() {
@@ -131,6 +136,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredGeoCodeSelector.
      * @return the requiredGeoCodeSelector
      */
     public SelectorTransfer getRequiredGeoCodeSelector() {
@@ -145,6 +151,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedItemSelector.
      * @return the recommendedItemSelector
      */
     public SelectorTransfer getRecommendedItemSelector() {
@@ -159,6 +166,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredItemSelector.
      * @return the requiredItemSelector
      */
     public SelectorTransfer getRequiredItemSelector() {
@@ -173,6 +181,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedOrderSelector.
      * @return the recommendedOrderSelector
      */
     public SelectorTransfer getRecommendedOrderSelector() {
@@ -187,6 +196,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredOrderSelector.
      * @return the requiredOrderSelector
      */
     public SelectorTransfer getRequiredOrderSelector() {
@@ -201,6 +211,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedShipmentSelector.
      * @return the recommendedShipmentSelector
      */
     public SelectorTransfer getRecommendedShipmentSelector() {
@@ -215,6 +226,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredShipmentSelector.
      * @return the requiredShipmentSelector
      */
     public SelectorTransfer getRequiredShipmentSelector() {
@@ -229,6 +241,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -243,6 +256,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -257,6 +271,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

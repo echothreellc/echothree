@@ -32,6 +32,7 @@ public class UserVisitSearchFacetListItemTransfer
     }
 
     /**
+     * Returns the entityListItem.
      * @return the entityListItem
      */
     public EntityListItemTransfer getEntityListItem() {
@@ -46,6 +47,7 @@ public class UserVisitSearchFacetListItemTransfer
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Integer getCount() {

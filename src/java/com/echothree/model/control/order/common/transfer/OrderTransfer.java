@@ -64,6 +64,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderType.
      * @return the orderType
      */
     public OrderTypeTransfer getOrderType() {
@@ -78,6 +79,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderName.
      * @return the orderName
      */
     public String getOrderName() {
@@ -92,6 +94,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderPriority.
      * @return the orderPriority
      */
     public OrderPriorityTransfer getOrderPriority() {
@@ -106,6 +109,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -120,6 +124,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the holdUntilComplete.
      * @return the holdUntilComplete
      */
     public Boolean getHoldUntilComplete() {
@@ -134,6 +139,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the allowBackorders.
      * @return the allowBackorders
      */
     public Boolean getAllowBackorders() {
@@ -148,6 +154,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the allowSubstitutions.
      * @return the allowSubstitutions
      */
     public Boolean getAllowSubstitutions() {
@@ -162,6 +169,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the allowCombiningShipments.
      * @return the allowCombiningShipments
      */
     public Boolean getAllowCombiningShipments() {
@@ -176,6 +184,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the term.
      * @return the term
      */
     public TermTransfer getTerm() {
@@ -190,6 +199,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the reference.
      * @return the reference
      */
     public String getReference() {
@@ -204,6 +214,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -218,6 +229,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -232,6 +244,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -246,6 +259,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the taxable.
      * @return the taxable
      */
     public Boolean getTaxable() {
@@ -260,6 +274,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderRoles.
      * @return the orderRoles
      */
     public MapWrapper<OrderRoleTransfer> getOrderRoles() {
@@ -274,6 +289,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderTimes.
      * @return the orderTimes
      */
     public MapWrapper<OrderTimeTransfer> getOrderTimes() {

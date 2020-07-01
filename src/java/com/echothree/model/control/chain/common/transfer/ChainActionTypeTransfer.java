@@ -38,6 +38,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the chainActionTypeName.
      * @return the chainActionTypeName
      */
     public String getChainActionTypeName() {
@@ -52,6 +53,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the allowMultiple.
      * @return the allowMultiple
      */
     public Boolean getAllowMultiple() {
@@ -66,6 +68,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -80,6 +83,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -94,6 +98,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -34,6 +34,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -48,6 +49,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Returns the entityAttributeGroup.
      * @return the entityAttributeGroup
      */
     public EntityAttributeGroupTransfer getEntityAttributeGroup() {
@@ -62,6 +64,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {

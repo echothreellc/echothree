@@ -47,6 +47,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the contentPage.
      * @return the contentPage
      */
     public ContentPageTransfer getContentPage() {
@@ -61,6 +62,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the contentPageLayoutArea.
      * @return the contentPageLayoutArea
      */
     public ContentPageLayoutAreaTransfer getContentPageLayoutArea() {
@@ -75,6 +77,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -89,6 +92,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -103,6 +107,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -117,6 +122,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -131,6 +137,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the string.
      * @return the string
      */
     public String getString() {
@@ -145,6 +152,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the url.
      * @return the url
      */
     public String getUrl() {

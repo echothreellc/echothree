@@ -44,6 +44,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the application.
      * @return the application
      */
     public ApplicationTransfer getApplication() {
@@ -58,6 +59,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the applicationEditorUseName.
      * @return the applicationEditorUseName
      */
     public String getApplicationEditorUseName() {
@@ -72,6 +74,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the defaultApplicationEditor.
      * @return the defaultApplicationEditor
      */
     public ApplicationEditorTransfer getDefaultApplicationEditor() {
@@ -86,6 +89,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the defaultHeight.
      * @return the defaultHeight
      */
     public Integer getDefaultHeight() {
@@ -100,6 +104,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the defaultWidth.
      * @return the defaultWidth
      */
     public Integer getDefaultWidth() {
@@ -114,6 +119,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -128,6 +134,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -142,6 +149,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -92,6 +92,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the vendorName.
      * @return the vendorName
      */
     public String getVendorName() {
@@ -106,6 +107,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the vendorType.
      * @return the vendorType
      */
     public VendorTypeTransfer getVendorType() {
@@ -120,6 +122,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the minimumPurchaseOrderLines.
      * @return the minimumPurchaseOrderLines
      */
     public Integer getMinimumPurchaseOrderLines() {
@@ -134,6 +137,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the maximumPurchaseOrderLines.
      * @return the maximumPurchaseOrderLines
      */
     public Integer getMaximumPurchaseOrderLines() {
@@ -148,6 +152,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the unformattedMinimumPurchaseOrderAmount.
      * @return the unformattedMinimumPurchaseOrderAmount
      */
     public Long getUnformattedMinimumPurchaseOrderAmount() {
@@ -162,6 +167,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the minimumPurchaseOrderAmount.
      * @return the minimumPurchaseOrderAmount
      */
     public String getMinimumPurchaseOrderAmount() {
@@ -176,6 +182,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the unformattedMaximumPurchaseOrderAmount.
      * @return the unformattedMaximumPurchaseOrderAmount
      */
     public Long getUnformattedMaximumPurchaseOrderAmount() {
@@ -190,6 +197,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the maximumPurchaseOrderAmount.
      * @return the maximumPurchaseOrderAmount
      */
     public String getMaximumPurchaseOrderAmount() {
@@ -204,6 +212,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the useItemPurchasingCategories.
      * @return the useItemPurchasingCategories
      */
     public Boolean getUseItemPurchasingCategories() {
@@ -218,6 +227,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the defaultItemAliasType.
      * @return the defaultItemAliasType
      */
     public ItemAliasTypeTransfer getDefaultItemAliasType() {
@@ -232,6 +242,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the apGlAccount.
      * @return the apGlAccount
      */
     public GlAccountTransfer getApGlAccount() {
@@ -246,6 +257,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the holdUntilComplete.
      * @return the holdUntilComplete
      */
     public Boolean getHoldUntilComplete() {
@@ -260,6 +272,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the allowBackorders.
      * @return the allowBackorders
      */
     public Boolean getAllowBackorders() {
@@ -274,6 +287,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the allowSubstitutions.
      * @return the allowSubstitutions
      */
     public Boolean getAllowSubstitutions() {
@@ -288,6 +302,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the allowCombiningShipments.
      * @return the allowCombiningShipments
      */
     public Boolean getAllowCombiningShipments() {
@@ -302,6 +317,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the requireReference.
      * @return the requireReference
      */
     public Boolean getRequireReference() {
@@ -316,6 +332,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the allowReferenceDuplicates.
      * @return the allowReferenceDuplicates
      */
     public Boolean getAllowReferenceDuplicates() {
@@ -330,6 +347,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the referenceValidationPattern.
      * @return the referenceValidationPattern
      */
     public String getReferenceValidationPattern() {
@@ -344,6 +362,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the vendorStatus.
      * @return the vendorStatus
      */
     public WorkflowEntityStatusTransfer getVendorStatus() {
@@ -358,6 +377,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the vendorItemsCount.
      * @return the vendorItemsCount
      */
     public Long getVendorItemsCount() {
@@ -372,6 +392,7 @@ public class VendorTransfer
     }
 
     /**
+     * Returns the vendorItems.
      * @return the vendorItems
      */
     public ListWrapper<VendorItemTransfer> getVendorItems() {

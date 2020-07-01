@@ -34,6 +34,7 @@ public class EditorDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class EditorDescriptionTransfer
     }
 
     /**
+     * Returns the editor.
      * @return the editor
      */
     public EditorTransfer getEditor() {
@@ -62,6 +64,7 @@ public class EditorDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

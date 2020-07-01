@@ -47,6 +47,7 @@ public class BatchOrderDirectoryHandler {
     }
 
     /**
+     * Returns the directory.
      * @return the directory
      */
     public String getDirectory() {

@@ -34,6 +34,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Returns the searchSortOrder.
      * @return the searchSortOrder
      */
     public SearchSortOrderTransfer getSearchSortOrder() {
@@ -62,6 +64,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

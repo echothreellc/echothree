@@ -42,6 +42,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the securityRoleGroupName.
      * @return the securityRoleGroupName
      */
     public String getSecurityRoleGroupName() {
@@ -56,6 +57,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the parentSecurityRoleGroup.
      * @return the parentSecurityRoleGroup
      */
     public SecurityRoleGroupTransfer getParentSecurityRoleGroup() {
@@ -70,6 +72,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -84,6 +87,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -98,6 +102,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -112,6 +117,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the securityRoleCount.
      * @return the securityRoleCount
      */
     public Long getSecurityRoleCount() {
@@ -126,6 +132,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the securityRoles.
      * @return the securityRoles
      */
     public MapWrapper<SecurityRoleTransfer> getSecurityRoles() {

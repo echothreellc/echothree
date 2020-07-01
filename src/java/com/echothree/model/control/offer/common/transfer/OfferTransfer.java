@@ -52,6 +52,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {
@@ -66,6 +67,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the salesOrderSequence.
      * @return the salesOrderSequence
      */
     public SequenceTransfer getSalesOrderSequence() {
@@ -80,6 +82,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the department.
      * @return the department
      */
     public DepartmentTransfer getDepartment() {
@@ -94,6 +97,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerItemSelector.
      * @return the offerItemSelector
      */
     public SelectorTransfer getOfferItemSelector() {
@@ -108,6 +112,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerItemPriceFilter.
      * @return the offerItemPriceFilter
      */
     public FilterTransfer getOfferItemPriceFilter() {
@@ -122,6 +127,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -136,6 +142,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -150,6 +157,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -164,6 +172,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerNameElements.
      * @return the offerNameElements
      */
     public ListWrapper<OfferNameElementTransfer> getOfferNameElements() {
@@ -178,6 +187,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerCustomerTypes.
      * @return the offerCustomerTypes
      */
     public ListWrapper<OfferCustomerTypeTransfer> getOfferCustomerTypes() {

@@ -42,6 +42,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -56,6 +57,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the entityIntegerRangeName.
      * @return the entityIntegerRangeName
      */
     public String getEntityIntegerRangeName() {
@@ -70,6 +72,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the minimumIntegerValue.
      * @return the minimumIntegerValue
      */
     public Integer getMinimumIntegerValue() {
@@ -84,6 +87,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the maximumIntegerValue.
      * @return the maximumIntegerValue
      */
     public Integer getMaximumIntegerValue() {
@@ -98,6 +102,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -112,6 +117,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -126,6 +132,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

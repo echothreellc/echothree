@@ -32,6 +32,7 @@ public class ContactMechanismResultTransfer
     }
 
     /**
+     * Returns the contactMechanismName.
      * @return the contactMechanismName
      */
     public String getContactMechanismName() {
@@ -46,6 +47,7 @@ public class ContactMechanismResultTransfer
     }
 
     /**
+     * Returns the contactMechanism.
      * @return the contactMechanism
      */
     public ContactMechanismTransfer getContactMechanism() {

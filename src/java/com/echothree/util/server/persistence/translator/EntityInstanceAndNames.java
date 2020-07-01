@@ -30,6 +30,7 @@ public class EntityInstanceAndNames {
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     public EntityInstance getEntityInstance() {
@@ -44,6 +45,7 @@ public class EntityInstanceAndNames {
     }
 
     /**
+     * Returns the entityNames.
      * @return the entityNames
      */
     public EntityNames getEntityNames() {

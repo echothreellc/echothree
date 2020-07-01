@@ -55,6 +55,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceType.
      * @return the invoiceType
      */
     public InvoiceTypeTransfer getInvoiceType() {
@@ -69,6 +70,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceName.
      * @return the invoiceName
      */
     public String getInvoiceName() {
@@ -83,6 +85,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the billingAccount.
      * @return the billingAccount
      */
     public BillingAccountTransfer getBillingAccount() {
@@ -97,6 +100,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the glAccount.
      * @return the glAccount
      */
     public GlAccountTransfer getGlAccount() {
@@ -111,6 +115,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the term.
      * @return the term
      */
     public TermTransfer getTerm() {
@@ -125,6 +130,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the reference.
      * @return the reference
      */
     public String getReference() {
@@ -139,6 +145,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -153,6 +160,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceStatus.
      * @return the invoiceStatus
      */
     public WorkflowEntityStatusTransfer getInvoiceStatus() {
@@ -167,6 +175,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceTimes.
      * @return the invoiceTimes
      */
     public MapWrapper<InvoiceTimeTransfer> getInvoiceTimes() {
@@ -181,6 +190,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceRoles.
      * @return the invoiceRoles
      */
     public MapWrapper<InvoiceRoleTransfer> getInvoiceRoles() {
@@ -195,6 +205,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceLines.
      * @return the invoiceLines
      */
     public ListWrapper<InvoiceLineTransfer> getInvoiceLines() {
@@ -209,6 +220,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceAliases.
      * @return the invoiceAliases
      */
     public ListWrapper<InvoiceAliasTransfer> getInvoiceAliases() {

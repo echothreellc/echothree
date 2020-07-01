@@ -34,6 +34,7 @@ public class CampaignMediumDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class CampaignMediumDescriptionTransfer
     }
 
     /**
+     * Returns the campaignMedium.
      * @return the campaignMedium
      */
     public CampaignMediumTransfer getCampaignMedium() {
@@ -62,6 +64,7 @@ public class CampaignMediumDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

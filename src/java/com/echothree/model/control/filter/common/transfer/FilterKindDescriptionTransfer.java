@@ -34,6 +34,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Returns the filterKind.
      * @return the filterKind
      */
     public FilterKindTransfer getFilterKind() {
@@ -62,6 +64,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

@@ -25,6 +25,7 @@ public class EntityLongAttributeFacetResult
     private Integer count;
 
     /**
+     * Returns the longAttribute.
      * @return the longAttribute
      */
     public Long getLongAttribute() {
@@ -39,6 +40,7 @@ public class EntityLongAttributeFacetResult
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Integer getCount() {

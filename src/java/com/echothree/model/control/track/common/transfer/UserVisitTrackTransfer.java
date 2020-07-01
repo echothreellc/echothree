@@ -38,6 +38,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Returns the userVisit.
      * @return the userVisit
      */
     public UserVisitTransfer getUserVisit() {
@@ -52,6 +53,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Returns the userVisitTrackSequence.
      * @return the userVisitTrackSequence
      */
     public Integer getUserVisitTrackSequence() {
@@ -66,6 +68,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -80,6 +83,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {
@@ -94,6 +98,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Returns the track.
      * @return the track
      */
     public TrackTransfer getTrack() {

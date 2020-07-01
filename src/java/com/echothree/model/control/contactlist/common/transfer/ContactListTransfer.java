@@ -46,6 +46,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the contactListName.
      * @return the contactListName
      */
     public String getContactListName() {
@@ -60,6 +61,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the contactListGroup.
      * @return the contactListGroup
      */
     public ContactListGroupTransfer getContactListGroup() {
@@ -74,6 +76,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the contactListType.
      * @return the contactListType
      */
     public ContactListTypeTransfer getContactListType() {
@@ -88,6 +91,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the contactListFrequency.
      * @return the contactListFrequency
      */
     public ContactListFrequencyTransfer getContactListFrequency() {
@@ -102,6 +106,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the defaultPartyContactListStatus.
      * @return the defaultPartyContactListStatus
      */
     public WorkflowEntranceTransfer getDefaultPartyContactListStatus() {
@@ -116,6 +121,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -130,6 +136,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -144,6 +151,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {

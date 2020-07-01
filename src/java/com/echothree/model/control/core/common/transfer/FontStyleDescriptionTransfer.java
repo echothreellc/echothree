@@ -34,6 +34,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -48,6 +49,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Returns the fontStyle.
      * @return the fontStyle
      */
     public FontStyleTransfer getFontStyle() {
@@ -62,6 +64,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
