@@ -33,6 +33,7 @@ public class EntityLongAttributeFacetResult
     }
 
     /**
+     * Sets the longAttribute.
      * @param longAttribute the longAttribute to set
      */
     public void setLongAttribute(Long longAttribute) {
@@ -48,6 +49,7 @@ public class EntityLongAttributeFacetResult
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

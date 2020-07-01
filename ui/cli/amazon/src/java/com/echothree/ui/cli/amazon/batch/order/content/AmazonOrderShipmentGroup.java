@@ -68,6 +68,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the order.
      * @param order the order to set
      */
     public void setOrder(AmazonOrder order) {
@@ -83,6 +84,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the recipientName.
      * @param recipientName the recipientName to set
      */
     public void setRecipientName(String recipientName) {
@@ -98,6 +100,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipAddress1.
      * @param shipAddress1 the shipAddress1 to set
      */
     public void setShipAddress1(String shipAddress1) {
@@ -113,6 +116,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipAddress2.
      * @param shipAddress2 the shipAddress2 to set
      */
     public void setShipAddress2(String shipAddress2) {
@@ -128,6 +132,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipCity.
      * @param shipCity the shipCity to set
      */
     public void setShipCity(String shipCity) {
@@ -143,6 +148,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipState.
      * @param shipState the shipState to set
      */
     public void setShipState(String shipState) {
@@ -158,6 +164,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipZip.
      * @param shipZip the shipZip to set
      */
     public void setShipZip(String shipZip) {
@@ -173,6 +180,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipCountry.
      * @param shipCountry the shipCountry to set
      */
     public void setShipCountry(String shipCountry) {
@@ -188,6 +196,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipMethod.
      * @param shipMethod the shipMethod to set
      */
     public void setShipMethod(String shipMethod) {
@@ -207,6 +216,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the amazonOrderLines.
      * @param amazonOrderLines the amazonOrderLines to set
      */
     public void setAmazonOrderLines(Map<String, AmazonOrderLine> amazonOrderLines) {
@@ -222,6 +232,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the recipientNameResult.
      * @param recipientNameResult the recipientNameResult to set
      */
     public void setRecipientNameResult(NameResult recipientNameResult) {
@@ -237,6 +248,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the contactMechanismName.
      * @param contactMechanismName the contactMechanismName to set
      */
     public void setContactMechanismName(String contactMechanismName) {

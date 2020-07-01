@@ -37,6 +37,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentCollectionName.
      * @param contentCollectionName the contentCollectionName to set
      */
     public void setContentCollectionName(String contentCollectionName) {
@@ -52,6 +53,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentSectionName.
      * @param contentSectionName the contentSectionName to set
      */
     public void setContentSectionName(String contentSectionName) {
@@ -67,6 +69,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentPageName.
      * @param contentPageName the contentPageName to set
      */
     public void setContentPageName(String contentPageName) {
@@ -82,6 +85,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the parentContentSectionName.
      * @param parentContentSectionName the parentContentSectionName to set
      */
     public void setParentContentSectionName(String parentContentSectionName) {

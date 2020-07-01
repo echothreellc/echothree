@@ -59,6 +59,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -74,6 +75,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendor.
      * @param vendor the vendor to set
      */
     public void setVendor(VendorTransfer vendor) {
@@ -89,6 +91,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendorItemName.
      * @param vendorItemName the vendorItemName to set
      */
     public void setVendorItemName(String vendorItemName) {
@@ -104,6 +107,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -119,6 +123,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the priority.
      * @param priority the priority to set
      */
     public void setPriority(Integer priority) {
@@ -134,6 +139,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -149,6 +155,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -164,6 +171,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendorItemStatus.
      * @param vendorItemStatus the vendorItemStatus to set
      */
     public void setVendorItemStatus(WorkflowEntityStatusTransfer vendorItemStatus) {
@@ -179,6 +187,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendorItemCosts.
      * @param vendorItemCosts the vendorItemCosts to set
      */
     public void setVendorItemCosts(ListWrapper<VendorItemCostTransfer> vendorItemCosts) {

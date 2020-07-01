@@ -55,6 +55,7 @@ public class TransferPropertiesHolder {
     }
 
     /**
+     * Sets the clazz.
      * @param clazz the clazz to set
      */
     public void setClazz(Class clazz) {

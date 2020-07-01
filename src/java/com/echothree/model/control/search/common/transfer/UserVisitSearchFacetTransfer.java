@@ -46,6 +46,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -61,6 +62,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the userVisitSearchFacetListItems.
      * @param userVisitSearchFacetListItems the userVisitSearchFacetListItems to set
      */
     public void setUserVisitSearchFacetListItems(ListWrapper<UserVisitSearchFacetListItemTransfer> userVisitSearchFacetListItems) {
@@ -76,6 +78,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the userVisitSearchFacetIntegers.
      * @param userVisitSearchFacetIntegers the userVisitSearchFacetIntegers to set
      */
     public void setUserVisitSearchFacetIntegers(ListWrapper<UserVisitSearchFacetIntegerTransfer> userVisitSearchFacetIntegers) {
@@ -91,6 +94,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the userVisitSearchFacetLongs.
      * @param userVisitSearchFacetLongs the userVisitSearchFacetLongs to set
      */
     public void setUserVisitSearchFacetLongs(ListWrapper<UserVisitSearchFacetLongTransfer> userVisitSearchFacetLongs) {

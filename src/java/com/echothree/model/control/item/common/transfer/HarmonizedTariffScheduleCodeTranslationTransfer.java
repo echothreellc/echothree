@@ -48,6 +48,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -63,6 +64,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCode.
      * @param harmonizedTariffScheduleCode the harmonizedTariffScheduleCode to set
      */
     public void setHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode) {
@@ -78,6 +80,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -93,6 +96,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransfer
     }
 
     /**
+     * Sets the overviewMimeType.
      * @param overviewMimeType the overviewMimeType to set
      */
     public void setOverviewMimeType(MimeTypeTransfer overviewMimeType) {
@@ -108,6 +112,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransfer
     }
 
     /**
+     * Sets the overview.
      * @param overview the overview to set
      */
     public void setOverview(String overview) {

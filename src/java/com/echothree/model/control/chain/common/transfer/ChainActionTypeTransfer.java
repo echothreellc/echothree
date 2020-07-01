@@ -46,6 +46,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the chainActionTypeName.
      * @param chainActionTypeName the chainActionTypeName to set
      */
     public void setChainActionTypeName(String chainActionTypeName) {
@@ -61,6 +62,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the allowMultiple.
      * @param allowMultiple the allowMultiple to set
      */
     public void setAllowMultiple(Boolean allowMultiple) {
@@ -76,6 +78,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -91,6 +94,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -106,6 +110,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

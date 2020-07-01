@@ -46,6 +46,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Sets the documentTypeUsageType.
      * @param documentTypeUsageType the documentTypeUsageType to set
      */
     public void setDocumentTypeUsageType(DocumentTypeUsageTypeTransfer documentTypeUsageType) {
@@ -61,6 +62,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Sets the documentType.
      * @param documentType the documentType to set
      */
     public void setDocumentType(DocumentTypeTransfer documentType) {
@@ -76,6 +78,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -91,6 +94,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -106,6 +110,7 @@ public class DocumentTypeUsageTransfer
     }
 
     /**
+     * Sets the maximumInstances.
      * @param maximumInstances the maximumInstances to set
      */
     public void setMaximumInstances(Integer maximumInstances) {

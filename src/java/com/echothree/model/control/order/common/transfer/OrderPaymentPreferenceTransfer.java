@@ -52,6 +52,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the orderPaymentPreferenceSequence.
      * @param orderPaymentPreferenceSequence the orderPaymentPreferenceSequence to set
      */
     public void setOrderPaymentPreferenceSequence(Integer orderPaymentPreferenceSequence) {
@@ -67,6 +68,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the paymentMethod.
      * @param paymentMethod the paymentMethod to set
      */
     public void setPaymentMethod(PaymentMethodTransfer paymentMethod) {
@@ -82,6 +84,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the partyPaymentMethod.
      * @param partyPaymentMethod the partyPaymentMethod to set
      */
     public void setPartyPaymentMethod(PartyPaymentMethodTransfer partyPaymentMethod) {
@@ -97,6 +100,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the wasPresent.
      * @param wasPresent the wasPresent to set
      */
     public void setWasPresent(Boolean wasPresent) {
@@ -112,6 +116,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the unformattedMaximumAmount.
      * @param unformattedMaximumAmount the unformattedMaximumAmount to set
      */
     public void setUnformattedMaximumAmount(Long unformattedMaximumAmount) {
@@ -127,6 +132,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the maximumAmount.
      * @param maximumAmount the maximumAmount to set
      */
     public void setMaximumAmount(String maximumAmount) {
@@ -142,6 +148,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

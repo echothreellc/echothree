@@ -48,6 +48,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactMechanismName.
      * @param contactMechanismName the contactMechanismName to set
      */
     public void setContactMechanismName(String contactMechanismName) {
@@ -63,6 +64,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactMechanismType.
      * @param contactMechanismType the contactMechanismType to set
      */
     public void setContactMechanismType(ContactMechanismTypeTransfer contactMechanismType) {
@@ -78,6 +80,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the allowSolicitation.
      * @param allowSolicitation the allowSolicitation to set
      */
     public void setAllowSolicitation(Boolean allowSolicitation) {
@@ -93,6 +96,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactEmailAddress.
      * @param contactEmailAddress the contactEmailAddress to set
      */
     public void setContactEmailAddress(ContactEmailAddressTransfer contactEmailAddress) {
@@ -108,6 +112,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactPostalAddress.
      * @param contactPostalAddress the contactPostalAddress to set
      */
     public void setContactPostalAddress(ContactPostalAddressTransfer contactPostalAddress) {
@@ -123,6 +128,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactTelephone.
      * @param contactTelephone the contactTelephone to set
      */
     public void setContactTelephone(ContactTelephoneTransfer contactTelephone) {
@@ -138,6 +144,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactWebAddress.
      * @param contactWebAddress the contactWebAddress to set
      */
     public void setContactWebAddress(ContactWebAddressTransfer contactWebAddress) {
@@ -153,6 +160,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactInet4Address.
      * @param contactInet4Address the contactInet4Address to set
      */
     public void setContactInet4Address(ContactInet4AddressTransfer contactInet4Address) {

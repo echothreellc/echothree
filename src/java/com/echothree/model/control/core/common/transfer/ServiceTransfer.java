@@ -47,6 +47,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the serviceName.
      * @param serviceName the serviceName to set
      */
     public void setServiceName(String serviceName) {
@@ -62,6 +63,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the port.
      * @param port the port to set
      */
     public void setPort(Integer port) {
@@ -77,6 +79,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the protocol.
      * @param protocol the protocol to set
      */
     public void setProtocol(ProtocolTransfer protocol) {
@@ -92,6 +95,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -107,6 +111,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -122,6 +127,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

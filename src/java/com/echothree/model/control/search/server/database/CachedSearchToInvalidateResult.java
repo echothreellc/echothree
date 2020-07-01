@@ -33,6 +33,7 @@ public class CachedSearchToInvalidateResult
     }
 
     /**
+     * Sets the cachedSearchStatus.
      * @param cachedSearchStatus the cachedSearchStatus to set
      */
     public void setCachedSearchStatus(CachedSearchStatus cachedSearchStatus) {

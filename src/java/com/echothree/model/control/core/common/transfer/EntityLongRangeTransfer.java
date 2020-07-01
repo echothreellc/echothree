@@ -50,6 +50,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -65,6 +66,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Sets the entityLongRangeName.
      * @param entityLongRangeName the entityLongRangeName to set
      */
     public void setEntityLongRangeName(String entityLongRangeName) {
@@ -80,6 +82,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Sets the minimumLongValue.
      * @param minimumLongValue the minimumLongValue to set
      */
     public void setMinimumLongValue(Long minimumLongValue) {
@@ -95,6 +98,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Sets the maximumLongValue.
      * @param maximumLongValue the maximumLongValue to set
      */
     public void setMaximumLongValue(Long maximumLongValue) {
@@ -110,6 +114,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -125,6 +130,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -140,6 +146,7 @@ public class EntityLongRangeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

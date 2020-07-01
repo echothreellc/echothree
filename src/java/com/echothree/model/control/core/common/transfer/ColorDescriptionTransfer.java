@@ -42,6 +42,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Sets the color.
      * @param color the color to set
      */
     public void setColor(ColorTransfer color) {
@@ -72,6 +74,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

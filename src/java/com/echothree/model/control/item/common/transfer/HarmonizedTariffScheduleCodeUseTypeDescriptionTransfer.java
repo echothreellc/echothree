@@ -42,6 +42,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeUseType.
      * @param harmonizedTariffScheduleCodeUseType the harmonizedTariffScheduleCodeUseType to set
      */
     public void setHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType) {
@@ -72,6 +74,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

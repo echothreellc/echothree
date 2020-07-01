@@ -77,6 +77,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the currencyIsoName.
      * @param currencyIsoName the currencyIsoName to set
      */
     public void setCurrencyIsoName(String currencyIsoName) {
@@ -92,6 +93,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbol.
      * @param symbol the symbol to set
      */
     public void setSymbol(String symbol) {
@@ -107,6 +109,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolPosition.
      * @param symbolPosition the symbolPosition to set
      */
     public void setSymbolPosition(SymbolPositionTransfer symbolPosition) {
@@ -122,6 +125,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnListStart.
      * @param symbolOnListStart the symbolOnListStart to set
      */
     public void setSymbolOnListStart(Boolean symbolOnListStart) {
@@ -137,6 +141,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnListMember.
      * @param symbolOnListMember the symbolOnListMember to set
      */
     public void setSymbolOnListMember(Boolean symbolOnListMember) {
@@ -152,6 +157,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnSubtotal.
      * @param symbolOnSubtotal the symbolOnSubtotal to set
      */
     public void setSymbolOnSubtotal(Boolean symbolOnSubtotal) {
@@ -167,6 +173,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnTotal.
      * @param symbolOnTotal the symbolOnTotal to set
      */
     public void setSymbolOnTotal(Boolean symbolOnTotal) {
@@ -182,6 +189,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the groupingSeparator.
      * @param groupingSeparator the groupingSeparator to set
      */
     public void setGroupingSeparator(String groupingSeparator) {
@@ -197,6 +205,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the groupingSize.
      * @param groupingSize the groupingSize to set
      */
     public void setGroupingSize(Integer groupingSize) {
@@ -212,6 +221,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the fractionSeparator.
      * @param fractionSeparator the fractionSeparator to set
      */
     public void setFractionSeparator(String fractionSeparator) {
@@ -227,6 +237,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the defaultFractionDigits.
      * @param defaultFractionDigits the defaultFractionDigits to set
      */
     public void setDefaultFractionDigits(Integer defaultFractionDigits) {
@@ -242,6 +253,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the priceUnitFractionDigits.
      * @param priceUnitFractionDigits the priceUnitFractionDigits to set
      */
     public void setPriceUnitFractionDigits(Integer priceUnitFractionDigits) {
@@ -257,6 +269,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the priceLineFractionDigits.
      * @param priceLineFractionDigits the priceLineFractionDigits to set
      */
     public void setPriceLineFractionDigits(Integer priceLineFractionDigits) {
@@ -272,6 +285,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the costUnitFractionDigits.
      * @param costUnitFractionDigits the costUnitFractionDigits to set
      */
     public void setCostUnitFractionDigits(Integer costUnitFractionDigits) {
@@ -287,6 +301,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the costLineFractionDigits.
      * @param costLineFractionDigits the costLineFractionDigits to set
      */
     public void setCostLineFractionDigits(Integer costLineFractionDigits) {
@@ -302,6 +317,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the minusSign.
      * @param minusSign the minusSign to set
      */
     public void setMinusSign(String minusSign) {
@@ -317,6 +333,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -332,6 +349,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -347,6 +365,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

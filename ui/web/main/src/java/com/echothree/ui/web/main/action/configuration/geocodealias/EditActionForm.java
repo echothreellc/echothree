@@ -36,6 +36,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the geoCodeName.
      * @param geoCodeName the geoCodeName to set
      */
     public void setGeoCodeName(String geoCodeName) {
@@ -51,6 +52,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the geoCodeAliasTypeName.
      * @param geoCodeAliasTypeName the geoCodeAliasTypeName to set
      */
     public void setGeoCodeAliasTypeName(String geoCodeAliasTypeName) {
@@ -66,6 +68,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the alias.
      * @param alias the alias to set
      */
     public void setAlias(String alias) {

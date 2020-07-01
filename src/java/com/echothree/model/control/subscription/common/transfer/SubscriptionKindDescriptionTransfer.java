@@ -42,6 +42,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Sets the subscriptionKind.
      * @param subscriptionKind the subscriptionKind to set
      */
     public void setSubscriptionKind(SubscriptionKindTransfer subscriptionKind) {
@@ -72,6 +74,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -41,6 +41,7 @@ public class OrderLineTimeTransfer
     }
 
     /**
+     * Sets the orderTimeType.
      * @param orderTimeType the orderTimeType to set
      */
     public void setOrderTimeType(OrderTimeTypeTransfer orderTimeType) {
@@ -56,6 +57,7 @@ public class OrderLineTimeTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -71,6 +73,7 @@ public class OrderLineTimeTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {

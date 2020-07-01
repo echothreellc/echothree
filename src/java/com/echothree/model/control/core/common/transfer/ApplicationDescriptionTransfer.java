@@ -42,6 +42,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Sets the application.
      * @param application the application to set
      */
     public void setApplication(ApplicationTransfer application) {
@@ -72,6 +74,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

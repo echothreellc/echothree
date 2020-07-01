@@ -42,6 +42,7 @@ public class UserLoginPasswordTypeTransfer
     }
 
     /**
+     * Sets the userLoginPasswordTypeName.
      * @param userLoginPasswordTypeName the userLoginPasswordTypeName to set
      */
     public void setUserLoginPasswordTypeName(String userLoginPasswordTypeName) {
@@ -57,6 +58,7 @@ public class UserLoginPasswordTypeTransfer
     }
 
     /**
+     * Sets the userLoginPasswordEncoderType.
      * @param userLoginPasswordEncoderType the userLoginPasswordEncoderType to set
      */
     public void setUserLoginPasswordEncoderType(UserLoginPasswordEncoderTypeTransfer userLoginPasswordEncoderType) {
@@ -72,6 +74,7 @@ public class UserLoginPasswordTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

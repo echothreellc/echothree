@@ -33,6 +33,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the geoCodeName.
      * @param geoCodeName the geoCodeName to set
      */
     public void setGeoCodeName(String geoCodeName) {

@@ -55,6 +55,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureKind.
      * @param unitOfMeasureKind the unitOfMeasureKind to set
      */
     public void setUnitOfMeasureKind(UnitOfMeasureKindTransfer unitOfMeasureKind) {
@@ -70,6 +71,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureTypeName.
      * @param unitOfMeasureTypeName the unitOfMeasureTypeName to set
      */
     public void setUnitOfMeasureTypeName(String unitOfMeasureTypeName) {
@@ -85,6 +87,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the symbolPosition.
      * @param symbolPosition the symbolPosition to set
      */
     public void setSymbolPosition(SymbolPositionTransfer symbolPosition) {
@@ -100,6 +103,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the suppressSymbolSeparator.
      * @param suppressSymbolSeparator the suppressSymbolSeparator to set
      */
     public void setSuppressSymbolSeparator(Boolean suppressSymbolSeparator) {
@@ -115,6 +119,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -130,6 +135,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -145,6 +151,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -160,6 +167,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureTypeVolume.
      * @param unitOfMeasureTypeVolume the unitOfMeasureTypeVolume to set
      */
     public void setUnitOfMeasureTypeVolume(UnitOfMeasureTypeVolumeTransfer unitOfMeasureTypeVolume) {
@@ -175,6 +183,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureTypeWeight.
      * @param unitOfMeasureTypeWeight the unitOfMeasureTypeWeight to set
      */
     public void setUnitOfMeasureTypeWeight(UnitOfMeasureTypeWeightTransfer unitOfMeasureTypeWeight) {

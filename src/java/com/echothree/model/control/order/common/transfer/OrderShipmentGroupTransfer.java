@@ -51,6 +51,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Sets the orderShipmentGroupSequence.
      * @param orderShipmentGroupSequence the orderShipmentGroupSequence to set
      */
     public void setOrderShipmentGroupSequence(Integer orderShipmentGroupSequence) {
@@ -66,6 +67,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Sets the itemDeliveryType.
      * @param itemDeliveryType the itemDeliveryType to set
      */
     public void setItemDeliveryType(ItemDeliveryTypeTransfer itemDeliveryType) {
@@ -81,6 +83,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -96,6 +99,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Sets the partyContactMechanism.
      * @param partyContactMechanism the partyContactMechanism to set
      */
     public void setPartyContactMechanism(PartyContactMechanismTransfer partyContactMechanism) {
@@ -111,6 +115,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Sets the shippingMethod.
      * @param shippingMethod the shippingMethod to set
      */
     public void setShippingMethod(ShippingMethodTransfer shippingMethod) {
@@ -126,6 +131,7 @@ public class OrderShipmentGroupTransfer
     }
 
     /**
+     * Sets the holdUntilComplete.
      * @param holdUntilComplete the holdUntilComplete to set
      */
     public void setHoldUntilComplete(Boolean holdUntilComplete) {

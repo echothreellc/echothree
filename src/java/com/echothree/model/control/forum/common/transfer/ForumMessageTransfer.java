@@ -57,6 +57,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageName.
      * @param forumMessageName the forumMessageName to set
      */
     public void setForumMessageName(String forumMessageName) {
@@ -72,6 +73,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumThread.
      * @param forumThread the forumThread to set
      */
     public void setForumThread(ForumThreadTransfer forumThread) {
@@ -87,6 +89,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageType.
      * @param forumMessageType the forumMessageType to set
      */
     public void setForumMessageType(ForumMessageTypeTransfer forumMessageType) {
@@ -102,6 +105,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the parentForumMessage.
      * @param parentForumMessage the parentForumMessage to set
      */
     public void setParentForumMessage(ForumMessageTransfer parentForumMessage) {
@@ -117,6 +121,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the icon.
      * @param icon the icon to set
      */
     public void setIcon(IconTransfer icon) {
@@ -132,6 +137,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the unformattedPostedTime.
      * @param unformattedPostedTime the unformattedPostedTime to set
      */
     public void setUnformattedPostedTime(Long unformattedPostedTime) {
@@ -147,6 +153,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the postedTime.
      * @param postedTime the postedTime to set
      */
     public void setPostedTime(String postedTime) {
@@ -162,6 +169,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageRoles.
      * @param forumMessageRoles the forumMessageRoles to set
      */
     public void setForumMessageRoles(ListWrapper<ForumMessageRoleTransfer> forumMessageRoles) {
@@ -177,6 +185,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageParts.
      * @param forumMessageParts the forumMessageParts to set
      */
     public void setForumMessageParts(MapWrapper<ForumMessagePartTransfer> forumMessageParts) {
@@ -192,6 +201,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageAttachments.
      * @param forumMessageAttachments the forumMessageAttachments to set
      */
     public void setForumMessageAttachments(ListWrapper<ForumMessageAttachmentTransfer> forumMessageAttachments) {

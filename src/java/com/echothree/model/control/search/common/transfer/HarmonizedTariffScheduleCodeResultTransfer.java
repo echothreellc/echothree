@@ -43,6 +43,7 @@ public class HarmonizedTariffScheduleCodeResultTransfer
     }
 
     /**
+     * Sets the countryGeoCodeName.
      * @param countryGeoCodeName the countryGeoCodeName to set
      */
     public void setCountryGeoCodeName(String countryGeoCodeName) {
@@ -58,6 +59,7 @@ public class HarmonizedTariffScheduleCodeResultTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeName.
      * @param harmonizedTariffScheduleCodeName the harmonizedTariffScheduleCodeName to set
      */
     public void setHarmonizedTariffScheduleCodeName(String harmonizedTariffScheduleCodeName) {
@@ -73,6 +75,7 @@ public class HarmonizedTariffScheduleCodeResultTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCode.
      * @param harmonizedTariffScheduleCode the harmonizedTariffScheduleCode to set
      */
     public void setHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode) {

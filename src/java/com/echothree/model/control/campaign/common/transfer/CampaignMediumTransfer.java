@@ -51,6 +51,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Sets the campaignMediumName.
      * @param campaignMediumName the campaignMediumName to set
      */
     public void setCampaignMediumName(String campaignMediumName) {
@@ -66,6 +67,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Sets the valueSha1Hash.
      * @param valueSha1Hash the valueSha1Hash to set
      */
     public void setValueSha1Hash(String valueSha1Hash) {
@@ -81,6 +83,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Sets the value.
      * @param value the value to set
      */
     public void setValue(String value) {
@@ -96,6 +99,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -111,6 +115,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -126,6 +131,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -141,6 +147,7 @@ public class CampaignMediumTransfer
     }
 
     /**
+     * Sets the campaignMediumStatus.
      * @param campaignMediumStatus the campaignMediumStatus to set
      */
     public void setCampaignMediumStatus(WorkflowEntityStatusTransfer campaignMediumStatus) {

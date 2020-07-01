@@ -93,6 +93,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the countryName.
      * @param countryName the countryName to set
      */
     public void setCountryName(String countryName) {
@@ -108,6 +109,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the iso3Number.
      * @param iso3Number the iso3Number to set
      */
     public void setIso3Number(String iso3Number) {
@@ -123,6 +125,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the iso3Letter.
      * @param iso3Letter the iso3Letter to set
      */
     public void setIso3Letter(String iso3Letter) {
@@ -138,6 +141,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the iso2Letter.
      * @param iso2Letter the iso2Letter to set
      */
     public void setIso2Letter(String iso2Letter) {
@@ -153,6 +157,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the telephoneCode.
      * @param telephoneCode the telephoneCode to set
      */
     public void setTelephoneCode(String telephoneCode) {
@@ -168,6 +173,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the areaCodePattern.
      * @param areaCodePattern the areaCodePattern to set
      */
     public void setAreaCodePattern(String areaCodePattern) {
@@ -183,6 +189,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the areaCodeRequired.
      * @param areaCodeRequired the areaCodeRequired to set
      */
     public void setAreaCodeRequired(Boolean areaCodeRequired) {
@@ -198,6 +205,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the areaCodeExample.
      * @param areaCodeExample the areaCodeExample to set
      */
     public void setAreaCodeExample(String areaCodeExample) {
@@ -213,6 +221,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the telephoneNumberPattern.
      * @param telephoneNumberPattern the telephoneNumberPattern to set
      */
     public void setTelephoneNumberPattern(String telephoneNumberPattern) {
@@ -228,6 +237,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the telephoneNumberExample.
      * @param telephoneNumberExample the telephoneNumberExample to set
      */
     public void setTelephoneNumberExample(String telephoneNumberExample) {
@@ -262,6 +272,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the cityRequired.
      * @param cityRequired the cityRequired to set
      */
     public void setCityRequired(Boolean cityRequired) {
@@ -277,6 +288,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the cityGeoCodeRequired.
      * @param cityGeoCodeRequired the cityGeoCodeRequired to set
      */
     public void setCityGeoCodeRequired(Boolean cityGeoCodeRequired) {
@@ -292,6 +304,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the stateRequired.
      * @param stateRequired the stateRequired to set
      */
     public void setStateRequired(Boolean stateRequired) {
@@ -307,6 +320,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the stateGeoCodeRequired.
      * @param stateGeoCodeRequired the stateGeoCodeRequired to set
      */
     public void setStateGeoCodeRequired(Boolean stateGeoCodeRequired) {
@@ -322,6 +336,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the postalCodePattern.
      * @param postalCodePattern the postalCodePattern to set
      */
     public void setPostalCodePattern(String postalCodePattern) {
@@ -337,6 +352,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the postalCodeRequired.
      * @param postalCodeRequired the postalCodeRequired to set
      */
     public void setPostalCodeRequired(Boolean postalCodeRequired) {
@@ -352,6 +368,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the postalCodeGeoCodeRequired.
      * @param postalCodeGeoCodeRequired the postalCodeGeoCodeRequired to set
      */
     public void setPostalCodeGeoCodeRequired(Boolean postalCodeGeoCodeRequired) {
@@ -367,6 +384,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the postalCodeLength.
      * @param postalCodeLength the postalCodeLength to set
      */
     public void setPostalCodeLength(String postalCodeLength) {
@@ -382,6 +400,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the postalCodeGeoCodeLength.
      * @param postalCodeGeoCodeLength the postalCodeGeoCodeLength to set
      */
     public void setPostalCodeGeoCodeLength(String postalCodeGeoCodeLength) {
@@ -397,6 +416,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the postalCodeExample.
      * @param postalCodeExample the postalCodeExample to set
      */
     public void setPostalCodeExample(String postalCodeExample) {
@@ -412,6 +432,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -427,6 +448,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(String sortOrder) {
@@ -442,6 +464,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -41,6 +41,7 @@ public class TagTransfer
     }
 
     /**
+     * Sets the tagScope.
      * @param tagScope the tagScope to set
      */
     public void setTagScope(TagScopeTransfer tagScope) {
@@ -56,6 +57,7 @@ public class TagTransfer
     }
 
     /**
+     * Sets the tagName.
      * @param tagName the tagName to set
      */
     public void setTagName(String tagName) {
@@ -71,6 +73,7 @@ public class TagTransfer
     }
 
     /**
+     * Sets the usageCount.
      * @param usageCount the usageCount to set
      */
     public void setUsageCount(Long usageCount) {

@@ -42,6 +42,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -58,6 +59,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -74,6 +76,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Sets the entityInstanceAttribute.
      * @param entityInstanceAttribute the entityInstanceAttribute to set
      */
     public void setEntityInstanceAttribute(EntityInstanceTransfer entityInstanceAttribute) {

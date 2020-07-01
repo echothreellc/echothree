@@ -40,6 +40,7 @@ public class EntityTagTransfer
     }
 
     /**
+     * Sets the taggedEntityInstance.
      * @param taggedEntityInstance the taggedEntityInstance to set
      */
     public void setTaggedEntityInstance(EntityInstanceTransfer taggedEntityInstance) {
@@ -55,6 +56,7 @@ public class EntityTagTransfer
     }
 
     /**
+     * Sets the tag.
      * @param tag the tag to set
      */
     public void setTag(TagTransfer tag) {

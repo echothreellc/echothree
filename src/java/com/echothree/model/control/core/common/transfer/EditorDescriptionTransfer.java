@@ -42,6 +42,7 @@ public class EditorDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class EditorDescriptionTransfer
     }
 
     /**
+     * Sets the editor.
      * @param editor the editor to set
      */
     public void setEditor(EditorTransfer editor) {
@@ -72,6 +74,7 @@ public class EditorDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

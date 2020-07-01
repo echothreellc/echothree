@@ -41,6 +41,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Sets the contentWebAddressName.
      * @param contentWebAddressName the contentWebAddressName to set
      */
     public void setContentWebAddressName(String contentWebAddressName) {
@@ -56,6 +57,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Sets the contentCollection.
      * @param contentCollection the contentCollection to set
      */
     public void setContentCollection(ContentCollectionTransfer contentCollection) {
@@ -71,6 +73,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

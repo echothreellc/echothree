@@ -40,6 +40,7 @@ public class ContactMechanismResultTransfer
     }
 
     /**
+     * Sets the contactMechanismName.
      * @param contactMechanismName the contactMechanismName to set
      */
     public void setContactMechanismName(String contactMechanismName) {
@@ -55,6 +56,7 @@ public class ContactMechanismResultTransfer
     }
 
     /**
+     * Sets the contactMechanism.
      * @param contactMechanism the contactMechanism to set
      */
     public void setContactMechanism(ContactMechanismTransfer contactMechanism) {

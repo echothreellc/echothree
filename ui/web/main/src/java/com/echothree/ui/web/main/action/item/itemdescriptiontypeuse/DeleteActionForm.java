@@ -35,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the itemDescriptionTypeName.
      * @param itemDescriptionTypeName the itemDescriptionTypeName to set
      */
     public void setItemDescriptionTypeName(String itemDescriptionTypeName) {
@@ -50,6 +51,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the itemDescriptionTypeUseTypeName.
      * @param itemDescriptionTypeUseTypeName the itemDescriptionTypeUseTypeName to set
      */
     public void setItemDescriptionTypeUseTypeName(String itemDescriptionTypeUseTypeName) {

@@ -127,6 +127,7 @@ public class ForumMessageSearchEvaluator
     }
 
     /**
+     * Sets the includeFutureForumThreads.
      * @param includeFutureForumThreads the includeFutureForumThreads to set
      */
     public void setIncludeFutureForumThreads(boolean includeFutureForumThreads) {

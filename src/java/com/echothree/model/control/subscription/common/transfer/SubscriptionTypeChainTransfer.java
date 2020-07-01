@@ -44,6 +44,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Sets the subscriptionType.
      * @param subscriptionType the subscriptionType to set
      */
     public void setSubscriptionType(SubscriptionTypeTransfer subscriptionType) {
@@ -59,6 +60,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Sets the chain.
      * @param chain the chain to set
      */
     public void setChain(ChainTransfer chain) {
@@ -74,6 +76,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Sets the unformattedRemainingTime.
      * @param unformattedRemainingTime the unformattedRemainingTime to set
      */
     public void setUnformattedRemainingTime(Long unformattedRemainingTime) {
@@ -89,6 +92,7 @@ public class SubscriptionTypeChainTransfer
     }
 
     /**
+     * Sets the remainingTime.
      * @param remainingTime the remainingTime to set
      */
     public void setRemainingTime(String remainingTime) {

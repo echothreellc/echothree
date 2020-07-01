@@ -49,6 +49,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the colorName.
      * @param colorName the colorName to set
      */
     public void setColorName(String colorName) {
@@ -64,6 +65,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the red.
      * @param red the red to set
      */
     public void setRed(Integer red) {
@@ -79,6 +81,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the green.
      * @param green the green to set
      */
     public void setGreen(Integer green) {
@@ -94,6 +97,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the blue.
      * @param blue the blue to set
      */
     public void setBlue(Integer blue) {
@@ -109,6 +113,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -124,6 +129,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -139,6 +145,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

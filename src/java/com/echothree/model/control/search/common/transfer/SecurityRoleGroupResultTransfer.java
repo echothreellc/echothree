@@ -40,6 +40,7 @@ public class SecurityRoleGroupResultTransfer
     }
 
     /**
+     * Sets the securityRoleGroupName.
      * @param securityRoleGroupName the securityRoleGroupName to set
      */
     public void setSecurityRoleGroupName(String securityRoleGroupName) {
@@ -55,6 +56,7 @@ public class SecurityRoleGroupResultTransfer
     }
 
     /**
+     * Sets the securityRoleGroup.
      * @param securityRoleGroup the securityRoleGroup to set
      */
     public void setSecurityRoleGroup(SecurityRoleGroupTransfer securityRoleGroup) {

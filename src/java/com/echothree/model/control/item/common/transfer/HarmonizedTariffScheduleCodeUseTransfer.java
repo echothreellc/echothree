@@ -39,6 +39,7 @@ public class HarmonizedTariffScheduleCodeUseTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCode.
      * @param harmonizedTariffScheduleCode the harmonizedTariffScheduleCode to set
      */
     public void setHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode) {
@@ -54,6 +55,7 @@ public class HarmonizedTariffScheduleCodeUseTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeUseType.
      * @param harmonizedTariffScheduleCodeUseType the harmonizedTariffScheduleCodeUseType to set
      */
     public void setHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType) {

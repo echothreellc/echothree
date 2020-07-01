@@ -42,6 +42,7 @@ public class ContentPageDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ContentPageDescriptionTransfer
     }
 
     /**
+     * Sets the contentPage.
      * @param contentPage the contentPage to set
      */
     public void setContentPage(ContentPageTransfer contentPage) {
@@ -72,6 +74,7 @@ public class ContentPageDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

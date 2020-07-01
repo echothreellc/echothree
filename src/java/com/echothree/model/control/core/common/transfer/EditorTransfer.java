@@ -58,6 +58,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the editorName.
      * @param editorName the editorName to set
      */
     public void setEditorName(String editorName) {
@@ -73,6 +74,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the hasDimensions.
      * @param hasDimensions the hasDimensions to set
      */
     public void setHasDimensions(Boolean hasDimensions) {
@@ -88,6 +90,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the minimumHeight.
      * @param minimumHeight the minimumHeight to set
      */
     public void setMinimumHeight(Integer minimumHeight) {
@@ -103,6 +106,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the minimumWidth.
      * @param minimumWidth the minimumWidth to set
      */
     public void setMinimumWidth(Integer minimumWidth) {
@@ -118,6 +122,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the maximumHeight.
      * @param maximumHeight the maximumHeight to set
      */
     public void setMaximumHeight(Integer maximumHeight) {
@@ -133,6 +138,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the maximumWidth.
      * @param maximumWidth the maximumWidth to set
      */
     public void setMaximumWidth(Integer maximumWidth) {
@@ -148,6 +154,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the defaultHeight.
      * @param defaultHeight the defaultHeight to set
      */
     public void setDefaultHeight(Integer defaultHeight) {
@@ -163,6 +170,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the defaultWidth.
      * @param defaultWidth the defaultWidth to set
      */
     public void setDefaultWidth(Integer defaultWidth) {
@@ -178,6 +186,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -193,6 +202,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -208,6 +218,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

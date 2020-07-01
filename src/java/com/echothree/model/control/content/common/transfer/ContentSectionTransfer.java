@@ -51,6 +51,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Sets the contentCollection.
      * @param contentCollection the contentCollection to set
      */
     public void setContentCollection(ContentCollectionTransfer contentCollection) {
@@ -66,6 +67,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Sets the contentSectionName.
      * @param contentSectionName the contentSectionName to set
      */
     public void setContentSectionName(String contentSectionName) {
@@ -81,6 +83,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Sets the parentContentSection.
      * @param parentContentSection the parentContentSection to set
      */
     public void setParentContentSection(ContentSectionTransfer parentContentSection) {
@@ -96,6 +99,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -111,6 +115,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -126,6 +131,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -141,6 +147,7 @@ public class ContentSectionTransfer
     }
 
     /**
+     * Sets the contentPages.
      * @param contentPages the contentPages to set
      */
     public void setContentPages(ListWrapper<ContentPageTransfer> contentPages) {

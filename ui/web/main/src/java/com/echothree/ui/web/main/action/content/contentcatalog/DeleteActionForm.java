@@ -35,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentCollectionName.
      * @param contentCollectionName the contentCollectionName to set
      */
     public void setContentCollectionName(String contentCollectionName) {
@@ -50,6 +51,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentCatalogName.
      * @param contentCatalogName the contentCatalogName to set
      */
     public void setContentCatalogName(String contentCatalogName) {

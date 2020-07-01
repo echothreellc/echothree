@@ -53,6 +53,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the contactListTypeName.
      * @param contactListTypeName the contactListTypeName to set
      */
     public void setContactListTypeName(String contactListTypeName) {
@@ -68,6 +69,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the confirmationRequestChain.
      * @param confirmationRequestChain the confirmationRequestChain to set
      */
     public void setConfirmationRequestChain(ChainTransfer confirmationRequestChain) {
@@ -83,6 +85,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the subscribeChain.
      * @param subscribeChain the subscribeChain to set
      */
     public void setSubscribeChain(ChainTransfer subscribeChain) {
@@ -98,6 +101,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the unsubscribeChain.
      * @param unsubscribeChain the unsubscribeChain to set
      */
     public void setUnsubscribeChain(ChainTransfer unsubscribeChain) {
@@ -113,6 +117,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the usedForSolicitation.
      * @param usedForSolicitation the usedForSolicitation to set
      */
     public void setUsedForSolicitation(Boolean usedForSolicitation) {
@@ -128,6 +133,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -143,6 +149,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -158,6 +165,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -46,6 +46,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the returnKindName.
      * @param returnKindName the returnKindName to set
      */
     public void setReturnKindName(String returnKindName) {
@@ -61,6 +62,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the returnSequenceType.
      * @param returnSequenceType the returnSequenceType to set
      */
     public void setReturnSequenceType(SequenceTypeTransfer returnSequenceType) {
@@ -76,6 +78,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -91,6 +94,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -106,6 +110,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -113,6 +113,7 @@ public class WorkRequirementScopeTransfer
     }
 
     /**
+     * Sets the workRequirements.
      * @param workRequirements the workRequirements to set
      */
     public void setWorkRequirements(ListWrapper<WorkRequirementTransfer> workRequirements) {

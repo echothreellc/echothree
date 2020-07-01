@@ -79,6 +79,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -94,6 +95,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the forceChangeAfterCreate.
      * @param forceChangeAfterCreate the forceChangeAfterCreate to set
      */
     public void setForceChangeAfterCreate(Boolean forceChangeAfterCreate) {
@@ -109,6 +111,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the forceChangeAfterReset.
      * @param forceChangeAfterReset the forceChangeAfterReset to set
      */
     public void setForceChangeAfterReset(Boolean forceChangeAfterReset) {
@@ -124,6 +127,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the allowChange.
      * @param allowChange the allowChange to set
      */
     public void setAllowChange(Boolean allowChange) {
@@ -139,6 +143,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the passwordHistory.
      * @param passwordHistory the passwordHistory to set
      */
     public void setPasswordHistory(Integer passwordHistory) {
@@ -154,6 +159,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the unformattedMinimumPasswordLifetime.
      * @param unformattedMinimumPasswordLifetime the unformattedMinimumPasswordLifetime to set
      */
     public void setUnformattedMinimumPasswordLifetime(Long unformattedMinimumPasswordLifetime) {
@@ -169,6 +175,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the minimumPasswordLifetime.
      * @param minimumPasswordLifetime the minimumPasswordLifetime to set
      */
     public void setMinimumPasswordLifetime(String minimumPasswordLifetime) {
@@ -184,6 +191,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the unformattedMaximumPasswordLifetime.
      * @param unformattedMaximumPasswordLifetime the unformattedMaximumPasswordLifetime to set
      */
     public void setUnformattedMaximumPasswordLifetime(Long unformattedMaximumPasswordLifetime) {
@@ -199,6 +207,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the maximumPasswordLifetime.
      * @param maximumPasswordLifetime the maximumPasswordLifetime to set
      */
     public void setMaximumPasswordLifetime(String maximumPasswordLifetime) {
@@ -214,6 +223,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the unformattedExpirationWarningTime.
      * @param unformattedExpirationWarningTime the unformattedExpirationWarningTime to set
      */
     public void setUnformattedExpirationWarningTime(Long unformattedExpirationWarningTime) {
@@ -229,6 +239,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the expirationWarningTime.
      * @param expirationWarningTime the expirationWarningTime to set
      */
     public void setExpirationWarningTime(String expirationWarningTime) {
@@ -244,6 +255,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the expiredLoginsPermitted.
      * @param expiredLoginsPermitted the expiredLoginsPermitted to set
      */
     public void setExpiredLoginsPermitted(Integer expiredLoginsPermitted) {
@@ -259,6 +271,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the minimumLength.
      * @param minimumLength the minimumLength to set
      */
     public void setMinimumLength(Integer minimumLength) {
@@ -274,6 +287,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the maximumLength.
      * @param maximumLength the maximumLength to set
      */
     public void setMaximumLength(Integer maximumLength) {
@@ -289,6 +303,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the requiredDigitCount.
      * @param requiredDigitCount the requiredDigitCount to set
      */
     public void setRequiredDigitCount(Integer requiredDigitCount) {
@@ -304,6 +319,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the requiredLetterCount.
      * @param requiredLetterCount the requiredLetterCount to set
      */
     public void setRequiredLetterCount(Integer requiredLetterCount) {
@@ -319,6 +335,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the requiredUpperCaseCount.
      * @param requiredUpperCaseCount the requiredUpperCaseCount to set
      */
     public void setRequiredUpperCaseCount(Integer requiredUpperCaseCount) {
@@ -334,6 +351,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the requiredLowerCaseCount.
      * @param requiredLowerCaseCount the requiredLowerCaseCount to set
      */
     public void setRequiredLowerCaseCount(Integer requiredLowerCaseCount) {
@@ -349,6 +367,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the maximumRepeated.
      * @param maximumRepeated the maximumRepeated to set
      */
     public void setMaximumRepeated(Integer maximumRepeated) {
@@ -364,6 +383,7 @@ public class PartyTypePasswordStringPolicyTransfer
     }
 
     /**
+     * Sets the minimumCharacterTypes.
      * @param minimumCharacterTypes the minimumCharacterTypes to set
      */
     public void setMinimumCharacterTypes(Integer minimumCharacterTypes) {

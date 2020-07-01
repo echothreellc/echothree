@@ -54,6 +54,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the contactListName.
      * @param contactListName the contactListName to set
      */
     public void setContactListName(String contactListName) {
@@ -69,6 +70,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the contactListGroup.
      * @param contactListGroup the contactListGroup to set
      */
     public void setContactListGroup(ContactListGroupTransfer contactListGroup) {
@@ -84,6 +86,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the contactListType.
      * @param contactListType the contactListType to set
      */
     public void setContactListType(ContactListTypeTransfer contactListType) {
@@ -99,6 +102,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the contactListFrequency.
      * @param contactListFrequency the contactListFrequency to set
      */
     public void setContactListFrequency(ContactListFrequencyTransfer contactListFrequency) {
@@ -114,6 +118,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the defaultPartyContactListStatus.
      * @param defaultPartyContactListStatus the defaultPartyContactListStatus to set
      */
     public void setDefaultPartyContactListStatus(WorkflowEntranceTransfer defaultPartyContactListStatus) {
@@ -129,6 +134,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -144,6 +150,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -159,6 +166,7 @@ public class ContactListTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

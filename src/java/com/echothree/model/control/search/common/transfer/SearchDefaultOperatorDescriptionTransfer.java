@@ -42,6 +42,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Sets the searchDefaultOperator.
      * @param searchDefaultOperator the searchDefaultOperator to set
      */
     public void setSearchDefaultOperator(SearchDefaultOperatorTransfer searchDefaultOperator) {
@@ -72,6 +74,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

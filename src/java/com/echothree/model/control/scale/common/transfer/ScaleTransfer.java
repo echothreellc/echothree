@@ -49,6 +49,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the scaleName.
      * @param scaleName the scaleName to set
      */
     public void setScaleName(String scaleName) {
@@ -64,6 +65,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the scaleType.
      * @param scaleType the scaleType to set
      */
     public void setScaleType(ScaleTypeTransfer scaleType) {
@@ -79,6 +81,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the serverService.
      * @param serverService the serverService to set
      */
     public void setServerService(ServerServiceTransfer serverService) {
@@ -94,6 +97,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -109,6 +113,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -124,6 +129,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

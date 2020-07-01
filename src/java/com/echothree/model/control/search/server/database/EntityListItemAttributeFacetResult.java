@@ -34,6 +34,7 @@ public class EntityListItemAttributeFacetResult
     }
 
     /**
+     * Sets the entityListItem.
      * @param entityListItem the entityListItem to set
      */
     public void setEntityListItem(EntityListItem entityListItem) {
@@ -49,6 +50,7 @@ public class EntityListItemAttributeFacetResult
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

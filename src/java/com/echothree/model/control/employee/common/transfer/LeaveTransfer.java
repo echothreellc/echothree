@@ -64,6 +64,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveName.
      * @param leaveName the leaveName to set
      */
     public void setLeaveName(String leaveName) {
@@ -79,6 +80,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -94,6 +96,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the company.
      * @param company the company to set
      */
     public void setCompany(CompanyTransfer company) {
@@ -109,6 +112,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveType.
      * @param leaveType the leaveType to set
      */
     public void setLeaveType(LeaveTypeTransfer leaveType) {
@@ -124,6 +128,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveReason.
      * @param leaveReason the leaveReason to set
      */
     public void setLeaveReason(LeaveReasonTransfer leaveReason) {
@@ -139,6 +144,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -154,6 +160,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -169,6 +176,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -184,6 +192,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -199,6 +208,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the unformattedTotalTime.
      * @param unformattedTotalTime the unformattedTotalTime to set
      */
     public void setUnformattedTotalTime(Long unformattedTotalTime) {
@@ -214,6 +224,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the totalTime.
      * @param totalTime the totalTime to set
      */
     public void setTotalTime(String totalTime) {
@@ -229,6 +240,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveStatus.
      * @param leaveStatus the leaveStatus to set
      */
     public void setLeaveStatus(WorkflowEntityStatusTransfer leaveStatus) {

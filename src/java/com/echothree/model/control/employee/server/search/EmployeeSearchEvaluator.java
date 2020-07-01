@@ -74,6 +74,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Sets the partyEmployeeName.
      * @param partyEmployeeName the partyEmployeeName to set
      */
     public void setPartyEmployeeName(String partyEmployeeName) {
@@ -89,6 +90,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Sets the employeeStatusWorkflowStep.
      * @param employeeStatusWorkflowStep the employeeStatusWorkflowStep to set
      */
     public void setEmployeeStatusWorkflowStep(WorkflowStep employeeStatusWorkflowStep) {
@@ -104,6 +106,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Sets the employeeAvailabilityWorkflowStep.
      * @param employeeAvailabilityWorkflowStep the employeeAvailabilityWorkflowStep to set
      */
     public void setEmployeeAvailabilityWorkflowStep(WorkflowStep employeeAvailabilityWorkflowStep) {

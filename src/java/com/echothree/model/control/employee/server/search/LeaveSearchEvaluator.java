@@ -107,6 +107,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveName.
      * @param leaveName the leaveName to set
      */
     public void setLeaveName(String leaveName) {
@@ -122,6 +123,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(Party party) {
@@ -137,6 +139,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the companyParty.
      * @param companyParty the companyParty to set
      */
     public void setCompanyParty(Party companyParty) {
@@ -152,6 +155,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveType.
      * @param leaveType the leaveType to set
      */
     public void setLeaveType(LeaveType leaveType) {
@@ -167,6 +171,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveReason.
      * @param leaveReason the leaveReason to set
      */
     public void setLeaveReason(LeaveReason leaveReason) {
@@ -182,6 +187,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveStatusWorkflowStep.
      * @param leaveStatusWorkflowStep the leaveStatusWorkflowStep to set
      */
     public void setLeaveStatusWorkflowStep(WorkflowStep leaveStatusWorkflowStep) {

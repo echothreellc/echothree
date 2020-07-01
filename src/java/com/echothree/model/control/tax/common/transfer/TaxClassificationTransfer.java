@@ -46,6 +46,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -61,6 +62,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the taxClassificationName.
      * @param taxClassificationName the taxClassificationName to set
      */
     public void setTaxClassificationName(String taxClassificationName) {
@@ -76,6 +78,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -91,6 +94,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -106,6 +110,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

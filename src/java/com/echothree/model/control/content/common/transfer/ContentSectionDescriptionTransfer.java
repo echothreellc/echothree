@@ -42,6 +42,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Sets the contentSection.
      * @param contentSection the contentSection to set
      */
     public void setContentSection(ContentSectionTransfer contentSection) {
@@ -72,6 +74,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

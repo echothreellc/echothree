@@ -51,6 +51,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the subscriptionName.
      * @param subscriptionName the subscriptionName to set
      */
     public void setSubscriptionName(String subscriptionName) {
@@ -66,6 +67,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the subscriptionType.
      * @param subscriptionType the subscriptionType to set
      */
     public void setSubscriptionType(SubscriptionTypeTransfer subscriptionType) {
@@ -81,6 +83,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -96,6 +99,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -111,6 +115,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -126,6 +131,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -141,6 +147,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {

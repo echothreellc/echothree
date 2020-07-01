@@ -109,6 +109,7 @@ public class WorkRequirementTypeTransfer
     }
 
     /**
+     * Sets the allowReassignment.
      * @param allowReassignment the allowReassignment to set
      */
     public void setAllowReassignment(Boolean allowReassignment) {
@@ -140,6 +141,7 @@ public class WorkRequirementTypeTransfer
     }
 
     /**
+     * Sets the workRequirementScopes.
      * @param workRequirementScopes the workRequirementScopes to set
      */
     public void setWorkRequirementScopes(ListWrapper<WorkRequirementScopeTransfer> workRequirementScopes) {

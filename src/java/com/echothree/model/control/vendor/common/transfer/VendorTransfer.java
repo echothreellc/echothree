@@ -100,6 +100,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the vendorName.
      * @param vendorName the vendorName to set
      */
     public void setVendorName(String vendorName) {
@@ -115,6 +116,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the vendorType.
      * @param vendorType the vendorType to set
      */
     public void setVendorType(VendorTypeTransfer vendorType) {
@@ -130,6 +132,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the minimumPurchaseOrderLines.
      * @param minimumPurchaseOrderLines the minimumPurchaseOrderLines to set
      */
     public void setMinimumPurchaseOrderLines(Integer minimumPurchaseOrderLines) {
@@ -145,6 +148,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the maximumPurchaseOrderLines.
      * @param maximumPurchaseOrderLines the maximumPurchaseOrderLines to set
      */
     public void setMaximumPurchaseOrderLines(Integer maximumPurchaseOrderLines) {
@@ -160,6 +164,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the unformattedMinimumPurchaseOrderAmount.
      * @param unformattedMinimumPurchaseOrderAmount the unformattedMinimumPurchaseOrderAmount to set
      */
     public void setUnformattedMinimumPurchaseOrderAmount(Long unformattedMinimumPurchaseOrderAmount) {
@@ -175,6 +180,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the minimumPurchaseOrderAmount.
      * @param minimumPurchaseOrderAmount the minimumPurchaseOrderAmount to set
      */
     public void setMinimumPurchaseOrderAmount(String minimumPurchaseOrderAmount) {
@@ -190,6 +196,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the unformattedMaximumPurchaseOrderAmount.
      * @param unformattedMaximumPurchaseOrderAmount the unformattedMaximumPurchaseOrderAmount to set
      */
     public void setUnformattedMaximumPurchaseOrderAmount(Long unformattedMaximumPurchaseOrderAmount) {
@@ -205,6 +212,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the maximumPurchaseOrderAmount.
      * @param maximumPurchaseOrderAmount the maximumPurchaseOrderAmount to set
      */
     public void setMaximumPurchaseOrderAmount(String maximumPurchaseOrderAmount) {
@@ -220,6 +228,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the useItemPurchasingCategories.
      * @param useItemPurchasingCategories the useItemPurchasingCategories to set
      */
     public void setUseItemPurchasingCategories(Boolean useItemPurchasingCategories) {
@@ -235,6 +244,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the defaultItemAliasType.
      * @param defaultItemAliasType the defaultItemAliasType to set
      */
     public void setDefaultItemAliasType(ItemAliasTypeTransfer defaultItemAliasType) {
@@ -250,6 +260,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the apGlAccount.
      * @param apGlAccount the apGlAccount to set
      */
     public void setApGlAccount(GlAccountTransfer apGlAccount) {
@@ -265,6 +276,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the holdUntilComplete.
      * @param holdUntilComplete the holdUntilComplete to set
      */
     public void setHoldUntilComplete(Boolean holdUntilComplete) {
@@ -280,6 +292,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the allowBackorders.
      * @param allowBackorders the allowBackorders to set
      */
     public void setAllowBackorders(Boolean allowBackorders) {
@@ -295,6 +308,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the allowSubstitutions.
      * @param allowSubstitutions the allowSubstitutions to set
      */
     public void setAllowSubstitutions(Boolean allowSubstitutions) {
@@ -310,6 +324,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the allowCombiningShipments.
      * @param allowCombiningShipments the allowCombiningShipments to set
      */
     public void setAllowCombiningShipments(Boolean allowCombiningShipments) {
@@ -325,6 +340,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the requireReference.
      * @param requireReference the requireReference to set
      */
     public void setRequireReference(Boolean requireReference) {
@@ -340,6 +356,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the allowReferenceDuplicates.
      * @param allowReferenceDuplicates the allowReferenceDuplicates to set
      */
     public void setAllowReferenceDuplicates(Boolean allowReferenceDuplicates) {
@@ -355,6 +372,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the referenceValidationPattern.
      * @param referenceValidationPattern the referenceValidationPattern to set
      */
     public void setReferenceValidationPattern(String referenceValidationPattern) {
@@ -370,6 +388,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the vendorStatus.
      * @param vendorStatus the vendorStatus to set
      */
     public void setVendorStatus(WorkflowEntityStatusTransfer vendorStatus) {
@@ -385,6 +404,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the vendorItemsCount.
      * @param vendorItemsCount the vendorItemsCount to set
      */
     public void setVendorItemsCount(Long vendorItemsCount) {
@@ -400,6 +420,7 @@ public class VendorTransfer
     }
 
     /**
+     * Sets the vendorItems.
      * @param vendorItems the vendorItems to set
      */
     public void setVendorItems(ListWrapper<VendorItemTransfer> vendorItems) {

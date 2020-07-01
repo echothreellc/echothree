@@ -43,6 +43,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Sets the chainInstanceName.
      * @param chainInstanceName the chainInstanceName to set
      */
     public void setChainInstanceName(String chainInstanceName) {
@@ -58,6 +59,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Sets the chain.
      * @param chain the chain to set
      */
     public void setChain(ChainTransfer chain) {
@@ -73,6 +75,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Sets the chainInstanceStatus.
      * @param chainInstanceStatus the chainInstanceStatus to set
      */
     public void setChainInstanceStatus(ChainInstanceStatusTransfer chainInstanceStatus) {
@@ -88,6 +91,7 @@ public class ChainInstanceTransfer
     }
 
     /**
+     * Sets the chainInstanceEntityRoles.
      * @param chainInstanceEntityRoles the chainInstanceEntityRoles to set
      */
     public void setChainInstanceEntityRoles(MapWrapper<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoles) {

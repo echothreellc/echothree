@@ -47,6 +47,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -62,6 +63,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -77,6 +79,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the singularDescription.
      * @param singularDescription the singularDescription to set
      */
     public void setSingularDescription(String singularDescription) {
@@ -92,6 +95,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the pluralDescription.
      * @param pluralDescription the pluralDescription to set
      */
     public void setPluralDescription(String pluralDescription) {
@@ -107,6 +111,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the symbol.
      * @param symbol the symbol to set
      */
     public void setSymbol(String symbol) {

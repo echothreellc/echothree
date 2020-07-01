@@ -50,6 +50,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the printerGroupJobName.
      * @param printerGroupJobName the printerGroupJobName to set
      */
     public void setPrinterGroupJobName(String printerGroupJobName) {
@@ -65,6 +66,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the printerGroup.
      * @param printerGroup the printerGroup to set
      */
     public void setPrinterGroup(PrinterGroupTransfer printerGroup) {
@@ -80,6 +82,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the document.
      * @param document the document to set
      */
     public void setDocument(DocumentTransfer document) {
@@ -95,6 +98,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the copies.
      * @param copies the copies to set
      */
     public void setCopies(Integer copies) {
@@ -110,6 +114,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the priority.
      * @param priority the priority to set
      */
     public void setPriority(Integer priority) {
@@ -125,6 +130,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the printerGroupJobStatus.
      * @param printerGroupJobStatus the printerGroupJobStatus to set
      */
     public void setPrinterGroupJobStatus(WorkflowEntityStatusTransfer printerGroupJobStatus) {

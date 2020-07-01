@@ -43,6 +43,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contactListName.
      * @param contactListName the contactListName to set
      */
     public void setContactListName(String contactListName) {

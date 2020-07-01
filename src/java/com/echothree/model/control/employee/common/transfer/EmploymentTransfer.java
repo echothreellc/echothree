@@ -56,6 +56,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the employmentName.
      * @param employmentName the employmentName to set
      */
     public void setEmploymentName(String employmentName) {
@@ -71,6 +72,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -86,6 +88,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the company.
      * @param company the company to set
      */
     public void setCompany(CompanyTransfer company) {
@@ -101,6 +104,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -116,6 +120,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -131,6 +136,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -146,6 +152,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -161,6 +168,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the terminationType.
      * @param terminationType the terminationType to set
      */
     public void setTerminationType(TerminationTypeTransfer terminationType) {
@@ -176,6 +184,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the terminationReason.
      * @param terminationReason the terminationReason to set
      */
     public void setTerminationReason(TerminationReasonTransfer terminationReason) {

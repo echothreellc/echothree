@@ -69,6 +69,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the workflowName.
      * @param workflowName the workflowName to set
      */
     public void setWorkflowName(String workflowName) {
@@ -84,6 +85,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the workflowStepName.
      * @param workflowStepName the workflowStepName to set
      */
     public void setWorkflowStepName(String workflowStepName) {
@@ -99,6 +101,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the workflowDestinationName.
      * @param workflowDestinationName the workflowDestinationName to set
      */
     public void setWorkflowDestinationName(String workflowDestinationName) {
@@ -114,6 +117,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the destinationWorkflowName.
      * @param destinationWorkflowName the destinationWorkflowName to set
      */
     public void setDestinationWorkflowName(String destinationWorkflowName) {

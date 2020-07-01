@@ -54,6 +54,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the printerGroupName.
      * @param printerGroupName the printerGroupName to set
      */
     public void setPrinterGroupName(String printerGroupName) {
@@ -69,6 +70,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the unformattedKeepPrintedJobsTime.
      * @param unformattedKeepPrintedJobsTime the unformattedKeepPrintedJobsTime to set
      */
     public void setUnformattedKeepPrintedJobsTime(Long unformattedKeepPrintedJobsTime) {
@@ -84,6 +86,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the keepPrintedJobsTime.
      * @param keepPrintedJobsTime the keepPrintedJobsTime to set
      */
     public void setKeepPrintedJobsTime(String keepPrintedJobsTime) {
@@ -99,6 +102,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -114,6 +118,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -129,6 +134,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the printerGroupStatus.
      * @param printerGroupStatus the printerGroupStatus to set
      */
     public void setPrinterGroupStatus(WorkflowEntityStatusTransfer printerGroupStatus) {
@@ -144,6 +150,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -159,6 +166,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the printers.
      * @param printers the printers to set
      */
     public void setPrinters(ListWrapper<PrinterTransfer> printers) {

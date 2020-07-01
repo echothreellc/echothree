@@ -90,6 +90,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {

@@ -43,6 +43,7 @@ public class SearchResultActionTypeTransfer
     }
 
     /**
+     * Sets the searchResultActionTypeName.
      * @param searchResultActionTypeName the searchResultActionTypeName to set
      */
     public void setSearchResultActionTypeName(String searchResultActionTypeName) {
@@ -58,6 +59,7 @@ public class SearchResultActionTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -73,6 +75,7 @@ public class SearchResultActionTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -88,6 +91,7 @@ public class SearchResultActionTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

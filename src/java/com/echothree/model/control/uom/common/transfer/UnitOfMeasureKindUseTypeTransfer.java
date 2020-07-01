@@ -48,6 +48,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureKindUseTypeName.
      * @param unitOfMeasureKindUseTypeName the unitOfMeasureKindUseTypeName to set
      */
     public void setUnitOfMeasureKindUseTypeName(String unitOfMeasureKindUseTypeName) {
@@ -63,6 +64,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the allowMultiple.
      * @param allowMultiple the allowMultiple to set
      */
     public void setAllowMultiple(Boolean allowMultiple) {
@@ -78,6 +80,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the allowFractionDigits.
      * @param allowFractionDigits the allowFractionDigits to set
      */
     public void setAllowFractionDigits(Boolean allowFractionDigits) {
@@ -93,6 +96,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -108,6 +112,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -123,6 +128,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

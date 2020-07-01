@@ -45,6 +45,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -60,6 +61,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -75,6 +77,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeUseType.
      * @param harmonizedTariffScheduleCodeUseType the harmonizedTariffScheduleCodeUseType to set
      */
     public void setHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType) {
@@ -90,6 +93,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCode.
      * @param harmonizedTariffScheduleCode the harmonizedTariffScheduleCode to set
      */
     public void setHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode) {

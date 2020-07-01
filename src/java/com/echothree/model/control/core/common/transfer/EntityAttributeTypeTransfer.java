@@ -39,6 +39,7 @@ public class EntityAttributeTypeTransfer
     }
 
     /**
+     * Sets the entityAttributeTypeName.
      * @param entityAttributeTypeName the entityAttributeTypeName to set
      */
     public void setEntityAttributeTypeName(String entityAttributeTypeName) {
@@ -54,6 +55,7 @@ public class EntityAttributeTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

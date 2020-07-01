@@ -46,6 +46,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Sets the paymentProcessorType.
      * @param paymentProcessorType the paymentProcessorType to set
      */
     public void setPaymentProcessorType(PaymentProcessorTypeTransfer paymentProcessorType) {
@@ -61,6 +62,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -76,6 +78,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Sets the partyPaymentMethodWorkflow.
      * @param partyPaymentMethodWorkflow the partyPaymentMethodWorkflow to set
      */
     public void setPartyPaymentMethodWorkflow(WorkflowTransfer partyPaymentMethodWorkflow) {
@@ -91,6 +94,7 @@ public class PaymentProcessorTypePartyTypeTransfer
     }
 
     /**
+     * Sets the partyContactMechanismWorkflow.
      * @param partyContactMechanismWorkflow the partyContactMechanismWorkflow to set
      */
     public void setPartyContactMechanismWorkflow(WorkflowTransfer partyContactMechanismWorkflow) {

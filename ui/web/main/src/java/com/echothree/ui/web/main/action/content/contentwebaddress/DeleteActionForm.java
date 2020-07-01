@@ -34,6 +34,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentWebAddressName.
      * @param contentWebAddressName the contentWebAddressName to set
      */
     public void setContentWebAddressName(String contentWebAddressName) {

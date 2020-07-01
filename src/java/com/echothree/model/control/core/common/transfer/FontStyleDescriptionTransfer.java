@@ -42,6 +42,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Sets the fontStyle.
      * @param fontStyle the fontStyle to set
      */
     public void setFontStyle(FontStyleTransfer fontStyle) {
@@ -72,6 +74,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

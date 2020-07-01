@@ -42,6 +42,7 @@ public class SearchSortDirectionDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class SearchSortDirectionDescriptionTransfer
     }
 
     /**
+     * Sets the searchSortDirection.
      * @param searchSortDirection the searchSortDirection to set
      */
     public void setSearchSortDirection(SearchSortDirectionTransfer searchSortDirection) {
@@ -72,6 +74,7 @@ public class SearchSortDirectionDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -42,6 +42,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Sets the commandMessage.
      * @param commandMessage the commandMessage to set
      */
     public void setCommandMessage(CommandMessageTransfer commandMessage) {
@@ -57,6 +58,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -72,6 +74,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Sets the translation.
      * @param translation the translation to set
      */
     public void setTranslation(String translation) {

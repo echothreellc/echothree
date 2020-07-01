@@ -56,6 +56,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the jobName.
      * @param jobName the jobName to set
      */
     public void setJobName(String jobName) {
@@ -71,6 +72,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the runAsParty.
      * @param runAsParty the runAsParty to set
      */
     public void setRunAsParty(PartyTransfer runAsParty) {
@@ -86,6 +88,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -101,6 +104,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -116,6 +120,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the jobStatus.
      * @param jobStatus the jobStatus to set
      */
     public void setJobStatus(WorkflowEntityStatusTransfer jobStatus) {
@@ -131,6 +136,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the unformattedLastStartTime.
      * @param unformattedLastStartTime the unformattedLastStartTime to set
      */
     public void setUnformattedLastStartTime(Long unformattedLastStartTime) {
@@ -146,6 +152,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the lastStartTime.
      * @param lastStartTime the lastStartTime to set
      */
     public void setLastStartTime(String lastStartTime) {
@@ -161,6 +168,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the unformattedLastEndTime.
      * @param unformattedLastEndTime the unformattedLastEndTime to set
      */
     public void setUnformattedLastEndTime(Long unformattedLastEndTime) {
@@ -176,6 +184,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the lastEndTime.
      * @param lastEndTime the lastEndTime to set
      */
     public void setLastEndTime(String lastEndTime) {

@@ -33,6 +33,7 @@ public class EntityInstanceResult
     }
 
     /**
+     * Sets the entityInstancePK.
      * @param entityInstancePK the entityInstancePK to set
      */
     public void setEntityInstancePK(EntityInstancePK entityInstancePK) {

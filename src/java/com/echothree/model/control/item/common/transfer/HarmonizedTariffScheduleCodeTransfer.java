@@ -55,6 +55,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -70,6 +71,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeName.
      * @param harmonizedTariffScheduleCodeName the harmonizedTariffScheduleCodeName to set
      */
     public void setHarmonizedTariffScheduleCodeName(String harmonizedTariffScheduleCodeName) {
@@ -85,6 +87,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the firstHarmonizedTariffScheduleCodeUnit.
      * @param firstHarmonizedTariffScheduleCodeUnit the firstHarmonizedTariffScheduleCodeUnit to set
      */
     public void setFirstHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnitTransfer firstHarmonizedTariffScheduleCodeUnit) {
@@ -100,6 +103,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the secondHarmonizedTariffScheduleCodeUnit.
      * @param secondHarmonizedTariffScheduleCodeUnit the secondHarmonizedTariffScheduleCodeUnit to set
      */
     public void setSecondHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnitTransfer secondHarmonizedTariffScheduleCodeUnit) {
@@ -115,6 +119,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -130,6 +135,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -145,6 +151,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -160,6 +167,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeUses.
      * @param harmonizedTariffScheduleCodeUses the harmonizedTariffScheduleCodeUses to set
      */
     public void setHarmonizedTariffScheduleCodeUses(MapWrapper<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUses) {

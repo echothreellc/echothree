@@ -44,6 +44,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -60,6 +61,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -76,6 +78,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Sets the timeAttribute.
      * @param timeAttribute the timeAttribute to set
      */
     public void setTimeAttribute(String timeAttribute) {
@@ -91,6 +94,7 @@ public class EntityTimeAttributeTransfer
     }
 
     /**
+     * Sets the unformattedTimeAttribute.
      * @param unformattedTimeAttribute the unformattedTimeAttribute to set
      */
     public void setUnformattedTimeAttribute(Long unformattedTimeAttribute) {

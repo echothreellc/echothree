@@ -40,6 +40,7 @@ public class ItemResultTransfer
     }
 
     /**
+     * Sets the itemName.
      * @param itemName the itemName to set
      */
     public void setItemName(String itemName) {
@@ -55,6 +56,7 @@ public class ItemResultTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {

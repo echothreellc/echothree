@@ -43,6 +43,7 @@ public class TextTransformationTransfer
     }
 
     /**
+     * Sets the textTransformationName.
      * @param textTransformationName the textTransformationName to set
      */
     public void setTextTransformationName(String textTransformationName) {
@@ -58,6 +59,7 @@ public class TextTransformationTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -73,6 +75,7 @@ public class TextTransformationTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -88,6 +91,7 @@ public class TextTransformationTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

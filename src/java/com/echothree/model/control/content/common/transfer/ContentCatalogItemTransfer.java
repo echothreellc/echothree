@@ -68,6 +68,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the contentCatalog.
      * @param contentCatalog the contentCatalog to set
      */
     public void setContentCatalog(ContentCatalogTransfer contentCatalog) {
@@ -83,6 +84,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -98,6 +100,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the inventoryCondition.
      * @param inventoryCondition the inventoryCondition to set
      */
     public void setInventoryCondition(InventoryConditionTransfer inventoryCondition) {
@@ -113,6 +116,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -128,6 +132,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -143,6 +148,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the unformattedUnitPrice.
      * @param unformattedUnitPrice the unformattedUnitPrice to set
      */
     public void setUnformattedUnitPrice(Long unformattedUnitPrice) {
@@ -158,6 +164,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the unitPrice.
      * @param unitPrice the unitPrice to set
      */
     public void setUnitPrice(String unitPrice) {
@@ -173,6 +180,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the unformattedMinimumUnitPrice.
      * @param unformattedMinimumUnitPrice the unformattedMinimumUnitPrice to set
      */
     public void setUnformattedMinimumUnitPrice(Long unformattedMinimumUnitPrice) {
@@ -188,6 +196,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the minimumUnitPrice.
      * @param minimumUnitPrice the minimumUnitPrice to set
      */
     public void setMinimumUnitPrice(String minimumUnitPrice) {
@@ -203,6 +212,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the unformattedMaximumUnitPrice.
      * @param unformattedMaximumUnitPrice the unformattedMaximumUnitPrice to set
      */
     public void setUnformattedMaximumUnitPrice(Long unformattedMaximumUnitPrice) {
@@ -218,6 +228,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the maximumUnitPrice.
      * @param maximumUnitPrice the maximumUnitPrice to set
      */
     public void setMaximumUnitPrice(String maximumUnitPrice) {
@@ -233,6 +244,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the unformattedUnitPriceIncrement.
      * @param unformattedUnitPriceIncrement the unformattedUnitPriceIncrement to set
      */
     public void setUnformattedUnitPriceIncrement(Long unformattedUnitPriceIncrement) {
@@ -248,6 +260,7 @@ public class ContentCatalogItemTransfer
     }
 
     /**
+     * Sets the unitPriceIncrement.
      * @param unitPriceIncrement the unitPriceIncrement to set
      */
     public void setUnitPriceIncrement(String unitPriceIncrement) {

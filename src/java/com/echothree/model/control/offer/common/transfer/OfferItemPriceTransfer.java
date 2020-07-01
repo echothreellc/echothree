@@ -64,6 +64,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the offerItem.
      * @param offerItem the offerItem to set
      */
     public void setOfferItem(OfferItemTransfer offerItem) {
@@ -79,6 +80,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the inventoryCondition.
      * @param inventoryCondition the inventoryCondition to set
      */
     public void setInventoryCondition(InventoryConditionTransfer inventoryCondition) {
@@ -94,6 +96,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -109,6 +112,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -124,6 +128,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedUnitPrice.
      * @param unformattedUnitPrice the unformattedUnitPrice to set
      */
     public void setUnformattedUnitPrice(Long unformattedUnitPrice) {
@@ -139,6 +144,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the unitPrice.
      * @param unitPrice the unitPrice to set
      */
     public void setUnitPrice(String unitPrice) {
@@ -154,6 +160,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedMinimumUnitPrice.
      * @param unformattedMinimumUnitPrice the unformattedMinimumUnitPrice to set
      */
     public void setUnformattedMinimumUnitPrice(Long unformattedMinimumUnitPrice) {
@@ -169,6 +176,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the minimumUnitPrice.
      * @param minimumUnitPrice the minimumUnitPrice to set
      */
     public void setMinimumUnitPrice(String minimumUnitPrice) {
@@ -184,6 +192,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedMaximumUnitPrice.
      * @param unformattedMaximumUnitPrice the unformattedMaximumUnitPrice to set
      */
     public void setUnformattedMaximumUnitPrice(Long unformattedMaximumUnitPrice) {
@@ -199,6 +208,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the maximumUnitPrice.
      * @param maximumUnitPrice the maximumUnitPrice to set
      */
     public void setMaximumUnitPrice(String maximumUnitPrice) {
@@ -214,6 +224,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedUnitPriceIncrement.
      * @param unformattedUnitPriceIncrement the unformattedUnitPriceIncrement to set
      */
     public void setUnformattedUnitPriceIncrement(Long unformattedUnitPriceIncrement) {
@@ -229,6 +240,7 @@ public class OfferItemPriceTransfer
     }
 
     /**
+     * Sets the unitPriceIncrement.
      * @param unitPriceIncrement the unitPriceIncrement to set
      */
     public void setUnitPriceIncrement(String unitPriceIncrement) {

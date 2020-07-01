@@ -47,6 +47,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentCollectionName.
      * @param contentCollectionName the contentCollectionName to set
      */
     public void setContentCollectionName(String contentCollectionName) {
@@ -62,6 +63,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -77,6 +79,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -92,6 +95,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentCatalogs.
      * @param contentCatalogs the contentCatalogs to set
      */
     public void setContentCatalogs(ListWrapper<ContentCatalogTransfer> contentCatalogs) {
@@ -107,6 +111,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentForums.
      * @param contentForums the contentForums to set
      */
     public void setContentForums(ListWrapper<ContentForumTransfer> contentForums) {
@@ -122,6 +127,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentSections.
      * @param contentSections the contentSections to set
      */
     public void setContentSections(ListWrapper<ContentSectionTransfer> contentSections) {

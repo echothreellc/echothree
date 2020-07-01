@@ -40,6 +40,7 @@ public class UseResultTransfer
     }
 
     /**
+     * Sets the useName.
      * @param useName the useName to set
      */
     public void setUseName(String useName) {
@@ -55,6 +56,7 @@ public class UseResultTransfer
     }
 
     /**
+     * Sets the use.
      * @param use the use to set
      */
     public void setUse(UseTransfer use) {

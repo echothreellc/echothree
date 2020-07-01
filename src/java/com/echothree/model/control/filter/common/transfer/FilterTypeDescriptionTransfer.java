@@ -42,6 +42,7 @@ public class FilterTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class FilterTypeDescriptionTransfer
     }
 
     /**
+     * Sets the filterType.
      * @param filterType the filterType to set
      */
     public void setFilterType(FilterTypeTransfer filterType) {
@@ -72,6 +74,7 @@ public class FilterTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

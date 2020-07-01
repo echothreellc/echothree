@@ -92,6 +92,7 @@ public class PartyTypeTransfer
     }
 
     /**
+     * Sets the allowPartyAliases.
      * @param allowPartyAliases the allowPartyAliases to set
      */
     public void setAllowPartyAliases(Boolean allowPartyAliases) {
@@ -155,6 +156,7 @@ public class PartyTypeTransfer
     }
 
     /**
+     * Sets the partyAliasTypes.
      * @param partyAliasTypes the partyAliasTypes to set
      */
     public void setPartyAliasTypes(ListWrapper<PartyAliasTypeTransfer> partyAliasTypes) {

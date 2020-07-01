@@ -82,6 +82,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityType.
      * @param entityType the entityType to set
      */
     public void setEntityType(EntityTypeTransfer entityType) {
@@ -97,6 +98,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityAttributeName.
      * @param entityAttributeName the entityAttributeName to set
      */
     public void setEntityAttributeName(String entityAttributeName) {
@@ -112,6 +114,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityAttributeType.
      * @param entityAttributeType the entityAttributeType to set
      */
     public void setEntityAttributeType(EntityAttributeTypeTransfer entityAttributeType) {
@@ -127,6 +130,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the trackRevisions.
      * @param trackRevisions the trackRevisions to set
      */
     public void setTrackRevisions(boolean trackRevisions) {
@@ -142,6 +146,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -157,6 +162,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -172,6 +178,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the checkContentWebAddress.
      * @param checkContentWebAddress the checkContentWebAddress to set
      */
     public void setCheckContentWebAddress(boolean checkContentWebAddress) {
@@ -187,6 +194,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the validationPattern.
      * @param validationPattern the validationPattern to set
      */
     public void setValidationPattern(String validationPattern) {
@@ -202,6 +210,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the upperRangeIntegerValue.
      * @param upperRangeIntegerValue the upperRangeIntegerValue to set
      */
     public void setUpperRangeIntegerValue(Integer upperRangeIntegerValue) {
@@ -217,6 +226,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the upperLimitIntegerValue.
      * @param upperLimitIntegerValue the upperLimitIntegerValue to set
      */
     public void setUpperLimitIntegerValue(Integer upperLimitIntegerValue) {
@@ -232,6 +242,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the lowerLimitIntegerValue.
      * @param lowerLimitIntegerValue the lowerLimitIntegerValue to set
      */
     public void setLowerLimitIntegerValue(Integer lowerLimitIntegerValue) {
@@ -247,6 +258,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the lowerRangeIntegerValue.
      * @param lowerRangeIntegerValue the lowerRangeIntegerValue to set
      */
     public void setLowerRangeIntegerValue(Integer lowerRangeIntegerValue) {
@@ -262,6 +274,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the upperRangeLongValue.
      * @param upperRangeLongValue the upperRangeLongValue to set
      */
     public void setUpperRangeLongValue(Long upperRangeLongValue) {
@@ -277,6 +290,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the upperLimitLongValue.
      * @param upperLimitLongValue the upperLimitLongValue to set
      */
     public void setUpperLimitLongValue(Long upperLimitLongValue) {
@@ -292,6 +306,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the lowerLimitLongValue.
      * @param lowerLimitLongValue the lowerLimitLongValue to set
      */
     public void setLowerLimitLongValue(Long lowerLimitLongValue) {
@@ -307,6 +322,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the lowerRangeLongValue.
      * @param lowerRangeLongValue the lowerRangeLongValue to set
      */
     public void setLowerRangeLongValue(Long lowerRangeLongValue) {
@@ -322,6 +338,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -337,6 +354,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityListItemSequence.
      * @param entityListItemSequence the entityListItemSequence to set
      */
     public void setEntityListItemSequence(SequenceTransfer entityListItemSequence) {
@@ -352,6 +370,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityBooleanAttribute.
      * @param entityBooleanAttribute the entityBooleanAttribute to set
      */
     public void setEntityBooleanAttribute(EntityBooleanAttributeTransfer entityBooleanAttribute) {
@@ -367,6 +386,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityNameAttribute.
      * @param entityNameAttribute the entityNameAttribute to set
      */
     public void setEntityNameAttribute(EntityNameAttributeTransfer entityNameAttribute) {
@@ -382,6 +402,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityIntegerAttribute.
      * @param entityIntegerAttribute the entityIntegerAttribute to set
      */
     public void setEntityIntegerAttribute(EntityIntegerAttributeTransfer entityIntegerAttribute) {
@@ -397,6 +418,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityLongAttribute.
      * @param entityLongAttribute the entityLongAttribute to set
      */
     public void setEntityLongAttribute(EntityLongAttributeTransfer entityLongAttribute) {
@@ -412,6 +434,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityStringAttribute.
      * @param entityStringAttribute the entityStringAttribute to set
      */
     public void setEntityStringAttribute(EntityStringAttributeTransfer entityStringAttribute) {
@@ -427,6 +450,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityGeoPointAttribute.
      * @param entityGeoPointAttribute the entityGeoPointAttribute to set
      */
     public void setEntityGeoPointAttribute(EntityGeoPointAttributeTransfer entityGeoPointAttribute) {
@@ -442,6 +466,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityBlobAttribute.
      * @param entityBlobAttribute the entityBlobAttribute to set
      */
     public void setEntityBlobAttribute(EntityBlobAttributeTransfer entityBlobAttribute) {
@@ -457,6 +482,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityClobAttribute.
      * @param entityClobAttribute the entityClobAttribute to set
      */
     public void setEntityClobAttribute(EntityClobAttributeTransfer entityClobAttribute) {
@@ -472,6 +498,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityEntityAttribute.
      * @param entityEntityAttribute the entityEntityAttribute to set
      */
     public void setEntityEntityAttribute(EntityEntityAttributeTransfer entityEntityAttribute) {
@@ -487,6 +514,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityCollectionAttributes.
      * @param entityCollectionAttributes the entityCollectionAttributes to set
      */
     public void setEntityCollectionAttributes(ListWrapper<EntityCollectionAttributeTransfer> entityCollectionAttributes) {
@@ -502,6 +530,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityDateAttribute.
      * @param entityDateAttribute the entityDateAttribute to set
      */
     public void setEntityDateAttribute(EntityDateAttributeTransfer entityDateAttribute) {
@@ -517,6 +546,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityTimeAttribute.
      * @param entityTimeAttribute the entityTimeAttribute to set
      */
     public void setEntityTimeAttribute(EntityTimeAttributeTransfer entityTimeAttribute) {
@@ -532,6 +562,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityListItemAttribute.
      * @param entityListItemAttribute the entityListItemAttribute to set
      */
     public void setEntityListItemAttribute(EntityListItemAttributeTransfer entityListItemAttribute) {
@@ -547,6 +578,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityMultipleListItemAttributes.
      * @param entityMultipleListItemAttributes the entityMultipleListItemAttributes to set
      */
     public void setEntityMultipleListItemAttributes(ListWrapper<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributes) {
@@ -562,6 +594,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityListItems.
      * @param entityListItems the entityListItems to set
      */
     public void setEntityListItems(ListWrapper<EntityListItemTransfer> entityListItems) {
@@ -577,6 +610,7 @@ public class EntityAttributeTransfer
     }
 
     /**
+     * Sets the entityAttributeEntityTypes.
      * @param entityAttributeEntityTypes the entityAttributeEntityTypes to set
      */
     public void setEntityAttributeEntityTypes(ListWrapper<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypes) {

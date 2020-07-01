@@ -42,6 +42,7 @@ public class PartyTypeContactListGroupTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -57,6 +58,7 @@ public class PartyTypeContactListGroupTransfer
     }
 
     /**
+     * Sets the contactListGroup.
      * @param contactListGroup the contactListGroup to set
      */
     public void setContactListGroup(ContactListGroupTransfer contactListGroup) {
@@ -72,6 +74,7 @@ public class PartyTypeContactListGroupTransfer
     }
 
     /**
+     * Sets the addWhenCreated.
      * @param addWhenCreated the addWhenCreated to set
      */
     public void setAddWhenCreated(Boolean addWhenCreated) {

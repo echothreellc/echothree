@@ -49,6 +49,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -64,6 +65,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -79,6 +81,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the unformattedShippingStartTime.
      * @param unformattedShippingStartTime the unformattedShippingStartTime to set
      */
     public void setUnformattedShippingStartTime(Long unformattedShippingStartTime) {
@@ -94,6 +97,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the shippingStartTime.
      * @param shippingStartTime the shippingStartTime to set
      */
     public void setShippingStartTime(String shippingStartTime) {
@@ -109,6 +113,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the unformattedShippingEndTime.
      * @param unformattedShippingEndTime the unformattedShippingEndTime to set
      */
     public void setUnformattedShippingEndTime(Long unformattedShippingEndTime) {
@@ -124,6 +129,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the shippingEndTime.
      * @param shippingEndTime the shippingEndTime to set
      */
     public void setShippingEndTime(String shippingEndTime) {

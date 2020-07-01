@@ -68,6 +68,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -104,6 +105,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the alias.
      * @param alias the alias to set
      */
     public void setAlias(String alias) {

@@ -40,6 +40,7 @@ public class QueuedEntityTransfer
     }
 
     /**
+     * Sets the queueType.
      * @param queueType the queueType to set
      */
     public void setQueueType(QueueTypeTransfer queueType) {
@@ -56,6 +57,7 @@ public class QueuedEntityTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override

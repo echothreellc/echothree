@@ -42,6 +42,7 @@ public class SelectorKindDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class SelectorKindDescriptionTransfer
     }
 
     /**
+     * Sets the selectorKind.
      * @param selectorKind the selectorKind to set
      */
     public void setSelectorKind(SelectorKindTransfer selectorKind) {
@@ -72,6 +74,7 @@ public class SelectorKindDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

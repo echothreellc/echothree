@@ -46,6 +46,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the contentPageLayout.
      * @param contentPageLayout the contentPageLayout to set
      */
     public void setContentPageLayout(ContentPageLayoutTransfer contentPageLayout) {
@@ -61,6 +62,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the contentPageAreaType.
      * @param contentPageAreaType the contentPageAreaType to set
      */
     public void setContentPageAreaType(ContentPageAreaTypeTransfer contentPageAreaType) {
@@ -76,6 +78,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the showDescriptionField.
      * @param showDescriptionField the showDescriptionField to set
      */
     public void setShowDescriptionField(Boolean showDescriptionField) {
@@ -91,6 +94,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -106,6 +110,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

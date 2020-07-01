@@ -67,6 +67,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -82,6 +83,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the contactListName.
      * @param contactListName the contactListName to set
      */
     public void setContactListName(String contactListName) {

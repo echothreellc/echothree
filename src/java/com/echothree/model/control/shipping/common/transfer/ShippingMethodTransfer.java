@@ -47,6 +47,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the shippingMethodName.
      * @param shippingMethodName the shippingMethodName to set
      */
     public void setShippingMethodName(String shippingMethodName) {
@@ -62,6 +63,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the geoCodeSelector.
      * @param geoCodeSelector the geoCodeSelector to set
      */
     public void setGeoCodeSelector(SelectorTransfer geoCodeSelector) {
@@ -77,6 +79,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the itemSelector.
      * @param itemSelector the itemSelector to set
      */
     public void setItemSelector(SelectorTransfer itemSelector) {
@@ -92,6 +95,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -107,6 +111,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

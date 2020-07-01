@@ -51,6 +51,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the documentTypeName.
      * @param documentTypeName the documentTypeName to set
      */
     public void setDocumentTypeName(String documentTypeName) {
@@ -66,6 +67,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the parentDocumentType.
      * @param parentDocumentType the parentDocumentType to set
      */
     public void setParentDocumentType(DocumentTypeTransfer parentDocumentType) {
@@ -81,6 +83,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the mimeTypeUsageType.
      * @param mimeTypeUsageType the mimeTypeUsageType to set
      */
     public void setMimeTypeUsageType(MimeTypeUsageTypeTransfer mimeTypeUsageType) {
@@ -96,6 +99,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the maximumPages.
      * @param maximumPages the maximumPages to set
      */
     public void setMaximumPages(Integer maximumPages) {
@@ -111,6 +115,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -126,6 +131,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -141,6 +147,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

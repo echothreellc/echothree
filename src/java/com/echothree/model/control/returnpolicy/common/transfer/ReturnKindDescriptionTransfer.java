@@ -42,6 +42,7 @@ public class ReturnKindDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ReturnKindDescriptionTransfer
     }
 
     /**
+     * Sets the returnKind.
      * @param returnKind the returnKind to set
      */
     public void setReturnKind(ReturnKindTransfer returnKind) {
@@ -72,6 +74,7 @@ public class ReturnKindDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

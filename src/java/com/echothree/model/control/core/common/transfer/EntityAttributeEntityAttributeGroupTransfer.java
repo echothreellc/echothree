@@ -42,6 +42,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -57,6 +58,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Sets the entityAttributeGroup.
      * @param entityAttributeGroup the entityAttributeGroup to set
      */
     public void setEntityAttributeGroup(EntityAttributeGroupTransfer entityAttributeGroup) {
@@ -72,6 +74,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

@@ -45,6 +45,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -60,6 +61,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the contactList.
      * @param contactList the contactList to set
      */
     public void setContactList(ContactListTransfer contactList) {
@@ -75,6 +77,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the preferredContactListContactMechanismPurpose.
      * @param preferredContactListContactMechanismPurpose the preferredContactListContactMechanismPurpose to set
      */
     public void setPreferredContactListContactMechanismPurpose(ContactListContactMechanismPurposeTransfer preferredContactListContactMechanismPurpose) {
@@ -90,6 +93,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the partyContactListStatus.
      * @param partyContactListStatus the partyContactListStatus to set
      */
     public void setPartyContactListStatus(WorkflowEntityStatusTransfer partyContactListStatus) {

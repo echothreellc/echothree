@@ -43,6 +43,7 @@ public class PartyReturnPolicyTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -58,6 +59,7 @@ public class PartyReturnPolicyTransfer
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -73,6 +75,7 @@ public class PartyReturnPolicyTransfer
     }
 
     /**
+     * Sets the partyReturnPolicyStatus.
      * @param partyReturnPolicyStatus the partyReturnPolicyStatus to set
      */
     public void setPartyReturnPolicyStatus(WorkflowEntityStatusTransfer partyReturnPolicyStatus) {

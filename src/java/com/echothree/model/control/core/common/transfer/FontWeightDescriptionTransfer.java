@@ -42,6 +42,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Sets the fontWeight.
      * @param fontWeight the fontWeight to set
      */
     public void setFontWeight(FontWeightTransfer fontWeight) {
@@ -72,6 +74,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

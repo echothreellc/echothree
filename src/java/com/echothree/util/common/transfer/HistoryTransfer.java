@@ -45,6 +45,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Sets the snapshot.
      * @param snapshot the snapshot to set
      */
     public void setSnapshot(T snapshot) {
@@ -60,6 +61,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Sets the unformattedFromTime.
      * @param unformattedFromTime the unformattedFromTime to set
      */
     public void setUnformattedFromTime(Long unformattedFromTime) {
@@ -75,6 +77,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Sets the fromTime.
      * @param fromTime the fromTime to set
      */
     public void setFromTime(String fromTime) {
@@ -90,6 +93,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Sets the unformattedThruTime.
      * @param unformattedThruTime the unformattedThruTime to set
      */
     public void setUnformattedThruTime(Long unformattedThruTime) {
@@ -105,6 +109,7 @@ public class HistoryTransfer<T extends BaseTransfer>
     }
 
     /**
+     * Sets the thruTime.
      * @param thruTime the thruTime to set
      */
     public void setThruTime(String thruTime) {

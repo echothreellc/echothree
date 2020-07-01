@@ -42,6 +42,7 @@ public class CampaignTermDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class CampaignTermDescriptionTransfer
     }
 
     /**
+     * Sets the campaignTerm.
      * @param campaignTerm the campaignTerm to set
      */
     public void setCampaignTerm(CampaignTermTransfer campaignTerm) {
@@ -72,6 +74,7 @@ public class CampaignTermDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

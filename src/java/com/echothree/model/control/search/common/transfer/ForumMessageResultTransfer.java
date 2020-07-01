@@ -40,6 +40,7 @@ public class ForumMessageResultTransfer
     }
 
     /**
+     * Sets the forumMessageName.
      * @param forumMessageName the forumMessageName to set
      */
     public void setForumMessageName(String forumMessageName) {
@@ -55,6 +56,7 @@ public class ForumMessageResultTransfer
     }
 
     /**
+     * Sets the forumMessage.
      * @param forumMessage the forumMessage to set
      */
     public void setForumMessage(ForumMessageTransfer forumMessage) {

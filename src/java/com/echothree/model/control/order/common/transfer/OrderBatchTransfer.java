@@ -46,6 +46,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -61,6 +62,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Long count) {
@@ -76,6 +78,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Sets the amount.
      * @param amount the amount to set
      */
     public void setAmount(String amount) {

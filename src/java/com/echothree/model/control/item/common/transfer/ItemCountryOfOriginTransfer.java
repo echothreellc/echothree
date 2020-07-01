@@ -44,6 +44,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -59,6 +60,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -74,6 +76,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Sets the unformattedPercent.
      * @param unformattedPercent the unformattedPercent to set
      */
     public void setUnformattedPercent(Integer unformattedPercent) {
@@ -89,6 +92,7 @@ public class ItemCountryOfOriginTransfer
     }
 
     /**
+     * Sets the percent.
      * @param percent the percent to set
      */
     public void setPercent(String percent) {

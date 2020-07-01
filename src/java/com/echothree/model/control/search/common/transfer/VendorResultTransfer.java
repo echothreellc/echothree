@@ -40,6 +40,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -55,6 +56,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Sets the vendor.
      * @param vendor the vendor to set
      */
     public void setVendor(VendorTransfer vendor) {

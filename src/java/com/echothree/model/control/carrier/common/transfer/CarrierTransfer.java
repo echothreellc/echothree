@@ -62,6 +62,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Sets the carrierName.
      * @param carrierName the carrierName to set
      */
     public void setCarrierName(String carrierName) {
@@ -77,6 +78,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Sets the carrierType.
      * @param carrierType the carrierType to set
      */
     public void setCarrierType(CarrierTypeTransfer carrierType) {
@@ -92,6 +94,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Sets the geoCodeSelector.
      * @param geoCodeSelector the geoCodeSelector to set
      */
     public void setGeoCodeSelector(SelectorTransfer geoCodeSelector) {
@@ -107,6 +110,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Sets the itemSelector.
      * @param itemSelector the itemSelector to set
      */
     public void setItemSelector(SelectorTransfer itemSelector) {
@@ -122,6 +126,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Sets the accountValidationPattern.
      * @param accountValidationPattern the accountValidationPattern to set
      */
     public void setAccountValidationPattern(String accountValidationPattern) {
@@ -137,6 +142,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -152,6 +158,7 @@ public class CarrierTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

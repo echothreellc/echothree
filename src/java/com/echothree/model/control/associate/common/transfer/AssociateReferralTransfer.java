@@ -49,6 +49,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Sets the associateReferralName.
      * @param associateReferralName the associateReferralName to set
      */
     public void setAssociateReferralName(String associateReferralName) {
@@ -64,6 +65,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Sets the associate.
      * @param associate the associate to set
      */
     public void setAssociate(AssociateTransfer associate) {
@@ -79,6 +81,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Sets the associateContactMechanism.
      * @param associateContactMechanism the associateContactMechanism to set
      */
     public void setAssociateContactMechanism(AssociatePartyContactMechanismTransfer associateContactMechanism) {
@@ -94,6 +97,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Sets the targetEntityInstance.
      * @param targetEntityInstance the targetEntityInstance to set
      */
     public void setTargetEntityInstance(EntityInstanceTransfer targetEntityInstance) {
@@ -109,6 +113,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Sets the unformattedAssociateReferralTime.
      * @param unformattedAssociateReferralTime the unformattedAssociateReferralTime to set
      */
     public void setUnformattedAssociateReferralTime(Long unformattedAssociateReferralTime) {
@@ -124,6 +129,7 @@ public class AssociateReferralTransfer
     }
 
     /**
+     * Sets the associateReferralTime.
      * @param associateReferralTime the associateReferralTime to set
      */
     public void setAssociateReferralTime(String associateReferralTime) {

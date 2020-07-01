@@ -38,6 +38,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowName.
      * @param workflowName the workflowName to set
      */
     public void setWorkflowName(String workflowName) {
@@ -53,6 +54,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowStepName.
      * @param workflowStepName the workflowStepName to set
      */
     public void setWorkflowStepName(String workflowStepName) {
@@ -68,6 +70,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowDestinationName.
      * @param workflowDestinationName the workflowDestinationName to set
      */
     public void setWorkflowDestinationName(String workflowDestinationName) {
@@ -83,6 +86,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the destinationWorkflowName.
      * @param destinationWorkflowName the destinationWorkflowName to set
      */
     public void setDestinationWorkflowName(String destinationWorkflowName) {
@@ -98,6 +102,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the destinationWorkflowStepName.
      * @param destinationWorkflowStepName the destinationWorkflowStepName to set
      */
     public void setDestinationWorkflowStepName(String destinationWorkflowStepName) {

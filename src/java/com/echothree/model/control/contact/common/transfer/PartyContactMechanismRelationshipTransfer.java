@@ -40,6 +40,7 @@ public class PartyContactMechanismRelationshipTransfer
     }
 
     /**
+     * Sets the fromPartyContactMechanism.
      * @param fromPartyContactMechanism the fromPartyContactMechanism to set
      */
     public void setFromPartyContactMechanism(PartyContactMechanismTransfer fromPartyContactMechanism) {
@@ -55,6 +56,7 @@ public class PartyContactMechanismRelationshipTransfer
     }
 
     /**
+     * Sets the toPartyContactMechanism.
      * @param toPartyContactMechanism the toPartyContactMechanism to set
      */
     public void setToPartyContactMechanism(PartyContactMechanismTransfer toPartyContactMechanism) {

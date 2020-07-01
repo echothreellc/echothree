@@ -56,6 +56,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the cacheEntryKey.
      * @param cacheEntryKey the cacheEntryKey to set
      */
     public void setCacheEntryKey(String cacheEntryKey) {
@@ -71,6 +72,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -86,6 +88,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the createdTime.
      * @param createdTime the createdTime to set
      */
     public void setCreatedTime(String createdTime) {
@@ -101,6 +104,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the unformattedCreatedTime.
      * @param unformattedCreatedTime the unformattedCreatedTime to set
      */
     public void setUnformattedCreatedTime(Long unformattedCreatedTime) {
@@ -116,6 +120,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the validUntilTime.
      * @param validUntilTime the validUntilTime to set
      */
     public void setValidUntilTime(String validUntilTime) {
@@ -131,6 +136,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the unformattedValidUntilTime.
      * @param unformattedValidUntilTime the unformattedValidUntilTime to set
      */
     public void setUnformattedValidUntilTime(Long unformattedValidUntilTime) {
@@ -146,6 +152,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the clob.
      * @param clob the clob to set
      */
     public void setClob(String clob) {
@@ -161,6 +168,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the blob.
      * @param blob the blob to set
      */
     public void setBlob(ByteArray blob) {
@@ -176,6 +184,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the cacheEntryDependencies.
      * @param cacheEntryDependencies the cacheEntryDependencies to set
      */
     public void setCacheEntryDependencies(ListWrapper<CacheEntryDependencyTransfer> cacheEntryDependencies) {

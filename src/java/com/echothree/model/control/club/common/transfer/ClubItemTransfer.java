@@ -47,6 +47,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the club.
      * @param club the club to set
      */
     public void setClub(ClubTransfer club) {
@@ -62,6 +63,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the clubItemType.
      * @param clubItemType the clubItemType to set
      */
     public void setClubItemType(ClubItemTypeTransfer clubItemType) {
@@ -77,6 +79,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -92,6 +95,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the unformattedSubscriptionTime.
      * @param unformattedSubscriptionTime the unformattedSubscriptionTime to set
      */
     public void setUnformattedSubscriptionTime(Long unformattedSubscriptionTime) {
@@ -107,6 +111,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the subscriptionTime.
      * @param subscriptionTime the subscriptionTime to set
      */
     public void setSubscriptionTime(String subscriptionTime) {

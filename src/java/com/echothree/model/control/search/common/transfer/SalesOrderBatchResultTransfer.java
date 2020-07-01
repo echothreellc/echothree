@@ -40,6 +40,7 @@ public class SalesOrderBatchResultTransfer
     }
 
     /**
+     * Sets the batchName.
      * @param batchName the batchName to set
      */
     public void setBatchName(String batchName) {
@@ -55,6 +56,7 @@ public class SalesOrderBatchResultTransfer
     }
 
     /**
+     * Sets the salesOrderBatch.
      * @param salesOrderBatch the salesOrderBatch to set
      */
     public void setSalesOrderBatch(SalesOrderBatchTransfer salesOrderBatch) {

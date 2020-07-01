@@ -53,6 +53,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCollection.
      * @param contentCollection the contentCollection to set
      */
     public void setContentCollection(ContentCollectionTransfer contentCollection) {
@@ -68,6 +69,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCatalogName.
      * @param contentCatalogName the contentCatalogName to set
      */
     public void setContentCatalogName(String contentCatalogName) {
@@ -83,6 +85,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -98,6 +101,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -113,6 +117,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -128,6 +133,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -143,6 +149,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCatalogItems.
      * @param contentCatalogItems the contentCatalogItems to set
      */
     public void setContentCatalogItems(ListWrapper<ContentCatalogItemTransfer> contentCatalogItems) {
@@ -158,6 +165,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCategories.
      * @param contentCategories the contentCategories to set
      */
     public void setContentCategories(ListWrapper<ContentCategoryTransfer> contentCategories) {

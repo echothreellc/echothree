@@ -42,6 +42,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the licenseType.
      * @param licenseType the licenseType to set
      */
     public void setLicenseType(LicenseTypeTransfer licenseType) {
@@ -72,6 +74,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

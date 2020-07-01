@@ -48,6 +48,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the vendorItem.
      * @param vendorItem the vendorItem to set
      */
     public void setVendorItem(VendorItemTransfer vendorItem) {
@@ -63,6 +64,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the inventoryCondition.
      * @param inventoryCondition the inventoryCondition to set
      */
     public void setInventoryCondition(InventoryConditionTransfer inventoryCondition) {
@@ -78,6 +80,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -93,6 +96,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the unformattedUnitCost.
      * @param unformattedUnitCost the unformattedUnitCost to set
      */
     public void setUnformattedUnitCost(Long unformattedUnitCost) {
@@ -108,6 +112,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the unitCost.
      * @param unitCost the unitCost to set
      */
     public void setUnitCost(String unitCost) {

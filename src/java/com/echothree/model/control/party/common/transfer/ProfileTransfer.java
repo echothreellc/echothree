@@ -67,6 +67,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the nickname.
      * @param nickname the nickname to set
      */
     public void setNickname(String nickname) {
@@ -82,6 +83,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the icon.
      * @param icon the icon to set
      */
     public void setIcon(IconTransfer icon) {
@@ -97,6 +99,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the gender.
      * @param gender the gender to set
      */
     public void setGender(GenderTransfer gender) {
@@ -112,6 +115,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the mood.
      * @param mood the mood to set
      */
     public void setMood(MoodTransfer mood) {
@@ -127,6 +131,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the birthday.
      * @param birthday the birthday to set
      */
     public void setBirthday(String birthday) {
@@ -142,6 +147,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the unformattedBirthday.
      * @param unformattedBirthday the unformattedBirthday to set
      */
     public void setUnformattedBirthday(Integer unformattedBirthday) {
@@ -157,6 +163,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the birthdayFormat.
      * @param birthdayFormat the birthdayFormat to set
      */
     public void setBirthdayFormat(BirthdayFormatTransfer birthdayFormat) {
@@ -172,6 +179,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the occupation.
      * @param occupation the occupation to set
      */
     public void setOccupation(String occupation) {
@@ -187,6 +195,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the hobbies.
      * @param hobbies the hobbies to set
      */
     public void setHobbies(String hobbies) {
@@ -202,6 +211,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the location.
      * @param location the location to set
      */
     public void setLocation(String location) {
@@ -217,6 +227,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the bioMimeType.
      * @param bioMimeType the bioMimeType to set
      */
     public void setBioMimeType(MimeTypeTransfer bioMimeType) {
@@ -232,6 +243,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the bio.
      * @param bio the bio to set
      */
     public void setBio(String bio) {
@@ -247,6 +259,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the signatureMimeType.
      * @param signatureMimeType the signatureMimeType to set
      */
     public void setSignatureMimeType(MimeTypeTransfer signatureMimeType) {
@@ -262,6 +275,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the signature.
      * @param signature the signature to set
      */
     public void setSignature(String signature) {

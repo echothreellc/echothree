@@ -50,6 +50,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -66,6 +67,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -82,6 +84,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -97,6 +100,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Sets the blobAttribute.
      * @param blobAttribute the blobAttribute to set
      */
     public void setBlobAttribute(ByteArray blobAttribute) {
@@ -112,6 +116,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -127,6 +132,7 @@ public class EntityBlobAttributeTransfer
     }
 
     /**
+     * Sets the eTag.
      * @param eTag the eTag to set
      */
     public void seteTag(String eTag) {

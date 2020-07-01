@@ -42,6 +42,7 @@ public class ChainActionTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ChainActionTypeDescriptionTransfer
     }
 
     /**
+     * Sets the chainActionType.
      * @param chainActionType the chainActionType to set
      */
     public void setChainActionType(ChainActionTypeTransfer chainActionType) {
@@ -72,6 +74,7 @@ public class ChainActionTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -40,6 +40,7 @@ public class UserVisitSearchFacetIntegerTransfer
     }
 
     /**
+     * Sets the entityIntegerRange.
      * @param entityIntegerRange the entityIntegerRange to set
      */
     public void setEntityIntegerRange(EntityIntegerRangeTransfer entityIntegerRange) {
@@ -55,6 +56,7 @@ public class UserVisitSearchFacetIntegerTransfer
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

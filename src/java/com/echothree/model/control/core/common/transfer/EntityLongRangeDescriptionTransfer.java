@@ -42,6 +42,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Sets the entityLongRange.
      * @param entityLongRange the entityLongRange to set
      */
     public void setEntityLongRange(EntityLongRangeTransfer entityLongRange) {
@@ -72,6 +74,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -44,6 +44,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -59,6 +60,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the carrier.
      * @param carrier the carrier to set
      */
     public void setCarrier(CarrierTransfer carrier) {
@@ -74,6 +76,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the account.
      * @param account the account to set
      */
     public void setAccount(String account) {
@@ -89,6 +92,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the alwaysUseThirdPartyBilling.
      * @param alwaysUseThirdPartyBilling the alwaysUseThirdPartyBilling to set
      */
     public void setAlwaysUseThirdPartyBilling(Boolean alwaysUseThirdPartyBilling) {

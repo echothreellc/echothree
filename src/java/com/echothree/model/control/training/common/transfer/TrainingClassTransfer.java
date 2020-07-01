@@ -179,6 +179,7 @@ public class TrainingClassTransfer
     }
 
     /**
+     * Sets the workEffortScope.
      * @param workEffortScope the workEffortScope to set
      */
     public void setWorkEffortScope(WorkEffortScopeTransfer workEffortScope) {

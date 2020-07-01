@@ -55,6 +55,7 @@ public class BatchOrderDirectoryHandler {
     }
 
     /**
+     * Sets the directory.
      * @param directory the directory to set
      */
     public void setDirectory(String directory) {

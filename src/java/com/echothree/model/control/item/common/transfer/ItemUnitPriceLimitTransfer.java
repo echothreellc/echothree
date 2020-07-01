@@ -56,6 +56,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -71,6 +72,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the inventoryCondition.
      * @param inventoryCondition the inventoryCondition to set
      */
     public void setInventoryCondition(InventoryConditionTransfer inventoryCondition) {
@@ -86,6 +88,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -101,6 +104,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -116,6 +120,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the unformattedMinimumUnitPrice.
      * @param unformattedMinimumUnitPrice the unformattedMinimumUnitPrice to set
      */
     public void setUnformattedMinimumUnitPrice(Long unformattedMinimumUnitPrice) {
@@ -131,6 +136,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the minimumUnitPrice.
      * @param minimumUnitPrice the minimumUnitPrice to set
      */
     public void setMinimumUnitPrice(String minimumUnitPrice) {
@@ -146,6 +152,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the unformattedMaximumUnitPrice.
      * @param unformattedMaximumUnitPrice the unformattedMaximumUnitPrice to set
      */
     public void setUnformattedMaximumUnitPrice(Long unformattedMaximumUnitPrice) {
@@ -161,6 +168,7 @@ public class ItemUnitPriceLimitTransfer
     }
 
     /**
+     * Sets the maximumUnitPrice.
      * @param maximumUnitPrice the maximumUnitPrice to set
      */
     public void setMaximumUnitPrice(String maximumUnitPrice) {

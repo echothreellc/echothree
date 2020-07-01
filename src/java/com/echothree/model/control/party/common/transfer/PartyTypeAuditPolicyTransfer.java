@@ -43,6 +43,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -58,6 +59,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Sets the auditCommands.
      * @param auditCommands the auditCommands to set
      */
     public void setAuditCommands(Boolean auditCommands) {
@@ -73,6 +75,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Sets the unformattedRetainUserVisitsTime.
      * @param unformattedRetainUserVisitsTime the unformattedRetainUserVisitsTime to set
      */
     public void setUnformattedRetainUserVisitsTime(Long unformattedRetainUserVisitsTime) {
@@ -88,6 +91,7 @@ public class PartyTypeAuditPolicyTransfer
     }
 
     /**
+     * Sets the retainUserVisitsTime.
      * @param retainUserVisitsTime the retainUserVisitsTime to set
      */
     public void setRetainUserVisitsTime(String retainUserVisitsTime) {

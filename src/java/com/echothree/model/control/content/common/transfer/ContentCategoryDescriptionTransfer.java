@@ -43,6 +43,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -58,6 +59,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Sets the contentCategory.
      * @param contentCategory the contentCategory to set
      */
     public void setContentCategory(ContentCategoryTransfer contentCategory) {
@@ -73,6 +75,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

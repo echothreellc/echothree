@@ -42,6 +42,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Sets the chainEntityRoleType.
      * @param chainEntityRoleType the chainEntityRoleType to set
      */
     public void setChainEntityRoleType(ChainEntityRoleTypeTransfer chainEntityRoleType) {
@@ -72,6 +74,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

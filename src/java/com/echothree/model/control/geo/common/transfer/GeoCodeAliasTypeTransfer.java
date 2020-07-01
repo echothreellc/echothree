@@ -50,6 +50,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the geoCodeType.
      * @param geoCodeType the geoCodeType to set
      */
     public void setGeoCodeType(GeoCodeTypeTransfer geoCodeType) {
@@ -65,6 +66,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the geoCodeAliasTypeName.
      * @param geoCodeAliasTypeName the geoCodeAliasTypeName to set
      */
     public void setGeoCodeAliasTypeName(String geoCodeAliasTypeName) {
@@ -80,6 +82,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the validationPattern.
      * @param validationPattern the validationPattern to set
      */
     public void setValidationPattern(String validationPattern) {
@@ -95,6 +98,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the isRequired.
      * @param isRequired the isRequired to set
      */
     public void setIsRequired(Boolean isRequired) {
@@ -110,6 +114,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -125,6 +130,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -140,6 +146,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

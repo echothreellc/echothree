@@ -37,6 +37,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowName.
      * @param workflowName the workflowName to set
      */
     public void setWorkflowName(String workflowName) {
@@ -52,6 +53,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowEntranceName.
      * @param workflowEntranceName the workflowEntranceName to set
      */
     public void setWorkflowEntranceName(String workflowEntranceName) {
@@ -67,6 +69,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the entranceWorkflowName.
      * @param entranceWorkflowName the entranceWorkflowName to set
      */
     public void setEntranceWorkflowName(String entranceWorkflowName) {
@@ -82,6 +85,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the entranceWorkflowStepName.
      * @param entranceWorkflowStepName the entranceWorkflowStepName to set
      */
     public void setEntranceWorkflowStepName(String entranceWorkflowStepName) {

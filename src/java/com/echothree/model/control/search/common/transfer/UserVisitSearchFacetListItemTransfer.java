@@ -40,6 +40,7 @@ public class UserVisitSearchFacetListItemTransfer
     }
 
     /**
+     * Sets the entityListItem.
      * @param entityListItem the entityListItem to set
      */
     public void setEntityListItem(EntityListItemTransfer entityListItem) {
@@ -55,6 +56,7 @@ public class UserVisitSearchFacetListItemTransfer
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

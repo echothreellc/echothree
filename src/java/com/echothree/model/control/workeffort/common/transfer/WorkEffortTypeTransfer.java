@@ -66,6 +66,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the workEffortTypeName.
      * @param workEffortTypeName the workEffortTypeName to set
      */
     public void setWorkEffortTypeName(String workEffortTypeName) {
@@ -81,6 +82,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the entityType.
      * @param entityType the entityType to set
      */
     public void setEntityType(EntityTypeTransfer entityType) {
@@ -96,6 +98,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the workEffortSequence.
      * @param workEffortSequence the workEffortSequence to set
      */
     public void setWorkEffortSequence(SequenceTransfer workEffortSequence) {
@@ -111,6 +114,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the unformattedScheduledTime.
      * @param unformattedScheduledTime the unformattedScheduledTime to set
      */
     public void setUnformattedScheduledTime(Long unformattedScheduledTime) {
@@ -126,6 +130,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the scheduledTime.
      * @param scheduledTime the scheduledTime to set
      */
     public void setScheduledTime(String scheduledTime) {
@@ -141,6 +146,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the unformattedEstimatedTimeAllowed.
      * @param unformattedEstimatedTimeAllowed the unformattedEstimatedTimeAllowed to set
      */
     public void setUnformattedEstimatedTimeAllowed(Long unformattedEstimatedTimeAllowed) {
@@ -156,6 +162,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the estimatedTimeAllowed.
      * @param estimatedTimeAllowed the estimatedTimeAllowed to set
      */
     public void setEstimatedTimeAllowed(String estimatedTimeAllowed) {
@@ -171,6 +178,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the unformattedMaximumTimeAllowed.
      * @param unformattedMaximumTimeAllowed the unformattedMaximumTimeAllowed to set
      */
     public void setUnformattedMaximumTimeAllowed(Long unformattedMaximumTimeAllowed) {
@@ -186,6 +194,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the maximumTimeAllowed.
      * @param maximumTimeAllowed the maximumTimeAllowed to set
      */
     public void setMaximumTimeAllowed(String maximumTimeAllowed) {
@@ -201,6 +210,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -216,6 +226,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -231,6 +242,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the workEffortScopes.
      * @param workEffortScopes the workEffortScopes to set
      */
     public void setWorkEffortScopes(ListWrapper<WorkEffortScopeTransfer> workEffortScopes) {
@@ -246,6 +258,7 @@ public class WorkEffortTypeTransfer
     }
 
     /**
+     * Sets the workRequirementTypes.
      * @param workRequirementTypes the workRequirementTypes to set
      */
     public void setWorkRequirementTypes(ListWrapper<WorkRequirementTypeTransfer> workRequirementTypes) {

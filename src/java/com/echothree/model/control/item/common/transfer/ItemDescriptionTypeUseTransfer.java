@@ -39,6 +39,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Sets the itemDescriptionType.
      * @param itemDescriptionType the itemDescriptionType to set
      */
     public void setItemDescriptionType(ItemDescriptionTypeTransfer itemDescriptionType) {
@@ -54,6 +55,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Sets the itemDescriptionTypeUseType.
      * @param itemDescriptionTypeUseType the itemDescriptionTypeUseType to set
      */
     public void setItemDescriptionTypeUseType(ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseType) {

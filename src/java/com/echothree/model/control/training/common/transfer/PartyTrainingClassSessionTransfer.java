@@ -53,6 +53,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClass.
      * @param partyTrainingClass the partyTrainingClass to set
      */
     public void setPartyTrainingClass(PartyTrainingClassTransfer partyTrainingClass) {
@@ -68,6 +69,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionSequence.
      * @param partyTrainingClassSessionSequence the partyTrainingClassSessionSequence to set
      */
     public void setPartyTrainingClassSessionSequence(Integer partyTrainingClassSessionSequence) {
@@ -83,6 +85,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the lastPartyTrainingClassSessionSection.
      * @param lastPartyTrainingClassSessionSection the lastPartyTrainingClassSessionSection to set
      */
     public void setLastPartyTrainingClassSessionSection(PartyTrainingClassSessionSectionTransfer lastPartyTrainingClassSessionSection) {
@@ -98,6 +101,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the lastPartyTrainingClassSessionPage.
      * @param lastPartyTrainingClassSessionPage the lastPartyTrainingClassSessionPage to set
      */
     public void setLastPartyTrainingClassSessionPage(PartyTrainingClassSessionPageTransfer lastPartyTrainingClassSessionPage) {
@@ -113,6 +117,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the lastPartyTrainingClassSessionQuestion.
      * @param lastPartyTrainingClassSessionQuestion the lastPartyTrainingClassSessionQuestion to set
      */
     public void setLastPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestionTransfer lastPartyTrainingClassSessionQuestion) {
@@ -128,6 +133,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionPages.
      * @param partyTrainingClassSessionPages the partyTrainingClassSessionPages to set
      */
     public void setPartyTrainingClassSessionPages(ListWrapper<PartyTrainingClassSessionPageTransfer> partyTrainingClassSessionPages) {
@@ -143,6 +149,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionQuestions.
      * @param partyTrainingClassSessionQuestions the partyTrainingClassSessionQuestions to set
      */
     public void setPartyTrainingClassSessionQuestions(ListWrapper<PartyTrainingClassSessionQuestionTransfer> partyTrainingClassSessionQuestions) {

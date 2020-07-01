@@ -66,6 +66,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -81,6 +82,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the username.
      * @param username the username to set
      */
     public void setUsername(String username) {
@@ -96,6 +98,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the unformattedLastLoginTime.
      * @param unformattedLastLoginTime the unformattedLastLoginTime to set
      */
     public void setUnformattedLastLoginTime(Long unformattedLastLoginTime) {
@@ -111,6 +114,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the lastLoginTime.
      * @param lastLoginTime the lastLoginTime to set
      */
     public void setLastLoginTime(String lastLoginTime) {
@@ -126,6 +130,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the failureCount.
      * @param failureCount the failureCount to set
      */
     public void setFailureCount(Integer failureCount) {
@@ -141,6 +146,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the unformattedFirstFailureTime.
      * @param unformattedFirstFailureTime the unformattedFirstFailureTime to set
      */
     public void setUnformattedFirstFailureTime(Long unformattedFirstFailureTime) {
@@ -156,6 +162,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the firstFailureTime.
      * @param firstFailureTime the firstFailureTime to set
      */
     public void setFirstFailureTime(String firstFailureTime) {
@@ -171,6 +178,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the unformattedLastFailureTime.
      * @param unformattedLastFailureTime the unformattedLastFailureTime to set
      */
     public void setUnformattedLastFailureTime(Long unformattedLastFailureTime) {
@@ -186,6 +194,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the lastFailureTime.
      * @param lastFailureTime the lastFailureTime to set
      */
     public void setLastFailureTime(String lastFailureTime) {
@@ -201,6 +210,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the expiredCount.
      * @param expiredCount the expiredCount to set
      */
     public void setExpiredCount(Integer expiredCount) {
@@ -216,6 +226,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the forceChange.
      * @param forceChange the forceChange to set
      */
     public void setForceChange(Boolean forceChange) {
@@ -231,6 +242,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the userLoginPasswords.
      * @param userLoginPasswords the userLoginPasswords to set
      */
     public void setUserLoginPasswords(MapWrapper<UserLoginPasswordTransfer> userLoginPasswords) {

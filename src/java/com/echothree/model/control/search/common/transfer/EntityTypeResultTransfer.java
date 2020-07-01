@@ -42,6 +42,7 @@ public class EntityTypeResultTransfer
     }
 
     /**
+     * Sets the componentVendorName.
      * @param componentVendorName the componentVendorName to set
      */
     public void setComponentVendorName(String componentVendorName) {
@@ -57,6 +58,7 @@ public class EntityTypeResultTransfer
     }
 
     /**
+     * Sets the entityTypeName.
      * @param entityTypeName the entityTypeName to set
      */
     public void setEntityTypeName(String entityTypeName) {
@@ -72,6 +74,7 @@ public class EntityTypeResultTransfer
     }
 
     /**
+     * Sets the entityType.
      * @param entityType the entityType to set
      */
     public void setEntityType(EntityTypeTransfer entityType) {

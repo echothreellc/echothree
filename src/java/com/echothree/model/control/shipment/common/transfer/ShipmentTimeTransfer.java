@@ -41,6 +41,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Sets the shipmentTimeType.
      * @param shipmentTimeType the shipmentTimeType to set
      */
     public void setShipmentTimeType(ShipmentTimeTypeTransfer shipmentTimeType) {
@@ -56,6 +57,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -71,6 +73,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {

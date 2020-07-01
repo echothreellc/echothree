@@ -152,6 +152,7 @@ public abstract class BaseEvaluator
     }
 
     /**
+     * Sets the q.
      * @param q the q to set
      */
     public void setQ(final ExecutionErrorAccumulator eea, final String q) {
@@ -195,6 +196,7 @@ public abstract class BaseEvaluator
     }
 
     /**
+     * Sets the field.
      * @param field the field to set
      */
     public void setField(String field) {
@@ -210,6 +212,7 @@ public abstract class BaseEvaluator
     }
 
     /**
+     * Sets the fields.
      * @param fields the fields to set
      */
     public void setFields(String[] fields) {

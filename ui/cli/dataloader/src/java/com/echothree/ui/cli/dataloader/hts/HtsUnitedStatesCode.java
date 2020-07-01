@@ -49,6 +49,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the commodity.
      * @param commodity the commodity to set
      */
     public void setCommodity(String commodity) {
@@ -64,6 +65,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the descrip1.
      * @param descrip1 the descrip1 to set
      */
     public void setDescrip1(String descrip1) {
@@ -79,6 +81,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the quantity1.
      * @param quantity1 the quantity1 to set
      */
     public void setQuantity1(String quantity1) {
@@ -94,6 +97,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the quantity2.
      * @param quantity2 the quantity2 to set
      */
     public void setQuantity2(String quantity2) {

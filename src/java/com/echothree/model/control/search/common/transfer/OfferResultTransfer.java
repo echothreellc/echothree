@@ -40,6 +40,7 @@ public class OfferResultTransfer
     }
 
     /**
+     * Sets the offerName.
      * @param offerName the offerName to set
      */
     public void setOfferName(String offerName) {
@@ -55,6 +56,7 @@ public class OfferResultTransfer
     }
 
     /**
+     * Sets the offer.
      * @param offer the offer to set
      */
     public void setOffer(OfferTransfer offer) {

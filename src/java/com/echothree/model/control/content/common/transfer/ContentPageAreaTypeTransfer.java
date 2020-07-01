@@ -39,6 +39,7 @@ public class ContentPageAreaTypeTransfer
     }
 
     /**
+     * Sets the contentPageAreaTypeName.
      * @param contentPageAreaTypeName the contentPageAreaTypeName to set
      */
     public void setContentPageAreaTypeName(String contentPageAreaTypeName) {
@@ -54,6 +55,7 @@ public class ContentPageAreaTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

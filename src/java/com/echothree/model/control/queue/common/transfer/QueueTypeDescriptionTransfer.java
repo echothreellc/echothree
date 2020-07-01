@@ -42,6 +42,7 @@ public class QueueTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class QueueTypeDescriptionTransfer
     }
 
     /**
+     * Sets the queueType.
      * @param queueType the queueType to set
      */
     public void setQueueType(QueueTypeTransfer queueType) {
@@ -72,6 +74,7 @@ public class QueueTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

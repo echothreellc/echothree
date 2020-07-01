@@ -42,6 +42,7 @@ public class TextDecorationDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class TextDecorationDescriptionTransfer
     }
 
     /**
+     * Sets the textDecoration.
      * @param textDecoration the textDecoration to set
      */
     public void setTextDecoration(TextDecorationTransfer textDecoration) {
@@ -72,6 +74,7 @@ public class TextDecorationDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

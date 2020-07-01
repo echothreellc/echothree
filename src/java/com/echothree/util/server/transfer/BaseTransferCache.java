@@ -246,6 +246,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Sets the includeEntityAttributeGroups.
      * @param includeEntityAttributeGroups the includeEntityAttributeGroups to set
      */
     public void setIncludeEntityAttributeGroups(boolean includeEntityAttributeGroups) {
@@ -272,6 +273,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Sets the includeTagScopes.
      * @param includeTagScopes the includeTagScopes to set
      */
     public void setIncludeTagScopes(boolean includeTagScopes) {
@@ -307,6 +309,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Sets the setupBaseTransfer.
      * @param includeEntityInstance the setupBaseTransfer to set
      */
     public void setIncludeEntityInstance(boolean includeEntityInstance) {
@@ -322,6 +325,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Sets the includeEntityAppearance.
      * @param includeEntityAppearance the includeEntityAppearance to set
      */
     public void setIncludeEntityAppearance(boolean includeEntityAppearance) {
@@ -337,6 +341,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Sets the includeNames.
      * @param includeNames the includeNames to set
      */
     public void setIncludeNames(boolean includeNames) {
@@ -352,6 +357,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Sets the includeKey.
      * @param includeKey the includeKey to set
      */
     public void setIncludeKey(boolean includeKey) {
@@ -367,6 +373,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Sets the includeGuid.
      * @param includeGuid the includeGuid to set
      */
     public void setIncludeGuid(boolean includeGuid) {
@@ -374,6 +381,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
     
     /**
+     * Sets the includeUlid.
      * @param includeUlid the includeUlid to set
      */
     public void setIncludeUlid(boolean includeUlid) {

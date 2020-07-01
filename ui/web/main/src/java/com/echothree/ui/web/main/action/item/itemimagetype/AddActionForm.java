@@ -104,6 +104,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the quality.
      * @param quality the quality to set
      */
     public void setQuality(String quality) {

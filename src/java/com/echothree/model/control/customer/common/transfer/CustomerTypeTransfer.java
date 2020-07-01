@@ -87,6 +87,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the customerTypeName.
      * @param customerTypeName the customerTypeName to set
      */
     public void setCustomerTypeName(String customerTypeName) {
@@ -102,6 +103,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the customerSequence.
      * @param customerSequence the customerSequence to set
      */
     public void setCustomerSequence(SequenceTransfer customerSequence) {
@@ -117,6 +119,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -132,6 +135,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultTerm.
      * @param defaultTerm the defaultTerm to set
      */
     public void setDefaultTerm(TermTransfer defaultTerm) {
@@ -155,6 +159,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultCancellationPolicy.
      * @param defaultCancellationPolicy the defaultCancellationPolicy to set
      */
     public void setDefaultCancellationPolicy(CancellationPolicyTransfer defaultCancellationPolicy) {
@@ -170,6 +175,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultReturnPolicy.
      * @param defaultReturnPolicy the defaultReturnPolicy to set
      */
     public void setDefaultReturnPolicy(ReturnPolicyTransfer defaultReturnPolicy) {
@@ -185,6 +191,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultArGlAccount.
      * @param defaultArGlAccount the defaultArGlAccount to set
      */
     public void setDefaultArGlAccount(GlAccountTransfer defaultArGlAccount) {
@@ -200,6 +207,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultHoldUntilComplete.
      * @param defaultHoldUntilComplete the defaultHoldUntilComplete to set
      */
     public void setDefaultHoldUntilComplete(Boolean defaultHoldUntilComplete) {
@@ -215,6 +223,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowBackorders.
      * @param defaultAllowBackorders the defaultAllowBackorders to set
      */
     public void setDefaultAllowBackorders(Boolean defaultAllowBackorders) {
@@ -230,6 +239,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowSubstitutions.
      * @param defaultAllowSubstitutions the defaultAllowSubstitutions to set
      */
     public void setDefaultAllowSubstitutions(Boolean defaultAllowSubstitutions) {
@@ -245,6 +255,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowCombiningShipments.
      * @param defaultAllowCombiningShipments the defaultAllowCombiningShipments to set
      */
     public void setDefaultAllowCombiningShipments(Boolean defaultAllowCombiningShipments) {
@@ -260,6 +271,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultRequireReference.
      * @param defaultRequireReference the defaultRequireReference to set
      */
     public void setDefaultRequireReference(Boolean defaultRequireReference) {
@@ -275,6 +287,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowReferenceDuplicates.
      * @param defaultAllowReferenceDuplicates the defaultAllowReferenceDuplicates to set
      */
     public void setDefaultAllowReferenceDuplicates(Boolean defaultAllowReferenceDuplicates) {
@@ -290,6 +303,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultReferenceValidationPattern.
      * @param defaultReferenceValidationPattern the defaultReferenceValidationPattern to set
      */
     public void setDefaultReferenceValidationPattern(String defaultReferenceValidationPattern) {
@@ -305,6 +319,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultTaxable.
      * @param defaultTaxable the defaultTaxable to set
      */
     public void setDefaultTaxable(Boolean defaultTaxable) {
@@ -320,6 +335,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the allocationPriority.
      * @param allocationPriority the allocationPriority to set
      */
     public void setAllocationPriority(AllocationPriorityTransfer allocationPriority) {
@@ -335,6 +351,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -350,6 +367,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -365,6 +383,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

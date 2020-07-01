@@ -69,6 +69,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the workEffortName.
      * @param workEffortName the workEffortName to set
      */
     public void setWorkEffortName(String workEffortName) {
@@ -84,6 +85,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the owningEntityInstance.
      * @param owningEntityInstance the owningEntityInstance to set
      */
     public void setOwningEntityInstance(EntityInstanceTransfer owningEntityInstance) {
@@ -99,6 +101,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the workEffortScope.
      * @param workEffortScope the workEffortScope to set
      */
     public void setWorkEffortScope(WorkEffortScopeTransfer workEffortScope) {
@@ -114,6 +117,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the unformattedScheduledTime.
      * @param unformattedScheduledTime the unformattedScheduledTime to set
      */
     public void setUnformattedScheduledTime(Long unformattedScheduledTime) {
@@ -129,6 +133,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the scheduledTime.
      * @param scheduledTime the scheduledTime to set
      */
     public void setScheduledTime(String scheduledTime) {
@@ -144,6 +149,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the unformattedScheduledStartTime.
      * @param unformattedScheduledStartTime the unformattedScheduledStartTime to set
      */
     public void setUnformattedScheduledStartTime(Long unformattedScheduledStartTime) {
@@ -159,6 +165,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the scheduledStartTime.
      * @param scheduledStartTime the scheduledStartTime to set
      */
     public void setScheduledStartTime(String scheduledStartTime) {
@@ -174,6 +181,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the unformattedScheduledEndTime.
      * @param unformattedScheduledEndTime the unformattedScheduledEndTime to set
      */
     public void setUnformattedScheduledEndTime(Long unformattedScheduledEndTime) {
@@ -189,6 +197,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the scheduledEndTime.
      * @param scheduledEndTime the scheduledEndTime to set
      */
     public void setScheduledEndTime(String scheduledEndTime) {
@@ -204,6 +213,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the unformattedEstimatedTimeAllowed.
      * @param unformattedEstimatedTimeAllowed the unformattedEstimatedTimeAllowed to set
      */
     public void setUnformattedEstimatedTimeAllowed(Long unformattedEstimatedTimeAllowed) {
@@ -219,6 +229,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the estimatedTimeAllowed.
      * @param estimatedTimeAllowed the estimatedTimeAllowed to set
      */
     public void setEstimatedTimeAllowed(String estimatedTimeAllowed) {
@@ -234,6 +245,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the unformattedMaximumTimeAllowed.
      * @param unformattedMaximumTimeAllowed the unformattedMaximumTimeAllowed to set
      */
     public void setUnformattedMaximumTimeAllowed(Long unformattedMaximumTimeAllowed) {
@@ -249,6 +261,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the maximumTimeAllowed.
      * @param maximumTimeAllowed the maximumTimeAllowed to set
      */
     public void setMaximumTimeAllowed(String maximumTimeAllowed) {
@@ -264,6 +277,7 @@ public class WorkEffortTransfer
     }
 
     /**
+     * Sets the workRequirements.
      * @param workRequirements the workRequirements to set
      */
     public void setWorkRequirements(ListWrapper<WorkRequirementTransfer> workRequirements) {

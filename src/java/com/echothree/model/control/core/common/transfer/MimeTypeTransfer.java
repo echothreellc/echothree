@@ -49,6 +49,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the mimeTypeName.
      * @param mimeTypeName the mimeTypeName to set
      */
     public void setMimeTypeName(String mimeTypeName) {
@@ -64,6 +65,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the entityAttributeType.
      * @param entityAttributeType the entityAttributeType to set
      */
     public void setEntityAttributeType(EntityAttributeTypeTransfer entityAttributeType) {
@@ -79,6 +81,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -94,6 +97,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -109,6 +113,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -124,6 +129,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the mimeTypeFileExtensions.
      * @param mimeTypeFileExtensions the mimeTypeFileExtensions to set
      */
     public void setMimeTypeFileExtensions(ListWrapper<MimeTypeFileExtensionTransfer> mimeTypeFileExtensions) {

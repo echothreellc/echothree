@@ -51,6 +51,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -66,6 +67,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the userLoginPasswordType.
      * @param userLoginPasswordType the userLoginPasswordType to set
      */
     public void setUserLoginPasswordType(UserLoginPasswordTypeTransfer userLoginPasswordType) {
@@ -81,6 +83,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the password.
      * @param password the password to set
      */
     public void setPassword(String password) {
@@ -96,6 +99,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the unformattedChangedTime.
      * @param unformattedChangedTime the unformattedChangedTime to set
      */
     public void setUnformattedChangedTime(Long unformattedChangedTime) {
@@ -111,6 +115,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the changedTime.
      * @param changedTime the changedTime to set
      */
     public void setChangedTime(String changedTime) {
@@ -126,6 +131,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the wasReset.
      * @param wasReset the wasReset to set
      */
     public void setWasReset(Boolean wasReset) {

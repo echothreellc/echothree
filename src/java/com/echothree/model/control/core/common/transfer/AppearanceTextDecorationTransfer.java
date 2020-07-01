@@ -39,6 +39,7 @@ public class AppearanceTextDecorationTransfer
     }
 
     /**
+     * Sets the appearance.
      * @param appearance the appearance to set
      */
     public void setAppearance(AppearanceTransfer appearance) {
@@ -54,6 +55,7 @@ public class AppearanceTextDecorationTransfer
     }
 
     /**
+     * Sets the textDecoration.
      * @param textDecoration the textDecoration to set
      */
     public void setTextDecoration(TextDecorationTransfer textDecoration) {

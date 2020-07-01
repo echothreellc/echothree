@@ -55,6 +55,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the workRequirement.
      * @param workRequirement the workRequirement to set
      */
     public void setWorkRequirement(WorkRequirementTransfer workRequirement) {
@@ -70,6 +71,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the workTimeSequence.
      * @param workTimeSequence the workTimeSequence to set
      */
     public void setWorkTimeSequence(Integer workTimeSequence) {
@@ -85,6 +87,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -100,6 +103,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -115,6 +119,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -130,6 +135,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -145,6 +151,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -160,6 +167,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the workTimeStatus.
      * @param workTimeStatus the workTimeStatus to set
      */
     public void setWorkTimeStatus(WorkflowEntityStatusTransfer workTimeStatus) {

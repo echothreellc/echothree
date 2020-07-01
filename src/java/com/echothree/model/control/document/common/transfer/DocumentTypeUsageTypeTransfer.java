@@ -43,6 +43,7 @@ public class DocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the documentTypeUsageTypeName.
      * @param documentTypeUsageTypeName the documentTypeUsageTypeName to set
      */
     public void setDocumentTypeUsageTypeName(String documentTypeUsageTypeName) {
@@ -58,6 +59,7 @@ public class DocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -73,6 +75,7 @@ public class DocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -88,6 +91,7 @@ public class DocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

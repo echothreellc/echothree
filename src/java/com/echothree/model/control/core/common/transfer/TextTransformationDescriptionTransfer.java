@@ -42,6 +42,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Sets the textTransformation.
      * @param textTransformation the textTransformation to set
      */
     public void setTextTransformation(TextTransformationTransfer textTransformation) {
@@ -72,6 +74,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

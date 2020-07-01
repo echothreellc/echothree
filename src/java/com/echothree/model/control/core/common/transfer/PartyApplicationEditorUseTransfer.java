@@ -47,6 +47,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -62,6 +63,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the applicationEditorUse.
      * @param applicationEditorUse the applicationEditorUse to set
      */
     public void setApplicationEditorUse(ApplicationEditorUseTransfer applicationEditorUse) {
@@ -77,6 +79,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the applicationEditor.
      * @param applicationEditor the applicationEditor to set
      */
     public void setApplicationEditor(ApplicationEditorTransfer applicationEditor) {
@@ -92,6 +95,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the preferredHeight.
      * @param preferredHeight the preferredHeight to set
      */
     public void setPreferredHeight(Integer preferredHeight) {
@@ -107,6 +111,7 @@ public class PartyApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the preferredWidth.
      * @param preferredWidth the preferredWidth to set
      */
     public void setPreferredWidth(Integer preferredWidth) {

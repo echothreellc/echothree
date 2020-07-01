@@ -42,6 +42,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Sets the applicationEditorUse.
      * @param applicationEditorUse the applicationEditorUse to set
      */
     public void setApplicationEditorUse(ApplicationEditorUseTransfer applicationEditorUse) {
@@ -72,6 +74,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

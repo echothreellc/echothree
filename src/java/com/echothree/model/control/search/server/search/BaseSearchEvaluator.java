@@ -443,6 +443,7 @@ public abstract class BaseSearchEvaluator
     }
 
     /**
+     * Sets the createdSince.
      * @param createdSince the createdSince to set
      */
     public void setCreatedSince(Long createdSince) {
@@ -458,6 +459,7 @@ public abstract class BaseSearchEvaluator
     }
 
     /**
+     * Sets the modifiedSince.
      * @param modifiedSince the modifiedSince to set
      */
     public void setModifiedSince(Long modifiedSince) {

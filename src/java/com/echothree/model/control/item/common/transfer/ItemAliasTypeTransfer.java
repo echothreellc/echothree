@@ -66,6 +66,7 @@ public class ItemAliasTypeTransfer
     }
 
     /**
+     * Sets the itemAliasChecksumType.
      * @param itemAliasChecksumType the itemAliasChecksumType to set
      */
     public void setItemAliasChecksumType(ItemAliasChecksumTypeTransfer itemAliasChecksumType) {

@@ -41,6 +41,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Sets the lotTimeType.
      * @param lotTimeType the lotTimeType to set
      */
     public void setLotTimeType(LotTimeTypeTransfer lotTimeType) {
@@ -56,6 +57,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -71,6 +73,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {

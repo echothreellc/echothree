@@ -46,6 +46,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Sets the userVisit.
      * @param userVisit the userVisit to set
      */
     public void setUserVisit(UserVisitTransfer userVisit) {
@@ -61,6 +62,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Sets the userVisitTrackSequence.
      * @param userVisitTrackSequence the userVisitTrackSequence to set
      */
     public void setUserVisitTrackSequence(Integer userVisitTrackSequence) {
@@ -76,6 +78,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -91,6 +94,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {
@@ -106,6 +110,7 @@ public class UserVisitTrackTransfer
     }
 
     /**
+     * Sets the track.
      * @param track the track to set
      */
     public void setTrack(TrackTransfer track) {

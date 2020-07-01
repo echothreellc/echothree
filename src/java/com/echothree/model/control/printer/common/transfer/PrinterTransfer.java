@@ -47,6 +47,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Sets the printerName.
      * @param printerName the printerName to set
      */
     public void setPrinterName(String printerName) {
@@ -62,6 +63,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Sets the printerGroup.
      * @param printerGroup the printerGroup to set
      */
     public void setPrinterGroup(PrinterGroupTransfer printerGroup) {
@@ -77,6 +79,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Sets the priority.
      * @param priority the priority to set
      */
     public void setPriority(Integer priority) {
@@ -92,6 +95,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Sets the printerStatus.
      * @param printerStatus the printerStatus to set
      */
     public void setPrinterStatus(WorkflowEntityStatusTransfer printerStatus) {
@@ -107,6 +111,7 @@ public class PrinterTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

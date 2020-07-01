@@ -49,6 +49,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -65,6 +66,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -81,6 +83,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -96,6 +99,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the clobAttribute.
      * @param clobAttribute the clobAttribute to set
      */
     public void setClobAttribute(String clobAttribute) {
@@ -111,6 +115,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -126,6 +131,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the eTag.
      * @param eTag the eTag to set
      */
     public void seteTag(String eTag) {

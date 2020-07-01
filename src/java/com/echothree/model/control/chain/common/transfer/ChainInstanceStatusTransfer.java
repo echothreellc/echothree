@@ -46,6 +46,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Sets the chainInstance.
      * @param chainInstance the chainInstance to set
      */
     public void setChainInstance(ChainInstanceTransfer chainInstance) {
@@ -61,6 +62,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Sets the nextChainActionSet.
      * @param nextChainActionSet the nextChainActionSet to set
      */
     public void setNextChainActionSet(ChainActionSetTransfer nextChainActionSet) {
@@ -76,6 +78,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Sets the unformattedNextChainActionSetTime.
      * @param unformattedNextChainActionSetTime the unformattedNextChainActionSetTime to set
      */
     public void setUnformattedNextChainActionSetTime(Long unformattedNextChainActionSetTime) {
@@ -91,6 +94,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Sets the nextChainActionSetTime.
      * @param nextChainActionSetTime the nextChainActionSetTime to set
      */
     public void setNextChainActionSetTime(String nextChainActionSetTime) {
@@ -106,6 +110,7 @@ public class ChainInstanceStatusTransfer
     }
 
     /**
+     * Sets the queuedLetterSequence.
      * @param queuedLetterSequence the queuedLetterSequence to set
      */
     public void setQueuedLetterSequence(Integer queuedLetterSequence) {

@@ -43,6 +43,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Sets the contentCategory.
      * @param contentCategory the contentCategory to set
      */
     public void setContentCategory(ContentCategoryTransfer contentCategory) {
@@ -58,6 +59,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Sets the contentCatalogItem.
      * @param contentCatalogItem the contentCatalogItem to set
      */
     public void setContentCatalogItem(ContentCatalogItemTransfer contentCatalogItem) {
@@ -73,6 +75,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -88,6 +91,7 @@ public class ContentCategoryItemTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

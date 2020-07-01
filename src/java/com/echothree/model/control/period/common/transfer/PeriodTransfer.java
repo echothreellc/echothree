@@ -57,6 +57,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the periodKind.
      * @param periodKind the periodKind to set
      */
     public void setPeriodKind(PeriodKindTransfer periodKind) {
@@ -72,6 +73,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the periodName.
      * @param periodName the periodName to set
      */
     public void setPeriodName(String periodName) {
@@ -87,6 +89,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the parentPeriod.
      * @param parentPeriod the parentPeriod to set
      */
     public void setParentPeriod(PeriodTransfer parentPeriod) {
@@ -102,6 +105,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the periodType.
      * @param periodType the periodType to set
      */
     public void setPeriodType(PeriodTypeTransfer periodType) {
@@ -117,6 +121,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -132,6 +137,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -147,6 +153,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -162,6 +169,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -177,6 +185,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -192,6 +201,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the status.
      * @param status the status to set
      */
     public void setStatus(WorkflowEntityStatusTransfer status) {

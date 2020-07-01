@@ -40,6 +40,7 @@ public class EmployeeResultTransfer
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -55,6 +56,7 @@ public class EmployeeResultTransfer
     }
 
     /**
+     * Sets the employee.
      * @param employee the employee to set
      */
     public void setEmployee(EmployeeTransfer employee) {

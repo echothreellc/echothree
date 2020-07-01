@@ -36,6 +36,7 @@ public class DescriptionDeleteActionForm
     }
 
     /**
+     * Sets the geoCodeTypeName.
      * @param geoCodeTypeName the geoCodeTypeName to set
      */
     public void setGeoCodeTypeName(String geoCodeTypeName) {
@@ -51,6 +52,7 @@ public class DescriptionDeleteActionForm
     }
 
     /**
+     * Sets the geoCodeAliasTypeName.
      * @param geoCodeAliasTypeName the geoCodeAliasTypeName to set
      */
     public void setGeoCodeAliasTypeName(String geoCodeAliasTypeName) {
@@ -66,6 +68,7 @@ public class DescriptionDeleteActionForm
     }
 
     /**
+     * Sets the languageIsoName.
      * @param languageIsoName the languageIsoName to set
      */
     public void setLanguageIsoName(String languageIsoName) {

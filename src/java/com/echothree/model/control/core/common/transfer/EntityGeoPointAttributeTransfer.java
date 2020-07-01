@@ -52,6 +52,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -68,6 +69,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -84,6 +86,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the unformattedLatitude.
      * @param unformattedLatitude the unformattedLatitude to set
      */
     public void setUnformattedLatitude(Integer unformattedLatitude) {
@@ -99,6 +102,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the latitude.
      * @param latitude the latitude to set
      */
     public void setLatitude(String latitude) {
@@ -114,6 +118,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the unformattedLongitude.
      * @param unformattedLongitude the unformattedLongitude to set
      */
     public void setUnformattedLongitude(Integer unformattedLongitude) {
@@ -129,6 +134,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the longitude.
      * @param longitude the longitude to set
      */
     public void setLongitude(String longitude) {
@@ -144,6 +150,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the elevation.
      * @param elevation the elevation to set
      */
     public void setElevation(String elevation) {
@@ -159,6 +166,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the altitude.
      * @param altitude the altitude to set
      */
     public void setAltitude(String altitude) {

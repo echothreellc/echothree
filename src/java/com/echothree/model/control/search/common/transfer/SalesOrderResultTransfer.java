@@ -40,6 +40,7 @@ public class SalesOrderResultTransfer
     }
 
     /**
+     * Sets the orderName.
      * @param orderName the orderName to set
      */
     public void setOrderName(String orderName) {
@@ -55,6 +56,7 @@ public class SalesOrderResultTransfer
     }
 
     /**
+     * Sets the orderStatus.
      * @param orderStatus the orderStatus to set
      */
     public void setOrderStatus(WorkflowEntityStatusTransfer orderStatus) {

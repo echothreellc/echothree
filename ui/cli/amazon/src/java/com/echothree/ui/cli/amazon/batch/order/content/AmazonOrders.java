@@ -33,6 +33,7 @@ public class AmazonOrders {
     }
 
     /**
+     * Sets the amazonOrders.
      * @param amazonOrders the amazonOrders to set
      */
     public void setAmazonOrders(Map<String, AmazonOrder> amazonOrders) {
@@ -48,6 +49,7 @@ public class AmazonOrders {
     }
 
     /**
+     * Sets the batchName.
      * @param batchName the batchName to set
      */
     public void setBatchName(String batchName) {

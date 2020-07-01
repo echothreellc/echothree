@@ -43,6 +43,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -58,6 +59,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -73,6 +75,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Sets the partyCancellationPolicyStatus.
      * @param partyCancellationPolicyStatus the partyCancellationPolicyStatus to set
      */
     public void setPartyCancellationPolicyStatus(WorkflowEntityStatusTransfer partyCancellationPolicyStatus) {

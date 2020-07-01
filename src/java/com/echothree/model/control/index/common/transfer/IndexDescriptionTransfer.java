@@ -42,6 +42,7 @@ public class IndexDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class IndexDescriptionTransfer
     }
 
     /**
+     * Sets the index.
      * @param index the index to set
      */
     public void setIndex(IndexTransfer index) {
@@ -72,6 +74,7 @@ public class IndexDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

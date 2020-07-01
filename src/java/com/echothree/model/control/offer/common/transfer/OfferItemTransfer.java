@@ -43,6 +43,7 @@ public class OfferItemTransfer
     }
 
     /**
+     * Sets the offer.
      * @param offer the offer to set
      */
     public void setOffer(OfferTransfer offer) {
@@ -58,6 +59,7 @@ public class OfferItemTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -73,6 +75,7 @@ public class OfferItemTransfer
     }
 
     /**
+     * Sets the offerItemPrices.
      * @param offerItemPrices the offerItemPrices to set
      */
     public void setOfferItemPrices(ListWrapper<OfferItemPriceTransfer> offerItemPrices) {

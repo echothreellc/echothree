@@ -33,6 +33,7 @@ public class EntityIntegerAttributeFacetResult
     }
 
     /**
+     * Sets the integerAttribute.
      * @param integerAttribute the integerAttribute to set
      */
     public void setIntegerAttribute(Integer integerAttribute) {
@@ -48,6 +49,7 @@ public class EntityIntegerAttributeFacetResult
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

@@ -48,6 +48,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the filterAdjustment.
      * @param filterAdjustment the filterAdjustment to set
      */
     public void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment) {
@@ -63,6 +64,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -78,6 +80,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -93,6 +96,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the unformattedUnitAmount.
      * @param unformattedUnitAmount the unformattedUnitAmount to set
      */
     public void setUnformattedUnitAmount(Long unformattedUnitAmount) {
@@ -108,6 +112,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the unitAmount.
      * @param unitAmount the unitAmount to set
      */
     public void setUnitAmount(String unitAmount) {

@@ -36,6 +36,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -51,6 +52,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the partyAliasTypeName.
      * @param partyAliasTypeName the partyAliasTypeName to set
      */
     public void setPartyAliasTypeName(String partyAliasTypeName) {
@@ -66,6 +68,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the alias.
      * @param alias the alias to set
      */
     public void setAlias(String alias) {

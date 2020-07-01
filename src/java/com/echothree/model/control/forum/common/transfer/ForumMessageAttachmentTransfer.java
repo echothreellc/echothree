@@ -52,6 +52,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the forumMessage.
      * @param forumMessage the forumMessage to set
      */
     public void setForumMessage(ForumMessageTransfer forumMessage) {
@@ -67,6 +68,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the forumMessageAttachmentSequence.
      * @param forumMessageAttachmentSequence the forumMessageAttachmentSequence to set
      */
     public void setForumMessageAttachmentSequence(Integer forumMessageAttachmentSequence) {
@@ -82,6 +84,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -97,6 +100,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -112,6 +116,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the blob.
      * @param blob the blob to set
      */
     public void setBlob(ByteArray blob) {
@@ -127,6 +132,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the clob.
      * @param clob the clob to set
      */
     public void setClob(String clob) {
@@ -142,6 +148,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the eTag.
      * @param eTag the eTag to set
      */
     public void seteTag(String eTag) {

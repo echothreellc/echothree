@@ -72,6 +72,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderType.
      * @param orderType the orderType to set
      */
     public void setOrderType(OrderTypeTransfer orderType) {
@@ -87,6 +88,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderName.
      * @param orderName the orderName to set
      */
     public void setOrderName(String orderName) {
@@ -102,6 +104,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderPriority.
      * @param orderPriority the orderPriority to set
      */
     public void setOrderPriority(OrderPriorityTransfer orderPriority) {
@@ -117,6 +120,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -132,6 +136,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the holdUntilComplete.
      * @param holdUntilComplete the holdUntilComplete to set
      */
     public void setHoldUntilComplete(Boolean holdUntilComplete) {
@@ -147,6 +152,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the allowBackorders.
      * @param allowBackorders the allowBackorders to set
      */
     public void setAllowBackorders(Boolean allowBackorders) {
@@ -162,6 +168,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the allowSubstitutions.
      * @param allowSubstitutions the allowSubstitutions to set
      */
     public void setAllowSubstitutions(Boolean allowSubstitutions) {
@@ -177,6 +184,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the allowCombiningShipments.
      * @param allowCombiningShipments the allowCombiningShipments to set
      */
     public void setAllowCombiningShipments(Boolean allowCombiningShipments) {
@@ -192,6 +200,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the term.
      * @param term the term to set
      */
     public void setTerm(TermTransfer term) {
@@ -207,6 +216,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the reference.
      * @param reference the reference to set
      */
     public void setReference(String reference) {
@@ -222,6 +232,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -237,6 +248,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -252,6 +264,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -267,6 +280,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the taxable.
      * @param taxable the taxable to set
      */
     public void setTaxable(Boolean taxable) {
@@ -282,6 +296,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderRoles.
      * @param orderRoles the orderRoles to set
      */
     public void setOrderRoles(MapWrapper<OrderRoleTransfer> orderRoles) {
@@ -297,6 +312,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderTimes.
      * @param orderTimes the orderTimes to set
      */
     public void setOrderTimes(MapWrapper<OrderTimeTransfer> orderTimes) {

@@ -40,6 +40,7 @@ public class UseTypeResultTransfer
     }
 
     /**
+     * Sets the useTypeName.
      * @param useTypeName the useTypeName to set
      */
     public void setUseTypeName(String useTypeName) {
@@ -55,6 +56,7 @@ public class UseTypeResultTransfer
     }
 
     /**
+     * Sets the useType.
      * @param useType the useType to set
      */
     public void setUseType(UseTypeTransfer useType) {

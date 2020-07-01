@@ -43,6 +43,7 @@ public class CheckSpellingWordTransfer
     }
 
     /**
+     * Sets the word.
      * @param word the word to set
      */
     public void setWord(String word) {
@@ -58,6 +59,7 @@ public class CheckSpellingWordTransfer
     }
 
     /**
+     * Sets the searchCheckSpellingActionType.
      * @param searchCheckSpellingActionType the searchCheckSpellingActionType to set
      */
     public void setSearchCheckSpellingActionType(SearchCheckSpellingActionTypeTransfer searchCheckSpellingActionType) {
@@ -73,6 +75,7 @@ public class CheckSpellingWordTransfer
     }
 
     /**
+     * Sets the checkSpellingSuggestions.
      * @param checkSpellingSuggestions the checkSpellingSuggestions to set
      */
     public void setCheckSpellingSuggestions(ListWrapper<CheckSpellingSuggestionTransfer> checkSpellingSuggestions) {

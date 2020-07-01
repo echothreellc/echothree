@@ -40,6 +40,7 @@ public class UserVisitSearchFacetLongTransfer
     }
 
     /**
+     * Sets the entityLongRange.
      * @param entityLongRange the entityLongRange to set
      */
     public void setEntityLongRange(EntityLongRangeTransfer entityLongRange) {
@@ -55,6 +56,7 @@ public class UserVisitSearchFacetLongTransfer
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

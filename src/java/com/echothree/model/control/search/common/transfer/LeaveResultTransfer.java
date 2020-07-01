@@ -40,6 +40,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Sets the leaveName.
      * @param leaveName the leaveName to set
      */
     public void setLeaveName(String leaveName) {
@@ -55,6 +56,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Sets the leave.
      * @param leave the leave to set
      */
     public void setLeave(LeaveTransfer leave) {

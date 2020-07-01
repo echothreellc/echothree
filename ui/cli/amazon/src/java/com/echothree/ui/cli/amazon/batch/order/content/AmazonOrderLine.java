@@ -64,6 +64,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the orderShipmentGroup.
      * @param orderShipmentGroup the orderShipmentGroup to set
      */
     public void setOrderShipmentGroup(AmazonOrderShipmentGroup orderShipmentGroup) {
@@ -79,6 +80,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the orderItemId.
      * @param orderItemId the orderItemId to set
      */
     public void setOrderItemId(String orderItemId) {
@@ -94,6 +96,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the itemName.
      * @param itemName the itemName to set
      */
     public void setItemName(String itemName) {
@@ -109,6 +112,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the listingId.
      * @param listingId the listingId to set
      */
     public void setListingId(String listingId) {
@@ -124,6 +128,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the sku.
      * @param sku the sku to set
      */
     public void setSku(String sku) {
@@ -139,6 +144,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the price.
      * @param price the price to set
      */
     public void setPrice(String price) {
@@ -154,6 +160,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the shippingFee.
      * @param shippingFee the shippingFee to set
      */
     public void setShippingFee(String shippingFee) {
@@ -169,6 +176,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the quantityPurchased.
      * @param quantityPurchased the quantityPurchased to set
      */
     public void setQuantityPurchased(String quantityPurchased) {
@@ -184,6 +192,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the totalPrice.
      * @param totalPrice the totalPrice to set
      */
     public void setTotalPrice(String totalPrice) {
@@ -199,6 +208,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the upc.
      * @param upc the upc to set
      */
     public void setUpc(String upc) {
@@ -214,6 +224,7 @@ public class AmazonOrderLine
     }
 
     /**
+     * Sets the orderLineSequence.
      * @param orderLineSequence the orderLineSequence to set
      */
     public void setOrderLineSequence(String orderLineSequence) {

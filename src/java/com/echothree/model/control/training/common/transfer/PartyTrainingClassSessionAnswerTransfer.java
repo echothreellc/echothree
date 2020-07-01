@@ -51,6 +51,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionQuestion.
      * @param partyTrainingClassSessionQuestion the partyTrainingClassSessionQuestion to set
      */
     public void setPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestionTransfer partyTrainingClassSessionQuestion) {
@@ -66,6 +67,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionAnswerSequence.
      * @param partyTrainingClassSessionAnswerSequence the partyTrainingClassSessionAnswerSequence to set
      */
     public void setPartyTrainingClassSessionAnswerSequence(Integer partyTrainingClassSessionAnswerSequence) {
@@ -81,6 +83,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the trainingClassAnswer.
      * @param trainingClassAnswer the trainingClassAnswer to set
      */
     public void setTrainingClassAnswer(TrainingClassAnswerTransfer trainingClassAnswer) {
@@ -96,6 +99,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the unformattedQuestionStartTime.
      * @param unformattedQuestionStartTime the unformattedQuestionStartTime to set
      */
     public void setUnformattedQuestionStartTime(Long unformattedQuestionStartTime) {
@@ -111,6 +115,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the questionStartTime.
      * @param questionStartTime the questionStartTime to set
      */
     public void setQuestionStartTime(String questionStartTime) {
@@ -126,6 +131,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the unformattedQuestionEndTime.
      * @param unformattedQuestionEndTime the unformattedQuestionEndTime to set
      */
     public void setUnformattedQuestionEndTime(Long unformattedQuestionEndTime) {
@@ -141,6 +147,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the questionEndTime.
      * @param questionEndTime the questionEndTime to set
      */
     public void setQuestionEndTime(String questionEndTime) {

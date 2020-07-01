@@ -42,6 +42,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Sets the chainInstance.
      * @param chainInstance the chainInstance to set
      */
     public void setChainInstance(ChainInstanceTransfer chainInstance) {
@@ -57,6 +58,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Sets the chainEntityRoleType.
      * @param chainEntityRoleType the chainEntityRoleType to set
      */
     public void setChainEntityRoleType(ChainEntityRoleTypeTransfer chainEntityRoleType) {
@@ -73,6 +75,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override

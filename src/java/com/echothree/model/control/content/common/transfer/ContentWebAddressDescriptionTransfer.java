@@ -43,6 +43,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -58,6 +59,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Sets the contentWebAddress.
      * @param contentWebAddress the contentWebAddress to set
      */
     public void setContentWebAddress(ContentWebAddressTransfer contentWebAddress) {
@@ -73,6 +75,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

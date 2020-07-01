@@ -61,6 +61,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the amazonOrders.
      * @param amazonOrders the amazonOrders to set
      */
     public void setAmazonOrders(AmazonOrders amazonOrders) {
@@ -76,6 +77,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the orderId.
      * @param orderId the orderId to set
      */
     public void setOrderId(String orderId) {
@@ -91,6 +93,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the purchaseDate.
      * @param purchaseDate the purchaseDate to set
      */
     public void setPurchaseDate(String purchaseDate) {
@@ -106,6 +109,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the paymentsDate.
      * @param paymentsDate the paymentsDate to set
      */
     public void setPaymentsDate(String paymentsDate) {
@@ -121,6 +125,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the buyerName.
      * @param buyerName the buyerName to set
      */
     public void setBuyerName(String buyerName) {
@@ -136,6 +141,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the buyerEmail.
      * @param buyerEmail the buyerEmail to set
      */
     public void setBuyerEmail(String buyerEmail) {
@@ -155,6 +161,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the amazonOrderShipmentGroups.
      * @param amazonOrderShipmentGroups the amazonOrderShipmentGroups to set
      */
     public void setAmazonOrderShipmentGroups(Map<String, AmazonOrderShipmentGroup> amazonOrderShipmentGroups) {
@@ -170,6 +177,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the customerName.
      * @param customerName the customerName to set
      */
     public void setCustomerName(String customerName) {
@@ -185,6 +193,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -200,6 +209,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the orderName.
      * @param orderName the orderName to set
      */
     public void setOrderName(String orderName) {

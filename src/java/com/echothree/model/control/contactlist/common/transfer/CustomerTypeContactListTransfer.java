@@ -42,6 +42,7 @@ public class CustomerTypeContactListTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -57,6 +58,7 @@ public class CustomerTypeContactListTransfer
     }
 
     /**
+     * Sets the contactList.
      * @param contactList the contactList to set
      */
     public void setContactList(ContactListTransfer contactList) {
@@ -72,6 +74,7 @@ public class CustomerTypeContactListTransfer
     }
 
     /**
+     * Sets the addWhenCreated.
      * @param addWhenCreated the addWhenCreated to set
      */
     public void setAddWhenCreated(Boolean addWhenCreated) {

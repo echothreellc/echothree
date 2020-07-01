@@ -42,6 +42,7 @@ public class SearchUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -57,6 +58,7 @@ public class SearchUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the searchUseType.
      * @param searchUseType the searchUseType to set
      */
     public void setSearchUseType(SearchUseTypeTransfer searchUseType) {
@@ -72,6 +74,7 @@ public class SearchUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

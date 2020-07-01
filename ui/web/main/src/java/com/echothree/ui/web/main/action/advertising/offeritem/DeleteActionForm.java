@@ -35,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the offerName.
      * @param offerName the offerName to set
      */
     public void setOfferName(String offerName) {
@@ -50,6 +51,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the itemName.
      * @param itemName the itemName to set
      */
     public void setItemName(String itemName) {

@@ -56,6 +56,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the userVisit.
      * @param userVisit the userVisit to set
      */
     public void setUserVisit(UserVisitTransfer userVisit) {
@@ -71,6 +72,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the userVisitCampaignSequence.
      * @param userVisitCampaignSequence the userVisitCampaignSequence to set
      */
     public void setUserVisitCampaignSequence(Integer userVisitCampaignSequence) {
@@ -86,6 +88,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -101,6 +104,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {
@@ -116,6 +120,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaign.
      * @param campaign the campaign to set
      */
     public void setCampaign(CampaignTransfer campaign) {
@@ -131,6 +136,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignSource.
      * @param campaignSource the campaignSource to set
      */
     public void setCampaignSource(CampaignSourceTransfer campaignSource) {
@@ -146,6 +152,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignMedium.
      * @param campaignMedium the campaignMedium to set
      */
     public void setCampaignMedium(CampaignMediumTransfer campaignMedium) {
@@ -161,6 +168,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignTerm.
      * @param campaignTerm the campaignTerm to set
      */
     public void setCampaignTerm(CampaignTermTransfer campaignTerm) {
@@ -176,6 +184,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignContent.
      * @param campaignContent the campaignContent to set
      */
     public void setCampaignContent(CampaignContentTransfer campaignContent) {

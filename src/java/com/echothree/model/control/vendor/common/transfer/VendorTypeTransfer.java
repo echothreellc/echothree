@@ -77,6 +77,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the vendorTypeName.
      * @param vendorTypeName the vendorTypeName to set
      */
     public void setVendorTypeName(String vendorTypeName) {
@@ -108,6 +109,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultCancellationPolicy.
      * @param defaultCancellationPolicy the defaultCancellationPolicy to set
      */
     public void setDefaultCancellationPolicy(CancellationPolicyTransfer defaultCancellationPolicy) {
@@ -123,6 +125,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultReturnPolicy.
      * @param defaultReturnPolicy the defaultReturnPolicy to set
      */
     public void setDefaultReturnPolicy(ReturnPolicyTransfer defaultReturnPolicy) {
@@ -138,6 +141,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultApGlAccount.
      * @param defaultApGlAccount the defaultApGlAccount to set
      */
     public void setDefaultApGlAccount(GlAccountTransfer defaultApGlAccount) {
@@ -153,6 +157,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultHoldUntilComplete.
      * @param defaultHoldUntilComplete the defaultHoldUntilComplete to set
      */
     public void setDefaultHoldUntilComplete(Boolean defaultHoldUntilComplete) {
@@ -168,6 +173,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowBackorders.
      * @param defaultAllowBackorders the defaultAllowBackorders to set
      */
     public void setDefaultAllowBackorders(Boolean defaultAllowBackorders) {
@@ -183,6 +189,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowSubstitutions.
      * @param defaultAllowSubstitutions the defaultAllowSubstitutions to set
      */
     public void setDefaultAllowSubstitutions(Boolean defaultAllowSubstitutions) {
@@ -198,6 +205,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowCombiningShipments.
      * @param defaultAllowCombiningShipments the defaultAllowCombiningShipments to set
      */
     public void setDefaultAllowCombiningShipments(Boolean defaultAllowCombiningShipments) {
@@ -213,6 +221,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultRequireReference.
      * @param defaultRequireReference the defaultRequireReference to set
      */
     public void setDefaultRequireReference(Boolean defaultRequireReference) {
@@ -228,6 +237,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowReferenceDuplicates.
      * @param defaultAllowReferenceDuplicates the defaultAllowReferenceDuplicates to set
      */
     public void setDefaultAllowReferenceDuplicates(Boolean defaultAllowReferenceDuplicates) {
@@ -243,6 +253,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultReferenceValidationPattern.
      * @param defaultReferenceValidationPattern the defaultReferenceValidationPattern to set
      */
     public void setDefaultReferenceValidationPattern(String defaultReferenceValidationPattern) {
@@ -258,6 +269,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -273,6 +285,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -288,6 +301,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

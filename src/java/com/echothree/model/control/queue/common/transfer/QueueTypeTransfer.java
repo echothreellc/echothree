@@ -51,6 +51,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the queueTypeName.
      * @param queueTypeName the queueTypeName to set
      */
     public void setQueueTypeName(String queueTypeName) {
@@ -66,6 +67,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -81,6 +83,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -96,6 +99,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -111,6 +115,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the queuedEntityCount.
      * @param queuedEntityCount the queuedEntityCount to set
      */
     public void setQueuedEntityCount(Long queuedEntityCount) {
@@ -126,6 +131,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the unformattedOldestQueuedEntityTime.
      * @param unformattedOldestQueuedEntityTime the unformattedOldestQueuedEntityTime to set
      */
     public void setUnformattedOldestQueuedEntityTime(Long unformattedOldestQueuedEntityTime) {
@@ -141,6 +147,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the oldestQueuedEntityTime.
      * @param oldestQueuedEntityTime the oldestQueuedEntityTime to set
      */
     public void setOldestQueuedEntityTime(String oldestQueuedEntityTime) {
@@ -156,6 +163,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the unformattedLatestQueuedEntityTime.
      * @param unformattedLatestQueuedEntityTime the unformattedLatestQueuedEntityTime to set
      */
     public void setUnformattedLatestQueuedEntityTime(Long unformattedLatestQueuedEntityTime) {
@@ -171,6 +179,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the latestQueuedEntityTime.
      * @param latestQueuedEntityTime the latestQueuedEntityTime to set
      */
     public void setLatestQueuedEntityTime(String latestQueuedEntityTime) {
@@ -186,6 +195,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the queuedEntities.
      * @param queuedEntities the queuedEntities to set
      */
     public void setQueuedEntities(ListWrapper<QueuedEntityTransfer> queuedEntities) {

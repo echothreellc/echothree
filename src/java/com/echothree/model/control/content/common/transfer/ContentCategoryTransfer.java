@@ -57,6 +57,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCatalog.
      * @param contentCatalog the contentCatalog to set
      */
     public void setContentCatalog(ContentCatalogTransfer contentCatalog) {
@@ -72,6 +73,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCategoryName.
      * @param contentCategoryName the contentCategoryName to set
      */
     public void setContentCategoryName(String contentCategoryName) {
@@ -87,6 +89,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the parentContentCategory.
      * @param parentContentCategory the parentContentCategory to set
      */
     public void setParentContentCategory(ContentCategoryTransfer parentContentCategory) {
@@ -102,6 +105,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -117,6 +121,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCategoryItemSelector.
      * @param contentCategoryItemSelector the contentCategoryItemSelector to set
      */
     public void setContentCategoryItemSelector(SelectorTransfer contentCategoryItemSelector) {
@@ -132,6 +137,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -147,6 +153,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -162,6 +169,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -177,6 +185,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCategoryItems.
      * @param contentCategoryItems the contentCategoryItems to set
      */
     public void setContentCategoryItems(ListWrapper<ContentCategoryItemTransfer> contentCategoryItems) {

@@ -56,6 +56,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the appearanceName.
      * @param appearanceName the appearanceName to set
      */
     public void setAppearanceName(String appearanceName) {
@@ -71,6 +72,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the textColor.
      * @param textColor the textColor to set
      */
     public void setTextColor(ColorTransfer textColor) {
@@ -86,6 +88,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the backgroundColor.
      * @param backgroundColor the backgroundColor to set
      */
     public void setBackgroundColor(ColorTransfer backgroundColor) {
@@ -101,6 +104,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the fontStyle.
      * @param fontStyle the fontStyle to set
      */
     public void setFontStyle(FontStyleTransfer fontStyle) {
@@ -116,6 +120,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the fontWeight.
      * @param fontWeight the fontWeight to set
      */
     public void setFontWeight(FontWeightTransfer fontWeight) {
@@ -131,6 +136,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -146,6 +152,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -161,6 +168,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -176,6 +184,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the appearanceTextDecorations.
      * @param appearanceTextDecorations the appearanceTextDecorations to set
      */
     public void setAppearanceTextDecorations(ListWrapper<AppearanceTextDecorationTransfer> appearanceTextDecorations) {
@@ -191,6 +200,7 @@ public class AppearanceTransfer
     }
 
     /**
+     * Sets the appearanceTextTransformations.
      * @param appearanceTextTransformations the appearanceTextTransformations to set
      */
     public void setAppearanceTextTransformations(ListWrapper<AppearanceTextTransformationTransfer> appearanceTextTransformations) {
