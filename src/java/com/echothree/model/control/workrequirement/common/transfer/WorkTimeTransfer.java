@@ -47,6 +47,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the workRequirement.
      * @return the workRequirement
      */
     public WorkRequirementTransfer getWorkRequirement() {
@@ -54,6 +55,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the workRequirement.
      * @param workRequirement the workRequirement to set
      */
     public void setWorkRequirement(WorkRequirementTransfer workRequirement) {
@@ -61,6 +63,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the workTimeSequence.
      * @return the workTimeSequence
      */
     public Integer getWorkTimeSequence() {
@@ -68,6 +71,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the workTimeSequence.
      * @param workTimeSequence the workTimeSequence to set
      */
     public void setWorkTimeSequence(Integer workTimeSequence) {
@@ -75,6 +79,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -82,6 +87,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -89,6 +95,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -96,6 +103,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -103,6 +111,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -110,6 +119,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -117,6 +127,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -124,6 +135,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -131,6 +143,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -138,6 +151,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -145,6 +159,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Returns the workTimeStatus.
      * @return the workTimeStatus
      */
     public WorkflowEntityStatusTransfer getWorkTimeStatus() {
@@ -152,6 +167,7 @@ public class WorkTimeTransfer
     }
 
     /**
+     * Sets the workTimeStatus.
      * @param workTimeStatus the workTimeStatus to set
      */
     public void setWorkTimeStatus(WorkflowEntityStatusTransfer workTimeStatus) {

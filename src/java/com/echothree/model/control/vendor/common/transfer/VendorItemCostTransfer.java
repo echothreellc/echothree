@@ -40,6 +40,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the vendorItem.
      * @return the vendorItem
      */
     public VendorItemTransfer getVendorItem() {
@@ -47,6 +48,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the vendorItem.
      * @param vendorItem the vendorItem to set
      */
     public void setVendorItem(VendorItemTransfer vendorItem) {
@@ -54,6 +56,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -61,6 +64,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the inventoryCondition.
      * @param inventoryCondition the inventoryCondition to set
      */
     public void setInventoryCondition(InventoryConditionTransfer inventoryCondition) {
@@ -68,6 +72,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -75,6 +80,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -82,6 +88,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the unformattedUnitCost.
      * @return the unformattedUnitCost
      */
     public Long getUnformattedUnitCost() {
@@ -89,6 +96,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the unformattedUnitCost.
      * @param unformattedUnitCost the unformattedUnitCost to set
      */
     public void setUnformattedUnitCost(Long unformattedUnitCost) {
@@ -96,6 +104,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Returns the unitCost.
      * @return the unitCost
      */
     public String getUnitCost() {
@@ -103,6 +112,7 @@ public class VendorItemCostTransfer
     }
 
     /**
+     * Sets the unitCost.
      * @param unitCost the unitCost to set
      */
     public void setUnitCost(String unitCost) {

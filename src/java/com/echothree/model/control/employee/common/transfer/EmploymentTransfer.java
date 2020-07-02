@@ -48,6 +48,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the employmentName.
      * @return the employmentName
      */
     public String getEmploymentName() {
@@ -55,6 +56,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the employmentName.
      * @param employmentName the employmentName to set
      */
     public void setEmploymentName(String employmentName) {
@@ -62,6 +64,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -69,6 +72,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -76,6 +80,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the company.
      * @return the company
      */
     public CompanyTransfer getCompany() {
@@ -83,6 +88,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the company.
      * @param company the company to set
      */
     public void setCompany(CompanyTransfer company) {
@@ -90,6 +96,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -97,6 +104,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -104,6 +112,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -111,6 +120,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -118,6 +128,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -125,6 +136,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -132,6 +144,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -139,6 +152,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -146,6 +160,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the terminationType.
      * @return the terminationType
      */
     public TerminationTypeTransfer getTerminationType() {
@@ -153,6 +168,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the terminationType.
      * @param terminationType the terminationType to set
      */
     public void setTerminationType(TerminationTypeTransfer terminationType) {
@@ -160,6 +176,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Returns the terminationReason.
      * @return the terminationReason
      */
     public TerminationReasonTransfer getTerminationReason() {
@@ -167,6 +184,7 @@ public class EmploymentTransfer
     }
 
     /**
+     * Sets the terminationReason.
      * @param terminationReason the terminationReason to set
      */
     public void setTerminationReason(TerminationReasonTransfer terminationReason) {

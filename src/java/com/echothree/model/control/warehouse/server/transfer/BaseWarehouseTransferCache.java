@@ -28,7 +28,7 @@ public abstract class BaseWarehouseTransferCache<K extends BaseEntity, V extends
     WarehouseControl warehouseControl;
     
     /** Creates a new instance of BaseWarehouseTransferCache */
-    public BaseWarehouseTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
+    protected BaseWarehouseTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
         super(userVisit);
         
         this.warehouseControl = warehouseControl;

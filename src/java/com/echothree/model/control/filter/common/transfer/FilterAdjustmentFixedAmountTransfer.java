@@ -40,6 +40,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Returns the filterAdjustment.
      * @return the filterAdjustment
      */
     public FilterAdjustmentTransfer getFilterAdjustment() {
@@ -47,6 +48,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the filterAdjustment.
      * @param filterAdjustment the filterAdjustment to set
      */
     public void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment) {
@@ -54,6 +56,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -61,6 +64,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -68,6 +72,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -75,6 +80,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -82,6 +88,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Returns the unformattedUnitAmount.
      * @return the unformattedUnitAmount
      */
     public Long getUnformattedUnitAmount() {
@@ -89,6 +96,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the unformattedUnitAmount.
      * @param unformattedUnitAmount the unformattedUnitAmount to set
      */
     public void setUnformattedUnitAmount(Long unformattedUnitAmount) {
@@ -96,6 +104,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Returns the unitAmount.
      * @return the unitAmount
      */
     public String getUnitAmount() {
@@ -103,6 +112,7 @@ public class FilterAdjustmentFixedAmountTransfer
     }
 
     /**
+     * Sets the unitAmount.
      * @param unitAmount the unitAmount to set
      */
     public void setUnitAmount(String unitAmount) {

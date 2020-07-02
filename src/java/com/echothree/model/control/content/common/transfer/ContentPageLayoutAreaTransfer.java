@@ -38,6 +38,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the contentPageLayout.
      * @return the contentPageLayout
      */
     public ContentPageLayoutTransfer getContentPageLayout() {
@@ -45,6 +46,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the contentPageLayout.
      * @param contentPageLayout the contentPageLayout to set
      */
     public void setContentPageLayout(ContentPageLayoutTransfer contentPageLayout) {
@@ -52,6 +54,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the contentPageAreaType.
      * @return the contentPageAreaType
      */
     public ContentPageAreaTypeTransfer getContentPageAreaType() {
@@ -59,6 +62,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the contentPageAreaType.
      * @param contentPageAreaType the contentPageAreaType to set
      */
     public void setContentPageAreaType(ContentPageAreaTypeTransfer contentPageAreaType) {
@@ -66,6 +70,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the showDescriptionField.
      * @return the showDescriptionField
      */
     public Boolean getShowDescriptionField() {
@@ -73,6 +78,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the showDescriptionField.
      * @param showDescriptionField the showDescriptionField to set
      */
     public void setShowDescriptionField(Boolean showDescriptionField) {
@@ -80,6 +86,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -87,6 +94,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -94,6 +102,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -101,6 +110,7 @@ public class ContentPageLayoutAreaTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

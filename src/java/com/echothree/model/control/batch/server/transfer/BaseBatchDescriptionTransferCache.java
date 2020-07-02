@@ -29,7 +29,7 @@ public abstract class BaseBatchDescriptionTransferCache<K extends BaseEntity, V 
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseBatchDescriptionTransferCache */
-    public BaseBatchDescriptionTransferCache(UserVisit userVisit, BatchControl batchControl) {
+    protected BaseBatchDescriptionTransferCache(UserVisit userVisit, BatchControl batchControl) {
         super(userVisit, batchControl);
     }
     

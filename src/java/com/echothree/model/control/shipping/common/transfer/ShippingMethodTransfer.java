@@ -39,6 +39,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the shippingMethodName.
      * @return the shippingMethodName
      */
     public String getShippingMethodName() {
@@ -46,6 +47,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the shippingMethodName.
      * @param shippingMethodName the shippingMethodName to set
      */
     public void setShippingMethodName(String shippingMethodName) {
@@ -53,6 +55,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the geoCodeSelector.
      * @return the geoCodeSelector
      */
     public SelectorTransfer getGeoCodeSelector() {
@@ -60,6 +63,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the geoCodeSelector.
      * @param geoCodeSelector the geoCodeSelector to set
      */
     public void setGeoCodeSelector(SelectorTransfer geoCodeSelector) {
@@ -67,6 +71,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the itemSelector.
      * @return the itemSelector
      */
     public SelectorTransfer getItemSelector() {
@@ -74,6 +79,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the itemSelector.
      * @param itemSelector the itemSelector to set
      */
     public void setItemSelector(SelectorTransfer itemSelector) {
@@ -81,6 +87,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -88,6 +95,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -95,6 +103,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -102,6 +111,7 @@ public class ShippingMethodTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

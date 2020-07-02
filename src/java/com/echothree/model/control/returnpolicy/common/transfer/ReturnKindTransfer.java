@@ -38,6 +38,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Returns the returnKindName.
      * @return the returnKindName
      */
     public String getReturnKindName() {
@@ -45,6 +46,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the returnKindName.
      * @param returnKindName the returnKindName to set
      */
     public void setReturnKindName(String returnKindName) {
@@ -52,6 +54,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Returns the returnSequenceType.
      * @return the returnSequenceType
      */
     public SequenceTypeTransfer getReturnSequenceType() {
@@ -59,6 +62,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the returnSequenceType.
      * @param returnSequenceType the returnSequenceType to set
      */
     public void setReturnSequenceType(SequenceTypeTransfer returnSequenceType) {
@@ -66,6 +70,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -73,6 +78,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -80,6 +86,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -87,6 +94,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -94,6 +102,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -101,6 +110,7 @@ public class ReturnKindTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

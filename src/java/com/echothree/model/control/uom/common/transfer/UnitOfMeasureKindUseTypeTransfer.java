@@ -40,6 +40,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKindUseTypeName.
      * @return the unitOfMeasureKindUseTypeName
      */
     public String getUnitOfMeasureKindUseTypeName() {
@@ -47,6 +48,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureKindUseTypeName.
      * @param unitOfMeasureKindUseTypeName the unitOfMeasureKindUseTypeName to set
      */
     public void setUnitOfMeasureKindUseTypeName(String unitOfMeasureKindUseTypeName) {
@@ -54,6 +56,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the allowMultiple.
      * @return the allowMultiple
      */
     public Boolean getAllowMultiple() {
@@ -61,6 +64,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the allowMultiple.
      * @param allowMultiple the allowMultiple to set
      */
     public void setAllowMultiple(Boolean allowMultiple) {
@@ -68,6 +72,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the allowFractionDigits.
      * @return the allowFractionDigits
      */
     public Boolean getAllowFractionDigits() {
@@ -75,6 +80,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the allowFractionDigits.
      * @param allowFractionDigits the allowFractionDigits to set
      */
     public void setAllowFractionDigits(Boolean allowFractionDigits) {
@@ -82,6 +88,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -89,6 +96,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -96,6 +104,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -103,6 +112,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -110,6 +120,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -117,6 +128,7 @@ public class UnitOfMeasureKindUseTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

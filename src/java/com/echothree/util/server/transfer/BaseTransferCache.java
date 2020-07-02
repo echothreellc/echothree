@@ -90,7 +90,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     boolean includeTagScopes;
     
     /** Creates a new instance of BaseTransferCache */
-    public BaseTransferCache(UserVisit userVisit) {
+    protected BaseTransferCache(UserVisit userVisit) {
         this.userVisit = userVisit;
         
         session = ThreadSession.currentSession();
@@ -143,7 +143,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return userControl;
     }
 
-    public PartyPK getPartyPK() {
+    protected PartyPK getPartyPK() {
         if(party == null) {
             getParty();
         }
@@ -151,7 +151,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return party == null? null: party.getPrimaryKey();
     }
 
-    public Party getParty() {
+    protected Party getParty() {
         if(party == null) {
             party = getUserControl().getPartyFromUserVisit(userVisit);
         }
@@ -238,16 +238,18 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeEntityAttributeGroups.
      * @return the includeEntityAttributeGroups
      */
-    public boolean getIncludeEntityAttributeGroups() {
+    protected boolean getIncludeEntityAttributeGroups() {
         return includeEntityAttributeGroups;
     }
 
     /**
+     * Sets the includeEntityAttributeGroups.
      * @param includeEntityAttributeGroups the includeEntityAttributeGroups to set
      */
-    public void setIncludeEntityAttributeGroups(boolean includeEntityAttributeGroups) {
+    protected void setIncludeEntityAttributeGroups(boolean includeEntityAttributeGroups) {
         this.includeEntityAttributeGroups = includeEntityAttributeGroups;
     }
 
@@ -263,16 +265,18 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeTagScopes.
      * @return the includeTagScopes
      */
-    public boolean getIncludeTagScopes() {
+    protected boolean getIncludeTagScopes() {
         return includeTagScopes;
     }
 
     /**
+     * Sets the includeTagScopes.
      * @param includeTagScopes the includeTagScopes to set
      */
-    public void setIncludeTagScopes(boolean includeTagScopes) {
+    protected void setIncludeTagScopes(boolean includeTagScopes) {
         this.includeTagScopes = includeTagScopes;
     }
 
@@ -297,79 +301,90 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
 
     /**
+     * Returns the includeEntityInstance.
      * @return the includeEntityInstance
      */
-    public boolean getIncludeEntityInstance() {
+    protected boolean getIncludeEntityInstance() {
         return includeEntityInstance;
     }
 
     /**
+     * Sets the setupBaseTransfer.
      * @param includeEntityInstance the setupBaseTransfer to set
      */
-    public void setIncludeEntityInstance(boolean includeEntityInstance) {
+    protected void setIncludeEntityInstance(boolean includeEntityInstance) {
         this.includeEntityInstance = includeEntityInstance;
     }
 
     /**
+     * Returns the includeEntityAppearance.
      * @return the includeEntityAppearance
      */
-    public boolean getIncludeEntityAppearance() {
+    protected boolean getIncludeEntityAppearance() {
         return includeEntityAppearance;
     }
 
     /**
+     * Sets the includeEntityAppearance.
      * @param includeEntityAppearance the includeEntityAppearance to set
      */
-    public void setIncludeEntityAppearance(boolean includeEntityAppearance) {
+    protected void setIncludeEntityAppearance(boolean includeEntityAppearance) {
         this.includeEntityAppearance = includeEntityAppearance;
     }
 
     /**
+     * Returns the includeNames.
      * @return the includeNames
      */
-    public boolean getIncludeNames() {
+    protected boolean getIncludeNames() {
         return includeNames;
     }
 
     /**
+     * Sets the includeNames.
      * @param includeNames the includeNames to set
      */
-    public void setIncludeNames(boolean includeNames) {
+    protected void setIncludeNames(boolean includeNames) {
         this.includeNames = includeNames;
     }
 
     /**
+     * Returns the includeKey.
      * @return the includeKey
      */
-    public boolean getIncludeKey() {
+    protected boolean getIncludeKey() {
         return includeKey;
     }
 
     /**
+     * Sets the includeKey.
      * @param includeKey the includeKey to set
      */
-    public void setIncludeKey(boolean includeKey) {
+    protected void setIncludeKey(boolean includeKey) {
         this.includeKey = includeKey;
     }
 
     /**
+     * Returns the includeGuid.
      * @return the includeGuid
      */
-    public boolean getIncludeGuid() {
+    protected boolean getIncludeGuid() {
         return includeGuid;
     }
 
     /**
+     * Sets the includeGuid.
      * @param includeGuid the includeGuid to set
      */
-    public void setIncludeGuid(boolean includeGuid) {
+    protected void setIncludeGuid(boolean includeGuid) {
         this.includeGuid = includeGuid;
     }
     
     /**
+     * Sets the includeUlid.
      * @param includeUlid the includeUlid to set
      */
-    public void setIncludeUlid(boolean includeUlid) {
+    protected void setIncludeUlid(boolean includeUlid) {
         this.includeUlid = includeUlid;
     }
     

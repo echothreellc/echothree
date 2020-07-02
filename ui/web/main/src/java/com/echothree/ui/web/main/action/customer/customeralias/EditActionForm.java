@@ -28,6 +28,7 @@ public class EditActionForm
     private String alias;
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -35,6 +36,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -42,6 +44,7 @@ public class EditActionForm
     }
 
     /**
+     * Returns the partyAliasTypeName.
      * @return the partyAliasTypeName
      */
     public String getPartyAliasTypeName() {
@@ -49,6 +52,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the partyAliasTypeName.
      * @param partyAliasTypeName the partyAliasTypeName to set
      */
     public void setPartyAliasTypeName(String partyAliasTypeName) {
@@ -56,6 +60,7 @@ public class EditActionForm
     }
 
     /**
+     * Returns the alias.
      * @return the alias
      */
     public String getAlias() {
@@ -63,6 +68,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the alias.
      * @param alias the alias to set
      */
     public void setAlias(String alias) {

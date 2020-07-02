@@ -28,7 +28,7 @@ public abstract class BaseSearchTransferCache<K extends BaseEntity, V extends Ba
     SearchControl searchControl;
     
     /** Creates a new instance of BaseSearchTransferCache */
-    public BaseSearchTransferCache(UserVisit userVisit, SearchControl searchControl) {
+    protected BaseSearchTransferCache(UserVisit userVisit, SearchControl searchControl) {
         super(userVisit);
         
         this.searchControl = searchControl;

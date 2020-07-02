@@ -34,6 +34,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Returns the filterKind.
      * @return the filterKind
      */
     public FilterKindTransfer getFilterKind() {
@@ -55,6 +58,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Sets the filterKind.
      * @param filterKind the filterKind to set
      */
     public void setFilterKind(FilterKindTransfer filterKind) {
@@ -62,6 +66,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class FilterKindDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

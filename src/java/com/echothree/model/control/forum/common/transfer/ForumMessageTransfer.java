@@ -49,6 +49,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageName.
      * @return the forumMessageName
      */
     public String getForumMessageName() {
@@ -56,6 +57,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageName.
      * @param forumMessageName the forumMessageName to set
      */
     public void setForumMessageName(String forumMessageName) {
@@ -63,6 +65,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumThread.
      * @return the forumThread
      */
     public ForumThreadTransfer getForumThread() {
@@ -70,6 +73,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumThread.
      * @param forumThread the forumThread to set
      */
     public void setForumThread(ForumThreadTransfer forumThread) {
@@ -77,6 +81,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageType.
      * @return the forumMessageType
      */
     public ForumMessageTypeTransfer getForumMessageType() {
@@ -84,6 +89,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageType.
      * @param forumMessageType the forumMessageType to set
      */
     public void setForumMessageType(ForumMessageTypeTransfer forumMessageType) {
@@ -91,6 +97,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the parentForumMessage.
      * @return the parentForumMessage
      */
     public ForumMessageTransfer getParentForumMessage() {
@@ -98,6 +105,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the parentForumMessage.
      * @param parentForumMessage the parentForumMessage to set
      */
     public void setParentForumMessage(ForumMessageTransfer parentForumMessage) {
@@ -105,6 +113,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the icon.
      * @return the icon
      */
     public IconTransfer getIcon() {
@@ -112,6 +121,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the icon.
      * @param icon the icon to set
      */
     public void setIcon(IconTransfer icon) {
@@ -119,6 +129,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the unformattedPostedTime.
      * @return the unformattedPostedTime
      */
     public Long getUnformattedPostedTime() {
@@ -126,6 +137,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the unformattedPostedTime.
      * @param unformattedPostedTime the unformattedPostedTime to set
      */
     public void setUnformattedPostedTime(Long unformattedPostedTime) {
@@ -133,6 +145,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the postedTime.
      * @return the postedTime
      */
     public String getPostedTime() {
@@ -140,6 +153,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the postedTime.
      * @param postedTime the postedTime to set
      */
     public void setPostedTime(String postedTime) {
@@ -147,6 +161,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageRoles.
      * @return the forumMessageRoles
      */
     public ListWrapper<ForumMessageRoleTransfer> getForumMessageRoles() {
@@ -154,6 +169,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageRoles.
      * @param forumMessageRoles the forumMessageRoles to set
      */
     public void setForumMessageRoles(ListWrapper<ForumMessageRoleTransfer> forumMessageRoles) {
@@ -161,6 +177,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageParts.
      * @return the forumMessageParts
      */
     public MapWrapper<ForumMessagePartTransfer> getForumMessageParts() {
@@ -168,6 +185,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageParts.
      * @param forumMessageParts the forumMessageParts to set
      */
     public void setForumMessageParts(MapWrapper<ForumMessagePartTransfer> forumMessageParts) {
@@ -175,6 +193,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Returns the forumMessageAttachments.
      * @return the forumMessageAttachments
      */
     public ListWrapper<ForumMessageAttachmentTransfer> getForumMessageAttachments() {
@@ -182,6 +201,7 @@ public class ForumMessageTransfer
     }
 
     /**
+     * Sets the forumMessageAttachments.
      * @param forumMessageAttachments the forumMessageAttachments to set
      */
     public void setForumMessageAttachments(ListWrapper<ForumMessageAttachmentTransfer> forumMessageAttachments) {

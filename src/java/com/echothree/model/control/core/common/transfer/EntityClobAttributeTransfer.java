@@ -41,6 +41,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -48,6 +49,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -55,6 +57,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -63,6 +66,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -71,6 +75,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -78,6 +83,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -85,6 +91,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the clobAttribute.
      * @return the clobAttribute
      */
     public String getClobAttribute() {
@@ -92,6 +99,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the clobAttribute.
      * @param clobAttribute the clobAttribute to set
      */
     public void setClobAttribute(String clobAttribute) {
@@ -99,6 +107,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -106,6 +115,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -113,6 +123,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String geteTag() {
@@ -120,6 +131,7 @@ public class EntityClobAttributeTransfer
     }
 
     /**
+     * Sets the eTag.
      * @param eTag the eTag to set
      */
     public void seteTag(String eTag) {

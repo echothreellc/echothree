@@ -31,6 +31,7 @@ public class EntityAppearanceTransfer
     }
 
     /**
+     * Returns the entityInstace.
      * @return the entityInstace
      */
     @Override
@@ -39,6 +40,7 @@ public class EntityAppearanceTransfer
     }
 
     /**
+     * Sets the entityInstace.
      * @param entityInstance the entityInstace to set
      */
     @Override
@@ -47,6 +49,7 @@ public class EntityAppearanceTransfer
     }
 
     /**
+     * Returns the appearance.
      * @return the appearance
      */
     public AppearanceTransfer getAppearance() {
@@ -54,6 +57,7 @@ public class EntityAppearanceTransfer
     }
 
     /**
+     * Sets the appearance.
      * @param appearance the appearance to set
      */
     public void setAppearance(AppearanceTransfer appearance) {

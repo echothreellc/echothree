@@ -28,7 +28,7 @@ public abstract class BaseGeoTransferCache<K extends BaseEntity, V extends BaseT
     GeoControl geoControl;
     
     /** Creates a new instance of BaseGeoTransferCache */
-    public BaseGeoTransferCache(UserVisit userVisit, GeoControl geoControl) {
+    protected BaseGeoTransferCache(UserVisit userVisit, GeoControl geoControl) {
         super(userVisit);
         
         this.geoControl = geoControl;

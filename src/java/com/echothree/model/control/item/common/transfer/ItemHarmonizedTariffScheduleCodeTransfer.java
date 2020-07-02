@@ -37,6 +37,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -44,6 +45,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -51,6 +53,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -58,6 +61,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -65,6 +69,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCodeUseType.
      * @return the harmonizedTariffScheduleCodeUseType
      */
     public HarmonizedTariffScheduleCodeUseTypeTransfer getHarmonizedTariffScheduleCodeUseType() {
@@ -72,6 +77,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeUseType.
      * @param harmonizedTariffScheduleCodeUseType the harmonizedTariffScheduleCodeUseType to set
      */
     public void setHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType) {
@@ -79,6 +85,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCode.
      * @return the harmonizedTariffScheduleCode
      */
     public HarmonizedTariffScheduleCodeTransfer getHarmonizedTariffScheduleCode() {
@@ -86,6 +93,7 @@ public class ItemHarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCode.
      * @param harmonizedTariffScheduleCode the harmonizedTariffScheduleCode to set
      */
     public void setHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCodeTransfer harmonizedTariffScheduleCode) {

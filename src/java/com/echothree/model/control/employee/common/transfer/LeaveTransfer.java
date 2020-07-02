@@ -56,6 +56,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveName.
      * @return the leaveName
      */
     public String getLeaveName() {
@@ -63,6 +64,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveName.
      * @param leaveName the leaveName to set
      */
     public void setLeaveName(String leaveName) {
@@ -70,6 +72,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -77,6 +80,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -84,6 +88,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the company.
      * @return the company
      */
     public CompanyTransfer getCompany() {
@@ -91,6 +96,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the company.
      * @param company the company to set
      */
     public void setCompany(CompanyTransfer company) {
@@ -98,6 +104,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveType.
      * @return the leaveType
      */
     public LeaveTypeTransfer getLeaveType() {
@@ -105,6 +112,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveType.
      * @param leaveType the leaveType to set
      */
     public void setLeaveType(LeaveTypeTransfer leaveType) {
@@ -112,6 +120,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveReason.
      * @return the leaveReason
      */
     public LeaveReasonTransfer getLeaveReason() {
@@ -119,6 +128,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveReason.
      * @param leaveReason the leaveReason to set
      */
     public void setLeaveReason(LeaveReasonTransfer leaveReason) {
@@ -126,6 +136,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -133,6 +144,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -140,6 +152,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -147,6 +160,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -154,6 +168,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -161,6 +176,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -168,6 +184,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -175,6 +192,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -182,6 +200,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the unformattedTotalTime.
      * @return the unformattedTotalTime
      */
     public Long getUnformattedTotalTime() {
@@ -189,6 +208,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the unformattedTotalTime.
      * @param unformattedTotalTime the unformattedTotalTime to set
      */
     public void setUnformattedTotalTime(Long unformattedTotalTime) {
@@ -196,6 +216,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the totalTime.
      * @return the totalTime
      */
     public String getTotalTime() {
@@ -203,6 +224,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the totalTime.
      * @param totalTime the totalTime to set
      */
     public void setTotalTime(String totalTime) {
@@ -210,6 +232,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Returns the leaveStatus.
      * @return the leaveStatus
      */
     public WorkflowEntityStatusTransfer getLeaveStatus() {
@@ -217,6 +240,7 @@ public class LeaveTransfer
     }
 
     /**
+     * Sets the leaveStatus.
      * @param leaveStatus the leaveStatus to set
      */
     public void setLeaveStatus(WorkflowEntityStatusTransfer leaveStatus) {

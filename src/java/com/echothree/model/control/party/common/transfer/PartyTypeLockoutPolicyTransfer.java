@@ -42,6 +42,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -49,6 +50,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -56,6 +58,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Returns the lockoutFailureCount.
      * @return the lockoutFailureCount
      */
     public Integer getLockoutFailureCount() {
@@ -63,6 +66,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Sets the lockoutFailureCount.
      * @param lockoutFailureCount the lockoutFailureCount to set
      */
     public void setLockoutFailureCount(Integer lockoutFailureCount) {
@@ -70,6 +74,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Returns the unformattedResetFailureCountTime.
      * @return the unformattedResetFailureCountTime
      */
     public Long getUnformattedResetFailureCountTime() {
@@ -77,6 +82,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Sets the unformattedResetFailureCountTime.
      * @param unformattedResetFailureCountTime the unformattedResetFailureCountTime to set
      */
     public void setUnformattedResetFailureCountTime(Long unformattedResetFailureCountTime) {
@@ -84,6 +90,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Returns the resetFailureCountTime.
      * @return the resetFailureCountTime
      */
     public String getResetFailureCountTime() {
@@ -91,6 +98,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Sets the resetFailureCountTime.
      * @param resetFailureCountTime the resetFailureCountTime to set
      */
     public void setResetFailureCountTime(String resetFailureCountTime) {
@@ -98,6 +106,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Returns the manualLockoutReset.
      * @return the manualLockoutReset
      */
     public Boolean getManualLockoutReset() {
@@ -105,6 +114,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Sets the manualLockoutReset.
      * @param manualLockoutReset the manualLockoutReset to set
      */
     public void setManualLockoutReset(Boolean manualLockoutReset) {
@@ -112,6 +122,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Returns the unformattedLockoutInactiveTime.
      * @return the unformattedLockoutInactiveTime
      */
     public Long getUnformattedLockoutInactiveTime() {
@@ -119,6 +130,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Sets the unformattedLockoutInactiveTime.
      * @param unformattedLockoutInactiveTime the unformattedLockoutInactiveTime to set
      */
     public void setUnformattedLockoutInactiveTime(Long unformattedLockoutInactiveTime) {
@@ -126,6 +138,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Returns the lockoutInactiveTime.
      * @return the lockoutInactiveTime
      */
     public String getLockoutInactiveTime() {
@@ -133,6 +146,7 @@ public class PartyTypeLockoutPolicyTransfer
     }
 
     /**
+     * Sets the lockoutInactiveTime.
      * @param lockoutInactiveTime the lockoutInactiveTime to set
      */
     public void setLockoutInactiveTime(String lockoutInactiveTime) {

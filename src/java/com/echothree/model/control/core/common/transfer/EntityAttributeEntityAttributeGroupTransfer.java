@@ -34,6 +34,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -41,6 +42,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -48,6 +50,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Returns the entityAttributeGroup.
      * @return the entityAttributeGroup
      */
     public EntityAttributeGroupTransfer getEntityAttributeGroup() {
@@ -55,6 +58,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Sets the entityAttributeGroup.
      * @param entityAttributeGroup the entityAttributeGroup to set
      */
     public void setEntityAttributeGroup(EntityAttributeGroupTransfer entityAttributeGroup) {
@@ -62,6 +66,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -69,6 +74,7 @@ public class EntityAttributeEntityAttributeGroupTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

@@ -76,6 +76,7 @@ public class SearchUseTypesTag
     }
     
     /**
+     * Sets the languageIsoName.
      * @param languageIsoName the languageIsoName to set
      */
     public void setLanguageIsoName(String languageIsoName) {
@@ -83,6 +84,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the searchTypeName.
      * @param searchTypeName the searchTypeName to set
      */
     public void setSearchTypeName(String searchTypeName) {
@@ -90,6 +92,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the searchDefaultOperatorName.
      * @param searchDefaultOperatorName the searchDefaultOperatorName to set
      */
     public void setSearchDefaultOperatorName(String searchDefaultOperatorName) {
@@ -97,6 +100,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the searchSortOrderName.
      * @param searchSortOrderName the searchSortOrderName to set
      */
     public void setSearchSortOrderName(String searchSortOrderName) {
@@ -104,6 +108,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the searchSortDirectionName.
      * @param searchSortDirectionName the searchSortDirectionName to set
      */
     public void setSearchSortDirectionName(String searchSortDirectionName) {
@@ -111,6 +116,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the rememberPreferences.
      * @param rememberPreferences the rememberPreferences to set
      */
     public void setRememberPreferences(String rememberPreferences) {
@@ -118,6 +124,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the q.
      * @param q the q to set
      */
     public void setQ(String q) {
@@ -125,6 +132,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the createdSince.
      * @param createdSince the createdSince to set
      */
     public void setCreatedSince(String createdSince) {
@@ -132,6 +140,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the modifiedSince.
      * @param modifiedSince the modifiedSince to set
      */
     public void setModifiedSince(String modifiedSince) {
@@ -139,6 +148,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the fields.
      * @param fields the fields to set
      */
     public void setFields(String fields) {
@@ -146,6 +156,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the searchUseTypeName.
      * @param searchUseTypeName the searchUseTypeName to set
      */
     public void setSearchUseTypeName(String searchUseTypeName) {
@@ -153,6 +164,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the countVar.
      * @param countVar the countVar to set
      */
     public void setCountVar(String countVar) {
@@ -164,6 +176,7 @@ public class SearchUseTypesTag
     }
 
     /**
+     * Sets the scope.
      * @param scope the scope to set
      */
     public void setScope(String scope) {

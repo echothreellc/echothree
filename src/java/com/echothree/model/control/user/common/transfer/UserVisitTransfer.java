@@ -61,6 +61,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the userKey.
      * @return the userKey
      */
     public UserKeyTransfer getUserKey() {
@@ -68,6 +69,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the userKey.
      * @param userKey the userKey to set
      */
     public void setUserKey(UserKeyTransfer userKey) {
@@ -75,6 +77,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredLanguage.
      * @return the preferredLanguage
      */
     public LanguageTransfer getPreferredLanguage() {
@@ -82,6 +85,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the preferredLanguage.
      * @param preferredLanguage the preferredLanguage to set
      */
     public void setPreferredLanguage(LanguageTransfer preferredLanguage) {
@@ -89,6 +93,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredCurrency.
      * @return the preferredCurrency
      */
     public CurrencyTransfer getPreferredCurrency() {
@@ -96,6 +101,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the preferredCurrency.
      * @param preferredCurrency the preferredCurrency to set
      */
     public void setPreferredCurrency(CurrencyTransfer preferredCurrency) {
@@ -103,6 +109,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredTimeZone.
      * @return the preferredTimeZone
      */
     public TimeZoneTransfer getPreferredTimeZone() {
@@ -110,6 +117,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the preferredTimeZone.
      * @param preferredTimeZone the preferredTimeZone to set
      */
     public void setPreferredTimeZone(TimeZoneTransfer preferredTimeZone) {
@@ -117,6 +125,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the preferredDateTimeFormat.
      * @return the preferredDateTimeFormat
      */
     public DateTimeFormatTransfer getPreferredDateTimeFormat() {
@@ -124,6 +133,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the preferredDateTimeFormat.
      * @param preferredDateTimeFormat the preferredDateTimeFormat to set
      */
     public void setPreferredDateTimeFormat(DateTimeFormatTransfer preferredDateTimeFormat) {
@@ -131,6 +141,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the unformattedLastCommandTime.
      * @return the unformattedLastCommandTime
      */
     public Long getUnformattedLastCommandTime() {
@@ -138,6 +149,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the unformattedLastCommandTime.
      * @param unformattedLastCommandTime the unformattedLastCommandTime to set
      */
     public void setUnformattedLastCommandTime(Long unformattedLastCommandTime) {
@@ -145,6 +157,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the lastCommandTime.
      * @return the lastCommandTime
      */
     public String getLastCommandTime() {
@@ -152,6 +165,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the lastCommandTime.
      * @param lastCommandTime the lastCommandTime to set
      */
     public void setLastCommandTime(String lastCommandTime) {
@@ -159,6 +173,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the offerUse.
      * @return the offerUse
      */
     public OfferUseTransfer getOfferUse() {
@@ -166,6 +181,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the offerUse.
      * @param offerUse the offerUse to set
      */
     public void setOfferUse(OfferUseTransfer offerUse) {
@@ -173,6 +189,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the associateReferral.
      * @return the associateReferral
      */
     public AssociateReferralTransfer getAssociateReferral() {
@@ -180,6 +197,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the associateReferral.
      * @param associateReferral the associateReferral to set
      */
     public void setAssociateReferral(AssociateReferralTransfer associateReferral) {
@@ -187,6 +205,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the unformattedRetainUntilTime.
      * @return the unformattedRetainUntilTime
      */
     public Long getUnformattedRetainUntilTime() {
@@ -194,6 +213,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the unformattedRetainUntilTime.
      * @param unformattedRetainUntilTime the unformattedRetainUntilTime to set
      */
     public void setUnformattedRetainUntilTime(Long unformattedRetainUntilTime) {
@@ -201,6 +221,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the retainUntilTime.
      * @return the retainUntilTime
      */
     public String getRetainUntilTime() {
@@ -208,6 +229,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the retainUntilTime.
      * @param retainUntilTime the retainUntilTime to set
      */
     public void setRetainUntilTime(String retainUntilTime) {
@@ -215,6 +237,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Returns the userVisitCampaigns.
      * @return the userVisitCampaigns
      */
     public ListWrapper<UserVisitCampaignTransfer> getUserVisitCampaigns() {
@@ -222,6 +245,7 @@ public class UserVisitTransfer
     }
 
     /**
+     * Sets the userVisitCampaigns.
      * @param userVisitCampaigns the userVisitCampaigns to set
      */
     public void setUserVisitCampaigns(ListWrapper<UserVisitCampaignTransfer> userVisitCampaigns) {

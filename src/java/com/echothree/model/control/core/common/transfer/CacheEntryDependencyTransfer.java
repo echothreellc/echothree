@@ -31,6 +31,7 @@ public class CacheEntryDependencyTransfer
     }
 
     /**
+     * Returns the cacheEntry.
      * @return the cacheEntry
      */
     public CacheEntryTransfer getCacheEntry() {
@@ -38,6 +39,7 @@ public class CacheEntryDependencyTransfer
     }
 
     /**
+     * Sets the cacheEntry.
      * @param cacheEntry the cacheEntry to set
      */
     public void setCacheEntry(CacheEntryTransfer cacheEntry) {
@@ -45,6 +47,7 @@ public class CacheEntryDependencyTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -53,6 +56,7 @@ public class CacheEntryDependencyTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override

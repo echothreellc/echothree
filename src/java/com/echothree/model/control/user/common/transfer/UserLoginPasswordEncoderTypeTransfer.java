@@ -31,6 +31,7 @@ public class UserLoginPasswordEncoderTypeTransfer
     }
 
     /**
+     * Returns the userLoginPasswordEncoderTypeName.
      * @return the userLoginPasswordEncoderTypeName
      */
     public String getUserLoginPasswordEncoderTypeName() {
@@ -38,6 +39,7 @@ public class UserLoginPasswordEncoderTypeTransfer
     }
 
     /**
+     * Sets the userLoginPasswordEncoderTypeName.
      * @param userLoginPasswordEncoderTypeName the userLoginPasswordEncoderTypeName to set
      */
     public void setUserLoginPasswordEncoderTypeName(String userLoginPasswordEncoderTypeName) {
@@ -45,6 +47,7 @@ public class UserLoginPasswordEncoderTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -52,6 +55,7 @@ public class UserLoginPasswordEncoderTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

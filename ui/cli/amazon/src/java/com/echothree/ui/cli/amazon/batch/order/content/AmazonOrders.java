@@ -25,6 +25,7 @@ public class AmazonOrders {
     private String batchName;
 
     /**
+     * Returns the amazonOrders.
      * @return the amazonOrders
      */
     public Map<String, AmazonOrder> getAmazonOrders() {
@@ -32,6 +33,7 @@ public class AmazonOrders {
     }
 
     /**
+     * Sets the amazonOrders.
      * @param amazonOrders the amazonOrders to set
      */
     public void setAmazonOrders(Map<String, AmazonOrder> amazonOrders) {
@@ -39,6 +41,7 @@ public class AmazonOrders {
     }
 
     /**
+     * Returns the batchName.
      * @return the batchName
      */
     public String getBatchName() {
@@ -46,6 +49,7 @@ public class AmazonOrders {
     }
 
     /**
+     * Sets the batchName.
      * @param batchName the batchName to set
      */
     public void setBatchName(String batchName) {

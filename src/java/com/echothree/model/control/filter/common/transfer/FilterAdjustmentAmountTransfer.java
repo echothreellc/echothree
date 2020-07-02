@@ -40,6 +40,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the filterAdjustment.
      * @return the filterAdjustment
      */
     public FilterAdjustmentTransfer getFilterAdjustment() {
@@ -47,6 +48,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Sets the filterAdjustment.
      * @param filterAdjustment the filterAdjustment to set
      */
     public void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment) {
@@ -54,6 +56,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -61,6 +64,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -68,6 +72,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -75,6 +80,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -82,6 +88,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the unformattedAmount.
      * @return the unformattedAmount
      */
     public Long getUnformattedAmount() {
@@ -89,6 +96,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Sets the unformattedAmount.
      * @param unformattedAmount the unformattedAmount to set
      */
     public void setUnformattedAmount(Long unformattedAmount) {
@@ -96,6 +104,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Returns the amount.
      * @return the amount
      */
     public String getAmount() {
@@ -103,6 +112,7 @@ public class FilterAdjustmentAmountTransfer
     }
 
     /**
+     * Sets the amount.
      * @param amount the amount to set
      */
     public void setAmount(String amount) {

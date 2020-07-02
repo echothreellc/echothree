@@ -34,6 +34,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Returns the searchSortOrder.
      * @return the searchSortOrder
      */
     public SearchSortOrderTransfer getSearchSortOrder() {
@@ -55,6 +58,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Sets the searchSortOrder.
      * @param searchSortOrder the searchSortOrder to set
      */
     public void setSearchSortOrder(SearchSortOrderTransfer searchSortOrder) {
@@ -62,6 +66,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class SearchSortOrderDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

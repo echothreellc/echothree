@@ -34,6 +34,7 @@ public class CustomerTypeContactListGroupTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -41,6 +42,7 @@ public class CustomerTypeContactListGroupTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -48,6 +50,7 @@ public class CustomerTypeContactListGroupTransfer
     }
 
     /**
+     * Returns the contactListGroup.
      * @return the contactListGroup
      */
     public ContactListGroupTransfer getContactListGroup() {
@@ -55,6 +58,7 @@ public class CustomerTypeContactListGroupTransfer
     }
 
     /**
+     * Sets the contactListGroup.
      * @param contactListGroup the contactListGroup to set
      */
     public void setContactListGroup(ContactListGroupTransfer contactListGroup) {
@@ -62,6 +66,7 @@ public class CustomerTypeContactListGroupTransfer
     }
 
     /**
+     * Returns the addWhenCreated.
      * @return the addWhenCreated
      */
     public Boolean getAddWhenCreated() {
@@ -69,6 +74,7 @@ public class CustomerTypeContactListGroupTransfer
     }
 
     /**
+     * Sets the addWhenCreated.
      * @param addWhenCreated the addWhenCreated to set
      */
     public void setAddWhenCreated(Boolean addWhenCreated) {

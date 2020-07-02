@@ -26,6 +26,7 @@ public class EntityListItemAttributeFacetResult
     private Integer count;
 
     /**
+     * Returns the entityListItem.
      * @return the entityListItem
      */
     public EntityListItem getEntityListItem() {
@@ -33,6 +34,7 @@ public class EntityListItemAttributeFacetResult
     }
 
     /**
+     * Sets the entityListItem.
      * @param entityListItem the entityListItem to set
      */
     public void setEntityListItem(EntityListItem entityListItem) {
@@ -40,6 +42,7 @@ public class EntityListItemAttributeFacetResult
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Integer getCount() {
@@ -47,6 +50,7 @@ public class EntityListItemAttributeFacetResult
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

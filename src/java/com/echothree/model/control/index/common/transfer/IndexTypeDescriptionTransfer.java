@@ -34,6 +34,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Returns the indexType.
      * @return the indexType
      */
     public IndexTypeTransfer getIndexType() {
@@ -55,6 +58,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Sets the indexType.
      * @param indexType the indexType to set
      */
     public void setIndexType(IndexTypeTransfer indexType) {
@@ -62,6 +66,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class IndexTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

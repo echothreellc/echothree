@@ -45,6 +45,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClass.
      * @return the partyTrainingClass
      */
     public PartyTrainingClassTransfer getPartyTrainingClass() {
@@ -52,6 +53,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClass.
      * @param partyTrainingClass the partyTrainingClass to set
      */
     public void setPartyTrainingClass(PartyTrainingClassTransfer partyTrainingClass) {
@@ -59,6 +61,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionSequence.
      * @return the partyTrainingClassSessionSequence
      */
     public Integer getPartyTrainingClassSessionSequence() {
@@ -66,6 +69,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionSequence.
      * @param partyTrainingClassSessionSequence the partyTrainingClassSessionSequence to set
      */
     public void setPartyTrainingClassSessionSequence(Integer partyTrainingClassSessionSequence) {
@@ -73,6 +77,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the lastPartyTrainingClassSessionSection.
      * @return the lastPartyTrainingClassSessionSection
      */
     public PartyTrainingClassSessionSectionTransfer getLastPartyTrainingClassSessionSection() {
@@ -80,6 +85,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the lastPartyTrainingClassSessionSection.
      * @param lastPartyTrainingClassSessionSection the lastPartyTrainingClassSessionSection to set
      */
     public void setLastPartyTrainingClassSessionSection(PartyTrainingClassSessionSectionTransfer lastPartyTrainingClassSessionSection) {
@@ -87,6 +93,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the lastPartyTrainingClassSessionPage.
      * @return the lastPartyTrainingClassSessionPage
      */
     public PartyTrainingClassSessionPageTransfer getLastPartyTrainingClassSessionPage() {
@@ -94,6 +101,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the lastPartyTrainingClassSessionPage.
      * @param lastPartyTrainingClassSessionPage the lastPartyTrainingClassSessionPage to set
      */
     public void setLastPartyTrainingClassSessionPage(PartyTrainingClassSessionPageTransfer lastPartyTrainingClassSessionPage) {
@@ -101,6 +109,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the lastPartyTrainingClassSessionQuestion.
      * @return the lastPartyTrainingClassSessionQuestion
      */
     public PartyTrainingClassSessionQuestionTransfer getLastPartyTrainingClassSessionQuestion() {
@@ -108,6 +117,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the lastPartyTrainingClassSessionQuestion.
      * @param lastPartyTrainingClassSessionQuestion the lastPartyTrainingClassSessionQuestion to set
      */
     public void setLastPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestionTransfer lastPartyTrainingClassSessionQuestion) {
@@ -115,6 +125,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionPages.
      * @return the partyTrainingClassSessionPages
      */
     public ListWrapper<PartyTrainingClassSessionPageTransfer> getPartyTrainingClassSessionPages() {
@@ -122,6 +133,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionPages.
      * @param partyTrainingClassSessionPages the partyTrainingClassSessionPages to set
      */
     public void setPartyTrainingClassSessionPages(ListWrapper<PartyTrainingClassSessionPageTransfer> partyTrainingClassSessionPages) {
@@ -129,6 +141,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionQuestions.
      * @return the partyTrainingClassSessionQuestions
      */
     public ListWrapper<PartyTrainingClassSessionQuestionTransfer> getPartyTrainingClassSessionQuestions() {
@@ -136,6 +149,7 @@ public class PartyTrainingClassSessionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionQuestions.
      * @param partyTrainingClassSessionQuestions the partyTrainingClassSessionQuestions to set
      */
     public void setPartyTrainingClassSessionQuestions(ListWrapper<PartyTrainingClassSessionQuestionTransfer> partyTrainingClassSessionQuestions) {

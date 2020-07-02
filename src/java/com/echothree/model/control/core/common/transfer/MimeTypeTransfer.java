@@ -41,6 +41,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeName.
      * @return the mimeTypeName
      */
     public String getMimeTypeName() {
@@ -48,6 +49,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the mimeTypeName.
      * @param mimeTypeName the mimeTypeName to set
      */
     public void setMimeTypeName(String mimeTypeName) {
@@ -55,6 +57,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the entityAttributeType.
      * @return the entityAttributeType
      */
     public EntityAttributeTypeTransfer getEntityAttributeType() {
@@ -62,6 +65,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the entityAttributeType.
      * @param entityAttributeType the entityAttributeType to set
      */
     public void setEntityAttributeType(EntityAttributeTypeTransfer entityAttributeType) {
@@ -69,6 +73,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -76,6 +81,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -83,6 +89,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -90,6 +97,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -97,6 +105,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -104,6 +113,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -111,6 +121,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeFileExtensions.
      * @return the mimeTypeFileExtensions
      */
     public ListWrapper<MimeTypeFileExtensionTransfer> getMimeTypeFileExtensions() {
@@ -118,6 +129,7 @@ public class MimeTypeTransfer
     }
 
     /**
+     * Sets the mimeTypeFileExtensions.
      * @param mimeTypeFileExtensions the mimeTypeFileExtensions to set
      */
     public void setMimeTypeFileExtensions(ListWrapper<MimeTypeFileExtensionTransfer> mimeTypeFileExtensions) {

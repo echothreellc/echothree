@@ -21,7 +21,7 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 
 public class FilteredItemFixedPrice
-        extends FilteredItemPrice implements Comparable {
+        extends FilteredItemPrice implements Comparable<FilteredItemFixedPrice> {
     
     protected Long unitPrice;
     
@@ -41,8 +41,8 @@ public class FilteredItemFixedPrice
     }
     
     @Override
-    public int compareTo(Object obj) {
-        return unitPrice.compareTo(((FilteredItemFixedPrice)obj).unitPrice);
+    public int compareTo(FilteredItemFixedPrice obj) {
+        return unitPrice.compareTo((obj).unitPrice);
     }
     
     @Override

@@ -41,6 +41,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the scaleName.
      * @return the scaleName
      */
     public String getScaleName() {
@@ -48,6 +49,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the scaleName.
      * @param scaleName the scaleName to set
      */
     public void setScaleName(String scaleName) {
@@ -55,6 +57,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the scaleType.
      * @return the scaleType
      */
     public ScaleTypeTransfer getScaleType() {
@@ -62,6 +65,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the scaleType.
      * @param scaleType the scaleType to set
      */
     public void setScaleType(ScaleTypeTransfer scaleType) {
@@ -69,6 +73,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the serverService.
      * @return the serverService
      */
     public ServerServiceTransfer getServerService() {
@@ -76,6 +81,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the serverService.
      * @param serverService the serverService to set
      */
     public void setServerService(ServerServiceTransfer serverService) {
@@ -83,6 +89,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -90,6 +97,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -97,6 +105,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -104,6 +113,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -111,6 +121,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -118,6 +129,7 @@ public class ScaleTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

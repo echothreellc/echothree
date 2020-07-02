@@ -34,6 +34,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Returns the chainInstance.
      * @return the chainInstance
      */
     public ChainInstanceTransfer getChainInstance() {
@@ -41,6 +42,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Sets the chainInstance.
      * @param chainInstance the chainInstance to set
      */
     public void setChainInstance(ChainInstanceTransfer chainInstance) {
@@ -48,6 +50,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Returns the chainEntityRoleType.
      * @return the chainEntityRoleType
      */
     public ChainEntityRoleTypeTransfer getChainEntityRoleType() {
@@ -55,6 +58,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Sets the chainEntityRoleType.
      * @param chainEntityRoleType the chainEntityRoleType to set
      */
     public void setChainEntityRoleType(ChainEntityRoleTypeTransfer chainEntityRoleType) {
@@ -62,6 +66,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -70,6 +75,7 @@ public class ChainInstanceEntityRoleTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override

@@ -28,6 +28,7 @@ public class RepeatHolder {
     }
 
     /**
+     * Returns the broken.
      * @return the broken
      */
     public boolean isBroken() {
@@ -35,6 +36,7 @@ public class RepeatHolder {
     }
 
     /**
+     * Sets the broken.
      * @param broken the broken to set
      */
     public void setBroken(boolean broken) {
@@ -42,6 +44,7 @@ public class RepeatHolder {
     }
 
     /**
+     * Returns the previousRepeatHolder.
      * @return the previousRepeatHolder
      */
     public RepeatHolder getPreviousRepeatHolder() {

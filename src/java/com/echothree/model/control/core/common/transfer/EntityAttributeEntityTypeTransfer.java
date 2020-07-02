@@ -31,6 +31,7 @@ public class EntityAttributeEntityTypeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -38,6 +39,7 @@ public class EntityAttributeEntityTypeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -45,6 +47,7 @@ public class EntityAttributeEntityTypeTransfer
     }
 
     /**
+     * Returns the allowedEntityType.
      * @return the allowedEntityType
      */
     public EntityTypeTransfer getAllowedEntityType() {
@@ -52,6 +55,7 @@ public class EntityAttributeEntityTypeTransfer
     }
 
     /**
+     * Sets the allowedEntityType.
      * @param allowedEntityType the allowedEntityType to set
      */
     public void setAllowedEntityType(EntityTypeTransfer allowedEntityType) {

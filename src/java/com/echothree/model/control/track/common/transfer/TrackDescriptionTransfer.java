@@ -34,6 +34,7 @@ public class TrackDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class TrackDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class TrackDescriptionTransfer
     }
 
     /**
+     * Returns the track.
      * @return the track
      */
     public TrackTransfer getTrack() {
@@ -55,6 +58,7 @@ public class TrackDescriptionTransfer
     }
 
     /**
+     * Sets the track.
      * @param track the track to set
      */
     public void setTrack(TrackTransfer track) {
@@ -62,6 +66,7 @@ public class TrackDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class TrackDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -43,6 +43,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -50,6 +51,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -57,6 +59,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the userLoginPasswordType.
      * @return the userLoginPasswordType
      */
     public UserLoginPasswordTypeTransfer getUserLoginPasswordType() {
@@ -64,6 +67,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the userLoginPasswordType.
      * @param userLoginPasswordType the userLoginPasswordType to set
      */
     public void setUserLoginPasswordType(UserLoginPasswordTypeTransfer userLoginPasswordType) {
@@ -71,6 +75,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the password.
      * @return the password
      */
     public String getPassword() {
@@ -78,6 +83,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the password.
      * @param password the password to set
      */
     public void setPassword(String password) {
@@ -85,6 +91,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the unformattedChangedTime.
      * @return the unformattedChangedTime
      */
     public Long getUnformattedChangedTime() {
@@ -92,6 +99,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the unformattedChangedTime.
      * @param unformattedChangedTime the unformattedChangedTime to set
      */
     public void setUnformattedChangedTime(Long unformattedChangedTime) {
@@ -99,6 +107,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the changedTime.
      * @return the changedTime
      */
     public String getChangedTime() {
@@ -106,6 +115,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the changedTime.
      * @param changedTime the changedTime to set
      */
     public void setChangedTime(String changedTime) {
@@ -113,6 +123,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Returns the wasReset.
      * @return the wasReset
      */
     public Boolean getWasReset() {
@@ -120,6 +131,7 @@ public class UserLoginPasswordTransfer
     }
 
     /**
+     * Sets the wasReset.
      * @param wasReset the wasReset to set
      */
     public void setWasReset(Boolean wasReset) {

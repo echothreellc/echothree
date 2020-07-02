@@ -82,6 +82,7 @@ public class AddActionForm
     }
     
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -89,6 +90,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {

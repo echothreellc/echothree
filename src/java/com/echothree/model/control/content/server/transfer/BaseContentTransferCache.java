@@ -28,7 +28,7 @@ public abstract class BaseContentTransferCache<K extends BaseEntity, V extends B
     ContentControl contentControl;
 
     /** Creates a new instance of BaseContentTransferCache */
-    public BaseContentTransferCache(UserVisit userVisit, ContentControl contentControl) {
+    protected BaseContentTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit);
 
         this.contentControl = contentControl;

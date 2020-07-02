@@ -36,6 +36,7 @@ public class SalesOrderBatchTransfer
     }
 
     /**
+     * Returns the paymentMethod.
      * @return the paymentMethod
      */
     public PaymentMethodTransfer getPaymentMethod() {
@@ -43,6 +44,7 @@ public class SalesOrderBatchTransfer
     }
 
     /**
+     * Sets the paymentMethod.
      * @param paymentMethod the paymentMethod to set
      */
     public void setPaymentMethod(PaymentMethodTransfer paymentMethod) {

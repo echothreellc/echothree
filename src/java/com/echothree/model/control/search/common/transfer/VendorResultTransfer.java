@@ -32,6 +32,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -39,6 +40,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -46,6 +48,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Returns the vendor.
      * @return the vendor
      */
     public VendorTransfer getVendor() {
@@ -53,6 +56,7 @@ public class VendorResultTransfer
     }
 
     /**
+     * Sets the vendor.
      * @param vendor the vendor to set
      */
     public void setVendor(VendorTransfer vendor) {

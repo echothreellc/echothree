@@ -43,6 +43,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the documentTypeName.
      * @return the documentTypeName
      */
     public String getDocumentTypeName() {
@@ -50,6 +51,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the documentTypeName.
      * @param documentTypeName the documentTypeName to set
      */
     public void setDocumentTypeName(String documentTypeName) {
@@ -57,6 +59,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the parentDocumentType.
      * @return the parentDocumentType
      */
     public DocumentTypeTransfer getParentDocumentType() {
@@ -64,6 +67,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the parentDocumentType.
      * @param parentDocumentType the parentDocumentType to set
      */
     public void setParentDocumentType(DocumentTypeTransfer parentDocumentType) {
@@ -71,6 +75,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeUsageType.
      * @return the mimeTypeUsageType
      */
     public MimeTypeUsageTypeTransfer getMimeTypeUsageType() {
@@ -78,6 +83,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the mimeTypeUsageType.
      * @param mimeTypeUsageType the mimeTypeUsageType to set
      */
     public void setMimeTypeUsageType(MimeTypeUsageTypeTransfer mimeTypeUsageType) {
@@ -85,6 +91,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the maximumPages.
      * @return the maximumPages
      */
     public Integer getMaximumPages() {
@@ -92,6 +99,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the maximumPages.
      * @param maximumPages the maximumPages to set
      */
     public void setMaximumPages(Integer maximumPages) {
@@ -99,6 +107,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -106,6 +115,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -113,6 +123,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -120,6 +131,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -127,6 +139,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -134,6 +147,7 @@ public class DocumentTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

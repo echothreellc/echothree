@@ -70,6 +70,7 @@ public final class EntityTypeTransfer
     }
     
     /**
+     * Returns the keepAllHistory.
      * @return the keepAllHistory
      */
     public Boolean getKeepAllHistory() {
@@ -77,6 +78,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Sets the keepAllHistory.
      * @param keepAllHistory the keepAllHistory to set
      */
     public void setKeepAllHistory(Boolean keepAllHistory) {
@@ -84,6 +86,7 @@ public final class EntityTypeTransfer
     }
     
     /**
+     * Returns the unformattedLockTimeout.
      * @return the unformattedLockTimeout
      */
     public Long getUnformattedLockTimeout() {
@@ -91,6 +94,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Sets the unformattedLockTimeout.
      * @param unformattedLockTimeout the unformattedLockTimeout to set
      */
     public void setUnformattedLockTimeout(Long unformattedLockTimeout) {
@@ -98,6 +102,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Returns the lockTimeout.
      * @return the lockTimeout
      */
     public String getLockTimeout() {
@@ -105,6 +110,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Sets the lockTimeout.
      * @param lockTimeout the lockTimeout to set
      */
     public void setLockTimeout(String lockTimeout) {
@@ -128,6 +134,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Returns the indexTypesCount.
      * @return the indexTypesCount
      */
     public Long getIndexTypesCount() {
@@ -135,6 +142,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Sets the indexTypesCount.
      * @param indexTypesCount the indexTypesCount to set
      */
     public void setIndexTypesCount(Long indexTypesCount) {
@@ -142,6 +150,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Returns the indexTypes.
      * @return the indexTypes
      */
     public ListWrapper<IndexTypeTransfer> getIndexTypes() {
@@ -149,6 +158,7 @@ public final class EntityTypeTransfer
     }
 
     /**
+     * Sets the indexTypes.
      * @param indexTypes the indexTypes to set
      */
     public void setIndexTypes(ListWrapper<IndexTypeTransfer> indexTypes) {

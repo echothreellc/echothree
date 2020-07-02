@@ -50,6 +50,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the editorName.
      * @return the editorName
      */
     public String getEditorName() {
@@ -57,6 +58,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the editorName.
      * @param editorName the editorName to set
      */
     public void setEditorName(String editorName) {
@@ -64,6 +66,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the hasDimensions.
      * @return the hasDimensions
      */
     public Boolean getHasDimensions() {
@@ -71,6 +74,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the hasDimensions.
      * @param hasDimensions the hasDimensions to set
      */
     public void setHasDimensions(Boolean hasDimensions) {
@@ -78,6 +82,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the minimumHeight.
      * @return the minimumHeight
      */
     public Integer getMinimumHeight() {
@@ -85,6 +90,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the minimumHeight.
      * @param minimumHeight the minimumHeight to set
      */
     public void setMinimumHeight(Integer minimumHeight) {
@@ -92,6 +98,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the minimumWidth.
      * @return the minimumWidth
      */
     public Integer getMinimumWidth() {
@@ -99,6 +106,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the minimumWidth.
      * @param minimumWidth the minimumWidth to set
      */
     public void setMinimumWidth(Integer minimumWidth) {
@@ -106,6 +114,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the maximumHeight.
      * @return the maximumHeight
      */
     public Integer getMaximumHeight() {
@@ -113,6 +122,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the maximumHeight.
      * @param maximumHeight the maximumHeight to set
      */
     public void setMaximumHeight(Integer maximumHeight) {
@@ -120,6 +130,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the maximumWidth.
      * @return the maximumWidth
      */
     public Integer getMaximumWidth() {
@@ -127,6 +138,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the maximumWidth.
      * @param maximumWidth the maximumWidth to set
      */
     public void setMaximumWidth(Integer maximumWidth) {
@@ -134,6 +146,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the defaultHeight.
      * @return the defaultHeight
      */
     public Integer getDefaultHeight() {
@@ -141,6 +154,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the defaultHeight.
      * @param defaultHeight the defaultHeight to set
      */
     public void setDefaultHeight(Integer defaultHeight) {
@@ -148,6 +162,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the defaultWidth.
      * @return the defaultWidth
      */
     public Integer getDefaultWidth() {
@@ -155,6 +170,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the defaultWidth.
      * @param defaultWidth the defaultWidth to set
      */
     public void setDefaultWidth(Integer defaultWidth) {
@@ -162,6 +178,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -169,6 +186,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -176,6 +194,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -183,6 +202,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -190,6 +210,7 @@ public class EditorTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -197,6 +218,7 @@ public class EditorTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

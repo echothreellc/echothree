@@ -66,6 +66,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Returns the partyEmployeeName.
      * @return the partyEmployeeName
      */
     public String getPartyEmployeeName() {
@@ -73,6 +74,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Sets the partyEmployeeName.
      * @param partyEmployeeName the partyEmployeeName to set
      */
     public void setPartyEmployeeName(String partyEmployeeName) {
@@ -80,6 +82,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Returns the employeeStatusWorkflowStep.
      * @return the employeeStatusWorkflowStep
      */
     public WorkflowStep getEmployeeStatusWorkflowStep() {
@@ -87,6 +90,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Sets the employeeStatusWorkflowStep.
      * @param employeeStatusWorkflowStep the employeeStatusWorkflowStep to set
      */
     public void setEmployeeStatusWorkflowStep(WorkflowStep employeeStatusWorkflowStep) {
@@ -94,6 +98,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Returns the employeeAvailabilityWorkflowStep.
      * @return the employeeAvailabilityWorkflowStep
      */
     public WorkflowStep getEmployeeAvailabilityWorkflowStep() {
@@ -101,6 +106,7 @@ public class EmployeeSearchEvaluator
     }
 
     /**
+     * Sets the employeeAvailabilityWorkflowStep.
      * @param employeeAvailabilityWorkflowStep the employeeAvailabilityWorkflowStep to set
      */
     public void setEmployeeAvailabilityWorkflowStep(WorkflowStep employeeAvailabilityWorkflowStep) {

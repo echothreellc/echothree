@@ -30,6 +30,7 @@ public class DeleteActionForm
     private String currencyIsoName;
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {
@@ -37,6 +38,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the offerName.
      * @param offerName the offerName to set
      */
     public void setOfferName(String offerName) {
@@ -44,6 +46,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {
@@ -51,6 +54,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the itemName.
      * @param itemName the itemName to set
      */
     public void setItemName(String itemName) {
@@ -58,6 +62,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the inventoryConditionName.
      * @return the inventoryConditionName
      */
     public String getInventoryConditionName() {
@@ -65,6 +70,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the inventoryConditionName.
      * @param inventoryConditionName the inventoryConditionName to set
      */
     public void setInventoryConditionName(String inventoryConditionName) {
@@ -72,6 +78,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the unitOfMeasureTypeName.
      * @return the unitOfMeasureTypeName
      */
     public String getUnitOfMeasureTypeName() {
@@ -79,6 +86,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the unitOfMeasureTypeName.
      * @param unitOfMeasureTypeName the unitOfMeasureTypeName to set
      */
     public void setUnitOfMeasureTypeName(String unitOfMeasureTypeName) {
@@ -86,6 +94,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the currencyIsoName.
      * @return the currencyIsoName
      */
     public String getCurrencyIsoName() {
@@ -93,6 +102,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the currencyIsoName.
      * @param currencyIsoName the currencyIsoName to set
      */
     public void setCurrencyIsoName(String currencyIsoName) {

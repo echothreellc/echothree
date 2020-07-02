@@ -36,6 +36,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -43,6 +44,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -50,6 +52,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -58,6 +61,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -66,6 +70,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the dateAttribute.
      * @return the dateAttribute
      */
     public String getDateAttribute() {
@@ -73,6 +78,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Sets the dateAttribute.
      * @param dateAttribute the dateAttribute to set
      */
     public void setDateAttribute(String dateAttribute) {
@@ -80,6 +86,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Returns the unformattedDateAttribute.
      * @return the unformattedDateAttribute
      */
     public Integer getUnformattedDateAttribute() {
@@ -87,6 +94,7 @@ public class EntityDateAttributeTransfer
     }
 
     /**
+     * Sets the unformattedDateAttribute.
      * @param unformattedDateAttribute the unformattedDateAttribute to set
      */
     public void setUnformattedDateAttribute(Integer unformattedDateAttribute) {

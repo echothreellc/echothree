@@ -25,6 +25,7 @@ public class EntityIntegerAttributeFacetResult
     private Integer count;
 
     /**
+     * Returns the integerAttribute.
      * @return the integerAttribute
      */
     public Integer getIntegerAttribute() {
@@ -32,6 +33,7 @@ public class EntityIntegerAttributeFacetResult
     }
 
     /**
+     * Sets the integerAttribute.
      * @param integerAttribute the integerAttribute to set
      */
     public void setIntegerAttribute(Integer integerAttribute) {
@@ -39,6 +41,7 @@ public class EntityIntegerAttributeFacetResult
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Integer getCount() {
@@ -46,6 +49,7 @@ public class EntityIntegerAttributeFacetResult
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

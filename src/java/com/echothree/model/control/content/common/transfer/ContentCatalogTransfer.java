@@ -45,6 +45,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCollection.
      * @return the contentCollection
      */
     public ContentCollectionTransfer getContentCollection() {
@@ -52,6 +53,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCollection.
      * @param contentCollection the contentCollection to set
      */
     public void setContentCollection(ContentCollectionTransfer contentCollection) {
@@ -59,6 +61,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCatalogName.
      * @return the contentCatalogName
      */
     public String getContentCatalogName() {
@@ -66,6 +69,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCatalogName.
      * @param contentCatalogName the contentCatalogName to set
      */
     public void setContentCatalogName(String contentCatalogName) {
@@ -73,6 +77,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the defaultOfferUse.
      * @return the defaultOfferUse
      */
     public OfferUseTransfer getDefaultOfferUse() {
@@ -80,6 +85,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -87,6 +93,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -94,6 +101,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -101,6 +109,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -108,6 +117,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -115,6 +125,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -122,6 +133,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -129,6 +141,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCatalogItems.
      * @return the contentCatalogItems
      */
     public ListWrapper<ContentCatalogItemTransfer> getContentCatalogItems() {
@@ -136,6 +149,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCatalogItems.
      * @param contentCatalogItems the contentCatalogItems to set
      */
     public void setContentCatalogItems(ListWrapper<ContentCatalogItemTransfer> contentCatalogItems) {
@@ -143,6 +157,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Returns the contentCategories.
      * @return the contentCategories
      */
     public ListWrapper<ContentCategoryTransfer> getContentCategories() {
@@ -150,6 +165,7 @@ public class ContentCatalogTransfer
     }
 
     /**
+     * Sets the contentCategories.
      * @param contentCategories the contentCategories to set
      */
     public void setContentCategories(ListWrapper<ContentCategoryTransfer> contentCategories) {

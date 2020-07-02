@@ -59,6 +59,7 @@ public class EditActionForm
     }
     
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -66,6 +67,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -73,6 +75,7 @@ public class EditActionForm
     }
 
     /**
+     * Returns the contactListName.
      * @return the contactListName
      */
     public String getContactListName() {
@@ -80,6 +83,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the contactListName.
      * @param contactListName the contactListName to set
      */
     public void setContactListName(String contactListName) {

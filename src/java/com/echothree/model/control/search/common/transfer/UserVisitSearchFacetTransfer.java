@@ -38,6 +38,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -45,6 +46,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -52,6 +54,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the userVisitSearchFacetListItems.
      * @return the userVisitSearchFacetListItems
      */
     public ListWrapper<UserVisitSearchFacetListItemTransfer> getUserVisitSearchFacetListItems() {
@@ -59,6 +62,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the userVisitSearchFacetListItems.
      * @param userVisitSearchFacetListItems the userVisitSearchFacetListItems to set
      */
     public void setUserVisitSearchFacetListItems(ListWrapper<UserVisitSearchFacetListItemTransfer> userVisitSearchFacetListItems) {
@@ -66,6 +70,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the userVisitSearchFacetIntegers.
      * @return the userVisitSearchFacetIntegers
      */
     public ListWrapper<UserVisitSearchFacetIntegerTransfer> getUserVisitSearchFacetIntegers() {
@@ -73,6 +78,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the userVisitSearchFacetIntegers.
      * @param userVisitSearchFacetIntegers the userVisitSearchFacetIntegers to set
      */
     public void setUserVisitSearchFacetIntegers(ListWrapper<UserVisitSearchFacetIntegerTransfer> userVisitSearchFacetIntegers) {
@@ -80,6 +86,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Returns the userVisitSearchFacetLongs.
      * @return the userVisitSearchFacetLongs
      */
     public ListWrapper<UserVisitSearchFacetLongTransfer> getUserVisitSearchFacetLongs() {
@@ -87,6 +94,7 @@ public class UserVisitSearchFacetTransfer
     }
 
     /**
+     * Sets the userVisitSearchFacetLongs.
      * @param userVisitSearchFacetLongs the userVisitSearchFacetLongs to set
      */
     public void setUserVisitSearchFacetLongs(ListWrapper<UserVisitSearchFacetLongTransfer> userVisitSearchFacetLongs) {

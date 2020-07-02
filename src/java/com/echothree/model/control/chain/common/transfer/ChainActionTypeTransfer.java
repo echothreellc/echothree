@@ -38,6 +38,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the chainActionTypeName.
      * @return the chainActionTypeName
      */
     public String getChainActionTypeName() {
@@ -45,6 +46,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the chainActionTypeName.
      * @param chainActionTypeName the chainActionTypeName to set
      */
     public void setChainActionTypeName(String chainActionTypeName) {
@@ -52,6 +54,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the allowMultiple.
      * @return the allowMultiple
      */
     public Boolean getAllowMultiple() {
@@ -59,6 +62,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the allowMultiple.
      * @param allowMultiple the allowMultiple to set
      */
     public void setAllowMultiple(Boolean allowMultiple) {
@@ -66,6 +70,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -73,6 +78,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -80,6 +86,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -87,6 +94,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -94,6 +102,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -101,6 +110,7 @@ public class ChainActionTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -59,6 +59,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the nickname.
      * @return the nickname
      */
     public String getNickname() {
@@ -66,6 +67,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the nickname.
      * @param nickname the nickname to set
      */
     public void setNickname(String nickname) {
@@ -73,6 +75,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the icon.
      * @return the icon
      */
     public IconTransfer getIcon() {
@@ -80,6 +83,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the icon.
      * @param icon the icon to set
      */
     public void setIcon(IconTransfer icon) {
@@ -87,6 +91,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the gender.
      * @return the gender
      */
     public GenderTransfer getGender() {
@@ -94,6 +99,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the gender.
      * @param gender the gender to set
      */
     public void setGender(GenderTransfer gender) {
@@ -101,6 +107,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the mood.
      * @return the mood
      */
     public MoodTransfer getMood() {
@@ -108,6 +115,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the mood.
      * @param mood the mood to set
      */
     public void setMood(MoodTransfer mood) {
@@ -115,6 +123,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the birthday.
      * @return the birthday
      */
     public String getBirthday() {
@@ -122,6 +131,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the birthday.
      * @param birthday the birthday to set
      */
     public void setBirthday(String birthday) {
@@ -129,6 +139,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the unformattedBirthday.
      * @return the unformattedBirthday
      */
     public Integer getUnformattedBirthday() {
@@ -136,6 +147,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the unformattedBirthday.
      * @param unformattedBirthday the unformattedBirthday to set
      */
     public void setUnformattedBirthday(Integer unformattedBirthday) {
@@ -143,6 +155,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the birthdayFormat.
      * @return the birthdayFormat
      */
     public BirthdayFormatTransfer getBirthdayFormat() {
@@ -150,6 +163,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the birthdayFormat.
      * @param birthdayFormat the birthdayFormat to set
      */
     public void setBirthdayFormat(BirthdayFormatTransfer birthdayFormat) {
@@ -157,6 +171,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the occupation.
      * @return the occupation
      */
     public String getOccupation() {
@@ -164,6 +179,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the occupation.
      * @param occupation the occupation to set
      */
     public void setOccupation(String occupation) {
@@ -171,6 +187,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the hobbies.
      * @return the hobbies
      */
     public String getHobbies() {
@@ -178,6 +195,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the hobbies.
      * @param hobbies the hobbies to set
      */
     public void setHobbies(String hobbies) {
@@ -185,6 +203,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the location.
      * @return the location
      */
     public String getLocation() {
@@ -192,6 +211,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the location.
      * @param location the location to set
      */
     public void setLocation(String location) {
@@ -199,6 +219,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the bioMimeType.
      * @return the bioMimeType
      */
     public MimeTypeTransfer getBioMimeType() {
@@ -206,6 +227,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the bioMimeType.
      * @param bioMimeType the bioMimeType to set
      */
     public void setBioMimeType(MimeTypeTransfer bioMimeType) {
@@ -213,6 +235,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the bio.
      * @return the bio
      */
     public String getBio() {
@@ -220,6 +243,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the bio.
      * @param bio the bio to set
      */
     public void setBio(String bio) {
@@ -227,6 +251,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the signatureMimeType.
      * @return the signatureMimeType
      */
     public MimeTypeTransfer getSignatureMimeType() {
@@ -234,6 +259,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the signatureMimeType.
      * @param signatureMimeType the signatureMimeType to set
      */
     public void setSignatureMimeType(MimeTypeTransfer signatureMimeType) {
@@ -241,6 +267,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Returns the signature.
      * @return the signature
      */
     public String getSignature() {
@@ -248,6 +275,7 @@ public class ProfileTransfer
     }
 
     /**
+     * Sets the signature.
      * @param signature the signature to set
      */
     public void setSignature(String signature) {

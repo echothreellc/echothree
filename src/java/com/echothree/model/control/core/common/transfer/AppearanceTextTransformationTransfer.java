@@ -31,6 +31,7 @@ public class AppearanceTextTransformationTransfer
     }
 
     /**
+     * Returns the appearance.
      * @return the appearance
      */
     public AppearanceTransfer getAppearance() {
@@ -38,6 +39,7 @@ public class AppearanceTextTransformationTransfer
     }
 
     /**
+     * Sets the appearance.
      * @param appearance the appearance to set
      */
     public void setAppearance(AppearanceTransfer appearance) {
@@ -45,6 +47,7 @@ public class AppearanceTextTransformationTransfer
     }
 
     /**
+     * Returns the textTransformation.
      * @return the textTransformation
      */
     public TextTransformationTransfer getTextTransformation() {
@@ -52,6 +55,7 @@ public class AppearanceTextTransformationTransfer
     }
 
     /**
+     * Sets the textTransformation.
      * @param textTransformation the textTransformation to set
      */
     public void setTextTransformation(TextTransformationTransfer textTransformation) {

@@ -38,6 +38,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the indexTypeName.
      * @return the indexTypeName
      */
     public String getIndexTypeName() {
@@ -45,6 +46,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Sets the indexTypeName.
      * @param indexTypeName the indexTypeName to set
      */
     public void setIndexTypeName(String indexTypeName) {
@@ -52,6 +54,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the entityType.
      * @return the entityType
      */
     public EntityTypeTransfer getEntityType() {
@@ -59,6 +62,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Sets the entityType.
      * @param entityType the entityType to set
      */
     public void setEntityType(EntityTypeTransfer entityType) {
@@ -66,6 +70,7 @@ public class IndexTypeTransfer
     }
     
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -73,6 +78,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -80,6 +86,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -87,6 +94,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -94,6 +102,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -101,6 +110,7 @@ public class IndexTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

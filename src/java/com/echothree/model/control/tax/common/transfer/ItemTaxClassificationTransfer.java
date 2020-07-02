@@ -35,6 +35,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -42,6 +43,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -49,6 +51,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -56,6 +59,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -63,6 +67,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Returns the taxClassification.
      * @return the taxClassification
      */
     public TaxClassificationTransfer getTaxClassification() {
@@ -70,6 +75,7 @@ public class ItemTaxClassificationTransfer
     }
 
     /**
+     * Sets the taxClassification.
      * @param taxClassification the taxClassification to set
      */
     public void setTaxClassification(TaxClassificationTransfer taxClassification) {

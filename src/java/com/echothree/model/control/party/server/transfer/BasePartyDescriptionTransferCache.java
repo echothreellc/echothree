@@ -25,7 +25,7 @@ public abstract class BasePartyDescriptionTransferCache<K extends BaseEntity, V 
         extends BasePartyTransferCache<K, V> {
     
     /** Creates a new instance of BasePartyDescriptionTransferCache */
-    public BasePartyDescriptionTransferCache(UserVisit userVisit, PartyControl partyControl) {
+    protected BasePartyDescriptionTransferCache(UserVisit userVisit, PartyControl partyControl) {
         super(userVisit, partyControl);
     }
     

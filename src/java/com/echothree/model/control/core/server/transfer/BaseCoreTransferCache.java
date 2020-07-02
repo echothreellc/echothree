@@ -28,7 +28,7 @@ public abstract class BaseCoreTransferCache<K extends BaseEntity, V extends Base
     CoreControl coreControl;
     
     /** Creates a new instance of BaseCoreTransferCache */
-    public BaseCoreTransferCache(UserVisit userVisit, CoreControl coreControl) {
+    protected BaseCoreTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit);
         
         this.coreControl = coreControl;

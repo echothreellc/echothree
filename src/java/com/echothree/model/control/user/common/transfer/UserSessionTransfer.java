@@ -40,6 +40,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the userVisit.
      * @return the userVisit
      */
     public UserVisitTransfer getUserVisit() {
@@ -47,6 +48,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Sets the userVisit.
      * @param userVisit the userVisit to set
      */
     public void setUserVisit(UserVisitTransfer userVisit) {
@@ -54,6 +56,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -61,6 +64,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -68,6 +72,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the partyRelationship.
      * @return the partyRelationship
      */
     public PartyRelationshipTransfer getPartyRelationship() {
@@ -75,6 +80,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Sets the partyRelationship.
      * @param partyRelationship the partyRelationship to set
      */
     public void setPartyRelationship(PartyRelationshipTransfer partyRelationship) {
@@ -82,6 +88,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the unformattedPasswordVerifiedTime.
      * @return the unformattedPasswordVerifiedTime
      */
     public Long getUnformattedPasswordVerifiedTime() {
@@ -89,6 +96,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Sets the unformattedPasswordVerifiedTime.
      * @param unformattedPasswordVerifiedTime the unformattedPasswordVerifiedTime to set
      */
     public void setUnformattedPasswordVerifiedTime(Long unformattedPasswordVerifiedTime) {
@@ -96,6 +104,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Returns the passwordVerifiedTime.
      * @return the passwordVerifiedTime
      */
     public String getPasswordVerifiedTime() {
@@ -103,6 +112,7 @@ public class UserSessionTransfer
     }
 
     /**
+     * Sets the passwordVerifiedTime.
      * @param passwordVerifiedTime the passwordVerifiedTime to set
      */
     public void setPasswordVerifiedTime(String passwordVerifiedTime) {

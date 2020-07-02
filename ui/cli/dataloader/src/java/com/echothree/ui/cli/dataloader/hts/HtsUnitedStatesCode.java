@@ -41,6 +41,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the commodity.
      * @return the commodity
      */
     public String getCommodity() {
@@ -48,6 +49,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the commodity.
      * @param commodity the commodity to set
      */
     public void setCommodity(String commodity) {
@@ -55,6 +57,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the descrip1.
      * @return the descrip1
      */
     public String getDescrip1() {
@@ -62,6 +65,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the descrip1.
      * @param descrip1 the descrip1 to set
      */
     public void setDescrip1(String descrip1) {
@@ -69,6 +73,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the quantity1.
      * @return the quantity1
      */
     public String getQuantity1() {
@@ -76,6 +81,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the quantity1.
      * @param quantity1 the quantity1 to set
      */
     public void setQuantity1(String quantity1) {
@@ -83,6 +89,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Returns the quantity2.
      * @return the quantity2
      */
     public String getQuantity2() {
@@ -90,6 +97,7 @@ public class HtsUnitedStatesCode {
     }
 
     /**
+     * Sets the quantity2.
      * @param quantity2 the quantity2 to set
      */
     public void setQuantity2(String quantity2) {

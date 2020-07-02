@@ -34,6 +34,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Returns the contentCatalog.
      * @return the contentCatalog
      */
     public ContentCatalogTransfer getContentCatalog() {
@@ -55,6 +58,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Sets the contentCatalog.
      * @param contentCatalog the contentCatalog to set
      */
     public void setContentCatalog(ContentCatalogTransfer contentCatalog) {
@@ -62,6 +66,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class ContentCatalogDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

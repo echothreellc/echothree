@@ -35,6 +35,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -42,6 +43,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -49,6 +51,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Returns the contentCategory.
      * @return the contentCategory
      */
     public ContentCategoryTransfer getContentCategory() {
@@ -56,6 +59,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Sets the contentCategory.
      * @param contentCategory the contentCategory to set
      */
     public void setContentCategory(ContentCategoryTransfer contentCategory) {
@@ -63,6 +67,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -70,6 +75,7 @@ public class ContentCategoryDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

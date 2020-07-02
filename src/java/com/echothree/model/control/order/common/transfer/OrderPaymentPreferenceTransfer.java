@@ -44,6 +44,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the orderPaymentPreferenceSequence.
      * @return the orderPaymentPreferenceSequence
      */
     public Integer getOrderPaymentPreferenceSequence() {
@@ -51,6 +52,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the orderPaymentPreferenceSequence.
      * @param orderPaymentPreferenceSequence the orderPaymentPreferenceSequence to set
      */
     public void setOrderPaymentPreferenceSequence(Integer orderPaymentPreferenceSequence) {
@@ -58,6 +60,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the paymentMethod.
      * @return the paymentMethod
      */
     public PaymentMethodTransfer getPaymentMethod() {
@@ -65,6 +68,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the paymentMethod.
      * @param paymentMethod the paymentMethod to set
      */
     public void setPaymentMethod(PaymentMethodTransfer paymentMethod) {
@@ -72,6 +76,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the partyPaymentMethod.
      * @return the partyPaymentMethod
      */
     public PartyPaymentMethodTransfer getPartyPaymentMethod() {
@@ -79,6 +84,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the partyPaymentMethod.
      * @param partyPaymentMethod the partyPaymentMethod to set
      */
     public void setPartyPaymentMethod(PartyPaymentMethodTransfer partyPaymentMethod) {
@@ -86,6 +92,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the wasPresent.
      * @return the wasPresent
      */
     public Boolean getWasPresent() {
@@ -93,6 +100,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the wasPresent.
      * @param wasPresent the wasPresent to set
      */
     public void setWasPresent(Boolean wasPresent) {
@@ -100,6 +108,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the unformattedMaximumAmount.
      * @return the unformattedMaximumAmount
      */
     public Long getUnformattedMaximumAmount() {
@@ -107,6 +116,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the unformattedMaximumAmount.
      * @param unformattedMaximumAmount the unformattedMaximumAmount to set
      */
     public void setUnformattedMaximumAmount(Long unformattedMaximumAmount) {
@@ -114,6 +124,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the maximumAmount.
      * @return the maximumAmount
      */
     public String getMaximumAmount() {
@@ -121,6 +132,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the maximumAmount.
      * @param maximumAmount the maximumAmount to set
      */
     public void setMaximumAmount(String maximumAmount) {
@@ -128,6 +140,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -135,6 +148,7 @@ public class OrderPaymentPreferenceTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

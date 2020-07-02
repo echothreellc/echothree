@@ -34,6 +34,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCodeUseType.
      * @return the harmonizedTariffScheduleCodeUseType
      */
     public HarmonizedTariffScheduleCodeUseTypeTransfer getHarmonizedTariffScheduleCodeUseType() {
@@ -55,6 +58,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeUseType.
      * @param harmonizedTariffScheduleCodeUseType the harmonizedTariffScheduleCodeUseType to set
      */
     public void setHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType) {
@@ -62,6 +66,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -26,6 +26,7 @@ public class EditActionForm
     private String partyPaymentMethodName;
 
     /**
+     * Returns the partyPaymentMethodName.
      * @return the partyPaymentMethodName
      */
     public String getPartyPaymentMethodName() {
@@ -33,6 +34,7 @@ public class EditActionForm
     }
 
     /**
+     * Sets the partyPaymentMethodName.
      * @param partyPaymentMethodName the partyPaymentMethodName to set
      */
     public void setPartyPaymentMethodName(String partyPaymentMethodName) {

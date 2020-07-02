@@ -28,12 +28,12 @@ public abstract class BaseAccountingTransferCache<K extends BaseEntity, V extend
     AccountingControl accountingControl;
     
     /** Creates a new instance of BaseAccountingTransferCache */
-    public BaseAccountingTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
+    protected BaseAccountingTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
         super(userVisit);
         
         this.accountingControl = accountingControl;
     }
     
-    public abstract V getTransfer(K key);
+    protected abstract V getTransfer(K key);
 
 }

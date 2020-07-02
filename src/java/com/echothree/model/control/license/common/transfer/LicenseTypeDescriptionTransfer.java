@@ -34,6 +34,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the licenseType.
      * @return the licenseType
      */
     public LicenseTypeTransfer getLicenseType() {
@@ -55,6 +58,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the licenseType.
      * @param licenseType the licenseType to set
      */
     public void setLicenseType(LicenseTypeTransfer licenseType) {
@@ -62,6 +66,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class LicenseTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

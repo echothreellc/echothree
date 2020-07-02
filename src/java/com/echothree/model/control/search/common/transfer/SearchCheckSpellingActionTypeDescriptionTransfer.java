@@ -34,6 +34,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransfer
     }
 
     /**
+     * Returns the searchCheckSpellingActionType.
      * @return the searchCheckSpellingActionType
      */
     public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionType() {
@@ -55,6 +58,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransfer
     }
 
     /**
+     * Sets the searchCheckSpellingActionType.
      * @param searchCheckSpellingActionType the searchCheckSpellingActionType to set
      */
     public void setSearchCheckSpellingActionType(SearchCheckSpellingActionTypeTransfer searchCheckSpellingActionType) {
@@ -62,6 +66,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

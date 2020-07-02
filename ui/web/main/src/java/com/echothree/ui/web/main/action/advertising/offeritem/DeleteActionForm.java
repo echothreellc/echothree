@@ -27,6 +27,7 @@ public class DeleteActionForm
     private String itemName;
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {
@@ -34,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the offerName.
      * @param offerName the offerName to set
      */
     public void setOfferName(String offerName) {
@@ -41,6 +43,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {
@@ -48,6 +51,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the itemName.
      * @param itemName the itemName to set
      */
     public void setItemName(String itemName) {

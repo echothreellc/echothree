@@ -43,6 +43,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -50,6 +51,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -57,6 +59,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the contactMechanism.
      * @return the contactMechanism
      */
     public ContactMechanismTransfer getContactMechanism() {
@@ -64,6 +67,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Sets the contactMechanism.
      * @param contactMechanism the contactMechanism to set
      */
     public void setContactMechanism(ContactMechanismTransfer contactMechanism) {
@@ -71,6 +75,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -78,6 +83,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -85,6 +91,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -92,6 +99,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -99,6 +107,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -106,6 +115,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -113,6 +123,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the partyContactMechanismPurposes.
      * @return the partyContactMechanismPurposes
      */
     public ListWrapper<PartyContactMechanismPurposeTransfer> getPartyContactMechanismPurposes() {
@@ -120,6 +131,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Sets the partyContactMechanismPurposes.
      * @param partyContactMechanismPurposes the partyContactMechanismPurposes to set
      */
     public void setPartyContactMechanismPurposes(ListWrapper<PartyContactMechanismPurposeTransfer> partyContactMechanismPurposes) {
@@ -127,6 +139,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Returns the partyContactMechanismRelationships.
      * @return the partyContactMechanismRelationships
      */
     public ListWrapper<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationships() {
@@ -134,6 +147,7 @@ public class PartyContactMechanismTransfer
     }
 
     /**
+     * Sets the partyContactMechanismRelationships.
      * @param partyContactMechanismRelationships the partyContactMechanismRelationships to set
      */
     public void setPartyContactMechanismRelationships(ListWrapper<PartyContactMechanismRelationshipTransfer> partyContactMechanismRelationships) {

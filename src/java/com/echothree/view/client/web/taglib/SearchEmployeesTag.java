@@ -82,6 +82,7 @@ public class SearchEmployeesTag
     }
     
     /**
+     * Sets the searchTypeName.
      * @param searchTypeName the searchTypeName to set
      */
     public void setSearchTypeName(String searchTypeName) {
@@ -89,6 +90,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the employeeName.
      * @param employeeName the employeeName to set
      */
     public void setEmployeeName(String employeeName) {
@@ -96,6 +98,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -103,6 +106,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the firstName.
      * @param firstName the firstName to set
      */
     public void setFirstName(String firstName) {
@@ -110,6 +114,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the firstNameSoundex.
      * @param firstNameSoundex the firstNameSoundex to set
      */
     public void setFirstNameSoundex(String firstNameSoundex) {
@@ -117,6 +122,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the middleName.
      * @param middleName the middleName to set
      */
     public void setMiddleName(String middleName) {
@@ -124,6 +130,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the middleNameSoundex.
      * @param middleNameSoundex the middleNameSoundex to set
      */
     public void setMiddleNameSoundex(String middleNameSoundex) {
@@ -131,6 +138,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the lastName.
      * @param lastName the lastName to set
      */
     public void setLastName(String lastName) {
@@ -138,6 +146,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the lastNameSoundex.
      * @param lastNameSoundex the lastNameSoundex to set
      */
     public void setLastNameSoundex(String lastNameSoundex) {
@@ -145,6 +154,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the employeeStatusChoice.
      * @param employeeStatusChoice the employeeStatusChoice to set
      */
     public void setEmployeeStatusChoice(String employeeStatusChoice) {
@@ -152,6 +162,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the employeeAvailabilityChoice.
      * @param employeeAvailabilityChoice the employeeAvailabilityChoice to set
      */
     public void setEmployeeAvailabilityChoice(String employeeAvailabilityChoice) {
@@ -159,6 +170,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the createdSince.
      * @param createdSince the createdSince to set
      */
     public void setCreatedSince(String createdSince) {
@@ -166,6 +178,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the modifiedSince.
      * @param modifiedSince the modifiedSince to set
      */
     public void setModifiedSince(String modifiedSince) {
@@ -173,6 +186,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the fields.
      * @param fields the fields to set
      */
     public void setFields(String fields) {
@@ -180,6 +194,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the countVar.
      * @param countVar the countVar to set
      */
     public void setCountVar(String countVar) {
@@ -191,6 +206,7 @@ public class SearchEmployeesTag
     }
 
     /**
+     * Sets the scope.
      * @param scope the scope to set
      */
     public void setScope(String scope) {

@@ -43,6 +43,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Returns the contentType.
      * @return the contentType
      */
     @Override
@@ -51,6 +52,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Sets the contentType.
      * @param contentType the contentType to set
      */
     public void setContentType(String contentType) {
@@ -58,6 +60,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Returns the inputStream.
      * @return the inputStream
      */
     @Override
@@ -66,6 +69,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Sets the inputStream.
      * @param inputStream the inputStream to set
      */
     public void setInputStream(ByteArrayInputStream inputStream) {
@@ -73,6 +77,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Returns the lastModified.
      * @return the lastModified
      */
     @Override
@@ -81,6 +86,7 @@ public class ByteArrayStreamInfo
     }
 
     /**
+     * Sets the lastModified.
      * @param lastModified the lastModified to set
      */
     public void setLastModified(Long lastModified) {

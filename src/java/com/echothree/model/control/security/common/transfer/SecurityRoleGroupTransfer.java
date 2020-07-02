@@ -42,6 +42,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the securityRoleGroupName.
      * @return the securityRoleGroupName
      */
     public String getSecurityRoleGroupName() {
@@ -49,6 +50,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Sets the securityRoleGroupName.
      * @param securityRoleGroupName the securityRoleGroupName to set
      */
     public void setSecurityRoleGroupName(String securityRoleGroupName) {
@@ -56,6 +58,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the parentSecurityRoleGroup.
      * @return the parentSecurityRoleGroup
      */
     public SecurityRoleGroupTransfer getParentSecurityRoleGroup() {
@@ -63,6 +66,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Sets the parentSecurityRoleGroup.
      * @param parentSecurityRoleGroup the parentSecurityRoleGroup to set
      */
     public void setParentSecurityRoleGroup(SecurityRoleGroupTransfer parentSecurityRoleGroup) {
@@ -70,6 +74,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -77,6 +82,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -84,6 +90,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -91,6 +98,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -98,6 +106,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -105,6 +114,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -112,6 +122,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the securityRoleCount.
      * @return the securityRoleCount
      */
     public Long getSecurityRoleCount() {
@@ -119,6 +130,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Sets the securityRoleCount.
      * @param securityRoleCount the securityRoleCount to set
      */
     public void setSecurityRoleCount(Long securityRoleCount) {
@@ -126,6 +138,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Returns the securityRoles.
      * @return the securityRoles
      */
     public MapWrapper<SecurityRoleTransfer> getSecurityRoles() {
@@ -133,6 +146,7 @@ public class SecurityRoleGroupTransfer
     }
 
     /**
+     * Sets the securityRoles.
      * @param securityRoles the securityRoles to set
      */
     public void setSecurityRoles(MapWrapper<SecurityRoleTransfer> securityRoles) {

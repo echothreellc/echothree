@@ -69,6 +69,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the currencyIsoName.
      * @return the currencyIsoName
      */
     public String getCurrencyIsoName() {
@@ -76,6 +77,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the currencyIsoName.
      * @param currencyIsoName the currencyIsoName to set
      */
     public void setCurrencyIsoName(String currencyIsoName) {
@@ -83,6 +85,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the symbol.
      * @return the symbol
      */
     public String getSymbol() {
@@ -90,6 +93,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbol.
      * @param symbol the symbol to set
      */
     public void setSymbol(String symbol) {
@@ -97,6 +101,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the symbolPosition.
      * @return the symbolPosition
      */
     public SymbolPositionTransfer getSymbolPosition() {
@@ -104,6 +109,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolPosition.
      * @param symbolPosition the symbolPosition to set
      */
     public void setSymbolPosition(SymbolPositionTransfer symbolPosition) {
@@ -111,6 +117,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the symbolOnListStart.
      * @return the symbolOnListStart
      */
     public Boolean getSymbolOnListStart() {
@@ -118,6 +125,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnListStart.
      * @param symbolOnListStart the symbolOnListStart to set
      */
     public void setSymbolOnListStart(Boolean symbolOnListStart) {
@@ -125,6 +133,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the symbolOnListMember.
      * @return the symbolOnListMember
      */
     public Boolean getSymbolOnListMember() {
@@ -132,6 +141,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnListMember.
      * @param symbolOnListMember the symbolOnListMember to set
      */
     public void setSymbolOnListMember(Boolean symbolOnListMember) {
@@ -139,6 +149,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the symbolOnSubtotal.
      * @return the symbolOnSubtotal
      */
     public Boolean getSymbolOnSubtotal() {
@@ -146,6 +157,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnSubtotal.
      * @param symbolOnSubtotal the symbolOnSubtotal to set
      */
     public void setSymbolOnSubtotal(Boolean symbolOnSubtotal) {
@@ -153,6 +165,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the symbolOnTotal.
      * @return the symbolOnTotal
      */
     public Boolean getSymbolOnTotal() {
@@ -160,6 +173,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the symbolOnTotal.
      * @param symbolOnTotal the symbolOnTotal to set
      */
     public void setSymbolOnTotal(Boolean symbolOnTotal) {
@@ -167,6 +181,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the groupingSeparator.
      * @return the groupingSeparator
      */
     public String getGroupingSeparator() {
@@ -174,6 +189,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the groupingSeparator.
      * @param groupingSeparator the groupingSeparator to set
      */
     public void setGroupingSeparator(String groupingSeparator) {
@@ -181,6 +197,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the groupingSize.
      * @return the groupingSize
      */
     public Integer getGroupingSize() {
@@ -188,6 +205,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the groupingSize.
      * @param groupingSize the groupingSize to set
      */
     public void setGroupingSize(Integer groupingSize) {
@@ -195,6 +213,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the fractionSeparator.
      * @return the fractionSeparator
      */
     public String getFractionSeparator() {
@@ -202,6 +221,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the fractionSeparator.
      * @param fractionSeparator the fractionSeparator to set
      */
     public void setFractionSeparator(String fractionSeparator) {
@@ -209,6 +229,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the defaultFractionDigits.
      * @return the defaultFractionDigits
      */
     public Integer getDefaultFractionDigits() {
@@ -216,6 +237,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the defaultFractionDigits.
      * @param defaultFractionDigits the defaultFractionDigits to set
      */
     public void setDefaultFractionDigits(Integer defaultFractionDigits) {
@@ -223,6 +245,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the priceUnitFractionDigits.
      * @return the priceUnitFractionDigits
      */
     public Integer getPriceUnitFractionDigits() {
@@ -230,6 +253,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the priceUnitFractionDigits.
      * @param priceUnitFractionDigits the priceUnitFractionDigits to set
      */
     public void setPriceUnitFractionDigits(Integer priceUnitFractionDigits) {
@@ -237,6 +261,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the priceLineFractionDigits.
      * @return the priceLineFractionDigits
      */
     public Integer getPriceLineFractionDigits() {
@@ -244,6 +269,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the priceLineFractionDigits.
      * @param priceLineFractionDigits the priceLineFractionDigits to set
      */
     public void setPriceLineFractionDigits(Integer priceLineFractionDigits) {
@@ -251,6 +277,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the costUnitFractionDigits.
      * @return the costUnitFractionDigits
      */
     public Integer getCostUnitFractionDigits() {
@@ -258,6 +285,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the costUnitFractionDigits.
      * @param costUnitFractionDigits the costUnitFractionDigits to set
      */
     public void setCostUnitFractionDigits(Integer costUnitFractionDigits) {
@@ -265,6 +293,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the costLineFractionDigits.
      * @return the costLineFractionDigits
      */
     public Integer getCostLineFractionDigits() {
@@ -272,6 +301,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the costLineFractionDigits.
      * @param costLineFractionDigits the costLineFractionDigits to set
      */
     public void setCostLineFractionDigits(Integer costLineFractionDigits) {
@@ -279,6 +309,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the minusSign.
      * @return the minusSign
      */
     public String getMinusSign() {
@@ -286,6 +317,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the minusSign.
      * @param minusSign the minusSign to set
      */
     public void setMinusSign(String minusSign) {
@@ -293,6 +325,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -300,6 +333,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -307,6 +341,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -314,6 +349,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -321,6 +357,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -328,6 +365,7 @@ public class CurrencyTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

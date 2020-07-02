@@ -28,7 +28,7 @@ public abstract class BaseLetterTransferCache<K extends BaseEntity, V extends Ba
     LetterControl letterControl;
     
     /** Creates a new instance of BaseLetterTransferCache */
-    public BaseLetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
+    protected BaseLetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
         super(userVisit);
         
         this.letterControl = letterControl;

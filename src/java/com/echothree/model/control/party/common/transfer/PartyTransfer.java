@@ -124,6 +124,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -131,6 +132,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -138,6 +140,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -145,6 +148,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -152,6 +156,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredLanguage.
      * @return the preferredLanguage
      */
     public LanguageTransfer getPreferredLanguage() {
@@ -159,6 +164,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the preferredLanguage.
      * @param preferredLanguage the preferredLanguage to set
      */
     public void setPreferredLanguage(LanguageTransfer preferredLanguage) {
@@ -166,6 +172,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredCurrency.
      * @return the preferredCurrency
      */
     public CurrencyTransfer getPreferredCurrency() {
@@ -173,6 +180,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the preferredCurrency.
      * @param preferredCurrency the preferredCurrency to set
      */
     public void setPreferredCurrency(CurrencyTransfer preferredCurrency) {
@@ -180,6 +188,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredTimeZone.
      * @return the preferredTimeZone
      */
     public TimeZoneTransfer getPreferredTimeZone() {
@@ -187,6 +196,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the preferredTimeZone.
      * @param preferredTimeZone the preferredTimeZone to set
      */
     public void setPreferredTimeZone(TimeZoneTransfer preferredTimeZone) {
@@ -194,6 +204,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the preferredDateTimeFormat.
      * @return the preferredDateTimeFormat
      */
     public DateTimeFormatTransfer getPreferredDateTimeFormat() {
@@ -201,6 +212,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the preferredDateTimeFormat.
      * @param preferredDateTimeFormat the preferredDateTimeFormat to set
      */
     public void setPreferredDateTimeFormat(DateTimeFormatTransfer preferredDateTimeFormat) {
@@ -208,6 +220,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the person.
      * @return the person
      */
     public PersonTransfer getPerson() {
@@ -215,6 +228,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the person.
      * @param person the person to set
      */
     public void setPerson(PersonTransfer person) {
@@ -222,6 +236,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyGroup.
      * @return the partyGroup
      */
     public PartyGroupTransfer getPartyGroup() {
@@ -229,6 +244,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyGroup.
      * @param partyGroup the partyGroup to set
      */
     public void setPartyGroup(PartyGroupTransfer partyGroup) {
@@ -236,6 +252,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the profile.
      * @return the profile
      */
     public ProfileTransfer getProfile() {
@@ -243,6 +260,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the profile.
      * @param profile the profile to set
      */
     public void setProfile(ProfileTransfer profile) {
@@ -250,6 +268,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the userLogin.
      * @return the userLogin
      */
     public UserLoginTransfer getUserLogin() {
@@ -257,6 +276,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the userLogin.
      * @param userLogin the userLogin to set
      */
     public void setUserLogin(UserLoginTransfer userLogin) {
@@ -264,6 +284,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the recoveryAnswer.
      * @return the recoveryAnswer
      */
     public RecoveryAnswerTransfer getRecoveryAnswer() {
@@ -271,6 +292,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the recoveryAnswer.
      * @param recoveryAnswer the recoveryAnswer to set
      */
     public void setRecoveryAnswer(RecoveryAnswerTransfer recoveryAnswer) {
@@ -278,6 +300,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -285,6 +308,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -292,6 +316,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyAliases.
      * @return the partyAliases
      */
     public ListWrapper<PartyAliasTransfer> getPartyAliases() {
@@ -299,6 +324,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyAliases.
      * @param partyAliases the partyAliases to set
      */
     public void setPartyAliases(ListWrapper<PartyAliasTransfer> partyAliases) {
@@ -306,6 +332,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyRelationships.
      * @return the partyRelationships
      */
     public ListWrapper<PartyRelationshipTransfer> getPartyRelationships() {
@@ -313,6 +340,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyRelationships.
      * @param partyRelationships the partyRelationships to set
      */
     public void setPartyRelationships(ListWrapper<PartyRelationshipTransfer> partyRelationships) {
@@ -320,6 +348,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyContactMechanisms.
      * @return the partyContactMechanisms
      */
     public ListWrapper<PartyContactMechanismTransfer> getPartyContactMechanisms() {
@@ -327,6 +356,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyContactMechanisms.
      * @param partyContactMechanisms the partyContactMechanisms to set
      */
     public void setPartyContactMechanisms(ListWrapper<PartyContactMechanismTransfer> partyContactMechanisms) {
@@ -334,6 +364,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyContactLists.
      * @return the partyContactLists
      */
     public ListWrapper<PartyContactListTransfer> getPartyContactLists() {
@@ -341,6 +372,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyContactLists.
      * @param partyContactLists the partyContactLists to set
      */
     public void setPartyContactLists(ListWrapper<PartyContactListTransfer> partyContactLists) {
@@ -348,6 +380,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the billingAccounts.
      * @return the billingAccounts
      */
     public ListWrapper<BillingAccountTransfer> getBillingAccounts() {
@@ -355,6 +388,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the billingAccounts.
      * @param billingAccounts the billingAccounts to set
      */
     public void setBillingAccounts(ListWrapper<BillingAccountTransfer> billingAccounts) {
@@ -362,6 +396,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesFromCount.
      * @return the invoicesFromCount
      */
     public Long getInvoicesFromCount() {
@@ -369,6 +404,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the invoicesFromCount.
      * @param invoicesFromCount the invoicesFromCount to set
      */
     public void setInvoicesFromCount(Long invoicesFromCount) {
@@ -376,6 +412,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesFrom.
      * @return the invoicesFrom
      */
     public ListWrapper<InvoiceTransfer> getInvoicesFrom() {
@@ -383,6 +420,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the invoicesFrom.
      * @param invoicesFrom the invoicesFrom to set
      */
     public void setInvoicesFrom(ListWrapper<InvoiceTransfer> invoicesFrom) {
@@ -390,6 +428,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesToCount.
      * @return the invoicesToCount
      */
     public Long getInvoicesToCount() {
@@ -397,6 +436,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the invoicesToCount.
      * @param invoicesToCount the invoicesToCount to set
      */
     public void setInvoicesToCount(Long invoicesToCount) {
@@ -404,6 +444,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the invoicesTo.
      * @return the invoicesTo
      */
     public ListWrapper<InvoiceTransfer> getInvoicesTo() {
@@ -411,6 +452,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the invoicesTo.
      * @param invoicesTo the invoicesTo to set
      */
     public void setInvoicesTo(ListWrapper<InvoiceTransfer> invoicesTo) {
@@ -418,6 +460,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCreditLimits.
      * @return the partyCreditLimits
      */
     public ListWrapper<PartyCreditLimitTransfer> getPartyCreditLimits() {
@@ -425,6 +468,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyCreditLimits.
      * @param partyCreditLimits the partyCreditLimits to set
      */
     public void setPartyCreditLimits(ListWrapper<PartyCreditLimitTransfer> partyCreditLimits) {
@@ -432,6 +476,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyTerm.
      * @return the partyTerm
      */
     public PartyTermTransfer getPartyTerm() {
@@ -439,6 +484,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyTerm.
      * @param partyTerm the partyTerm to set
      */
     public void setPartyTerm(PartyTermTransfer partyTerm) {
@@ -446,6 +492,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyFreeOnBoard.
      * @return the partyFreeOnBoard
      */
     public PartyFreeOnBoardTransfer getPartyFreeOnBoard() {
@@ -453,6 +500,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyFreeOnBoard.
      * @param partyFreeOnBoard the partyFreeOnBoard to set
      */
     public void setPartyFreeOnBoard(final PartyFreeOnBoardTransfer partyFreeOnBoard) {
@@ -460,6 +508,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyPaymentMethods.
      * @return the partyPaymentMethods
      */
     public ListWrapper<PartyPaymentMethodTransfer> getPartyPaymentMethods() {
@@ -467,6 +516,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyPaymentMethods.
      * @param partyPaymentMethods the partyPaymentMethods to set
      */
     public void setPartyPaymentMethods(ListWrapper<PartyPaymentMethodTransfer> partyPaymentMethods) {
@@ -474,6 +524,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -481,6 +532,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -488,6 +540,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -495,6 +548,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -502,6 +556,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCancellationPolicies.
      * @return the partyCancellationPolicies
      */
     public ListWrapper<PartyCancellationPolicyTransfer> getPartyCancellationPolicies() {
@@ -509,6 +564,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyCancellationPolicies.
      * @param partyCancellationPolicies the partyCancellationPolicies to set
      */
     public void setPartyCancellationPolicies(ListWrapper<PartyCancellationPolicyTransfer> partyCancellationPolicies) {
@@ -516,6 +572,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyReturnPolicies.
      * @return the partyReturnPolicies
      */
     public ListWrapper<PartyReturnPolicyTransfer> getPartyReturnPolicies() {
@@ -523,6 +580,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyReturnPolicies.
      * @param partyReturnPolicies the partyReturnPolicies to set
      */
     public void setPartyReturnPolicies(ListWrapper<PartyReturnPolicyTransfer> partyReturnPolicies) {
@@ -530,6 +588,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the subscriptions.
      * @return the subscriptions
      */
     public ListWrapper<SubscriptionTransfer> getSubscriptions() {
@@ -537,6 +596,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the subscriptions.
      * @param subscriptions the subscriptions to set
      */
     public void setSubscriptions(ListWrapper<SubscriptionTransfer> subscriptions) {
@@ -544,6 +604,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the communicationEventsCount.
      * @return the communicationEventsCount
      */
     public Long getCommunicationEventsCount() {
@@ -551,6 +612,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the communicationEventsCount.
      * @param communicationEventsCount the communicationEventsCount to set
      */
     public void setCommunicationEventsCount(Long communicationEventsCount) {
@@ -558,6 +620,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the communicationEvents.
      * @return the communicationEvents
      */
     public ListWrapper<CommunicationEventTransfer> getCommunicationEvents() {
@@ -565,6 +628,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the communicationEvents.
      * @param communicationEvents the communicationEvents to set
      */
     public void setCommunicationEvents(ListWrapper<CommunicationEventTransfer> communicationEvents) {
@@ -572,6 +636,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyDocuments.
      * @return the partyDocuments
      */
     public ListWrapper<PartyDocumentTransfer> getPartyDocuments() {
@@ -579,6 +644,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyDocuments.
      * @param partyDocuments the partyDocuments to set
      */
     public void setPartyDocuments(ListWrapper<PartyDocumentTransfer> partyDocuments) {
@@ -586,6 +652,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyPrinterGroupUses.
      * @return the partyPrinterGroupUses
      */
     public ListWrapper<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUses() {
@@ -593,6 +660,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyPrinterGroupUses.
      * @param partyPrinterGroupUses the partyPrinterGroupUses to set
      */
     public void setPartyPrinterGroupUses(ListWrapper<PartyPrinterGroupUseTransfer> partyPrinterGroupUses) {
@@ -600,6 +668,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyScaleUses.
      * @return the partyScaleUses
      */
     public ListWrapper<PartyScaleUseTransfer> getPartyScaleUses() {
@@ -607,6 +676,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyScaleUses.
      * @param partyScaleUses the partyScaleUses to set
      */
     public void setPartyScaleUses(ListWrapper<PartyScaleUseTransfer> partyScaleUses) {
@@ -614,6 +684,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyEntityTypes.
      * @return the partyEntityTypes
      */
     public ListWrapper<PartyEntityTypeTransfer> getPartyEntityTypes() {
@@ -621,6 +692,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyEntityTypes.
      * @param partyEntityTypes the partyEntityTypes to set
      */
     public void setPartyEntityTypes(ListWrapper<PartyEntityTypeTransfer> partyEntityTypes) {
@@ -628,6 +700,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyApplicationEditorUses.
      * @return the partyApplicationEditorUses
      */
     public ListWrapper<PartyApplicationEditorUseTransfer> getPartyApplicationEditorUses() {
@@ -635,6 +708,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyApplicationEditorUses.
      * @param partyApplicationEditorUses the partyApplicationEditorUses to set
      */
     public void setPartyApplicationEditorUses(ListWrapper<PartyApplicationEditorUseTransfer> partyApplicationEditorUses) {
@@ -642,6 +716,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCarriers.
      * @return the partyCarriers
      */
     public ListWrapper<PartyCarrierTransfer> getPartyCarriers() {
@@ -649,6 +724,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyCarriers.
      * @param partyCarriers the partyCarriers to set
      */
     public void setPartyCarriers(ListWrapper<PartyCarrierTransfer> partyCarriers) {
@@ -656,6 +732,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyCarrierAccounts.
      * @return the partyCarrierAccounts
      */
     public ListWrapper<PartyCarrierAccountTransfer> getPartyCarrierAccounts() {
@@ -663,6 +740,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyCarrierAccounts.
      * @param partyCarrierAccounts the partyCarrierAccounts to set
      */
     public void setPartyCarrierAccounts(ListWrapper<PartyCarrierAccountTransfer> partyCarrierAccounts) {
@@ -670,6 +748,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the employments.
      * @return the employments
      */
     public ListWrapper<EmploymentTransfer> getEmployments() {
@@ -677,6 +756,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the employments.
      * @param employments the employments to set
      */
     public void setEmployments(ListWrapper<EmploymentTransfer> employments) {
@@ -684,6 +764,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the leaves.
      * @return the leaves
      */
     public ListWrapper<LeaveTransfer> getLeaves() {
@@ -691,6 +772,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the leaves.
      * @param leaves the leaves to set
      */
     public void setLeaves(ListWrapper<LeaveTransfer> leaves) {
@@ -698,6 +780,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyResponsibilities.
      * @return the partyResponsibilities
      */
     public ListWrapper<PartyResponsibilityTransfer> getPartyResponsibilities() {
@@ -705,6 +788,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyResponsibilities.
      * @param partyResponsibilities the partyResponsibilities to set
      */
     public void setPartyResponsibilities(ListWrapper<PartyResponsibilityTransfer> partyResponsibilities) {
@@ -712,6 +796,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partyTrainingClasses.
      * @return the partyTrainingClasses
      */
     public ListWrapper<PartyTrainingClassTransfer> getPartyTrainingClasses() {
@@ -719,6 +804,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partyTrainingClasses.
      * @param partyTrainingClasses the partyTrainingClasses to set
      */
     public void setPartyTrainingClasses(ListWrapper<PartyTrainingClassTransfer> partyTrainingClasses) {
@@ -726,6 +812,7 @@ public class PartyTransfer
     }
 
     /**
+     * Returns the partySkills.
      * @return the partySkills
      */
     public ListWrapper<PartySkillTransfer> getPartySkills() {
@@ -733,6 +820,7 @@ public class PartyTransfer
     }
 
     /**
+     * Sets the partySkills.
      * @param partySkills the partySkills to set
      */
     public void setPartySkills(ListWrapper<PartySkillTransfer> partySkills) {

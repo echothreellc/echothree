@@ -42,6 +42,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -49,6 +50,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -56,6 +58,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the entityIntegerRangeName.
      * @return the entityIntegerRangeName
      */
     public String getEntityIntegerRangeName() {
@@ -63,6 +66,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Sets the entityIntegerRangeName.
      * @param entityIntegerRangeName the entityIntegerRangeName to set
      */
     public void setEntityIntegerRangeName(String entityIntegerRangeName) {
@@ -70,6 +74,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the minimumIntegerValue.
      * @return the minimumIntegerValue
      */
     public Integer getMinimumIntegerValue() {
@@ -77,6 +82,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Sets the minimumIntegerValue.
      * @param minimumIntegerValue the minimumIntegerValue to set
      */
     public void setMinimumIntegerValue(Integer minimumIntegerValue) {
@@ -84,6 +90,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the maximumIntegerValue.
      * @return the maximumIntegerValue
      */
     public Integer getMaximumIntegerValue() {
@@ -91,6 +98,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Sets the maximumIntegerValue.
      * @param maximumIntegerValue the maximumIntegerValue to set
      */
     public void setMaximumIntegerValue(Integer maximumIntegerValue) {
@@ -98,6 +106,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -105,6 +114,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -112,6 +122,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -119,6 +130,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -126,6 +138,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -133,6 +146,7 @@ public class EntityIntegerRangeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

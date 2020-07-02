@@ -64,6 +64,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderType.
      * @return the orderType
      */
     public OrderTypeTransfer getOrderType() {
@@ -71,6 +72,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderType.
      * @param orderType the orderType to set
      */
     public void setOrderType(OrderTypeTransfer orderType) {
@@ -78,6 +80,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderName.
      * @return the orderName
      */
     public String getOrderName() {
@@ -85,6 +88,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderName.
      * @param orderName the orderName to set
      */
     public void setOrderName(String orderName) {
@@ -92,6 +96,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderPriority.
      * @return the orderPriority
      */
     public OrderPriorityTransfer getOrderPriority() {
@@ -99,6 +104,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderPriority.
      * @param orderPriority the orderPriority to set
      */
     public void setOrderPriority(OrderPriorityTransfer orderPriority) {
@@ -106,6 +112,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -113,6 +120,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -120,6 +128,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the holdUntilComplete.
      * @return the holdUntilComplete
      */
     public Boolean getHoldUntilComplete() {
@@ -127,6 +136,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the holdUntilComplete.
      * @param holdUntilComplete the holdUntilComplete to set
      */
     public void setHoldUntilComplete(Boolean holdUntilComplete) {
@@ -134,6 +144,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the allowBackorders.
      * @return the allowBackorders
      */
     public Boolean getAllowBackorders() {
@@ -141,6 +152,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the allowBackorders.
      * @param allowBackorders the allowBackorders to set
      */
     public void setAllowBackorders(Boolean allowBackorders) {
@@ -148,6 +160,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the allowSubstitutions.
      * @return the allowSubstitutions
      */
     public Boolean getAllowSubstitutions() {
@@ -155,6 +168,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the allowSubstitutions.
      * @param allowSubstitutions the allowSubstitutions to set
      */
     public void setAllowSubstitutions(Boolean allowSubstitutions) {
@@ -162,6 +176,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the allowCombiningShipments.
      * @return the allowCombiningShipments
      */
     public Boolean getAllowCombiningShipments() {
@@ -169,6 +184,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the allowCombiningShipments.
      * @param allowCombiningShipments the allowCombiningShipments to set
      */
     public void setAllowCombiningShipments(Boolean allowCombiningShipments) {
@@ -176,6 +192,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the term.
      * @return the term
      */
     public TermTransfer getTerm() {
@@ -183,6 +200,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the term.
      * @param term the term to set
      */
     public void setTerm(TermTransfer term) {
@@ -190,6 +208,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the reference.
      * @return the reference
      */
     public String getReference() {
@@ -197,6 +216,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the reference.
      * @param reference the reference to set
      */
     public void setReference(String reference) {
@@ -204,6 +224,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -211,6 +232,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -218,6 +240,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -225,6 +248,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -232,6 +256,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -239,6 +264,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -246,6 +272,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the taxable.
      * @return the taxable
      */
     public Boolean getTaxable() {
@@ -253,6 +280,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the taxable.
      * @param taxable the taxable to set
      */
     public void setTaxable(Boolean taxable) {
@@ -260,6 +288,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderRoles.
      * @return the orderRoles
      */
     public MapWrapper<OrderRoleTransfer> getOrderRoles() {
@@ -267,6 +296,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderRoles.
      * @param orderRoles the orderRoles to set
      */
     public void setOrderRoles(MapWrapper<OrderRoleTransfer> orderRoles) {
@@ -274,6 +304,7 @@ public class OrderTransfer
     }
 
     /**
+     * Returns the orderTimes.
      * @return the orderTimes
      */
     public MapWrapper<OrderTimeTransfer> getOrderTimes() {
@@ -281,6 +312,7 @@ public class OrderTransfer
     }
 
     /**
+     * Sets the orderTimes.
      * @param orderTimes the orderTimes to set
      */
     public void setOrderTimes(MapWrapper<OrderTimeTransfer> orderTimes) {

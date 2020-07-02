@@ -60,6 +60,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the workflowName.
      * @return the workflowName
      */
     public String getWorkflowName() {
@@ -67,6 +68,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the workflowName.
      * @param workflowName the workflowName to set
      */
     public void setWorkflowName(String workflowName) {
@@ -74,6 +76,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the workflowEntranceName.
      * @return the workflowEntranceName
      */
     public String getWorkflowEntranceName() {
@@ -81,6 +84,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the workflowEntranceName.
      * @param workflowEntranceName the workflowEntranceName to set
      */
     public void setWorkflowEntranceName(String workflowEntranceName) {
@@ -88,6 +92,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the entranceWorkflowName.
      * @return the entranceWorkflowName
      */
     public String getEntranceWorkflowName() {
@@ -95,6 +100,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the entranceWorkflowName.
      * @param entranceWorkflowName the entranceWorkflowName to set
      */
     public void setEntranceWorkflowName(String entranceWorkflowName) {

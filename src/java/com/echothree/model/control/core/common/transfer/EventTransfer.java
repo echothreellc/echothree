@@ -44,6 +44,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the unformattedEventTime.
      * @return the unformattedEventTime
      */
     public Long getUnformattedEventTime() {
@@ -51,6 +52,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the unformattedEventTime.
      * @param unformattedEventTime the unformattedEventTime to set
      */
     public void setUnformattedEventTime(Long unformattedEventTime) {
@@ -58,6 +60,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the eventTime.
      * @return the eventTime
      */
     public String getEventTime() {
@@ -65,6 +68,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the eventTime.
      * @param eventTime the eventTime to set
      */
     public void setEventTime(String eventTime) {
@@ -72,6 +76,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the eventTimeSequence.
      * @return the eventTimeSequence
      */
     public Integer getEventTimeSequence() {
@@ -79,6 +84,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the eventTimeSequence.
      * @param eventTimeSequence the eventTimeSequence to set
      */
     public void setEventTimeSequence(Integer eventTimeSequence) {
@@ -86,6 +92,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -94,6 +101,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -102,6 +110,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the eventType.
      * @return the eventType
      */
     public EventTypeTransfer getEventType() {
@@ -109,6 +118,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the eventType.
      * @param eventType the eventType to set
      */
     public void setEventType(EventTypeTransfer eventType) {
@@ -116,6 +126,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the relatedEntityInstance.
      * @return the relatedEntityInstance
      */
     public EntityInstanceTransfer getRelatedEntityInstance() {
@@ -123,6 +134,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the relatedEntityInstance.
      * @param relatedEntityInstance the relatedEntityInstance to set
      */
     public void setRelatedEntityInstance(EntityInstanceTransfer relatedEntityInstance) {
@@ -130,6 +142,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the relatedEventType.
      * @return the relatedEventType
      */
     public EventTypeTransfer getRelatedEventType() {
@@ -137,6 +150,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the relatedEventType.
      * @param relatedEventType the relatedEventType to set
      */
     public void setRelatedEventType(EventTypeTransfer relatedEventType) {
@@ -144,6 +158,7 @@ public class EventTransfer
     }
 
     /**
+     * Returns the createdBy.
      * @return the createdBy
      */
     public EntityInstanceTransfer getCreatedBy() {
@@ -151,6 +166,7 @@ public class EventTransfer
     }
 
     /**
+     * Sets the createdBy.
      * @param createdBy the createdBy to set
      */
     public void setCreatedBy(EntityInstanceTransfer createdBy) {

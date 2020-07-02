@@ -58,6 +58,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -65,6 +66,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -72,6 +74,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the username.
      * @return the username
      */
     public String getUsername() {
@@ -79,6 +82,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the username.
      * @param username the username to set
      */
     public void setUsername(String username) {
@@ -86,6 +90,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the unformattedLastLoginTime.
      * @return the unformattedLastLoginTime
      */
     public Long getUnformattedLastLoginTime() {
@@ -93,6 +98,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the unformattedLastLoginTime.
      * @param unformattedLastLoginTime the unformattedLastLoginTime to set
      */
     public void setUnformattedLastLoginTime(Long unformattedLastLoginTime) {
@@ -100,6 +106,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the lastLoginTime.
      * @return the lastLoginTime
      */
     public String getLastLoginTime() {
@@ -107,6 +114,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the lastLoginTime.
      * @param lastLoginTime the lastLoginTime to set
      */
     public void setLastLoginTime(String lastLoginTime) {
@@ -114,6 +122,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the failureCount.
      * @return the failureCount
      */
     public Integer getFailureCount() {
@@ -121,6 +130,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the failureCount.
      * @param failureCount the failureCount to set
      */
     public void setFailureCount(Integer failureCount) {
@@ -128,6 +138,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the unformattedFirstFailureTime.
      * @return the unformattedFirstFailureTime
      */
     public Long getUnformattedFirstFailureTime() {
@@ -135,6 +146,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the unformattedFirstFailureTime.
      * @param unformattedFirstFailureTime the unformattedFirstFailureTime to set
      */
     public void setUnformattedFirstFailureTime(Long unformattedFirstFailureTime) {
@@ -142,6 +154,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the firstFailureTime.
      * @return the firstFailureTime
      */
     public String getFirstFailureTime() {
@@ -149,6 +162,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the firstFailureTime.
      * @param firstFailureTime the firstFailureTime to set
      */
     public void setFirstFailureTime(String firstFailureTime) {
@@ -156,6 +170,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the unformattedLastFailureTime.
      * @return the unformattedLastFailureTime
      */
     public Long getUnformattedLastFailureTime() {
@@ -163,6 +178,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the unformattedLastFailureTime.
      * @param unformattedLastFailureTime the unformattedLastFailureTime to set
      */
     public void setUnformattedLastFailureTime(Long unformattedLastFailureTime) {
@@ -170,6 +186,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the lastFailureTime.
      * @return the lastFailureTime
      */
     public String getLastFailureTime() {
@@ -177,6 +194,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the lastFailureTime.
      * @param lastFailureTime the lastFailureTime to set
      */
     public void setLastFailureTime(String lastFailureTime) {
@@ -184,6 +202,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the expiredCount.
      * @return the expiredCount
      */
     public Integer getExpiredCount() {
@@ -191,6 +210,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the expiredCount.
      * @param expiredCount the expiredCount to set
      */
     public void setExpiredCount(Integer expiredCount) {
@@ -198,6 +218,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the forceChange.
      * @return the forceChange
      */
     public Boolean getForceChange() {
@@ -205,6 +226,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the forceChange.
      * @param forceChange the forceChange to set
      */
     public void setForceChange(Boolean forceChange) {
@@ -212,6 +234,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Returns the userLoginPasswords.
      * @return the userLoginPasswords
      */
     public MapWrapper<UserLoginPasswordTransfer> getUserLoginPasswords() {
@@ -219,6 +242,7 @@ public class UserLoginTransfer
     }
 
     /**
+     * Sets the userLoginPasswords.
      * @param userLoginPasswords the userLoginPasswords to set
      */
     public void setUserLoginPasswords(MapWrapper<UserLoginPasswordTransfer> userLoginPasswords) {

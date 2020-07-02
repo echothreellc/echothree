@@ -86,6 +86,7 @@ public class SearchItemsTag
     }
     
     /**
+     * Sets the languageIsoName.
      * @param languageIsoName the languageIsoName to set
      */
     public void setLanguageIsoName(String languageIsoName) {
@@ -93,6 +94,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the searchTypeName.
      * @param searchTypeName the searchTypeName to set
      */
     public void setSearchTypeName(String searchTypeName) {
@@ -100,6 +102,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the searchDefaultOperatorName.
      * @param searchDefaultOperatorName the searchDefaultOperatorName to set
      */
     public void setSearchDefaultOperatorName(String searchDefaultOperatorName) {
@@ -107,6 +110,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the searchSortOrderName.
      * @param searchSortOrderName the searchSortOrderName to set
      */
     public void setSearchSortOrderName(String searchSortOrderName) {
@@ -114,6 +118,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the searchSortDirectionName.
      * @param searchSortDirectionName the searchSortDirectionName to set
      */
     public void setSearchSortDirectionName(String searchSortDirectionName) {
@@ -121,6 +126,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the rememberPreferences.
      * @param rememberPreferences the rememberPreferences to set
      */
     public void setRememberPreferences(String rememberPreferences) {
@@ -128,6 +134,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the itemNameOrAlias.
      * @param itemNameOrAlias the itemNameOrAlias to set
      */
     public void setItemNameOrAlias(String itemNameOrAlias) {
@@ -135,6 +142,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -142,6 +150,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the itemTypeName.
      * @param itemTypeName the itemTypeName to set
      */
     public void setItemTypeName(String itemTypeName) {
@@ -149,6 +158,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the itemUseTypeName.
      * @param itemUseTypeName the itemUseTypeName to set
      */
     public void setItemUseTypeName(String itemUseTypeName) {
@@ -156,6 +166,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the itemStatusChoice.
      * @param itemStatusChoice the itemStatusChoice to set
      */
     public void setItemStatusChoice(String itemStatusChoice) {
@@ -163,6 +174,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the itemStatusChoices.
      * @param itemStatusChoices the itemStatusChoices to set
      */
     public void setItemStatusChoices(String itemStatusChoices) {
@@ -170,6 +182,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the createdSince.
      * @param createdSince the createdSince to set
      */
     public void setCreatedSince(String createdSince) {
@@ -177,6 +190,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the modifiedSince.
      * @param modifiedSince the modifiedSince to set
      */
     public void setModifiedSince(String modifiedSince) {
@@ -184,6 +198,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the fields.
      * @param fields the fields to set
      */
     public void setFields(String fields) {
@@ -191,6 +206,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the searchUseTypeName.
      * @param searchUseTypeName the searchUseTypeName to set
      */
     public void setSearchUseTypeName(String searchUseTypeName) {
@@ -198,6 +214,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the countVar.
      * @param countVar the countVar to set
      */
     public void setCountVar(String countVar) {
@@ -209,6 +226,7 @@ public class SearchItemsTag
     }
 
     /**
+     * Sets the scope.
      * @param scope the scope to set
      */
     public void setScope(String scope) {

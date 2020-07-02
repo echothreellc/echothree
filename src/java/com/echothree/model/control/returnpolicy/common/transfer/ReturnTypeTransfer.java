@@ -41,6 +41,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the returnKind.
      * @return the returnKind
      */
     public ReturnKindTransfer getReturnKind() {
@@ -48,6 +49,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Sets the returnKind.
      * @param returnKind the returnKind to set
      */
     public void setReturnKind(ReturnKindTransfer returnKind) {
@@ -55,6 +57,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the returnTypeName.
      * @return the returnTypeName
      */
     public String getReturnTypeName() {
@@ -62,6 +65,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Sets the returnTypeName.
      * @param returnTypeName the returnTypeName to set
      */
     public void setReturnTypeName(String returnTypeName) {
@@ -69,6 +73,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the returnSequence.
      * @return the returnSequence
      */
     public SequenceTransfer getReturnSequence() {
@@ -76,6 +81,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Sets the returnSequence.
      * @param returnSequence the returnSequence to set
      */
     public void setReturnSequence(SequenceTransfer returnSequence) {
@@ -83,6 +89,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -90,6 +97,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -97,6 +105,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -104,6 +113,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -111,6 +121,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -118,6 +129,7 @@ public class ReturnTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

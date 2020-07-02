@@ -29,7 +29,7 @@ public abstract class BaseInvoiceDescriptionTransferCache<K extends BaseEntity, 
     PartyControl partyControl;
     
     /** Creates a new instance of BaseInvoiceDescriptionTransferCache */
-    public BaseInvoiceDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
+    protected BaseInvoiceDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
         super(userVisit, invoiceControl);
         
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);

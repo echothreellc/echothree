@@ -34,6 +34,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Returns the fontWeight.
      * @return the fontWeight
      */
     public FontWeightTransfer getFontWeight() {
@@ -55,6 +58,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Sets the fontWeight.
      * @param fontWeight the fontWeight to set
      */
     public void setFontWeight(FontWeightTransfer fontWeight) {
@@ -62,6 +66,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class FontWeightDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

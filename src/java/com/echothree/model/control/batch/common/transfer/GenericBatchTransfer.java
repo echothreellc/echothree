@@ -31,13 +31,14 @@ public abstract class GenericBatchTransfer
     private ListWrapper<BatchEntityTransfer> batchEntities;
     
     /** Creates a new instance of GenericBatchTransfer */
-    public GenericBatchTransfer(BatchTypeTransfer batchType, String batchName, WorkflowEntityStatusTransfer batchStatus) {
+    protected GenericBatchTransfer(BatchTypeTransfer batchType, String batchName, WorkflowEntityStatusTransfer batchStatus) {
         this.batchType = batchType;
         this.batchName = batchName;
         this.batchStatus = batchStatus;
     }
 
     /**
+     * Returns the batchType.
      * @return the batchType
      */
     public BatchTypeTransfer getBatchType() {
@@ -45,6 +46,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Sets the batchType.
      * @param batchType the batchType to set
      */
     public void setBatchType(BatchTypeTransfer batchType) {
@@ -52,6 +54,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchName.
      * @return the batchName
      */
     public String getBatchName() {
@@ -59,6 +62,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Sets the batchName.
      * @param batchName the batchName to set
      */
     public void setBatchName(String batchName) {
@@ -66,6 +70,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchStatus.
      * @return the batchStatus
      */
     public WorkflowEntityStatusTransfer getBatchStatus() {
@@ -73,6 +78,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Sets the batchStatus.
      * @param batchStatus the batchStatus to set
      */
     public void setBatchStatus(WorkflowEntityStatusTransfer batchStatus) {
@@ -80,6 +86,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchAliases.
      * @return the batchAliases
      */
     public ListWrapper<BatchAliasTransfer> getBatchAliases() {
@@ -87,6 +94,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Sets the batchAliases.
      * @param batchAliases the batchAliases to set
      */
     public void setBatchAliases(ListWrapper<BatchAliasTransfer> batchAliases) {
@@ -94,6 +102,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Returns the batchEntities.
      * @return the batchEntities
      */
     public ListWrapper<BatchEntityTransfer> getBatchEntities() {
@@ -101,6 +110,7 @@ public abstract class GenericBatchTransfer
     }
 
     /**
+     * Sets the batchEntities.
      * @param batchEntities the batchEntities to set
      */
     public void setBatchEntities(ListWrapper<BatchEntityTransfer> batchEntities) {

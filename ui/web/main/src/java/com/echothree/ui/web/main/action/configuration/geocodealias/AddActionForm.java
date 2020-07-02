@@ -63,6 +63,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the geoCodeName.
      * @return the geoCodeName
      */
     public String getGeoCodeName() {
@@ -70,6 +71,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the geoCodeName.
      * @param geoCodeName the geoCodeName to set
      */
     public void setGeoCodeName(String geoCodeName) {
@@ -97,6 +99,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the alias.
      * @return the alias
      */
     public String getAlias() {
@@ -104,6 +107,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the alias.
      * @param alias the alias to set
      */
     public void setAlias(String alias) {

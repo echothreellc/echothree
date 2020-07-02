@@ -32,6 +32,7 @@ public class UseResultTransfer
     }
 
     /**
+     * Returns the useName.
      * @return the useName
      */
     public String getUseName() {
@@ -39,6 +40,7 @@ public class UseResultTransfer
     }
 
     /**
+     * Sets the useName.
      * @param useName the useName to set
      */
     public void setUseName(String useName) {
@@ -46,6 +48,7 @@ public class UseResultTransfer
     }
 
     /**
+     * Returns the use.
      * @return the use
      */
     public UseTransfer getUse() {
@@ -53,6 +56,7 @@ public class UseResultTransfer
     }
 
     /**
+     * Sets the use.
      * @param use the use to set
      */
     public void setUse(UseTransfer use) {

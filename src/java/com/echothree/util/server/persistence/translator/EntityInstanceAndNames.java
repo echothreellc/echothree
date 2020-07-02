@@ -30,6 +30,7 @@ public class EntityInstanceAndNames {
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     public EntityInstance getEntityInstance() {
@@ -37,6 +38,7 @@ public class EntityInstanceAndNames {
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     public void setEntityInstance(EntityInstance entityInstance) {
@@ -44,6 +46,7 @@ public class EntityInstanceAndNames {
     }
 
     /**
+     * Returns the entityNames.
      * @return the entityNames
      */
     public EntityNames getEntityNames() {
@@ -51,6 +54,7 @@ public class EntityInstanceAndNames {
     }
 
     /**
+     * Sets the entityNames.
      * @param entityNames the entityNames to set
      */
     public void setEntityNames(EntityNames entityNames) {

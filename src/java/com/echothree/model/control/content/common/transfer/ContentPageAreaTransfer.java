@@ -47,6 +47,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the contentPage.
      * @return the contentPage
      */
     public ContentPageTransfer getContentPage() {
@@ -54,6 +55,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the contentPage.
      * @param contentPage the contentPage to set
      */
     public void setContentPage(ContentPageTransfer contentPage) {
@@ -61,6 +63,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the contentPageLayoutArea.
      * @return the contentPageLayoutArea
      */
     public ContentPageLayoutAreaTransfer getContentPageLayoutArea() {
@@ -68,6 +71,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the contentPageLayoutArea.
      * @param contentPageLayoutArea the contentPageLayoutArea to set
      */
     public void setContentPageLayoutArea(ContentPageLayoutAreaTransfer contentPageLayoutArea) {
@@ -75,6 +79,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -82,6 +87,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -89,6 +95,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -96,6 +103,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -103,6 +111,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -110,6 +119,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the blob.
      * @param blob the blob to set
      */
     public void setBlob(ByteArray blob) {
@@ -117,6 +127,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -124,6 +135,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the clob.
      * @param clob the clob to set
      */
     public void setClob(String clob) {
@@ -131,6 +143,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the string.
      * @return the string
      */
     public String getString() {
@@ -138,6 +151,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the string.
      * @param string the string to set
      */
     public void setString(String string) {
@@ -145,6 +159,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Returns the url.
      * @return the url
      */
     public String getUrl() {
@@ -152,6 +167,7 @@ public class ContentPageAreaTransfer
     }
 
     /**
+     * Sets the url.
      * @param url the url to set
      */
     public void setUrl(String url) {

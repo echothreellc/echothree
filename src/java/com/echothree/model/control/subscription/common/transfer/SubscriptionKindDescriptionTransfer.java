@@ -34,6 +34,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Returns the subscriptionKind.
      * @return the subscriptionKind
      */
     public SubscriptionKindTransfer getSubscriptionKind() {
@@ -55,6 +58,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Sets the subscriptionKind.
      * @param subscriptionKind the subscriptionKind to set
      */
     public void setSubscriptionKind(SubscriptionKindTransfer subscriptionKind) {
@@ -62,6 +66,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class SubscriptionKindDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

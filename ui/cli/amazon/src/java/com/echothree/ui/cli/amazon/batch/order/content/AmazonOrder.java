@@ -53,6 +53,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the amazonOrders.
      * @return the amazonOrders
      */
     public AmazonOrders getAmazonOrders() {
@@ -60,6 +61,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the amazonOrders.
      * @param amazonOrders the amazonOrders to set
      */
     public void setAmazonOrders(AmazonOrders amazonOrders) {
@@ -67,6 +69,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the orderId.
      * @return the orderId
      */
     public String getOrderId() {
@@ -74,6 +77,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the orderId.
      * @param orderId the orderId to set
      */
     public void setOrderId(String orderId) {
@@ -81,6 +85,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the purchaseDate.
      * @return the purchaseDate
      */
     public String getPurchaseDate() {
@@ -88,6 +93,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the purchaseDate.
      * @param purchaseDate the purchaseDate to set
      */
     public void setPurchaseDate(String purchaseDate) {
@@ -95,6 +101,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the paymentsDate.
      * @return the paymentsDate
      */
     public String getPaymentsDate() {
@@ -102,6 +109,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the paymentsDate.
      * @param paymentsDate the paymentsDate to set
      */
     public void setPaymentsDate(String paymentsDate) {
@@ -109,6 +117,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the buyerName.
      * @return the buyerName
      */
     public String getBuyerName() {
@@ -116,6 +125,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the buyerName.
      * @param buyerName the buyerName to set
      */
     public void setBuyerName(String buyerName) {
@@ -123,6 +133,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the buyerEmail.
      * @return the buyerEmail
      */
     public String getBuyerEmail() {
@@ -130,6 +141,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the buyerEmail.
      * @param buyerEmail the buyerEmail to set
      */
     public void setBuyerEmail(String buyerEmail) {
@@ -137,6 +149,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the amazonOrderShipmentGroups.
      * @return the amazonOrderShipmentGroups
      */
     public Map<String, AmazonOrderShipmentGroup> getAmazonOrderShipmentGroups() {
@@ -148,6 +161,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the amazonOrderShipmentGroups.
      * @param amazonOrderShipmentGroups the amazonOrderShipmentGroups to set
      */
     public void setAmazonOrderShipmentGroups(Map<String, AmazonOrderShipmentGroup> amazonOrderShipmentGroups) {
@@ -155,6 +169,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the customerName.
      * @return the customerName
      */
     public String getCustomerName() {
@@ -162,6 +177,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the customerName.
      * @param customerName the customerName to set
      */
     public void setCustomerName(String customerName) {
@@ -169,6 +185,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -176,6 +193,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -183,6 +201,7 @@ public class AmazonOrder
     }
 
     /**
+     * Returns the orderName.
      * @return the orderName
      */
     public String getOrderName() {
@@ -190,6 +209,7 @@ public class AmazonOrder
     }
 
     /**
+     * Sets the orderName.
      * @param orderName the orderName to set
      */
     public void setOrderName(String orderName) {

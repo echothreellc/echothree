@@ -43,6 +43,7 @@ public class TrackTransfer
     }
 
     /**
+     * Returns the trackName.
      * @return the trackName
      */
     public String getTrackName() {
@@ -50,6 +51,7 @@ public class TrackTransfer
     }
 
     /**
+     * Sets the trackName.
      * @param trackName the trackName to set
      */
     public void setTrackName(String trackName) {
@@ -57,6 +59,7 @@ public class TrackTransfer
     }
 
     /**
+     * Returns the valueSha1Hash.
      * @return the valueSha1Hash
      */
     public String getValueSha1Hash() {
@@ -64,6 +67,7 @@ public class TrackTransfer
     }
 
     /**
+     * Sets the valueSha1Hash.
      * @param valueSha1Hash the valueSha1Hash to set
      */
     public void setValueSha1Hash(String valueSha1Hash) {
@@ -71,6 +75,7 @@ public class TrackTransfer
     }
 
     /**
+     * Returns the value.
      * @return the value
      */
     public String getValue() {
@@ -78,6 +83,7 @@ public class TrackTransfer
     }
 
     /**
+     * Sets the value.
      * @param value the value to set
      */
     public void setValue(String value) {
@@ -85,6 +91,7 @@ public class TrackTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -92,6 +99,7 @@ public class TrackTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -99,6 +107,7 @@ public class TrackTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -106,6 +115,7 @@ public class TrackTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -113,6 +123,7 @@ public class TrackTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -120,6 +131,7 @@ public class TrackTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -127,6 +139,7 @@ public class TrackTransfer
     }
 
     /**
+     * Returns the trackStatus.
      * @return the trackStatus
      */
     public WorkflowEntityStatusTransfer getTrackStatus() {
@@ -134,6 +147,7 @@ public class TrackTransfer
     }
 
     /**
+     * Sets the trackStatus.
      * @param trackStatus the trackStatus to set
      */
     public void setTrackStatus(WorkflowEntityStatusTransfer trackStatus) {

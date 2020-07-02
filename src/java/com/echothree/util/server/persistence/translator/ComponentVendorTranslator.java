@@ -28,6 +28,7 @@ public class ComponentVendorTranslator {
     }
 
     /**
+     * Returns the nameTranslators.
      * @return the nameTranslators
      */
     public Map<String, EntityInstanceTranslator> getNameTranslators() {
@@ -35,6 +36,7 @@ public class ComponentVendorTranslator {
     }
 
     /**
+     * Sets the nameTranslators.
      * @param nameTranslators the nameTranslators to set
      */
     public void setNameTranslators(Map<String, EntityInstanceTranslator> nameTranslators) {

@@ -39,6 +39,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {
@@ -46,6 +47,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentCollectionName.
      * @param contentCollectionName the contentCollectionName to set
      */
     public void setContentCollectionName(String contentCollectionName) {
@@ -53,6 +55,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the defaultOfferUse.
      * @return the defaultOfferUse
      */
     public OfferUseTransfer getDefaultOfferUse() {
@@ -60,6 +63,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -67,6 +71,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -74,6 +79,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -81,6 +87,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentCatalogs.
      * @return the contentCatalogs
      */
     public ListWrapper<ContentCatalogTransfer> getContentCatalogs() {
@@ -88,6 +95,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentCatalogs.
      * @param contentCatalogs the contentCatalogs to set
      */
     public void setContentCatalogs(ListWrapper<ContentCatalogTransfer> contentCatalogs) {
@@ -95,6 +103,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentForums.
      * @return the contentForums
      */
     public ListWrapper<ContentForumTransfer> getContentForums() {
@@ -102,6 +111,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentForums.
      * @param contentForums the contentForums to set
      */
     public void setContentForums(ListWrapper<ContentForumTransfer> contentForums) {
@@ -109,6 +119,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Returns the contentSections.
      * @return the contentSections
      */
     public ListWrapper<ContentSectionTransfer> getContentSections() {
@@ -116,6 +127,7 @@ public class ContentCollectionTransfer
     }
 
     /**
+     * Sets the contentSections.
      * @param contentSections the contentSections to set
      */
     public void setContentSections(ListWrapper<ContentSectionTransfer> contentSections) {

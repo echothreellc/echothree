@@ -28,7 +28,7 @@ public abstract class BaseCarrierTransferCache<K extends BaseEntity, V extends B
     CarrierControl carrierControl;
     
     /** Creates a new instance of BaseCarrierTransferCache */
-    public BaseCarrierTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
+    protected BaseCarrierTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
         super(userVisit);
         
         this.carrierControl = carrierControl;

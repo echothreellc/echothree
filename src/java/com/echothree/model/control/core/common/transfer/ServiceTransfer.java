@@ -39,6 +39,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the serviceName.
      * @return the serviceName
      */
     public String getServiceName() {
@@ -46,6 +47,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the serviceName.
      * @param serviceName the serviceName to set
      */
     public void setServiceName(String serviceName) {
@@ -53,6 +55,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the port.
      * @return the port
      */
     public Integer getPort() {
@@ -60,6 +63,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the port.
      * @param port the port to set
      */
     public void setPort(Integer port) {
@@ -67,6 +71,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the protocol.
      * @return the protocol
      */
     public ProtocolTransfer getProtocol() {
@@ -74,6 +79,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the protocol.
      * @param protocol the protocol to set
      */
     public void setProtocol(ProtocolTransfer protocol) {
@@ -81,6 +87,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -88,6 +95,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -95,6 +103,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -102,6 +111,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -109,6 +119,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -116,6 +127,7 @@ public class ServiceTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

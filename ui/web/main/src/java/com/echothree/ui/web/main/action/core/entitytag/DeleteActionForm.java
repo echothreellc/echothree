@@ -29,6 +29,7 @@ public class DeleteActionForm
     private String tagName;
 
     /**
+     * Returns the tagScopeName.
      * @return the tagScopeName
      */
     public String getTagScopeName() {
@@ -36,6 +37,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the tagScopeName.
      * @param tagScopeName the tagScopeName to set
      */
     public void setTagScopeName(String tagScopeName) {
@@ -43,6 +45,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the entityRef.
      * @return the entityRef
      */
     public String getEntityRef() {
@@ -50,6 +53,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the entityRef.
      * @param entityRef the entityRef to set
      */
     public void setEntityRef(String entityRef) {
@@ -57,6 +61,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the returnUrl.
      * @return the returnUrl
      */
     public String getReturnUrl() {
@@ -64,6 +69,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the returnUrl.
      * @param returnUrl the returnUrl to set
      */
     public void setReturnUrl(String returnUrl) {
@@ -71,6 +77,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the tagName.
      * @return the tagName
      */
     public String getTagName() {
@@ -78,6 +85,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the tagName.
      * @param tagName the tagName to set
      */
     public void setTagName(String tagName) {

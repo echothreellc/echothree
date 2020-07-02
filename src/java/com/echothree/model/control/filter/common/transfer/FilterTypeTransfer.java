@@ -37,6 +37,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the filterKind.
      * @return the filterKind
      */
     public FilterKindTransfer getFilterKind() {
@@ -44,6 +45,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Sets the filterKind.
      * @param filterKind the filterKind to set
      */
     public void setFilterKind(FilterKindTransfer filterKind) {
@@ -51,6 +53,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the filterTypeName.
      * @return the filterTypeName
      */
     public String getFilterTypeName() {
@@ -58,6 +61,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Sets the filterTypeName.
      * @param filterTypeName the filterTypeName to set
      */
     public void setFilterTypeName(String filterTypeName) {
@@ -65,6 +69,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -72,6 +77,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -79,6 +85,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -86,6 +93,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -93,6 +101,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -100,6 +109,7 @@ public class FilterTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

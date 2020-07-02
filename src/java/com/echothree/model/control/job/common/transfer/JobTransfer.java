@@ -48,6 +48,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the jobName.
      * @return the jobName
      */
     public String getJobName() {
@@ -55,6 +56,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the jobName.
      * @param jobName the jobName to set
      */
     public void setJobName(String jobName) {
@@ -62,6 +64,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the runAsParty.
      * @return the runAsParty
      */
     public PartyTransfer getRunAsParty() {
@@ -69,6 +72,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the runAsParty.
      * @param runAsParty the runAsParty to set
      */
     public void setRunAsParty(PartyTransfer runAsParty) {
@@ -76,6 +80,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -83,6 +88,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -90,6 +96,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -97,6 +104,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -104,6 +112,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the jobStatus.
      * @return the jobStatus
      */
     public WorkflowEntityStatusTransfer getJobStatus() {
@@ -111,6 +120,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the jobStatus.
      * @param jobStatus the jobStatus to set
      */
     public void setJobStatus(WorkflowEntityStatusTransfer jobStatus) {
@@ -118,6 +128,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the unformattedLastStartTime.
      * @return the unformattedLastStartTime
      */
     public Long getUnformattedLastStartTime() {
@@ -125,6 +136,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the unformattedLastStartTime.
      * @param unformattedLastStartTime the unformattedLastStartTime to set
      */
     public void setUnformattedLastStartTime(Long unformattedLastStartTime) {
@@ -132,6 +144,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the lastStartTime.
      * @return the lastStartTime
      */
     public String getLastStartTime() {
@@ -139,6 +152,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the lastStartTime.
      * @param lastStartTime the lastStartTime to set
      */
     public void setLastStartTime(String lastStartTime) {
@@ -146,6 +160,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the unformattedLastEndTime.
      * @return the unformattedLastEndTime
      */
     public Long getUnformattedLastEndTime() {
@@ -153,6 +168,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the unformattedLastEndTime.
      * @param unformattedLastEndTime the unformattedLastEndTime to set
      */
     public void setUnformattedLastEndTime(Long unformattedLastEndTime) {
@@ -160,6 +176,7 @@ public class JobTransfer
     }
 
     /**
+     * Returns the lastEndTime.
      * @return the lastEndTime
      */
     public String getLastEndTime() {
@@ -167,6 +184,7 @@ public class JobTransfer
     }
 
     /**
+     * Sets the lastEndTime.
      * @param lastEndTime the lastEndTime to set
      */
     public void setLastEndTime(String lastEndTime) {

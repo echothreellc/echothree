@@ -28,7 +28,7 @@ public abstract class BaseTermTransferCache<K extends BaseEntity, V extends Base
     TermControl termControl;
     
     /** Creates a new instance of BaseTermTransferCache */
-    public BaseTermTransferCache(UserVisit userVisit, TermControl termControl) {
+    protected BaseTermTransferCache(UserVisit userVisit, TermControl termControl) {
         super(userVisit);
         
         this.termControl = termControl;

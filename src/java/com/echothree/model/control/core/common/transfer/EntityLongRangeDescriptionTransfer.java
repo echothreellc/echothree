@@ -34,6 +34,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Returns the entityLongRange.
      * @return the entityLongRange
      */
     public EntityLongRangeTransfer getEntityLongRange() {
@@ -55,6 +58,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Sets the entityLongRange.
      * @param entityLongRange the entityLongRange to set
      */
     public void setEntityLongRange(EntityLongRangeTransfer entityLongRange) {
@@ -62,6 +66,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class EntityLongRangeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

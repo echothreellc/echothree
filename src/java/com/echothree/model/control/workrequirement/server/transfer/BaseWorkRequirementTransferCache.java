@@ -28,7 +28,7 @@ public abstract class BaseWorkRequirementTransferCache<K extends BaseEntity, V e
     WorkRequirementControl workRequirementControl;
     
     /** Creates a new instance of BaseWorkRequirementTransferCache */
-    public BaseWorkRequirementTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
+    protected BaseWorkRequirementTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
         super(userVisit);
         
         this.workRequirementControl = workRequirementControl;

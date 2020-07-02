@@ -35,6 +35,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Returns the scaleUseTypeName.
      * @return the scaleUseTypeName
      */
     public String getScaleUseTypeName() {
@@ -42,6 +43,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Sets the scaleUseTypeName.
      * @param scaleUseTypeName the scaleUseTypeName to set
      */
     public void setScaleUseTypeName(String scaleUseTypeName) {
@@ -49,6 +51,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -56,6 +59,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -63,6 +67,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -70,6 +75,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -77,6 +83,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -84,6 +91,7 @@ public class ScaleUseTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

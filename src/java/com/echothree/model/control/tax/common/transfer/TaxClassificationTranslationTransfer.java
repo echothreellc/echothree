@@ -40,6 +40,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -47,6 +48,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -54,6 +56,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the taxClassification.
      * @return the taxClassification
      */
     public TaxClassificationTransfer getTaxClassification() {
@@ -61,6 +64,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Sets the taxClassification.
      * @param taxClassification the taxClassification to set
      */
     public void setTaxClassification(TaxClassificationTransfer taxClassification) {
@@ -68,6 +72,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -75,6 +80,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -82,6 +88,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the overviewMimeType.
      * @return the overviewMimeType
      */
     public MimeTypeTransfer getOverviewMimeType() {
@@ -89,6 +96,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Sets the overviewMimeType.
      * @param overviewMimeType the overviewMimeType to set
      */
     public void setOverviewMimeType(MimeTypeTransfer overviewMimeType) {
@@ -96,6 +104,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Returns the overview.
      * @return the overview
      */
     public String getOverview() {
@@ -103,6 +112,7 @@ public class TaxClassificationTranslationTransfer
     }
 
     /**
+     * Sets the overview.
      * @param overview the overview to set
      */
     public void setOverview(String overview) {

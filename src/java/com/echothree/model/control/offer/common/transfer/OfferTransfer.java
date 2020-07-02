@@ -52,6 +52,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerName.
      * @return the offerName
      */
     public String getOfferName() {
@@ -59,6 +60,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the offerName.
      * @param offerName the offerName to set
      */
     public void setOfferName(String offerName) {
@@ -66,6 +68,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the salesOrderSequence.
      * @return the salesOrderSequence
      */
     public SequenceTransfer getSalesOrderSequence() {
@@ -73,6 +76,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the salesOrderSequence.
      * @param salesOrderSequence the salesOrderSequence to set
      */
     public void setSalesOrderSequence(SequenceTransfer salesOrderSequence) {
@@ -80,6 +84,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the department.
      * @return the department
      */
     public DepartmentTransfer getDepartment() {
@@ -87,6 +92,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the department.
      * @param department the department to set
      */
     public void setDepartment(DepartmentTransfer department) {
@@ -94,6 +100,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerItemSelector.
      * @return the offerItemSelector
      */
     public SelectorTransfer getOfferItemSelector() {
@@ -101,6 +108,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the offerItemSelector.
      * @param offerItemSelector the offerItemSelector to set
      */
     public void setOfferItemSelector(SelectorTransfer offerItemSelector) {
@@ -108,6 +116,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerItemPriceFilter.
      * @return the offerItemPriceFilter
      */
     public FilterTransfer getOfferItemPriceFilter() {
@@ -115,6 +124,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the offerItemPriceFilter.
      * @param offerItemPriceFilter the offerItemPriceFilter to set
      */
     public void setOfferItemPriceFilter(FilterTransfer offerItemPriceFilter) {
@@ -122,6 +132,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -129,6 +140,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -136,6 +148,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -143,6 +156,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -150,6 +164,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -157,6 +172,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -164,6 +180,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerNameElements.
      * @return the offerNameElements
      */
     public ListWrapper<OfferNameElementTransfer> getOfferNameElements() {
@@ -171,6 +188,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the offerNameElements.
      * @param offerNameElements the offerNameElements to set
      */
     public void setOfferNameElements(ListWrapper<OfferNameElementTransfer> offerNameElements) {
@@ -178,6 +196,7 @@ public class OfferTransfer
     }
 
     /**
+     * Returns the offerCustomerTypes.
      * @return the offerCustomerTypes
      */
     public ListWrapper<OfferCustomerTypeTransfer> getOfferCustomerTypes() {
@@ -185,6 +204,7 @@ public class OfferTransfer
     }
 
     /**
+     * Sets the offerCustomerTypes.
      * @param offerCustomerTypes the offerCustomerTypes to set
      */
     public void setOfferCustomerTypes(ListWrapper<OfferCustomerTypeTransfer> offerCustomerTypes) {

@@ -27,6 +27,7 @@ public class DeleteActionForm
     private String geoCodeAliasTypeName;
 
     /**
+     * Returns the geoCodeTypeName.
      * @return the geoCodeTypeName
      */
     public String getGeoCodeTypeName() {
@@ -34,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the geoCodeTypeName.
      * @param geoCodeTypeName the geoCodeTypeName to set
      */
     public void setGeoCodeTypeName(String geoCodeTypeName) {
@@ -41,6 +43,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the geoCodeAliasTypeName.
      * @return the geoCodeAliasTypeName
      */
     public String getGeoCodeAliasTypeName() {
@@ -48,6 +51,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the geoCodeAliasTypeName.
      * @param geoCodeAliasTypeName the geoCodeAliasTypeName to set
      */
     public void setGeoCodeAliasTypeName(String geoCodeAliasTypeName) {

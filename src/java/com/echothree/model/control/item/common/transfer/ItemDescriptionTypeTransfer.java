@@ -70,6 +70,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the itemDescriptionTypeName.
      * @return the itemDescriptionTypeName
      */
     public String getItemDescriptionTypeName() {
@@ -77,6 +78,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the itemDescriptionTypeName.
      * @param itemDescriptionTypeName the itemDescriptionTypeName to set
      */
     public void setItemDescriptionTypeName(String itemDescriptionTypeName) {
@@ -84,6 +86,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the parentItemDescriptionType.
      * @return the parentItemDescriptionType
      */
     public ItemDescriptionTypeTransfer getParentItemDescriptionType() {
@@ -91,6 +94,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the parentItemDescriptionType.
      * @param parentItemDescriptionType the parentItemDescriptionType to set
      */
     public void setParentItemDescriptionType(ItemDescriptionTypeTransfer parentItemDescriptionType) {
@@ -98,6 +102,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the useParentIfMissing.
      * @return the useParentIfMissing
      */
     public Boolean getUseParentIfMissing() {
@@ -105,6 +110,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the useParentIfMissing.
      * @param useParentIfMissing the useParentIfMissing to set
      */
     public void setUseParentIfMissing(Boolean useParentIfMissing) {
@@ -112,6 +118,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the mimeTypeUsageType.
      * @return the mimeTypeUsageType
      */
     public MimeTypeUsageTypeTransfer getMimeTypeUsageType() {
@@ -119,6 +126,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the mimeTypeUsageType.
      * @param mimeTypeUsageType the mimeTypeUsageType to set
      */
     public void setMimeTypeUsageType(MimeTypeUsageTypeTransfer mimeTypeUsageType) {
@@ -126,6 +134,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the checkContentWebAddress.
      * @return the checkContentWebAddress
      */
     public Boolean getCheckContentWebAddress() {
@@ -133,6 +142,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the checkContentWebAddress.
      * @param checkContentWebAddress the checkContentWebAddress to set
      */
     public void setCheckContentWebAddress(Boolean checkContentWebAddress) {
@@ -140,6 +150,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the includeInIndex.
      * @return the includeInIndex
      */
     public Boolean getIncludeInIndex() {
@@ -147,6 +158,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the includeInIndex.
      * @param includeInIndex the includeInIndex to set
      */
     public void setIncludeInIndex(Boolean includeInIndex) {
@@ -154,6 +166,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the indexDefault.
      * @return the indexDefault
      */
     public Boolean getIndexDefault() {
@@ -161,6 +174,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the indexDefault.
      * @param indexDefault the indexDefault to set
      */
     public void setIndexDefault(Boolean indexDefault) {
@@ -168,6 +182,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -175,6 +190,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -182,6 +198,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -189,6 +206,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -196,6 +214,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -203,6 +222,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -210,6 +230,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the minimumHeight.
      * @return the minimumHeight
      */
     public Integer getMinimumHeight() {
@@ -217,6 +238,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the minimumHeight.
      * @param minimumHeight the minimumHeight to set
      */
     public void setMinimumHeight(Integer minimumHeight) {
@@ -224,6 +246,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the minimumWidth.
      * @return the minimumWidth
      */
     public Integer getMinimumWidth() {
@@ -231,6 +254,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the minimumWidth.
      * @param minimumWidth the minimumWidth to set
      */
     public void setMinimumWidth(Integer minimumWidth) {
@@ -238,6 +262,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the maximumHeight.
      * @return the maximumHeight
      */
     public Integer getMaximumHeight() {
@@ -245,6 +270,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the maximumHeight.
      * @param maximumHeight the maximumHeight to set
      */
     public void setMaximumHeight(Integer maximumHeight) {
@@ -252,6 +278,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the maximumWidth.
      * @return the maximumWidth
      */
     public Integer getMaximumWidth() {
@@ -259,6 +286,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the maximumWidth.
      * @param maximumWidth the maximumWidth to set
      */
     public void setMaximumWidth(Integer maximumWidth) {
@@ -266,6 +294,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the preferredHeight.
      * @return the preferredHeight
      */
     public Integer getPreferredHeight() {
@@ -273,6 +302,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the preferredHeight.
      * @param preferredHeight the preferredHeight to set
      */
     public void setPreferredHeight(Integer preferredHeight) {
@@ -280,6 +310,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the preferredWidth.
      * @return the preferredWidth
      */
     public Integer getPreferredWidth() {
@@ -287,6 +318,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the preferredWidth.
      * @param preferredWidth the preferredWidth to set
      */
     public void setPreferredWidth(Integer preferredWidth) {
@@ -294,6 +326,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the preferredMimeType.
      * @return the preferredMimeType
      */
     public MimeTypeTransfer getPreferredMimeType() {
@@ -301,6 +334,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the preferredMimeType.
      * @param preferredMimeType the preferredMimeType to set
      */
     public void setPreferredMimeType(MimeTypeTransfer preferredMimeType) {
@@ -308,6 +342,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the quality.
      * @return the quality
      */
     public Integer getQuality() {
@@ -315,6 +350,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the quality.
      * @param quality the quality to set
      */
     public void setQuality(Integer quality) {
@@ -322,6 +358,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Returns the scaleFromParent.
      * @return the scaleFromParent
      */
     public Boolean getScaleFromParent() {
@@ -329,6 +366,7 @@ public class ItemDescriptionTypeTransfer
     }
 
     /**
+     * Sets the scaleFromParent.
      * @param scaleFromParent the scaleFromParent to set
      */
     public void setScaleFromParent(Boolean scaleFromParent) {

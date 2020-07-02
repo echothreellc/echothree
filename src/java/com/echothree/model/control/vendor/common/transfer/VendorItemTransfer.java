@@ -51,6 +51,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -58,6 +59,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -65,6 +67,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendor.
      * @return the vendor
      */
     public VendorTransfer getVendor() {
@@ -72,6 +75,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendor.
      * @param vendor the vendor to set
      */
     public void setVendor(VendorTransfer vendor) {
@@ -79,6 +83,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendorItemName.
      * @return the vendorItemName
      */
     public String getVendorItemName() {
@@ -86,6 +91,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendorItemName.
      * @param vendorItemName the vendorItemName to set
      */
     public void setVendorItemName(String vendorItemName) {
@@ -93,6 +99,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -100,6 +107,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -107,6 +115,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the priority.
      * @return the priority
      */
     public Integer getPriority() {
@@ -114,6 +123,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the priority.
      * @param priority the priority to set
      */
     public void setPriority(Integer priority) {
@@ -121,6 +131,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -128,6 +139,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -135,6 +147,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -142,6 +155,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -149,6 +163,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendorItemStatus.
      * @return the vendorItemStatus
      */
     public WorkflowEntityStatusTransfer getVendorItemStatus() {
@@ -156,6 +171,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendorItemStatus.
      * @param vendorItemStatus the vendorItemStatus to set
      */
     public void setVendorItemStatus(WorkflowEntityStatusTransfer vendorItemStatus) {
@@ -163,6 +179,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Returns the vendorItemCosts.
      * @return the vendorItemCosts
      */
     public ListWrapper<VendorItemCostTransfer> getVendorItemCosts() {
@@ -170,6 +187,7 @@ public class VendorItemTransfer
     }
 
     /**
+     * Sets the vendorItemCosts.
      * @param vendorItemCosts the vendorItemCosts to set
      */
     public void setVendorItemCosts(ListWrapper<VendorItemCostTransfer> vendorItemCosts) {

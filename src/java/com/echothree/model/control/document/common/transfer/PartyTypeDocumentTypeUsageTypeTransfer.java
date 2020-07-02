@@ -37,6 +37,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -44,6 +45,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -51,6 +53,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the documentTypeUsageType.
      * @return the documentTypeUsageType
      */
     public DocumentTypeUsageTypeTransfer getDocumentTypeUsageType() {
@@ -58,6 +61,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the documentTypeUsageType.
      * @param documentTypeUsageType the documentTypeUsageType to set
      */
     public void setDocumentTypeUsageType(DocumentTypeUsageTypeTransfer documentTypeUsageType) {
@@ -65,6 +69,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -72,6 +77,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -79,6 +85,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -86,6 +93,7 @@ public class PartyTypeDocumentTypeUsageTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

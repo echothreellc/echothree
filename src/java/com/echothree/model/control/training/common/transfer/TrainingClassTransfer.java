@@ -171,6 +171,7 @@ public class TrainingClassTransfer
     }
 
     /**
+     * Returns the workEffortScope.
      * @return the workEffortScope
      */
     public WorkEffortScopeTransfer getWorkEffortScope() {
@@ -178,6 +179,7 @@ public class TrainingClassTransfer
     }
 
     /**
+     * Sets the workEffortScope.
      * @param workEffortScope the workEffortScope to set
      */
     public void setWorkEffortScope(WorkEffortScopeTransfer workEffortScope) {

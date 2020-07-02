@@ -106,6 +106,7 @@ public class ItemSearchEvaluator
     }
  
     /**
+     * Returns the itemNameOrAlias.
      * @return the itemNameOrAlias
      */
     public String getItemNameOrAlias() {
@@ -113,6 +114,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Sets the itemNameOrAlias.
      * @param itemNameOrAlias the itemNameOrAlias to set
      */
     public void setItemNameOrAlias(String itemNameOrAlias) {
@@ -120,6 +122,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Returns the itemType.
      * @return the itemType
      */
     public ItemType getItemType() {
@@ -127,6 +130,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Sets the itemType.
      * @param itemType the itemType to set
      */
     public void setItemType(ItemType itemType) {
@@ -134,6 +138,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Returns the itemUseType.
      * @return the itemUseType
      */
     public ItemUseType getItemUseType() {
@@ -141,6 +146,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Sets the itemUseType.
      * @param itemUseType the itemUseType to set
      */
     public void setItemUseType(ItemUseType itemUseType) {
@@ -148,6 +154,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Returns the itemStatusWorkflowStep.
      * @return the itemStatusWorkflowStep
      */
     public WorkflowStep getItemStatusWorkflowStep() {
@@ -155,6 +162,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Sets the itemStatusWorkflowStep.
      * @param itemStatusWorkflowStep the itemStatusWorkflowStep to set
      */
     public void setItemStatusWorkflowStep(WorkflowStep itemStatusWorkflowStep) {
@@ -162,6 +170,7 @@ public class ItemSearchEvaluator
     }
 
     /**
+     * Sets the itemStatusWorkflowSteps.
      * @param itemStatusWorkflowSteps the itemStatusWorkflowSteps to set
      */
     public void setItemStatusWorkflowSteps(List<WorkflowStep> itemStatusWorkflowSteps) {

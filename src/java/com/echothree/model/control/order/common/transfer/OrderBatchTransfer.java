@@ -38,6 +38,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -45,6 +46,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -52,6 +54,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Long getCount() {
@@ -59,6 +62,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Long count) {
@@ -66,6 +70,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Returns the amount.
      * @return the amount
      */
     public String getAmount() {
@@ -73,6 +78,7 @@ public class OrderBatchTransfer
     }
 
     /**
+     * Sets the amount.
      * @param amount the amount to set
      */
     public void setAmount(String amount) {

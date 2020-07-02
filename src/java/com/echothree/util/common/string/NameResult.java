@@ -34,6 +34,7 @@ public class NameResult {
     }
 
     /**
+     * Returns the personalTitleChoice.
      * @return the personalTitleChoice
      */
     public String getPersonalTitleChoice() {
@@ -41,6 +42,7 @@ public class NameResult {
     }
 
     /**
+     * Returns the firstName.
      * @return the firstName
      */
     public String getFirstName() {
@@ -48,6 +50,7 @@ public class NameResult {
     }
 
     /**
+     * Returns the middleName.
      * @return the middleName
      */
     public String getMiddleName() {
@@ -55,6 +58,7 @@ public class NameResult {
     }
 
     /**
+     * Returns the lastName.
      * @return the lastName
      */
     public String getLastName() {
@@ -62,6 +66,7 @@ public class NameResult {
     }
 
     /**
+     * Returns the nameSuffixChoice.
      * @return the nameSuffixChoice
      */
     public String getNameSuffixChoice() {

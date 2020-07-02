@@ -35,6 +35,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Returns the licenseTypeName.
      * @return the licenseTypeName
      */
     public String getLicenseTypeName() {
@@ -42,6 +43,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Sets the licenseTypeName.
      * @param licenseTypeName the licenseTypeName to set
      */
     public void setLicenseTypeName(String licenseTypeName) {
@@ -49,6 +51,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -56,6 +59,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -63,6 +67,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -70,6 +75,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -77,6 +83,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -84,6 +91,7 @@ public class LicenseTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

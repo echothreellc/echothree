@@ -34,6 +34,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Returns the applicationEditorUse.
      * @return the applicationEditorUse
      */
     public ApplicationEditorUseTransfer getApplicationEditorUse() {
@@ -55,6 +58,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Sets the applicationEditorUse.
      * @param applicationEditorUse the applicationEditorUse to set
      */
     public void setApplicationEditorUse(ApplicationEditorUseTransfer applicationEditorUse) {
@@ -62,6 +66,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class ApplicationEditorUseDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

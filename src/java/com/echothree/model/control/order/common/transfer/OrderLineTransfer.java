@@ -60,6 +60,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the order.
      * @return the order
      */
     public O getOrder() {
@@ -67,6 +68,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the order.
      * @param order the order to set
      */
     public void setOrder(O order) {
@@ -74,6 +76,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the orderLineSequence.
      * @return the orderLineSequence
      */
     public Integer getOrderLineSequence() {
@@ -81,6 +84,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the orderLineSequence.
      * @param orderLineSequence the orderLineSequence to set
      */
     public void setOrderLineSequence(Integer orderLineSequence) {
@@ -88,6 +92,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -95,6 +100,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -102,6 +108,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -109,6 +116,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the inventoryCondition.
      * @param inventoryCondition the inventoryCondition to set
      */
     public void setInventoryCondition(InventoryConditionTransfer inventoryCondition) {
@@ -116,6 +124,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -123,6 +132,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -130,6 +140,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the quantity.
      * @return the quantity
      */
     public Long getQuantity() {
@@ -137,6 +148,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the quantity.
      * @param quantity the quantity to set
      */
     public void setQuantity(Long quantity) {
@@ -144,6 +156,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the unformattedUnitAmount.
      * @return the unformattedUnitAmount
      */
     public Long getUnformattedUnitAmount() {
@@ -151,6 +164,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the unformattedUnitAmount.
      * @param unformattedUnitAmount the unformattedUnitAmount to set
      */
     public void setUnformattedUnitAmount(Long unformattedUnitAmount) {
@@ -158,6 +172,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the unitAmount.
      * @return the unitAmount
      */
     public String getUnitAmount() {
@@ -165,6 +180,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the unitAmount.
      * @param unitAmount the unitAmount to set
      */
     public void setUnitAmount(String unitAmount) {
@@ -172,6 +188,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -179,6 +196,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -186,6 +204,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -193,6 +212,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -200,6 +220,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -207,6 +228,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -214,6 +236,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the taxable.
      * @return the taxable
      */
     public Boolean getTaxable() {
@@ -221,6 +244,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the taxable.
      * @param taxable the taxable to set
      */
     public void setTaxable(Boolean taxable) {
@@ -228,6 +252,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Returns the orderTimes.
      * @return the orderTimes
      */
     public MapWrapper<OrderLineTimeTransfer> getOrderTimes() {
@@ -235,6 +260,7 @@ public class OrderLineTransfer<O extends OrderTransfer>
     }
 
     /**
+     * Sets the orderTimes.
      * @param orderTimes the orderTimes to set
      */
     public void setOrderTimes(MapWrapper<OrderLineTimeTransfer> orderTimes) {

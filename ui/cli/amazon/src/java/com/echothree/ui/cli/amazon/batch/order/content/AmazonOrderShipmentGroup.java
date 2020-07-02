@@ -60,6 +60,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the order.
      * @return the order
      */
     public AmazonOrder getOrder() {
@@ -67,6 +68,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the order.
      * @param order the order to set
      */
     public void setOrder(AmazonOrder order) {
@@ -74,6 +76,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the recipientName.
      * @return the recipientName
      */
     public String getRecipientName() {
@@ -81,6 +84,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the recipientName.
      * @param recipientName the recipientName to set
      */
     public void setRecipientName(String recipientName) {
@@ -88,6 +92,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipAddress1.
      * @return the shipAddress1
      */
     public String getShipAddress1() {
@@ -95,6 +100,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipAddress1.
      * @param shipAddress1 the shipAddress1 to set
      */
     public void setShipAddress1(String shipAddress1) {
@@ -102,6 +108,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipAddress2.
      * @return the shipAddress2
      */
     public String getShipAddress2() {
@@ -109,6 +116,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipAddress2.
      * @param shipAddress2 the shipAddress2 to set
      */
     public void setShipAddress2(String shipAddress2) {
@@ -116,6 +124,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipCity.
      * @return the shipCity
      */
     public String getShipCity() {
@@ -123,6 +132,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipCity.
      * @param shipCity the shipCity to set
      */
     public void setShipCity(String shipCity) {
@@ -130,6 +140,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipState.
      * @return the shipState
      */
     public String getShipState() {
@@ -137,6 +148,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipState.
      * @param shipState the shipState to set
      */
     public void setShipState(String shipState) {
@@ -144,6 +156,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipZip.
      * @return the shipZip
      */
     public String getShipZip() {
@@ -151,6 +164,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipZip.
      * @param shipZip the shipZip to set
      */
     public void setShipZip(String shipZip) {
@@ -158,6 +172,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipCountry.
      * @return the shipCountry
      */
     public String getShipCountry() {
@@ -165,6 +180,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipCountry.
      * @param shipCountry the shipCountry to set
      */
     public void setShipCountry(String shipCountry) {
@@ -172,6 +188,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the shipMethod.
      * @return the shipMethod
      */
     public String getShipMethod() {
@@ -179,6 +196,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the shipMethod.
      * @param shipMethod the shipMethod to set
      */
     public void setShipMethod(String shipMethod) {
@@ -186,6 +204,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the amazonOrderLines.
      * @return the amazonOrderLines
      */
     public Map<String, AmazonOrderLine> getAmazonOrderLines() {
@@ -197,6 +216,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the amazonOrderLines.
      * @param amazonOrderLines the amazonOrderLines to set
      */
     public void setAmazonOrderLines(Map<String, AmazonOrderLine> amazonOrderLines) {
@@ -204,6 +224,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the recipientNameResult.
      * @return the recipientNameResult
      */
     public NameResult getRecipientNameResult() {
@@ -211,6 +232,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the recipientNameResult.
      * @param recipientNameResult the recipientNameResult to set
      */
     public void setRecipientNameResult(NameResult recipientNameResult) {
@@ -218,6 +240,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Returns the contactMechanismName.
      * @return the contactMechanismName
      */
     public String getContactMechanismName() {
@@ -225,6 +248,7 @@ public class AmazonOrderShipmentGroup
     }
 
     /**
+     * Sets the contactMechanismName.
      * @param contactMechanismName the contactMechanismName to set
      */
     public void setContactMechanismName(String contactMechanismName) {
