@@ -49,6 +49,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the indexName.
      * @return the indexName
      */
     public String getIndexName() {
@@ -56,6 +57,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the indexName.
      * @param indexName the indexName to set
      */
     public void setIndexName(String indexName) {
@@ -63,6 +65,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the indexType.
      * @return the indexType
      */
     public IndexTypeTransfer getIndexType() {
@@ -70,6 +73,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the indexType.
      * @param indexType the indexType to set
      */
     public void setIndexType(IndexTypeTransfer indexType) {
@@ -77,6 +81,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -84,6 +89,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -91,6 +97,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the directory.
      * @return the directory
      */
     public String getDirectory() {
@@ -98,6 +105,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the directory.
      * @param directory the directory to set
      */
     public void setDirectory(String directory) {
@@ -105,6 +113,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -112,6 +121,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -119,6 +129,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -126,6 +137,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -133,6 +145,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -140,6 +153,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -147,6 +161,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the unformattedCreatedTime.
      * @return the unformattedCreatedTime
      */
     public Long getUnformattedCreatedTime() {
@@ -154,6 +169,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the unformattedCreatedTime.
      * @param unformattedCreatedTime the unformattedCreatedTime to set
      */
     public void setUnformattedCreatedTime(Long unformattedCreatedTime) {
@@ -161,6 +177,7 @@ public class IndexTransfer
     }
 
     /**
+     * Returns the createdTime.
      * @return the createdTime
      */
     public String getCreatedTime() {
@@ -168,6 +185,7 @@ public class IndexTransfer
     }
 
     /**
+     * Sets the createdTime.
      * @param createdTime the createdTime to set
      */
     public void setCreatedTime(String createdTime) {

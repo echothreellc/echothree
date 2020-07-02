@@ -32,6 +32,7 @@ public class PartyContactMechanismRelationshipTransfer
     }
 
     /**
+     * Returns the fromPartyContactMechanism.
      * @return the fromPartyContactMechanism
      */
     public PartyContactMechanismTransfer getFromPartyContactMechanism() {
@@ -39,6 +40,7 @@ public class PartyContactMechanismRelationshipTransfer
     }
 
     /**
+     * Sets the fromPartyContactMechanism.
      * @param fromPartyContactMechanism the fromPartyContactMechanism to set
      */
     public void setFromPartyContactMechanism(PartyContactMechanismTransfer fromPartyContactMechanism) {
@@ -46,6 +48,7 @@ public class PartyContactMechanismRelationshipTransfer
     }
 
     /**
+     * Returns the toPartyContactMechanism.
      * @return the toPartyContactMechanism
      */
     public PartyContactMechanismTransfer getToPartyContactMechanism() {
@@ -53,6 +56,7 @@ public class PartyContactMechanismRelationshipTransfer
     }
 
     /**
+     * Sets the toPartyContactMechanism.
      * @param toPartyContactMechanism the toPartyContactMechanism to set
      */
     public void setToPartyContactMechanism(PartyContactMechanismTransfer toPartyContactMechanism) {

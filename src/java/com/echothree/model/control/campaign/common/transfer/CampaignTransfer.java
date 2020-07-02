@@ -43,6 +43,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Returns the campaignName.
      * @return the campaignName
      */
     public String getCampaignName() {
@@ -50,6 +51,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Sets the campaignName.
      * @param campaignName the campaignName to set
      */
     public void setCampaignName(String campaignName) {
@@ -57,6 +59,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Returns the valueSha1Hash.
      * @return the valueSha1Hash
      */
     public String getValueSha1Hash() {
@@ -64,6 +67,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Sets the valueSha1Hash.
      * @param valueSha1Hash the valueSha1Hash to set
      */
     public void setValueSha1Hash(String valueSha1Hash) {
@@ -71,6 +75,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Returns the value.
      * @return the value
      */
     public String getValue() {
@@ -78,6 +83,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Sets the value.
      * @param value the value to set
      */
     public void setValue(String value) {
@@ -85,6 +91,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -92,6 +99,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -99,6 +107,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -106,6 +115,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -113,6 +123,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -120,6 +131,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -127,6 +139,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Returns the campaignStatus.
      * @return the campaignStatus
      */
     public WorkflowEntityStatusTransfer getCampaignStatus() {
@@ -134,6 +147,7 @@ public class CampaignTransfer
     }
 
     /**
+     * Sets the campaignStatus.
      * @param campaignStatus the campaignStatus to set
      */
     public void setCampaignStatus(WorkflowEntityStatusTransfer campaignStatus) {

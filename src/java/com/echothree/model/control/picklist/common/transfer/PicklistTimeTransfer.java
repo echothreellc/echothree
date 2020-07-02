@@ -33,6 +33,7 @@ public class PicklistTimeTransfer
     }
 
     /**
+     * Returns the picklistTimeType.
      * @return the picklistTimeType
      */
     public PicklistTimeTypeTransfer getPicklistTimeType() {
@@ -40,6 +41,7 @@ public class PicklistTimeTransfer
     }
 
     /**
+     * Sets the picklistTimeType.
      * @param picklistTimeType the picklistTimeType to set
      */
     public void setPicklistTimeType(PicklistTimeTypeTransfer picklistTimeType) {
@@ -47,6 +49,7 @@ public class PicklistTimeTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -54,6 +57,7 @@ public class PicklistTimeTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -61,6 +65,7 @@ public class PicklistTimeTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {
@@ -68,6 +73,7 @@ public class PicklistTimeTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {

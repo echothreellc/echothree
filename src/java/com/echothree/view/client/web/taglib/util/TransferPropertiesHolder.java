@@ -31,6 +31,7 @@ public class TransferPropertiesHolder {
     }
 
     /**
+     * Returns the transferProperties.
      * @return the transferProperties
      */
     public TransferProperties getTransferProperties() {
@@ -38,6 +39,7 @@ public class TransferPropertiesHolder {
     }
 
     /**
+     * Returns the previousTransferPropertiesHolder.
      * @return the previousTransferPropertiesHolder
      */
     public TransferPropertiesHolder getPreviousTransferPropertiesHolder() {
@@ -45,6 +47,7 @@ public class TransferPropertiesHolder {
     }
 
     /**
+     * Returns the clazz.
      * @return the clazz
      */
     public Class getClazz() {
@@ -52,6 +55,7 @@ public class TransferPropertiesHolder {
     }
 
     /**
+     * Sets the clazz.
      * @param clazz the clazz to set
      */
     public void setClazz(Class clazz) {

@@ -37,6 +37,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the selectorKind.
      * @return the selectorKind
      */
     public SelectorKindTransfer getSelectorKind() {
@@ -44,6 +45,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Sets the selectorKind.
      * @param selectorKind the selectorKind to set
      */
     public void setSelectorKind(SelectorKindTransfer selectorKind) {
@@ -51,6 +53,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the selectorTypeName.
      * @return the selectorTypeName
      */
     public String getSelectorTypeName() {
@@ -58,6 +61,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Sets the selectorTypeName.
      * @param selectorTypeName the selectorTypeName to set
      */
     public void setSelectorTypeName(String selectorTypeName) {
@@ -65,6 +69,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -72,6 +77,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -79,6 +85,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -86,6 +93,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -93,6 +101,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -100,6 +109,7 @@ public class SelectorTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

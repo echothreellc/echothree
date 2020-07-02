@@ -25,10 +25,10 @@ public abstract class BasePaymentTransferCache<K extends BaseEntity, V extends B
         extends BaseTransferCache<K, V> {
     
     /** Creates a new instance of BasePaymentTransferCache */
-    public BasePaymentTransferCache(UserVisit userVisit) {
+    protected BasePaymentTransferCache(UserVisit userVisit) {
         super(userVisit);
     }
 
-    public abstract V getTransfer(K key);
+    protected abstract V getTransfer(K key);
 
 }

@@ -49,6 +49,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the periodKind.
      * @return the periodKind
      */
     public PeriodKindTransfer getPeriodKind() {
@@ -56,6 +57,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the periodKind.
      * @param periodKind the periodKind to set
      */
     public void setPeriodKind(PeriodKindTransfer periodKind) {
@@ -63,6 +65,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the periodName.
      * @return the periodName
      */
     public String getPeriodName() {
@@ -70,6 +73,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the periodName.
      * @param periodName the periodName to set
      */
     public void setPeriodName(String periodName) {
@@ -77,6 +81,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the parentPeriod.
      * @return the parentPeriod
      */
     public PeriodTransfer getParentPeriod() {
@@ -84,6 +89,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the parentPeriod.
      * @param parentPeriod the parentPeriod to set
      */
     public void setParentPeriod(PeriodTransfer parentPeriod) {
@@ -91,6 +97,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the periodType.
      * @return the periodType
      */
     public PeriodTypeTransfer getPeriodType() {
@@ -98,6 +105,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the periodType.
      * @param periodType the periodType to set
      */
     public void setPeriodType(PeriodTypeTransfer periodType) {
@@ -105,6 +113,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -112,6 +121,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -119,6 +129,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -126,6 +137,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -133,6 +145,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -140,6 +153,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -147,6 +161,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -154,6 +169,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {
@@ -161,6 +177,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -168,6 +185,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -175,6 +193,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Returns the status.
      * @return the status
      */
     public WorkflowEntityStatusTransfer getStatus() {
@@ -182,6 +201,7 @@ public class PeriodTransfer
     }
 
     /**
+     * Sets the status.
      * @param status the status to set
      */
     public void setStatus(WorkflowEntityStatusTransfer status) {

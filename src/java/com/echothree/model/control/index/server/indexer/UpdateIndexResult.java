@@ -29,6 +29,7 @@ public class UpdateIndexResult {
     }
 
     /**
+     * Returns the remainingTime.
      * @return the remainingTime
      */
     public long getRemainingTime() {
@@ -36,6 +37,7 @@ public class UpdateIndexResult {
     }
 
     /**
+     * Sets the remainingTime.
      * @param remainingTime the remainingTime to set
      */
     public void setRemainingTime(long remainingTime) {
@@ -43,6 +45,7 @@ public class UpdateIndexResult {
     }
 
     /**
+     * Returns the indexModified.
      * @return the indexModified
      */
     public boolean getIndexModified() {
@@ -50,6 +53,7 @@ public class UpdateIndexResult {
     }
 
     /**
+     * Sets the indexModified.
      * @param indexModified the indexModified to set
      */
     public void setIndexModified(boolean indexModified) {
@@ -57,6 +61,7 @@ public class UpdateIndexResult {
     }
     
     /**
+     * Returns the indexingComplete.
      * @return the indexingComplete
      */
     public boolean getIndexingComplete() {
@@ -64,6 +69,7 @@ public class UpdateIndexResult {
     }
 
     /**
+     * Sets the indexingComplete.
      * @param indexingComplete the indexingComplete to set
      */
     public void setIndexingComplete(boolean indexingComplete) {

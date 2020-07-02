@@ -37,6 +37,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {
@@ -44,6 +45,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Sets the contentCollectionName.
      * @param contentCollectionName the contentCollectionName to set
      */
     public void setContentCollectionName(String contentCollectionName) {
@@ -51,6 +53,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCatalogName.
      * @return the contentCatalogName
      */
     public String getContentCatalogName() {
@@ -58,6 +61,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Sets the contentCatalogName.
      * @param contentCatalogName the contentCatalogName to set
      */
     public void setContentCatalogName(String contentCatalogName) {
@@ -65,6 +69,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCategoryName.
      * @return the contentCategoryName
      */
     public String getContentCategoryName() {
@@ -72,6 +77,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Sets the contentCategoryName.
      * @param contentCategoryName the contentCategoryName to set
      */
     public void setContentCategoryName(String contentCategoryName) {
@@ -79,6 +85,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Returns the contentCategory.
      * @return the contentCategory
      */
     public ContentCategoryTransfer getContentCategory() {
@@ -86,6 +93,7 @@ public class ContentCategoryResultTransfer
     }
 
     /**
+     * Sets the contentCategory.
      * @param contentCategory the contentCategory to set
      */
     public void setContentCategory(ContentCategoryTransfer contentCategory) {

@@ -32,6 +32,7 @@ public class ForumMessageResultTransfer
     }
 
     /**
+     * Returns the forumMessageName.
      * @return the forumMessageName
      */
     public String getForumMessageName() {
@@ -39,6 +40,7 @@ public class ForumMessageResultTransfer
     }
 
     /**
+     * Sets the forumMessageName.
      * @param forumMessageName the forumMessageName to set
      */
     public void setForumMessageName(String forumMessageName) {
@@ -46,6 +48,7 @@ public class ForumMessageResultTransfer
     }
 
     /**
+     * Returns the forumMessage.
      * @return the forumMessage
      */
     public ForumMessageTransfer getForumMessage() {
@@ -53,6 +56,7 @@ public class ForumMessageResultTransfer
     }
 
     /**
+     * Sets the forumMessage.
      * @param forumMessage the forumMessage to set
      */
     public void setForumMessage(ForumMessageTransfer forumMessage) {

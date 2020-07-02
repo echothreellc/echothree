@@ -34,6 +34,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -41,6 +42,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -48,6 +50,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -56,6 +59,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -64,6 +68,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Returns the entityInstanceAttribute.
      * @return the entityInstanceAttribute
      */
     public EntityInstanceTransfer getEntityInstanceAttribute() {
@@ -71,6 +76,7 @@ public class EntityEntityAttributeTransfer
     }
 
     /**
+     * Sets the entityInstanceAttribute.
      * @param entityInstanceAttribute the entityInstanceAttribute to set
      */
     public void setEntityInstanceAttribute(EntityInstanceTransfer entityInstanceAttribute) {

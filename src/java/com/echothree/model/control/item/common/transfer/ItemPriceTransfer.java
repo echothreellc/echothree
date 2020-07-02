@@ -56,6 +56,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -63,6 +64,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -70,6 +72,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the inventoryCondition.
      * @return the inventoryCondition
      */
     public InventoryConditionTransfer getInventoryCondition() {
@@ -77,6 +80,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the inventoryCondition.
      * @param inventoryCondition the inventoryCondition to set
      */
     public void setInventoryCondition(InventoryConditionTransfer inventoryCondition) {
@@ -84,6 +88,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -91,6 +96,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -98,6 +104,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the currency.
      * @return the currency
      */
     public CurrencyTransfer getCurrency() {
@@ -105,6 +112,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the currency.
      * @param currency the currency to set
      */
     public void setCurrency(CurrencyTransfer currency) {
@@ -112,6 +120,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedUnitPrice.
      * @return the unformattedUnitPrice
      */
     public Long getUnformattedUnitPrice() {
@@ -119,6 +128,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedUnitPrice.
      * @param unformattedUnitPrice the unformattedUnitPrice to set
      */
     public void setUnformattedUnitPrice(Long unformattedUnitPrice) {
@@ -126,6 +136,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unitPrice.
      * @return the unitPrice
      */
     public String getUnitPrice() {
@@ -133,6 +144,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the unitPrice.
      * @param unitPrice the unitPrice to set
      */
     public void setUnitPrice(String unitPrice) {
@@ -140,6 +152,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedMinimumUnitPrice.
      * @return the unformattedMinimumUnitPrice
      */
     public Long getUnformattedMinimumUnitPrice() {
@@ -147,6 +160,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedMinimumUnitPrice.
      * @param unformattedMinimumUnitPrice the unformattedMinimumUnitPrice to set
      */
     public void setUnformattedMinimumUnitPrice(Long unformattedMinimumUnitPrice) {
@@ -154,6 +168,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the minimumUnitPrice.
      * @return the minimumUnitPrice
      */
     public String getMinimumUnitPrice() {
@@ -161,6 +176,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the minimumUnitPrice.
      * @param minimumUnitPrice the minimumUnitPrice to set
      */
     public void setMinimumUnitPrice(String minimumUnitPrice) {
@@ -168,6 +184,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedMaximumUnitPrice.
      * @return the unformattedMaximumUnitPrice
      */
     public Long getUnformattedMaximumUnitPrice() {
@@ -175,6 +192,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedMaximumUnitPrice.
      * @param unformattedMaximumUnitPrice the unformattedMaximumUnitPrice to set
      */
     public void setUnformattedMaximumUnitPrice(Long unformattedMaximumUnitPrice) {
@@ -182,6 +200,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the maximumUnitPrice.
      * @return the maximumUnitPrice
      */
     public String getMaximumUnitPrice() {
@@ -189,6 +208,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the maximumUnitPrice.
      * @param maximumUnitPrice the maximumUnitPrice to set
      */
     public void setMaximumUnitPrice(String maximumUnitPrice) {
@@ -196,6 +216,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unformattedUnitPriceIncrement.
      * @return the unformattedUnitPriceIncrement
      */
     public Long getUnformattedUnitPriceIncrement() {
@@ -203,6 +224,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the unformattedUnitPriceIncrement.
      * @param unformattedUnitPriceIncrement the unformattedUnitPriceIncrement to set
      */
     public void setUnformattedUnitPriceIncrement(Long unformattedUnitPriceIncrement) {
@@ -210,6 +232,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Returns the unitPriceIncrement.
      * @return the unitPriceIncrement
      */
     public String getUnitPriceIncrement() {
@@ -217,6 +240,7 @@ public class ItemPriceTransfer
     }
 
     /**
+     * Sets the unitPriceIncrement.
      * @param unitPriceIncrement the unitPriceIncrement to set
      */
     public void setUnitPriceIncrement(String unitPriceIncrement) {

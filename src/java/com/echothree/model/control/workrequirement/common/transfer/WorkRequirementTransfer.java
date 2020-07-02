@@ -51,6 +51,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workRequirementName.
      * @return the workRequirementName
      */
     public String getWorkRequirementName() {
@@ -58,6 +59,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the workRequirementName.
      * @param workRequirementName the workRequirementName to set
      */
     public void setWorkRequirementName(String workRequirementName) {
@@ -65,6 +67,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workEffort.
      * @return the workEffort
      */
     public WorkEffortTransfer getWorkEffort() {
@@ -72,6 +75,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the workEffort.
      * @param workEffort the workEffort to set
      */
     public void setWorkEffort(WorkEffortTransfer workEffort) {
@@ -79,6 +83,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workRequirementScope.
      * @return the workRequirementScope
      */
     public WorkRequirementScopeTransfer getWorkRequirementScope() {
@@ -86,6 +91,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the workRequirementScope.
      * @param workRequirementScope the workRequirementScope to set
      */
     public void setWorkRequirementScope(WorkRequirementScopeTransfer workRequirementScope) {
@@ -93,6 +99,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -100,6 +107,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -107,6 +115,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -114,6 +123,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -121,6 +131,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the unformattedRequiredTime.
      * @return the unformattedRequiredTime
      */
     public Long getUnformattedRequiredTime() {
@@ -128,6 +139,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the unformattedRequiredTime.
      * @param unformattedRequiredTime the unformattedRequiredTime to set
      */
     public void setUnformattedRequiredTime(Long unformattedRequiredTime) {
@@ -135,6 +147,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the requiredTime.
      * @return the requiredTime
      */
     public String getRequiredTime() {
@@ -142,6 +155,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the requiredTime.
      * @param requiredTime the requiredTime to set
      */
     public void setRequiredTime(String requiredTime) {
@@ -149,6 +163,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workRequirementStatus.
      * @return the workRequirementStatus
      */
     public WorkflowEntityStatusTransfer getWorkRequirementStatus() {
@@ -156,6 +171,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the workRequirementStatus.
      * @param workRequirementStatus the workRequirementStatus to set
      */
     public void setWorkRequirementStatus(WorkflowEntityStatusTransfer workRequirementStatus) {
@@ -163,6 +179,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workAssignments.
      * @return the workAssignments
      */
     public ListWrapper<WorkAssignmentTransfer> getWorkAssignments() {
@@ -170,6 +187,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the workAssignments.
      * @param workAssignments the workAssignments to set
      */
     public void setWorkAssignments(ListWrapper<WorkAssignmentTransfer> workAssignments) {
@@ -177,6 +195,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Returns the workTimes.
      * @return the workTimes
      */
     public ListWrapper<WorkTimeTransfer> getWorkTimes() {
@@ -184,6 +203,7 @@ public class WorkRequirementTransfer
     }
 
     /**
+     * Sets the workTimes.
      * @param workTimes the workTimes to set
      */
     public void setWorkTimes(ListWrapper<WorkTimeTransfer> workTimes) {

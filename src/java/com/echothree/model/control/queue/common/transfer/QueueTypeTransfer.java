@@ -43,6 +43,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the queueTypeName.
      * @return the queueTypeName
      */
     public String getQueueTypeName() {
@@ -50,6 +51,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the queueTypeName.
      * @param queueTypeName the queueTypeName to set
      */
     public void setQueueTypeName(String queueTypeName) {
@@ -57,6 +59,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -64,6 +67,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -71,6 +75,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -78,6 +83,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -85,6 +91,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -92,6 +99,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -99,6 +107,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the queuedEntityCount.
      * @return the queuedEntityCount
      */
     public Long getQueuedEntityCount() {
@@ -106,6 +115,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the queuedEntityCount.
      * @param queuedEntityCount the queuedEntityCount to set
      */
     public void setQueuedEntityCount(Long queuedEntityCount) {
@@ -113,6 +123,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the unformattedOldestQueuedEntityTime.
      * @return the unformattedOldestQueuedEntityTime
      */
     public Long getUnformattedOldestQueuedEntityTime() {
@@ -120,6 +131,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the unformattedOldestQueuedEntityTime.
      * @param unformattedOldestQueuedEntityTime the unformattedOldestQueuedEntityTime to set
      */
     public void setUnformattedOldestQueuedEntityTime(Long unformattedOldestQueuedEntityTime) {
@@ -127,6 +139,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the oldestQueuedEntityTime.
      * @return the oldestQueuedEntityTime
      */
     public String getOldestQueuedEntityTime() {
@@ -134,6 +147,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the oldestQueuedEntityTime.
      * @param oldestQueuedEntityTime the oldestQueuedEntityTime to set
      */
     public void setOldestQueuedEntityTime(String oldestQueuedEntityTime) {
@@ -141,6 +155,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the unformattedLatestQueuedEntityTime.
      * @return the unformattedLatestQueuedEntityTime
      */
     public Long getUnformattedLatestQueuedEntityTime() {
@@ -148,6 +163,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the unformattedLatestQueuedEntityTime.
      * @param unformattedLatestQueuedEntityTime the unformattedLatestQueuedEntityTime to set
      */
     public void setUnformattedLatestQueuedEntityTime(Long unformattedLatestQueuedEntityTime) {
@@ -155,6 +171,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the latestQueuedEntityTime.
      * @return the latestQueuedEntityTime
      */
     public String getLatestQueuedEntityTime() {
@@ -162,6 +179,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the latestQueuedEntityTime.
      * @param latestQueuedEntityTime the latestQueuedEntityTime to set
      */
     public void setLatestQueuedEntityTime(String latestQueuedEntityTime) {
@@ -169,6 +187,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Returns the queuedEntities.
      * @return the queuedEntities
      */
     public ListWrapper<QueuedEntityTransfer> getQueuedEntities() {
@@ -176,6 +195,7 @@ public class QueueTypeTransfer
     }
 
     /**
+     * Sets the queuedEntities.
      * @param queuedEntities the queuedEntities to set
      */
     public void setQueuedEntities(ListWrapper<QueuedEntityTransfer> queuedEntities) {

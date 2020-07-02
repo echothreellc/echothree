@@ -35,6 +35,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -42,6 +43,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -49,6 +51,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -56,6 +59,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -63,6 +67,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Returns the partyCancellationPolicyStatus.
      * @return the partyCancellationPolicyStatus
      */
     public WorkflowEntityStatusTransfer getPartyCancellationPolicyStatus() {
@@ -70,6 +75,7 @@ public class PartyCancellationPolicyTransfer
     }
 
     /**
+     * Sets the partyCancellationPolicyStatus.
      * @param partyCancellationPolicyStatus the partyCancellationPolicyStatus to set
      */
     public void setPartyCancellationPolicyStatus(WorkflowEntityStatusTransfer partyCancellationPolicyStatus) {

@@ -41,6 +41,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -48,6 +49,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -55,6 +57,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -62,6 +65,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -69,6 +73,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the unformattedShippingStartTime.
      * @return the unformattedShippingStartTime
      */
     public Long getUnformattedShippingStartTime() {
@@ -76,6 +81,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the unformattedShippingStartTime.
      * @param unformattedShippingStartTime the unformattedShippingStartTime to set
      */
     public void setUnformattedShippingStartTime(Long unformattedShippingStartTime) {
@@ -83,6 +89,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the shippingStartTime.
      * @return the shippingStartTime
      */
     public String getShippingStartTime() {
@@ -90,6 +97,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the shippingStartTime.
      * @param shippingStartTime the shippingStartTime to set
      */
     public void setShippingStartTime(String shippingStartTime) {
@@ -97,6 +105,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the unformattedShippingEndTime.
      * @return the unformattedShippingEndTime
      */
     public Long getUnformattedShippingEndTime() {
@@ -104,6 +113,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the unformattedShippingEndTime.
      * @param unformattedShippingEndTime the unformattedShippingEndTime to set
      */
     public void setUnformattedShippingEndTime(Long unformattedShippingEndTime) {
@@ -111,6 +121,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Returns the shippingEndTime.
      * @return the shippingEndTime
      */
     public String getShippingEndTime() {
@@ -118,6 +129,7 @@ public class ItemShippingTimeTransfer
     }
 
     /**
+     * Sets the shippingEndTime.
      * @param shippingEndTime the shippingEndTime to set
      */
     public void setShippingEndTime(String shippingEndTime) {

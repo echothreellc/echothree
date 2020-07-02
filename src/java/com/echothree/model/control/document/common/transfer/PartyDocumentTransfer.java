@@ -36,6 +36,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -43,6 +44,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -50,6 +52,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the document.
      * @return the document
      */
     public DocumentTransfer getDocument() {
@@ -57,6 +60,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Sets the document.
      * @param document the document to set
      */
     public void setDocument(DocumentTransfer document) {
@@ -64,6 +68,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -71,6 +76,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -78,6 +84,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -85,6 +92,7 @@ public class PartyDocumentTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

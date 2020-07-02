@@ -32,6 +32,7 @@ public class UserVisitSearchFacetLongTransfer
     }
 
     /**
+     * Returns the entityLongRange.
      * @return the entityLongRange
      */
     public EntityLongRangeTransfer getEntityLongRange() {
@@ -39,6 +40,7 @@ public class UserVisitSearchFacetLongTransfer
     }
 
     /**
+     * Sets the entityLongRange.
      * @param entityLongRange the entityLongRange to set
      */
     public void setEntityLongRange(EntityLongRangeTransfer entityLongRange) {
@@ -46,6 +48,7 @@ public class UserVisitSearchFacetLongTransfer
     }
 
     /**
+     * Returns the count.
      * @return the count
      */
     public Integer getCount() {
@@ -53,6 +56,7 @@ public class UserVisitSearchFacetLongTransfer
     }
 
     /**
+     * Sets the count.
      * @param count the count to set
      */
     public void setCount(Integer count) {

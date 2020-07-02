@@ -34,6 +34,7 @@ public class PartyTypeContactListTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -41,6 +42,7 @@ public class PartyTypeContactListTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -48,6 +50,7 @@ public class PartyTypeContactListTransfer
     }
 
     /**
+     * Returns the contactList.
      * @return the contactList
      */
     public ContactListTransfer getContactList() {
@@ -55,6 +58,7 @@ public class PartyTypeContactListTransfer
     }
 
     /**
+     * Sets the contactList.
      * @param contactList the contactList to set
      */
     public void setContactList(ContactListTransfer contactList) {
@@ -62,6 +66,7 @@ public class PartyTypeContactListTransfer
     }
 
     /**
+     * Returns the addWhenCreated.
      * @return the addWhenCreated
      */
     public Boolean getAddWhenCreated() {
@@ -69,6 +74,7 @@ public class PartyTypeContactListTransfer
     }
 
     /**
+     * Sets the addWhenCreated.
      * @param addWhenCreated the addWhenCreated to set
      */
     public void setAddWhenCreated(Boolean addWhenCreated) {

@@ -44,6 +44,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the application.
      * @return the application
      */
     public ApplicationTransfer getApplication() {
@@ -51,6 +52,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the application.
      * @param application the application to set
      */
     public void setApplication(ApplicationTransfer application) {
@@ -58,6 +60,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the applicationEditorUseName.
      * @return the applicationEditorUseName
      */
     public String getApplicationEditorUseName() {
@@ -65,6 +68,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the applicationEditorUseName.
      * @param applicationEditorUseName the applicationEditorUseName to set
      */
     public void setApplicationEditorUseName(String applicationEditorUseName) {
@@ -72,6 +76,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the defaultApplicationEditor.
      * @return the defaultApplicationEditor
      */
     public ApplicationEditorTransfer getDefaultApplicationEditor() {
@@ -79,6 +84,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the defaultApplicationEditor.
      * @param defaultApplicationEditor the defaultApplicationEditor to set
      */
     public void setDefaultApplicationEditor(ApplicationEditorTransfer defaultApplicationEditor) {
@@ -86,6 +92,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the defaultHeight.
      * @return the defaultHeight
      */
     public Integer getDefaultHeight() {
@@ -93,6 +100,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the defaultHeight.
      * @param defaultHeight the defaultHeight to set
      */
     public void setDefaultHeight(Integer defaultHeight) {
@@ -100,6 +108,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the defaultWidth.
      * @return the defaultWidth
      */
     public Integer getDefaultWidth() {
@@ -107,6 +116,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the defaultWidth.
      * @param defaultWidth the defaultWidth to set
      */
     public void setDefaultWidth(Integer defaultWidth) {
@@ -114,6 +124,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -121,6 +132,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -128,6 +140,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -135,6 +148,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -142,6 +156,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -149,6 +164,7 @@ public class ApplicationEditorUseTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

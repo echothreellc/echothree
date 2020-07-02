@@ -34,6 +34,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Returns the contentCollection.
      * @return the contentCollection
      */
     public ContentCollectionTransfer getContentCollection() {
@@ -41,6 +42,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Sets the contentCollection.
      * @param contentCollection the contentCollection to set
      */
     public void setContentCollection(ContentCollectionTransfer contentCollection) {
@@ -48,6 +50,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Returns the forum.
      * @return the forum
      */
     public ForumTransfer getForum() {
@@ -55,6 +58,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Sets the forum.
      * @param forum the forum to set
      */
     public void setForum(ForumTransfer forum) {
@@ -62,6 +66,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -69,6 +74,7 @@ public class ContentForumTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {

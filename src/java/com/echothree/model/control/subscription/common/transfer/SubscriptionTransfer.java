@@ -43,6 +43,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the subscriptionName.
      * @return the subscriptionName
      */
     public String getSubscriptionName() {
@@ -50,6 +51,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the subscriptionName.
      * @param subscriptionName the subscriptionName to set
      */
     public void setSubscriptionName(String subscriptionName) {
@@ -57,6 +59,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the subscriptionType.
      * @return the subscriptionType
      */
     public SubscriptionTypeTransfer getSubscriptionType() {
@@ -64,6 +67,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the subscriptionType.
      * @param subscriptionType the subscriptionType to set
      */
     public void setSubscriptionType(SubscriptionTypeTransfer subscriptionType) {
@@ -71,6 +75,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -78,6 +83,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -85,6 +91,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the unformattedStartTime.
      * @return the unformattedStartTime
      */
     public Long getUnformattedStartTime() {
@@ -92,6 +99,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the unformattedStartTime.
      * @param unformattedStartTime the unformattedStartTime to set
      */
     public void setUnformattedStartTime(Long unformattedStartTime) {
@@ -99,6 +107,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the startTime.
      * @return the startTime
      */
     public String getStartTime() {
@@ -106,6 +115,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the startTime.
      * @param startTime the startTime to set
      */
     public void setStartTime(String startTime) {
@@ -113,6 +123,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the unformattedEndTime.
      * @return the unformattedEndTime
      */
     public Long getUnformattedEndTime() {
@@ -120,6 +131,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the unformattedEndTime.
      * @param unformattedEndTime the unformattedEndTime to set
      */
     public void setUnformattedEndTime(Long unformattedEndTime) {
@@ -127,6 +139,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Returns the endTime.
      * @return the endTime
      */
     public String getEndTime() {
@@ -134,6 +147,7 @@ public class SubscriptionTransfer
     }
 
     /**
+     * Sets the endTime.
      * @param endTime the endTime to set
      */
     public void setEndTime(String endTime) {

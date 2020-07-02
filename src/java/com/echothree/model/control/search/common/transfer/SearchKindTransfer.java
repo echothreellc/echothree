@@ -35,6 +35,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Returns the searchKindName.
      * @return the searchKindName
      */
     public String getSearchKindName() {
@@ -42,6 +43,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Sets the searchKindName.
      * @param searchKindName the searchKindName to set
      */
     public void setSearchKindName(String searchKindName) {
@@ -49,6 +51,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -56,6 +59,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -63,6 +67,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -70,6 +75,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -77,6 +83,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -84,6 +91,7 @@ public class SearchKindTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

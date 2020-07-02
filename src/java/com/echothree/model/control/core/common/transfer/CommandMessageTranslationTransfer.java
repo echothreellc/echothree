@@ -34,6 +34,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Returns the commandMessage.
      * @return the commandMessage
      */
     public CommandMessageTransfer getCommandMessage() {
@@ -41,6 +42,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Sets the commandMessage.
      * @param commandMessage the commandMessage to set
      */
     public void setCommandMessage(CommandMessageTransfer commandMessage) {
@@ -48,6 +50,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -55,6 +58,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -62,6 +66,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Returns the translation.
      * @return the translation
      */
     public String getTranslation() {
@@ -69,6 +74,7 @@ public class CommandMessageTranslationTransfer
     }
 
     /**
+     * Sets the translation.
      * @param translation the translation to set
      */
     public void setTranslation(String translation) {

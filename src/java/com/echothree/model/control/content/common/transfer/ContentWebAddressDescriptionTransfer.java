@@ -35,6 +35,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -42,6 +43,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -49,6 +51,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Returns the contentWebAddress.
      * @return the contentWebAddress
      */
     public ContentWebAddressTransfer getContentWebAddress() {
@@ -56,6 +59,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Sets the contentWebAddress.
      * @param contentWebAddress the contentWebAddress to set
      */
     public void setContentWebAddress(ContentWebAddressTransfer contentWebAddress) {
@@ -63,6 +67,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -70,6 +75,7 @@ public class ContentWebAddressDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

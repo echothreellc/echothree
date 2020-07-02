@@ -31,6 +31,7 @@ public class ContentPageAreaTypeTransfer
     }
 
     /**
+     * Returns the contentPageAreaTypeName.
      * @return the contentPageAreaTypeName
      */
     public String getContentPageAreaTypeName() {
@@ -38,6 +39,7 @@ public class ContentPageAreaTypeTransfer
     }
 
     /**
+     * Sets the contentPageAreaTypeName.
      * @param contentPageAreaTypeName the contentPageAreaTypeName to set
      */
     public void setContentPageAreaTypeName(String contentPageAreaTypeName) {
@@ -45,6 +47,7 @@ public class ContentPageAreaTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -52,6 +55,7 @@ public class ContentPageAreaTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -47,6 +47,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -54,6 +55,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -61,6 +63,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
     
     /**
+     * Returns the harmonizedTariffScheduleCodeName.
      * @return the harmonizedTariffScheduleCodeName
      */
     public String getHarmonizedTariffScheduleCodeName() {
@@ -68,6 +71,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeName.
      * @param harmonizedTariffScheduleCodeName the harmonizedTariffScheduleCodeName to set
      */
     public void setHarmonizedTariffScheduleCodeName(String harmonizedTariffScheduleCodeName) {
@@ -75,6 +79,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the firstHarmonizedTariffScheduleCodeUnit.
      * @return the firstHarmonizedTariffScheduleCodeUnit
      */
     public HarmonizedTariffScheduleCodeUnitTransfer getFirstHarmonizedTariffScheduleCodeUnit() {
@@ -82,6 +87,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the firstHarmonizedTariffScheduleCodeUnit.
      * @param firstHarmonizedTariffScheduleCodeUnit the firstHarmonizedTariffScheduleCodeUnit to set
      */
     public void setFirstHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnitTransfer firstHarmonizedTariffScheduleCodeUnit) {
@@ -89,6 +95,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the secondHarmonizedTariffScheduleCodeUnit.
      * @return the secondHarmonizedTariffScheduleCodeUnit
      */
     public HarmonizedTariffScheduleCodeUnitTransfer getSecondHarmonizedTariffScheduleCodeUnit() {
@@ -96,6 +103,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the secondHarmonizedTariffScheduleCodeUnit.
      * @param secondHarmonizedTariffScheduleCodeUnit the secondHarmonizedTariffScheduleCodeUnit to set
      */
     public void setSecondHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnitTransfer secondHarmonizedTariffScheduleCodeUnit) {
@@ -103,6 +111,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -110,6 +119,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -117,6 +127,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -124,6 +135,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -131,6 +143,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -138,6 +151,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -145,6 +159,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Returns the harmonizedTariffScheduleCodeUses.
      * @return the harmonizedTariffScheduleCodeUses
      */
     public MapWrapper<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUses() {
@@ -152,6 +167,7 @@ public class HarmonizedTariffScheduleCodeTransfer
     }
 
     /**
+     * Sets the harmonizedTariffScheduleCodeUses.
      * @param harmonizedTariffScheduleCodeUses the harmonizedTariffScheduleCodeUses to set
      */
     public void setHarmonizedTariffScheduleCodeUses(MapWrapper<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUses) {

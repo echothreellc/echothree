@@ -60,6 +60,7 @@ public class BasePK
     }
     
     /**
+     * Returns String representation of this PK in the form of "componentVendorName.entityTypeName.entityId"..
      * @return String representation of this PK in the form of "componentVendorName.entityTypeName.entityId".
      */
     public String getEntityRef() {
@@ -71,6 +72,7 @@ public class BasePK
     }
 
     /**
+     * Returns String representation of this PK in the form of "[.componentVendorName.entityTypeName.entityId]"..
      * @return String representation of this PK in the form of "[.componentVendorName.entityTypeName.entityId]".
      */
     @Override
@@ -83,6 +85,7 @@ public class BasePK
     }
     
      /**
+     * Returns the componentVendorName.
      * @return the componentVendorName
      */
    public String getComponentVendorName() {
@@ -90,6 +93,7 @@ public class BasePK
     }
     
     /**
+     * Returns the entityTypeName.
      * @return the entityTypeName
      */
     public String getEntityTypeName() {
@@ -97,6 +101,7 @@ public class BasePK
     }
     
     /**
+     * Returns the entityId.
      * @return the entityId
      */
     public Long getEntityId() {

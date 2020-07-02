@@ -32,6 +32,7 @@ public class OrderRoleTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -39,6 +40,7 @@ public class OrderRoleTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -46,6 +48,7 @@ public class OrderRoleTransfer
     }
 
     /**
+     * Returns the orderRoleType.
      * @return the orderRoleType
      */
     public OrderRoleTypeTransfer getOrderRoleType() {
@@ -53,6 +56,7 @@ public class OrderRoleTransfer
     }
 
     /**
+     * Sets the orderRoleType.
      * @param orderRoleType the orderRoleType to set
      */
     public void setOrderRoleType(OrderRoleTypeTransfer orderRoleType) {

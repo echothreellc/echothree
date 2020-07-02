@@ -44,6 +44,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the entityAttribute.
      * @return the entityAttribute
      */
     public EntityAttributeTransfer getEntityAttribute() {
@@ -51,6 +52,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the entityAttribute.
      * @param entityAttribute the entityAttribute to set
      */
     public void setEntityAttribute(EntityAttributeTransfer entityAttribute) {
@@ -58,6 +60,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the entityInstance.
      * @return the entityInstance
      */
     @Override
@@ -66,6 +69,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the entityInstance.
      * @param entityInstance the entityInstance to set
      */
     @Override
@@ -74,6 +78,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the unformattedLatitude.
      * @return the unformattedLatitude
      */
     public Integer getUnformattedLatitude() {
@@ -81,6 +86,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the unformattedLatitude.
      * @param unformattedLatitude the unformattedLatitude to set
      */
     public void setUnformattedLatitude(Integer unformattedLatitude) {
@@ -88,6 +94,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the latitude.
      * @return the latitude
      */
     public String getLatitude() {
@@ -95,6 +102,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the latitude.
      * @param latitude the latitude to set
      */
     public void setLatitude(String latitude) {
@@ -102,6 +110,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the unformattedLongitude.
      * @return the unformattedLongitude
      */
     public Integer getUnformattedLongitude() {
@@ -109,6 +118,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the unformattedLongitude.
      * @param unformattedLongitude the unformattedLongitude to set
      */
     public void setUnformattedLongitude(Integer unformattedLongitude) {
@@ -116,6 +126,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the longitude.
      * @return the longitude
      */
     public String getLongitude() {
@@ -123,6 +134,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the longitude.
      * @param longitude the longitude to set
      */
     public void setLongitude(String longitude) {
@@ -130,6 +142,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the elevation.
      * @return the elevation
      */
     public String getElevation() {
@@ -137,6 +150,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the elevation.
      * @param elevation the elevation to set
      */
     public void setElevation(String elevation) {
@@ -144,6 +158,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Returns the altitude.
      * @return the altitude
      */
     public String getAltitude() {
@@ -151,6 +166,7 @@ public class EntityGeoPointAttributeTransfer
     }
 
     /**
+     * Sets the altitude.
      * @param altitude the altitude to set
      */
     public void setAltitude(String altitude) {

@@ -32,6 +32,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Returns the leaveName.
      * @return the leaveName
      */
     public String getLeaveName() {
@@ -39,6 +40,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Sets the leaveName.
      * @param leaveName the leaveName to set
      */
     public void setLeaveName(String leaveName) {
@@ -46,6 +48,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Returns the leave.
      * @return the leave
      */
     public LeaveTransfer getLeave() {
@@ -53,6 +56,7 @@ public class LeaveResultTransfer
     }
 
     /**
+     * Sets the leave.
      * @param leave the leave to set
      */
     public void setLeave(LeaveTransfer leave) {

@@ -48,6 +48,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the userVisit.
      * @return the userVisit
      */
     public UserVisitTransfer getUserVisit() {
@@ -55,6 +56,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the userVisit.
      * @param userVisit the userVisit to set
      */
     public void setUserVisit(UserVisitTransfer userVisit) {
@@ -62,6 +64,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the userVisitCampaignSequence.
      * @return the userVisitCampaignSequence
      */
     public Integer getUserVisitCampaignSequence() {
@@ -69,6 +72,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the userVisitCampaignSequence.
      * @param userVisitCampaignSequence the userVisitCampaignSequence to set
      */
     public void setUserVisitCampaignSequence(Integer userVisitCampaignSequence) {
@@ -76,6 +80,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -83,6 +88,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -90,6 +96,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {
@@ -97,6 +104,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {
@@ -104,6 +112,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaign.
      * @return the campaign
      */
     public CampaignTransfer getCampaign() {
@@ -111,6 +120,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaign.
      * @param campaign the campaign to set
      */
     public void setCampaign(CampaignTransfer campaign) {
@@ -118,6 +128,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignSource.
      * @return the campaignSource
      */
     public CampaignSourceTransfer getCampaignSource() {
@@ -125,6 +136,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignSource.
      * @param campaignSource the campaignSource to set
      */
     public void setCampaignSource(CampaignSourceTransfer campaignSource) {
@@ -132,6 +144,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignMedium.
      * @return the campaignMedium
      */
     public CampaignMediumTransfer getCampaignMedium() {
@@ -139,6 +152,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignMedium.
      * @param campaignMedium the campaignMedium to set
      */
     public void setCampaignMedium(CampaignMediumTransfer campaignMedium) {
@@ -146,6 +160,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignTerm.
      * @return the campaignTerm
      */
     public CampaignTermTransfer getCampaignTerm() {
@@ -153,6 +168,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignTerm.
      * @param campaignTerm the campaignTerm to set
      */
     public void setCampaignTerm(CampaignTermTransfer campaignTerm) {
@@ -160,6 +176,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Returns the campaignContent.
      * @return the campaignContent
      */
     public CampaignContentTransfer getCampaignContent() {
@@ -167,6 +184,7 @@ public class UserVisitCampaignTransfer
     }
 
     /**
+     * Sets the campaignContent.
      * @param campaignContent the campaignContent to set
      */
     public void setCampaignContent(CampaignContentTransfer campaignContent) {

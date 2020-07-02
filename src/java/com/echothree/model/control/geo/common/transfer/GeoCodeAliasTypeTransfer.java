@@ -42,6 +42,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Returns the geoCodeType.
      * @return the geoCodeType
      */
     public GeoCodeTypeTransfer getGeoCodeType() {
@@ -49,6 +50,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the geoCodeType.
      * @param geoCodeType the geoCodeType to set
      */
     public void setGeoCodeType(GeoCodeTypeTransfer geoCodeType) {
@@ -56,6 +58,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Returns the geoCodeAliasTypeName.
      * @return the geoCodeAliasTypeName
      */
     public String getGeoCodeAliasTypeName() {
@@ -63,6 +66,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the geoCodeAliasTypeName.
      * @param geoCodeAliasTypeName the geoCodeAliasTypeName to set
      */
     public void setGeoCodeAliasTypeName(String geoCodeAliasTypeName) {
@@ -70,6 +74,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Returns the validationPattern.
      * @return the validationPattern
      */
     public String getValidationPattern() {
@@ -77,6 +82,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the validationPattern.
      * @param validationPattern the validationPattern to set
      */
     public void setValidationPattern(String validationPattern) {
@@ -84,6 +90,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Returns the isRequired.
      * @return the isRequired
      */
     public Boolean getIsRequired() {
@@ -91,6 +98,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the isRequired.
      * @param isRequired the isRequired to set
      */
     public void setIsRequired(Boolean isRequired) {
@@ -98,6 +106,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -105,6 +114,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -112,6 +122,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -119,6 +130,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -126,6 +138,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -133,6 +146,7 @@ public class GeoCodeAliasTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -34,6 +34,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Returns the searchDefaultOperator.
      * @return the searchDefaultOperator
      */
     public SearchDefaultOperatorTransfer getSearchDefaultOperator() {
@@ -55,6 +58,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Sets the searchDefaultOperator.
      * @param searchDefaultOperator the searchDefaultOperator to set
      */
     public void setSearchDefaultOperator(SearchDefaultOperatorTransfer searchDefaultOperator) {
@@ -62,6 +66,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class SearchDefaultOperatorDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

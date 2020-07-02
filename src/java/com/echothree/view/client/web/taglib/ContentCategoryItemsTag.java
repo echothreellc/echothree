@@ -122,6 +122,7 @@ public class ContentCategoryItemsTag
     }
     
     /**
+     * Sets the contentCategoryItemOffset.
      * @param contentCategoryItemOffset the contentCategoryItemOffset to set
      */
     public void setContentCategoryItemOffset(String contentCategoryItemOffset) {
@@ -129,6 +130,7 @@ public class ContentCategoryItemsTag
     }
 
     /**
+     * Sets the contentCategoryItemCount.
      * @param contentCategoryItemCount the contentCategoryItemCount to set
      */
     public void setContentCategoryItemCount(String contentCategoryItemCount) {

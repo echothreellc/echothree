@@ -38,6 +38,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the countryGeoCode.
      * @return the countryGeoCode
      */
     public CountryTransfer getCountryGeoCode() {
@@ -45,6 +46,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the countryGeoCode.
      * @param countryGeoCode the countryGeoCode to set
      */
     public void setCountryGeoCode(CountryTransfer countryGeoCode) {
@@ -52,6 +54,7 @@ public class TaxClassificationTransfer
     }
     
     /**
+     * Returns the taxClassificationName.
      * @return the taxClassificationName
      */
     public String getTaxClassificationName() {
@@ -59,6 +62,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the taxClassificationName.
      * @param taxClassificationName the taxClassificationName to set
      */
     public void setTaxClassificationName(String taxClassificationName) {
@@ -66,6 +70,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -73,6 +78,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -80,6 +86,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -87,6 +94,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -94,6 +102,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -101,6 +110,7 @@ public class TaxClassificationTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

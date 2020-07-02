@@ -79,6 +79,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the customerTypeName.
      * @return the customerTypeName
      */
     public String getCustomerTypeName() {
@@ -86,6 +87,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the customerTypeName.
      * @param customerTypeName the customerTypeName to set
      */
     public void setCustomerTypeName(String customerTypeName) {
@@ -93,6 +95,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the customerSequence.
      * @return the customerSequence
      */
     public SequenceTransfer getCustomerSequence() {
@@ -100,6 +103,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the customerSequence.
      * @param customerSequence the customerSequence to set
      */
     public void setCustomerSequence(SequenceTransfer customerSequence) {
@@ -107,6 +111,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultOfferUse.
      * @return the defaultOfferUse
      */
     public OfferUseTransfer getDefaultOfferUse() {
@@ -114,6 +119,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -121,6 +127,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultTerm.
      * @return the defaultTerm
      */
     public TermTransfer getDefaultTerm() {
@@ -128,6 +135,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultTerm.
      * @param defaultTerm the defaultTerm to set
      */
     public void setDefaultTerm(TermTransfer defaultTerm) {
@@ -143,6 +151,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultCancellationPolicy.
      * @return the defaultCancellationPolicy
      */
     public CancellationPolicyTransfer getDefaultCancellationPolicy() {
@@ -150,6 +159,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultCancellationPolicy.
      * @param defaultCancellationPolicy the defaultCancellationPolicy to set
      */
     public void setDefaultCancellationPolicy(CancellationPolicyTransfer defaultCancellationPolicy) {
@@ -157,6 +167,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultReturnPolicy.
      * @return the defaultReturnPolicy
      */
     public ReturnPolicyTransfer getDefaultReturnPolicy() {
@@ -164,6 +175,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultReturnPolicy.
      * @param defaultReturnPolicy the defaultReturnPolicy to set
      */
     public void setDefaultReturnPolicy(ReturnPolicyTransfer defaultReturnPolicy) {
@@ -171,6 +183,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultArGlAccount.
      * @return the defaultArGlAccount
      */
     public GlAccountTransfer getDefaultArGlAccount() {
@@ -178,6 +191,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultArGlAccount.
      * @param defaultArGlAccount the defaultArGlAccount to set
      */
     public void setDefaultArGlAccount(GlAccountTransfer defaultArGlAccount) {
@@ -185,6 +199,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultHoldUntilComplete.
      * @return the defaultHoldUntilComplete
      */
     public Boolean getDefaultHoldUntilComplete() {
@@ -192,6 +207,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultHoldUntilComplete.
      * @param defaultHoldUntilComplete the defaultHoldUntilComplete to set
      */
     public void setDefaultHoldUntilComplete(Boolean defaultHoldUntilComplete) {
@@ -199,6 +215,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowBackorders.
      * @return the defaultAllowBackorders
      */
     public Boolean getDefaultAllowBackorders() {
@@ -206,6 +223,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowBackorders.
      * @param defaultAllowBackorders the defaultAllowBackorders to set
      */
     public void setDefaultAllowBackorders(Boolean defaultAllowBackorders) {
@@ -213,6 +231,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowSubstitutions.
      * @return the defaultAllowSubstitutions
      */
     public Boolean getDefaultAllowSubstitutions() {
@@ -220,6 +239,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowSubstitutions.
      * @param defaultAllowSubstitutions the defaultAllowSubstitutions to set
      */
     public void setDefaultAllowSubstitutions(Boolean defaultAllowSubstitutions) {
@@ -227,6 +247,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowCombiningShipments.
      * @return the defaultAllowCombiningShipments
      */
     public Boolean getDefaultAllowCombiningShipments() {
@@ -234,6 +255,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowCombiningShipments.
      * @param defaultAllowCombiningShipments the defaultAllowCombiningShipments to set
      */
     public void setDefaultAllowCombiningShipments(Boolean defaultAllowCombiningShipments) {
@@ -241,6 +263,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultRequireReference.
      * @return the defaultRequireReference
      */
     public Boolean getDefaultRequireReference() {
@@ -248,6 +271,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultRequireReference.
      * @param defaultRequireReference the defaultRequireReference to set
      */
     public void setDefaultRequireReference(Boolean defaultRequireReference) {
@@ -255,6 +279,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowReferenceDuplicates.
      * @return the defaultAllowReferenceDuplicates
      */
     public Boolean getDefaultAllowReferenceDuplicates() {
@@ -262,6 +287,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowReferenceDuplicates.
      * @param defaultAllowReferenceDuplicates the defaultAllowReferenceDuplicates to set
      */
     public void setDefaultAllowReferenceDuplicates(Boolean defaultAllowReferenceDuplicates) {
@@ -269,6 +295,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultReferenceValidationPattern.
      * @return the defaultReferenceValidationPattern
      */
     public String getDefaultReferenceValidationPattern() {
@@ -276,6 +303,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultReferenceValidationPattern.
      * @param defaultReferenceValidationPattern the defaultReferenceValidationPattern to set
      */
     public void setDefaultReferenceValidationPattern(String defaultReferenceValidationPattern) {
@@ -283,6 +311,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the defaultTaxable.
      * @return the defaultTaxable
      */
     public Boolean getDefaultTaxable() {
@@ -290,6 +319,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the defaultTaxable.
      * @param defaultTaxable the defaultTaxable to set
      */
     public void setDefaultTaxable(Boolean defaultTaxable) {
@@ -297,6 +327,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the allocationPriority.
      * @return the allocationPriority
      */
     public AllocationPriorityTransfer getAllocationPriority() {
@@ -304,6 +335,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the allocationPriority.
      * @param allocationPriority the allocationPriority to set
      */
     public void setAllocationPriority(AllocationPriorityTransfer allocationPriority) {
@@ -311,6 +343,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -318,6 +351,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -325,6 +359,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -332,6 +367,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -339,6 +375,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -346,6 +383,7 @@ public class CustomerTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

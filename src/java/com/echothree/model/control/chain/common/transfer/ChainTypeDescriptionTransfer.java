@@ -34,6 +34,7 @@ public class ChainTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class ChainTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class ChainTypeDescriptionTransfer
     }
 
     /**
+     * Returns the chainType.
      * @return the chainType
      */
     public ChainTypeTransfer getChainType() {
@@ -55,6 +58,7 @@ public class ChainTypeDescriptionTransfer
     }
 
     /**
+     * Sets the chainType.
      * @param chainType the chainType to set
      */
     public void setChainType(ChainTypeTransfer chainType) {
@@ -62,6 +66,7 @@ public class ChainTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class ChainTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

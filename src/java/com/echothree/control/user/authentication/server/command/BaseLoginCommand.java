@@ -62,8 +62,9 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         extends BaseSimpleCommand<F> {
     
     /** Creates a new instance of BaseLoginCommand */
-    public BaseLoginCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION, List<FieldDefinition> FORM_FIELD_DEFINITIONS) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    protected BaseLoginCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
+            List<FieldDefinition> formFieldDefinition) {
+        super(userVisitPK, form, commandSecurityDefinition, formFieldDefinition, false);
     }
     
     protected UserLoginPasswordString checkPassword(String password, Party party, String userLoginPasswordTypeName,

@@ -35,6 +35,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Returns the textDecorationName.
      * @return the textDecorationName
      */
     public String getTextDecorationName() {
@@ -42,6 +43,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Sets the textDecorationName.
      * @param textDecorationName the textDecorationName to set
      */
     public void setTextDecorationName(String textDecorationName) {
@@ -49,6 +51,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -56,6 +59,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -63,6 +67,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -70,6 +75,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -77,6 +83,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -84,6 +91,7 @@ public class TextDecorationTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

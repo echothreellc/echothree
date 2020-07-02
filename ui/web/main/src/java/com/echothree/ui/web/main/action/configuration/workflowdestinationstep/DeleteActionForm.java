@@ -30,6 +30,7 @@ public class DeleteActionForm
     private String destinationWorkflowStepName;
 
     /**
+     * Returns the workflowName.
      * @return the workflowName
      */
     public String getWorkflowName() {
@@ -37,6 +38,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowName.
      * @param workflowName the workflowName to set
      */
     public void setWorkflowName(String workflowName) {
@@ -44,6 +46,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the workflowStepName.
      * @return the workflowStepName
      */
     public String getWorkflowStepName() {
@@ -51,6 +54,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowStepName.
      * @param workflowStepName the workflowStepName to set
      */
     public void setWorkflowStepName(String workflowStepName) {
@@ -58,6 +62,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the workflowDestinationName.
      * @return the workflowDestinationName
      */
     public String getWorkflowDestinationName() {
@@ -65,6 +70,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the workflowDestinationName.
      * @param workflowDestinationName the workflowDestinationName to set
      */
     public void setWorkflowDestinationName(String workflowDestinationName) {
@@ -72,6 +78,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the destinationWorkflowName.
      * @return the destinationWorkflowName
      */
     public String getDestinationWorkflowName() {
@@ -79,6 +86,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the destinationWorkflowName.
      * @param destinationWorkflowName the destinationWorkflowName to set
      */
     public void setDestinationWorkflowName(String destinationWorkflowName) {
@@ -86,6 +94,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the destinationWorkflowStepName.
      * @return the destinationWorkflowStepName
      */
     public String getDestinationWorkflowStepName() {
@@ -93,6 +102,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the destinationWorkflowStepName.
      * @param destinationWorkflowStepName the destinationWorkflowStepName to set
      */
     public void setDestinationWorkflowStepName(String destinationWorkflowStepName) {

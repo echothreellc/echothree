@@ -29,7 +29,7 @@ public abstract class BaseChainDescriptionTransferCache<K extends BaseEntity, V 
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseChainDescriptionTransferCache */
-    public BaseChainDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
+    protected BaseChainDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
         super(userVisit, chainControl);
     }
     

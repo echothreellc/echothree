@@ -28,7 +28,7 @@ public abstract class BasePeriodTransferCache<K extends BaseEntity, V extends Ba
     PeriodControl periodControl;
     
     /** Creates a new instance of BasePeriodTransferCache */
-    public BasePeriodTransferCache(UserVisit userVisit, PeriodControl periodControl) {
+    protected BasePeriodTransferCache(UserVisit userVisit, PeriodControl periodControl) {
         super(userVisit);
         
         this.periodControl = periodControl;

@@ -37,6 +37,7 @@ public final class ContactListContactMechanismPurposeTransfer
     }
 
     /**
+     * Returns the contactList.
      * @return the contactList
      */
     public final ContactListTransfer getContactList() {
@@ -44,6 +45,7 @@ public final class ContactListContactMechanismPurposeTransfer
     }
 
     /**
+     * Returns the contactMechanismPurpose.
      * @return the contactMechanismPurpose
      */
     public final ContactMechanismPurposeTransfer getContactMechanismPurpose() {
@@ -51,6 +53,7 @@ public final class ContactListContactMechanismPurposeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public final Boolean getIsDefault() {
@@ -58,6 +61,7 @@ public final class ContactListContactMechanismPurposeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public final Integer getSortOrder() {

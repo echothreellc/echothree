@@ -28,7 +28,7 @@ public abstract class BaseDocumentTransferCache<K extends BaseEntity, V extends 
     DocumentControl documentControl;
     
     /** Creates a new instance of BaseDocumentTransferCache */
-    public BaseDocumentTransferCache(UserVisit userVisit, DocumentControl documentControl) {
+    protected BaseDocumentTransferCache(UserVisit userVisit, DocumentControl documentControl) {
         super(userVisit);
         
         this.documentControl = documentControl;

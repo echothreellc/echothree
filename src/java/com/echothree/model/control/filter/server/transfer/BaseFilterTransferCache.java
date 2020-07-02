@@ -28,7 +28,7 @@ public abstract class BaseFilterTransferCache<K extends BaseEntity, V extends Ba
     FilterControl filterControl;
     
     /** Creates a new instance of BaseFilterTransferCache */
-    public BaseFilterTransferCache(UserVisit userVisit, FilterControl filterControl) {
+    protected BaseFilterTransferCache(UserVisit userVisit, FilterControl filterControl) {
         super(userVisit);
         
         this.filterControl = filterControl;

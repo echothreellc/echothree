@@ -36,6 +36,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the commandMessageType.
      * @return the commandMessageType
      */
     public CommandMessageTypeTransfer getCommandMessageType() {
@@ -43,6 +44,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Sets the commandMessageType.
      * @param commandMessageType the commandMessageType to set
      */
     public void setCommandMessageType(CommandMessageTypeTransfer commandMessageType) {
@@ -50,6 +52,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the commandMessageKey.
      * @return the commandMessageKey
      */
     public String getCommandMessageKey() {
@@ -57,6 +60,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Sets the commandMessageKey.
      * @param commandMessageKey the commandMessageKey to set
      */
     public void setCommandMessageKey(String commandMessageKey) {
@@ -64,6 +68,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the translation.
      * @return the translation
      */
     public String getTranslation() {
@@ -71,6 +76,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Sets the translation.
      * @param translation the translation to set
      */
     public void setTranslation(String translation) {
@@ -78,6 +84,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Returns the commandMessageTranslations.
      * @return the commandMessageTranslations
      */
     public MapWrapper<CommandMessageTranslationTransfer> getCommandMessageTranslations() {
@@ -85,6 +92,7 @@ public class CommandMessageTransfer
     }
 
     /**
+     * Sets the commandMessageTranslations.
      * @param commandMessageTranslations the commandMessageTranslations to set
      */
     public void setCommandMessageTranslations(MapWrapper<CommandMessageTranslationTransfer> commandMessageTranslations) {

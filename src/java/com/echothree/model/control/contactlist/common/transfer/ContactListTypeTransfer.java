@@ -45,6 +45,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the contactListTypeName.
      * @return the contactListTypeName
      */
     public String getContactListTypeName() {
@@ -52,6 +53,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the contactListTypeName.
      * @param contactListTypeName the contactListTypeName to set
      */
     public void setContactListTypeName(String contactListTypeName) {
@@ -59,6 +61,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the confirmationRequestChain.
      * @return the confirmationRequestChain
      */
     public ChainTransfer getConfirmationRequestChain() {
@@ -66,6 +69,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the confirmationRequestChain.
      * @param confirmationRequestChain the confirmationRequestChain to set
      */
     public void setConfirmationRequestChain(ChainTransfer confirmationRequestChain) {
@@ -73,6 +77,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the subscribeChain.
      * @return the subscribeChain
      */
     public ChainTransfer getSubscribeChain() {
@@ -80,6 +85,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the subscribeChain.
      * @param subscribeChain the subscribeChain to set
      */
     public void setSubscribeChain(ChainTransfer subscribeChain) {
@@ -87,6 +93,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the unsubscribeChain.
      * @return the unsubscribeChain
      */
     public ChainTransfer getUnsubscribeChain() {
@@ -94,6 +101,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the unsubscribeChain.
      * @param unsubscribeChain the unsubscribeChain to set
      */
     public void setUnsubscribeChain(ChainTransfer unsubscribeChain) {
@@ -101,6 +109,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the usedForSolicitation.
      * @return the usedForSolicitation
      */
     public Boolean getUsedForSolicitation() {
@@ -108,6 +117,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the usedForSolicitation.
      * @param usedForSolicitation the usedForSolicitation to set
      */
     public void setUsedForSolicitation(Boolean usedForSolicitation) {
@@ -115,6 +125,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -122,6 +133,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -129,6 +141,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -136,6 +149,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -143,6 +157,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -150,6 +165,7 @@ public class ContactListTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

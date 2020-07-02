@@ -27,6 +27,7 @@ public class DeleteActionForm
     private String itemDescriptionTypeUseTypeName;
 
     /**
+     * Returns the itemDescriptionTypeName.
      * @return the itemDescriptionTypeName
      */
     public String getItemDescriptionTypeName() {
@@ -34,6 +35,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the itemDescriptionTypeName.
      * @param itemDescriptionTypeName the itemDescriptionTypeName to set
      */
     public void setItemDescriptionTypeName(String itemDescriptionTypeName) {
@@ -41,6 +43,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the itemDescriptionTypeUseTypeName.
      * @return the itemDescriptionTypeUseTypeName
      */
     public String getItemDescriptionTypeUseTypeName() {
@@ -48,6 +51,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the itemDescriptionTypeUseTypeName.
      * @param itemDescriptionTypeUseTypeName the itemDescriptionTypeUseTypeName to set
      */
     public void setItemDescriptionTypeUseTypeName(String itemDescriptionTypeUseTypeName) {

@@ -171,6 +171,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the deleteWhenUnused.
      * @return the deleteWhenUnused
      */
     public Boolean getDeleteWhenUnused() {
@@ -178,6 +179,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the deleteWhenUnused.
      * @param deleteWhenUnused the deleteWhenUnused to set
      */
     public void setDeleteWhenUnused(Boolean deleteWhenUnused) {
@@ -271,6 +273,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the name.
      * @return the name
      */
     public String getName() {
@@ -278,6 +281,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the name.
      * @param name the name to set
      */
     public void setName(String name) {
@@ -285,6 +289,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the number.
      * @return the number
      */
     public String getNumber() {
@@ -292,6 +297,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the number.
      * @param number the number to set
      */
     public void setNumber(String number) {
@@ -299,6 +305,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the securityCode.
      * @return the securityCode
      */
     public String getSecurityCode() {
@@ -306,6 +313,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the securityCode.
      * @param securityCode the securityCode to set
      */
     public void setSecurityCode(String securityCode) {
@@ -313,6 +321,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the expirationMonth.
      * @return the expirationMonth
      */
     public String getExpirationMonth() {
@@ -320,6 +329,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the expirationMonth.
      * @param expirationMonth the expirationMonth to set
      */
     public void setExpirationMonth(String expirationMonth) {
@@ -327,6 +337,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the expirationYear.
      * @return the expirationYear
      */
     public String getExpirationYear() {
@@ -334,6 +345,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the expirationYear.
      * @param expirationYear the expirationYear to set
      */
     public void setExpirationYear(String expirationYear) {
@@ -364,6 +376,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the issuerName.
      * @return the issuerName
      */
     public String getIssuerName() {
@@ -371,6 +384,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the issuerName.
      * @param issuerName the issuerName to set
      */
     public void setIssuerName(String issuerName) {

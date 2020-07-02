@@ -44,6 +44,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the forumMessage.
      * @return the forumMessage
      */
     public ForumMessageTransfer getForumMessage() {
@@ -51,6 +52,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the forumMessage.
      * @param forumMessage the forumMessage to set
      */
     public void setForumMessage(ForumMessageTransfer forumMessage) {
@@ -58,6 +60,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the forumMessageAttachmentSequence.
      * @return the forumMessageAttachmentSequence
      */
     public Integer getForumMessageAttachmentSequence() {
@@ -65,6 +68,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the forumMessageAttachmentSequence.
      * @param forumMessageAttachmentSequence the forumMessageAttachmentSequence to set
      */
     public void setForumMessageAttachmentSequence(Integer forumMessageAttachmentSequence) {
@@ -72,6 +76,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -79,6 +84,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -86,6 +92,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -93,6 +100,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -100,6 +108,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -107,6 +116,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the blob.
      * @param blob the blob to set
      */
     public void setBlob(ByteArray blob) {
@@ -114,6 +124,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -121,6 +132,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the clob.
      * @param clob the clob to set
      */
     public void setClob(String clob) {
@@ -128,6 +140,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String geteTag() {
@@ -135,6 +148,7 @@ public class ForumMessageAttachmentTransfer
     }
 
     /**
+     * Sets the eTag.
      * @param eTag the eTag to set
      */
     public void seteTag(String eTag) {

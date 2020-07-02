@@ -34,6 +34,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Returns the textTransformation.
      * @return the textTransformation
      */
     public TextTransformationTransfer getTextTransformation() {
@@ -55,6 +58,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Sets the textTransformation.
      * @param textTransformation the textTransformation to set
      */
     public void setTextTransformation(TextTransformationTransfer textTransformation) {
@@ -62,6 +66,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class TextTransformationDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

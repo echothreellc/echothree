@@ -37,6 +37,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the chainKind.
      * @return the chainKind
      */
     public ChainKindTransfer getChainKind() {
@@ -44,6 +45,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Sets the chainKind.
      * @param chainKind the chainKind to set
      */
     public void setChainKind(ChainKindTransfer chainKind) {
@@ -51,6 +53,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the chainTypeName.
      * @return the chainTypeName
      */
     public String getChainTypeName() {
@@ -58,6 +61,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Sets the chainTypeName.
      * @param chainTypeName the chainTypeName to set
      */
     public void setChainTypeName(String chainTypeName) {
@@ -65,6 +69,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -72,6 +77,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -79,6 +85,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -86,6 +93,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -93,6 +101,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -100,6 +109,7 @@ public class ChainTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

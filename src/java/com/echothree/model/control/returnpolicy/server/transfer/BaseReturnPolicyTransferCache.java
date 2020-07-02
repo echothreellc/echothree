@@ -28,7 +28,7 @@ public abstract class BaseReturnPolicyTransferCache<K extends BaseEntity, V exte
     ReturnPolicyControl returnPolicyControl;
     
     /** Creates a new instance of BaseReturnPolicyTransferCache */
-    public BaseReturnPolicyTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
+    protected BaseReturnPolicyTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
         super(userVisit);
         
         this.returnPolicyControl = returnPolicyControl;

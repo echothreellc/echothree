@@ -55,6 +55,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceType.
      * @return the invoiceType
      */
     public InvoiceTypeTransfer getInvoiceType() {
@@ -62,6 +63,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the invoiceType.
      * @param invoiceType the invoiceType to set
      */
     public void setInvoiceType(InvoiceTypeTransfer invoiceType) {
@@ -69,6 +71,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceName.
      * @return the invoiceName
      */
     public String getInvoiceName() {
@@ -76,6 +79,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the invoiceName.
      * @param invoiceName the invoiceName to set
      */
     public void setInvoiceName(String invoiceName) {
@@ -83,6 +87,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the billingAccount.
      * @return the billingAccount
      */
     public BillingAccountTransfer getBillingAccount() {
@@ -90,6 +95,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the billingAccount.
      * @param billingAccount the billingAccount to set
      */
     public void setBillingAccount(BillingAccountTransfer billingAccount) {
@@ -97,6 +103,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the glAccount.
      * @return the glAccount
      */
     public GlAccountTransfer getGlAccount() {
@@ -104,6 +111,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the glAccount.
      * @param glAccount the glAccount to set
      */
     public void setGlAccount(GlAccountTransfer glAccount) {
@@ -111,6 +119,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the term.
      * @return the term
      */
     public TermTransfer getTerm() {
@@ -118,6 +127,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the term.
      * @param term the term to set
      */
     public void setTerm(TermTransfer term) {
@@ -125,6 +135,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the reference.
      * @return the reference
      */
     public String getReference() {
@@ -132,6 +143,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the reference.
      * @param reference the reference to set
      */
     public void setReference(String reference) {
@@ -139,6 +151,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -146,6 +159,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -153,6 +167,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceStatus.
      * @return the invoiceStatus
      */
     public WorkflowEntityStatusTransfer getInvoiceStatus() {
@@ -160,6 +175,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the invoiceStatus.
      * @param invoiceStatus the invoiceStatus to set
      */
     public void setInvoiceStatus(WorkflowEntityStatusTransfer invoiceStatus) {
@@ -167,6 +183,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceTimes.
      * @return the invoiceTimes
      */
     public MapWrapper<InvoiceTimeTransfer> getInvoiceTimes() {
@@ -174,6 +191,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the invoiceTimes.
      * @param invoiceTimes the invoiceTimes to set
      */
     public void setInvoiceTimes(MapWrapper<InvoiceTimeTransfer> invoiceTimes) {
@@ -181,6 +199,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceRoles.
      * @return the invoiceRoles
      */
     public MapWrapper<InvoiceRoleTransfer> getInvoiceRoles() {
@@ -188,6 +207,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the invoiceRoles.
      * @param invoiceRoles the invoiceRoles to set
      */
     public void setInvoiceRoles(MapWrapper<InvoiceRoleTransfer> invoiceRoles) {
@@ -195,6 +215,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceLines.
      * @return the invoiceLines
      */
     public ListWrapper<InvoiceLineTransfer> getInvoiceLines() {
@@ -202,6 +223,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the invoiceLines.
      * @param invoiceLines the invoiceLines to set
      */
     public void setInvoiceLines(ListWrapper<InvoiceLineTransfer> invoiceLines) {
@@ -209,6 +231,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Returns the invoiceAliases.
      * @return the invoiceAliases
      */
     public ListWrapper<InvoiceAliasTransfer> getInvoiceAliases() {
@@ -216,6 +239,7 @@ public class InvoiceTransfer
     }
 
     /**
+     * Sets the invoiceAliases.
      * @param invoiceAliases the invoiceAliases to set
      */
     public void setInvoiceAliases(ListWrapper<InvoiceAliasTransfer> invoiceAliases) {

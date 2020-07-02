@@ -37,6 +37,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the indexType.
      * @return the indexType
      */
     public IndexTypeTransfer getIndexType() {
@@ -44,6 +45,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Sets the indexType.
      * @param indexType the indexType to set
      */
     public void setIndexType(IndexTypeTransfer indexType) {
@@ -51,6 +53,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the indexFieldName.
      * @return the indexFieldName
      */
     public String getIndexFieldName() {
@@ -58,6 +61,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Sets the indexFieldName.
      * @param indexFieldName the indexFieldName to set
      */
     public void setIndexFieldName(String indexFieldName) {
@@ -65,6 +69,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -72,6 +77,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -79,6 +85,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -86,6 +93,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -93,6 +101,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -100,6 +109,7 @@ public class IndexFieldTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

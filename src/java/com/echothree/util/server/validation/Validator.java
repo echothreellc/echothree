@@ -174,6 +174,7 @@ public class Validator {
     }
 
     /**
+     * Returns An ArrayList if there are errors found, otherwise null.
      * @return An ArrayList if there are errors found, otherwise null
      */
     public Messages validateField(BaseForm form, FieldDefinition fieldDefinition) {

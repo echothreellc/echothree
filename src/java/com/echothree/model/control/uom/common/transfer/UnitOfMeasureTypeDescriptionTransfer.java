@@ -39,6 +39,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
     
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -46,6 +47,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -53,6 +55,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the unitOfMeasureType.
      * @return the unitOfMeasureType
      */
     public UnitOfMeasureTypeTransfer getUnitOfMeasureType() {
@@ -60,6 +63,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the unitOfMeasureType.
      * @param unitOfMeasureType the unitOfMeasureType to set
      */
     public void setUnitOfMeasureType(UnitOfMeasureTypeTransfer unitOfMeasureType) {
@@ -67,6 +71,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the singularDescription.
      * @return the singularDescription
      */
     public String getSingularDescription() {
@@ -74,6 +79,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the singularDescription.
      * @param singularDescription the singularDescription to set
      */
     public void setSingularDescription(String singularDescription) {
@@ -81,6 +87,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the pluralDescription.
      * @return the pluralDescription
      */
     public String getPluralDescription() {
@@ -88,6 +95,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the pluralDescription.
      * @param pluralDescription the pluralDescription to set
      */
     public void setPluralDescription(String pluralDescription) {
@@ -95,6 +103,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Returns the symbol.
      * @return the symbol
      */
     public String getSymbol() {
@@ -102,6 +111,7 @@ public class UnitOfMeasureTypeDescriptionTransfer
     }
 
     /**
+     * Sets the symbol.
      * @param symbol the symbol to set
      */
     public void setSymbol(String symbol) {

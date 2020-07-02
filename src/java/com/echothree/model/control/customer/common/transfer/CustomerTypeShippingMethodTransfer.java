@@ -39,6 +39,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -46,6 +47,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -53,6 +55,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the shippingMethod.
      * @return the shippingMethod
      */
     public ShippingMethodTransfer getShippingMethod() {
@@ -60,6 +63,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Sets the shippingMethod.
      * @param shippingMethod the shippingMethod to set
      */
     public void setShippingMethod(ShippingMethodTransfer shippingMethod) {
@@ -67,6 +71,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the defaultSelectionPriority.
      * @return the defaultSelectionPriority
      */
     public Integer getDefaultSelectionPriority() {
@@ -74,6 +79,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Sets the defaultSelectionPriority.
      * @param defaultSelectionPriority the defaultSelectionPriority to set
      */
     public void setDefaultSelectionPriority(Integer defaultSelectionPriority) {
@@ -81,6 +87,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -88,6 +95,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -95,6 +103,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -102,6 +111,7 @@ public class CustomerTypeShippingMethodTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

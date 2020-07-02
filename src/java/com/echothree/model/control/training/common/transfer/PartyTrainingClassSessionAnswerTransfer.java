@@ -43,6 +43,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionQuestion.
      * @return the partyTrainingClassSessionQuestion
      */
     public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestion() {
@@ -50,6 +51,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionQuestion.
      * @param partyTrainingClassSessionQuestion the partyTrainingClassSessionQuestion to set
      */
     public void setPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestionTransfer partyTrainingClassSessionQuestion) {
@@ -57,6 +59,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionAnswerSequence.
      * @return the partyTrainingClassSessionAnswerSequence
      */
     public Integer getPartyTrainingClassSessionAnswerSequence() {
@@ -64,6 +67,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionAnswerSequence.
      * @param partyTrainingClassSessionAnswerSequence the partyTrainingClassSessionAnswerSequence to set
      */
     public void setPartyTrainingClassSessionAnswerSequence(Integer partyTrainingClassSessionAnswerSequence) {
@@ -71,6 +75,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the trainingClassAnswer.
      * @return the trainingClassAnswer
      */
     public TrainingClassAnswerTransfer getTrainingClassAnswer() {
@@ -78,6 +83,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the trainingClassAnswer.
      * @param trainingClassAnswer the trainingClassAnswer to set
      */
     public void setTrainingClassAnswer(TrainingClassAnswerTransfer trainingClassAnswer) {
@@ -85,6 +91,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the unformattedQuestionStartTime.
      * @return the unformattedQuestionStartTime
      */
     public Long getUnformattedQuestionStartTime() {
@@ -92,6 +99,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the unformattedQuestionStartTime.
      * @param unformattedQuestionStartTime the unformattedQuestionStartTime to set
      */
     public void setUnformattedQuestionStartTime(Long unformattedQuestionStartTime) {
@@ -99,6 +107,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the questionStartTime.
      * @return the questionStartTime
      */
     public String getQuestionStartTime() {
@@ -106,6 +115,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the questionStartTime.
      * @param questionStartTime the questionStartTime to set
      */
     public void setQuestionStartTime(String questionStartTime) {
@@ -113,6 +123,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the unformattedQuestionEndTime.
      * @return the unformattedQuestionEndTime
      */
     public Long getUnformattedQuestionEndTime() {
@@ -120,6 +131,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the unformattedQuestionEndTime.
      * @param unformattedQuestionEndTime the unformattedQuestionEndTime to set
      */
     public void setUnformattedQuestionEndTime(Long unformattedQuestionEndTime) {
@@ -127,6 +139,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Returns the questionEndTime.
      * @return the questionEndTime
      */
     public String getQuestionEndTime() {
@@ -134,6 +147,7 @@ public class PartyTrainingClassSessionAnswerTransfer
     }
 
     /**
+     * Sets the questionEndTime.
      * @param questionEndTime the questionEndTime to set
      */
     public void setQuestionEndTime(String questionEndTime) {

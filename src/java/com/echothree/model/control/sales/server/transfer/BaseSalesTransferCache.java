@@ -28,7 +28,7 @@ public abstract class BaseSalesTransferCache<K extends BaseEntity, V extends Bas
     SalesControl salesControl;
     
     /** Creates a new instance of BaseSalesTransferCache */
-    public BaseSalesTransferCache(UserVisit userVisit, SalesControl salesControl) {
+    protected BaseSalesTransferCache(UserVisit userVisit, SalesControl salesControl) {
         super(userVisit);
         
         this.salesControl = salesControl;

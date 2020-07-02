@@ -28,12 +28,12 @@ public abstract class BaseTaxTransferCache<K extends BaseEntity, V extends BaseT
     TaxControl taxControl;
     
     /** Creates a new instance of BaseTaxTransferCache */
-    public BaseTaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
+    protected BaseTaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
         super(userVisit);
         
         this.taxControl = taxControl;
     }
 
-    public abstract V getTransfer(K key);
+    protected abstract V getTransfer(K key);
     
 }

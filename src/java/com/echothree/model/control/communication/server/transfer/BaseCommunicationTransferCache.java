@@ -28,7 +28,7 @@ public abstract class BaseCommunicationTransferCache<K extends BaseEntity, V ext
     CommunicationControl communicationControl;
     
     /** Creates a new instance of BaseCommunicationTransferCache */
-    public BaseCommunicationTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
+    protected BaseCommunicationTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
         super(userVisit);
         
         this.communicationControl = communicationControl;

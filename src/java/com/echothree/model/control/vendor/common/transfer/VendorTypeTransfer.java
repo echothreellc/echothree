@@ -69,6 +69,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the vendorTypeName.
      * @return the vendorTypeName
      */
     public String getVendorTypeName() {
@@ -76,6 +77,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the vendorTypeName.
      * @param vendorTypeName the vendorTypeName to set
      */
     public void setVendorTypeName(String vendorTypeName) {
@@ -99,6 +101,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultCancellationPolicy.
      * @return the defaultCancellationPolicy
      */
     public CancellationPolicyTransfer getDefaultCancellationPolicy() {
@@ -106,6 +109,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultCancellationPolicy.
      * @param defaultCancellationPolicy the defaultCancellationPolicy to set
      */
     public void setDefaultCancellationPolicy(CancellationPolicyTransfer defaultCancellationPolicy) {
@@ -113,6 +117,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultReturnPolicy.
      * @return the defaultReturnPolicy
      */
     public ReturnPolicyTransfer getDefaultReturnPolicy() {
@@ -120,6 +125,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultReturnPolicy.
      * @param defaultReturnPolicy the defaultReturnPolicy to set
      */
     public void setDefaultReturnPolicy(ReturnPolicyTransfer defaultReturnPolicy) {
@@ -127,6 +133,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultApGlAccount.
      * @return the defaultApGlAccount
      */
     public GlAccountTransfer getDefaultApGlAccount() {
@@ -134,6 +141,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultApGlAccount.
      * @param defaultApGlAccount the defaultApGlAccount to set
      */
     public void setDefaultApGlAccount(GlAccountTransfer defaultApGlAccount) {
@@ -141,6 +149,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultHoldUntilComplete.
      * @return the defaultHoldUntilComplete
      */
     public Boolean getDefaultHoldUntilComplete() {
@@ -148,6 +157,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultHoldUntilComplete.
      * @param defaultHoldUntilComplete the defaultHoldUntilComplete to set
      */
     public void setDefaultHoldUntilComplete(Boolean defaultHoldUntilComplete) {
@@ -155,6 +165,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowBackorders.
      * @return the defaultAllowBackorders
      */
     public Boolean getDefaultAllowBackorders() {
@@ -162,6 +173,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowBackorders.
      * @param defaultAllowBackorders the defaultAllowBackorders to set
      */
     public void setDefaultAllowBackorders(Boolean defaultAllowBackorders) {
@@ -169,6 +181,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowSubstitutions.
      * @return the defaultAllowSubstitutions
      */
     public Boolean getDefaultAllowSubstitutions() {
@@ -176,6 +189,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowSubstitutions.
      * @param defaultAllowSubstitutions the defaultAllowSubstitutions to set
      */
     public void setDefaultAllowSubstitutions(Boolean defaultAllowSubstitutions) {
@@ -183,6 +197,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowCombiningShipments.
      * @return the defaultAllowCombiningShipments
      */
     public Boolean getDefaultAllowCombiningShipments() {
@@ -190,6 +205,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowCombiningShipments.
      * @param defaultAllowCombiningShipments the defaultAllowCombiningShipments to set
      */
     public void setDefaultAllowCombiningShipments(Boolean defaultAllowCombiningShipments) {
@@ -197,6 +213,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultRequireReference.
      * @return the defaultRequireReference
      */
     public Boolean getDefaultRequireReference() {
@@ -204,6 +221,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultRequireReference.
      * @param defaultRequireReference the defaultRequireReference to set
      */
     public void setDefaultRequireReference(Boolean defaultRequireReference) {
@@ -211,6 +229,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultAllowReferenceDuplicates.
      * @return the defaultAllowReferenceDuplicates
      */
     public Boolean getDefaultAllowReferenceDuplicates() {
@@ -218,6 +237,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultAllowReferenceDuplicates.
      * @param defaultAllowReferenceDuplicates the defaultAllowReferenceDuplicates to set
      */
     public void setDefaultAllowReferenceDuplicates(Boolean defaultAllowReferenceDuplicates) {
@@ -225,6 +245,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the defaultReferenceValidationPattern.
      * @return the defaultReferenceValidationPattern
      */
     public String getDefaultReferenceValidationPattern() {
@@ -232,6 +253,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the defaultReferenceValidationPattern.
      * @param defaultReferenceValidationPattern the defaultReferenceValidationPattern to set
      */
     public void setDefaultReferenceValidationPattern(String defaultReferenceValidationPattern) {
@@ -239,6 +261,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -246,6 +269,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -253,6 +277,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -260,6 +285,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -267,6 +293,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -274,6 +301,7 @@ public class VendorTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

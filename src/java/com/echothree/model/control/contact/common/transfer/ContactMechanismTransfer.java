@@ -40,6 +40,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactMechanismName.
      * @return the contactMechanismName
      */
     public String getContactMechanismName() {
@@ -47,6 +48,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactMechanismName.
      * @param contactMechanismName the contactMechanismName to set
      */
     public void setContactMechanismName(String contactMechanismName) {
@@ -54,6 +56,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactMechanismType.
      * @return the contactMechanismType
      */
     public ContactMechanismTypeTransfer getContactMechanismType() {
@@ -61,6 +64,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactMechanismType.
      * @param contactMechanismType the contactMechanismType to set
      */
     public void setContactMechanismType(ContactMechanismTypeTransfer contactMechanismType) {
@@ -68,6 +72,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the allowSolicitation.
      * @return the allowSolicitation
      */
     public Boolean getAllowSolicitation() {
@@ -75,6 +80,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the allowSolicitation.
      * @param allowSolicitation the allowSolicitation to set
      */
     public void setAllowSolicitation(Boolean allowSolicitation) {
@@ -82,6 +88,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactEmailAddress.
      * @return the contactEmailAddress
      */
     public ContactEmailAddressTransfer getContactEmailAddress() {
@@ -89,6 +96,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactEmailAddress.
      * @param contactEmailAddress the contactEmailAddress to set
      */
     public void setContactEmailAddress(ContactEmailAddressTransfer contactEmailAddress) {
@@ -96,6 +104,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactPostalAddress.
      * @return the contactPostalAddress
      */
     public ContactPostalAddressTransfer getContactPostalAddress() {
@@ -103,6 +112,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactPostalAddress.
      * @param contactPostalAddress the contactPostalAddress to set
      */
     public void setContactPostalAddress(ContactPostalAddressTransfer contactPostalAddress) {
@@ -110,6 +120,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactTelephone.
      * @return the contactTelephone
      */
     public ContactTelephoneTransfer getContactTelephone() {
@@ -117,6 +128,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactTelephone.
      * @param contactTelephone the contactTelephone to set
      */
     public void setContactTelephone(ContactTelephoneTransfer contactTelephone) {
@@ -124,6 +136,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactWebAddress.
      * @return the contactWebAddress
      */
     public ContactWebAddressTransfer getContactWebAddress() {
@@ -131,6 +144,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactWebAddress.
      * @param contactWebAddress the contactWebAddress to set
      */
     public void setContactWebAddress(ContactWebAddressTransfer contactWebAddress) {
@@ -138,6 +152,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Returns the contactInet4Address.
      * @return the contactInet4Address
      */
     public ContactInet4AddressTransfer getContactInet4Address() {
@@ -145,6 +160,7 @@ public class ContactMechanismTransfer
     }
 
     /**
+     * Sets the contactInet4Address.
      * @param contactInet4Address the contactInet4Address to set
      */
     public void setContactInet4Address(ContactInet4AddressTransfer contactInet4Address) {

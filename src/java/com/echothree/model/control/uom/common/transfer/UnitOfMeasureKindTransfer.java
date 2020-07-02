@@ -37,6 +37,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKindName.
      * @return the unitOfMeasureKindName
      */
     public String getUnitOfMeasureKindName() {
@@ -44,6 +45,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Sets the unitOfMeasureKindName.
      * @param unitOfMeasureKindName the unitOfMeasureKindName to set
      */
     public void setUnitOfMeasureKindName(String unitOfMeasureKindName) {
@@ -51,6 +53,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the fractionDigits.
      * @return the fractionDigits
      */
     public Integer getFractionDigits() {
@@ -58,6 +61,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Sets the fractionDigits.
      * @param fractionDigits the fractionDigits to set
      */
     public void setFractionDigits(Integer fractionDigits) {
@@ -65,6 +69,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -72,6 +77,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -79,6 +85,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -86,6 +93,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -93,6 +101,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -100,6 +109,7 @@ public class UnitOfMeasureKindTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -28,7 +28,7 @@ public abstract class BaseMessageTransferCache<K extends BaseEntity, V extends B
     MessageControl messageControl;
     
     /** Creates a new instance of BaseMessageTransferCache */
-    public BaseMessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
+    protected BaseMessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
         super(userVisit);
         
         this.messageControl = messageControl;

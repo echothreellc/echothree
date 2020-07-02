@@ -34,6 +34,7 @@ public class AddActionForm
     private String description;
     
     /**
+     * Returns the geoCodeTypeName.
      * @return the geoCodeTypeName
      */
     public String getGeoCodeTypeName() {
@@ -41,6 +42,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the geoCodeTypeName.
      * @param geoCodeTypeName the geoCodeTypeName to set
      */
     public void setGeoCodeTypeName(String geoCodeTypeName) {
@@ -48,6 +50,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the geoCodeAliasTypeName.
      * @return the geoCodeAliasTypeName
      */
     public String getGeoCodeAliasTypeName() {
@@ -55,6 +58,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the geoCodeAliasTypeName.
      * @param geoCodeAliasTypeName the geoCodeAliasTypeName to set
      */
     public void setGeoCodeAliasTypeName(String geoCodeAliasTypeName) {
@@ -62,6 +66,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the validationPattern.
      * @return the validationPattern
      */
     public String getValidationPattern() {
@@ -69,6 +74,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the validationPattern.
      * @param validationPattern the validationPattern to set
      */
     public void setValidationPattern(String validationPattern) {
@@ -76,6 +82,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the isRequired.
      * @return the isRequired
      */
     public Boolean getIsRequired() {
@@ -83,6 +90,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the isRequired.
      * @param isRequired the isRequired to set
      */
     public void setIsRequired(Boolean isRequired) {
@@ -90,6 +98,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -97,6 +106,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -104,6 +114,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public String getSortOrder() {
@@ -111,6 +122,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(String sortOrder) {
@@ -118,6 +130,7 @@ public class AddActionForm
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -125,6 +138,7 @@ public class AddActionForm
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -34,6 +34,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Returns the indexField.
      * @return the indexField
      */
     public IndexFieldTransfer getIndexField() {
@@ -55,6 +58,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Sets the indexField.
      * @param indexField the indexField to set
      */
     public void setIndexField(IndexFieldTransfer indexField) {
@@ -62,6 +66,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class IndexFieldDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

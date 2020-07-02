@@ -42,6 +42,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the printerGroupJobName.
      * @return the printerGroupJobName
      */
     public String getPrinterGroupJobName() {
@@ -49,6 +50,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the printerGroupJobName.
      * @param printerGroupJobName the printerGroupJobName to set
      */
     public void setPrinterGroupJobName(String printerGroupJobName) {
@@ -56,6 +58,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the printerGroup.
      * @return the printerGroup
      */
     public PrinterGroupTransfer getPrinterGroup() {
@@ -63,6 +66,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the printerGroup.
      * @param printerGroup the printerGroup to set
      */
     public void setPrinterGroup(PrinterGroupTransfer printerGroup) {
@@ -70,6 +74,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the document.
      * @return the document
      */
     public DocumentTransfer getDocument() {
@@ -77,6 +82,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the document.
      * @param document the document to set
      */
     public void setDocument(DocumentTransfer document) {
@@ -84,6 +90,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the copies.
      * @return the copies
      */
     public Integer getCopies() {
@@ -91,6 +98,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the copies.
      * @param copies the copies to set
      */
     public void setCopies(Integer copies) {
@@ -98,6 +106,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the priority.
      * @return the priority
      */
     public Integer getPriority() {
@@ -105,6 +114,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the priority.
      * @param priority the priority to set
      */
     public void setPriority(Integer priority) {
@@ -112,6 +122,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Returns the printerGroupJobStatus.
      * @return the printerGroupJobStatus
      */
     public WorkflowEntityStatusTransfer getPrinterGroupJobStatus() {
@@ -119,6 +130,7 @@ public class PrinterGroupJobTransfer
     }
 
     /**
+     * Sets the printerGroupJobStatus.
      * @param printerGroupJobStatus the printerGroupJobStatus to set
      */
     public void setPrinterGroupJobStatus(WorkflowEntityStatusTransfer printerGroupJobStatus) {

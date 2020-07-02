@@ -39,6 +39,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the club.
      * @return the club
      */
     public ClubTransfer getClub() {
@@ -46,6 +47,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the club.
      * @param club the club to set
      */
     public void setClub(ClubTransfer club) {
@@ -53,6 +55,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the clubItemType.
      * @return the clubItemType
      */
     public ClubItemTypeTransfer getClubItemType() {
@@ -60,6 +63,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the clubItemType.
      * @param clubItemType the clubItemType to set
      */
     public void setClubItemType(ClubItemTypeTransfer clubItemType) {
@@ -67,6 +71,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the item.
      * @return the item
      */
     public ItemTransfer getItem() {
@@ -74,6 +79,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the item.
      * @param item the item to set
      */
     public void setItem(ItemTransfer item) {
@@ -81,6 +87,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the unformattedSubscriptionTime.
      * @return the unformattedSubscriptionTime
      */
     public Long getUnformattedSubscriptionTime() {
@@ -88,6 +95,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the unformattedSubscriptionTime.
      * @param unformattedSubscriptionTime the unformattedSubscriptionTime to set
      */
     public void setUnformattedSubscriptionTime(Long unformattedSubscriptionTime) {
@@ -95,6 +103,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Returns the subscriptionTime.
      * @return the subscriptionTime
      */
     public String getSubscriptionTime() {
@@ -102,6 +111,7 @@ public class ClubItemTransfer
     }
 
     /**
+     * Sets the subscriptionTime.
      * @param subscriptionTime the subscriptionTime to set
      */
     public void setSubscriptionTime(String subscriptionTime) {

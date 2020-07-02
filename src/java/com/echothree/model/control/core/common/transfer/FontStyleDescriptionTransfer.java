@@ -34,6 +34,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Returns the fontStyle.
      * @return the fontStyle
      */
     public FontStyleTransfer getFontStyle() {
@@ -55,6 +58,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Sets the fontStyle.
      * @param fontStyle the fontStyle to set
      */
     public void setFontStyle(FontStyleTransfer fontStyle) {
@@ -62,6 +66,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class FontStyleDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

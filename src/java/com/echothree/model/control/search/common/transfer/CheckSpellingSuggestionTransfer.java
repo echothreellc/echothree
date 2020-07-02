@@ -29,6 +29,7 @@ public class CheckSpellingSuggestionTransfer
     }
 
     /**
+     * Returns the suggestion.
      * @return the suggestion
      */
     public String getSuggestion() {
@@ -36,6 +37,7 @@ public class CheckSpellingSuggestionTransfer
     }
 
     /**
+     * Sets the suggestion.
      * @param suggestion the suggestion to set
      */
     public void setSuggestion(String suggestion) {

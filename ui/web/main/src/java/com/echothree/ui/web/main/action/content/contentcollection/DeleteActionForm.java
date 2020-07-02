@@ -26,6 +26,7 @@ public class DeleteActionForm
     private String contentCollectionName;
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {
@@ -33,6 +34,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentCollectionName.
      * @param contentCollectionName the contentCollectionName to set
      */
     public void setContentCollectionName(String contentCollectionName) {

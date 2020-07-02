@@ -61,6 +61,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the carrier.
      * @return the carrier
      */
     public CarrierTransfer getCarrier() {
@@ -68,6 +69,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the carrier.
      * @param carrier the carrier to set
      */
     public void setCarrier(CarrierTransfer carrier) {
@@ -75,6 +77,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the carrierOptionName.
      * @return the carrierOptionName
      */
     public String getCarrierOptionName() {
@@ -82,6 +85,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the carrierOptionName.
      * @param carrierOptionName the carrierOptionName to set
      */
     public void setCarrierOptionName(String carrierOptionName) {
@@ -89,6 +93,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the isRecommended.
      * @return the isRecommended
      */
     public Boolean getIsRecommended() {
@@ -96,6 +101,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the isRecommended.
      * @param isRecommended the isRecommended to set
      */
     public void setIsRecommended(Boolean isRecommended) {
@@ -103,6 +109,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the isRequired.
      * @return the isRequired
      */
     public Boolean getIsRequired() {
@@ -110,6 +117,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the isRequired.
      * @param isRequired the isRequired to set
      */
     public void setIsRequired(Boolean isRequired) {
@@ -117,6 +125,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedGeoCodeSelector.
      * @return the recommendedGeoCodeSelector
      */
     public SelectorTransfer getRecommendedGeoCodeSelector() {
@@ -124,6 +133,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the recommendedGeoCodeSelector.
      * @param recommendedGeoCodeSelector the recommendedGeoCodeSelector to set
      */
     public void setRecommendedGeoCodeSelector(SelectorTransfer recommendedGeoCodeSelector) {
@@ -131,6 +141,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredGeoCodeSelector.
      * @return the requiredGeoCodeSelector
      */
     public SelectorTransfer getRequiredGeoCodeSelector() {
@@ -138,6 +149,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the requiredGeoCodeSelector.
      * @param requiredGeoCodeSelector the requiredGeoCodeSelector to set
      */
     public void setRequiredGeoCodeSelector(SelectorTransfer requiredGeoCodeSelector) {
@@ -145,6 +157,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedItemSelector.
      * @return the recommendedItemSelector
      */
     public SelectorTransfer getRecommendedItemSelector() {
@@ -152,6 +165,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the recommendedItemSelector.
      * @param recommendedItemSelector the recommendedItemSelector to set
      */
     public void setRecommendedItemSelector(SelectorTransfer recommendedItemSelector) {
@@ -159,6 +173,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredItemSelector.
      * @return the requiredItemSelector
      */
     public SelectorTransfer getRequiredItemSelector() {
@@ -166,6 +181,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the requiredItemSelector.
      * @param requiredItemSelector the requiredItemSelector to set
      */
     public void setRequiredItemSelector(SelectorTransfer requiredItemSelector) {
@@ -173,6 +189,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedOrderSelector.
      * @return the recommendedOrderSelector
      */
     public SelectorTransfer getRecommendedOrderSelector() {
@@ -180,6 +197,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the recommendedOrderSelector.
      * @param recommendedOrderSelector the recommendedOrderSelector to set
      */
     public void setRecommendedOrderSelector(SelectorTransfer recommendedOrderSelector) {
@@ -187,6 +205,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredOrderSelector.
      * @return the requiredOrderSelector
      */
     public SelectorTransfer getRequiredOrderSelector() {
@@ -194,6 +213,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the requiredOrderSelector.
      * @param requiredOrderSelector the requiredOrderSelector to set
      */
     public void setRequiredOrderSelector(SelectorTransfer requiredOrderSelector) {
@@ -201,6 +221,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the recommendedShipmentSelector.
      * @return the recommendedShipmentSelector
      */
     public SelectorTransfer getRecommendedShipmentSelector() {
@@ -208,6 +229,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the recommendedShipmentSelector.
      * @param recommendedShipmentSelector the recommendedShipmentSelector to set
      */
     public void setRecommendedShipmentSelector(SelectorTransfer recommendedShipmentSelector) {
@@ -215,6 +237,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the requiredShipmentSelector.
      * @return the requiredShipmentSelector
      */
     public SelectorTransfer getRequiredShipmentSelector() {
@@ -222,6 +245,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the requiredShipmentSelector.
      * @param requiredShipmentSelector the requiredShipmentSelector to set
      */
     public void setRequiredShipmentSelector(SelectorTransfer requiredShipmentSelector) {
@@ -229,6 +253,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -236,6 +261,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -243,6 +269,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -250,6 +277,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -257,6 +285,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -264,6 +293,7 @@ public class CarrierOptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

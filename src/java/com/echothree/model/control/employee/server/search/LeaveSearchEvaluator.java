@@ -99,6 +99,7 @@ public class LeaveSearchEvaluator
     }
  
     /**
+     * Returns the leaveName.
      * @return the leaveName
      */
     public String getLeaveName() {
@@ -106,6 +107,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveName.
      * @param leaveName the leaveName to set
      */
     public void setLeaveName(String leaveName) {
@@ -113,6 +115,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public Party getParty() {
@@ -120,6 +123,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(Party party) {
@@ -127,6 +131,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the companyParty.
      * @return the companyParty
      */
     public Party getCompanyParty() {
@@ -134,6 +139,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the companyParty.
      * @param companyParty the companyParty to set
      */
     public void setCompanyParty(Party companyParty) {
@@ -141,6 +147,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the leaveType.
      * @return the leaveType
      */
     public LeaveType getLeaveType() {
@@ -148,6 +155,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveType.
      * @param leaveType the leaveType to set
      */
     public void setLeaveType(LeaveType leaveType) {
@@ -155,6 +163,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the leaveReason.
      * @return the leaveReason
      */
     public LeaveReason getLeaveReason() {
@@ -162,6 +171,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveReason.
      * @param leaveReason the leaveReason to set
      */
     public void setLeaveReason(LeaveReason leaveReason) {
@@ -169,6 +179,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Returns the leaveStatusWorkflowStep.
      * @return the leaveStatusWorkflowStep
      */
     public WorkflowStep getLeaveStatusWorkflowStep() {
@@ -176,6 +187,7 @@ public class LeaveSearchEvaluator
     }
 
     /**
+     * Sets the leaveStatusWorkflowStep.
      * @param leaveStatusWorkflowStep the leaveStatusWorkflowStep to set
      */
     public void setLeaveStatusWorkflowStep(WorkflowStep leaveStatusWorkflowStep) {

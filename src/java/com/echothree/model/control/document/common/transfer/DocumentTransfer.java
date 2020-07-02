@@ -46,6 +46,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the documentName.
      * @return the documentName
      */
     public String getDocumentName() {
@@ -53,6 +54,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the documentName.
      * @param documentName the documentName to set
      */
     public void setDocumentName(String documentName) {
@@ -60,6 +62,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the documentType.
      * @return the documentType
      */
     public DocumentTypeTransfer getDocumentType() {
@@ -67,6 +70,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the documentType.
      * @param documentType the documentType to set
      */
     public void setDocumentType(DocumentTypeTransfer documentType) {
@@ -74,6 +78,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -81,6 +86,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -88,6 +94,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the pages.
      * @return the pages
      */
     public Integer getPages() {
@@ -95,6 +102,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the pages.
      * @param pages the pages to set
      */
     public void setPages(Integer pages) {
@@ -102,6 +110,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -109,6 +118,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -116,6 +126,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -123,6 +134,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the blob.
      * @param blob the blob to set
      */
     public void setBlob(ByteArray blob) {
@@ -130,6 +142,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -137,6 +150,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the clob.
      * @param clob the clob to set
      */
     public void setClob(String clob) {
@@ -144,6 +158,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String geteTag() {
@@ -151,6 +166,7 @@ public class DocumentTransfer
     }
 
     /**
+     * Sets the eTag.
      * @param eTag the eTag to set
      */
     public void seteTag(String eTag) {

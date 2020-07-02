@@ -34,6 +34,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Returns the color.
      * @return the color
      */
     public ColorTransfer getColor() {
@@ -55,6 +58,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Sets the color.
      * @param color the color to set
      */
     public void setColor(ColorTransfer color) {
@@ -62,6 +66,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class ColorDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

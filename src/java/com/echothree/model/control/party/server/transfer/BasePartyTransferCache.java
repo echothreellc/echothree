@@ -28,7 +28,7 @@ public abstract class BasePartyTransferCache<K extends BaseEntity, V extends Bas
     PartyControl partyControl;
     
     /** Creates a new instance of BasePartyTransferCache */
-    public BasePartyTransferCache(UserVisit userVisit, PartyControl partyControl) {
+    protected BasePartyTransferCache(UserVisit userVisit, PartyControl partyControl) {
         super(userVisit);
         
         this.partyControl = partyControl;

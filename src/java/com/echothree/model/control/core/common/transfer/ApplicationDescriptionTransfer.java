@@ -34,6 +34,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Returns the application.
      * @return the application
      */
     public ApplicationTransfer getApplication() {
@@ -55,6 +58,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Sets the application.
      * @param application the application to set
      */
     public void setApplication(ApplicationTransfer application) {
@@ -62,6 +66,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class ApplicationDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

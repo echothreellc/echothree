@@ -112,6 +112,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the itemImageType.
      * @return the itemImageType
      */
     public ItemImageTypeTransfer getItemImageType() {
@@ -119,6 +120,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Sets the itemImageType.
      * @param itemImageType the itemImageType to set
      */
     public void setItemImageType(ItemImageTypeTransfer itemImageType) {
@@ -126,6 +128,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the height.
      * @return the height
      */
     public Integer getHeight() {
@@ -133,6 +136,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Sets the height.
      * @param height the height to set
      */
     public void setHeight(Integer height) {
@@ -140,6 +144,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the width.
      * @return the width
      */
     public Integer getWidth() {
@@ -147,6 +152,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Sets the width.
      * @param width the width to set
      */
     public void setWidth(Integer width) {
@@ -154,6 +160,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the scaledFromParent.
      * @return the scaledFromParent
      */
     public Boolean getScaledFromParent() {
@@ -161,6 +168,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Sets the scaledFromParent.
      * @param scaledFromParent the scaledFromParent to set
      */
     public void setScaledFromParent(Boolean scaledFromParent) {
@@ -168,6 +176,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Returns the eTag.
      * @return the eTag
      */
     public String getETag() {
@@ -175,6 +184,7 @@ public class ItemDescriptionTransfer
     }
 
     /**
+     * Sets the eTag.
      * @param eTag the eTag to set
      */
     public void setETag(String eTag) {

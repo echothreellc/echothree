@@ -48,6 +48,7 @@ public class ItemImageTypeTransfer
     }
     
     /**
+     * Returns the preferredMimeType.
      * @return the preferredMimeType
      */
     public MimeTypeTransfer getPreferredMimeType() {
@@ -55,6 +56,7 @@ public class ItemImageTypeTransfer
     }
 
     /**
+     * Sets the preferredMimeType.
      * @param preferredMimeType the preferredMimeType to set
      */
     public void setPreferredMimeType(MimeTypeTransfer preferredMimeType) {
@@ -62,6 +64,7 @@ public class ItemImageTypeTransfer
     }
 
     /**
+     * Returns the quality.
      * @return the quality
      */
     public Integer getQuality() {
@@ -69,6 +72,7 @@ public class ItemImageTypeTransfer
     }
 
     /**
+     * Sets the quality.
      * @param quality the quality to set
      */
     public void setQuality(Integer quality) {

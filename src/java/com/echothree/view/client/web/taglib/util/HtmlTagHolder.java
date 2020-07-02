@@ -33,6 +33,7 @@ public class HtmlTagHolder {
     }
 
     /**
+     * Returns the tag.
      * @return the tag
      */
     public String getTag() {
@@ -40,6 +41,7 @@ public class HtmlTagHolder {
     }
 
     /**
+     * Returns the htmlFilterAction.
      * @return the htmlFilterAction
      */
     public HtmlFilterAction getHtmlFilterAction() {
@@ -51,6 +53,7 @@ public class HtmlTagHolder {
     }
     
     /**
+     * Returns the attributes.
      * @return the attributes
      */
     public Set<String> getAttributes() {

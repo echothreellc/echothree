@@ -49,6 +49,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the contentCatalog.
      * @return the contentCatalog
      */
     public ContentCatalogTransfer getContentCatalog() {
@@ -56,6 +57,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCatalog.
      * @param contentCatalog the contentCatalog to set
      */
     public void setContentCatalog(ContentCatalogTransfer contentCatalog) {
@@ -63,6 +65,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the contentCategoryName.
      * @return the contentCategoryName
      */
     public String getContentCategoryName() {
@@ -70,6 +73,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCategoryName.
      * @param contentCategoryName the contentCategoryName to set
      */
     public void setContentCategoryName(String contentCategoryName) {
@@ -77,6 +81,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the parentContentCategory.
      * @return the parentContentCategory
      */
     public ContentCategoryTransfer getParentContentCategory() {
@@ -84,6 +89,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the parentContentCategory.
      * @param parentContentCategory the parentContentCategory to set
      */
     public void setParentContentCategory(ContentCategoryTransfer parentContentCategory) {
@@ -91,6 +97,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the defaultOfferUse.
      * @return the defaultOfferUse
      */
     public OfferUseTransfer getDefaultOfferUse() {
@@ -98,6 +105,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the defaultOfferUse.
      * @param defaultOfferUse the defaultOfferUse to set
      */
     public void setDefaultOfferUse(OfferUseTransfer defaultOfferUse) {
@@ -105,6 +113,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the contentCategoryItemSelector.
      * @return the contentCategoryItemSelector
      */
     public SelectorTransfer getContentCategoryItemSelector() {
@@ -112,6 +121,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCategoryItemSelector.
      * @param contentCategoryItemSelector the contentCategoryItemSelector to set
      */
     public void setContentCategoryItemSelector(SelectorTransfer contentCategoryItemSelector) {
@@ -119,6 +129,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -126,6 +137,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -133,6 +145,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -140,6 +153,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -147,6 +161,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -154,6 +169,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -161,6 +177,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Returns the contentCategoryItems.
      * @return the contentCategoryItems
      */
     public ListWrapper<ContentCategoryItemTransfer> getContentCategoryItems() {
@@ -168,6 +185,7 @@ public class ContentCategoryTransfer
     }
 
     /**
+     * Sets the contentCategoryItems.
      * @param contentCategoryItems the contentCategoryItems to set
      */
     public void setContentCategoryItems(ListWrapper<ContentCategoryItemTransfer> contentCategoryItems) {

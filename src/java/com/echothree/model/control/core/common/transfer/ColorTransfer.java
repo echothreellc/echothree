@@ -41,6 +41,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the colorName.
      * @return the colorName
      */
     public String getColorName() {
@@ -48,6 +49,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the colorName.
      * @param colorName the colorName to set
      */
     public void setColorName(String colorName) {
@@ -55,6 +57,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the red.
      * @return the red
      */
     public Integer getRed() {
@@ -62,6 +65,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the red.
      * @param red the red to set
      */
     public void setRed(Integer red) {
@@ -69,6 +73,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the green.
      * @return the green
      */
     public Integer getGreen() {
@@ -76,6 +81,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the green.
      * @param green the green to set
      */
     public void setGreen(Integer green) {
@@ -83,6 +89,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the blue.
      * @return the blue
      */
     public Integer getBlue() {
@@ -90,6 +97,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the blue.
      * @param blue the blue to set
      */
     public void setBlue(Integer blue) {
@@ -97,6 +105,7 @@ public class ColorTransfer
     }
     
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -104,6 +113,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -111,6 +121,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -118,6 +129,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -125,6 +137,7 @@ public class ColorTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -132,6 +145,7 @@ public class ColorTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

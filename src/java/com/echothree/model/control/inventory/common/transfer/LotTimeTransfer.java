@@ -33,6 +33,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Returns the lotTimeType.
      * @return the lotTimeType
      */
     public LotTimeTypeTransfer getLotTimeType() {
@@ -40,6 +41,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Sets the lotTimeType.
      * @param lotTimeType the lotTimeType to set
      */
     public void setLotTimeType(LotTimeTypeTransfer lotTimeType) {
@@ -47,6 +49,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -54,6 +57,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -61,6 +65,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {
@@ -68,6 +73,7 @@ public class LotTimeTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {

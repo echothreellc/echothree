@@ -39,6 +39,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -46,6 +47,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -53,6 +55,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the paymentMethod.
      * @return the paymentMethod
      */
     public PaymentMethodTransfer getPaymentMethod() {
@@ -60,6 +63,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Sets the paymentMethod.
      * @param paymentMethod the paymentMethod to set
      */
     public void setPaymentMethod(PaymentMethodTransfer paymentMethod) {
@@ -67,6 +71,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the defaultSelectionPriority.
      * @return the defaultSelectionPriority
      */
     public Integer getDefaultSelectionPriority() {
@@ -74,6 +79,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Sets the defaultSelectionPriority.
      * @param defaultSelectionPriority the defaultSelectionPriority to set
      */
     public void setDefaultSelectionPriority(Integer defaultSelectionPriority) {
@@ -81,6 +87,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -88,6 +95,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -95,6 +103,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -102,6 +111,7 @@ public class CustomerTypePaymentMethodTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

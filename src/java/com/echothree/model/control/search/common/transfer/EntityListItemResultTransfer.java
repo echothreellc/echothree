@@ -39,6 +39,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the componentVendorName.
      * @return the componentVendorName
      */
     public String getComponentVendorName() {
@@ -46,6 +47,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Sets the componentVendorName.
      * @param componentVendorName the componentVendorName to set
      */
     public void setComponentVendorName(String componentVendorName) {
@@ -53,6 +55,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityTypeName.
      * @return the entityTypeName
      */
     public String getEntityTypeName() {
@@ -60,6 +63,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Sets the entityTypeName.
      * @param entityTypeName the entityTypeName to set
      */
     public void setEntityTypeName(String entityTypeName) {
@@ -67,6 +71,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityAttributeName.
      * @return the entityAttributeName
      */
     public String getEntityAttributeName() {
@@ -74,6 +79,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Sets the entityAttributeName.
      * @param entityAttributeName the entityAttributeName to set
      */
     public void setEntityAttributeName(String entityAttributeName) {
@@ -81,6 +87,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityListItemName.
      * @return the entityListItemName
      */
     public String getEntityListItemName() {
@@ -88,6 +95,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Sets the entityListItemName.
      * @param entityListItemName the entityListItemName to set
      */
     public void setEntityListItemName(String entityListItemName) {
@@ -95,6 +103,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Returns the entityListItem.
      * @return the entityListItem
      */
     public EntityListItemTransfer getEntityListItem() {
@@ -102,6 +111,7 @@ public class EntityListItemResultTransfer
     }
 
     /**
+     * Sets the entityListItem.
      * @param entityListItem the entityListItem to set
      */
     public void setEntityListItem(EntityListItemTransfer entityListItem) {

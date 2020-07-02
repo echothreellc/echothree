@@ -34,6 +34,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Returns the chainEntityRoleType.
      * @return the chainEntityRoleType
      */
     public ChainEntityRoleTypeTransfer getChainEntityRoleType() {
@@ -55,6 +58,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Sets the chainEntityRoleType.
      * @param chainEntityRoleType the chainEntityRoleType to set
      */
     public void setChainEntityRoleType(ChainEntityRoleTypeTransfer chainEntityRoleType) {
@@ -62,6 +66,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class ChainEntityRoleTypeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -35,6 +35,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the application.
      * @return the application
      */
     public ApplicationTransfer getApplication() {
@@ -42,6 +43,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Sets the application.
      * @param application the application to set
      */
     public void setApplication(ApplicationTransfer application) {
@@ -49,6 +51,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the editor.
      * @return the editor
      */
     public EditorTransfer getEditor() {
@@ -56,6 +59,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Sets the editor.
      * @param editor the editor to set
      */
     public void setEditor(EditorTransfer editor) {
@@ -63,6 +67,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -70,6 +75,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -77,6 +83,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -84,6 +91,7 @@ public class ApplicationEditorTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

@@ -43,6 +43,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentSection.
      * @return the contentSection
      */
     public ContentSectionTransfer getContentSection() {
@@ -50,6 +51,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Sets the contentSection.
      * @param contentSection the contentSection to set
      */
     public void setContentSection(ContentSectionTransfer contentSection) {
@@ -57,6 +59,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentPageName.
      * @return the contentPageName
      */
     public String getContentPageName() {
@@ -64,6 +67,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Sets the contentPageName.
      * @param contentPageName the contentPageName to set
      */
     public void setContentPageName(String contentPageName) {
@@ -71,6 +75,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentPageLayout.
      * @return the contentPageLayout
      */
     public ContentPageLayoutTransfer getContentPageLayout() {
@@ -78,6 +83,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Sets the contentPageLayout.
      * @param contentPageLayout the contentPageLayout to set
      */
     public void setContentPageLayout(ContentPageLayoutTransfer contentPageLayout) {
@@ -85,6 +91,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -92,6 +99,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -99,6 +107,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -106,6 +115,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -113,6 +123,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -120,6 +131,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -127,6 +139,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Returns the contentPageAreas.
      * @return the contentPageAreas
      */
     public MapWrapper<ContentPageAreaTransfer> getContentPageAreas() {
@@ -134,6 +147,7 @@ public class ContentPageTransfer
     }
 
     /**
+     * Sets the contentPageAreas.
      * @param contentPageAreas the contentPageAreas to set
      */
     public void setContentPageAreas(MapWrapper<ContentPageAreaTransfer> contentPageAreas) {

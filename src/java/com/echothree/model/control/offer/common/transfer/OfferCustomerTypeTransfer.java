@@ -36,6 +36,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the offer.
      * @return the offer
      */
     public OfferTransfer getOffer() {
@@ -43,6 +44,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Sets the offer.
      * @param offer the offer to set
      */
     public void setOffer(OfferTransfer offer) {
@@ -50,6 +52,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -57,6 +60,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -64,6 +68,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -71,6 +76,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -78,6 +84,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -85,6 +92,7 @@ public class OfferCustomerTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {

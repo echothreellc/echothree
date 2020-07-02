@@ -32,6 +32,7 @@ public class CustomerResultTransfer
     }
 
     /**
+     * Returns the partyName.
      * @return the partyName
      */
     public String getPartyName() {
@@ -39,6 +40,7 @@ public class CustomerResultTransfer
     }
 
     /**
+     * Sets the partyName.
      * @param partyName the partyName to set
      */
     public void setPartyName(String partyName) {
@@ -46,6 +48,7 @@ public class CustomerResultTransfer
     }
     
     /**
+     * Returns the customer.
      * @return the customer
      */
     public CustomerTransfer getCustomer() {
@@ -53,6 +56,7 @@ public class CustomerResultTransfer
     }
 
     /**
+     * Sets the customer.
      * @param customer the customer to set
      */
     public void setCustomer(CustomerTransfer customer) {

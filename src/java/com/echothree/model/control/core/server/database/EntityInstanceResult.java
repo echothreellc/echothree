@@ -25,6 +25,7 @@ public class EntityInstanceResult
     private EntityInstancePK entityInstancePK;
 
     /**
+     * Returns the entityInstancePK.
      * @return the entityInstancePK
      */
     public EntityInstancePK getEntityInstancePK() {
@@ -32,6 +33,7 @@ public class EntityInstanceResult
     }
 
     /**
+     * Sets the entityInstancePK.
      * @param entityInstancePK the entityInstancePK to set
      */
     public void setEntityInstancePK(EntityInstancePK entityInstancePK) {

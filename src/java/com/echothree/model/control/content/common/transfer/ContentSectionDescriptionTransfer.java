@@ -34,6 +34,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Returns the contentSection.
      * @return the contentSection
      */
     public ContentSectionTransfer getContentSection() {
@@ -55,6 +58,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Sets the contentSection.
      * @param contentSection the contentSection to set
      */
     public void setContentSection(ContentSectionTransfer contentSection) {
@@ -62,6 +66,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class ContentSectionDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

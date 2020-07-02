@@ -36,6 +36,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -43,6 +44,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -50,6 +52,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the carrier.
      * @return the carrier
      */
     public CarrierTransfer getCarrier() {
@@ -57,6 +60,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the carrier.
      * @param carrier the carrier to set
      */
     public void setCarrier(CarrierTransfer carrier) {
@@ -64,6 +68,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the account.
      * @return the account
      */
     public String getAccount() {
@@ -71,6 +76,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the account.
      * @param account the account to set
      */
     public void setAccount(String account) {
@@ -78,6 +84,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Returns the alwaysUseThirdPartyBilling.
      * @return the alwaysUseThirdPartyBilling
      */
     public Boolean getAlwaysUseThirdPartyBilling() {
@@ -85,6 +92,7 @@ public class PartyCarrierAccountTransfer
     }
 
     /**
+     * Sets the alwaysUseThirdPartyBilling.
      * @param alwaysUseThirdPartyBilling the alwaysUseThirdPartyBilling to set
      */
     public void setAlwaysUseThirdPartyBilling(Boolean alwaysUseThirdPartyBilling) {

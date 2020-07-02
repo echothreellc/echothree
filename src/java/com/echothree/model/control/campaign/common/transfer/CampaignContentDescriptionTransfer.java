@@ -34,6 +34,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Returns the campaignContent.
      * @return the campaignContent
      */
     public CampaignContentTransfer getCampaignContent() {
@@ -55,6 +58,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Sets the campaignContent.
      * @param campaignContent the campaignContent to set
      */
     public void setCampaignContent(CampaignContentTransfer campaignContent) {
@@ -62,6 +66,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class CampaignContentDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -34,6 +34,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Returns the language.
      * @return the language
      */
     public LanguageTransfer getLanguage() {
@@ -41,6 +42,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Sets the language.
      * @param language the language to set
      */
     public void setLanguage(LanguageTransfer language) {
@@ -48,6 +50,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Returns the entityIntegerRange.
      * @return the entityIntegerRange
      */
     public EntityIntegerRangeTransfer getEntityIntegerRange() {
@@ -55,6 +58,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Sets the entityIntegerRange.
      * @param entityIntegerRange the entityIntegerRange to set
      */
     public void setEntityIntegerRange(EntityIntegerRangeTransfer entityIntegerRange) {
@@ -62,6 +66,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -69,6 +74,7 @@ public class EntityIntegerRangeDescriptionTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

@@ -37,6 +37,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the party.
      * @return the party
      */
     public PartyTransfer getParty() {
@@ -44,6 +45,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the party.
      * @param party the party to set
      */
     public void setParty(PartyTransfer party) {
@@ -51,6 +53,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the contactList.
      * @return the contactList
      */
     public ContactListTransfer getContactList() {
@@ -58,6 +61,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the contactList.
      * @param contactList the contactList to set
      */
     public void setContactList(ContactListTransfer contactList) {
@@ -65,6 +69,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the preferredContactListContactMechanismPurpose.
      * @return the preferredContactListContactMechanismPurpose
      */
     public ContactListContactMechanismPurposeTransfer getPreferredContactListContactMechanismPurpose() {
@@ -72,6 +77,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the preferredContactListContactMechanismPurpose.
      * @param preferredContactListContactMechanismPurpose the preferredContactListContactMechanismPurpose to set
      */
     public void setPreferredContactListContactMechanismPurpose(ContactListContactMechanismPurposeTransfer preferredContactListContactMechanismPurpose) {
@@ -79,6 +85,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Returns the partyContactListStatus.
      * @return the partyContactListStatus
      */
     public WorkflowEntityStatusTransfer getPartyContactListStatus() {
@@ -86,6 +93,7 @@ public class PartyContactListTransfer
     }
 
     /**
+     * Sets the partyContactListStatus.
      * @param partyContactListStatus the partyContactListStatus to set
      */
     public void setPartyContactListStatus(WorkflowEntityStatusTransfer partyContactListStatus) {

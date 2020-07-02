@@ -28,7 +28,7 @@ public abstract class BaseTrainingTransferCache<K extends BaseEntity, V extends 
     TrainingControl trainingControl;
     
     /** Creates a new instance of BaseTrainingTransferCache */
-    public BaseTrainingTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
+    protected BaseTrainingTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
         super(userVisit);
         
         this.trainingControl = trainingControl;

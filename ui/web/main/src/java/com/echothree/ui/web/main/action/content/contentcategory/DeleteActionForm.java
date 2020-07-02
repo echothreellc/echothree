@@ -29,6 +29,7 @@ public class DeleteActionForm
     private String parentContentCategoryName;
 
     /**
+     * Returns the contentCollectionName.
      * @return the contentCollectionName
      */
     public String getContentCollectionName() {
@@ -36,6 +37,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentCollectionName.
      * @param contentCollectionName the contentCollectionName to set
      */
     public void setContentCollectionName(String contentCollectionName) {
@@ -43,6 +45,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the contentCatalogName.
      * @return the contentCatalogName
      */
     public String getContentCatalogName() {
@@ -50,6 +53,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentCatalogName.
      * @param contentCatalogName the contentCatalogName to set
      */
     public void setContentCatalogName(String contentCatalogName) {
@@ -57,6 +61,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the contentCategoryName.
      * @return the contentCategoryName
      */
     public String getContentCategoryName() {
@@ -64,6 +69,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the contentCategoryName.
      * @param contentCategoryName the contentCategoryName to set
      */
     public void setContentCategoryName(String contentCategoryName) {
@@ -71,6 +77,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Returns the parentContentCategoryName.
      * @return the parentContentCategoryName
      */
     public String getParentContentCategoryName() {
@@ -78,6 +85,7 @@ public class DeleteActionForm
     }
 
     /**
+     * Sets the parentContentCategoryName.
      * @param parentContentCategoryName the parentContentCategoryName to set
      */
     public void setParentContentCategoryName(String parentContentCategoryName) {

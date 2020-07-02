@@ -33,6 +33,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Returns the shipmentTimeType.
      * @return the shipmentTimeType
      */
     public ShipmentTimeTypeTransfer getShipmentTimeType() {
@@ -40,6 +41,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Sets the shipmentTimeType.
      * @param shipmentTimeType the shipmentTimeType to set
      */
     public void setShipmentTimeType(ShipmentTimeTypeTransfer shipmentTimeType) {
@@ -47,6 +49,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Returns the unformattedTime.
      * @return the unformattedTime
      */
     public Long getUnformattedTime() {
@@ -54,6 +57,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Sets the unformattedTime.
      * @param unformattedTime the unformattedTime to set
      */
     public void setUnformattedTime(Long unformattedTime) {
@@ -61,6 +65,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Returns the time.
      * @return the time
      */
     public String getTime() {
@@ -68,6 +73,7 @@ public class ShipmentTimeTransfer
     }
 
     /**
+     * Sets the time.
      * @param time the time to set
      */
     public void setTime(String time) {

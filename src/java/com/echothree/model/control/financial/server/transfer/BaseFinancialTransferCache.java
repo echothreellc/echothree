@@ -28,7 +28,7 @@ public abstract class BaseFinancialTransferCache<K extends BaseEntity, V extends
     FinancialControl financialControl;
     
     /** Creates a new instance of BaseFinancialTransferCache */
-    public BaseFinancialTransferCache(UserVisit userVisit, FinancialControl financialControl) {
+    protected BaseFinancialTransferCache(UserVisit userVisit, FinancialControl financialControl) {
         super(userVisit);
         
         this.financialControl = financialControl;

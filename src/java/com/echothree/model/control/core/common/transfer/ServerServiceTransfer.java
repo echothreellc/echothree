@@ -31,6 +31,7 @@ public class ServerServiceTransfer
     }
 
     /**
+     * Returns the server.
      * @return the server
      */
     public ServerTransfer getServer() {
@@ -38,6 +39,7 @@ public class ServerServiceTransfer
     }
 
     /**
+     * Sets the server.
      * @param server the server to set
      */
     public void setServer(ServerTransfer server) {
@@ -45,6 +47,7 @@ public class ServerServiceTransfer
     }
 
     /**
+     * Returns the service.
      * @return the service
      */
     public ServiceTransfer getService() {
@@ -52,6 +55,7 @@ public class ServerServiceTransfer
     }
 
     /**
+     * Sets the service.
      * @param service the service to set
      */
     public void setService(ServiceTransfer service) {

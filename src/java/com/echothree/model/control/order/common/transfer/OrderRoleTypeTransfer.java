@@ -33,6 +33,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Returns the orderRoleTypeName.
      * @return the orderRoleTypeName
      */
     public String getOrderRoleTypeName() {
@@ -40,6 +41,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Sets the orderRoleTypeName.
      * @param orderRoleTypeName the orderRoleTypeName to set
      */
     public void setOrderRoleTypeName(String orderRoleTypeName) {
@@ -47,6 +49,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -54,6 +57,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -61,6 +65,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -68,6 +73,7 @@ public class OrderRoleTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

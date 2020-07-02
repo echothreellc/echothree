@@ -37,6 +37,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSession.
      * @return the partyTrainingClassSession
      */
     public PartyTrainingClassSessionTransfer getPartyTrainingClassSession() {
@@ -44,6 +45,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSession.
      * @param partyTrainingClassSession the partyTrainingClassSession to set
      */
     public void setPartyTrainingClassSession(PartyTrainingClassSessionTransfer partyTrainingClassSession) {
@@ -51,6 +53,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the trainingClassQuestion.
      * @return the trainingClassQuestion
      */
     public TrainingClassQuestionTransfer getTrainingClassQuestion() {
@@ -58,6 +61,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Sets the trainingClassQuestion.
      * @param trainingClassQuestion the trainingClassQuestion to set
      */
     public void setTrainingClassQuestion(TrainingClassQuestionTransfer trainingClassQuestion) {
@@ -65,6 +69,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -72,6 +77,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -79,6 +85,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Returns the partyTrainingClassSessionAnswers.
      * @return the partyTrainingClassSessionAnswers
      */
     public ListWrapper<PartyTrainingClassSessionAnswerTransfer> getPartyTrainingClassSessionAnswers() {
@@ -86,6 +93,7 @@ public class PartyTrainingClassSessionQuestionTransfer
     }
 
     /**
+     * Sets the partyTrainingClassSessionAnswers.
      * @param partyTrainingClassSessionAnswers the partyTrainingClassSessionAnswers to set
      */
     public void setPartyTrainingClassSessionAnswers(ListWrapper<PartyTrainingClassSessionAnswerTransfer> partyTrainingClassSessionAnswers) {

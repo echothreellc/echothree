@@ -38,6 +38,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Returns the paymentMethodType.
      * @return the paymentMethodType
      */
     public PaymentMethodTypeTransfer getPaymentMethodType() {
@@ -45,6 +46,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Sets the paymentMethodType.
      * @param paymentMethodType the paymentMethodType to set
      */
     public void setPaymentMethodType(PaymentMethodTypeTransfer paymentMethodType) {
@@ -52,6 +54,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Returns the partyType.
      * @return the partyType
      */
     public PartyTypeTransfer getPartyType() {
@@ -59,6 +62,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Sets the partyType.
      * @param partyType the partyType to set
      */
     public void setPartyType(PartyTypeTransfer partyType) {
@@ -66,6 +70,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Returns the partyPaymentMethodWorkflow.
      * @return the partyPaymentMethodWorkflow
      */
     public WorkflowTransfer getPartyPaymentMethodWorkflow() {
@@ -73,6 +78,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Sets the partyPaymentMethodWorkflow.
      * @param partyPaymentMethodWorkflow the partyPaymentMethodWorkflow to set
      */
     public void setPartyPaymentMethodWorkflow(WorkflowTransfer partyPaymentMethodWorkflow) {
@@ -80,6 +86,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Returns the partyContactMechanismWorkflow.
      * @return the partyContactMechanismWorkflow
      */
     public WorkflowTransfer getPartyContactMechanismWorkflow() {
@@ -87,6 +94,7 @@ public class PaymentMethodTypePartyTypeTransfer
     }
 
     /**
+     * Sets the partyContactMechanismWorkflow.
      * @param partyContactMechanismWorkflow the partyContactMechanismWorkflow to set
      */
     public void setPartyContactMechanismWorkflow(WorkflowTransfer partyContactMechanismWorkflow) {

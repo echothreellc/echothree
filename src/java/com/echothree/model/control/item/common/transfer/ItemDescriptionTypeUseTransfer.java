@@ -31,6 +31,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Returns the itemDescriptionType.
      * @return the itemDescriptionType
      */
     public ItemDescriptionTypeTransfer getItemDescriptionType() {
@@ -38,6 +39,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Sets the itemDescriptionType.
      * @param itemDescriptionType the itemDescriptionType to set
      */
     public void setItemDescriptionType(ItemDescriptionTypeTransfer itemDescriptionType) {
@@ -45,6 +47,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Returns the itemDescriptionTypeUseType.
      * @return the itemDescriptionTypeUseType
      */
     public ItemDescriptionTypeUseTypeTransfer getItemDescriptionTypeUseType() {
@@ -52,6 +55,7 @@ public class ItemDescriptionTypeUseTransfer
     }
 
     /**
+     * Sets the itemDescriptionTypeUseType.
      * @param itemDescriptionTypeUseType the itemDescriptionTypeUseType to set
      */
     public void setItemDescriptionTypeUseType(ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseType) {

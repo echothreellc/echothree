@@ -47,6 +47,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKind.
      * @return the unitOfMeasureKind
      */
     public UnitOfMeasureKindTransfer getUnitOfMeasureKind() {
@@ -54,6 +55,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureKind.
      * @param unitOfMeasureKind the unitOfMeasureKind to set
      */
     public void setUnitOfMeasureKind(UnitOfMeasureKindTransfer unitOfMeasureKind) {
@@ -61,6 +63,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureTypeName.
      * @return the unitOfMeasureTypeName
      */
     public String getUnitOfMeasureTypeName() {
@@ -68,6 +71,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureTypeName.
      * @param unitOfMeasureTypeName the unitOfMeasureTypeName to set
      */
     public void setUnitOfMeasureTypeName(String unitOfMeasureTypeName) {
@@ -75,6 +79,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the symbolPosition.
      * @return the symbolPosition
      */
     public SymbolPositionTransfer getSymbolPosition() {
@@ -82,6 +87,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the symbolPosition.
      * @param symbolPosition the symbolPosition to set
      */
     public void setSymbolPosition(SymbolPositionTransfer symbolPosition) {
@@ -89,6 +95,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the suppressSymbolSeparator.
      * @return the suppressSymbolSeparator
      */
     public Boolean getSuppressSymbolSeparator() {
@@ -96,6 +103,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the suppressSymbolSeparator.
      * @param suppressSymbolSeparator the suppressSymbolSeparator to set
      */
     public void setSuppressSymbolSeparator(Boolean suppressSymbolSeparator) {
@@ -103,6 +111,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -110,6 +119,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -117,6 +127,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -124,6 +135,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -131,6 +143,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -138,6 +151,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -145,6 +159,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureTypeVolume.
      * @return the unitOfMeasureTypeVolume
      */
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolume() {
@@ -152,6 +167,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureTypeVolume.
      * @param unitOfMeasureTypeVolume the unitOfMeasureTypeVolume to set
      */
     public void setUnitOfMeasureTypeVolume(UnitOfMeasureTypeVolumeTransfer unitOfMeasureTypeVolume) {
@@ -159,6 +175,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Returns the unitOfMeasureTypeWeight.
      * @return the unitOfMeasureTypeWeight
      */
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeight() {
@@ -166,6 +183,7 @@ public class UnitOfMeasureTypeTransfer
     }
 
     /**
+     * Sets the unitOfMeasureTypeWeight.
      * @param unitOfMeasureTypeWeight the unitOfMeasureTypeWeight to set
      */
     public void setUnitOfMeasureTypeWeight(UnitOfMeasureTypeWeightTransfer unitOfMeasureTypeWeight) {

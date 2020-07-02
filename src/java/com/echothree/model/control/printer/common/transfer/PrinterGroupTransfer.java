@@ -46,6 +46,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the printerGroupName.
      * @return the printerGroupName
      */
     public String getPrinterGroupName() {
@@ -53,6 +54,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the printerGroupName.
      * @param printerGroupName the printerGroupName to set
      */
     public void setPrinterGroupName(String printerGroupName) {
@@ -60,6 +62,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the unformattedKeepPrintedJobsTime.
      * @return the unformattedKeepPrintedJobsTime
      */
     public Long getUnformattedKeepPrintedJobsTime() {
@@ -67,6 +70,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the unformattedKeepPrintedJobsTime.
      * @param unformattedKeepPrintedJobsTime the unformattedKeepPrintedJobsTime to set
      */
     public void setUnformattedKeepPrintedJobsTime(Long unformattedKeepPrintedJobsTime) {
@@ -74,6 +78,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the keepPrintedJobsTime.
      * @return the keepPrintedJobsTime
      */
     public String getKeepPrintedJobsTime() {
@@ -81,6 +86,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the keepPrintedJobsTime.
      * @param keepPrintedJobsTime the keepPrintedJobsTime to set
      */
     public void setKeepPrintedJobsTime(String keepPrintedJobsTime) {
@@ -88,6 +94,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the isDefault.
      * @return the isDefault
      */
     public Boolean getIsDefault() {
@@ -95,6 +102,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the isDefault.
      * @param isDefault the isDefault to set
      */
     public void setIsDefault(Boolean isDefault) {
@@ -102,6 +110,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the sortOrder.
      * @return the sortOrder
      */
     public Integer getSortOrder() {
@@ -109,6 +118,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the sortOrder.
      * @param sortOrder the sortOrder to set
      */
     public void setSortOrder(Integer sortOrder) {
@@ -116,6 +126,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the printerGroupStatus.
      * @return the printerGroupStatus
      */
     public WorkflowEntityStatusTransfer getPrinterGroupStatus() {
@@ -123,6 +134,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the printerGroupStatus.
      * @param printerGroupStatus the printerGroupStatus to set
      */
     public void setPrinterGroupStatus(WorkflowEntityStatusTransfer printerGroupStatus) {
@@ -130,6 +142,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -137,6 +150,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -144,6 +158,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Returns the printers.
      * @return the printers
      */
     public ListWrapper<PrinterTransfer> getPrinters() {
@@ -151,6 +166,7 @@ public class PrinterGroupTransfer
     }
 
     /**
+     * Sets the printers.
      * @param printers the printers to set
      */
     public void setPrinters(ListWrapper<PrinterTransfer> printers) {

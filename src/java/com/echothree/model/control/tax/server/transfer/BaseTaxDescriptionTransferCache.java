@@ -29,7 +29,7 @@ public abstract class BaseTaxDescriptionTransferCache<K extends BaseEntity, V ex
     PartyControl partyControl;
     
     /** Creates a new instance of BaseTaxDescriptionTransferCache */
-    public BaseTaxDescriptionTransferCache(UserVisit userVisit, TaxControl taxControl) {
+    protected BaseTaxDescriptionTransferCache(UserVisit userVisit, TaxControl taxControl) {
         super(userVisit, taxControl);
         
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);

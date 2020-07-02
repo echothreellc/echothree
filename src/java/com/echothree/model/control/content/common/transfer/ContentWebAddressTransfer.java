@@ -33,6 +33,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Returns the contentWebAddressName.
      * @return the contentWebAddressName
      */
     public String getContentWebAddressName() {
@@ -40,6 +41,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Sets the contentWebAddressName.
      * @param contentWebAddressName the contentWebAddressName to set
      */
     public void setContentWebAddressName(String contentWebAddressName) {
@@ -47,6 +49,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Returns the contentCollection.
      * @return the contentCollection
      */
     public ContentCollectionTransfer getContentCollection() {
@@ -54,6 +57,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Sets the contentCollection.
      * @param contentCollection the contentCollection to set
      */
     public void setContentCollection(ContentCollectionTransfer contentCollection) {
@@ -61,6 +65,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -68,6 +73,7 @@ public class ContentWebAddressTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {

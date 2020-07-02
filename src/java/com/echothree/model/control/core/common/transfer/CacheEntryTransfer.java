@@ -48,6 +48,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the cacheEntryKey.
      * @return the cacheEntryKey
      */
     public String getCacheEntryKey() {
@@ -55,6 +56,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the cacheEntryKey.
      * @param cacheEntryKey the cacheEntryKey to set
      */
     public void setCacheEntryKey(String cacheEntryKey) {
@@ -62,6 +64,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the mimeType.
      * @return the mimeType
      */
     public MimeTypeTransfer getMimeType() {
@@ -69,6 +72,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the mimeType.
      * @param mimeType the mimeType to set
      */
     public void setMimeType(MimeTypeTransfer mimeType) {
@@ -76,6 +80,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the createdTime.
      * @return the createdTime
      */
     public String getCreatedTime() {
@@ -83,6 +88,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the createdTime.
      * @param createdTime the createdTime to set
      */
     public void setCreatedTime(String createdTime) {
@@ -90,6 +96,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the unformattedCreatedTime.
      * @return the unformattedCreatedTime
      */
     public Long getUnformattedCreatedTime() {
@@ -97,6 +104,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the unformattedCreatedTime.
      * @param unformattedCreatedTime the unformattedCreatedTime to set
      */
     public void setUnformattedCreatedTime(Long unformattedCreatedTime) {
@@ -104,6 +112,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the validUntilTime.
      * @return the validUntilTime
      */
     public String getValidUntilTime() {
@@ -111,6 +120,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the validUntilTime.
      * @param validUntilTime the validUntilTime to set
      */
     public void setValidUntilTime(String validUntilTime) {
@@ -118,6 +128,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the unformattedValidUntilTime.
      * @return the unformattedValidUntilTime
      */
     public Long getUnformattedValidUntilTime() {
@@ -125,6 +136,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the unformattedValidUntilTime.
      * @param unformattedValidUntilTime the unformattedValidUntilTime to set
      */
     public void setUnformattedValidUntilTime(Long unformattedValidUntilTime) {
@@ -132,6 +144,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the clob.
      * @return the clob
      */
     public String getClob() {
@@ -139,6 +152,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the clob.
      * @param clob the clob to set
      */
     public void setClob(String clob) {
@@ -146,6 +160,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the blob.
      * @return the blob
      */
     public ByteArray getBlob() {
@@ -153,6 +168,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the blob.
      * @param blob the blob to set
      */
     public void setBlob(ByteArray blob) {
@@ -160,6 +176,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Returns the cacheEntryDependencies.
      * @return the cacheEntryDependencies
      */
     public ListWrapper<CacheEntryDependencyTransfer> getCacheEntryDependencies() {
@@ -167,6 +184,7 @@ public class CacheEntryTransfer
     }
 
     /**
+     * Sets the cacheEntryDependencies.
      * @param cacheEntryDependencies the cacheEntryDependencies to set
      */
     public void setCacheEntryDependencies(ListWrapper<CacheEntryDependencyTransfer> cacheEntryDependencies) {

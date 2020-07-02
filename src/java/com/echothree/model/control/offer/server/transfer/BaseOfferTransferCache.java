@@ -28,7 +28,7 @@ public abstract class BaseOfferTransferCache<K extends BaseEntity, V extends Bas
     OfferControl offerControl;
     
     /** Creates a new instance of BaseOfferTransferCache */
-    public BaseOfferTransferCache(UserVisit userVisit, OfferControl offerControl) {
+    protected BaseOfferTransferCache(UserVisit userVisit, OfferControl offerControl) {
         super(userVisit);
         
         this.offerControl = offerControl;

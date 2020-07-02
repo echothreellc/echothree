@@ -137,6 +137,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the useParentIfMissing.
      * @return the useParentIfMissing
      */
     public Boolean getUseParentIfMissing() {
@@ -144,6 +145,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the useParentIfMissing.
      * @param useParentIfMissing the useParentIfMissing to set
      */
     public void setUseParentIfMissing(Boolean useParentIfMissing) {
@@ -159,6 +161,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the checkContentWebAddress.
      * @return the checkContentWebAddress
      */
     public Boolean getCheckContentWebAddress() {
@@ -166,6 +169,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the checkContentWebAddress.
      * @param checkContentWebAddress the checkContentWebAddress to set
      */
     public void setCheckContentWebAddress(Boolean checkContentWebAddress) {
@@ -173,6 +177,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the includeInIndex.
      * @return the includeInIndex
      */
     public Boolean getIncludeInIndex() {
@@ -180,6 +185,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the includeInIndex.
      * @param includeInIndex the includeInIndex to set
      */
     public void setIncludeInIndex(Boolean includeInIndex) {
@@ -187,6 +193,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the indexDefault.
      * @return the indexDefault
      */
     public Boolean getIndexDefault() {
@@ -194,6 +201,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the indexDefault.
      * @param indexDefault the indexDefault to set
      */
     public void setIndexDefault(Boolean indexDefault) {
@@ -225,6 +233,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the minimumHeight.
      * @return the minimumHeight
      */
     public String getMinimumHeight() {
@@ -232,6 +241,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the minimumHeight.
      * @param minimumHeight the minimumHeight to set
      */
     public void setMinimumHeight(String minimumHeight) {
@@ -239,6 +249,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the minimumWidth.
      * @return the minimumWidth
      */
     public String getMinimumWidth() {
@@ -246,6 +257,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the minimumWidth.
      * @param minimumWidth the minimumWidth to set
      */
     public void setMinimumWidth(String minimumWidth) {
@@ -253,6 +265,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the maximumHeight.
      * @return the maximumHeight
      */
     public String getMaximumHeight() {
@@ -260,6 +273,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the maximumHeight.
      * @param maximumHeight the maximumHeight to set
      */
     public void setMaximumHeight(String maximumHeight) {
@@ -267,6 +281,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the maximumWidth.
      * @return the maximumWidth
      */
     public String getMaximumWidth() {
@@ -274,6 +289,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the maximumWidth.
      * @param maximumWidth the maximumWidth to set
      */
     public void setMaximumWidth(String maximumWidth) {
@@ -281,6 +297,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the preferredHeight.
      * @return the preferredHeight
      */
     public String getPreferredHeight() {
@@ -288,6 +305,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the preferredHeight.
      * @param preferredHeight the preferredHeight to set
      */
     public void setPreferredHeight(String preferredHeight) {
@@ -295,6 +313,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the preferredWidth.
      * @return the preferredWidth
      */
     public String getPreferredWidth() {
@@ -302,6 +321,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the preferredWidth.
      * @param preferredWidth the preferredWidth to set
      */
     public void setPreferredWidth(String preferredWidth) {
@@ -328,6 +348,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the quality.
      * @return the quality
      */
     public String getQuality() {
@@ -335,6 +356,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the quality.
      * @param quality the quality to set
      */
     public void setQuality(String quality) {
@@ -342,6 +364,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Returns the scaleFromParent.
      * @return the scaleFromParent
      */
     public Boolean getScaleFromParent() {
@@ -349,6 +372,7 @@ public class Step2ActionForm
     }
 
     /**
+     * Sets the scaleFromParent.
      * @param scaleFromParent the scaleFromParent to set
      */
     public void setScaleFromParent(Boolean scaleFromParent) {

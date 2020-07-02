@@ -75,6 +75,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerName.
      * @return the customerName
      */
     public String getCustomerName() {
@@ -82,6 +83,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the customerName.
      * @param customerName the customerName to set
      */
     public void setCustomerName(String customerName) {
@@ -89,6 +91,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerType.
      * @return the customerType
      */
     public CustomerTypeTransfer getCustomerType() {
@@ -96,6 +99,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the customerType.
      * @param customerType the customerType to set
      */
     public void setCustomerType(CustomerTypeTransfer customerType) {
@@ -103,6 +107,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the initialOfferUse.
      * @return the initialOfferUse
      */
     public OfferUseTransfer getInitialOfferUse() {
@@ -110,6 +115,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the initialOfferUse.
      * @param initialOfferUse the initialOfferUse to set
      */
     public void setInitialOfferUse(OfferUseTransfer initialOfferUse) {
@@ -117,6 +123,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the arGlAccount.
      * @return the arGlAccount
      */
     public GlAccountTransfer getArGlAccount() {
@@ -124,6 +131,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the arGlAccount.
      * @param arGlAccount the arGlAccount to set
      */
     public void setArGlAccount(GlAccountTransfer arGlAccount) {
@@ -131,6 +139,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the holdUntilComplete.
      * @return the holdUntilComplete
      */
     public Boolean getHoldUntilComplete() {
@@ -138,6 +147,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the holdUntilComplete.
      * @param holdUntilComplete the holdUntilComplete to set
      */
     public void setHoldUntilComplete(Boolean holdUntilComplete) {
@@ -145,6 +155,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowBackorders.
      * @return the allowBackorders
      */
     public Boolean getAllowBackorders() {
@@ -152,6 +163,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the allowBackorders.
      * @param allowBackorders the allowBackorders to set
      */
     public void setAllowBackorders(Boolean allowBackorders) {
@@ -159,6 +171,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowSubstitutions.
      * @return the allowSubstitutions
      */
     public Boolean getAllowSubstitutions() {
@@ -166,6 +179,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the allowSubstitutions.
      * @param allowSubstitutions the allowSubstitutions to set
      */
     public void setAllowSubstitutions(Boolean allowSubstitutions) {
@@ -173,6 +187,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowCombiningShipments.
      * @return the allowCombiningShipments
      */
     public Boolean getAllowCombiningShipments() {
@@ -180,6 +195,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the allowCombiningShipments.
      * @param allowCombiningShipments the allowCombiningShipments to set
      */
     public void setAllowCombiningShipments(Boolean allowCombiningShipments) {
@@ -187,6 +203,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the requireReference.
      * @return the requireReference
      */
     public Boolean getRequireReference() {
@@ -194,6 +211,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the requireReference.
      * @param requireReference the requireReference to set
      */
     public void setRequireReference(Boolean requireReference) {
@@ -201,6 +219,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the allowReferenceDuplicates.
      * @return the allowReferenceDuplicates
      */
     public Boolean getAllowReferenceDuplicates() {
@@ -208,6 +227,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the allowReferenceDuplicates.
      * @param allowReferenceDuplicates the allowReferenceDuplicates to set
      */
     public void setAllowReferenceDuplicates(Boolean allowReferenceDuplicates) {
@@ -215,6 +235,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the referenceValidationPattern.
      * @return the referenceValidationPattern
      */
     public String getReferenceValidationPattern() {
@@ -222,6 +243,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the referenceValidationPattern.
      * @param referenceValidationPattern the referenceValidationPattern to set
      */
     public void setReferenceValidationPattern(String referenceValidationPattern) {
@@ -229,6 +251,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerStatus.
      * @return the customerStatus
      */
     public WorkflowEntityStatusTransfer getCustomerStatus() {
@@ -236,6 +259,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the customerStatus.
      * @param customerStatus the customerStatus to set
      */
     public void setCustomerStatus(WorkflowEntityStatusTransfer customerStatus) {
@@ -243,6 +267,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Returns the customerCreditStatus.
      * @return the customerCreditStatus
      */
     public WorkflowEntityStatusTransfer getCustomerCreditStatus() {
@@ -250,6 +275,7 @@ public class CustomerTransfer
     }
 
     /**
+     * Sets the customerCreditStatus.
      * @param customerCreditStatus the customerCreditStatus to set
      */
     public void setCustomerCreditStatus(WorkflowEntityStatusTransfer customerCreditStatus) {

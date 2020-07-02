@@ -133,6 +133,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemName.
      * @return the itemName
      */
     public String getItemName() {
@@ -140,6 +141,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemName.
      * @param itemName the itemName to set
      */
     public void setItemName(String itemName) {
@@ -147,6 +149,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemType.
      * @return the itemType
      */
     public ItemTypeTransfer getItemType() {
@@ -154,6 +157,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemType.
      * @param itemType the itemType to set
      */
     public void setItemType(ItemTypeTransfer itemType) {
@@ -161,6 +165,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUseType.
      * @return the itemUseType
      */
     public ItemUseTypeTransfer getItemUseType() {
@@ -168,6 +173,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemUseType.
      * @param itemUseType the itemUseType to set
      */
     public void setItemUseType(ItemUseTypeTransfer itemUseType) {
@@ -175,6 +181,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemCategory.
      * @return the itemCategory
      */
     public ItemCategoryTransfer getItemCategory() {
@@ -182,6 +189,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemCategory.
      * @param itemCategory the itemCategory to set
      */
     public void setItemCategory(ItemCategoryTransfer itemCategory) {
@@ -189,6 +197,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemAccountingCategory.
      * @return the itemAccountingCategory
      */
     public ItemAccountingCategoryTransfer getItemAccountingCategory() {
@@ -196,6 +205,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemAccountingCategory.
      * @param itemAccountingCategory the itemAccountingCategory to set
      */
     public void setItemAccountingCategory(ItemAccountingCategoryTransfer itemAccountingCategory) {
@@ -203,6 +213,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPurchasingCategory.
      * @return the itemPurchasingCategory
      */
     public ItemPurchasingCategoryTransfer getItemPurchasingCategory() {
@@ -210,6 +221,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemPurchasingCategory.
      * @param itemPurchasingCategory the itemPurchasingCategory to set
      */
     public void setItemPurchasingCategory(ItemPurchasingCategoryTransfer itemPurchasingCategory) {
@@ -217,6 +229,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the company.
      * @return the company
      */
     public CompanyTransfer getCompany() {
@@ -224,6 +237,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the company.
      * @param company the company to set
      */
     public void setCompany(CompanyTransfer company) {
@@ -231,6 +245,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemDeliveryType.
      * @return the itemDeliveryType
      */
     public ItemDeliveryTypeTransfer getItemDeliveryType() {
@@ -238,6 +253,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemDeliveryType.
      * @param itemDeliveryType the itemDeliveryType to set
      */
     public void setItemDeliveryType(ItemDeliveryTypeTransfer itemDeliveryType) {
@@ -245,6 +261,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemInventoryType.
      * @return the itemInventoryType
      */
     public ItemInventoryTypeTransfer getItemInventoryType() {
@@ -252,6 +269,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemInventoryType.
      * @param itemInventoryType the itemInventoryType to set
      */
     public void setItemInventoryType(ItemInventoryTypeTransfer itemInventoryType) {
@@ -259,6 +277,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the inventorySerialized.
      * @return the inventorySerialized
      */
     public Boolean getInventorySerialized() {
@@ -266,6 +285,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the inventorySerialized.
      * @param inventorySerialized the inventorySerialized to set
      */
     public void setInventorySerialized(Boolean inventorySerialized) {
@@ -273,6 +293,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the serialNumberSequence.
      * @return the serialNumberSequence
      */
     public SequenceTransfer getSerialNumberSequence() {
@@ -280,6 +301,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the serialNumberSequence.
      * @param serialNumberSequence the serialNumberSequence to set
      */
     public void setSerialNumberSequence(SequenceTransfer serialNumberSequence) {
@@ -287,6 +309,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the shippingChargeExempt.
      * @return the shippingChargeExempt
      */
     public Boolean getShippingChargeExempt() {
@@ -294,6 +317,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the shippingChargeExempt.
      * @param shippingChargeExempt the shippingChargeExempt to set
      */
     public void setShippingChargeExempt(Boolean shippingChargeExempt) {
@@ -301,6 +325,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedShippingStartTime.
      * @return the unformattedShippingStartTime
      */
     public Long getUnformattedShippingStartTime() {
@@ -308,6 +333,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the unformattedShippingStartTime.
      * @param unformattedShippingStartTime the unformattedShippingStartTime to set
      */
     public void setUnformattedShippingStartTime(Long unformattedShippingStartTime) {
@@ -315,6 +341,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the shippingStartTime.
      * @return the shippingStartTime
      */
     public String getShippingStartTime() {
@@ -322,6 +349,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the shippingStartTime.
      * @param shippingStartTime the shippingStartTime to set
      */
     public void setShippingStartTime(String shippingStartTime) {
@@ -329,6 +357,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedShippingEndTime.
      * @return the unformattedShippingEndTime
      */
     public Long getUnformattedShippingEndTime() {
@@ -336,6 +365,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the unformattedShippingEndTime.
      * @param unformattedShippingEndTime the unformattedShippingEndTime to set
      */
     public void setUnformattedShippingEndTime(Long unformattedShippingEndTime) {
@@ -343,6 +373,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the shippingEndTime.
      * @return the shippingEndTime
      */
     public String getShippingEndTime() {
@@ -350,6 +381,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the shippingEndTime.
      * @param shippingEndTime the shippingEndTime to set
      */
     public void setShippingEndTime(String shippingEndTime) {
@@ -357,6 +389,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedSalesOrderStartTime.
      * @return the unformattedSalesOrderStartTime
      */
     public Long getUnformattedSalesOrderStartTime() {
@@ -364,6 +397,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the unformattedSalesOrderStartTime.
      * @param unformattedSalesOrderStartTime the unformattedSalesOrderStartTime to set
      */
     public void setUnformattedSalesOrderStartTime(Long unformattedSalesOrderStartTime) {
@@ -371,6 +405,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the salesOrderStartTime.
      * @return the salesOrderStartTime
      */
     public String getSalesOrderStartTime() {
@@ -378,6 +413,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the salesOrderStartTime.
      * @param salesOrderStartTime the salesOrderStartTime to set
      */
     public void setSalesOrderStartTime(String salesOrderStartTime) {
@@ -385,6 +421,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedSalesOrderEndTime.
      * @return the unformattedSalesOrderEndTime
      */
     public Long getUnformattedSalesOrderEndTime() {
@@ -392,6 +429,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the unformattedSalesOrderEndTime.
      * @param unformattedSalesOrderEndTime the unformattedSalesOrderEndTime to set
      */
     public void setUnformattedSalesOrderEndTime(Long unformattedSalesOrderEndTime) {
@@ -399,6 +437,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the salesOrderEndTime.
      * @return the salesOrderEndTime
      */
     public String getSalesOrderEndTime() {
@@ -406,6 +445,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the salesOrderEndTime.
      * @param salesOrderEndTime the salesOrderEndTime to set
      */
     public void setSalesOrderEndTime(String salesOrderEndTime) {
@@ -413,6 +453,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedPurchaseOrderStartTime.
      * @return the unformattedPurchaseOrderStartTime
      */
     public Long getUnformattedPurchaseOrderStartTime() {
@@ -420,6 +461,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the unformattedPurchaseOrderStartTime.
      * @param unformattedPurchaseOrderStartTime the unformattedPurchaseOrderStartTime to set
      */
     public void setUnformattedPurchaseOrderStartTime(Long unformattedPurchaseOrderStartTime) {
@@ -427,6 +469,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the purchaseOrderStartTime.
      * @return the purchaseOrderStartTime
      */
     public String getPurchaseOrderStartTime() {
@@ -434,6 +477,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the purchaseOrderStartTime.
      * @param purchaseOrderStartTime the purchaseOrderStartTime to set
      */
     public void setPurchaseOrderStartTime(String purchaseOrderStartTime) {
@@ -441,6 +485,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unformattedPurchaseOrderEndTime.
      * @return the unformattedPurchaseOrderEndTime
      */
     public Long getUnformattedPurchaseOrderEndTime() {
@@ -448,6 +493,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the unformattedPurchaseOrderEndTime.
      * @param unformattedPurchaseOrderEndTime the unformattedPurchaseOrderEndTime to set
      */
     public void setUnformattedPurchaseOrderEndTime(Long unformattedPurchaseOrderEndTime) {
@@ -455,6 +501,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the purchaseOrderEndTime.
      * @return the purchaseOrderEndTime
      */
     public String getPurchaseOrderEndTime() {
@@ -462,6 +509,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the purchaseOrderEndTime.
      * @param purchaseOrderEndTime the purchaseOrderEndTime to set
      */
     public void setPurchaseOrderEndTime(String purchaseOrderEndTime) {
@@ -469,6 +517,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the allowClubDiscounts.
      * @return the allowClubDiscounts
      */
     public Boolean getAllowClubDiscounts() {
@@ -476,6 +525,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the allowClubDiscounts.
      * @param allowClubDiscounts the allowClubDiscounts to set
      */
     public void setAllowClubDiscounts(Boolean allowClubDiscounts) {
@@ -483,6 +533,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the allowCouponDiscounts.
      * @return the allowCouponDiscounts
      */
     public Boolean getAllowCouponDiscounts() {
@@ -490,6 +541,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the allowCouponDiscounts.
      * @param allowCouponDiscounts the allowCouponDiscounts to set
      */
     public void setAllowCouponDiscounts(Boolean allowCouponDiscounts) {
@@ -497,6 +549,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the allowAssociatePayments.
      * @return the allowAssociatePayments
      */
     public Boolean getAllowAssociatePayments() {
@@ -504,6 +557,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the allowAssociatePayments.
      * @param allowAssociatePayments the allowAssociatePayments to set
      */
     public void setAllowAssociatePayments(Boolean allowAssociatePayments) {
@@ -511,6 +565,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the unitOfMeasureKind.
      * @return the unitOfMeasureKind
      */
     public UnitOfMeasureKindTransfer getUnitOfMeasureKind() {
@@ -518,6 +573,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the unitOfMeasureKind.
      * @param unitOfMeasureKind the unitOfMeasureKind to set
      */
     public void setUnitOfMeasureKind(UnitOfMeasureKindTransfer unitOfMeasureKind) {
@@ -525,6 +581,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPriceType.
      * @return the itemPriceType
      */
     public ItemPriceTypeTransfer getItemPriceType() {
@@ -532,6 +589,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemPriceType.
      * @param itemPriceType the itemPriceType to set
      */
     public void setItemPriceType(ItemPriceTypeTransfer itemPriceType) {
@@ -539,6 +597,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the cancellationPolicy.
      * @return the cancellationPolicy
      */
     public CancellationPolicyTransfer getCancellationPolicy() {
@@ -546,6 +605,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the cancellationPolicy.
      * @param cancellationPolicy the cancellationPolicy to set
      */
     public void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy) {
@@ -553,6 +613,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the returnPolicy.
      * @return the returnPolicy
      */
     public ReturnPolicyTransfer getReturnPolicy() {
@@ -560,6 +621,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the returnPolicy.
      * @param returnPolicy the returnPolicy to set
      */
     public void setReturnPolicy(ReturnPolicyTransfer returnPolicy) {
@@ -567,6 +629,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the description.
      * @return the description
      */
     public String getDescription() {
@@ -574,6 +637,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the description.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -581,6 +645,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemStatus.
      * @return the itemStatus
      */
     public WorkflowEntityStatusTransfer getItemStatus() {
@@ -588,6 +653,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemStatus.
      * @param itemStatus the itemStatus to set
      */
     public void setItemStatus(WorkflowEntityStatusTransfer itemStatus) {
@@ -595,6 +661,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemShippingTimes.
      * @return the itemShippingTimes
      */
     public ListWrapper<ItemShippingTimeTransfer> getItemShippingTimes() {
@@ -602,6 +669,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemShippingTimes.
      * @param itemShippingTimes the itemShippingTimes to set
      */
     public void setItemShippingTimes(ListWrapper<ItemShippingTimeTransfer> itemShippingTimes) {
@@ -609,6 +677,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemAliases.
      * @return the itemAliases
      */
     public ListWrapper<ItemAliasTransfer> getItemAliases() {
@@ -616,6 +685,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemAliases.
      * @param itemAliases the itemAliases to set
      */
     public void setItemAliases(ListWrapper<ItemAliasTransfer> itemAliases) {
@@ -623,6 +693,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPrices.
      * @return the itemPrices
      */
     public ListWrapper<ItemPriceTransfer> getItemPrices() {
@@ -630,6 +701,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemPrices.
      * @param itemPrices the itemPrices to set
      */
     public void setItemPrices(ListWrapper<ItemPriceTransfer> itemPrices) {
@@ -637,6 +709,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitOfMeasureTypes.
      * @return the itemUnitOfMeasureTypes
      */
     public ListWrapper<ItemUnitOfMeasureTypeTransfer> getItemUnitOfMeasureTypes() {
@@ -644,6 +717,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemUnitOfMeasureTypes.
      * @param itemUnitOfMeasureTypes the itemUnitOfMeasureTypes to set
      */
     public void setItemUnitOfMeasureTypes(ListWrapper<ItemUnitOfMeasureTypeTransfer> itemUnitOfMeasureTypes) {
@@ -651,6 +725,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemDescriptions.
      * @return the itemDescriptions
      */
     public ListWrapper<ItemDescriptionTransfer> getItemDescriptions() {
@@ -658,6 +733,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemDescriptions.
      * @param itemDescriptions the itemDescriptions to set
      */
     public void setItemDescriptions(ListWrapper<ItemDescriptionTransfer> itemDescriptions) {
@@ -665,6 +741,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemVolumes.
      * @return the itemVolumes
      */
     public ListWrapper<ItemVolumeTransfer> getItemVolumes() {
@@ -672,6 +749,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemVolumes.
      * @param itemVolumes the itemVolumes to set
      */
     public void setItemVolumes(ListWrapper<ItemVolumeTransfer> itemVolumes) {
@@ -679,6 +757,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemWeights.
      * @return the itemWeights
      */
     public ListWrapper<ItemWeightTransfer> getItemWeights() {
@@ -686,6 +765,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemWeights.
      * @param itemWeights the itemWeights to set
      */
     public void setItemWeights(ListWrapper<ItemWeightTransfer> itemWeights) {
@@ -693,6 +773,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the offerItems.
      * @return the offerItems
      */
     public ListWrapper<OfferItemTransfer> getOfferItems() {
@@ -700,6 +781,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the offerItems.
      * @param offerItems the offerItems to set
      */
     public void setOfferItems(ListWrapper<OfferItemTransfer> offerItems) {
@@ -707,6 +789,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the vendorItems.
      * @return the vendorItems
      */
     public ListWrapper<VendorItemTransfer> getVendorItems() {
@@ -714,6 +797,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the vendorItems.
      * @param vendorItems the vendorItems to set
      */
     public void setVendorItems(ListWrapper<VendorItemTransfer> vendorItems) {
@@ -721,6 +805,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemCountryOfOrigins.
      * @return the itemCountryOfOrigins
      */
     public MapWrapper<ItemCountryOfOriginTransfer> getItemCountryOfOrigins() {
@@ -728,6 +813,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemCountryOfOrigins.
      * @param itemCountryOfOrigins the itemCountryOfOrigins to set
      */
     public void setItemCountryOfOrigins(MapWrapper<ItemCountryOfOriginTransfer> itemCountryOfOrigins) {
@@ -735,6 +821,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemKitMembers.
      * @return the itemKitMembers
      */
     public ListWrapper<ItemKitMemberTransfer> getItemKitMembers() {
@@ -742,6 +829,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemKitMembers.
      * @param itemKitMembers the itemKitMembers to set
      */
     public void setItemKitMembers(ListWrapper<ItemKitMemberTransfer> itemKitMembers) {
@@ -749,6 +837,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemPackCheckRequirements.
      * @return the itemPackCheckRequirements
      */
     public ListWrapper<ItemPackCheckRequirementTransfer> getItemPackCheckRequirements() {
@@ -756,6 +845,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemPackCheckRequirements.
      * @param itemPackCheckRequirements the itemPackCheckRequirements to set
      */
     public void setItemPackCheckRequirements(ListWrapper<ItemPackCheckRequirementTransfer> itemPackCheckRequirements) {
@@ -763,6 +853,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitCustomerTypeLimits.
      * @return the itemUnitCustomerTypeLimits
      */
     public ListWrapper<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimits() {
@@ -770,6 +861,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemUnitCustomerTypeLimits.
      * @param itemUnitCustomerTypeLimits the itemUnitCustomerTypeLimits to set
      */
     public void setItemUnitCustomerTypeLimits(ListWrapper<ItemUnitCustomerTypeLimitTransfer> itemUnitCustomerTypeLimits) {
@@ -777,6 +869,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitLimits.
      * @return the itemUnitLimits
      */
     public ListWrapper<ItemUnitLimitTransfer> getItemUnitLimits() {
@@ -784,6 +877,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemUnitLimits.
      * @param itemUnitLimits the itemUnitLimits to set
      */
     public void setItemUnitLimits(ListWrapper<ItemUnitLimitTransfer> itemUnitLimits) {
@@ -791,6 +885,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemUnitPriceLimits.
      * @return the itemUnitPriceLimits
      */
     public ListWrapper<ItemUnitPriceLimitTransfer> getItemUnitPriceLimits() {
@@ -798,6 +893,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemUnitPriceLimits.
      * @param itemUnitPriceLimits the itemUnitPriceLimits to set
      */
     public void setItemUnitPriceLimits(ListWrapper<ItemUnitPriceLimitTransfer> itemUnitPriceLimits) {
@@ -805,6 +901,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the relatedItems.
      * @return the relatedItems
      */
     public MapWrapper<ListWrapper<RelatedItemTransfer>> getRelatedItems() {
@@ -812,6 +909,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the relatedItems.
      * @param relatedItems the relatedItems to set
      */
     public void setRelatedItems(MapWrapper<ListWrapper<RelatedItemTransfer>> relatedItems) {
@@ -819,6 +917,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemHarmonizedTariffScheduleCodes.
      * @return the itemHarmonizedTariffScheduleCodes
      */
     public ListWrapper<ItemHarmonizedTariffScheduleCodeTransfer> getItemHarmonizedTariffScheduleCodes() {
@@ -826,6 +925,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemHarmonizedTariffScheduleCodes.
      * @param itemHarmonizedTariffScheduleCodes the itemHarmonizedTariffScheduleCodes to set
      */
     public void setItemHarmonizedTariffScheduleCodes(ListWrapper<ItemHarmonizedTariffScheduleCodeTransfer> itemHarmonizedTariffScheduleCodes) {
@@ -833,6 +933,7 @@ public class ItemTransfer
     }
 
     /**
+     * Returns the itemTaxClassifications.
      * @return the itemTaxClassifications
      */
     public ListWrapper<ItemTaxClassificationTransfer> getItemTaxClassifications() {
@@ -840,6 +941,7 @@ public class ItemTransfer
     }
 
     /**
+     * Sets the itemTaxClassifications.
      * @param itemTaxClassifications the itemTaxClassifications to set
      */
     public void setItemTaxClassifications(ListWrapper<ItemTaxClassificationTransfer> itemTaxClassifications) {
