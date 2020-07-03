@@ -40,7 +40,7 @@ public abstract class BaseClearResultsCommand<F extends BaseClearResultsForm>
     }
 
     /** Creates a new instance of BaseClearResultsCommand */
-    public BaseClearResultsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
+    protected BaseClearResultsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
