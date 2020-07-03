@@ -129,7 +129,12 @@ public class OfferItemPriceFilterEvaluator
         }
         
         if(initialUnitPrice != unitPrice) {
-            filteredItemFixedPrice = filteredItemFixedPrice.clone();
+            try {
+                filteredItemFixedPrice = filteredItemFixedPrice.clone();
+            } catch(CloneNotSupportedException ex) {
+                throw new RuntimeException((ex));
+            }
+
             filteredItemFixedPrice.setUnitPrice(unitPrice);
         }
         
