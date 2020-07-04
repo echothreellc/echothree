@@ -73,8 +73,7 @@ public class AddActionForm
     private String name;
     private String emailAddress;
     private Boolean allowSolicitation;
-    private Boolean taxable;
-    
+
     private void setupVendorTypeChoices() {
         if(vendorTypeChoices == null) {
             try {
@@ -364,20 +363,11 @@ public class AddActionForm
         this.allowSolicitation = allowSolicitation;
     }
     
-    public Boolean getTaxable() {
-        return taxable;
-    }
-    
-    public void setTaxable(Boolean taxable) {
-        this.taxable = taxable;
-    }
-    
     @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
         setAllowSolicitation(Boolean.FALSE);
-        setTaxable(Boolean.FALSE);
         setUseItemPurchasingCategories(Boolean.FALSE);
     }
     

@@ -26,8 +26,5 @@ public interface CreateVendorForm
     
     String getAllowSolicitation();
     void setAllowSolicitation(String allowSolicitation);
-    
-    String getTaxable();
-    void setTaxable(String taxable);
-    
+
 }

@@ -84,8 +84,7 @@ public class AddAction
             commandForm.setPreferredDateTimeFormatName(actionForm.getDateTimeFormatChoice());
             commandForm.setEmailAddress(actionForm.getEmailAddress());
             commandForm.setAllowSolicitation(actionForm.getAllowSolicitation().toString());
-            commandForm.setTaxable(actionForm.getTaxable().toString());
-            
+
             CommandResult commandResult = PartyUtil.getHome().createVendor(getUserVisitPK(request), commandForm);
             
             if(commandResult.hasErrors()) {

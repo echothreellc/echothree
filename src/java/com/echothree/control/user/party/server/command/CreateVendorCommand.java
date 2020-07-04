@@ -112,8 +112,7 @@ public class CreateVendorCommand
                 new FieldDefinition("PreferredJavaTimeZoneName", FieldType.STRING, false, null, null),
                 new FieldDefinition("PreferredDateTimeFormatName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EmailAddress", FieldType.EMAIL_ADDRESS, false, null, null),
-                new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("Taxable", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null)
                 ));
     }
     
@@ -194,7 +193,6 @@ public class CreateVendorCommand
                                                     }
 
                                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                                        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                                                         var coreControl = getCoreControl();
                                                         var termControl = (TermControl)Session.getModelController(TermControl.class);
                                                         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
@@ -212,7 +210,6 @@ public class CreateVendorCommand
                                                         String name = form.getName();
                                                         String emailAddress = form.getEmailAddress();
                                                         Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                                        Boolean taxable = Boolean.valueOf(form.getTaxable());
                                                         String strMinimumPurchaseOrderLines = form.getMinimumPurchaseOrderLines();
                                                         Integer minimumPurchaseOrderLines = strMinimumPurchaseOrderLines == null ? null : Integer.valueOf(strMinimumPurchaseOrderLines);
                                                         String strMaximumPurchaseOrderLines = form.getMaximumPurchaseOrderLines();
@@ -274,7 +271,7 @@ public class CreateVendorCommand
                                                                     ContactMechanismPurposes.PRIMARY_EMAIL.name(), createdBy);
                                                         }
 
-                                                        termControl.createPartyTerm(party, termControl.getDefaultTerm(), taxable, createdBy);
+                                                        termControl.createPartyTerm(party, termControl.getDefaultTerm(), null, createdBy);
 
                                                         ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
 
