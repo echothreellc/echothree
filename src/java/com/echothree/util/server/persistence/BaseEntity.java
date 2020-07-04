@@ -28,12 +28,12 @@ public abstract class BaseEntity {
     protected EntityPermission _entityPermission;
     
     /** Creates a new instance of BaseEntity */
-    public BaseEntity() {
+    protected BaseEntity() {
         throw new PersistenceException(INVALID_CONSTRUCTOR_EXCEPTION);
     }
     
     /** Creates a new instance of BaseEntity */
-    public BaseEntity(EntityPermission entityPermission) {
+    protected BaseEntity(EntityPermission entityPermission) {
         _entityPermission = entityPermission;
     }
     
