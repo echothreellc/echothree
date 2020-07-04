@@ -19,26 +19,26 @@ package com.echothree.model.control.batch.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseBatchException
+public abstract class BaseBatchException
         extends BaseException {
     
     /** Creates a new instance of BaseBatchException */
-    public BaseBatchException() {
+    protected BaseBatchException() {
         super();
     }
     
     /** Creates a new instance of BaseBatchException */
-    public BaseBatchException(String message) {
+    protected BaseBatchException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseBatchException */
-    public BaseBatchException(Throwable cause) {
+    protected BaseBatchException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseBatchException */
-    public BaseBatchException(Message message) {
+    protected BaseBatchException(Message message) {
         super(message);
     }
 

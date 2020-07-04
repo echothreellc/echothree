@@ -19,26 +19,26 @@ package com.echothree.model.control.track.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseTrackException
+public abstract class BaseTrackException
         extends BaseException {
     
     /** Creates a new instance of BaseTrackException */
-    public BaseTrackException() {
+    protected BaseTrackException() {
         super();
     }
     
     /** Creates a new instance of BaseTrackException */
-    public BaseTrackException(String message) {
+    protected BaseTrackException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseTrackException */
-    public BaseTrackException(Throwable cause) {
+    protected BaseTrackException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseTrackException */
-    public BaseTrackException(Message message) {
+    protected BaseTrackException(Message message) {
         super(message);
     }
 

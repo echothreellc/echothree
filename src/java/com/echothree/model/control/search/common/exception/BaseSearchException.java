@@ -19,26 +19,26 @@ package com.echothree.model.control.search.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseSearchException
+public abstract class BaseSearchException
         extends BaseException {
     
     /** Creates a new instance of BaseSearchException */
-    public BaseSearchException() {
+    protected BaseSearchException() {
         super();
     }
     
     /** Creates a new instance of BaseSearchException */
-    public BaseSearchException(String message) {
+    protected BaseSearchException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseSearchException */
-    public BaseSearchException(Throwable cause) {
+    protected BaseSearchException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseSearchException */
-    public BaseSearchException(Message message) {
+    protected BaseSearchException(Message message) {
         super(message);
     }
 

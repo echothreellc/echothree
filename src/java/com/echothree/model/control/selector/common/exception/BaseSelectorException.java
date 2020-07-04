@@ -19,26 +19,26 @@ package com.echothree.model.control.selector.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseSelectorException
+public abstract class BaseSelectorException
         extends BaseException {
     
     /** Creates a new instance of BaseSelectorException */
-    public BaseSelectorException() {
+    protected BaseSelectorException() {
         super();
     }
     
     /** Creates a new instance of BaseSelectorException */
-    public BaseSelectorException(String message) {
+    protected BaseSelectorException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseSelectorException */
-    public BaseSelectorException(Throwable cause) {
+    protected BaseSelectorException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseSelectorException */
-    public BaseSelectorException(Message message) {
+    protected BaseSelectorException(Message message) {
         super(message);
     }
 

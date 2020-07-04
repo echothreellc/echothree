@@ -19,26 +19,26 @@ package com.echothree.model.control.index.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseIndexException
+public abstract class BaseIndexException
         extends BaseException {
     
     /** Creates a new instance of BaseIndexException */
-    public BaseIndexException() {
+    protected BaseIndexException() {
         super();
     }
     
     /** Creates a new instance of BaseIndexException */
-    public BaseIndexException(String message) {
+    protected BaseIndexException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseIndexException */
-    public BaseIndexException(Throwable cause) {
+    protected BaseIndexException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseIndexException */
-    public BaseIndexException(Message message) {
+    protected BaseIndexException(Message message) {
         super(message);
     }
 

@@ -19,26 +19,26 @@ package com.echothree.model.control.training.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseTrainingException
+public abstract class BaseTrainingException
         extends BaseException {
     
     /** Creates a new instance of BaseTrainingException */
-    public BaseTrainingException() {
+    protected BaseTrainingException() {
         super();
     }
     
     /** Creates a new instance of BaseTrainingException */
-    public BaseTrainingException(String message) {
+    protected BaseTrainingException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseTrainingException */
-    public BaseTrainingException(Throwable cause) {
+    protected BaseTrainingException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseTrainingException */
-    public BaseTrainingException(Message message) {
+    protected BaseTrainingException(Message message) {
         super(message);
     }
 

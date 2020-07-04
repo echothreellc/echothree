@@ -19,26 +19,26 @@ package com.echothree.model.control.security.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseSecurityException
+public abstract class BaseSecurityException
         extends BaseException {
     
     /** Creates a new instance of BaseSecurityException */
-    public BaseSecurityException() {
+    protected BaseSecurityException() {
         super();
     }
     
     /** Creates a new instance of BaseSecurityException */
-    public BaseSecurityException(String message) {
+    protected BaseSecurityException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseSecurityException */
-    public BaseSecurityException(Throwable cause) {
+    protected BaseSecurityException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseSecurityException */
-    public BaseSecurityException(Message message) {
+    protected BaseSecurityException(Message message) {
         super(message);
     }
 

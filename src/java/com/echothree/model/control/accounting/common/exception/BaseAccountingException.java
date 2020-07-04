@@ -19,26 +19,26 @@ package com.echothree.model.control.accounting.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseAccountingException
+public abstract class BaseAccountingException
         extends BaseException {
     
     /** Creates a new instance of BaseAccountingException */
-    public BaseAccountingException() {
+    protected BaseAccountingException() {
         super();
     }
     
     /** Creates a new instance of BaseAccountingException */
-    public BaseAccountingException(String message) {
+    protected BaseAccountingException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseAccountingException */
-    public BaseAccountingException(Throwable cause) {
+    protected BaseAccountingException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseAccountingException */
-    public BaseAccountingException(Message message) {
+    protected BaseAccountingException(Message message) {
         super(message);
     }
 

@@ -19,26 +19,26 @@ package com.echothree.model.control.license.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseLicenseException
+public abstract class BaseLicenseException
         extends BaseException {
     
     /** Creates a new instance of BaseLicenseException */
-    public BaseLicenseException() {
+    protected BaseLicenseException() {
         super();
     }
     
     /** Creates a new instance of BaseLicenseException */
-    public BaseLicenseException(String message) {
+    protected BaseLicenseException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseLicenseException */
-    public BaseLicenseException(Throwable cause) {
+    protected BaseLicenseException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseLicenseException */
-    public BaseLicenseException(Message message) {
+    protected BaseLicenseException(Message message) {
         super(message);
     }
 

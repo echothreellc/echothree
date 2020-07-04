@@ -19,26 +19,26 @@ package com.echothree.model.control.contact.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseContactException
+public abstract class BaseContactException
         extends BaseException {
     
     /** Creates a new instance of BaseContactException */
-    public BaseContactException() {
+    protected BaseContactException() {
         super();
     }
     
     /** Creates a new instance of BaseContactException */
-    public BaseContactException(String message) {
+    protected BaseContactException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseContactException */
-    public BaseContactException(Throwable cause) {
+    protected BaseContactException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseContactException */
-    public BaseContactException(Message message) {
+    protected BaseContactException(Message message) {
         super(message);
     }
 

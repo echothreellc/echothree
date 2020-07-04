@@ -19,26 +19,26 @@ package com.echothree.model.control.offer.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseOfferException
+public abstract class BaseOfferException
         extends BaseException {
     
     /** Creates a new instance of BaseOfferException */
-    public BaseOfferException() {
+    protected BaseOfferException() {
         super();
     }
     
     /** Creates a new instance of BaseOfferException */
-    public BaseOfferException(String message) {
+    protected BaseOfferException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseOfferException */
-    public BaseOfferException(Throwable cause) {
+    protected BaseOfferException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseOfferException */
-    public BaseOfferException(Message message) {
+    protected BaseOfferException(Message message) {
         super(message);
     }
 

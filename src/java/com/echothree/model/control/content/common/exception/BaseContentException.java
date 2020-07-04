@@ -19,26 +19,26 @@ package com.echothree.model.control.content.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseContentException
+public abstract class BaseContentException
         extends BaseException {
     
     /** Creates a new instance of BaseContentException */
-    public BaseContentException() {
+    protected BaseContentException() {
         super();
     }
     
     /** Creates a new instance of BaseContentException */
-    public BaseContentException(String message) {
+    protected BaseContentException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseContentException */
-    public BaseContentException(Throwable cause) {
+    protected BaseContentException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseContentException */
-    public BaseContentException(Message message) {
+    protected BaseContentException(Message message) {
         super(message);
     }
 

@@ -19,26 +19,26 @@ package com.echothree.model.control.user.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseUserException
+public abstract class BaseUserException
         extends BaseException {
     
     /** Creates a new instance of BaseUserException */
-    public BaseUserException() {
+    protected BaseUserException() {
         super();
     }
     
     /** Creates a new instance of BaseUserException */
-    public BaseUserException(String message) {
+    protected BaseUserException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseUserException */
-    public BaseUserException(Throwable cause) {
+    protected BaseUserException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseUserException */
-    public BaseUserException(Message message) {
+    protected BaseUserException(Message message) {
         super(message);
     }
 

@@ -19,26 +19,26 @@ package com.echothree.model.control.party.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BasePartyException
+public abstract class BasePartyException
         extends BaseException {
     
     /** Creates a new instance of BasePartyException */
-    public BasePartyException() {
+    protected BasePartyException() {
         super();
     }
     
     /** Creates a new instance of BasePartyException */
-    public BasePartyException(String message) {
+    protected BasePartyException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BasePartyException */
-    public BasePartyException(Throwable cause) {
+    protected BasePartyException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BasePartyException */
-    public BasePartyException(Message message) {
+    protected BasePartyException(Message message) {
         super(message);
     }
 

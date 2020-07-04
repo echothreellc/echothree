@@ -19,26 +19,26 @@ package com.echothree.model.control.rating.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseRatingException
+public abstract class BaseRatingException
         extends BaseException {
     
     /** Creates a new instance of BaseRatingException */
-    public BaseRatingException() {
+    protected BaseRatingException() {
         super();
     }
     
     /** Creates a new instance of BaseRatingException */
-    public BaseRatingException(String message) {
+    protected BaseRatingException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseRatingException */
-    public BaseRatingException(Throwable cause) {
+    protected BaseRatingException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseRatingException */
-    public BaseRatingException(Message message) {
+    protected BaseRatingException(Message message) {
         super(message);
     }
 

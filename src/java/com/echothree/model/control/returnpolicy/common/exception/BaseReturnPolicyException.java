@@ -19,26 +19,26 @@ package com.echothree.model.control.returnpolicy.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseReturnPolicyException
+public abstract class BaseReturnPolicyException
         extends BaseException {
     
     /** Creates a new instance of BaseReturnPolicyException */
-    public BaseReturnPolicyException() {
+    protected BaseReturnPolicyException() {
         super();
     }
     
     /** Creates a new instance of BaseReturnPolicyException */
-    public BaseReturnPolicyException(String message) {
+    protected BaseReturnPolicyException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseReturnPolicyException */
-    public BaseReturnPolicyException(Throwable cause) {
+    protected BaseReturnPolicyException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseReturnPolicyException */
-    public BaseReturnPolicyException(Message message) {
+    protected BaseReturnPolicyException(Message message) {
         super(message);
     }
 

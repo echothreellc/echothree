@@ -19,26 +19,26 @@ package com.echothree.model.control.workflow.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseWorkflowException
+public abstract class BaseWorkflowException
         extends BaseException {
     
     /** Creates a new instance of BaseWorkflowException */
-    public BaseWorkflowException() {
+    protected BaseWorkflowException() {
         super();
     }
     
     /** Creates a new instance of BaseWorkflowException */
-    public BaseWorkflowException(String message) {
+    protected BaseWorkflowException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseWorkflowException */
-    public BaseWorkflowException(Throwable cause) {
+    protected BaseWorkflowException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseWorkflowException */
-    public BaseWorkflowException(Message message) {
+    protected BaseWorkflowException(Message message) {
         super(message);
     }
 

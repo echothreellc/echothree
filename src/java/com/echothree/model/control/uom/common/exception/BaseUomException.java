@@ -19,26 +19,26 @@ package com.echothree.model.control.uom.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseUomException
+public abstract class BaseUomException
         extends BaseException {
     
     /** Creates a new instance of BaseUomException */
-    public BaseUomException() {
+    protected BaseUomException() {
         super();
     }
     
     /** Creates a new instance of BaseUomException */
-    public BaseUomException(String message) {
+    protected BaseUomException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseUomException */
-    public BaseUomException(Throwable cause) {
+    protected BaseUomException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseUomException */
-    public BaseUomException(Message message) {
+    protected BaseUomException(Message message) {
         super(message);
     }
 

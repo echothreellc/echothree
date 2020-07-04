@@ -23,22 +23,22 @@ public abstract class BaseShipmentException
         extends BaseException {
     
     /** Creates a new instance of BaseShipmentException */
-    public BaseShipmentException() {
+    protected BaseShipmentException() {
         super();
     }
     
     /** Creates a new instance of BaseShipmentException */
-    public BaseShipmentException(String message) {
+    protected BaseShipmentException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseShipmentException */
-    public BaseShipmentException(Throwable cause) {
+    protected BaseShipmentException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseShipmentException */
-    public BaseShipmentException(Message message) {
+    protected BaseShipmentException(Message message) {
         super(message);
     }
 

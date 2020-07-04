@@ -19,26 +19,26 @@ package com.echothree.model.control.sales.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseSalesException
+public abstract class BaseSalesException
         extends BaseException {
     
     /** Creates a new instance of BaseSalesException */
-    public BaseSalesException() {
+    protected BaseSalesException() {
         super();
     }
     
     /** Creates a new instance of BaseSalesException */
-    public BaseSalesException(String message) {
+    protected BaseSalesException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseSalesException */
-    public BaseSalesException(Throwable cause) {
+    protected BaseSalesException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseSalesException */
-    public BaseSalesException(Message message) {
+    protected BaseSalesException(Message message) {
         super(message);
     }
 

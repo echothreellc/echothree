@@ -19,26 +19,26 @@ package com.echothree.model.control.graphql.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseGraphQlException
+public abstract class BaseGraphQlException
         extends BaseException {
     
     /** Creates a new instance of BaseGraphQlException */
-    public BaseGraphQlException() {
+    protected BaseGraphQlException() {
         super();
     }
     
     /** Creates a new instance of BaseGraphQlException */
-    public BaseGraphQlException(String message) {
+    protected BaseGraphQlException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseGraphQlException */
-    public BaseGraphQlException(Throwable cause) {
+    protected BaseGraphQlException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseGraphQlException */
-    public BaseGraphQlException(Message message) {
+    protected BaseGraphQlException(Message message) {
         super(message);
     }
 

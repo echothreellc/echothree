@@ -19,26 +19,26 @@ package com.echothree.model.control.vendor.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseVendorException
+public abstract class BaseVendorException
         extends BaseException {
     
     /** Creates a new instance of BaseVendorException */
-    public BaseVendorException() {
+    protected BaseVendorException() {
         super();
     }
     
     /** Creates a new instance of BaseVendorException */
-    public BaseVendorException(String message) {
+    protected BaseVendorException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseVendorException */
-    public BaseVendorException(Throwable cause) {
+    protected BaseVendorException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseVendorException */
-    public BaseVendorException(Message message) {
+    protected BaseVendorException(Message message) {
         super(message);
     }
 

@@ -19,26 +19,26 @@ package com.echothree.model.control.term.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseTermException
+public abstract class BaseTermException
         extends BaseException {
     
     /** Creates a new instance of BaseTermException */
-    public BaseTermException() {
+    protected BaseTermException() {
         super();
     }
     
     /** Creates a new instance of BaseTermException */
-    public BaseTermException(String message) {
+    protected BaseTermException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseTermException */
-    public BaseTermException(Throwable cause) {
+    protected BaseTermException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseTermException */
-    public BaseTermException(Message message) {
+    protected BaseTermException(Message message) {
         super(message);
     }
 
