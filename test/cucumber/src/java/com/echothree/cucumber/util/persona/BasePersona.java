@@ -20,6 +20,11 @@ import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
+import com.echothree.control.user.contact.common.form.CreateContactEmailAddressForm;
+import com.echothree.control.user.contact.common.form.CreateContactPostalAddressForm;
+import com.echothree.control.user.contact.common.form.CreateContactTelephoneForm;
+import com.echothree.control.user.contact.common.form.CreateContactWebAddressForm;
+import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
@@ -77,9 +82,18 @@ public class BasePersona {
     }
 
     // Contact
+    public PartyContactMechanismSpec partyContactMechanismSpec;
+
+    public CreateContactEmailAddressForm createContactEmailAddressForm;
     public ContactEmailAddressEdit contactEmailAddressEdit;
+
+    public CreateContactPostalAddressForm createContactPostalAddressForm;
     public ContactPostalAddressEdit contactPostalAddressEdit;
+
+    public CreateContactTelephoneForm createContactTelephoneForm;
     public ContactTelephoneEdit contactTelephoneEdit;
+
+    public CreateContactWebAddressForm createContactWebAddressForm;
     public ContactWebAddressEdit contactWebAddressEdit;
 
     public String lastEmailAddressContactMechanismName;
@@ -117,6 +131,9 @@ public class BasePersona {
     public CreateCustomerWithLoginForm createCustomerWithLoginForm;
 
     public String lastCustomerName;
+
+    // Employee
+    public String lastEmployeeName;
 
     // Item
     public CreateItemForm createItemForm;
@@ -165,5 +182,8 @@ public class BasePersona {
     public VendorItemCostEdit vendorItemCostEdit;
 
     public String lastVendorName;
+
+    // Warehouse
+    public String lastWarehouseName;
 
 }
