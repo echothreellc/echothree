@@ -28,6 +28,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyTelephoneSteps implements En {
 
     public PartyTelephoneSteps() {
+        When("^the user begins entering a new telephone number$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactTelephoneEdit).isNull();
+
+                    persona.contactTelephoneEdit = ContactUtil.getHome().getContactTelephoneEdit();
+                });
+
+        When("^the user adds the new telephone number$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactTelephoneEdit).isNotNull();
+
+                    var contactService = ContactUtil.getHome();
+                    var createContactTelephoneForm = contactService.getCreateContactTelephoneForm();
+
+                    createContactTelephoneForm.set(persona.contactTelephoneEdit.get());
+
+                    var commandResult = contactService.createContactTelephone(persona.userVisitPK, createContactTelephoneForm);
+
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreateContactTelephoneResult)commandResult.getExecutionResult().getResult();
+
+                    persona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
+                    persona.contactTelephoneEdit = null;
+                });
+
         When("^the user deletes the last telephone number added$",
                 () -> {
                     var contactService = ContactUtil.getHome();
@@ -39,13 +68,51 @@ public class PartyTelephoneSteps implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactTelephoneForm);
                 });
 
-        When("^the user begins entering a new telephone number$",
+        When("^the user begins editing the last telephone number added$",
                 () -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.contactTelephoneEdit).isNull();
 
-                    persona.contactTelephoneEdit = ContactUtil.getHome().getContactTelephoneEdit();
+                    spec.setContactMechanismName(persona.lastTelephoneContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = ContactUtil.getHome().editContactTelephone(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditContactTelephoneResult)executionResult.getResult();
+
+                    if(!executionResult.getHasErrors()) {
+                        persona.contactTelephoneEdit = result.getEdit();
+                    }
+                });
+
+        When("^the user finishes editing the telephone number$",
+                () -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var persona = CurrentPersona.persona;
+                    var edit = persona.contactTelephoneEdit;
+
+                    assertThat(edit).isNotNull();
+
+                    spec.setContactMechanismName(persona.lastTelephoneContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+
+                    var commandResult = ContactUtil.getHome().editContactTelephone(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    persona.contactTelephoneEdit = null;
                 });
 
         When("^the user (does|does not) allow solicitations to the telephone number$",
@@ -100,73 +167,6 @@ public class PartyTelephoneSteps implements En {
                     assertThat(persona.contactTelephoneEdit).isNotNull();
 
                     persona.contactTelephoneEdit.setTelephoneExtension(extension);
-                });
-
-        When("^the user adds the new telephone number$",
-                () -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactTelephoneEdit).isNotNull();
-
-                    var contactService = ContactUtil.getHome();
-                    var createContactTelephoneForm = contactService.getCreateContactTelephoneForm();
-
-                    createContactTelephoneForm.set(persona.contactTelephoneEdit.get());
-
-                    var commandResult = contactService.createContactTelephone(persona.userVisitPK, createContactTelephoneForm);
-
-                    LastCommandResult.commandResult = commandResult;
-                    var result = (CreateContactTelephoneResult)commandResult.getExecutionResult().getResult();
-
-                    persona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-                    persona.contactTelephoneEdit = null;
-                });
-
-        When("^the user begins editing the last telephone number added$",
-                () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactTelephoneEdit).isNull();
-
-                    spec.setContactMechanismName(persona.lastTelephoneContactMechanismName);
-
-                    var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
-
-                    commandForm.setSpec(spec);
-                    commandForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = ContactUtil.getHome().editContactTelephone(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
-
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = (EditContactTelephoneResult)executionResult.getResult();
-
-                    if(!executionResult.getHasErrors()) {
-                        persona.contactTelephoneEdit = result.getEdit();
-                    }
-                });
-
-        When("^the user finishes editing the telephone number$",
-                () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-                    var persona = CurrentPersona.persona;
-                    var edit = persona.contactTelephoneEdit;
-
-                    assertThat(edit).isNotNull();
-
-                    spec.setContactMechanismName(persona.lastTelephoneContactMechanismName);
-
-                    var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
-
-                    commandForm.setSpec(spec);
-                    commandForm.setEdit(edit);
-                    commandForm.setEditMode(EditMode.UPDATE);
-
-                    var commandResult = ContactUtil.getHome().editContactTelephone(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
-
-                    persona.contactTelephoneEdit = null;
                 });
     }
 

@@ -28,17 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyWebAddressSteps implements En {
 
     public PartyWebAddressSteps() {
-        When("^the user deletes the last web address added$",
-                () -> {
-                    var contactService = ContactUtil.getHome();
-                    var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
-                    var persona = CurrentPersona.persona;
-
-                    deleteContactWebAddressForm.setContactMechanismName(persona.lastWebAddressContactMechanismName);
-
-                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactWebAddressForm);
-                });
-
         When("^the user begins entering a new web address$",
                 () -> {
                     var persona = CurrentPersona.persona;
@@ -46,24 +35,6 @@ public class PartyWebAddressSteps implements En {
                     assertThat(persona.contactWebAddressEdit).isNull();
 
                     persona.contactWebAddressEdit = ContactUtil.getHome().getContactWebAddressEdit();
-                });
-
-        When("^the user sets the web address's description to \"([^\"]*)\"$",
-                (String description) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactWebAddressEdit).isNotNull();
-
-                    persona.contactWebAddressEdit.setDescription(description);
-                });
-
-        When("^the user sets the web address's url to \"([^\"]*)\"$",
-                (String url) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactWebAddressEdit).isNotNull();
-
-                    persona.contactWebAddressEdit.setUrl(url);
                 });
 
         When("^the user adds the new web address$",
@@ -84,6 +55,17 @@ public class PartyWebAddressSteps implements En {
 
                     persona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
                     persona.contactWebAddressEdit = null;
+                });
+
+        When("^the user deletes the last web address added$",
+                () -> {
+                    var contactService = ContactUtil.getHome();
+                    var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
+                    var persona = CurrentPersona.persona;
+
+                    deleteContactWebAddressForm.setContactMechanismName(persona.lastWebAddressContactMechanismName);
+
+                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactWebAddressForm);
                 });
 
         When("^the user begins editing the last web address added$",
@@ -131,6 +113,24 @@ public class PartyWebAddressSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     persona.contactWebAddressEdit = null;
+                });
+
+        When("^the user sets the web address's description to \"([^\"]*)\"$",
+                (String description) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactWebAddressEdit).isNotNull();
+
+                    persona.contactWebAddressEdit.setDescription(description);
+                });
+
+        When("^the user sets the web address's url to \"([^\"]*)\"$",
+                (String url) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactWebAddressEdit).isNotNull();
+
+                    persona.contactWebAddressEdit.setUrl(url);
                 });
     }
 

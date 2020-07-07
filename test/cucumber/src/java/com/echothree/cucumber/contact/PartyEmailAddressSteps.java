@@ -28,17 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyEmailAddressSteps implements En {
 
     public PartyEmailAddressSteps() {
-        When("^the user deletes the last email address added$",
-                () -> {
-                    var contactService = ContactUtil.getHome();
-                    var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
-                    var persona = CurrentPersona.persona;
-
-                    deleteContactEmailAddressForm.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
-
-                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactEmailAddressForm);
-                });
-
         When("^the user begins entering a new email address$",
                 () -> {
                     var persona = CurrentPersona.persona;
@@ -46,33 +35,6 @@ public class PartyEmailAddressSteps implements En {
                     assertThat(persona.contactEmailAddressEdit).isNull();
 
                     persona.contactEmailAddressEdit = ContactUtil.getHome().getContactEmailAddressEdit();
-                });
-
-        When("^the user (does|does not) allow solicitations to the email address$",
-                (String allowSolicitation) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactEmailAddressEdit).isNotNull();
-
-                    persona.contactEmailAddressEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
-                });
-
-        When("^the user sets the email address's description to \"([^\"]*)\"$",
-                (String description) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactEmailAddressEdit).isNotNull();
-
-                    persona.contactEmailAddressEdit.setDescription(description);
-                });
-
-        When("^the user sets the email address's email address to \"([^\"]*)\"$",
-                (String emailAddress) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactEmailAddressEdit).isNotNull();
-
-                    persona.contactEmailAddressEdit.setEmailAddress(emailAddress);
                 });
 
         When("^the user adds the new email address$",
@@ -93,6 +55,17 @@ public class PartyEmailAddressSteps implements En {
 
                     persona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
                     persona.contactEmailAddressEdit = null;
+                });
+
+        When("^the user deletes the last email address added$",
+                () -> {
+                    var contactService = ContactUtil.getHome();
+                    var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
+                    var persona = CurrentPersona.persona;
+
+                    deleteContactEmailAddressForm.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
+
+                    LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactEmailAddressForm);
                 });
 
         When("^the user begins editing the last email address added$",
@@ -140,6 +113,33 @@ public class PartyEmailAddressSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     persona.contactEmailAddressEdit = null;
+                });
+
+        When("^the user (does|does not) allow solicitations to the email address$",
+                (String allowSolicitation) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactEmailAddressEdit).isNotNull();
+
+                    persona.contactEmailAddressEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+                });
+
+        When("^the user sets the email address's description to \"([^\"]*)\"$",
+                (String description) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactEmailAddressEdit).isNotNull();
+
+                    persona.contactEmailAddressEdit.setDescription(description);
+                });
+
+        When("^the user sets the email address's email address to \"([^\"]*)\"$",
+                (String emailAddress) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactEmailAddressEdit).isNotNull();
+
+                    persona.contactEmailAddressEdit.setEmailAddress(emailAddress);
                 });
     }
 

@@ -28,6 +28,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyPostalAddressSteps implements En {
 
     public PartyPostalAddressSteps() {
+        When("^the user begins entering a new postal address$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactPostalAddressEdit).isNull();
+
+                    persona.contactPostalAddressEdit = ContactUtil.getHome().getContactPostalAddressEdit();
+                });
+
+
+        When("^the user adds the new postal address$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.contactPostalAddressEdit).isNotNull();
+
+                    var contactService = ContactUtil.getHome();
+                    var createContactPostalAddressForm = contactService.getCreateContactPostalAddressForm();
+
+                    createContactPostalAddressForm.set(persona.contactPostalAddressEdit.get());
+
+                    var commandResult = contactService.createContactPostalAddress(persona.userVisitPK, createContactPostalAddressForm);
+
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
+
+                    persona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
+                    persona.contactPostalAddressEdit = null;
+                });
+
         When("^the user deletes the last postal address added$",
                 () -> {
                     var contactService = ContactUtil.getHome();
@@ -39,13 +69,51 @@ public class PartyPostalAddressSteps implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactPostalAddressForm);
                 });
 
-        When("^the user begins entering a new postal address$",
+        When("^the user begins editing the last postal address added$",
                 () -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.contactPostalAddressEdit).isNull();
 
-                    persona.contactPostalAddressEdit = ContactUtil.getHome().getContactPostalAddressEdit();
+                    spec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = ContactUtil.getHome().editContactPostalAddress(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditContactPostalAddressResult)executionResult.getResult();
+
+                    if(!executionResult.getHasErrors()) {
+                        persona.contactPostalAddressEdit = result.getEdit();
+                    }
+                });
+
+        When("^the user finishes editing the postal address$",
+                () -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var persona = CurrentPersona.persona;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(edit).isNotNull();
+
+                    spec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+
+                    var commandResult = ContactUtil.getHome().editContactPostalAddress(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    persona.contactPostalAddressEdit = null;
                 });
 
         When("^the user sets the postal address's first name to \"([^\"]*)\"$",
@@ -154,73 +222,6 @@ public class PartyPostalAddressSteps implements En {
                     assertThat(persona.contactPostalAddressEdit).isNotNull();
 
                     persona.contactPostalAddressEdit.setDescription(description);
-                });
-
-        When("^the user adds the new postal address$",
-                () -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    var contactService = ContactUtil.getHome();
-                    var createContactPostalAddressForm = contactService.getCreateContactPostalAddressForm();
-
-                    createContactPostalAddressForm.set(persona.contactPostalAddressEdit.get());
-
-                    var commandResult = contactService.createContactPostalAddress(persona.userVisitPK, createContactPostalAddressForm);
-
-                    LastCommandResult.commandResult = commandResult;
-                    var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
-
-                    persona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-                    persona.contactPostalAddressEdit = null;
-                });
-
-        When("^the user begins editing the last postal address added$",
-                () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNull();
-
-                    spec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
-
-                    var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
-
-                    commandForm.setSpec(spec);
-                    commandForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = ContactUtil.getHome().editContactPostalAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
-
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = (EditContactPostalAddressResult)executionResult.getResult();
-
-                    if(!executionResult.getHasErrors()) {
-                        persona.contactPostalAddressEdit = result.getEdit();
-                    }
-                });
-
-        When("^the user finishes editing the postal address$",
-                () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-                    var persona = CurrentPersona.persona;
-                    var edit = persona.contactPostalAddressEdit;
-
-                    assertThat(edit).isNotNull();
-
-                    spec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
-
-                    var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
-
-                    commandForm.setSpec(spec);
-                    commandForm.setEdit(edit);
-                    commandForm.setEditMode(EditMode.UPDATE);
-
-                    var commandResult = ContactUtil.getHome().editContactPostalAddress(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
-
-                    persona.contactPostalAddressEdit = null;
                 });
     }
 
