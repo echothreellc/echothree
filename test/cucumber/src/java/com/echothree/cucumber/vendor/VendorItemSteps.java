@@ -140,6 +140,7 @@ public class VendorItemSteps implements En {
                     var spec = persona.vendorItemSpec;
                     var edit = persona.vendorItemEdit;
 
+                    assertThat(spec).isNotNull();
                     assertThat(edit).isNotNull();
 
                     var commandForm = VendorUtil.getHome().getEditVendorItemForm();
