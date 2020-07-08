@@ -19,6 +19,8 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
+import com.echothree.control.user.vendor.common.VendorUtil;
+import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -32,29 +34,27 @@ public class PartyEmailAddressSteps implements En {
                 () -> {
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactEmailAddressForm).isNull();
                     assertThat(persona.contactEmailAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
 
-                    persona.contactEmailAddressEdit = ContactUtil.getHome().getContactEmailAddressEdit();
+                    persona.createContactEmailAddressForm = ContactUtil.getHome().getCreateContactEmailAddressForm();
                 });
 
         When("^the user adds the new email address$",
                 () -> {
                     var persona = CurrentPersona.persona;
+                    var createContactEmailAddressForm = persona.createContactEmailAddressForm;
 
-                    assertThat(persona.contactEmailAddressEdit).isNotNull();
+                    assertThat(createContactEmailAddressForm).isNotNull();
 
-                    var contactService = ContactUtil.getHome();
-                    var createContactEmailAddressForm = contactService.getCreateContactEmailAddressForm();
-
-                    createContactEmailAddressForm.set(persona.contactEmailAddressEdit.get());
-
-                    var commandResult = contactService.createContactEmailAddress(persona.userVisitPK, createContactEmailAddressForm);
+                    var commandResult = ContactUtil.getHome().createContactEmailAddress(persona.userVisitPK, createContactEmailAddressForm);
 
                     LastCommandResult.commandResult = commandResult;
                     var result = (CreateContactEmailAddressResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-                    persona.contactEmailAddressEdit = null;
+                    persona.createContactEmailAddressForm = null;
                 });
 
         When("^the user deletes the last email address added$",
@@ -63,19 +63,32 @@ public class PartyEmailAddressSteps implements En {
                     var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactEmailAddressForm).isNull();
+                    assertThat(persona.contactEmailAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
+
                     deleteContactEmailAddressForm.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
 
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactEmailAddressForm);
                 });
 
-        When("^the user begins editing the last email address added$",
+        When("^the user begins specifying an email address to edit$",
                 () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactEmailAddressForm).isNull();
                     assertThat(persona.contactEmailAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
 
-                    spec.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
+                    persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                });
+
+        When("^the user begins editing the email address$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.partyContactMechanismSpec;
+
+                    assertThat(spec).isNotNull();
 
                     var commandForm = ContactUtil.getHome().getEditContactEmailAddressForm();
 
@@ -95,13 +108,12 @@ public class PartyEmailAddressSteps implements En {
 
         When("^the user finishes editing the email address$",
                 () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var persona = CurrentPersona.persona;
+                    var spec = persona.partyContactMechanismSpec;
                     var edit = persona.contactEmailAddressEdit;
 
+                    assertThat(spec).isNotNull();
                     assertThat(edit).isNotNull();
-
-                    spec.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
 
                     var commandForm = ContactUtil.getHome().getEditContactEmailAddressForm();
 
@@ -112,34 +124,80 @@ public class PartyEmailAddressSteps implements En {
                     var commandResult = ContactUtil.getHome().editContactEmailAddress(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
+                    persona.partyContactMechanismSpec = null;
                     persona.contactEmailAddressEdit = null;
+                });
+
+        When("^the user sets the email address's party to the last party added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var partyContactMechanismSpec = persona.partyContactMechanismSpec;
+                    var createContactEmailAddressForm = persona.createContactEmailAddressForm;
+
+                    assertThat(partyContactMechanismSpec != null || createContactEmailAddressForm != null).isTrue();
+
+                    var lastPartyName = persona.lastPartyName;
+                    if(partyContactMechanismSpec != null) {
+                        partyContactMechanismSpec.setPartyName(lastPartyName);
+                    } else {
+                        createContactEmailAddressForm.setPartyName(lastPartyName);
+                    }
+                });
+
+        When("^the user sets the email address's contact mechanism to the last email address added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var partyContactMechanismSpec = persona.partyContactMechanismSpec;
+
+                    assertThat(partyContactMechanismSpec).isNotNull();
+
+                    partyContactMechanismSpec.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
                 });
 
         When("^the user (does|does not) allow solicitations to the email address$",
                 (String allowSolicitation) -> {
                     var persona = CurrentPersona.persona;
+                    var createContactEmailAddressForm = persona.createContactEmailAddressForm;
+                    var edit = persona.contactEmailAddressEdit;
 
-                    assertThat(persona.contactEmailAddressEdit).isNotNull();
+                    assertThat(createContactEmailAddressForm != null || edit != null).isTrue();
 
-                    persona.contactEmailAddressEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+                    allowSolicitation = Boolean.valueOf(allowSolicitation.equals("does")).toString();
+                    if(createContactEmailAddressForm != null) {
+                        createContactEmailAddressForm.setAllowSolicitation(allowSolicitation);
+                    } else {
+                        edit.setAllowSolicitation(allowSolicitation);
+                    }
                 });
 
         When("^the user sets the email address's description to \"([^\"]*)\"$",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
+                    var createContactEmailAddressForm = persona.createContactEmailAddressForm;
+                    var edit = persona.contactEmailAddressEdit;
 
-                    assertThat(persona.contactEmailAddressEdit).isNotNull();
+                    assertThat(createContactEmailAddressForm != null || edit != null).isTrue();
 
-                    persona.contactEmailAddressEdit.setDescription(description);
+                    if(createContactEmailAddressForm != null) {
+                        createContactEmailAddressForm.setDescription(description);
+                    } else {
+                        edit.setDescription(description);
+                    }
                 });
 
         When("^the user sets the email address's email address to \"([^\"]*)\"$",
                 (String emailAddress) -> {
                     var persona = CurrentPersona.persona;
+                    var createContactEmailAddressForm = persona.createContactEmailAddressForm;
+                    var edit = persona.contactEmailAddressEdit;
 
-                    assertThat(persona.contactEmailAddressEdit).isNotNull();
+                    assertThat(createContactEmailAddressForm != null || edit != null).isTrue();
 
-                    persona.contactEmailAddressEdit.setEmailAddress(emailAddress);
+                    if(createContactEmailAddressForm != null) {
+                        createContactEmailAddressForm.setEmailAddress(emailAddress);
+                    } else {
+                        edit.setEmailAddress(emailAddress);
+                    }
                 });
     }
 

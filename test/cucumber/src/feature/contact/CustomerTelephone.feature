@@ -72,7 +72,9 @@ Feature: Customer telephone
     And the user does allow solicitations to the telephone number
     And the user adds the new telephone number
     Then no error should occur
-    And the user begins editing the last telephone number added
+    And the user begins specifying a telephone number to edit
+    And the user sets the telephone number's contact mechanism to the last telephone number added
+    And the user begins editing the telephone number
     Then no error should occur
     And the user sets the telephone number's area code to "612"
     And the user sets the telephone number's extension to "200"

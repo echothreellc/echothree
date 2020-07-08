@@ -92,7 +92,9 @@ Feature: Customer postal address
     And the user does not allow solicitations to the postal address
     And the user adds the new postal address
     Then no error should occur
-    And the user begins editing the last postal address added
+    And the user begins specifying a postal address to edit
+    And the user sets the postal address's contact mechanism to the last postal address added
+    And the user begins editing the postal address
     Then no error should occur
     And the user sets the postal address's line 1 to "128 N Test Street"
     And the user sets the postal address's description to "Edited Postal"

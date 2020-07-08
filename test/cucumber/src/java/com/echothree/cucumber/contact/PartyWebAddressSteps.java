@@ -17,7 +17,9 @@
 package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
+import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
+import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -32,29 +34,27 @@ public class PartyWebAddressSteps implements En {
                 () -> {
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactWebAddressForm).isNull();
                     assertThat(persona.contactWebAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
 
-                    persona.contactWebAddressEdit = ContactUtil.getHome().getContactWebAddressEdit();
+                    persona.createContactWebAddressForm = ContactUtil.getHome().getCreateContactWebAddressForm();
                 });
 
         When("^the user adds the new web address$",
                 () -> {
                     var persona = CurrentPersona.persona;
+                    var createContactWebAddressForm = persona.createContactWebAddressForm;
 
-                    assertThat(persona.contactWebAddressEdit).isNotNull();
+                    assertThat(createContactWebAddressForm).isNotNull();
 
-                    var contactService = ContactUtil.getHome();
-                    var createContactWebAddressForm = contactService.getCreateContactWebAddressForm();
-
-                    createContactWebAddressForm.set(persona.contactWebAddressEdit.get());
-
-                    var commandResult = contactService.createContactWebAddress(persona.userVisitPK, createContactWebAddressForm);
+                    var commandResult = ContactUtil.getHome().createContactWebAddress(persona.userVisitPK, createContactWebAddressForm);
 
                     LastCommandResult.commandResult = commandResult;
                     var result = (CreateContactWebAddressResult)commandResult.getExecutionResult().getResult();
 
                     persona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-                    persona.contactWebAddressEdit = null;
+                    persona.createContactWebAddressForm = null;
                 });
 
         When("^the user deletes the last web address added$",
@@ -63,19 +63,32 @@ public class PartyWebAddressSteps implements En {
                     var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactWebAddressForm).isNull();
+                    assertThat(persona.contactWebAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
+
                     deleteContactWebAddressForm.setContactMechanismName(persona.lastWebAddressContactMechanismName);
 
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactWebAddressForm);
                 });
 
-        When("^the user begins editing the last web address added$",
+        When("^the user begins specifying a web address to edit$",
                 () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactWebAddressForm).isNull();
                     assertThat(persona.contactWebAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
 
-                    spec.setContactMechanismName(persona.lastWebAddressContactMechanismName);
+                    persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                });
+
+        When("^the user begins editing the web address$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.partyContactMechanismSpec;
+
+                    assertThat(spec).isNotNull();
 
                     var commandForm = ContactUtil.getHome().getEditContactWebAddressForm();
 
@@ -95,13 +108,12 @@ public class PartyWebAddressSteps implements En {
 
         When("^the user finishes editing the web address$",
                 () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var persona = CurrentPersona.persona;
+                    var spec = persona.partyContactMechanismSpec;
                     var edit = persona.contactWebAddressEdit;
 
+                    assertThat(spec).isNotNull();
                     assertThat(edit).isNotNull();
-
-                    spec.setContactMechanismName(persona.lastWebAddressContactMechanismName);
 
                     var commandForm = ContactUtil.getHome().getEditContactWebAddressForm();
 
@@ -112,25 +124,64 @@ public class PartyWebAddressSteps implements En {
                     var commandResult = ContactUtil.getHome().editContactWebAddress(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
+                    persona.partyContactMechanismSpec = null;
                     persona.contactWebAddressEdit = null;
+                });
+
+        When("^the user sets the web address's party to the last party added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var partyContactMechanismSpec = persona.partyContactMechanismSpec;
+                    var createContactWebAddressForm = persona.createContactWebAddressForm;
+
+                    assertThat(partyContactMechanismSpec != null || createContactWebAddressForm != null).isTrue();
+
+                    var lastPartyName = persona.lastPartyName;
+                    if(partyContactMechanismSpec != null) {
+                        partyContactMechanismSpec.setPartyName(lastPartyName);
+                    } else {
+                        createContactWebAddressForm.setPartyName(lastPartyName);
+                    }
+                });
+
+        When("^the user sets the web address's contact mechanism to the last web address added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var partyContactMechanismSpec = persona.partyContactMechanismSpec;
+
+                    assertThat(partyContactMechanismSpec).isNotNull();
+
+                    partyContactMechanismSpec.setContactMechanismName(persona.lastWebAddressContactMechanismName);
                 });
 
         When("^the user sets the web address's description to \"([^\"]*)\"$",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
+                    var createContactWebAddressForm = persona.createContactWebAddressForm;
+                    var edit = persona.contactWebAddressEdit;
 
-                    assertThat(persona.contactWebAddressEdit).isNotNull();
+                    assertThat(createContactWebAddressForm != null || edit != null).isTrue();
 
-                    persona.contactWebAddressEdit.setDescription(description);
+                    if(createContactWebAddressForm != null) {
+                        createContactWebAddressForm.setDescription(description);
+                    } else {
+                        edit.setDescription(description);
+                    }
                 });
 
         When("^the user sets the web address's url to \"([^\"]*)\"$",
                 (String url) -> {
                     var persona = CurrentPersona.persona;
+                    var createContactWebAddressForm = persona.createContactWebAddressForm;
+                    var edit = persona.contactWebAddressEdit;
 
-                    assertThat(persona.contactWebAddressEdit).isNotNull();
+                    assertThat(createContactWebAddressForm != null || edit != null).isTrue();
 
-                    persona.contactWebAddressEdit.setUrl(url);
+                    if(createContactWebAddressForm != null) {
+                        createContactWebAddressForm.setUrl(url);
+                    } else {
+                        edit.setUrl(url);
+                    }
                 });
     }
 
