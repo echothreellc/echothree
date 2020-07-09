@@ -184,6 +184,21 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
+        When("^the user sets the postal address's company name to \"([^\"]*)\"$",
+                (String companyName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setCompanyName(companyName);
+                    } else {
+                        edit.setCompanyName(companyName);
+                    }
+                });
+
         When("^the user sets the postal address's line 1 to \"([^\"]*)\"$",
                 (String address1) -> {
                     var persona = CurrentPersona.persona;
