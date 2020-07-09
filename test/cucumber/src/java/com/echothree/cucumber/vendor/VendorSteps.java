@@ -58,7 +58,12 @@ public class VendorSteps
                     LastCommandResult.commandResult = commandResult;
                     var result = (CreateVendorResult)commandResult.getExecutionResult().getResult();
 
-                    persona.lastVendorName = commandResult.getHasErrors() ? null : result.getVendorName();
+                    if(result != null) {
+                        persona.lastVendorName = commandResult.getHasErrors() ? null : result.getVendorName();
+                        persona.lastPartyName = commandResult.getHasErrors() ? null : result.getPartyName();
+                        persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
+                    }
+
                     persona.createVendorForm = null;
                 });
 
