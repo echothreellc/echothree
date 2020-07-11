@@ -143,4 +143,12 @@
             <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
         </workflow>
     </workflows>
+    <batchTypes>
+        <batchType batchTypeName="SALES_ORDER" parentBatchTypeName="ORDER" batchSequenceTypeName="SALES_ORDER_BATCH"
+                   batchWorkflowName="SALES_ORDER_BATCH_STATUS" batchWorkflowEntranceName="ENTRY" isDefault="false"
+                   sortOrder="1">
+            <batchTypeDescription languageIsoName="en" description="Sales Order" />
+            <batchTypeEntityType componentVendorName="EchoThree" entityTypeName="Order" />
+        </batchType>
+    </batchTypes>
 </initialData>
