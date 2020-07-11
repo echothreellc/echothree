@@ -2212,5 +2212,6 @@ public enum ExecutionErrors {
     UnknownDefaultFreeOnBoard,
     DuplicateFreeOnBoardDescription,
     UnknownFreeOnBoardDescription,
+    FreeOnBoardNotAllowed,
 
 }

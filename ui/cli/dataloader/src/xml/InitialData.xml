@@ -61,7 +61,6 @@
     </includes>
     <generateBaseKeys />
     <includes>
-        <file name="src/xml/InitialBatchTypes.xml" />
         <file name="src/xml/InitialCommunications.xml" />
         <file name="src/xml/InitialPrinters.xml" />
         <file name="src/xml/InitialScales.xml" />
