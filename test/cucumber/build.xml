@@ -105,7 +105,7 @@
             <arg value="--plugin"/>
             <arg value="pretty"/>
             <arg value="--plugin"/>
-            <arg value="html:${test.cucumber.results.html.dir}"/>
+            <arg value="html:${test.cucumber.results.html.dir}/index.html"/>
             <arg value="--glue"/>
             <arg value="com.echothree.cucumber"/>
             <arg value="src/feature"/>

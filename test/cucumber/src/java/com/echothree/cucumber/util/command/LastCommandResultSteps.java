@@ -41,7 +41,7 @@ public class LastCommandResultSteps implements En {
                 while(executionErrors.hasNext()) {
                     var message = executionErrors.next();
 
-                    scenario.write(message.getKey() + ": " + message.getMessage());
+                    scenario.log(message.getKey() + ": " + message.getMessage());
                 }
             }
 
