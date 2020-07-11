@@ -77,10 +77,12 @@ public class SalesOrderBatchLogic
             final Long amount, final BasePK createdBy) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
-        Batch batch = BatchLogic.getInstance().createBatch(eea, BatchConstants.BatchType_SALES_ORDER, createdBy);
+        var batch = BatchLogic.getInstance().createBatch(eea, BatchConstants.BatchType_SALES_ORDER, createdBy);
 
-        orderControl.createOrderBatch(batch, currency, count, amount, createdBy);
-        salesControl.createSalesOrderBatch(batch, paymentMethod, createdBy);
+        if(!eea.hasExecutionErrors()) {
+            orderControl.createOrderBatch(batch, currency, count, amount, createdBy);
+            salesControl.createSalesOrderBatch(batch, paymentMethod, createdBy);
+        }
 
         return batch;
     }

@@ -16,8 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.batch;
 
-import com.echothree.control.user.batch.common.BatchUtil;
 import com.echothree.control.user.batch.common.BatchService;
+import com.echothree.control.user.batch.common.BatchUtil;
 import com.echothree.control.user.batch.common.form.BatchFormFactory;
 import com.echothree.control.user.batch.common.form.CreateBatchTypeDescriptionForm;
 import com.echothree.control.user.batch.common.form.CreateBatchTypeEntityTypeForm;
@@ -29,19 +29,15 @@ import org.xml.sax.SAXException;
 
 public class BatchTypeHandler
         extends BaseHandler {
-    BatchService batchService;
+
+    BatchService batchService = BatchUtil.getHome();
+
     String batchTypeName;
     
     /** Creates a new instance of BatchTypeHandler */
     public BatchTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String batchTypeName)
-            throws SAXException {
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            batchService = BatchUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
         
         this.batchTypeName = batchTypeName;
     }

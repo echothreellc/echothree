@@ -32,4 +32,9 @@
             <orderRoleTypeDescription languageIsoName="en" description="End User" />
         </orderRoleType>
     </orderRoleTypes>
+    <batchTypes>
+        <batchType batchTypeName="ORDER" isDefault="false" sortOrder="1">
+            <batchTypeDescription languageIsoName="en" description="Order" />
+        </batchType>
+    </batchTypes>
 </initialData>

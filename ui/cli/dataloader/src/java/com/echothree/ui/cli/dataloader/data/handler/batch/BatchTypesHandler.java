@@ -28,30 +28,29 @@ import org.xml.sax.SAXException;
 
 public class BatchTypesHandler
         extends BaseHandler {
-    BatchService batchService;
+
+    BatchService batchService = BatchUtil.getHome();
     
     /** Creates a new instance of BatchTypesHandler */
     public BatchTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
-            throws SAXException {
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            batchService = BatchUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("batchType")) {
-            CreateBatchTypeForm commandForm = BatchFormFactory.getCreateBatchTypeForm();
+            var commandForm = BatchFormFactory.getCreateBatchTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
             
-            batchService.createBatchType(initialDataParser.getUserVisit(), commandForm);
-            
+            var commandResult = batchService.createBatchType(initialDataParser.getUserVisit(), commandForm);
+
+            if(commandResult.hasErrors()) {
+                getLog().error(commandResult);
+            }
+
             initialDataParser.pushHandler(new BatchTypeHandler(initialDataParser, this, commandForm.getBatchTypeName()));
         }
     }

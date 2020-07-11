@@ -33,6 +33,8 @@ import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
+import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
@@ -249,6 +251,8 @@ public class CreateCustomerCommand
                                                 }
 
                                                 if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
+                                                    var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+                                                    var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
                                                     var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                                     Soundex soundex = new Soundex();
                                                     PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
@@ -315,6 +319,8 @@ public class CreateCustomerCommand
                                                     }
 
                                                     termControl.createPartyTerm(party, term, customerTypeDetail.getDefaultTaxable(), createdBy);
+
+                                                    partyFreeOnBoardControl.createPartyFreeOnBoard(party, freeOnBoardControl.getDefaultFreeOnBoard(), createdBy);
 
                                                     for(CustomerTypeCreditLimit customerTypeCreditLimit : termControl.getCustomerTypeCreditLimitsByCustomerType(customerType)) {
                                                         Currency currency = customerTypeCreditLimit.getCurrency();

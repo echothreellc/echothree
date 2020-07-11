@@ -19,6 +19,7 @@ package com.echothree.model.control.invoice.server.logic;
 import com.echothree.model.control.invoice.common.InvoiceLineUseTypes;
 import com.echothree.model.control.invoice.common.InvoiceRoleTypes;
 import com.echothree.model.control.invoice.common.InvoiceTimeTypes;
+import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceRoleTypeNameException;
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceSequenceException;
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceSequenceTypeException;
@@ -174,11 +175,9 @@ public class InvoiceLogic
             freeOnBoard = partyFreeOnBoardControl.getPartyFreeOnBoard(billFrom).getFreeOnBoard();
         }
 
-
-        // TODO: This is dependent on type of Invoice, not all require FOB.
-//        if(freeOnBoard == null) {
-//            eea.addExecutionError(ExecutionErrors.UnknownPartyFreeOnBoard.name(), billFrom.getLastDetail().getPartyName());
-//        }
+        if(freeOnBoard == null) {
+            eea.addExecutionError(ExecutionErrors.UnknownPartyFreeOnBoard.name(), billFrom.getLastDetail().getPartyName());
+        }
 
         return freeOnBoard;
     }
@@ -216,7 +215,7 @@ public class InvoiceLogic
         return paidTime;
     }
     
-    public Invoice createInvoice(final Session session, final ExecutionErrorAccumulator eea, final String invoiceTypeName, final Party billFrom,
+    public Invoice createInvoice(final Session session, final ExecutionErrorAccumulator eea, String invoiceTypeName, final Party billFrom,
             final PartyContactMechanism billFromPartyContactMechanism, final Party billTo, final PartyContactMechanism billToPartyContactMechanism, Currency currency, final GlAccount glAccount,
             Term term, FreeOnBoard freeOnBoard, final String reference, final String description, Long invoicedTime, Long dueTime, Long paidTime, final BasePK createdBy) {
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -233,9 +232,17 @@ public class InvoiceLogic
             if(invoiceType != null) {
                 var invoiceName = getInvoiceName(eea, invoiceType);
 
+                invoiceTypeName = invoiceType.getLastDetail().getInvoiceTypeName(); // Clean-up capitalization.
+
                 if(eea == null || !eea.hasExecutionErrors()) {
                     term = getInvoiceTerm(eea, billFrom, term);
-                    freeOnBoard = getInvoiceFreeOnBoard(eea, billFrom, freeOnBoard);
+
+                    // FreeOnBoard is only allowed for SALES_INVOICEs and PURCHASE_INVOICEs.
+                    if(invoiceTypeName.equals(InvoiceTypes.SALES_INVOICE.name()) || invoiceTypeName.equals(InvoiceTypes.PURCHASE_INVOICE.name())) {
+                        freeOnBoard = getInvoiceFreeOnBoard(eea, billFrom, freeOnBoard);
+                    } else if(freeOnBoard != null) {
+                        eea.addExecutionError(ExecutionErrors.FreeOnBoardNotAllowed.name(), freeOnBoard.getLastDetail().getFreeOnBoardName());
+                    }
 
                     if(eea == null || !eea.hasExecutionErrors()) {
                         var billingControl = (BillingControl)Session.getModelController(BillingControl.class);

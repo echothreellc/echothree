@@ -24,10 +24,8 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
-import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
@@ -35,9 +33,11 @@ import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
+import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.term.server.TermControl;
-import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
+import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.vendor.server.logic.VendorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -59,11 +59,11 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.vendor.server.entity.VendorTypeDetail;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -194,6 +194,8 @@ public class CreateVendorCommand
 
                                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
                                                         var coreControl = getCoreControl();
+                                                        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+                                                        var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
                                                         var termControl = (TermControl)Session.getModelController(TermControl.class);
                                                         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                                         VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
@@ -272,6 +274,8 @@ public class CreateVendorCommand
                                                         }
 
                                                         termControl.createPartyTerm(party, termControl.getDefaultTerm(), null, createdBy);
+
+                                                        partyFreeOnBoardControl.createPartyFreeOnBoard(party, freeOnBoardControl.getDefaultFreeOnBoard(), createdBy);
 
                                                         ContactListLogic.getInstance().setupInitialContactLists(this, party, createdBy);
 
