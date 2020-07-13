@@ -1,6 +1,22 @@
 # Changelog
 
-## 2020-06-22-01
+## 2020-07-12-01
+
+* NPE from CreatePurchaseInvoice UC [101](https://gitlab.echothree.com/echothree/echothree/-/issues/101)
+* Error Prone 2.4.0 Upgrade [88](https://gitlab.echothree.com/echothree/echothree/-/issues/88)
+* graphql-java-annotations 8.0.1 Upgrade [90](https://gitlab.echothree.com/echothree/echothree/-/issues/90)
+* Apache FreeMarker 2.3.30 Upgrade [91](https://gitlab.echothree.com/echothree/echothree/-/issues/91)
+* ROME 1.14.1 Upgrade [92](https://gitlab.echothree.com/echothree/echothree/-/issues/92)
+* Apache Commons CLI 1.4 Upgrade [93](https://gitlab.echothree.com/echothree/echothree/-/issues/93)
+* Apache Commons Codec 1.14 Upgrade [94](https://gitlab.echothree.com/echothree/echothree/-/issues/94)
+* Apache Commons Digester 1.8.1 Upgrade [95](https://gitlab.echothree.com/echothree/echothree/-/issues/95)
+* Apache Commons IO 2.7 Upgrade [96](https://gitlab.echothree.com/echothree/echothree/-/issues/96)
+* Apache Commons Logging 1.2 Upgrade [97](https://gitlab.echothree.com/echothree/echothree/-/issues/97)
+* cucumber-java8/cucumber-junit 6.2.2 Upgrade [98](https://gitlab.echothree.com/echothree/echothree/-/issues/98)
+* ClassGraph 4.8.87 Upgrade [99](https://gitlab.echothree.com/echothree/echothree/-/issues/99)
+* WildFly 20.0.1 Upgrade [100](https://gitlab.echothree.com/echothree/echothree/-/issues/100)
+
+## 2020-06-28-01
 
 * Add Vendor Tests [76](https://gitlab.echothree.com/echothree/echothree/-/issues/76)
 * Add Vendor Item Tests [77](https://gitlab.echothree.com/echothree/echothree/-/issues/77)
