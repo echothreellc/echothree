@@ -108,6 +108,81 @@ public class ContentCollectionSteps implements En {
                     persona.contentCollectionSpec = null;
                     persona.contentCollectionEdit = null;
                 });
+
+        When("^the user sets the content collection's content collection name to \"([^\"]*)\"$",
+                (String contentCollectionName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    if(createContentCollectionForm != null) {
+                        createContentCollectionForm.setContentCollectionName(contentCollectionName);
+                    } else {
+                        contentCollectionEdit.setContentCollectionName(contentCollectionName);
+                    }
+                });
+
+        When("^the user sets the content collection's default offer name to \"([^\"]*)\"$",
+                (String defaultOfferName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    if(createContentCollectionForm != null) {
+                        createContentCollectionForm.setDefaultOfferName(defaultOfferName);
+                    } else {
+                        contentCollectionEdit.setDefaultOfferName(defaultOfferName);
+                    }
+                });
+
+        When("^the user sets the content collection's default use name to \"([^\"]*)\"$",
+                (String defaultUseName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    if(createContentCollectionForm != null) {
+                        createContentCollectionForm.setDefaultUseName(defaultUseName);
+                    } else {
+                        contentCollectionEdit.setDefaultUseName(defaultUseName);
+                    }
+                });
+
+        When("^the sourcer sets the content collection's default source name to \"([^\"]*)\"$",
+                (String defaultSourceName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    if(createContentCollectionForm != null) {
+                        createContentCollectionForm.setDefaultSourceName(defaultSourceName);
+                    } else {
+                        contentCollectionEdit.setDefaultSourceName(defaultSourceName);
+                    }
+                });
+
+        When("^the user sets the content collection's description to \"([^\"]*)\"$",
+                (String description) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    if(createContentCollectionForm != null) {
+                        createContentCollectionForm.setDescription(description);
+                    } else {
+                        contentCollectionEdit.setDescription(description);
+                    }
+                });
     }
 
 }
