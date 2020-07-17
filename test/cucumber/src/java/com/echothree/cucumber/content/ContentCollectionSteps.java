@@ -18,6 +18,7 @@ package com.echothree.cucumber.content;
 
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.EditContentCollectionResult;
+import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -32,6 +33,7 @@ public class ContentCollectionSteps implements En {
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createContentCollectionForm).isNull();
+                    assertThat(persona.deleteContentCollectionForm).isNull();
                     assertThat(persona.contentCollectionSpec).isNull();
 
                     persona.createContentCollectionForm = ContentUtil.getHome().getCreateContentCollectionForm();
@@ -55,11 +57,35 @@ public class ContentCollectionSteps implements En {
                     persona.createContentCollectionForm = null;
                 });
 
+        When("^the user begins deleting an content collection$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.createContentCollectionForm).isNull();
+                    assertThat(persona.deleteContentCollectionForm).isNull();
+                    assertThat(persona.entityListItemSpec).isNull();
+
+                    persona.deleteContentCollectionForm = ContentUtil.getHome().getDeleteContentCollectionForm();
+                });
+
+        When("^the user deletes the content collection$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var deleteContentCollectionForm = persona.deleteContentCollectionForm;
+
+                    assertThat(deleteContentCollectionForm).isNotNull();
+
+                    LastCommandResult.commandResult = ContentUtil.getHome().deleteContentCollection(persona.userVisitPK, deleteContentCollectionForm);
+
+                    persona.deleteContentCollectionForm = null;
+                });
+
         When("^the user begins specifying a content collection to edit$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createContentCollectionForm).isNull();
+                    assertThat(persona.deleteContentCollectionForm).isNull();
                     assertThat(persona.entityListItemSpec).isNull();
 
                     persona.contentCollectionSpec = ContentUtil.getHome().getContentCollectionSpec();
@@ -113,12 +139,16 @@ public class ContentCollectionSteps implements En {
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
+                    var deleteContentCollectionForm = persona.deleteContentCollectionForm;
                     var contentCollectionEdit = persona.contentCollectionEdit;
 
-                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+                    assertThat(createContentCollectionForm != null || deleteContentCollectionForm != null
+                            || contentCollectionEdit != null).isTrue();
 
                     if(createContentCollectionForm != null) {
                         createContentCollectionForm.setContentCollectionName(contentCollectionName);
+                    } else if(deleteContentCollectionForm != null) {
+                        deleteContentCollectionForm.setContentCollectionName(contentCollectionName);
                     } else {
                         contentCollectionEdit.setContentCollectionName(contentCollectionName);
                     }
