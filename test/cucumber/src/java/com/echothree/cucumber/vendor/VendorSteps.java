@@ -455,6 +455,17 @@ public class VendorSteps
                     createVendorForm.setAllowSolicitation(allowSolicitation);
                 });
 
+        When("^the user sets the vendor to (be|not be) taxable$",
+                (String taxable) -> {
+                    var persona = CurrentPersona.persona;
+                    var createVendorForm = persona.createVendorForm;
+
+                    assertThat(createVendorForm).isNotNull();
+
+                    taxable = Boolean.valueOf(taxable.equals("does")).toString();
+                    createVendorForm.setTaxable(taxable);
+                });
+
         When("^the user indicates the vendor default hold until complete should be (set|not set)$",
                 (String holdUntilComplete) -> {
                     var persona = CurrentPersona.persona;
