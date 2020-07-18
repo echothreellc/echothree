@@ -18,11 +18,11 @@ package com.echothree.cucumber.content;
 
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.EditContentCollectionResult;
-import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
+import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ContentCollectionSteps implements En {
@@ -57,7 +57,7 @@ public class ContentCollectionSteps implements En {
                     persona.createContentCollectionForm = null;
                 });
 
-        When("^the user begins deleting an content collection$",
+        When("^the user begins deleting a content collection$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -128,8 +128,7 @@ public class ContentCollectionSteps implements En {
                     commandForm.setEdit(edit);
                     commandForm.setEditMode(EditMode.UPDATE);
 
-                    var commandResult = ContentUtil.getHome().editContentCollection(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResult.commandResult = ContentUtil.getHome().editContentCollection(persona.userVisitPK, commandForm);
 
                     persona.contentCollectionSpec = null;
                     persona.contentCollectionEdit = null;
@@ -140,18 +139,27 @@ public class ContentCollectionSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
                     var deleteContentCollectionForm = persona.deleteContentCollectionForm;
-                    var contentCollectionEdit = persona.contentCollectionEdit;
+                    var contentCollectionSpec = persona.contentCollectionSpec;
 
                     assertThat(createContentCollectionForm != null || deleteContentCollectionForm != null
-                            || contentCollectionEdit != null).isTrue();
+                            || contentCollectionSpec != null).isTrue();
 
                     if(createContentCollectionForm != null) {
                         createContentCollectionForm.setContentCollectionName(contentCollectionName);
                     } else if(deleteContentCollectionForm != null) {
                         deleteContentCollectionForm.setContentCollectionName(contentCollectionName);
                     } else {
-                        contentCollectionEdit.setContentCollectionName(contentCollectionName);
+                        contentCollectionSpec.setContentCollectionName(contentCollectionName);
                     }
+                });
+        When("^the user sets the content collection's new content collection name to \"([^\"]*)\"$",
+                (String contentCollectionName) -> {
+                    var persona = CurrentPersona.persona;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(contentCollectionEdit).isNotNull();
+
+                    contentCollectionEdit.setContentCollectionName(contentCollectionName);
                 });
 
         When("^the user sets the content collection's default offer name to \"([^\"]*)\"$",
@@ -162,11 +170,7 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
 
-                    if(createContentCollectionForm != null) {
-                        createContentCollectionForm.setDefaultOfferName(defaultOfferName);
-                    } else {
-                        contentCollectionEdit.setDefaultOfferName(defaultOfferName);
-                    }
+                    Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultOfferName(defaultOfferName);
                 });
 
         When("^the user sets the content collection's default use name to \"([^\"]*)\"$",
@@ -177,14 +181,10 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
 
-                    if(createContentCollectionForm != null) {
-                        createContentCollectionForm.setDefaultUseName(defaultUseName);
-                    } else {
-                        contentCollectionEdit.setDefaultUseName(defaultUseName);
-                    }
+                    Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultUseName(defaultUseName);
                 });
 
-        When("^the sourcer sets the content collection's default source name to \"([^\"]*)\"$",
+        When("^the user sets the content collection's default source name to \"([^\"]*)\"$",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
@@ -192,11 +192,7 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
 
-                    if(createContentCollectionForm != null) {
-                        createContentCollectionForm.setDefaultSourceName(defaultSourceName);
-                    } else {
-                        contentCollectionEdit.setDefaultSourceName(defaultSourceName);
-                    }
+                    Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultSourceName(defaultSourceName);
                 });
 
         When("^the user sets the content collection's description to \"([^\"]*)\"$",
@@ -207,11 +203,7 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
 
-                    if(createContentCollectionForm != null) {
-                        createContentCollectionForm.setDescription(description);
-                    } else {
-                        contentCollectionEdit.setDescription(description);
-                    }
+                    Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDescription(description);
                 });
     }
 
