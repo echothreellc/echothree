@@ -152,6 +152,7 @@ public class ContentCollectionSteps implements En {
                         contentCollectionSpec.setContentCollectionName(contentCollectionName);
                     }
                 });
+
         When("^the user sets the content collection's new content collection name to \"([^\"]*)\"$",
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
