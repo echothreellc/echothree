@@ -92,8 +92,7 @@ public class CreateContentCatalogCommand
                 String defaultUseName = form.getDefaultUseName();
                 String defaultSourceName = form.getDefaultSourceName();
                 OfferUse defaultOfferUse = null;
-                boolean invalidDefaultOfferOrSourceSpecification = false;
-                
+
                 if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
                     Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
                     
@@ -124,7 +123,6 @@ public class CreateContentCatalogCommand
                     defaultOfferUse = contentCollection.getLastDetail().getDefaultOfferUse();
                 } else {
                     addExecutionError(ExecutionErrors.InvalidDefaultOfferOrSourceSpecification.name());
-                    invalidDefaultOfferOrSourceSpecification = true;
                 }
                 
                 if(defaultOfferUse != null) {
