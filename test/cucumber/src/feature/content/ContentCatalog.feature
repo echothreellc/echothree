@@ -12,7 +12,7 @@ Feature: Employee vendor
     And the user begins entering a new content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
     And the user sets the content collection's default source name to "TEST0001B"
-    And the user sets the content collection's description to "Customer Collection"
+    And the user sets the content collection's description to "Cucumber Collection"
     And the user adds the new content collection
     Then no error should occur
     And the user begins entering a new content catalog
@@ -21,7 +21,7 @@ Feature: Employee vendor
     And the user sets the content catalog's default source name to "TEST0001B"
     And the user sets the content catalog's sort order to "1"
     And the user sets the content catalog to be the default
-    And the user sets the content catalog's description to "Cucumber Collection"
+    And the user sets the content catalog's description to "Cucumber Catalog"
     And the user adds the new content catalog
     Then no error should occur
     And the user begins specifying a content catalog to edit
