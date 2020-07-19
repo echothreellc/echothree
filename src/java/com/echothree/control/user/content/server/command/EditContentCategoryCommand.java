@@ -167,19 +167,20 @@ public class EditContentCategoryCommand
     public void doLock(ContentCategoryEdit edit, ContentCategory contentCategory) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        ContentCategoryDescription contentCategoryDescription = contentControl.getContentCategoryDescription(contentCategory, getPreferredLanguage());
-        ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-        ContentCategory parentContentCategory = contentCategoryDetail.getParentContentCategory();
-        OfferUse defaultOfferUse = contentCategoryDetail.getDefaultOfferUse();
-        OfferUseDetail defaultOfferUseDetail = defaultOfferUse == null? null: defaultOfferUse.getLastDetail();
-        List<Source> defaultSources = defaultOfferUse == null? null: offerControl.getSourcesByOfferUse(defaultOfferUse);
-        Selector contentCategoryItemSelector = contentCategoryDetail.getContentCategoryItemSelector();
+        var contentCategoryDescription = contentControl.getContentCategoryDescription(contentCategory, getPreferredLanguage());
+        var contentCategoryDetail = contentCategory.getLastDetail();
+        var parentContentCategory = contentCategoryDetail.getParentContentCategory();
+        var defaultOfferUse = contentCategoryDetail.getDefaultOfferUse();
+        var defaultOfferUseDetail = defaultOfferUse == null ? null : defaultOfferUse.getLastDetail();
+        var sources = defaultOfferUse == null ? null : offerControl.getSourcesByOfferUse(defaultOfferUse); // List of Sources if there are any for the OfferUse
+        var defaultSourceName = sources == null ? null : sources.iterator().next().getLastDetail().getSourceName(); // From the List, the first available Source's SourceName
+        var contentCategoryItemSelector = contentCategoryDetail.getContentCategoryItemSelector();
 
         edit.setContentCategoryName(contentCategoryDetail.getContentCategoryName());
         edit.setParentContentCategoryName(parentContentCategory == null ? null : parentContentCategory.getLastDetail().getContentCategoryName());
-        edit.setDefaultOfferName(defaultOfferUseDetail == null? null: defaultOfferUseDetail.getOffer().getLastDetail().getOfferName());
-        edit.setDefaultUseName(defaultOfferUseDetail == null? null: defaultOfferUseDetail.getUse().getLastDetail().getUseName());
-        edit.setDefaultSourceName(defaultSources == null? null: defaultSources.iterator().next().getLastDetail().getSourceName());
+        edit.setDefaultOfferName(defaultSourceName == null ? (defaultOfferUseDetail == null? null: defaultOfferUseDetail.getOffer().getLastDetail().getOfferName()) : null);
+        edit.setDefaultUseName(defaultSourceName == null ? (defaultOfferUseDetail == null ? null : defaultOfferUseDetail.getUse().getLastDetail().getUseName()) : null);
+        edit.setDefaultSourceName(defaultSourceName);
         edit.setContentCategoryItemSelectorName(contentCategoryItemSelector == null? null: contentCategoryItemSelector.getLastDetail().getSelectorName());
         edit.setIsDefault(contentCategoryDetail.getIsDefault().toString());
         edit.setSortOrder(contentCategoryDetail.getSortOrder().toString());
