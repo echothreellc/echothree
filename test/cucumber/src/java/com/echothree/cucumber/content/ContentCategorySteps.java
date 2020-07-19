@@ -201,6 +201,17 @@ public class ContentCategorySteps implements En {
                     contentCategoryEdit.setContentCategoryName(contentCategoryName);
                 });
 
+        When("^the user sets the content category's parent content category name to \"([^\"]*)\"$",
+                (String parentContentCategoryName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCategoryForm = persona.createContentCategoryForm;
+                    var contentCategoryEdit = persona.contentCategoryEdit;
+
+                    assertThat(createContentCategoryForm != null || contentCategoryEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setParentContentCategoryName(parentContentCategoryName);
+                });
+
         When("^the user sets the content category's default offer name to \"([^\"]*)\"$",
                 (String defaultOfferName) -> {
                     var persona = CurrentPersona.persona;
