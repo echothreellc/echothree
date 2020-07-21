@@ -154,12 +154,13 @@ public class EditContentCatalogCommand
         ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
         OfferUse offerUse = contentCatalogDetail.getDefaultOfferUse();
         OfferUseDetail defaultOfferUseDetail = offerUse.getLastDetail();
-        List<Source> sources = offerControl.getSourcesByOfferUse(offerUse);
+        var sources = defaultOfferUse == null ? null : offerControl.getSourcesByOfferUse(defaultOfferUse); // List of Sources if there are any for the OfferUse
+        var defaultSourceName = sources == null ? null : sources.iterator().next().getLastDetail().getSourceName(); // From the List, the first available Source's SourceName
 
         edit.setContentCatalogName(contentCatalogDetail.getContentCatalogName());
-        edit.setDefaultOfferName(defaultOfferUseDetail.getOffer().getLastDetail().getOfferName());
-        edit.setDefaultUseName(defaultOfferUseDetail.getUse().getLastDetail().getUseName());
-        edit.setDefaultSourceName(sources.iterator().next().getLastDetail().getSourceName());
+        edit.setDefaultOfferName(defaultSourceName == null ? (defaultOfferUseDetail == null? null: defaultOfferUseDetail.getOffer().getLastDetail().getOfferName()) : null);
+        edit.setDefaultUseName(defaultSourceName == null ? (defaultOfferUseDetail == null ? null : defaultOfferUseDetail.getUse().getLastDetail().getUseName()) : null);
+        edit.setDefaultSourceName(defaultSourceName);
         edit.setIsDefault(contentCatalogDetail.getIsDefault().toString());
         edit.setSortOrder(contentCatalogDetail.getSortOrder().toString());
 
@@ -173,17 +174,17 @@ public class EditContentCatalogCommand
     @Override
     public void canUpdate(ContentCatalog contentCatalog) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        String contentCatalogName = edit.getContentCatalogName();
-        ContentCatalog duplicateContentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+        var contentCatalogName = edit.getContentCatalogName();
+        var duplicateContentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
         if(duplicateContentCatalog == null || contentCatalog.equals(duplicateContentCatalog)) {
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            String defaultOfferName = edit.getDefaultOfferName();
-            String defaultUseName = edit.getDefaultUseName();
-            String defaultSourceName = edit.getDefaultSourceName();
+            var defaultOfferName = edit.getDefaultOfferName();
+            var defaultUseName = edit.getDefaultUseName();
+            var defaultSourceName = edit.getDefaultSourceName();
 
             if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
+                var defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
                     Use defaultUse = offerControl.getUseByName(defaultUseName);
@@ -201,7 +202,7 @@ public class EditContentCatalogCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                Source source = offerControl.getSourceByName(defaultSourceName);
+                var source = offerControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
                     defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -209,32 +210,23 @@ public class EditContentCatalogCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultSourceName.name(), defaultSourceName);
                 }
             } else {
-                // If all three parameters are null, then try to get the default Source and use its OfferUse.
-                Source source = offerControl.getDefaultSource();
-
-                if(source != null) {
-                    defaultOfferUse = source.getLastDetail().getOfferUse();
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidDefaultOfferOrSourceSpecification.name());
-                }
+                addExecutionError(ExecutionErrors.InvalidDefaultOfferOrSourceSpecification.name());
             }
 
             if(defaultOfferUse != null) {
-                if(defaultOfferUse != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                    Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
-                    PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
-                    PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
-                    PartyCompany defaultPartyCompany = partyControl.getPartyCompany(defaultPartyDivision.getCompanyParty());
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var defaultOffer = defaultOfferUse.getLastDetail().getOffer();
+                var defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
+                var defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
+                var defaultPartyCompany = partyControl.getPartyCompany(defaultPartyDivision.getCompanyParty());
 
-                    Offer catalogOffer = contentCatalog.getLastDetail().getDefaultOfferUse().getLastDetail().getOffer();
-                    PartyDepartment catalogPartyDepartment = partyControl.getPartyDepartment(catalogOffer.getLastDetail().getDepartmentParty());
-                    PartyDivision catalogPartyDivision = partyControl.getPartyDivision(catalogPartyDepartment.getDivisionParty());
-                    PartyCompany catalogPartyCompany = partyControl.getPartyCompany(catalogPartyDivision.getCompanyParty());
+                var catalogOffer = contentCatalog.getLastDetail().getDefaultOfferUse().getLastDetail().getOffer();
+                var catalogPartyDepartment = partyControl.getPartyDepartment(catalogOffer.getLastDetail().getDepartmentParty());
+                var catalogPartyDivision = partyControl.getPartyDivision(catalogPartyDepartment.getDivisionParty());
+                var catalogPartyCompany = partyControl.getPartyCompany(catalogPartyDivision.getCompanyParty());
 
-                    if(!defaultPartyCompany.equals(catalogPartyCompany)) {
-                        addExecutionError(ExecutionErrors.InvalidOfferCompany.name());
-                    }
+                if(!defaultPartyCompany.equals(catalogPartyCompany)) {
+                    addExecutionError(ExecutionErrors.InvalidOfferCompany.name());
                 }
             }
         } else {
