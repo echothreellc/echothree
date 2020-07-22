@@ -1,5 +1,5 @@
-Feature: Employee content category
-  An employee wants to add, edit, and delete a content category
+Feature: Employee content category item
+  An employee wants to add, edit, and delete a content category item
 
   Background:
     Given the employee Test begins using the application
@@ -7,7 +7,7 @@ Feature: Employee content category
     When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
     Then no error should occur
 
-  Scenario: Existing employee adds a content category, edits it, and deletes it
+  Scenario: Existing employee adds a content category item, edits it, and deletes it
     Given the employee Test begins using the application
     And the user begins entering a new content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
@@ -34,14 +34,40 @@ Feature: Employee content category
     And the user sets the content category's description to "Cucumber Collection"
     And the user adds the new content category
     Then no error should occur
-    And the user begins specifying a content category to edit
-    And the user sets the content category's content collection name to "CucumberCollection"
-    And the user sets the content category's content catalog name to "CucumberCatalog"
-    And the user sets the content category's content category name to "CucumberCategory"
-    And the user begins editing the content category
+    And the user begins entering a new content category item
+    And the user sets the content category item's content collection name to "CucumberCollection"
+    And the user sets the content category item's content catalog name to "CucumberCatalog"
+    And the user sets the content category item's content category name to "CucumberCategory"
+    And the user sets the content category item's item name to "MINIMAL"
+    And the user sets the content category item's inventory condition name to "GOOD"
+    And the user sets the content category item's unit of measure type name to "EACH"
+    And the user sets the content category item's currency iso name to "USD"
+    And the user sets the content category item's sort order to "1"
+    And the user sets the content category item to be the default
+    And the user adds the new content category item
     Then no error should occur
-    And the user sets the content category's description to "Edited Cucumber Category"
-    And the user finishes editing the content category
+    And the user begins specifying a content category item to edit
+    And the user sets the content category item's content collection name to "CucumberCollection"
+    And the user sets the content category item's content catalog name to "CucumberCatalog"
+    And the user sets the content category item's content category name to "CucumberCategory"
+    And the user sets the content category item's item name to "MINIMAL"
+    And the user sets the content category item's inventory condition name to "GOOD"
+    And the user sets the content category item's unit of measure type name to "EACH"
+    And the user sets the content category item's currency iso name to "USD"
+    And the user begins editing the content category item
+    Then no error should occur
+    And the user sets the content category item's sort order to "2"
+    And the user finishes editing the content category item
+    Then no error should occur
+    And the user begins deleting a content category item
+    And the user sets the content category item's content collection name to "CucumberCollection"
+    And the user sets the content category item's content catalog name to "CucumberCatalog"
+    And the user sets the content category item's content category name to "CucumberCategory"
+    And the user sets the content category item's item name to "MINIMAL"
+    And the user sets the content category item's inventory condition name to "GOOD"
+    And the user sets the content category item's unit of measure type name to "EACH"
+    And the user sets the content category item's currency iso name to "USD"
+    And the user deletes the content category item
     Then no error should occur
     And the user begins deleting a content category
     And the user sets the content category's content collection name to "CucumberCollection"
