@@ -1,4 +1,4 @@
-Feature: Employee vendor
+Feature: Employee content category
   An employee wants to add, edit, and delete a content category
 
   Background:
