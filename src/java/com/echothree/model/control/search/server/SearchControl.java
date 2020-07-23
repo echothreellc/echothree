@@ -27,7 +27,7 @@ import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
-import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.sales.server.SalesOrderBatchControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.choice.SearchCheckSpellingActionTypeChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchDefaultOperatorChoicesBean;
@@ -5296,7 +5296,7 @@ public class SearchControl
         
         try {
             var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
-            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5311,7 +5311,7 @@ public class SearchControl
                     Batch batch = batchControl.getBatchByPK(new BatchPK(Long.valueOf(rs.getLong(1))));
 
                     salesOrderBatchResultTransfers.add(new SalesOrderBatchResultTransfer(batch.getLastDetail().getBatchName(),
-                            includeSalesOrderBatch ? salesControl.getSalesOrderBatchTransfer(userVisit, batch) : null));
+                            includeSalesOrderBatch ? salesOrderBatchControl.getSalesOrderBatchTransfer(userVisit, batch) : null));
                 }
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);

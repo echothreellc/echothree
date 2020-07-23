@@ -48,7 +48,7 @@ import com.echothree.model.control.sales.common.exception.UnitAmountBelowMinimum
 import com.echothree.model.control.sales.common.exception.UnitAmountBelowMinimumUnitPriceException;
 import com.echothree.model.control.sales.common.exception.UnitAmountNotMultipleOfUnitPriceIncrementException;
 import com.echothree.model.control.sales.common.exception.UnitAmountRequiredException;
-import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.sales.server.SalesOrderControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
@@ -131,7 +131,7 @@ public class SalesOrderLineLogic
             var salesOrderShipmentGroupLogic = SalesOrderShipmentGroupLogic.getInstance();
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
             var orderDetail = order.getLastDetail();
             var itemDetail = item.getLastDetail();
             var itemDeliveryType = itemDetail.getItemDeliveryType();
@@ -201,7 +201,7 @@ public class SalesOrderLineLogic
                 // Verify the OfferItem exists.
                 var offerUse = source == null ? null : source.getLastDetail().getOfferUse();
                 if(offerUse == null) {
-                    var salesOrder = salesControl.getSalesOrder(order);
+                    var salesOrder = salesOrderControl.getSalesOrder(order);
 
                     offerUse = salesOrder.getOfferUse();
                 }
@@ -351,7 +351,7 @@ public class SalesOrderLineLogic
                             unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable, createdByPartyPK);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        salesControl.createSalesOrderLine(orderLine, offerUse, associateReferral, createdByPartyPK);
+                        salesOrderControl.createSalesOrderLine(orderLine, offerUse, associateReferral, createdByPartyPK);
                     }
                 }
             }

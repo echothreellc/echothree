@@ -46,7 +46,7 @@ import com.echothree.model.control.sales.common.exception.SalesOrderDuplicateRef
 import com.echothree.model.control.sales.common.exception.SalesOrderReferenceRequiredException;
 import com.echothree.model.control.sales.common.exception.UnknownSalesOrderStatusChoiceException;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
-import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.sales.server.SalesOrderControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.TermControl;
@@ -394,12 +394,12 @@ public class SalesOrderLogic
 
                         if(eea == null || !eea.hasExecutionErrors()) {
                             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+                            var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
                             var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                             var associateReferral = AssociateReferralLogic.getInstance().getAssociateReferral(session, userVisit);
                             var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
 
-                            salesControl.createSalesOrder(order, offerUse, associateReferral, createdBy);
+                            salesOrderControl.createSalesOrder(order, offerUse, associateReferral, createdBy);
 
                             orderControl.createOrderUserVisit(order, userVisit);
                             

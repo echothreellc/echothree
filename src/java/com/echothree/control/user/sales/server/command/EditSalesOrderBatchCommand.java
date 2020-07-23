@@ -26,7 +26,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.sales.server.SalesOrderBatchControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -107,9 +107,9 @@ public class EditSalesOrderBatchCommand
         }
 
         if(!hasExecutionErrors()) {
-            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
             
-            result.setSalesOrderBatch(salesControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
+            result.setSalesOrderBatch(salesOrderBatchControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
         }
 
         return batch;
@@ -122,17 +122,17 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public void fillInResult(EditSalesOrderBatchResult result, Batch batch) {
-        var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+        var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
 
-        result.setSalesOrderBatch(salesControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
+        result.setSalesOrderBatch(salesOrderBatchControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
     }
 
     @Override
     public void doLock(SalesOrderBatchEdit edit, Batch batch) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+        var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
         OrderBatch orderBatch = orderControl.getOrderBatch(batch);
-        SalesOrderBatch salesOrderBatch = salesControl.getSalesOrderBatch(batch);
+        SalesOrderBatch salesOrderBatch = salesOrderBatchControl.getSalesOrderBatch(batch);
         Long count = orderBatch.getCount();
 
         // TODO: currency and payment method should be editable only if the batch has no orders in it.
@@ -169,7 +169,7 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public void doUpdate(Batch batch) {
-        var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+        var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         PartyPK partyPK = getPartyPK();
         String strCount = edit.getCount();
@@ -177,7 +177,7 @@ public class EditSalesOrderBatchCommand
         String strAmount = edit.getAmount();
         Long amount = strAmount == null ? null : Long.valueOf(strAmount);
         OrderBatchValue orderBatchValue = orderControl.getOrderBatchValueForUpdate(batch);
-        SalesOrderBatchValue salesOrderBatchValue = salesControl.getSalesOrderBatchValueForUpdate(batch);
+        SalesOrderBatchValue salesOrderBatchValue = salesOrderBatchControl.getSalesOrderBatchValueForUpdate(batch);
 
         if(currency != null) {
             orderBatchValue.setCurrencyPK(currency.getPrimaryKey());
@@ -189,7 +189,7 @@ public class EditSalesOrderBatchCommand
         }
 
         orderControl.updateOrderBatchFromValue(orderBatchValue, partyPK);
-        salesControl.updateSalesOrderBatchFromValue(salesOrderBatchValue, partyPK);
+        salesOrderBatchControl.updateSalesOrderBatchFromValue(salesOrderBatchValue, partyPK);
     }
 
 }
