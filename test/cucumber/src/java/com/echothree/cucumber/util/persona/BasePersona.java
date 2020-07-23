@@ -25,6 +25,30 @@ import com.echothree.control.user.contact.common.form.CreateContactPostalAddress
 import com.echothree.control.user.contact.common.form.CreateContactTelephoneForm;
 import com.echothree.control.user.contact.common.form.CreateContactWebAddressForm;
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
+import com.echothree.control.user.content.common.edit.ContentCatalogEdit;
+import com.echothree.control.user.content.common.edit.ContentCategoryEdit;
+import com.echothree.control.user.content.common.edit.ContentCategoryItemEdit;
+import com.echothree.control.user.content.common.edit.ContentCollectionEdit;
+import com.echothree.control.user.content.common.edit.ContentPageEdit;
+import com.echothree.control.user.content.common.edit.ContentSectionEdit;
+import com.echothree.control.user.content.common.form.CreateContentCatalogForm;
+import com.echothree.control.user.content.common.form.CreateContentCategoryForm;
+import com.echothree.control.user.content.common.form.CreateContentCategoryItemForm;
+import com.echothree.control.user.content.common.form.CreateContentCollectionForm;
+import com.echothree.control.user.content.common.form.CreateContentPageForm;
+import com.echothree.control.user.content.common.form.CreateContentSectionForm;
+import com.echothree.control.user.content.common.form.DeleteContentCatalogForm;
+import com.echothree.control.user.content.common.form.DeleteContentCategoryForm;
+import com.echothree.control.user.content.common.form.DeleteContentCategoryItemForm;
+import com.echothree.control.user.content.common.form.DeleteContentCollectionForm;
+import com.echothree.control.user.content.common.form.DeleteContentPageForm;
+import com.echothree.control.user.content.common.form.DeleteContentSectionForm;
+import com.echothree.control.user.content.common.spec.ContentCatalogSpec;
+import com.echothree.control.user.content.common.spec.ContentCategoryItemSpec;
+import com.echothree.control.user.content.common.spec.ContentCategorySpec;
+import com.echothree.control.user.content.common.spec.ContentCollectionSpec;
+import com.echothree.control.user.content.common.spec.ContentPageSpec;
+import com.echothree.control.user.content.common.spec.ContentSectionSpec;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
@@ -100,6 +124,37 @@ public class BasePersona {
     public String lastPostalAddressContactMechanismName;
     public String lastTelephoneContactMechanismName;
     public String lastWebAddressContactMechanismName;
+
+    // Content
+    public CreateContentCollectionForm createContentCollectionForm;
+    public DeleteContentCollectionForm deleteContentCollectionForm;
+    public ContentCollectionSpec contentCollectionSpec;
+    public ContentCollectionEdit contentCollectionEdit;
+
+    public CreateContentSectionForm createContentSectionForm;
+    public DeleteContentSectionForm deleteContentSectionForm;
+    public ContentSectionSpec contentSectionSpec;
+    public ContentSectionEdit contentSectionEdit;
+
+    public CreateContentPageForm createContentPageForm;
+    public DeleteContentPageForm deleteContentPageForm;
+    public ContentPageSpec contentPageSpec;
+    public ContentPageEdit contentPageEdit;
+
+    public CreateContentCatalogForm createContentCatalogForm;
+    public DeleteContentCatalogForm deleteContentCatalogForm;
+    public ContentCatalogSpec contentCatalogSpec;
+    public ContentCatalogEdit contentCatalogEdit;
+
+    public CreateContentCategoryForm createContentCategoryForm;
+    public DeleteContentCategoryForm deleteContentCategoryForm;
+    public ContentCategorySpec contentCategorySpec;
+    public ContentCategoryEdit contentCategoryEdit;
+
+    public CreateContentCategoryItemForm createContentCategoryItemForm;
+    public DeleteContentCategoryItemForm deleteContentCategoryItemForm;
+    public ContentCategoryItemSpec contentCategoryItemSpec;
+    public ContentCategoryItemEdit contentCategoryItemEdit;
 
     // Core
     public CreateEntityAttributeGroupForm createEntityAttributeGroupForm;
