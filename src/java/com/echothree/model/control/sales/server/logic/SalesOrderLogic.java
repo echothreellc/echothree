@@ -46,7 +46,7 @@ import com.echothree.model.control.sales.common.exception.SalesOrderDuplicateRef
 import com.echothree.model.control.sales.common.exception.SalesOrderReferenceRequiredException;
 import com.echothree.model.control.sales.common.exception.UnknownSalesOrderStatusChoiceException;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
-import com.echothree.model.control.sales.server.SalesOrderControl;
+import com.echothree.model.control.sales.server.control.SalesOrderControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.TermControl;

@@ -30,7 +30,7 @@ import com.echothree.model.control.sales.common.exception.UnknownSalesOrderBatch
 import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoicesBean;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
-import com.echothree.model.control.sales.server.SalesOrderBatchControl;
+import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;

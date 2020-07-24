@@ -14,10 +14,9 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.sales.server;
+package com.echothree.model.control.sales.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.sales.server.transfer.SalesTransferCaches;
 import com.echothree.model.data.associate.common.pk.AssociateReferralPK;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.offer.common.pk.OfferUsePK;
@@ -32,7 +31,6 @@ import com.echothree.model.data.sales.server.factory.SalesOrderFactory;
 import com.echothree.model.data.sales.server.factory.SalesOrderLineFactory;
 import com.echothree.model.data.sales.server.value.SalesOrderLineValue;
 import com.echothree.model.data.sales.server.value.SalesOrderValue;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -64,16 +62,16 @@ public class SalesOrderControl
     public long countSalesOrdersByOfferUse(final OfferUse offerUse) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                        "FROM salesorders " +
-                        "WHERE salord_ofruse_offeruseid = ? AND salord_thrutime = ?",
+                "FROM salesorders " +
+                "WHERE salord_ofruse_offeruseid = ? AND salord_thrutime = ?",
                 offerUse, Session.MAX_TIME_LONG);
     }
 
     public long countSalesOrdersByAssociateReferral(final AssociateReferral associateReferral) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                        "FROM salesorders " +
-                        "WHERE salord_ascrfr_associatereferralid = ? AND salord_thrutime = ?",
+                "FROM salesorders " +
+                "WHERE salord_ascrfr_associatereferralid = ? AND salord_thrutime = ?",
                 associateReferral, Session.MAX_TIME_LONG);
     }
 

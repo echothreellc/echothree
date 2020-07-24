@@ -48,7 +48,7 @@ import com.echothree.model.control.sales.common.exception.UnitAmountBelowMinimum
 import com.echothree.model.control.sales.common.exception.UnitAmountBelowMinimumUnitPriceException;
 import com.echothree.model.control.sales.common.exception.UnitAmountNotMultipleOfUnitPriceIncrementException;
 import com.echothree.model.control.sales.common.exception.UnitAmountRequiredException;
-import com.echothree.model.control.sales.server.SalesOrderControl;
+import com.echothree.model.control.sales.server.control.SalesOrderControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;

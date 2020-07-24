@@ -27,7 +27,7 @@ import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
-import com.echothree.model.control.sales.server.SalesOrderBatchControl;
+import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.choice.SearchCheckSpellingActionTypeChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchDefaultOperatorChoicesBean;

@@ -21,7 +21,7 @@ import com.echothree.control.user.sales.common.result.GetSalesOrderBatchResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.sales.server.SalesOrderBatchControl;
+import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

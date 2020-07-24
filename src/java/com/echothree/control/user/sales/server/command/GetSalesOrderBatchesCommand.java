@@ -20,7 +20,7 @@ import com.echothree.control.user.sales.common.form.GetSalesOrderBatchesForm;
 import com.echothree.control.user.sales.common.result.GetSalesOrderBatchesResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.sales.server.SalesOrderBatchControl;
+import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

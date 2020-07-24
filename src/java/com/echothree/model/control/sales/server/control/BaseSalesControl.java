@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.sales.server;
+package com.echothree.model.control.sales.server.control;
 
 import com.echothree.model.control.sales.server.transfer.SalesTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;

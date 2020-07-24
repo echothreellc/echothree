@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.sales.server;
+package com.echothree.model.control.sales.server.control;
 
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.transfer.SalesOrderBatchTransferCache;
-import com.echothree.model.control.sales.server.transfer.SalesTransferCaches;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.payment.common.pk.PaymentMethodPK;

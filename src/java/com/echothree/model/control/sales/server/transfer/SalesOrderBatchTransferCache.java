@@ -23,7 +23,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
-import com.echothree.model.control.sales.server.SalesOrderBatchControl;
+import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.server.entity.UserVisit;
