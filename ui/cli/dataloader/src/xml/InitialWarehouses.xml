@@ -21,9 +21,9 @@
         <warehouse warehouseName="WAREHOUSE_1" name="Warehouse 1" isDefault="true" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
                 picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
             <contactMechanisms>
-                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" name="Test Company" address1="Warehouse 1"
-                                      address2="123 Main St." city="Des Moines" state="IA" postalCode="50310" countryName="UNITED_STATES"
-                                      isCommercial="true" allowSolicitation="false">
+                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" companyName="Test Company"
+                                      address1="Warehouse 1" address2="123 Main St." city="Des Moines" state="IA" postalCode="50310"
+                                      countryName="UNITED_STATES" isCommercial="true" allowSolicitation="false">
                     <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_DELIVERY" />
                 </contactPostalAddress>
             </contactMechanisms>
@@ -149,9 +149,9 @@
         <warehouse warehouseName="WAREHOUSE_2" name="Warehouse 2" isDefault="false" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
                 picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
             <contactMechanisms>
-                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" name="Test Company" address1="Warehouse 2"
-                                      address2="123 Main St." city="Des Moines" state="IA" postalCode="50310" countryName="UNITED_STATES"
-                                      isCommercial="true" allowSolicitation="false">
+                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" companyName="Test Company"
+                                      address1="Warehouse 2" address2="123 Main St." city="Des Moines" state="IA" postalCode="50310"
+                                      countryName="UNITED_STATES" isCommercial="true" allowSolicitation="false">
                     <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_DELIVERY" />
                 </contactPostalAddress>
             </contactMechanisms>
