@@ -12,7 +12,7 @@
                     <partyContactMechanismPurpose contactMechanismPurposeName="OTHER_EMAIL" />
                     <contactMechanismAlias contactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" alias="CO_OTHER_EMAIL_LETTER" />
                 </contactEmailAddress>
-                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" name="Company" address1="Address 1"
+                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" name="Test Company" address1="123 Main St."
                 city="Des Moines" state="IA" postalCode="50310" countryName="UNITED_STATES" isCommercial="false"
                 allowSolicitation="false">
                     <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_BILLING" />
