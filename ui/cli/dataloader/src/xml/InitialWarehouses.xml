@@ -19,17 +19,17 @@
     </locationUseTypes>
     <warehouses>
         <warehouse warehouseName="WAREHOUSE_1" name="Warehouse 1" isDefault="true" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
-        picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
+                picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
             <inventoryLocationGroup inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1" isDefault="true" sortOrder="0">
                 <inventoryLocationGroupDescription languageIsoName="en" description="Inventory Location Group 1" />
                 <inventoryLocationGroupVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH"
-                width="1" depthUnitOfMeasureTypeName="INCH" depth="20" />
+                        width="1" depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <inventoryLocationGroupCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </inventoryLocationGroup>
             <inventoryLocationGroup inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2" isDefault="false" sortOrder="0">
                 <inventoryLocationGroupDescription languageIsoName="en" description="Inventory Location Group 2" />
                 <inventoryLocationGroupVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH"
-                width="1" depthUnitOfMeasureTypeName="INCH" depth="20" />
+                        width="1" depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <inventoryLocationGroupCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </inventoryLocationGroup>
             <locationType locationTypeName="LOCATION_TYPE_1" isDefault="true" sortOrder="0">
@@ -69,70 +69,70 @@
                 </locationNameElement>
             </locationType>
             <location locationName="01AA01AA01AA" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 01AA01AA01AA" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01AA01AA01AB" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 01AA01AA01AB" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01AA01AA01AC" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 01AA01AA01AC" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01AA01AA01AD" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 01AA01AA01AD" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01BB01AA01AA" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 01BB01AA01AA" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01BB01AA01AB" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 01BB01AA01AB" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01BB01AA01AC" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 01BB01AA01AC" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01BB01AA01AD" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 01BB01AA01AD" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01ZZ99AAAA" locationTypeName="LOCATION_TYPE_2" locationUseTypeName="RETURNS" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Returns for AAAA" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
             <location locationName="01ZZ99BBBB" locationTypeName="LOCATION_TYPE_2" locationUseTypeName="RETURNS" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Returns for BBBB" />
                 <locationVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
                 depthUnitOfMeasureTypeName="INCH" depth="20" />
@@ -140,16 +140,16 @@
             </location>
         </warehouse>
         <warehouse warehouseName="WAREHOUSE_2" name="Warehouse 2" isDefault="false" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
-        picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
+                picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
             <inventoryLocationGroup inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1" isDefault="true" sortOrder="0">
                 <inventoryLocationGroupDescription languageIsoName="en" description="Inventory Location Group 1" />
                 <inventoryLocationGroupVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH"
-                width="1" depthUnitOfMeasureTypeName="INCH" depth="20" />
+                        width="1" depthUnitOfMeasureTypeName="INCH" depth="20" />
             </inventoryLocationGroup>
             <inventoryLocationGroup inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2" isDefault="false" sortOrder="0">
                 <inventoryLocationGroupDescription languageIsoName="en" description="Inventory Location Group 2" />
                 <inventoryLocationGroupVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH"
-                width="1" depthUnitOfMeasureTypeName="INCH" depth="40" />
+                        width="1" depthUnitOfMeasureTypeName="INCH" depth="40" />
             </inventoryLocationGroup>
             <locationType locationTypeName="LOCATION_TYPE_1" isDefault="true" sortOrder="0">
                 <locationTypeDescription languageIsoName="en" description="Location Type 1" />
@@ -173,35 +173,35 @@
                 </locationNameElement>
             </locationType>
             <location locationName="02AA01AA01AA" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 02AA01AA01AA" />
             </location>
             <location locationName="02AA01AA01AB" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 02AA01AA01AB" />
             </location>
             <location locationName="02AA01AA01AC" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 02AA01AA01AC" />
             </location>
             <location locationName="02AA01AA01AD" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="1"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_1">
                 <locationDescription languageIsoName="en" description="Location 02AA01AA01AD" />
             </location>
             <location locationName="02BB01AA01AA" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 02BB01AA01AA" />
             </location>
             <location locationName="02BB01AA01AB" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 02BB01AA01AB" />
             </location>
             <location locationName="02BB01AA01AC" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 02BB01AA01AC" />
             </location>
             <location locationName="02BB01AA01AD" locationTypeName="LOCATION_TYPE_1" locationUseTypeName="PICKING" velocity="2"
-            inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
+                    inventoryLocationGroupName="INVENTORY_LOCATION_GROUP_2">
                 <locationDescription languageIsoName="en" description="Location 02BB01AA01AD" />
             </location>
         </warehouse>
