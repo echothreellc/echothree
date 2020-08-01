@@ -2213,5 +2213,7 @@ public enum ExecutionErrors {
     DuplicateFreeOnBoardDescription,
     UnknownFreeOnBoardDescription,
     FreeOnBoardNotAllowed,
+    UnknownPurchaseOrderStatusChoice,
+    InvalidPurchaseOrderStatus,
 
 }

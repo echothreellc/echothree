@@ -35,6 +35,8 @@ import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
+import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderStatusException;
+import com.echothree.model.control.purchase.common.exception.UnknownPurchaseOrderStatusChoiceException;
 import com.echothree.model.control.purchase.common.workflow.PurchaseOrderStatusConstants;
 import com.echothree.model.control.purchase.server.control.PurchaseOrderControl;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
@@ -205,7 +207,7 @@ public class PurchaseOrderLogic
 //            final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
 //            Boolean allowCombiningShipments, final String reference, Term term, FreeOnBoard freeOnBoard, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
 //        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-//        var orderType = getOrderTypeByName(eea, OrderTypes.SALES_ORDER.name());
+//        var orderType = getOrderTypeByName(eea, OrderTypes.PURCHASE_ORDER.name());
 //        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
 //        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.name());
 //        Order order = null;
@@ -243,7 +245,7 @@ public class PurchaseOrderLogic
 //                orderPriority = orderControl.getDefaultOrderPriority(orderType);
 //
 //                if(orderPriority == null) {
-//                    handleExecutionError(MissingDefaultOrderPriorityException.class, eea, ExecutionErrors.MissingDefaultOrderPriority.name(), OrderTypes.SALES_ORDER.name());
+//                    handleExecutionError(MissingDefaultOrderPriorityException.class, eea, ExecutionErrors.MissingDefaultOrderPriority.name(), OrderTypes.PURCHASE_ORDER.name());
 //                }
 //            }
 //
@@ -395,7 +397,7 @@ public class PurchaseOrderLogic
 //
 //                            orderControl.createOrderUserVisit(order, userVisit);
 //
-//                            workflowControl.addEntityToWorkflowUsingNames(null, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, workflowEntranceName,
+//                            workflowControl.addEntityToWorkflowUsingNames(null, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, workflowEntranceName,
 //                                    entityInstance, null, session.START_TIME + AllocatedInventoryTimeout, createdBy);
 //
 //                            if(billToParty != null) {
@@ -450,125 +452,99 @@ public class PurchaseOrderLogic
 //        return order;
 //    }
 
-//    public boolean isOrderInWorkflowSteps(final ExecutionErrorAccumulator eea, final Order order, final String... workflowStepNames) {
-//        return isOrderInWorkflowSteps(eea, getEntityInstanceByBaseEntity(order), workflowStepNames);
-//    }
+    public boolean isOrderInWorkflowSteps(final ExecutionErrorAccumulator eea, final Order order, final String... workflowStepNames) {
+        return isOrderInWorkflowSteps(eea, getEntityInstanceByBaseEntity(order), workflowStepNames);
+    }
 
-//    public boolean isOrderInWorkflowSteps(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final String... workflowStepNames) {
-//        return !WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance,
-//                workflowStepNames).isEmpty();
-//    }
+    public boolean isOrderInWorkflowSteps(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final String... workflowStepNames) {
+        return !WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, entityInstance,
+                workflowStepNames).isEmpty();
+    }
 
     public Order getOrderByName(final ExecutionErrorAccumulator eea, final String orderName) {
-        return getOrderByName(eea, OrderTypes.SALES_ORDER.name(), orderName);
+        return getOrderByName(eea, OrderTypes.PURCHASE_ORDER.name(), orderName);
     }
 
     public Order getOrderByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderName) {
-        return getOrderByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderName);
+        return getOrderByNameForUpdate(eea, OrderTypes.PURCHASE_ORDER.name(), orderName);
     }
 
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByName(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
+        return getOrderPriorityByName(eea, OrderTypes.PURCHASE_ORDER.name(), orderPriorityName);
     }
 
     public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
+        return getOrderPriorityByNameForUpdate(eea, OrderTypes.PURCHASE_ORDER.name(), orderPriorityName);
     }
 
-//    public PurchaseOrderStatusChoicesBean getPurchaseOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
-//            final Order order, final PartyPK partyPK) {
-//        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-//        PurchaseOrderStatusChoicesBean purchaseOrderStatusChoicesBean = new PurchaseOrderStatusChoicesBean();
-//
-//        if(order == null) {
-//            workflowControl.getWorkflowEntranceChoices(purchaseOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,
-//                    workflowControl.getWorkflowByName(PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS), partyPK);
-//        } else {
-//            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-//            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
-//            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
-//
-//            workflowControl.getWorkflowDestinationChoices(purchaseOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
-//        }
-//
-//        return purchaseOrderStatusChoicesBean;
-//    }
+    public PurchaseOrderStatusChoicesBean getPurchaseOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
+            final Order order, final PartyPK partyPK) {
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var purchaseOrderStatusChoicesBean = new PurchaseOrderStatusChoicesBean();
 
-//    public void setPurchaseOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
-//        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-//        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-//        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
-//        EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
-//        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
-//        WorkflowDestination workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
-//
-//        if(workflowDestination != null || orderStatusChoice == null) {
-//            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
-//            String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-//            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
-//            boolean handled = false;
-//            Long triggerTime = null;
-//
-//            if(currentWorkflowStepName.equals(PurchaseOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
-//                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_ENTRY_UNALLOCATED)) {
-//                    // TODO: Unallocate inventory.
-//                    handled = true;
-//                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
-//                    // TODO: Verify the order is not part of a batch.
-//                    // TODO: Verify all aspects of the order are valid.
-//                    handled = true;
-//                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_BATCH_AUDIT)) {
-//                    // TODO: Verify the order is part of a batch.
-//                    // TODO: Verify all aspects of the order are valid.
-//                    handled = true;
-//                }
-//            } else if(currentWorkflowStepName.equals(PurchaseOrderStatusConstants.WorkflowStep_ENTRY_UNALLOCATED)) {
-//                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
-//                    // TODO: Allocate inventory.
-//
-//                    triggerTime = session.START_TIME + AllocatedInventoryTimeout;
-//                    handled = true;
-//                }
-//            } else if(currentWorkflowStepName.equals(PurchaseOrderStatusConstants.WorkflowStep_BATCH_AUDIT)) {
-//                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
-//                    handled = true;
-//                }
-//            }
-//
-//            if(eea == null || !eea.hasExecutionErrors()) {
-//                if(handled) {
-//                    workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, triggerTime, modifiedBy);
-//                } else {
-//                    // TODO: An error of some sort.
-//                }
-//            }
-//        } else {
-//            handleExecutionError(UnknownPurchaseOrderStatusChoiceException.class, eea, ExecutionErrors.UnknownPurchaseOrderStatusChoice.name(), orderStatusChoice);
-//        }
-//    }
+        if(order == null) {
+            workflowControl.getWorkflowEntranceChoices(purchaseOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,
+                    workflowControl.getWorkflowByName(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS), partyPK);
+        } else {
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, entityInstance);
 
-//    /** Check to see if an Order is available for modification, and if it isn't, send back an error.
-//     *
-//     * @param session Required.
-//     * @param eea Required.
-//     * @param order Required.
-//     * @param modifiedBy Required.
-//     */
-//    public void checkOrderAvailableForModification(final Session session, final ExecutionErrorAccumulator eea, final Order order, final PartyPK modifiedBy) {
-//        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-//        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PurchaseOrderStatusConstants.Workflow_SALES_ORDER_STATUS, getEntityInstanceByBaseEntity(order));
-//        String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-//
-//        if(workflowStepName.equals(PurchaseOrderStatusConstants.WorkflowEntrance_ENTRY_ALLOCATED)) {
-//            WorkflowTrigger workflowTrigger = workflowControl.getWorkflowTriggerForUpdate(workflowEntityStatus);
-//
-//            workflowTrigger.setTriggerTime(session.START_TIME + AllocatedInventoryTimeout);
-//        } else if(workflowStepName.equals(PurchaseOrderStatusConstants.WorkflowEntrance_ENTRY_UNALLOCATED)) {
-//            setPurchaseOrderStatus(session, eea, order, PurchaseOrderStatusConstants.WorkflowDestination_ENTRY_UNALLOCATED_TO_ALLOCATED, modifiedBy);
-//        } else {
-//            handleExecutionError(InvalidPurchaseOrderStatusException.class, eea, ExecutionErrors.InvalidPurchaseOrderStatus.name(), order.getLastDetail().getOrderName(), workflowStepName);
-//        }
-//    }
+            workflowControl.getWorkflowDestinationChoices(purchaseOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice, workflowEntityStatus.getWorkflowStep(), partyPK);
+        }
+
+        return purchaseOrderStatusChoicesBean;
+    }
+
+    public void setPurchaseOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
+
+        if(workflowDestination != null || orderStatusChoice == null) {
+            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var handled = false;
+            Long triggerTime = null;
+
+            if(currentWorkflowStepName.equals(PurchaseOrderStatusConstants.WorkflowStep_ENTRY)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
+                    handled = true;
+                }
+            }
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                if(handled) {
+                    workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, triggerTime, modifiedBy);
+                } else {
+                    // TODO: An error of some sort.
+                }
+            }
+        } else {
+            handleExecutionError(UnknownPurchaseOrderStatusChoiceException.class, eea, ExecutionErrors.UnknownPurchaseOrderStatusChoice.name(), orderStatusChoice);
+        }
+    }
+
+    /** Check to see if an Order is available for modification, and if it isn't, send back an error.
+     *
+     * @param session Required.
+     * @param eea Required.
+     * @param order Required.
+     * @param modifiedBy Required.
+     */
+    public void checkOrderAvailableForModification(final Session session, final ExecutionErrorAccumulator eea, final Order order, final PartyPK modifiedBy) {
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, getEntityInstanceByBaseEntity(order));
+        var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+
+        if(!workflowStepName.equals(PurchaseOrderStatusConstants.WorkflowStep_ENTRY)) {
+            handleExecutionError(InvalidPurchaseOrderStatusException.class, eea, ExecutionErrors.InvalidPurchaseOrderStatus.name(), order.getLastDetail().getOrderName(), workflowStepName);
+        }
+    }
 
     /** Find the BILL_TO Party for a given Order.
      * 
