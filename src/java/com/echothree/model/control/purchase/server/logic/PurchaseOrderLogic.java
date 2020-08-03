@@ -553,7 +553,7 @@ public class PurchaseOrderLogic
      */
     public Party getOrderBillToParty(final Order order) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderRole billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
+        var billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
         Party party = null;
         
         if(billToOrderRole != null) {
@@ -563,14 +563,14 @@ public class PurchaseOrderLogic
         return party;
     }
     
-    /** Find the BILL_TO Party for a given Order.
+    /** Find the VendorType for a given Party.
      * 
      * @param party Optional.
      * @return The VendorType for the Party. May be null.
      */
     public VendorType getVendorTypeFromParty(final Party party) {
         var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-        Vendor vendor = party == null ? null : vendorControl.getVendor(party);
+        var vendor = party == null ? null : vendorControl.getVendor(party);
         VendorType vendorType = null;
         
         if(vendor != null) {
@@ -580,7 +580,7 @@ public class PurchaseOrderLogic
         return vendorType;
     }
     
-    /** Find the BILL_TO Party for a given Order.
+    /** Find the VendorType for the BILL_TO Party for a given Order.
      * 
      * @param order Required.
      * @return The VendorType for the BILL_TO Party. May be null.
@@ -599,7 +599,7 @@ public class PurchaseOrderLogic
      */
     public Party getOrderShipToParty(final Order order, final boolean billToFallback, final BasePK createdBy) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderRole shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
+        var shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
         
         if(shipToOrderRole == null && billToFallback) {
             shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
