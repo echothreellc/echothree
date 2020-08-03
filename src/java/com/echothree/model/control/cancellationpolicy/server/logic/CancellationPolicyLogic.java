@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.cancellationpolicy.server.logic;
 
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.exception.UnknownCancellationKindNameException;
 import com.echothree.model.control.cancellationpolicy.common.exception.UnknownCancellationPolicyNameException;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
@@ -113,11 +113,11 @@ public class CancellationPolicyLogic
         if(!inUse) {
             String cancellationKindName = cancellationPolicy.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName();
             
-            if(cancellationKindName.equals(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION)) {
+            if(cancellationKindName.equals(CancellationKinds.CUSTOMER_CANCELLATION.name())) {
                 var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
                 inUse |= itemControl.countItemsByCancellationPolicy(cancellationPolicy) != 0;
-            } else if(cancellationKindName.equals(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION)) {
+            } else if(cancellationKindName.equals(CancellationKinds.VENDOR_CANCELLATION.name())) {
                 var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 
                 inUse |= vendorControl.countVendorItemsByCancellationPolicy(cancellationPolicy) != 0;

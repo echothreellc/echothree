@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.cancellationpolicy.common;
 
-public interface CancellationPolicyConstants {
-    
-    String CancellationKind_CUSTOMER_CANCELLATION = "CUSTOMER_CANCELLATION";
-    String CancellationKind_VENDOR_CANCELLATION   = "VENDOR_CANCELLATION";
-    
-    String CancellationType_NO_PENALTY = "NO_PENALTY";
-    
+public enum CancellationTypes {
+
+    NO_PENALTY,
+
 }

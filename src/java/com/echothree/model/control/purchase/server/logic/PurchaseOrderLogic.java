@@ -16,70 +16,38 @@
 
 package com.echothree.model.control.purchase.server.logic;
 
-import com.echothree.model.control.accounting.common.exception.InvalidCurrencyException;
-import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
-import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
-import com.echothree.model.control.batch.server.logic.BatchLogic;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
-import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.common.exception.MissingDefaultOrderPriorityException;
-import com.echothree.model.control.order.common.exception.MissingRequiredBillToPartyException;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
-import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
 import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderStatusException;
 import com.echothree.model.control.purchase.common.exception.UnknownPurchaseOrderStatusChoiceException;
 import com.echothree.model.control.purchase.common.workflow.PurchaseOrderStatusConstants;
-import com.echothree.model.control.purchase.server.control.PurchaseOrderControl;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
-import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
-import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
-import com.echothree.model.control.term.server.TermControl;
-import com.echothree.model.control.term.server.logic.TermLogic;
-import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderPriority;
-import com.echothree.model.data.order.server.entity.OrderRole;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
-import com.echothree.model.data.term.server.entity.Term;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.model.data.vendor.server.entity.VendorTypeDetail;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
-import com.echothree.model.data.workflow.server.entity.WorkflowTrigger;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.Map;
-import java.util.Set;
 
 public class PurchaseOrderLogic
         extends OrderLogic {
@@ -168,7 +136,7 @@ public class PurchaseOrderLogic
 //    }
 
     public CancellationPolicy getCancellationPolicy(final ExecutionErrorAccumulator eea, final VendorType vendorType, final Vendor billToVendor) {
-        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION,
+        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationKinds.VENDOR_CANCELLATION.name(),
                 new CancellationPolicy[]{
                     billToVendor == null ? null : billToVendor.getCancellationPolicy(),
                     vendorType.getLastDetail().getDefaultCancellationPolicy()

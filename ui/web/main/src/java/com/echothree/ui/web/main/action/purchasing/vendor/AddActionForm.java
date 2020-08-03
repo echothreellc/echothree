@@ -33,7 +33,7 @@ import com.echothree.control.user.vendor.common.form.GetVendorTypeChoicesForm;
 import com.echothree.control.user.vendor.common.result.GetVendorTypeChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemAliasTypeChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
@@ -101,7 +101,7 @@ public class AddActionForm
             try {
                 GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
-                form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
+                form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
                 form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 

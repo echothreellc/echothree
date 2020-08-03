@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.common.exception.InvalidCurrencyEx
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.common.exception.MissingDefaultCustomerTypeException;
@@ -174,7 +174,7 @@ public class SalesOrderLogic
     }
 
     public CancellationPolicy getCancellationPolicy(final ExecutionErrorAccumulator eea, final CustomerType customerType, final Customer billToCustomer) {
-        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION,
+        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationKinds.CUSTOMER_CANCELLATION.name(),
                 new CancellationPolicy[]{
                     billToCustomer == null ? null : billToCustomer.getCancellationPolicy(),
                     customerType.getLastDetail().getDefaultCancellationPolicy()

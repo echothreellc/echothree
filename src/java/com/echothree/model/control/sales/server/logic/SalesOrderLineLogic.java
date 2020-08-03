@@ -17,7 +17,7 @@
 package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -368,7 +368,7 @@ public class SalesOrderLineLogic
         var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         var item = ItemLogic.getInstance().getItemByNameThenAlias(eea, itemName);
         var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
-        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION, cancellationPolicyName);
+        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationKinds.CUSTOMER_CANCELLATION.name(), cancellationPolicyName);
         var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(eea, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN, returnPolicyName);
         var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
         OrderLine orderLine = null;

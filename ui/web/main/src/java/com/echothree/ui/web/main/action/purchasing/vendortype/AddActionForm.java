@@ -28,7 +28,7 @@ import com.echothree.control.user.term.common.TermUtil;
 import com.echothree.control.user.term.common.result.GetTermChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
@@ -110,7 +110,7 @@ public class AddActionForm
         if(defaultCancellationPolicyChoices == null) {
             var form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
-            form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
+            form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(defaultCancellationPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
