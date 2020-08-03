@@ -168,7 +168,7 @@ public class PurchaseOrderLogic
 //    }
 
     public CancellationPolicy getCancellationPolicy(final ExecutionErrorAccumulator eea, final VendorType vendorType, final Vendor billToVendor) {
-        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION,
+        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION,
                 new CancellationPolicy[]{
                     billToVendor == null ? null : billToVendor.getCancellationPolicy(),
                     vendorType.getLastDetail().getDefaultCancellationPolicy()
@@ -176,7 +176,7 @@ public class PurchaseOrderLogic
     }
 
     public ReturnPolicy getReturnPolicy(final ExecutionErrorAccumulator eea, final VendorType vendorType, final Vendor billToVendor) {
-        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN,
+        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnPolicyConstants.ReturnKind_VENDOR_RETURN,
                 new ReturnPolicy[]{
                     billToVendor == null ? null : billToVendor.getReturnPolicy(),
                     vendorType.getLastDetail().getDefaultReturnPolicy()
