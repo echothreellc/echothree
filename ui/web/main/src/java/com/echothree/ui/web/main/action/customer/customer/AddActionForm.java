@@ -43,7 +43,7 @@ import com.echothree.model.control.customer.common.choice.CustomerCreditStatusCh
 import com.echothree.model.control.customer.common.choice.CustomerStatusChoicesBean;
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -126,7 +126,7 @@ public class AddActionForm
         if(returnPolicyChoices == null) {
             GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
-            form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+            form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 

@@ -26,7 +26,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -175,7 +175,7 @@ public class EditVendorTypeCommand
 
                             if(defaultReturnPolicyName != null) {
                                 var returnPolicyControl = (ReturnPolicyControl) Session.getModelController(ReturnPolicyControl.class);
-                                var returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                                var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                                 defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                             }

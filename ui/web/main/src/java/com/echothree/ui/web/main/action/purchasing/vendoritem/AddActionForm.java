@@ -24,7 +24,7 @@ import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyChoice
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -78,7 +78,7 @@ public class AddActionForm
             try {
                 GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
                 
-                form.setReturnKindName(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN);
+                form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

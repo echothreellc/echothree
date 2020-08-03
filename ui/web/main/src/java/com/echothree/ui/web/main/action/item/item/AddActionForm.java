@@ -60,7 +60,7 @@ import com.echothree.model.control.item.common.choice.ItemStatusChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemUseTypeChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindChoicesBean;
@@ -400,7 +400,7 @@ public class AddActionForm
             try {
                 GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
                 
-                form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

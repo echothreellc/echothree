@@ -16,15 +16,9 @@
 
 package com.echothree.model.control.returnpolicy.common;
 
-public interface ReturnPolicyConstants {
+public enum ReturnKinds {
     
-    String ReturnKind_CUSTOMER_RETURN = "CUSTOMER_RETURN";
-    String ReturnKind_VENDOR_RETURN   = "VENDOR_RETURN";
-    
-    String ReturnType_CREDIT_ON_RETURN                   = "CREDIT_ON_RETURN";
-    String ReturnType_REFUND_ITEM_ON_RETURN              = "REFUND_ITEM_ON_RETURN";
-    String ReturnType_REFUND_ITEM_AND_SHIPPING_ON_RETURN = "REFUND_ITEM_AND_SHIPPING_ON_RETURN";
-    String ReturnType_REPLACEMENT_WITHOUT_RETURN         = "REPLACEMENT_WITHOUT_RETURN";
-    String ReturnType_CROSS_SHIP_REPLACEMENT             = "CROSS_SHIP_REPLACEMENT";
-    
+    CUSTOMER_RETURN,
+    VENDOR_RETURN,
+
 }

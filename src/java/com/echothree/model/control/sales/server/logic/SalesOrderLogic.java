@@ -36,7 +36,7 @@ import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.choice.SalesOrderStatusChoicesBean;
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderBatchStatusException;
@@ -182,7 +182,7 @@ public class SalesOrderLogic
     }
 
     public ReturnPolicy getReturnPolicy(final ExecutionErrorAccumulator eea, final CustomerType customerType, final Customer billToCustomer) {
-        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN,
+        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnKinds.CUSTOMER_RETURN.name(),
                 new ReturnPolicy[]{
                     billToCustomer == null ? null : billToCustomer.getReturnPolicy(),
                     customerType.getLastDetail().getDefaultReturnPolicy()

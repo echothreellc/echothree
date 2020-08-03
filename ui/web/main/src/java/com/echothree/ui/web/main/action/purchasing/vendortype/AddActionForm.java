@@ -30,7 +30,7 @@ import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.shipment.common.choice.FreeOnBoardChoicesBean;
 import com.echothree.model.control.term.common.choice.TermChoicesBean;
@@ -129,7 +129,7 @@ public class AddActionForm
         if(defaultReturnPolicyChoices == null) {
             var form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
-            form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+            form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(defaultReturnPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 

@@ -27,7 +27,7 @@ import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -234,7 +234,7 @@ public class CreateItemCommand
 
                                                         if(returnPolicyName != null) {
                                                             var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-                                                            var returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                                                            var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                                                             returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                                                         }

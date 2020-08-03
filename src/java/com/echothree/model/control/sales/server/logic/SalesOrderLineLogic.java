@@ -33,7 +33,7 @@ import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.logic.OrderLineLogic;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.exception.CurrentTimeAfterSalesOrderEndTimeException;
 import com.echothree.model.control.sales.common.exception.CurrentTimeBeforeSalesOrderStartTimeException;
@@ -369,7 +369,7 @@ public class SalesOrderLineLogic
         var item = ItemLogic.getInstance().getItemByNameThenAlias(eea, itemName);
         var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
         var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationKinds.CUSTOMER_CANCELLATION.name(), cancellationPolicyName);
-        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(eea, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN, returnPolicyName);
+        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(eea, ReturnKinds.CUSTOMER_RETURN.name(), returnPolicyName);
         var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
         OrderLine orderLine = null;
 

@@ -27,7 +27,7 @@ import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusCho
 import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderStatusException;
 import com.echothree.model.control.purchase.common.exception.UnknownPurchaseOrderStatusChoiceException;
 import com.echothree.model.control.purchase.common.workflow.PurchaseOrderStatusConstants;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -144,7 +144,7 @@ public class PurchaseOrderLogic
     }
 
     public ReturnPolicy getReturnPolicy(final ExecutionErrorAccumulator eea, final VendorType vendorType, final Vendor billToVendor) {
-        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnPolicyConstants.ReturnKind_VENDOR_RETURN,
+        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnKinds.VENDOR_RETURN.name(),
                 new ReturnPolicy[]{
                     billToVendor == null ? null : billToVendor.getReturnPolicy(),
                     vendorType.getLastDetail().getDefaultReturnPolicy()

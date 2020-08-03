@@ -35,7 +35,7 @@ import com.echothree.model.control.accounting.common.choice.ItemAccountingCatego
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemCategoryChoicesBean;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.vendor.common.choice.ItemPurchasingCategoryChoicesBean;
 import com.echothree.util.common.command.CommandResult;
@@ -173,7 +173,7 @@ public class EditActionForm
             try {
                 GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
                 
-                form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

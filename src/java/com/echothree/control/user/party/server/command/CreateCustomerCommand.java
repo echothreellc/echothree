@@ -33,7 +33,7 @@ import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -152,7 +152,7 @@ public class CreateCustomerCommand
 
                 if(returnPolicyName != null) {
                     var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-                    ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                    ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                     returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                 }
