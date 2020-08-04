@@ -1,5 +1,12 @@
 # Changelog
 
+## 2020-07-26-01
+
+* Add Content Collection Tests [78](https://gitlab.echothree.com/echothree/echothree/-/issues/78)
+* Add Content Catalog Tests [79](https://gitlab.echothree.com/echothree/echothree/-/issues/79)
+* Add Content Category Tests [80](https://gitlab.echothree.com/echothree/echothree/-/issues/80)
+* Add Content Category Item Tests [81](https://gitlab.echothree.com/echothree/echothree/-/issues/81)
+
 ## 2020-07-12-01
 
 * NPE from CreatePurchaseInvoice UC [101](https://gitlab.echothree.com/echothree/echothree/-/issues/101)
