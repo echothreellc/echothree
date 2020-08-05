@@ -17,17 +17,15 @@
 package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.GetSalesOrderStatusChoicesForm;
-import com.echothree.control.user.sales.common.result.GetSalesOrderStatusChoicesResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,11 +61,11 @@ public class GetSalesOrderStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GetSalesOrderStatusChoicesResult result = SalesResultFactory.getGetSalesOrderStatusChoicesResult();
-        String orderName = form.getOrderName();
-        Order order = orderName == null? null: SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var result = SalesResultFactory.getGetSalesOrderStatusChoicesResult();
+        var orderName = form.getOrderName();
+        var order = orderName == null? null: SalesOrderLogic.getInstance().getOrderByName(this, orderName);
 
-        if(!this.hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
             String defaultSalesOrderStatusChoice = form.getDefaultSalesOrderStatusChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
