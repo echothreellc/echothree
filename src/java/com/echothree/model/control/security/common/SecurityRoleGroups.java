@@ -254,6 +254,8 @@ public enum SecurityRoleGroups {
     PurchaseInvoiceLine,
     PurchaseInvoiceStatus,
     PurchaseOrder,
+    PurchaseOrderLine,
+    PurchaseOrderStatus,
     QueuedLetter,
     QueueType,
     RelatedItem,

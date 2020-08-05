@@ -36,11 +36,30 @@ public class PurchaseBean
     public String ping() {
         return "PurchaseBean is alive!";
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Purchase Orders
+    // --------------------------------------------------------------------------------
+
+//    @Override
+//    public CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
+//        return new CreatePurchaseOrderCommand(userVisitPK, form).run();
+//    }
+
+    @Override
+    public CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {
+        return new GetPurchaseOrderStatusChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setPurchaseOrderStatus(UserVisitPK userVisitPK, SetPurchaseOrderStatusForm form) {
+        return new SetPurchaseOrderStatusCommand(userVisitPK, form).run();
+    }
+
     // --------------------------------------------------------------------------------
     //   Purchase Invoices
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createPurchaseInvoice(UserVisitPK userVisitPK, CreatePurchaseInvoiceForm form) {
         return new CreatePurchaseInvoiceCommand(userVisitPK, form).run();
@@ -50,12 +69,12 @@ public class PurchaseBean
     public CommandResult getPurchaseInvoiceStatusChoices(UserVisitPK userVisitPK, GetPurchaseInvoiceStatusChoicesForm form) {
         return new GetPurchaseInvoiceStatusChoicesCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult setPurchaseInvoiceStatus(UserVisitPK userVisitPK, SetPurchaseInvoiceStatusForm form) {
         return new SetPurchaseInvoiceStatusCommand(userVisitPK, form).run();
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Purchase Invoice Lines
     // --------------------------------------------------------------------------------

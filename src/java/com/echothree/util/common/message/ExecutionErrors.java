@@ -2215,5 +2215,6 @@ public enum ExecutionErrors {
     FreeOnBoardNotAllowed,
     UnknownPurchaseOrderStatusChoice,
     InvalidPurchaseOrderStatus,
+    UnknownPurchaseOrderName,
 
 }
