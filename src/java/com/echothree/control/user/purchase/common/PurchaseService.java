@@ -33,7 +33,7 @@ public interface PurchaseService
     //   Purchase Orders
     // --------------------------------------------------------------------------------
 
-//    CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
+    CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form);
 
     CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form);
 

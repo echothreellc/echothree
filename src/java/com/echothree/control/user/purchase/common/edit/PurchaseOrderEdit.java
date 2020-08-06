@@ -23,9 +23,6 @@ import com.echothree.util.common.form.BaseEdit;
 public interface PurchaseOrderEdit
         extends BaseEdit, TermSpec, FreeOnBoardSpec {
     
-    String getOrderPriorityName();
-    void setOrderPriorityName(String orderPriorityName);
-
     String getHoldUntilComplete();
     void setHoldUntilComplete(String holdUntilComplete);
 
@@ -40,8 +37,5 @@ public interface PurchaseOrderEdit
 
     String getReference();
     void setReference(String reference);
-
-    String getTaxable();
-    void setTaxable(String taxable);
 
 }

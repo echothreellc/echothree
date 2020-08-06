@@ -41,10 +41,10 @@ public class PurchaseBean
     //   Purchase Orders
     // --------------------------------------------------------------------------------
 
-//    @Override
-//    public CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
-//        return new CreatePurchaseOrderCommand(userVisitPK, form).run();
-//    }
+    @Override
+    public CommandResult createPurchaseOrder(UserVisitPK userVisitPK, CreatePurchaseOrderForm form) {
+        return new CreatePurchaseOrderCommand(userVisitPK, form).run();
+    }
 
     @Override
     public CommandResult getPurchaseOrderStatusChoices(UserVisitPK userVisitPK, GetPurchaseOrderStatusChoicesForm form) {

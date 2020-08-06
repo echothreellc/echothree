@@ -29,7 +29,10 @@ import com.echothree.model.control.purchase.common.exception.UnknownPurchaseOrde
 import com.echothree.model.control.purchase.common.workflow.PurchaseOrderStatusConstants;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
+import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
+import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.logic.VendorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -42,6 +45,9 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.term.server.entity.Term;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -151,34 +157,31 @@ public class PurchaseOrderLogic
                 });
     }
 
-//    /**
-//     *
-//     * @param session Required.
-//     * @param eea Required.
-//     * @param userVisit Required.
-//     * @param source Optional.
-//     * @param billToParty Optional.
-//     * @param orderPriority Optional.
-//     * @param currency Optional.
-//     * @param holdUntilComplete Optional.
-//     * @param allowBackorders Optional.
-//     * @param allowSubstitutions Optional.
-//     * @param allowCombiningShipments Optional.
-//     * @param reference Optional.
-//     * @param term Optional.
-//     * @param taxable Optional.
-//     * @param workflowEntranceName Optional.
-//     * @param createdByParty Required.
-//     * @return The newly created Order, or null if there was an error.
-//     */
-//    public Order createPurchaseOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Batch batch, Source source,
-//            final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
-//            Boolean allowCombiningShipments, final String reference, Term term, FreeOnBoard freeOnBoard, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
+    /**
+     *
+     * @param session Required.
+     * @param eea Required.
+     * @param userVisit Required.
+     * @param vendorParty Required.
+     * @param holdUntilComplete Optional.
+     * @param allowBackorders Optional.
+     * @param allowSubstitutions Optional.
+     * @param allowCombiningShipments Optional.
+     * @param reference Optional.
+     * @param term Optional.
+     * @param workflowEntranceName Optional.
+     * @param createdByParty Required.
+     * @return The newly created Order, or null if there was an error.
+     */
+    public Order createPurchaseOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
+            final Party vendorParty, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
+            Boolean allowCombiningShipments, final String reference, Term term, FreeOnBoard freeOnBoard,
+            final String workflowEntranceName, final Party createdByParty) {
 //        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 //        var orderType = getOrderTypeByName(eea, OrderTypes.PURCHASE_ORDER.name());
 //        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
 //        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.name());
-//        Order order = null;
+        Order order = null;
 //
 //        if(batch != null) {
 //            if(PurchaseOrderBatchLogic.getInstance().checkBatchAvailableForEntry(eea, batch)) {
@@ -386,39 +389,32 @@ public class PurchaseOrderLogic
 //                }
 //            }
 //        }
-//
-//        return order;
-//    }
 
-//    public Order createPurchaseOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
-//            final String batchName, final String sourceName, final String billToPartyName, final String orderPriorityName,
-//            final String currencyIsoName, final String termName, final String strHoldUntilComplete, final String strAllowBackorders,
-//            final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String freeOnBoardName,
-//            final String strTaxable, final String workflowEntranceName, final Party createdByParty) {
-//        var batch = batchName == null ? null : PurchaseOrderBatchLogic.getInstance().getBatchByName(eea, batchName);
-//        var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
-//        var billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(eea, billToPartyName, PartyTypes.CUSTOMER.name());
-//        var orderPriority = orderPriorityName == null ? null : PurchaseOrderLogic.getInstance().getOrderPriorityByName(eea, orderPriorityName);
-//        var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
-//        var term = termName == null ? null : TermLogic.getInstance().getTermByName(eea, termName);
-//        var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(eea, freeOnBoardName);
-//        Order order = null;
-//
-//        if(!eea.hasExecutionErrors()) {
-//            var holdUntilComplete = strHoldUntilComplete == null ? null : Boolean.valueOf(strHoldUntilComplete);
-//            var allowBackorders = strAllowBackorders == null ? null : Boolean.valueOf(strAllowBackorders);
-//            var allowSubstitutions = strAllowSubstitutions == null ? null : Boolean.valueOf(strAllowSubstitutions);
-//            var allowCombiningShipments = strAllowCombiningShipments == null ? null : Boolean.valueOf(strAllowCombiningShipments);
-//            var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
-//
-//            order = createPurchaseOrder(session, eea, userVisit, batch, source, billToParty, orderPriority, currency,
-//                    holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference, term,
-//                    freeOnBoard, taxable, workflowEntranceName, createdByParty);
-//
-//        }
-//
-//        return order;
-//    }
+        return order;
+    }
+
+    public Order createPurchaseOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
+            final String vendorName, final String termName, final String strHoldUntilComplete, final String strAllowBackorders,
+            final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String freeOnBoardName,
+            final String workflowEntranceName, final Party createdByParty) {
+        var vendor = VendorLogic.getInstance().getVendorByName(eea, vendorName, null);
+        var term = termName == null ? null : TermLogic.getInstance().getTermByName(eea, termName);
+        var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(eea, freeOnBoardName);
+        Order order = null;
+
+        if(!eea.hasExecutionErrors()) {
+            var holdUntilComplete = strHoldUntilComplete == null ? null : Boolean.valueOf(strHoldUntilComplete);
+            var allowBackorders = strAllowBackorders == null ? null : Boolean.valueOf(strAllowBackorders);
+            var allowSubstitutions = strAllowSubstitutions == null ? null : Boolean.valueOf(strAllowSubstitutions);
+            var allowCombiningShipments = strAllowCombiningShipments == null ? null : Boolean.valueOf(strAllowCombiningShipments);
+
+            order = createPurchaseOrder(session, eea, userVisit, vendor.getParty(), holdUntilComplete, allowBackorders,
+                allowSubstitutions, allowCombiningShipments, reference, term, freeOnBoard, workflowEntranceName,
+                createdByParty);
+        }
+
+        return order;
+    }
 
     public boolean isOrderInWorkflowSteps(final ExecutionErrorAccumulator eea, final Order order, final String... workflowStepNames) {
         return isOrderInWorkflowSteps(eea, getEntityInstanceByBaseEntity(order), workflowStepNames);
