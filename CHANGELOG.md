@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-08-09-01
+
+* jOOQ 3.13.4 Upgrade [105](https://gitlab.echothree.com/echothree/echothree/-/issues/105)
+* Apache Lucene 8.6.0 Upgrade [106](https://gitlab.echothree.com/echothree/echothree/-/issues/106)
+
 ## 2020-07-26-01
 
 * Add Content Collection Tests [78](https://gitlab.echothree.com/echothree/echothree/-/issues/78)
