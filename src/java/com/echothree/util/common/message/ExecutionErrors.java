@@ -2216,5 +2216,8 @@ public enum ExecutionErrors {
     UnknownPurchaseOrderStatusChoice,
     InvalidPurchaseOrderStatus,
     UnknownPurchaseOrderName,
+    PurchaseOrderReferenceRequired,
+    PurchaseOrderDuplicateReference,
+    InvalidPurchaseOrderReference,
 
 }
