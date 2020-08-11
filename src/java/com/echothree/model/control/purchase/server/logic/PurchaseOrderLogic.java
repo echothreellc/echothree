@@ -24,13 +24,19 @@ import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
+import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderReferenceException;
 import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderStatusException;
+import com.echothree.model.control.purchase.common.exception.PurchaseOrderDuplicateReferenceException;
+import com.echothree.model.control.purchase.common.exception.PurchaseOrderReferenceRequiredException;
 import com.echothree.model.control.purchase.common.exception.UnknownPurchaseOrderStatusChoiceException;
 import com.echothree.model.control.purchase.common.workflow.PurchaseOrderStatusConstants;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
+import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
+import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.term.server.logic.TermLogic;
+import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.vendor.server.logic.VendorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -50,6 +56,7 @@ import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorType;
+import com.echothree.model.data.vendor.server.entity.VendorTypeDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -103,43 +110,29 @@ public class PurchaseOrderLogic
 //        return vendorType;
 //    }
 
-//    public void validatePurchaseOrderReference(final ExecutionErrorAccumulator eea, final String reference, final VendorType vendorType, final Vendor billToVendor) {
-//        Boolean requireReference = null;
-//        Boolean allowReferenceDuplicates = null;
-//        String referenceValidationPattern = null;
-//
-//        if(billToVendor != null) {
-//            requireReference = billToVendor.getRequireReference();
-//            allowReferenceDuplicates = billToVendor.getAllowReferenceDuplicates();
-//            referenceValidationPattern = billToVendor.getReferenceValidationPattern();
-//        } else if(vendorType != null) {
-//            VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
-//
-//            requireReference = vendorTypeDetail.getDefaultRequireReference();
-//            allowReferenceDuplicates = vendorTypeDetail.getDefaultAllowReferenceDuplicates();
-//            referenceValidationPattern = vendorTypeDetail.getDefaultReferenceValidationPattern();
-//        }
-//
-//        if(requireReference != null) {
-//            if(requireReference && reference == null) {
-//                handleExecutionError(PurchaseOrderReferenceRequiredException.class, eea, ExecutionErrors.PurchaseOrderReferenceRequired.name());
-//            } else if(reference != null) {
-//                var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-//
-//                if(!allowReferenceDuplicates) {
-//                    if(billToVendor == null) {
-//                        handleExecutionError(MissingRequiredBillToPartyException.class, eea, ExecutionErrors.MissingRequiredBillToParty.name());
-//                    } else if(orderControl.countOrdersByBillToAndReference(billToVendor.getParty(), reference) != 0) {
-//                        handleExecutionError(PurchaseOrderDuplicateReferenceException.class, eea, ExecutionErrors.PurchaseOrderDuplicateReference.name());
-//                    }
-//                }
-//
-//                if(referenceValidationPattern != null && !reference.matches(referenceValidationPattern)) {
-//                    handleExecutionError(InvalidPurchaseOrderReferenceException.class, eea, ExecutionErrors.InvalidPurchaseOrderReference.name());
-//                }
-//            }
-//        }
-//    }
+    public void validatePurchaseOrderReference(final ExecutionErrorAccumulator eea, final String reference, final VendorType vendorType,
+            final Vendor vendor) {
+        var requireReference = vendor.getRequireReference();
+
+        if(requireReference != null) {
+            var allowReferenceDuplicates = vendor.getAllowReferenceDuplicates();
+            var referenceValidationPattern = vendor.getReferenceValidationPattern();
+
+            if(requireReference && reference == null) {
+                handleExecutionError(PurchaseOrderReferenceRequiredException.class, eea, ExecutionErrors.PurchaseOrderReferenceRequired.name());
+            } else if(reference != null) {
+                var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+
+                if(!allowReferenceDuplicates && orderControl.countOrdersByBillToAndReference(vendor.getParty(), reference) != 0) {
+                    handleExecutionError(PurchaseOrderDuplicateReferenceException.class, eea, ExecutionErrors.PurchaseOrderDuplicateReference.name());
+                }
+
+                if(referenceValidationPattern != null && !reference.matches(referenceValidationPattern)) {
+                    handleExecutionError(InvalidPurchaseOrderReferenceException.class, eea, ExecutionErrors.InvalidPurchaseOrderReference.name());
+                }
+            }
+        }
+    }
 
     public CancellationPolicy getCancellationPolicy(final ExecutionErrorAccumulator eea, final VendorType vendorType, final Vendor billToVendor) {
         return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationKinds.VENDOR_CANCELLATION.name(),
@@ -177,69 +170,34 @@ public class PurchaseOrderLogic
             final Party vendorParty, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
             Boolean allowCombiningShipments, final String reference, Term term, FreeOnBoard freeOnBoard,
             final String workflowEntranceName, final Party createdByParty) {
-//        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-//        var orderType = getOrderTypeByName(eea, OrderTypes.PURCHASE_ORDER.name());
-//        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
-//        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.name());
+        var orderType = getOrderTypeByName(eea, OrderTypes.PURCHASE_ORDER.name());
+        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
+        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.name());
         Order order = null;
-//
-//        if(batch != null) {
-//            if(PurchaseOrderBatchLogic.getInstance().checkBatchAvailableForEntry(eea, batch)) {
-//                var orderBatchCurrency = orderControl.getOrderBatch(batch).getCurrency();
-//
-//                if(currency == null) {
-//                    currency = orderBatchCurrency;
-//                } else {
-//                    if(!currency.equals(orderBatchCurrency)) {
-//                        handleExecutionError(InvalidCurrencyException.class, eea, ExecutionErrors.InvalidCurrency.name(), currency.getCurrencyIsoName(),
-//                                orderBatchCurrency.getCurrencyIsoName());
-//                    }
-//                }
-//            } else {
-//                handleExecutionError(InvalidPurchaseOrderBatchStatusException.class, eea, ExecutionErrors.InvalidPurchaseOrderBatchStatus.name(),
-//                        batch.getLastDetail().getBatchName());
-//            }
-//        }
-//
-//        if(eea == null || !eea.hasExecutionErrors()) {
-//            if(source == null) {
-//                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-//
-//                source = offerControl.getDefaultSource();
-//
-//                if(source == null) {
-//                    handleExecutionError(MissingDefaultSourceException.class, eea, ExecutionErrors.MissingDefaultSource.name());
-//                }
-//            }
-//
-//            if(orderPriority == null) {
-//                orderPriority = orderControl.getDefaultOrderPriority(orderType);
-//
-//                if(orderPriority == null) {
-//                    handleExecutionError(MissingDefaultOrderPriorityException.class, eea, ExecutionErrors.MissingDefaultOrderPriority.name(), OrderTypes.PURCHASE_ORDER.name());
-//                }
-//            }
-//
-//            if(currency == null) {
-//                var userControl = (UserControl)Session.getModelController(UserControl.class);
-//
-//                if(billToParty != null) {
-//                    currency = userControl.getPreferredCurrencyFromParty(billToParty);
-//                }
-//
-//                if(currency == null && userVisit != null) {
-//                    currency = userControl.getPreferredCurrencyFromUserVisit(userVisit);
-//                }
-//
-//                if(currency == null) {
-//                    currency = CurrencyLogic.getInstance().getDefaultCurrency(eea);
-//                }
-//            }
-//
-//            if(billToParty != null) {
-//                PartyLogic.getInstance().checkPartyType(eea, billToParty, PartyTypes.CUSTOMER.name());
-//            }
-//
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
+            var termControl = (TermControl)Session.getModelController(TermControl.class);
+            var userControl = (UserControl)Session.getModelController(UserControl.class);
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var currency = userControl.getPreferredCurrencyFromParty(vendorParty);
+            var vendor = vendorControl.getVendor(vendorParty);
+            var vendorType = vendor.getVendorType();
+
+            holdUntilComplete = holdUntilComplete == null ? vendor.getHoldUntilComplete() : holdUntilComplete;
+            allowBackorders = allowBackorders == null ? vendor.getAllowBackorders() : allowBackorders;
+            allowSubstitutions = allowSubstitutions == null ? vendor.getAllowSubstitutions() : allowSubstitutions;
+            allowCombiningShipments = allowCombiningShipments == null ? vendor.getAllowCombiningShipments() : allowCombiningShipments;
+
+            term = term == null ? termControl.getPartyTerm(vendorParty).getTerm() : term;
+            freeOnBoard = freeOnBoard == null ? partyFreeOnBoardControl.getPartyFreeOnBoard(vendorParty).getFreeOnBoard() : freeOnBoard;
+
+            var cancellationPolicy = getCancellationPolicy(eea, vendorType, vendor);
+            var returnPolicy = getReturnPolicy(eea, vendorType, vendor);
+
+            validatePurchaseOrderReference(eea, reference, vendorType, vendor);
+
 //            if(eea == null || !eea.hasExecutionErrors()) {
 //                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 //                var billToVendor = billToParty == null ? null : vendorControl.getVendor(billToParty);
@@ -247,9 +205,6 @@ public class PurchaseOrderLogic
 //                var vendorType = getVendorType(eea, offerUse.getLastDetail().getOffer(), billToVendor);
 //
 //                if(eea == null || !eea.hasExecutionErrors()) {
-//                    var cancellationPolicy = getCancellationPolicy(eea, vendorType, billToVendor);
-//                    var returnPolicy = getReturnPolicy(eea, vendorType, billToVendor);
-//
 //                    if(billToVendor != null) {
 //                        validatePurchaseOrderReference(eea, reference, vendorType, billToVendor);
 //                    }
@@ -388,7 +343,7 @@ public class PurchaseOrderLogic
 //                    }
 //                }
 //            }
-//        }
+        }
 
         return order;
     }
