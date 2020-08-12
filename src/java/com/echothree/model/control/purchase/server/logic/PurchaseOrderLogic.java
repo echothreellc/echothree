@@ -32,6 +32,10 @@ import com.echothree.model.control.purchase.common.exception.UnknownPurchaseOrde
 import com.echothree.model.control.purchase.common.workflow.PurchaseOrderStatusConstants;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
+import com.echothree.model.control.sequence.common.SequenceTypes;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.TermControl;
@@ -77,39 +81,6 @@ public class PurchaseOrderLogic
         return LogicHolder.instance;
     }
     
-    final static long AllocatedInventoryTimeout = 5 * 60 * 1000; // 5 Minutes
-
-//    public VendorType getVendorType(final ExecutionErrorAccumulator eea, final Offer offer, final Vendor vendor) {
-//        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-//        VendorType vendorType = null;
-//
-//        // 1) Try to get it from the vendor, if one was supplied.
-//        if(vendor != null) {
-//            vendorType = vendor.getVendorType();
-//        }
-//
-//        // 2) Try to get it from the offer, if one was supplied.
-//        if(vendorType == null && offer != null) {
-//            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-//            OfferVendorType offerVendorType = offerControl.getDefaultOfferVendorType(offer);
-//
-//            if(offerVendorType != null) {
-//                vendorType = offerVendorType.getVendorType();
-//            }
-//        }
-//
-//        // 3) Try to get the default VendorType, error if it isn't available.
-//        if(vendorType == null) {
-//            vendorType = vendorControl.getDefaultVendorType();
-//
-//            if(vendorType == null) {
-//                handleExecutionError(MissingDefaultVendorTypeException.class, eea, ExecutionErrors.MissingDefaultVendorType.name());
-//            }
-//        }
-//
-//        return vendorType;
-//    }
-
     public void validatePurchaseOrderReference(final ExecutionErrorAccumulator eea, final String reference, final VendorType vendorType,
             final Vendor vendor) {
         var requireReference = vendor.getRequireReference();
@@ -198,151 +169,28 @@ public class PurchaseOrderLogic
 
             validatePurchaseOrderReference(eea, reference, vendorType, vendor);
 
-//            if(eea == null || !eea.hasExecutionErrors()) {
-//                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-//                var billToVendor = billToParty == null ? null : vendorControl.getVendor(billToParty);
-//                var offerUse = source.getLastDetail().getOfferUse();
-//                var vendorType = getVendorType(eea, offerUse.getLastDetail().getOffer(), billToVendor);
-//
-//                if(eea == null || !eea.hasExecutionErrors()) {
-//                    if(billToVendor != null) {
-//                        validatePurchaseOrderReference(eea, reference, vendorType, billToVendor);
-//                    }
-//
-//                    if(eea == null || !eea.hasExecutionErrors()) {
-//                        var vendorTypeDetail = vendorType.getLastDetail();
-//                        var sequence = offerUse.getLastDetail().getPurchaseOrderSequence();
-//                        var createdBy = createdByParty == null ? null : createdByParty.getPrimaryKey();
-//
-//                        // If term or taxable were not set, then try to come up with sensible defaults, first from a PartyTerm if it
-//                        // was available, and then falling back on the VendorType.
-//                        if(term == null || taxable == null) {
-//                            var termControl = (TermControl)Session.getModelController(TermControl.class);
-//                            var partyTerm = billToParty == null ? null : termControl.getPartyTerm(billToParty);
-//
-//                            if(partyTerm == null) {
-//                                if(term == null) {
-//                                    term = vendorTypeDetail.getDefaultTerm();
-//                                }
-//
-//                                if(taxable == null) {
-//                                    taxable = vendorTypeDetail.getDefaultTaxable();
-//                                }
-//                            } else {
-//                                if(term == null) {
-//                                    term = partyTerm.getTerm();
-//                                }
-//
-//                                if(taxable == null) {
-//                                    taxable = partyTerm.getTaxable();
-//                                }
-//                            }
-//
-//                            // If no better answer was found, use the default Term.
-//                            if(term == null) {
-//                                termControl.getDefaultTerm();
-//                            }
-//
-//                            // If no better answer was found, the order is taxable.
-//                            if(taxable == null) {
-//                                taxable = true;
-//                            }
-//                        }
-//
-//                        // If FreeOnBoard wasn't specified, using the bill to Party, fir look for a preference for the Party,
-//                        // and then check the VendorType.
-//                        if(freeOnBoard == null) {
-//                            var partFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
-//                            var partyFreeOnBoard = billToParty == null ? null : partFreeOnBoardControl.getPartyFreeOnBoard(billToParty);
-//
-//                            if(partyFreeOnBoard == null) {
-//                                if(freeOnBoard == null) {
-//                                    freeOnBoard = vendorTypeDetail.getDefaultFreeOnBoard();
-//                                }
-//                            } else {
-//                                if(freeOnBoard == null) {
-//                                    freeOnBoard = partyFreeOnBoard.getFreeOnBoard();
-//                                }
-//                            }
-//
-//                            // If no better answer was found, use the default FreeOnBoard.
-//                            if(freeOnBoard == null) {
-//                                freeOnBoard = FreeOnBoardLogic.getInstance().getDefaultFreeOnBoard(eea);
-//                            }
-//                        }
-//
-//                        // If any of these flags were not set, try to get them from either the Vendor, or the VendorType.
-//                        if(holdUntilComplete == null || allowBackorders == null || allowSubstitutions == null || allowCombiningShipments == null) {
-//                            if(billToVendor == null) {
-//                                    if(holdUntilComplete == null) {
-//                                        holdUntilComplete = vendorTypeDetail.getDefaultHoldUntilComplete();
-//                                    }
-//
-//                                    if(allowBackorders == null) {
-//                                        allowBackorders = vendorTypeDetail.getDefaultAllowBackorders();
-//                                    }
-//
-//                                    if(allowSubstitutions == null) {
-//                                        allowSubstitutions = vendorTypeDetail.getDefaultAllowSubstitutions();
-//                                    }
-//
-//                                    if(allowCombiningShipments == null) {
-//                                        allowCombiningShipments = vendorTypeDetail.getDefaultAllowCombiningShipments();
-//                                    }
-//                            } else {
-//                                if(holdUntilComplete == null) {
-//                                    holdUntilComplete = billToVendor.getHoldUntilComplete();
-//                                }
-//
-//                                if(allowBackorders == null) {
-//                                    allowBackorders = billToVendor.getAllowBackorders();
-//                                }
-//
-//                                if(allowSubstitutions == null) {
-//                                    allowSubstitutions = billToVendor.getAllowSubstitutions();
-//                                }
-//
-//                                if(allowCombiningShipments == null) {
-//                                    allowCombiningShipments = billToVendor.getAllowCombiningShipments();
-//                                }
-//                            }
-//                        }
-//
-//                        order = createOrder(eea, orderType, sequence, orderPriority, currency, holdUntilComplete, allowBackorders,
-//                                allowSubstitutions, allowCombiningShipments, term, freeOnBoard, reference, null,
-//                                cancellationPolicy, returnPolicy, taxable, createdBy);
-//
-//                        if(eea == null || !eea.hasExecutionErrors()) {
-//                            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-//                            var purchaseOrderControl = (PurchaseOrderControl)Session.getModelController(PurchaseOrderControl.class);
-//                            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-//                            var associateReferral = AssociateReferralLogic.getInstance().getAssociateReferral(session, userVisit);
-//                            var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
-//
-//                            purchaseOrderControl.createPurchaseOrder(order, offerUse, associateReferral, createdBy);
-//
-//                            orderControl.createOrderUserVisit(order, userVisit);
-//
-//                            workflowControl.addEntityToWorkflowUsingNames(null, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, workflowEntranceName,
-//                                    entityInstance, null, session.START_TIME + AllocatedInventoryTimeout, createdBy);
-//
-//                            if(billToParty != null) {
-//                                orderControl.createOrderRole(order, billToParty, billToOrderRoleType, createdBy);
-//                            }
-//
-//                            if(createdByParty != null) {
-//                                orderControl.createOrderRole(order, createdByParty, placingOrderRoleType, createdBy);
-//                            }
-//
-//                            if(batch != null) {
-//                                // eea is passed in as null to createBatchEntity(...) so that an Exception will be thrown is something
-//                                // goes wrong. No real way to back out at this point if it does, except by Exception.
-//                                BatchLogic.getInstance().createBatchEntity(null, entityInstance, batch, createdBy);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            var sequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.PURCHASE_ORDER.name());
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var userSesson = userControl.getUserSessionByUserVisit(userVisit);;
+                var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+                var createdByPartyPK = createdByParty.getPrimaryKey();
+
+                order = createOrder(eea, orderType, sequence, null, currency, holdUntilComplete, allowBackorders,
+                        allowSubstitutions, allowCombiningShipments, term, freeOnBoard, reference, null,
+                        cancellationPolicy, returnPolicy, null, createdByPartyPK);
+
+                orderControl.createOrderUserVisit(order, userVisit);
+
+                workflowControl.addEntityToWorkflowUsingNames(null, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS,
+                        workflowEntranceName, entityInstance, null, null, createdByPartyPK);
+
+                orderControl.createOrderRole(order, userSesson.getPartyRelationship().getFromParty(), billToOrderRoleType, createdByPartyPK);
+
+                orderControl.createOrderRole(order, createdByParty, placingOrderRoleType, createdByPartyPK);
+            }
         }
 
         return order;
