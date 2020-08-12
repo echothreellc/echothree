@@ -34,8 +34,6 @@ import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.sequence.server.logic.SequenceLogic;
-import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.TermControl;
@@ -60,7 +58,6 @@ import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.model.data.vendor.server.entity.VendorTypeDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -81,7 +78,7 @@ public class PurchaseOrderLogic
         return LogicHolder.instance;
     }
     
-    public void validatePurchaseOrderReference(final ExecutionErrorAccumulator eea, final String reference, final VendorType vendorType,
+    public void validatePurchaseOrderReference(final ExecutionErrorAccumulator eea, final String reference,
             final Vendor vendor) {
         var requireReference = vendor.getRequireReference();
 
@@ -167,7 +164,7 @@ public class PurchaseOrderLogic
             var cancellationPolicy = getCancellationPolicy(eea, vendorType, vendor);
             var returnPolicy = getReturnPolicy(eea, vendorType, vendor);
 
-            validatePurchaseOrderReference(eea, reference, vendorType, vendor);
+            validatePurchaseOrderReference(eea, reference, vendor);
 
             var sequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.PURCHASE_ORDER.name());
 
