@@ -79,6 +79,9 @@ import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
+import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
+import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
+import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
 import com.echothree.control.user.vendor.common.edit.VendorEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
@@ -214,6 +217,13 @@ public class BasePersona {
     public CreatePartyPaymentMethodForm createPartyPaymentMethodForm;
 
     public String lastPartyPaymentMethodName;
+
+    // Purchase
+    public CreatePurchaseOrderForm createPurchaseOrderForm;
+    public PurchaseOrderSpec purchaseOrderSpec;
+    public PurchaseOrderEdit purchaseOrderEdit;
+
+    public String lastPurchaseOrderName;
 
     // Sales
     public String lastSalesOrderBatchName;
