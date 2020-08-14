@@ -81,6 +81,7 @@ import com.echothree.control.user.party.common.form.CreateVendorForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
 import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
 import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
+import com.echothree.control.user.purchase.common.form.SetPurchaseOrderStatusForm;
 import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
 import com.echothree.control.user.vendor.common.edit.VendorEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
@@ -220,6 +221,7 @@ public class BasePersona {
 
     // Purchase
     public CreatePurchaseOrderForm createPurchaseOrderForm;
+    public SetPurchaseOrderStatusForm setPurchaseOrderStatusForm;
     public PurchaseOrderSpec purchaseOrderSpec;
     public PurchaseOrderEdit purchaseOrderEdit;
 
