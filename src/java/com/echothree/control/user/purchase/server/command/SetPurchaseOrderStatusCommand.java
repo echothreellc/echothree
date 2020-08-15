@@ -40,11 +40,11 @@ public class SetPurchaseOrderStatusCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
-                )));
-        
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("OrderStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PurchaseOrderStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         ));
     }
     
@@ -56,13 +56,12 @@ public class SetPurchaseOrderStatusCommand
     @Override
     protected BaseResult execute() {
         var purchaseOrderLogic = PurchaseOrderLogic.getInstance();
-        var orderName = form.getOrderName();
-        var order = purchaseOrderLogic.getOrderByName(this, orderName);
+        var order = purchaseOrderLogic.getOrderByName(this, form.getOrderName());
         
         if(!hasExecutionErrors()) {
-            String orderStatusChoice = form.getSalesOrderStatusChoice();
+            var purchaseOrderStatusChoice = form.getPurchaseOrderStatusChoice();
             
-            purchaseOrderLogic.setPurchaseOrderStatus(getSession(), this, order, orderStatusChoice, getPartyPK());
+            purchaseOrderLogic.setPurchaseOrderStatus(getSession(), this, order, purchaseOrderStatusChoice, getPartyPK());
         }
         
         return null;

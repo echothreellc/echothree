@@ -21,7 +21,7 @@ import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
 public interface SetPurchaseOrderStatusForm
         extends PurchaseOrderSpec {
     
-    String getSalesOrderStatusChoice();
-    void setSalesOrderStatusChoice(String salesOrderStatusChoice);
+    String getPurchaseOrderStatusChoice();
+    void setPurchaseOrderStatusChoice(String purchaseOrderStatusChoice);
     
 }
