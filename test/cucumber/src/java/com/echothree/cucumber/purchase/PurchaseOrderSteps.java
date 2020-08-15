@@ -16,7 +16,9 @@
 
 package com.echothree.cucumber.purchase;
 
+import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.control.user.purchase.common.PurchaseUtil;
+import com.echothree.control.user.purchase.common.result.CreatePurchaseOrderResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -45,7 +47,15 @@ public class PurchaseOrderSteps implements En {
 
                     assertThat(createPurchaseOrderForm).isNotNull();
 
-                    LastCommandResult.commandResult = PurchaseUtil.getHome().createPurchaseOrder(persona.userVisitPK, createPurchaseOrderForm);
+                    var commandResult = PurchaseUtil.getHome().createPurchaseOrder(persona.userVisitPK, createPurchaseOrderForm);
+
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreatePurchaseOrderResult)commandResult.getExecutionResult().getResult();
+
+                    if(result != null) {
+                        persona.lastPurchaseOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
+                        persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
+                    }
 
                     persona.createPurchaseOrderForm = null;
                 });
