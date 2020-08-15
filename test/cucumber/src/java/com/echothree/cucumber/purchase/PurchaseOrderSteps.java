@@ -21,6 +21,7 @@ import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
+import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PurchaseOrderSteps implements En {
@@ -168,85 +169,96 @@ public class PurchaseOrderSteps implements En {
                     }
                 });
 
-//        When("^the user sets the purchase order's new purchase order name to ([a-zA-Z0-9-_]*)$",
-//                (String purchaseOrderName) -> {
-//                    var persona = CurrentPersona.persona;
-//                    var purchaseOrderEdit = persona.purchaseOrderEdit;
-//
-//                    assertThat(purchaseOrderEdit).isNotNull();
-//
-//                    purchaseOrderEdit.setPurchaseOrderName(purchaseOrderName);
-//                });
-//
-//        When("^the user sets the purchase order's status to ([a-zA-Z0-9-_]*)$",
-//                (String purchaseOrderStatusChoice) -> {
-//                    var persona = CurrentPersona.persona;
-//                    var setPurchaseOrderStatusForm = persona.setPurchaseOrderStatusForm;
-//
-//                    assertThat(setPurchaseOrderStatusForm).isNotNull();
-//
-//                    setPurchaseOrderStatusForm.setPurchaseOrderStatusChoice(purchaseOrderStatusChoice);
-//                });
-//
-//        When("^the user sets the purchase order's description to \"([^\"]*)\"$",
-//                (String description) -> {
-//                    var persona = CurrentPersona.persona;
-//                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
-//                    var purchaseOrderEdit = persona.purchaseOrderEdit;
-//
-//                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
-//
-//                    if(createPurchaseOrderForm != null) {
-//                        createPurchaseOrderForm.setDescription(description);
-//                    } else {
-//                        purchaseOrderEdit.setDescription(description);
-//                    }
-//                });
-//
-//        When("^the user sets the purchase order's priority to \"([^\"]*)\"$",
-//                (String priority) -> {
-//                    var persona = CurrentPersona.persona;
-//                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
-//                    var purchaseOrderEdit = persona.purchaseOrderEdit;
-//
-//                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
-//
-//                    if(createPurchaseOrderForm != null) {
-//                        createPurchaseOrderForm.setPriority(priority);
-//                    } else {
-//                        purchaseOrderEdit.setPriority(priority);
-//                    }
-//                });
-//
-//        When("^the user sets the purchase order's cancellation policy to ([a-zA-Z0-9-_]*)$",
-//                (String cancellationPolicyName) -> {
-//                    var persona = CurrentPersona.persona;
-//                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
-//                    var purchaseOrderEdit = persona.purchaseOrderEdit;
-//
-//                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
-//
-//                    if(createPurchaseOrderForm != null) {
-//                        createPurchaseOrderForm.setCancellationPolicyName(cancellationPolicyName);
-//                    } else {
-//                        purchaseOrderEdit.setCancellationPolicyName(cancellationPolicyName);
-//                    }
-//                });
-//
-//        When("^the user sets the purchase order's return policy to ([a-zA-Z0-9-_]*)$",
-//                (String returnPolicyName) -> {
-//                    var persona = CurrentPersona.persona;
-//                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
-//                    var purchaseOrderEdit = persona.purchaseOrderEdit;
-//
-//                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
-//
-//                    if(createPurchaseOrderForm != null) {
-//                        createPurchaseOrderForm.setReturnPolicyName(returnPolicyName);
-//                    } else {
-//                        purchaseOrderEdit.setReturnPolicyName(returnPolicyName);
-//                    }
-//                });
+        When("^the user sets the purchase order's status to ([a-zA-Z0-9-_]*)$",
+                (String purchaseOrderStatusChoice) -> {
+                    var persona = CurrentPersona.persona;
+                    var setPurchaseOrderStatusForm = persona.setPurchaseOrderStatusForm;
+
+                    assertThat(setPurchaseOrderStatusForm).isNotNull();
+
+                    setPurchaseOrderStatusForm.setPurchaseOrderStatusChoice(purchaseOrderStatusChoice);
+                });
+
+        When("^the user sets the purchase order's term name to \"([^\"]*)\"$",
+                (String termName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
+                    var purchaseOrderEdit = persona.purchaseOrderEdit;
+
+                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setTermName(termName);
+                });
+
+        When("^the user indicates the purchase order hold until complete should be (set|not set)$",
+                (String holdUntilComplete) -> {
+                    var persona = CurrentPersona.persona;
+                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
+                    var purchaseOrderEdit = persona.purchaseOrderEdit;
+
+                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
+
+                    holdUntilComplete = Boolean.valueOf(holdUntilComplete.equals("set")).toString();
+                    Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setHoldUntilComplete(holdUntilComplete);
+                });
+
+        When("^the user indicates the purchase order for allow backorders should be (set|not set)$",
+                (String allowBackorders) -> {
+                    var persona = CurrentPersona.persona;
+                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
+                    var purchaseOrderEdit = persona.purchaseOrderEdit;
+
+                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
+
+                    allowBackorders = Boolean.valueOf(allowBackorders.equals("set")).toString();
+                    Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setAllowBackorders(allowBackorders);
+                });
+
+        When("^the user indicates the purchase order for allow substitutions should be (set|not set)$",
+                (String allowSubstitutions) -> {
+                    var persona = CurrentPersona.persona;
+                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
+                    var purchaseOrderEdit = persona.purchaseOrderEdit;
+
+                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
+
+                    allowSubstitutions = Boolean.valueOf(allowSubstitutions.equals("set")).toString();
+                    Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setAllowSubstitutions(allowSubstitutions);
+                });
+
+        When("^the user indicates the purchase order for allow combining shipments should be (set|not set)$",
+                (String allowCombiningShipments) -> {
+                    var persona = CurrentPersona.persona;
+                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
+                    var purchaseOrderEdit = persona.purchaseOrderEdit;
+
+                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
+
+                    allowCombiningShipments = Boolean.valueOf(allowCombiningShipments.equals("set")).toString();
+                    Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setAllowCombiningShipments(allowCombiningShipments);
+                });
+
+        When("^the user sets the purchase order's reference to \"([^\"]*)\"$",
+                (String reference) -> {
+                    var persona = CurrentPersona.persona;
+                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
+                    var purchaseOrderEdit = persona.purchaseOrderEdit;
+
+                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setReference(reference);
+                });
+
+        When("^the user sets the purchase order's free on board name to \"([^\"]*)\"$",
+                (String freeOnBoardName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createPurchaseOrderForm = persona.createPurchaseOrderForm;
+                    var purchaseOrderEdit = persona.purchaseOrderEdit;
+
+                    assertThat(createPurchaseOrderForm != null || purchaseOrderEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setFreeOnBoardName(freeOnBoardName);
+                });
     }
 
 }
