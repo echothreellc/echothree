@@ -172,7 +172,6 @@ public class PurchaseOrderLogic
                 var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
                 var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 var userSesson = userControl.getUserSessionByUserVisit(userVisit);;
-                var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
                 var createdByPartyPK = createdByParty.getPrimaryKey();
 
                 order = createOrder(eea, orderType, sequence, null, currency, holdUntilComplete, allowBackorders,
@@ -181,6 +180,7 @@ public class PurchaseOrderLogic
 
                 orderControl.createOrderUserVisit(order, userVisit);
 
+                var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
                 workflowControl.addEntityToWorkflowUsingNames(null, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS,
                         workflowEntranceName, entityInstance, null, null, createdByPartyPK);
 
