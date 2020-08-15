@@ -19,26 +19,26 @@ package com.echothree.model.control.customer.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseCustomerException
+public abstract class BaseCustomerException
         extends BaseException {
     
     /** Creates a new instance of BaseCustomerException */
-    public BaseCustomerException() {
+    protected BaseCustomerException() {
         super();
     }
     
     /** Creates a new instance of BaseCustomerException */
-    public BaseCustomerException(String message) {
+    protected BaseCustomerException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseCustomerException */
-    public BaseCustomerException(Throwable cause) {
+    protected BaseCustomerException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseCustomerException */
-    public BaseCustomerException(Message message) {
+    protected BaseCustomerException(Message message) {
         super(message);
     }
 

@@ -19,26 +19,26 @@ package com.echothree.model.control.geo.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseGeoException
+public abstract class BaseGeoException
         extends BaseException {
     
     /** Creates a new instance of BaseGeoException */
-    public BaseGeoException() {
+    protected BaseGeoException() {
         super();
     }
     
     /** Creates a new instance of BaseGeoException */
-    public BaseGeoException(String message) {
+    protected BaseGeoException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseGeoException */
-    public BaseGeoException(Throwable cause) {
+    protected BaseGeoException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseGeoException */
-    public BaseGeoException(Message message) {
+    protected BaseGeoException(Message message) {
         super(message);
     }
 

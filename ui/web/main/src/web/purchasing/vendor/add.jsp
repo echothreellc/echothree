@@ -269,15 +269,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align=right><fmt:message key="label.taxable" />:</td>
-                        <td>
-                            <html:checkbox property="taxable" value="true" /> (*)
-                            <et:validationErrors id="errorMessage" property="Taxable">
-                                <p><c:out value="${errorMessage}" /></p>
-                            </et:validationErrors>
-                        </td>
-                    </tr>
-                    <tr>
                         <td></td>
                         <td><html:submit onclick="onSubmitDisable(this);" /><input type="hidden" name="submitButton" /></td>
                     </tr>

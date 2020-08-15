@@ -19,26 +19,26 @@ package com.echothree.model.control.campaign.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseCampaignException
+public abstract class BaseCampaignException
         extends BaseException {
     
     /** Creates a new instance of BaseCampaignException */
-    public BaseCampaignException() {
+    protected BaseCampaignException() {
         super();
     }
     
     /** Creates a new instance of BaseCampaignException */
-    public BaseCampaignException(String message) {
+    protected BaseCampaignException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseCampaignException */
-    public BaseCampaignException(Throwable cause) {
+    protected BaseCampaignException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseCampaignException */
-    public BaseCampaignException(Message message) {
+    protected BaseCampaignException(Message message) {
         super(message);
     }
 

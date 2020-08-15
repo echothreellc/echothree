@@ -21,7 +21,7 @@ import com.echothree.control.user.sales.common.result.GetSalesOrderBatchResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,9 +69,9 @@ public class GetSalesOrderBatchCommand
         Batch batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, form.getBatchName());
 
         if(batch != null) {
-            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
 
-            result.setSalesOrderBatch(salesControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
+            result.setSalesOrderBatch(salesOrderBatchControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
 
             sendEventUsingNames(batch.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }

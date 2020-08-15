@@ -19,26 +19,26 @@ package com.echothree.model.control.invoice.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseInvoiceException
+public abstract class BaseInvoiceException
         extends BaseException {
     
     /** Creates a new instance of BaseInvoiceException */
-    public BaseInvoiceException() {
+    protected BaseInvoiceException() {
         super();
     }
     
     /** Creates a new instance of BaseInvoiceException */
-    public BaseInvoiceException(String message) {
+    protected BaseInvoiceException(String message) {
         super(message);
     }
-    
+
     /** Creates a new instance of BaseInvoiceException */
-    public BaseInvoiceException(Throwable cause) {
+    protected BaseInvoiceException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseInvoiceException */
-    public BaseInvoiceException(Message message) {
+    protected BaseInvoiceException(Message message) {
         super(message);
     }
 

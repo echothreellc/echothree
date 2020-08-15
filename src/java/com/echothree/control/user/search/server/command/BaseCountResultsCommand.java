@@ -41,7 +41,7 @@ public abstract class BaseCountResultsCommand<F extends BaseCountResultsForm, R 
     }
 
     /** Creates a new instance of BaseCountResultsCommand */
-    public BaseCountResultsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
+    protected BaseCountResultsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     

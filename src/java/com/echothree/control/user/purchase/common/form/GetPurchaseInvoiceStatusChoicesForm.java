@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.purchase.common.form;
 
-import com.echothree.control.user.invoice.common.spec.InvoiceSpec;
+import com.echothree.control.user.purchase.common.spec.PurchaseInvoiceSpec;
 
 public interface GetPurchaseInvoiceStatusChoicesForm
-        extends InvoiceSpec {
+        extends PurchaseInvoiceSpec {
     
     String getDefaultInvoiceStatusChoice();
     void setDefaultInvoiceStatusChoice(String defaultInvoiceStatusChoice);

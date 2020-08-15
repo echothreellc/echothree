@@ -10,7 +10,7 @@
         <vendor vendorName="TEST_VENDOR" vendorTypeName="DEFAULT" minimumPurchaseOrderLines="5" maximumPurchaseOrderLines="100"
         minimumPurchaseOrderAmount="100.00" maximumPurchaseOrderAmount="10000.00" useItemPurchasingCategories="true"
         defaultItemAliasTypeName="UPC" firstName="Test" middleName="A" lastName="Vendor" emailAddress="TestV@echothree.com"
-        allowSolicitation="true" taxable="true">
+        allowSolicitation="true">
             <partyCreditLimit currencyIsoName="USD" creditLimit="100.00" potentialCreditLimit="1000.00" />
             <contactMechanisms>
                 <contactEmailAddress emailAddress="TestVAlternate@echothree.com" allowSolicitation="false">

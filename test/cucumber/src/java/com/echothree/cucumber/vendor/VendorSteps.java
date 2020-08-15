@@ -58,7 +58,12 @@ public class VendorSteps
                     LastCommandResult.commandResult = commandResult;
                     var result = (CreateVendorResult)commandResult.getExecutionResult().getResult();
 
-                    persona.lastVendorName = commandResult.getHasErrors() ? null : result.getVendorName();
+                    if(result != null) {
+                        persona.lastVendorName = commandResult.getHasErrors() ? null : result.getVendorName();
+                        persona.lastPartyName = commandResult.getHasErrors() ? null : result.getPartyName();
+                        persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
+                    }
+
                     persona.createVendorForm = null;
                 });
 
@@ -453,17 +458,6 @@ public class VendorSteps
 
                     allowSolicitation = Boolean.valueOf(allowSolicitation.equals("does")).toString();
                     createVendorForm.setAllowSolicitation(allowSolicitation);
-                });
-
-        When("^the user sets the vendor to (be|not be) taxable$",
-                (String taxable) -> {
-                    var persona = CurrentPersona.persona;
-                    var createVendorForm = persona.createVendorForm;
-
-                    assertThat(createVendorForm).isNotNull();
-
-                    taxable = Boolean.valueOf(taxable.equals("does")).toString();
-                    createVendorForm.setTaxable(taxable);
                 });
 
         When("^the user indicates the vendor default hold until complete should be (set|not set)$",

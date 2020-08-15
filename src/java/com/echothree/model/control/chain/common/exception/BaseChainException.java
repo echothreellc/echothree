@@ -19,26 +19,26 @@ package com.echothree.model.control.chain.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseChainException
+public abstract class BaseChainException
         extends BaseException {
     
     /** Creates a new instance of BaseChainException */
-    public BaseChainException() {
+    protected BaseChainException() {
         super();
     }
     
     /** Creates a new instance of BaseChainException */
-    public BaseChainException(String message) {
+    protected BaseChainException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseChainException */
-    public BaseChainException(Throwable cause) {
+    protected BaseChainException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseChainException */
-    public BaseChainException(Message message) {
+    protected BaseChainException(Message message) {
         super(message);
     }
 

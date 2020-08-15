@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.cancellationpolicy.common;
+package com.echothree.control.user.purchase.common.spec;
 
-public interface CancellationPolicyConstants {
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+
+public interface PurchaseOrderUniversalSpec
+        extends PurchaseOrderSpec, UniversalEntitySpec {
     
-    String CancellationKind_CUSTOMER_CANCELLATION = "CUSTOMER_CANCELLATION";
-    String CancellationKind_VENDOR_CANCELLATION   = "VENDOR_CANCELLATION";
-    
-    String CancellationType_NO_PENALTY = "NO_PENALTY";
+    // Nothing additional beyond PurchaseOrderSpec, UniversalEntitySpec
     
 }

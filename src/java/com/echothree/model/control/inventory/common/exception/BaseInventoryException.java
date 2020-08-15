@@ -19,26 +19,26 @@ package com.echothree.model.control.inventory.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseInventoryException
+public abstract class BaseInventoryException
         extends BaseException {
     
     /** Creates a new instance of BaseInventoryException */
-    public BaseInventoryException() {
+    protected BaseInventoryException() {
         super();
     }
     
     /** Creates a new instance of BaseInventoryException */
-    public BaseInventoryException(String message) {
+    protected BaseInventoryException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseInventoryException */
-    public BaseInventoryException(Throwable cause) {
+    protected BaseInventoryException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseInventoryException */
-    public BaseInventoryException(Message message) {
+    protected BaseInventoryException(Message message) {
         super(message);
     }
 

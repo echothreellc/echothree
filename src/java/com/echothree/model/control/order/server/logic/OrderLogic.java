@@ -45,7 +45,6 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
-import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
@@ -68,7 +67,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class OrderLogic
@@ -92,7 +90,7 @@ public class OrderLogic
     
     public OrderType getOrderTypeByName(final ExecutionErrorAccumulator eea, final String orderTypeName) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderControl.getOrderTypeByName(orderTypeName);
 
         if(orderType == null) {
             handleExecutionError(UnknownOrderTypeNameException.class, eea, ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
@@ -103,7 +101,7 @@ public class OrderLogic
 
     public OrderRoleType getOrderRoleTypeByName(final ExecutionErrorAccumulator eea, final String orderRoleTypeName) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderRoleType orderRoleType = orderControl.getOrderRoleTypeByName(orderRoleTypeName);
+        var orderRoleType = orderControl.getOrderRoleTypeByName(orderRoleTypeName);
 
         if(orderRoleType == null) {
             handleExecutionError(UnknownOrderRoleTypeNameException.class, eea, ExecutionErrors.UnknownOrderRoleTypeName.name(), orderRoleTypeName);
@@ -113,11 +111,11 @@ public class OrderLogic
     }
 
     public SequenceType getOrderSequenceType(final ExecutionErrorAccumulator eea, final OrderType orderType) {
-        SequenceType sequenceType = null;
-        OrderType parentOrderType = orderType;
+        var parentOrderType = orderType;
+        SequenceType sequenceType;
 
         do {
-            OrderTypeDetail orderTypeDetail = parentOrderType.getLastDetail();
+            var orderTypeDetail = parentOrderType.getLastDetail();
 
             sequenceType = orderTypeDetail.getOrderSequenceType();
 
@@ -142,8 +140,8 @@ public class OrderLogic
     }
 
     public Sequence getOrderSequence(final ExecutionErrorAccumulator eea, final OrderType orderType) {
+        var sequenceType = getOrderSequenceType(eea, orderType);
         Sequence sequence = null;
-        SequenceType sequenceType = getOrderSequenceType(eea, orderType);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
@@ -176,8 +174,8 @@ public class OrderLogic
             final Currency currency, final Boolean holdUntilComplete, final Boolean allowBackorders, final Boolean allowSubstitutions,
             final Boolean allowCombiningShipments, final Term term, final FreeOnBoard freeOnBoard, final String reference, final String description,
             final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final Boolean taxable, final BasePK createdBy) {
+        var orderName = getOrderName(eea, orderType, sequence);
         Order order = null;
-        String orderName = getOrderName(eea, orderType, sequence);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
@@ -191,7 +189,7 @@ public class OrderLogic
 
     public OrderAliasType getOrderAliasTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderAliasTypeName) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderAliasType orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+        var orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
         if(orderAliasType == null) {
             handleExecutionError(UnknownOrderAliasTypeNameException.class, eea, ExecutionErrors.UnknownOrderAliasTypeName.name(),
@@ -204,7 +202,7 @@ public class OrderLogic
     private Order getOrderByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName,
             final EntityPermission entityPermission) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderType orderType = getOrderTypeByName(eea, orderTypeName);
+        var orderType = getOrderTypeByName(eea, orderTypeName);
         Order order = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -228,7 +226,7 @@ public class OrderLogic
     
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderType orderType = getOrderTypeByName(eea, orderTypeName);
+        var orderType = getOrderTypeByName(eea, orderTypeName);
         OrderPriority orderPriority = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -244,7 +242,7 @@ public class OrderLogic
 
     public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderType orderType = getOrderTypeByName(eea, orderTypeName);
+        var orderType = getOrderTypeByName(eea, orderTypeName);
         OrderPriority orderPriority = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -262,8 +260,8 @@ public class OrderLogic
             final ItemDeliveryType itemDeliveryType, final Boolean isDefault, final PartyContactMechanism partyContactMechanism,
             final ShippingMethod shippingMethod, final Boolean holdUntilComplete, final BasePK createdBy) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderStatus = orderControl.getOrderStatusForUpdate(order);
         OrderShipmentGroup orderShipmentGroup = null;
-        OrderStatus orderStatus = orderControl.getOrderStatusForUpdate(order);
 
         if(orderShipmentGroupSequence == null) {
             orderShipmentGroupSequence = orderStatus.getOrderShipmentGroupSequence() + 1;
@@ -297,10 +295,10 @@ public class OrderLogic
         return orderControl.getDefaultOrderShipmentGroup(order, itemDeliveryType);
     }
 
-    public Set<Item> getItemsFromOrder(Order order) {
+    public Set<Item> getItemsFromOrder(final Order order) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        List<OrderLine> orderLines = orderControl.getOrderLinesByOrder(order);
-        Set<Item> items = new HashSet<>(orderLines.size());
+        var orderLines = orderControl.getOrderLinesByOrder(order);
+        var items = new HashSet<Item>(orderLines.size());
 
         orderLines.stream().forEach((orderLine) -> {
             items.add(orderLine.getLastDetail().getItem());
@@ -312,9 +310,9 @@ public class OrderLogic
     public OrderPaymentPreference createOrderPaymentPreference(final Session session, final ExecutionErrorAccumulator eea, final Order order,
             Integer orderPaymentPreferenceSequence, PaymentMethod paymentMethod, final PartyPaymentMethod partyPaymentMethod,
             final Boolean wasPresent, final Long maximumAmount, final Integer sortOrder, final BasePK createdBy) {
+        var parameterCount = (paymentMethod == null ? 0 : 1) + (partyPaymentMethod == null ? 0 : 1);
         OrderPaymentPreference orderPaymentPreference = null;
-        int parameterCount = (paymentMethod == null ? 0 : 1) + (partyPaymentMethod == null ? 0 : 1);
-        
+
         // Either the paymentMethod or the partyPaymentMethod must be specified.
         if(parameterCount == 1) {
             String paymentMethodTypeName;
@@ -388,7 +386,7 @@ public class OrderLogic
     private OrderPaymentPreference getOrderPaymentPreferenceByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName,
             final String orderPaymentPreferenceSequence, final EntityPermission entityPermission) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        Order order = getOrderByName(eea, orderTypeName, orderName);
+        var order = getOrderByName(eea, orderTypeName, orderName);
         OrderPaymentPreference orderPaymentPreference = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -414,9 +412,9 @@ public class OrderLogic
     }
     
     public void checkItemAgainstOrderPaymentPreferences(final Session session, final ExecutionErrorAccumulator eea, final Order order, final Item item,
-            BasePK evaluatedBy) {
+            final BasePK evaluatedBy) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        List<OrderPaymentPreference> orderPaymentPreferences = orderControl.getOrderPaymentPreferencesByOrder(order);
+        var orderPaymentPreferences = orderControl.getOrderPaymentPreferencesByOrder(order);
         
         orderPaymentPreferences.stream().forEach((orderPaymentPreference) -> {
             PaymentMethodLogic.getInstance().checkAcceptanceOfItem(session, eea, orderPaymentPreference.getLastDetail().getPaymentMethod(), item, evaluatedBy);
@@ -424,8 +422,8 @@ public class OrderLogic
     }
     
     public void checkItemAgainstShippingMethod(final Session session, final ExecutionErrorAccumulator eea, final OrderShipmentGroup orderShipmentGroup,
-            final Item item, BasePK evaluatedBy) {
-        ShippingMethod shippingMethod = orderShipmentGroup.getLastDetail().getShippingMethod();
+            final Item item, final BasePK evaluatedBy) {
+        var shippingMethod = orderShipmentGroup.getLastDetail().getShippingMethod();
         
         if(shippingMethod != null) {
             ShippingMethodLogic.getInstance().checkAcceptanceOfItem(session, eea, shippingMethod, item, evaluatedBy);

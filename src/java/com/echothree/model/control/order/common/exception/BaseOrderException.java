@@ -19,26 +19,26 @@ package com.echothree.model.control.order.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseOrderException
+public abstract class BaseOrderException
         extends BaseException {
     
     /** Creates a new instance of BaseOrderException */
-    public BaseOrderException() {
+    protected BaseOrderException() {
         super();
     }
     
     /** Creates a new instance of BaseOrderException */
-    public BaseOrderException(String message) {
+    protected BaseOrderException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseOrderException */
-    public BaseOrderException(Throwable cause) {
+    protected BaseOrderException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseOrderException */
-    public BaseOrderException(Message message) {
+    protected BaseOrderException(Message message) {
         super(message);
     }
 

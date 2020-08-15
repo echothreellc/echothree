@@ -21,7 +21,7 @@ import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
@@ -29,7 +29,7 @@ import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -112,8 +112,7 @@ public class CreateVendorCommand
                 new FieldDefinition("PreferredJavaTimeZoneName", FieldType.STRING, false, null, null),
                 new FieldDefinition("PreferredDateTimeFormatName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EmailAddress", FieldType.EMAIL_ADDRESS, false, null, null),
-                new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("Taxable", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null)
                 ));
     }
     
@@ -139,7 +138,7 @@ public class CreateVendorCommand
 
                 if(cancellationPolicyName != null) {
                     var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-                    CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
+                    CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
                 }
@@ -150,7 +149,7 @@ public class CreateVendorCommand
 
                     if(returnPolicyName != null) {
                         var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-                        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN);
+                        ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
 
                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     }
@@ -213,7 +212,6 @@ public class CreateVendorCommand
                                                         String name = form.getName();
                                                         String emailAddress = form.getEmailAddress();
                                                         Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                                        Boolean taxable = Boolean.valueOf(form.getTaxable());
                                                         String strMinimumPurchaseOrderLines = form.getMinimumPurchaseOrderLines();
                                                         Integer minimumPurchaseOrderLines = strMinimumPurchaseOrderLines == null ? null : Integer.valueOf(strMinimumPurchaseOrderLines);
                                                         String strMaximumPurchaseOrderLines = form.getMaximumPurchaseOrderLines();
@@ -275,7 +273,7 @@ public class CreateVendorCommand
                                                                     ContactMechanismPurposes.PRIMARY_EMAIL.name(), createdBy);
                                                         }
 
-                                                        termControl.createPartyTerm(party, termControl.getDefaultTerm(), taxable, createdBy);
+                                                        termControl.createPartyTerm(party, termControl.getDefaultTerm(), null, createdBy);
 
                                                         partyFreeOnBoardControl.createPartyFreeOnBoard(party, freeOnBoardControl.getDefaultFreeOnBoard(), createdBy);
 

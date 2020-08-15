@@ -30,7 +30,7 @@ import java.util.List;
         extends BaseSimpleCommand<F> {
     
     /** Creates a new instance of BaseCreateItemSearchResultActionCommand */
-    public BaseCreateSearchResultActionCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
+    protected BaseCreateSearchResultActionCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION,
             List<FieldDefinition> FORM_FIELD_DEFINITIONS) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }

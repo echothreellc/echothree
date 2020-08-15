@@ -17,7 +17,9 @@
 package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
+import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
+import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -28,162 +30,65 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyPostalAddressSteps implements En {
 
     public PartyPostalAddressSteps() {
+        When("^the user begins entering a new postal address$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.createContactPostalAddressForm).isNull();
+                    assertThat(persona.contactPostalAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
+
+                    persona.createContactPostalAddressForm = ContactUtil.getHome().getCreateContactPostalAddressForm();
+                });
+
+        When("^the user adds the new postal address$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+
+                    assertThat(createContactPostalAddressForm).isNotNull();
+
+                    var commandResult = ContactUtil.getHome().createContactPostalAddress(persona.userVisitPK, createContactPostalAddressForm);
+
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
+
+                    persona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
+                    persona.createContactPostalAddressForm = null;
+                });
+
         When("^the user deletes the last postal address added$",
                 () -> {
                     var contactService = ContactUtil.getHome();
                     var deleteContactPostalAddressForm = contactService.getDeleteContactMechanismForm();
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactPostalAddressForm).isNull();
+                    assertThat(persona.contactPostalAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
+
                     deleteContactPostalAddressForm.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
 
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactPostalAddressForm);
                 });
 
-        When("^the user begins entering a new postal address$",
+        When("^the user begins specifying a postal address to edit$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
+                    assertThat(persona.createContactPostalAddressForm).isNull();
                     assertThat(persona.contactPostalAddressEdit).isNull();
+                    assertThat(persona.partyContactMechanismSpec).isNull();
 
-                    persona.contactPostalAddressEdit = ContactUtil.getHome().getContactPostalAddressEdit();
+                    persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
                 });
 
-        When("^the user sets the postal address's first name to \"([^\"]*)\"$",
-                (String firstName) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setFirstName(firstName);
-                });
-
-        When("^the user sets the postal address's last name to \"([^\"]*)\"$",
-                (String lastName) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setLastName(lastName);
-                });
-
-        When("^the user sets the postal address's line 1 to \"([^\"]*)\"$",
-                (String address1) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setAddress1(address1);
-                });
-
-        When("^the user sets the postal address's line 2 to \"([^\"]*)\"$",
-                (String address2) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setAddress2(address2);
-                });
-
-        When("^the user sets the postal address's line 3 to \"([^\"]*)\"$",
-                (String address3) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setAddress3(address3);
-                });
-
-        When("^the user sets the postal address's city to \"([^\"]*)\"$",
-                (String city) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setCity(city);
-                });
-
-        When("^the user sets the postal address's state to \"([^\"]*)\"$",
-                (String state) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setState(state);
-                });
-
-        When("^the user sets the postal address's postal code to \"([^\"]*)\"$",
-                (String postalCode) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setPostalCode(postalCode);
-                });
-
-        When("^the user sets the postal address's country to \"([^\"]*)\"$",
-                (String country) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setCountryName(country);
-                });
-
-        When("^the user's postal address (is|is not) a commercial location$",
-                (String isCommercial) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setIsCommercial(Boolean.valueOf(isCommercial.equals("is")).toString());
-                });
-
-        When("^the user (does|does not) allow solicitations to the postal address$",
-                (String allowSolicitation) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
-                });
-
-        When("^the user sets the postal address's description to \"([^\"]*)\"$",
-                (String description) -> {
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    persona.contactPostalAddressEdit.setDescription(description);
-                });
-
-        When("^the user adds the new postal address$",
+        When("^the user begins editing the postal address$",
                 () -> {
                     var persona = CurrentPersona.persona;
+                    var spec = persona.partyContactMechanismSpec;
 
-                    assertThat(persona.contactPostalAddressEdit).isNotNull();
-
-                    var contactService = ContactUtil.getHome();
-                    var createContactPostalAddressForm = contactService.getCreateContactPostalAddressForm();
-
-                    createContactPostalAddressForm.set(persona.contactPostalAddressEdit.get());
-
-                    var commandResult = contactService.createContactPostalAddress(persona.userVisitPK, createContactPostalAddressForm);
-
-                    LastCommandResult.commandResult = commandResult;
-                    var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
-
-                    persona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-                    persona.contactPostalAddressEdit = null;
-                });
-
-        When("^the user begins editing the last postal address added$",
-                () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-                    var persona = CurrentPersona.persona;
-
-                    assertThat(persona.contactPostalAddressEdit).isNull();
-
-                    spec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
+                    assertThat(spec).isNotNull();
 
                     var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
 
@@ -203,13 +108,12 @@ public class PartyPostalAddressSteps implements En {
 
         When("^the user finishes editing the postal address$",
                 () -> {
-                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var persona = CurrentPersona.persona;
+                    var spec = persona.partyContactMechanismSpec;
                     var edit = persona.contactPostalAddressEdit;
 
+                    assertThat(spec).isNotNull();
                     assertThat(edit).isNotNull();
-
-                    spec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
 
                     var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
 
@@ -220,7 +124,231 @@ public class PartyPostalAddressSteps implements En {
                     var commandResult = ContactUtil.getHome().editContactPostalAddress(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
+                    persona.partyContactMechanismSpec = null;
                     persona.contactPostalAddressEdit = null;
+                });
+
+        When("^the user sets the postal address's party to the last party added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var partyContactMechanismSpec = persona.partyContactMechanismSpec;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+
+                    assertThat(partyContactMechanismSpec != null || createContactPostalAddressForm != null).isTrue();
+
+                    var lastPartyName = persona.lastPartyName;
+                    if(partyContactMechanismSpec != null) {
+                        partyContactMechanismSpec.setPartyName(lastPartyName);
+                    } else {
+                        createContactPostalAddressForm.setPartyName(lastPartyName);
+                    }
+                });
+
+        When("^the user sets the postal address's contact mechanism to the last postal address added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var partyContactMechanismSpec = persona.partyContactMechanismSpec;
+
+                    assertThat(partyContactMechanismSpec).isNotNull();
+
+                    partyContactMechanismSpec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
+                });
+
+        When("^the user sets the postal address's first name to \"([^\"]*)\"$",
+                (String firstName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setFirstName(firstName);
+                    } else {
+                        edit.setFirstName(firstName);
+                    }
+                });
+
+        When("^the user sets the postal address's last name to \"([^\"]*)\"$",
+                (String lastName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setLastName(lastName);
+                    } else {
+                        edit.setLastName(lastName);
+                    }
+                });
+
+        When("^the user sets the postal address's company name to \"([^\"]*)\"$",
+                (String companyName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setCompanyName(companyName);
+                    } else {
+                        edit.setCompanyName(companyName);
+                    }
+                });
+
+        When("^the user sets the postal address's line 1 to \"([^\"]*)\"$",
+                (String address1) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setAddress1(address1);
+                    } else {
+                        edit.setAddress1(address1);
+                    }
+                });
+
+        When("^the user sets the postal address's line 2 to \"([^\"]*)\"$",
+                (String address2) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setAddress2(address2);
+                    } else {
+                        edit.setAddress2(address2);
+                    }
+                });
+
+        When("^the user sets the postal address's line 3 to \"([^\"]*)\"$",
+                (String address3) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setAddress3(address3);
+                    } else {
+                        edit.setAddress3(address3);
+                    }
+                });
+
+        When("^the user sets the postal address's city to \"([^\"]*)\"$",
+                (String city) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setCity(city);
+                    } else {
+                        edit.setCity(city);
+                    }
+                });
+
+        When("^the user sets the postal address's state to \"([^\"]*)\"$",
+                (String state) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setState(state);
+                    } else {
+                        edit.setState(state);
+                    }
+                });
+
+        When("^the user sets the postal address's postal code to \"([^\"]*)\"$",
+                (String postalCode) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setPostalCode(postalCode);
+                    } else {
+                        edit.setPostalCode(postalCode);
+                    }
+                });
+
+        When("^the user sets the postal address's country to \"([^\"]*)\"$",
+                (String country) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setCountryName(country);
+                    } else {
+                        edit.setCountryName(country);
+                    }
+                });
+
+        When("^the user's postal address (is|is not) a commercial location$",
+                (String isCommercial) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    isCommercial = Boolean.valueOf(isCommercial.equals("is")).toString();
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setIsCommercial(isCommercial);
+                    } else {
+                        edit.setIsCommercial(isCommercial);
+                    }
+                });
+
+        When("^the user (does|does not) allow solicitations to the postal address$",
+                (String allowSolicitation) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    allowSolicitation = Boolean.valueOf(allowSolicitation.equals("does")).toString();
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setAllowSolicitation(allowSolicitation);
+                    } else {
+                        edit.setAllowSolicitation(allowSolicitation);
+                    }
+                });
+
+        When("^the user sets the postal address's description to \"([^\"]*)\"$",
+                (String description) -> {
+                    var persona = CurrentPersona.persona;
+                    var createContactPostalAddressForm = persona.createContactPostalAddressForm;
+                    var edit = persona.contactPostalAddressEdit;
+
+                    assertThat(createContactPostalAddressForm != null || edit != null).isTrue();
+
+                    if(createContactPostalAddressForm != null) {
+                        createContactPostalAddressForm.setDescription(description);
+                    } else {
+                        edit.setDescription(description);
+                    }
                 });
     }
 

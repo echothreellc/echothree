@@ -25,13 +25,13 @@ public abstract class BaseValue<PK extends BasePK> {
     protected PK _primaryKey;
     
     /** Creates a new instance of BaseValue */
-    public BaseValue(PK basePK) {
+    protected BaseValue(PK basePK) {
         entityId = basePK.getEntityId();
         _primaryKey = basePK;
     }
     
     /** Creates a new instance of BaseValue */
-    public BaseValue() {
+    protected BaseValue() {
         entityId = null;
         _primaryKey = null;
     }

@@ -57,7 +57,9 @@ Feature: Customer email address
     And the user does allow solicitations to the email address
     And the user adds the new email address
     Then no error should occur
-    And the user begins editing the last email address added
+    And the user begins specifying an email address to edit
+    And the user sets the email address's contact mechanism to the last email address added
+    And the user begins editing the email address
     Then no error should occur
     And the user sets the email address's email address to "Edited@echothree.com"
     And the user sets the email address's description to "Edited Email"

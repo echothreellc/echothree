@@ -21,7 +21,7 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 
 public class FilteredItemFixedPrice
-        extends FilteredItemPrice implements Comparable<FilteredItemFixedPrice> {
+        extends FilteredItemPrice implements Comparable<FilteredItemFixedPrice>, Cloneable {
     
     protected Long unitPrice;
     
@@ -42,20 +42,13 @@ public class FilteredItemFixedPrice
     
     @Override
     public int compareTo(FilteredItemFixedPrice obj) {
-        return unitPrice.compareTo((obj).unitPrice);
+        return unitPrice.compareTo(obj.unitPrice);
     }
     
     @Override
-    public FilteredItemFixedPrice clone() {
-        Object result;
-        
-        try {
-            result = super.clone();
-        } catch (CloneNotSupportedException cnse) {
-            result = null; // Should never happen
-        }
-        
-        return (FilteredItemFixedPrice)result;
+    public FilteredItemFixedPrice clone()
+            throws CloneNotSupportedException {
+        return (FilteredItemFixedPrice)super.clone();
     }
     
 }

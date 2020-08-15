@@ -19,26 +19,26 @@ package com.echothree.model.control.shipping.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseShippingException
+public abstract class BaseShippingException
         extends BaseException {
     
     /** Creates a new instance of BaseShippingException */
-    public BaseShippingException() {
+    protected BaseShippingException() {
         super();
     }
     
     /** Creates a new instance of BaseShippingException */
-    public BaseShippingException(String message) {
+    protected BaseShippingException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseShippingException */
-    public BaseShippingException(Throwable cause) {
+    protected BaseShippingException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseShippingException */
-    public BaseShippingException(Message message) {
+    protected BaseShippingException(Message message) {
         super(message);
     }
 

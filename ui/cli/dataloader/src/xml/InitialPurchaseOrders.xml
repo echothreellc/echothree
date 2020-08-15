@@ -26,20 +26,35 @@
             <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Entry" />
             </workflowStep>
-            <workflowStep workflowStepName="COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
-                <workflowStepDescription languageIsoName="en" description="Complete" />
+            <workflowStep workflowStepName="ENTRY_COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry Complete" />
+            </workflowStep>
+            <workflowStep workflowStepName="RELEASED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Released" />
+            </workflowStep>
+            <workflowStep workflowStepName="RECEIVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Received" />
+            </workflowStep>
+            <workflowStep workflowStepName="CHANGE_ORDER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Change Order" />
+            </workflowStep>
+            <workflowStep workflowStepName="CANCELED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Canceled" />
+            </workflowStep>
+            <workflowStep workflowStepName="CLOSED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Closed" />
             </workflowStep>
             <workflowEntrance workflowEntranceName="ENTRY" isDefault="true" sortOrder="0">
                 <workflowEntranceDescription languageIsoName="en" description="Entry" />
                 <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
             </workflowEntrance>
-            <workflowEntrance workflowEntranceName="COMPLETE" isDefault="false" sortOrder="0">
-                <workflowEntranceDescription languageIsoName="en" description="Complete" />
-                <workflowEntranceStep entranceWorkflowStepName="COMPLETE" />
+            <workflowEntrance workflowEntranceName="ENTRY_COMPLETE" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry Complete" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY_COMPLETE" />
             </workflowEntrance>
-            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_COMPLETE" isDefault="true" sortOrder="0">
-                <workflowDestinationDescription languageIsoName="en" description="Entry to Complete" />
-                <workflowDestinationStep destinationWorkflowStepName="COMPLETE" />
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_ENTRY_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Entry Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_COMPLETE" />
             </workflowDestination>
             <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
         </workflow>

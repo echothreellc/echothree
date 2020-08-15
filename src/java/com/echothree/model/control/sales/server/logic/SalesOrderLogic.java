@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.common.exception.InvalidCurrencyEx
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.common.exception.MissingDefaultCustomerTypeException;
@@ -36,7 +36,7 @@ import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.choice.SalesOrderStatusChoicesBean;
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderBatchStatusException;
@@ -46,7 +46,7 @@ import com.echothree.model.control.sales.common.exception.SalesOrderDuplicateRef
 import com.echothree.model.control.sales.common.exception.SalesOrderReferenceRequiredException;
 import com.echothree.model.control.sales.common.exception.UnknownSalesOrderStatusChoiceException;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
-import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.sales.server.control.SalesOrderControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.TermControl;
@@ -174,7 +174,7 @@ public class SalesOrderLogic
     }
 
     public CancellationPolicy getCancellationPolicy(final ExecutionErrorAccumulator eea, final CustomerType customerType, final Customer billToCustomer) {
-        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION,
+        return CancellationPolicyLogic.getInstance().getDefaultCancellationPolicyByKind(eea, CancellationKinds.CUSTOMER_CANCELLATION.name(),
                 new CancellationPolicy[]{
                     billToCustomer == null ? null : billToCustomer.getCancellationPolicy(),
                     customerType.getLastDetail().getDefaultCancellationPolicy()
@@ -182,7 +182,7 @@ public class SalesOrderLogic
     }
 
     public ReturnPolicy getReturnPolicy(final ExecutionErrorAccumulator eea, final CustomerType customerType, final Customer billToCustomer) {
-        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN,
+        return ReturnPolicyLogic.getInstance().getDefaultReturnPolicyByKind(eea, ReturnKinds.CUSTOMER_RETURN.name(),
                 new ReturnPolicy[]{
                     billToCustomer == null ? null : billToCustomer.getReturnPolicy(),
                     customerType.getLastDetail().getDefaultReturnPolicy()
@@ -394,12 +394,12 @@ public class SalesOrderLogic
 
                         if(eea == null || !eea.hasExecutionErrors()) {
                             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+                            var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
                             var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                             var associateReferral = AssociateReferralLogic.getInstance().getAssociateReferral(session, userVisit);
                             var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
 
-                            salesControl.createSalesOrder(order, offerUse, associateReferral, createdBy);
+                            salesOrderControl.createSalesOrder(order, offerUse, associateReferral, createdBy);
 
                             orderControl.createOrderUserVisit(order, userVisit);
                             

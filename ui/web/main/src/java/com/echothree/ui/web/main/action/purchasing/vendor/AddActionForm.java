@@ -33,10 +33,10 @@ import com.echothree.control.user.vendor.common.form.GetVendorTypeChoicesForm;
 import com.echothree.control.user.vendor.common.result.GetVendorTypeChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemAliasTypeChoicesBean;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorTypeChoicesBean;
 import com.echothree.util.common.command.CommandResult;
@@ -73,8 +73,7 @@ public class AddActionForm
     private String name;
     private String emailAddress;
     private Boolean allowSolicitation;
-    private Boolean taxable;
-    
+
     private void setupVendorTypeChoices() {
         if(vendorTypeChoices == null) {
             try {
@@ -102,7 +101,7 @@ public class AddActionForm
             try {
                 GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
-                form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
+                form.setCancellationKindName(CancellationKinds.VENDOR_CANCELLATION.name());
                 form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
@@ -125,7 +124,7 @@ public class AddActionForm
             try {
                 GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
-                form.setReturnKindName(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN);
+                form.setReturnKindName(ReturnKinds.VENDOR_RETURN.name());
                 form.setDefaultReturnPolicyChoice(returnPolicyChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
@@ -364,20 +363,11 @@ public class AddActionForm
         this.allowSolicitation = allowSolicitation;
     }
     
-    public Boolean getTaxable() {
-        return taxable;
-    }
-    
-    public void setTaxable(Boolean taxable) {
-        this.taxable = taxable;
-    }
-    
     @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
         
         setAllowSolicitation(Boolean.FALSE);
-        setTaxable(Boolean.FALSE);
         setUseItemPurchasingCategories(Boolean.FALSE);
     }
     

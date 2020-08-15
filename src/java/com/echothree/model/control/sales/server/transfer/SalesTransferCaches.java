@@ -16,27 +16,22 @@
 
 package com.echothree.model.control.sales.server.transfer;
 
-import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class SalesTransferCaches
         extends BaseTransferCaches {
     
-    protected SalesControl salesControl;
-    
     protected SalesOrderBatchTransferCache salesOrderBatchTransferCache;
     
     /** Creates a new instance of SalesTransferCaches */
-    public SalesTransferCaches(UserVisit userVisit, SalesControl salesControl) {
+    public SalesTransferCaches(UserVisit userVisit) {
         super(userVisit);
-        
-        this.salesControl = salesControl;
     }
     
     public SalesOrderBatchTransferCache getSalesOrderBatchTransferCache() {
         if(salesOrderBatchTransferCache == null)
-            salesOrderBatchTransferCache = new SalesOrderBatchTransferCache(userVisit, salesControl);
+            salesOrderBatchTransferCache = new SalesOrderBatchTransferCache(userVisit);
         
         return salesOrderBatchTransferCache;
     }

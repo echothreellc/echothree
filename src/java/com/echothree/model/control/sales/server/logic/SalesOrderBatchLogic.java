@@ -28,9 +28,9 @@ import com.echothree.model.control.sales.common.exception.InvalidSalesOrderBatch
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderStatusException;
 import com.echothree.model.control.sales.common.exception.UnknownSalesOrderBatchStatusChoiceException;
 import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoicesBean;
-import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
+import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -76,12 +76,12 @@ public class SalesOrderBatchLogic
     public Batch createBatch(final ExecutionErrorAccumulator eea, final Currency currency, final PaymentMethod paymentMethod, final Long count,
             final Long amount, final BasePK createdBy) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+        var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
         var batch = BatchLogic.getInstance().createBatch(eea, BatchConstants.BatchType_SALES_ORDER, createdBy);
 
         if(!eea.hasExecutionErrors()) {
             orderControl.createOrderBatch(batch, currency, count, amount, createdBy);
-            salesControl.createSalesOrderBatch(batch, paymentMethod, createdBy);
+            salesOrderBatchControl.createSalesOrderBatch(batch, paymentMethod, createdBy);
         }
 
         return batch;
@@ -126,10 +126,10 @@ public class SalesOrderBatchLogic
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-                var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+                var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
 
                 orderControl.deleteOrderBatch(batch, deletedBy);
-                salesControl.deleteSalesOrderBatch(batch, deletedBy);
+                salesOrderBatchControl.deleteSalesOrderBatch(batch, deletedBy);
             }
         } else {
             handleExecutionError(CannotDeleteSalesOrderBatchInUseException.class, eea, ExecutionErrors.CannotDeleteSalesOrderBatchInUse.name(),

@@ -132,12 +132,13 @@ public class CustomerSteps implements En {
                     LastCommandResult.commandResult = commandResult;
                     var result = (CreateCustomerWithLoginResult)commandResult.getExecutionResult().getResult();
 
-
-                    if(persona != null) {
+                    if(result != null) {
                         persona.lastCustomerName = commandResult.getHasErrors() ? null : result.getCustomerName();
                         persona.lastPartyName = commandResult.getHasErrors() ? null : result.getPartyName();
                         persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
                     }
+
+                    persona.createCustomerWithLoginForm = null;
                 });
 
         When("^the user sets the status of the last customer added to ([^\"]*)$",

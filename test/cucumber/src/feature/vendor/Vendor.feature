@@ -12,7 +12,6 @@ Feature: Employee vendor
     And the user begins entering a new vendor
     And the user sets the vendor to use use item purchasing categories
     And the user indicates the vendor does allow solicitations to the email address
-    And the user sets the vendor to not be taxable
     And the user adds the new vendor
     Then no error should occur
     And the user begins specifying a vendor to edit

@@ -19,26 +19,26 @@ package com.echothree.model.control.forum.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseForumException
+public abstract class BaseForumException
         extends BaseException {
     
     /** Creates a new instance of BaseForumException */
-    public BaseForumException() {
+    protected BaseForumException() {
         super();
     }
     
     /** Creates a new instance of BaseForumException */
-    public BaseForumException(String message) {
+    protected BaseForumException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseForumException */
-    public BaseForumException(Throwable cause) {
+    protected BaseForumException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseForumException */
-    public BaseForumException(Message message) {
+    protected BaseForumException(Message message) {
         super(message);
     }
 

@@ -17,12 +17,12 @@
 package com.echothree.control.user.purchase.common.result;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.invoice.common.spec.InvoiceLineSpec;
+import com.echothree.control.user.purchase.common.spec.PurchaseInvoiceLineSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreatePurchaseInvoiceLineResult
-        extends InvoiceLineSpec, EntityRefSpec, BaseResult {
+        extends PurchaseInvoiceLineSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond InvoiceLineSpec, EntityRefSpec, BaseResult
+    // Nothing additional beyond PurchaseInvoiceLineSpec, EntityRefSpec, BaseResult
     
 }

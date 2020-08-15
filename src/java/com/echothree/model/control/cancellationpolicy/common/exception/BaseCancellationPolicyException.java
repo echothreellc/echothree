@@ -19,26 +19,26 @@ package com.echothree.model.control.cancellationpolicy.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseCancellationPolicyException
+public abstract class BaseCancellationPolicyException
         extends BaseException {
     
     /** Creates a new instance of BaseCancellationPolicyException */
-    public BaseCancellationPolicyException() {
+    protected BaseCancellationPolicyException() {
         super();
     }
     
     /** Creates a new instance of BaseCancellationPolicyException */
-    public BaseCancellationPolicyException(String message) {
+    protected BaseCancellationPolicyException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseCancellationPolicyException */
-    public BaseCancellationPolicyException(Throwable cause) {
+    protected BaseCancellationPolicyException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseCancellationPolicyException */
-    public BaseCancellationPolicyException(Message message) {
+    protected BaseCancellationPolicyException(Message message) {
         super(message);
     }
 

@@ -58,109 +58,71 @@ public class EntityIdGenerator {
     }
     
     private boolean getNewChunk()
-    throws SQLException {
-        Connection conn = null;
+            throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         long currentMax;
-        
-        try {
-            conn = getConnection();
-            ps = conn.prepareStatement(selectQuery);
-            ps.setString(1, componentVendorName);
-            ps.setString(2, entityTypeName);
-            rs = ps.executeQuery();
-            
-            if(rs.next()) {
-                currentMax = rs.getLong(1);
-                
-                if(rs != null) {
-                    try{
-                        rs.close();
-                    } catch (Exception e) {
-                    } finally {
-                        rs = null;
-                    }
-                }
-                
-                if(ps != null) {
-                    try{
-                        ps.close();
-                    } catch (Exception e){
-                    } finally {
-                        ps = null;
-                    }
-                }
-                
-                ps = conn.prepareStatement(updateQuery);
-                ps.setLong(1, currentMax + chunkSize);
-                ps.setString(2, componentVendorName);
-                ps.setString(3, entityTypeName);
-                ps.setLong(4, currentMax);
-                
-                if(ps.executeUpdate() != 1)
-                    return false;
-                else {
-                    guardedValue = currentMax + chunkSize;
-                    currentValue = currentMax;
-                    return true;
-                }
-            } else {
-                if(rs != null) {
-                    try{
-                        rs.close();
-                    } catch (Exception e) {
-                    } finally {
-                        rs = null;
-                    }
-                }
-                
-                if(ps != null) {
-                    try{
-                        ps.close();
-                    } catch (Exception e) {
-                    } finally {
-                        ps = null;
-                    }
-                }
-                
-                ps = conn.prepareStatement(insertQuery);
+
+        try(var conn = getConnection();) {
+            try {
+                ps = conn.prepareStatement(selectQuery);
                 ps.setString(1, componentVendorName);
                 ps.setString(2, entityTypeName);
-                ps.setLong(3, chunkSize);
-                if(ps.executeUpdate() != 1) {
-                    return false;
-                } else {
-                    guardedValue = chunkSize;
-                    currentValue = 0;
-                    return true;
-                }
-            }
-        } finally {
-            if(rs != null) {
-                try{
+                rs = ps.executeQuery();
+
+                if(rs.next()) {
+                    currentMax = rs.getLong(1);
+
                     rs.close();
-                } catch (Exception e) {
-                } finally {
                     rs = null;
-                }
-            }
-            
-            if(ps != null) {
-                try{
+
                     ps.close();
-                } catch (Exception e) {
-                } finally {
                     ps = null;
+
+                    ps = conn.prepareStatement(updateQuery);
+                    ps.setLong(1, currentMax + chunkSize);
+                    ps.setString(2, componentVendorName);
+                    ps.setString(3, entityTypeName);
+                    ps.setLong(4, currentMax);
+
+                    if(ps.executeUpdate() != 1)
+                        return false;
+                    else {
+                        guardedValue = currentMax + chunkSize;
+                        currentValue = currentMax;
+                        return true;
+                    }
+                } else {
+                    rs.close();
+                    rs = null;
+
+                    ps.close();
+                    ps = null;
+
+                    ps = conn.prepareStatement(insertQuery);
+                    ps.setString(1, componentVendorName);
+                    ps.setString(2, entityTypeName);
+                    ps.setLong(3, chunkSize);
+
+                    if(ps.executeUpdate() != 1) {
+                        return false;
+                    } else {
+                        guardedValue = chunkSize;
+                        currentValue = 0;
+                        return true;
+                    }
                 }
-            }
-            
-            if(conn != null) {
-                try{
+            } finally {
+                if(rs != null) {
+                    rs.close();
+                }
+
+                if(ps != null) {
+                    ps.close();
+                }
+
+                if(conn != null) {
                     conn.close();
-                } catch (Exception e) {
-                } finally {
-                    conn = null;
                 }
             }
         }
@@ -169,7 +131,7 @@ public class EntityIdGenerator {
     public synchronized long getNextEntityId() {
         if(currentValue == guardedValue) {
             try {
-                for(int iter = 0; iter <= retryCount; iter++) {
+                for(var iter = 0; iter <= retryCount; iter++) {
                     if(getNewChunk())
                         break;
                 }
@@ -178,9 +140,10 @@ public class EntityIdGenerator {
             }
         }
         
-        if(currentValue == guardedValue)
+        if(currentValue == guardedValue) {
             throw new PersistenceDatabaseException("Could not get next increment value");
-        
+        }
+
         return ++currentValue;
     }
     

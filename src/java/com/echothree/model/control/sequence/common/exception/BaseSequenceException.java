@@ -19,26 +19,26 @@ package com.echothree.model.control.sequence.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseSequenceException
+public abstract class BaseSequenceException
         extends BaseException {
     
     /** Creates a new instance of BaseSequenceException */
-    public BaseSequenceException() {
+    protected BaseSequenceException() {
         super();
     }
     
     /** Creates a new instance of BaseSequenceException */
-    public BaseSequenceException(String message) {
+    protected BaseSequenceException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseSequenceException */
-    public BaseSequenceException(Throwable cause) {
+    protected BaseSequenceException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseSequenceException */
-    public BaseSequenceException(Message message) {
+    protected BaseSequenceException(Message message) {
         super(message);
     }
 

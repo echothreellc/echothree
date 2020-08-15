@@ -58,7 +58,7 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
     }
 
     /** Creates a new instance of BaseGetResultsFacetsCommand */
-    public BaseGetResultsFacetsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
+    protected BaseGetResultsFacetsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     

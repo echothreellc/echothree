@@ -18,7 +18,7 @@ package com.echothree.model.control.returnpolicy.server.logic;
 
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.exception.UnknownReturnKindNameException;
 import com.echothree.model.control.returnpolicy.common.exception.UnknownReturnPolicyNameException;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
@@ -113,11 +113,11 @@ public class ReturnPolicyLogic
         if(!inUse) {
             String returnKindName = returnPolicy.getLastDetail().getReturnKind().getLastDetail().getReturnKindName();
 
-            if(returnKindName.equals(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN)) {
+            if(returnKindName.equals(ReturnKinds.CUSTOMER_RETURN.name())) {
                 var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
                 inUse |= itemControl.countItemsByReturnPolicy(returnPolicy) != 0;
-            } else if(returnKindName.equals(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN)) {
+            } else if(returnKindName.equals(ReturnKinds.VENDOR_RETURN.name())) {
                 var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 
                 inUse |= vendorControl.countVendorItemsByReturnPolicy(returnPolicy) != 0;

@@ -37,13 +37,13 @@ import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyChoice
 import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.customer.common.choice.CustomerCreditStatusChoicesBean;
 import com.echothree.model.control.customer.common.choice.CustomerStatusChoicesBean;
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -107,7 +107,7 @@ public class AddActionForm
         if(cancellationPolicyChoices == null) {
             GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
 
-            form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
+            form.setCancellationKindName(CancellationKinds.CUSTOMER_CANCELLATION.name());
             form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 
@@ -126,7 +126,7 @@ public class AddActionForm
         if(returnPolicyChoices == null) {
             GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
 
-            form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+            form.setReturnKindName(ReturnKinds.CUSTOMER_RETURN.name());
             form.setDefaultReturnPolicyChoice(returnPolicyChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 

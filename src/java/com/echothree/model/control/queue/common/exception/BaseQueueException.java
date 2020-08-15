@@ -19,26 +19,26 @@ package com.echothree.model.control.queue.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseQueueException
+public abstract class BaseQueueException
         extends BaseException {
     
     /** Creates a new instance of BaseQueueException */
-    public BaseQueueException() {
+    protected BaseQueueException() {
         super();
     }
     
     /** Creates a new instance of BaseQueueException */
-    public BaseQueueException(String message) {
+    protected BaseQueueException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseQueueException */
-    public BaseQueueException(Throwable cause) {
+    protected BaseQueueException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseQueueException */
-    public BaseQueueException(Message message) {
+    protected BaseQueueException(Message message) {
         super(message);
     }
 

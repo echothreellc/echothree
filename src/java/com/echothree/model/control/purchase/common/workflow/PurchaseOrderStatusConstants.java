@@ -21,11 +21,16 @@ public interface PurchaseOrderStatusConstants {
     String Workflow_PURCHASE_ORDER_STATUS = "PURCHASE_ORDER_STATUS";
     
     String WorkflowStep_ENTRY = "ENTRY";
-    String WorkflowStep_COMPLETE = "COMPLETE";
-    
+    String WorkflowStep_ENTRY_COMPLETE = "ENTRY_COMPLETE";
+    String WorkflowStep_RELEASED = "RELEASED";
+    String WorkflowStep_RECEIVED = "RECEIVED";
+    String WorkflowStep_CHANGE_ORDER = "CHANGE_ORDER";
+    String WorkflowStep_CANCELED = "CANCELED";
+    String WorkflowStep_CLOSED = "CLOSED";
+
     String WorkflowEntrance_ENTRY = "ENTRY";
-    String WorkflowEntrance_COMPLETE= "COMPLETE";
-    
-    String WorkflowDestination_ENTRY_TO_COMPLETE = "ENTRY_TO_COMPLETE";
+    String WorkflowEntrance_ENTRY_COMPLETE= "ENTRY_COMPLETE";
+
+    String WorkflowDestination_ENTRY_TO_ENTRY_COMPLETE = "ENTRY_TO_ENTRY_COMPLETE";
 
 }

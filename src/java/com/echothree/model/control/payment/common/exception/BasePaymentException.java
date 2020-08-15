@@ -23,22 +23,22 @@ public abstract class BasePaymentException
         extends BaseException {
     
     /** Creates a new instance of BasePaymentException */
-    public BasePaymentException() {
+    protected BasePaymentException() {
         super();
     }
     
     /** Creates a new instance of BasePaymentException */
-    public BasePaymentException(String message) {
+    protected BasePaymentException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BasePaymentException */
-    public BasePaymentException(Throwable cause) {
+    protected BasePaymentException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BasePaymentException */
-    public BasePaymentException(Message message) {
+    protected BasePaymentException(Message message) {
         super(message);
     }
 

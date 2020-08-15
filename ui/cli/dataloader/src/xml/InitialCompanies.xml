@@ -2,7 +2,7 @@
 <initialData>
     <companies>
         <company companyName="TEST_COMPANY" name="Test Company" preferredLanguageIsoName="en" preferredCurrencyIsoName="USD"
-        preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT" isDefault="true" sortOrder="0">
+                preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT" isDefault="true" sortOrder="0">
             <contactMechanisms>
                 <contactEmailAddress emailAddress="PrimaryExample@echothree.com" allowSolicitation="false" description="Test Primary Email">
                     <partyContactMechanismPurpose contactMechanismPurposeName="PRIMARY_EMAIL" />
@@ -12,9 +12,9 @@
                     <partyContactMechanismPurpose contactMechanismPurposeName="OTHER_EMAIL" />
                     <contactMechanismAlias contactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" alias="CO_OTHER_EMAIL_LETTER" />
                 </contactEmailAddress>
-                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" name="Company" address1="Address 1"
-                city="Des Moines" state="IA" postalCode="50310" countryName="UNITED_STATES" isCommercial="false"
-                allowSolicitation="false">
+                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" companyName="Test Company"
+                        address1="123 Main St." city="Des Moines" state="IA" postalCode="50310" countryName="UNITED_STATES"
+                        isCommercial="true" allowSolicitation="false">
                     <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_BILLING" />
                     <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_DELIVERY" />
                     <contactMechanismAlias contactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" alias="CO_PHYSICAL_BILLING_LETTER" />
@@ -33,31 +33,31 @@
                 </contactWebAddress>
             </contactMechanisms>
             <letterSource letterSourceName="TEST_LETTER_SOURCE"
-            emailAddressContactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" emailAddressContactMechanismAlias="CO_PRIMARY_EMAIL_LETTER"
-            postalAddressContactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" postalAddressContactMechanismAlias="CO_PHYSICAL_BILLING_LETTER"
-            letterSourceContactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" letterSourceContactMechanismAlias="CO_WEB_SITE_LETTER"
-            isDefault="false" sortOrder="1">
+                    emailAddressContactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" emailAddressContactMechanismAlias="CO_PRIMARY_EMAIL_LETTER"
+                    postalAddressContactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" postalAddressContactMechanismAlias="CO_PHYSICAL_BILLING_LETTER"
+                    letterSourceContactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" letterSourceContactMechanismAlias="CO_WEB_SITE_LETTER"
+                    isDefault="false" sortOrder="1">
                 <letterSourceDescription languageIsoName="en" description="Test Letter Source" />
             </letterSource>
             <division divisionName="TEST_DIVISION_1" name="Test Division 1" preferredLanguageIsoName="en"
-            preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
-            isDefault="true" sortOrder="0">
+                    preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
+                    isDefault="true" sortOrder="0">
                 <department departmentName="TEST_DEPARTMENT_1_A" name="Test Department 1 A" preferredLanguageIsoName="en"
-                preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
-                isDefault="true" sortOrder="0" />
+                        preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
+                        isDefault="true" sortOrder="0" />
                 <department departmentName="TEST_DEPARTMENT_1_B" name="Test Department 1 B" preferredLanguageIsoName="en"
-                preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
-                isDefault="false" sortOrder="0" />
+                        preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
+                        isDefault="false" sortOrder="0" />
             </division>
             <division divisionName="TEST_DIVISION_2" name="Test Division 2" preferredLanguageIsoName="en"
-            preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
-            isDefault="false" sortOrder="0">
+                    preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
+                    isDefault="false" sortOrder="0">
                 <department departmentName="TEST_DEPARTMENT_2_A" name="Test Department 2 A" preferredLanguageIsoName="en"
-                preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
-                isDefault="true" sortOrder="0" />
+                        preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
+                        isDefault="true" sortOrder="0" />
                 <department departmentName="TEST_DEPARTMENT_2_B" name="Test Department 2 B" preferredLanguageIsoName="en"
-                preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
-                isDefault="false" sortOrder="0" />
+                        preferredCurrencyIsoName="USD" preferredJavaTimeZoneName="US/Central" preferredDateTimeFormatName="DEFAULT"
+                        isDefault="false" sortOrder="0" />
             </division>
         </company>
     </companies>

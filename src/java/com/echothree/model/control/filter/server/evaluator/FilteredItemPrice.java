@@ -20,7 +20,8 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 
-public class FilteredItemPrice implements Cloneable {
+public class FilteredItemPrice
+        implements Cloneable {
     
     protected Item item;
     protected UnitOfMeasureType unitOfMeasureType;
@@ -58,10 +59,9 @@ public class FilteredItemPrice implements Cloneable {
     }
     
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        Object result = super.clone();
-        
-        return result;
+    public FilteredItemPrice clone()
+            throws CloneNotSupportedException {
+        return (FilteredItemPrice)super.clone();
     }
     
 }

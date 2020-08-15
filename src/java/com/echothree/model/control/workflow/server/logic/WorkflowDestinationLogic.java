@@ -130,15 +130,16 @@ public class WorkflowDestinationLogic
         return map;
     }
     
-    private boolean workflowDestinationMapContainsStep(final Map<String, Set<String>> map, final String workflowName, final String workflowStepName, final boolean addIt) {
-        Set<String> workflowSteps = map.get(workflowName);
+    private boolean workflowDestinationMapContainsStep(final Map<String, Set<String>> map, final String workflowName,
+            final String workflowStepName, final boolean addIt) {
+        var workflowSteps = map.get(workflowName);
 
         if(workflowSteps == null && addIt) {
             workflowSteps = new HashSet<>();
             map.put(workflowName, workflowSteps);
         }
-        
-        boolean found = workflowSteps == null ? false : workflowSteps.contains(workflowStepName);
+
+        var found = workflowSteps != null && workflowSteps.contains(workflowStepName);
 
         if(!found && addIt) {
             workflowSteps.add(workflowStepName);
@@ -147,7 +148,8 @@ public class WorkflowDestinationLogic
         return found;
     }
 
-    public boolean workflowDestinationMapContainsStep(final Map<String, Set<String>> map, String workflowName, String workflowStepName) {
+    public boolean workflowDestinationMapContainsStep(final Map<String, Set<String>> map, final String workflowName,
+            final String workflowStepName) {
        return workflowDestinationMapContainsStep(map, workflowName, workflowStepName, false);
     }
 

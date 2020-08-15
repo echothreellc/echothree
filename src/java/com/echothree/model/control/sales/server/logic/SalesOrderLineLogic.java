@@ -17,7 +17,7 @@
 package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -33,7 +33,7 @@ import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.logic.OrderLineLogic;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.exception.CurrentTimeAfterSalesOrderEndTimeException;
 import com.echothree.model.control.sales.common.exception.CurrentTimeBeforeSalesOrderStartTimeException;
@@ -48,7 +48,7 @@ import com.echothree.model.control.sales.common.exception.UnitAmountBelowMinimum
 import com.echothree.model.control.sales.common.exception.UnitAmountBelowMinimumUnitPriceException;
 import com.echothree.model.control.sales.common.exception.UnitAmountNotMultipleOfUnitPriceIncrementException;
 import com.echothree.model.control.sales.common.exception.UnitAmountRequiredException;
-import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.sales.server.control.SalesOrderControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
@@ -131,7 +131,7 @@ public class SalesOrderLineLogic
             var salesOrderShipmentGroupLogic = SalesOrderShipmentGroupLogic.getInstance();
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
             var orderDetail = order.getLastDetail();
             var itemDetail = item.getLastDetail();
             var itemDeliveryType = itemDetail.getItemDeliveryType();
@@ -201,7 +201,7 @@ public class SalesOrderLineLogic
                 // Verify the OfferItem exists.
                 var offerUse = source == null ? null : source.getLastDetail().getOfferUse();
                 if(offerUse == null) {
-                    var salesOrder = salesControl.getSalesOrder(order);
+                    var salesOrder = salesOrderControl.getSalesOrder(order);
 
                     offerUse = salesOrder.getOfferUse();
                 }
@@ -351,7 +351,7 @@ public class SalesOrderLineLogic
                             unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable, createdByPartyPK);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        salesControl.createSalesOrderLine(orderLine, offerUse, associateReferral, createdByPartyPK);
+                        salesOrderControl.createSalesOrderLine(orderLine, offerUse, associateReferral, createdByPartyPK);
                     }
                 }
             }
@@ -368,8 +368,8 @@ public class SalesOrderLineLogic
         var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         var item = ItemLogic.getInstance().getItemByNameThenAlias(eea, itemName);
         var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
-        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION, cancellationPolicyName);
-        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(eea, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN, returnPolicyName);
+        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationKinds.CUSTOMER_CANCELLATION.name(), cancellationPolicyName);
+        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(eea, ReturnKinds.CUSTOMER_RETURN.name(), returnPolicyName);
         var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
         OrderLine orderLine = null;
 

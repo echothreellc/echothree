@@ -20,6 +20,11 @@ import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
+import com.echothree.control.user.contact.common.form.CreateContactEmailAddressForm;
+import com.echothree.control.user.contact.common.form.CreateContactPostalAddressForm;
+import com.echothree.control.user.contact.common.form.CreateContactTelephoneForm;
+import com.echothree.control.user.contact.common.form.CreateContactWebAddressForm;
+import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
 import com.echothree.control.user.content.common.edit.ContentCatalogEdit;
 import com.echothree.control.user.content.common.edit.ContentCategoryEdit;
 import com.echothree.control.user.content.common.edit.ContentCategoryItemEdit;
@@ -74,6 +79,10 @@ import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
+import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
+import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
+import com.echothree.control.user.purchase.common.form.SetPurchaseOrderStatusForm;
+import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
 import com.echothree.control.user.vendor.common.edit.VendorEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
@@ -101,9 +110,18 @@ public class BasePersona {
     }
 
     // Contact
+    public PartyContactMechanismSpec partyContactMechanismSpec;
+
+    public CreateContactEmailAddressForm createContactEmailAddressForm;
     public ContactEmailAddressEdit contactEmailAddressEdit;
+
+    public CreateContactPostalAddressForm createContactPostalAddressForm;
     public ContactPostalAddressEdit contactPostalAddressEdit;
+
+    public CreateContactTelephoneForm createContactTelephoneForm;
     public ContactTelephoneEdit contactTelephoneEdit;
+
+    public CreateContactWebAddressForm createContactWebAddressForm;
     public ContactWebAddressEdit contactWebAddressEdit;
 
     public String lastEmailAddressContactMechanismName;
@@ -173,6 +191,9 @@ public class BasePersona {
 
     public String lastCustomerName;
 
+    // Employee
+    public String lastEmployeeName;
+
     // Item
     public CreateItemForm createItemForm;
     public ItemSpec itemSpec;
@@ -198,6 +219,14 @@ public class BasePersona {
 
     public String lastPartyPaymentMethodName;
 
+    // Purchase
+    public CreatePurchaseOrderForm createPurchaseOrderForm;
+    public SetPurchaseOrderStatusForm setPurchaseOrderStatusForm;
+    public PurchaseOrderSpec purchaseOrderSpec;
+    public PurchaseOrderEdit purchaseOrderEdit;
+
+    public String lastPurchaseOrderName;
+
     // Sales
     public String lastSalesOrderBatchName;
     public String lastSalesOrderName;
@@ -220,5 +249,8 @@ public class BasePersona {
     public VendorItemCostEdit vendorItemCostEdit;
 
     public String lastVendorName;
+
+    // Warehouse
+    public String lastWarehouseName;
 
 }

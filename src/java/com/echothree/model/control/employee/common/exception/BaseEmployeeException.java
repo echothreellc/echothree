@@ -19,26 +19,26 @@ package com.echothree.model.control.employee.common.exception;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;
 
-public class BaseEmployeeException
+public abstract class BaseEmployeeException
         extends BaseException {
     
     /** Creates a new instance of BaseEmployeeException */
-    public BaseEmployeeException() {
+    protected BaseEmployeeException() {
         super();
     }
     
     /** Creates a new instance of BaseEmployeeException */
-    public BaseEmployeeException(String message) {
+    protected BaseEmployeeException(String message) {
         super(message);
     }
     
     /** Creates a new instance of BaseEmployeeException */
-    public BaseEmployeeException(Throwable cause) {
+    protected BaseEmployeeException(Throwable cause) {
         super(cause);
     }
     
     /** Creates a new instance of BaseEmployeeException */
-    public BaseEmployeeException(Message message) {
+    protected BaseEmployeeException(Message message) {
         super(message);
     }
 
