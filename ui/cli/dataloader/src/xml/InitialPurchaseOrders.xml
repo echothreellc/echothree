@@ -56,6 +56,10 @@
                 <workflowDestinationDescription languageIsoName="en" description="Entry to Entry Complete" />
                 <workflowDestinationStep destinationWorkflowStepName="ENTRY_COMPLETE" />
             </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_CANCELED" isDefault="false" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Canceled" />
+                <workflowDestinationStep destinationWorkflowStepName="CANCELED" />
+            </workflowDestination>
             <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
         </workflow>
     </workflows>

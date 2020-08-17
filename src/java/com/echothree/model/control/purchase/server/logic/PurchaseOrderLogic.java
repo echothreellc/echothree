@@ -277,6 +277,11 @@ public class PurchaseOrderLogic
 
             if(currentWorkflowStepName.equals(PurchaseOrderStatusConstants.WorkflowStep_ENTRY)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
+                    // TODO: What happens moving from ENTRY to ENTRY_COMPLETE?
+                    handled = true;
+                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_CANCELED)) {
+                    // TODO: What happens moving from ENTRY to CANCELED?
+                    // TODO: Purchase Order Lines need to be canceled as well.
                     handled = true;
                 }
             }

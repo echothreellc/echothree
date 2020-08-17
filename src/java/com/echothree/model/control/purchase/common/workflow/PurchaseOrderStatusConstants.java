@@ -32,5 +32,6 @@ public interface PurchaseOrderStatusConstants {
     String WorkflowEntrance_ENTRY_COMPLETE= "ENTRY_COMPLETE";
 
     String WorkflowDestination_ENTRY_TO_ENTRY_COMPLETE = "ENTRY_TO_ENTRY_COMPLETE";
+    String WorkflowDestination_ENTRY_TO_ENTRY_CANCELED = "ENTRY_TO_CANCELED";
 
 }
