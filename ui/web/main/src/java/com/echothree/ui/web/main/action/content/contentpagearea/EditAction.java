@@ -102,9 +102,9 @@ public class EditAction
                 spec.setLanguageIsoName(languageIsoName);
 
                 if(wasPost(request)) {
-                    boolean wasCancelled = wasCancelled(request);
+                    boolean wasCanceled = wasCanceled(request);
 
-                    if(wasCancelled) {
+                    if(wasCanceled) {
                         commandForm.setEditMode(EditMode.ABANDON);
                     } else {
                         ContentPageAreaEdit edit = ContentUtil.getHome().getContentPageAreaEdit();
@@ -119,7 +119,7 @@ public class EditAction
 
                     CommandResult commandResult = ContentUtil.getHome().editContentPageArea(getUserVisitPK(request), commandForm);
 
-                    if(commandResult.hasErrors() && !wasCancelled) {
+                    if(commandResult.hasErrors() && !wasCanceled) {
                         ExecutionResult executionResult = commandResult.getExecutionResult();
 
                         if(executionResult != null) {

@@ -74,9 +74,9 @@ public class EditAction
         spec.setDivisionName(originalDivisionName);
         
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
             
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 DivisionEdit edit = PartyUtil.getHome().getDivisionEdit();
@@ -96,7 +96,7 @@ public class EditAction
             
             CommandResult commandResult = PartyUtil.getHome().editDivision(getUserVisitPK(request), commandForm);
             
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {

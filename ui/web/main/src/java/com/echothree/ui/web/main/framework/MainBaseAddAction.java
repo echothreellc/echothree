@@ -51,7 +51,7 @@ public abstract class MainBaseAddAction<A extends ActionForm>
         setupParameters(actionForm, request);
 
         if(wasPost(request)) {
-            if(wasCancelled(request)) {
+            if(wasCanceled(request)) {
                 forwardKey = getCancelForward(actionForm);
             } else {
                 CommandResult commandResult = doAdd(actionForm, request);

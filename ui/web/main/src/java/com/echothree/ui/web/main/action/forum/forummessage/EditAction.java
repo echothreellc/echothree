@@ -72,9 +72,9 @@ public class EditAction
         spec.setForumMessageName(forumMessageName);
 
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
             
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 BlogEntryEdit edit = ForumUtil.getHome().getBlogEntryEdit();
@@ -97,7 +97,7 @@ public class EditAction
             
             CommandResult commandResult = ForumUtil.getHome().editBlogEntry(getUserVisitPK(request), commandForm);
 
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
@@ -160,9 +160,9 @@ public class EditAction
         spec.setForumMessageName(forumMessageName);
 
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
             
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 BlogCommentEdit edit = ForumUtil.getHome().getBlogCommentEdit();
@@ -179,7 +179,7 @@ public class EditAction
             
             CommandResult commandResult = ForumUtil.getHome().editBlogComment(getUserVisitPK(request), commandForm);
 
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {

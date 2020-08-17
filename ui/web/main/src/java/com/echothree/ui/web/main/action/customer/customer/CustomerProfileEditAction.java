@@ -75,9 +75,9 @@ public class CustomerProfileEditAction
         spec.setPartyName(partyName);
         
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
 
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 ProfileEdit edit = PartyUtil.getHome().getProfileEdit();
@@ -102,7 +102,7 @@ public class CustomerProfileEditAction
             
             CommandResult commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
             
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {

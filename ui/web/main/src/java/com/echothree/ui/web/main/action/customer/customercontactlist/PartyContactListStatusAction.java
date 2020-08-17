@@ -66,7 +66,7 @@ public class PartyContactListStatusAction
         if(wasPost(request)) {
             CommandResult commandResult = null;
 
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 SetPartyContactListStatusForm commandForm = ContactListUtil.getHome().getSetPartyContactListStatusForm();
 
                 commandForm.setPartyName(partyName);

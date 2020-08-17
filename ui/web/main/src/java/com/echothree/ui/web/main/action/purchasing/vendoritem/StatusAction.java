@@ -88,7 +88,7 @@ public class StatusAction
         if(wasPost(request)) {
             CommandResult commandResult = null;
 
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 SetVendorItemStatusForm commandForm = VendorUtil.getHome().getSetVendorItemStatusForm();
 
                 commandForm.setVendorName(vendorName);

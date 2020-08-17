@@ -86,11 +86,11 @@ public abstract class MainBaseEditAction<A extends ActionForm, S extends BaseSpe
         // Override this if you want to copy the TO from the *EditResult to the request.
     }
 
-    protected String handleUpdateOrAbandonResult(A actionForm, HttpServletRequest request, boolean wasCancelled, CommandResult commandResult)
+    protected String handleUpdateOrAbandonResult(A actionForm, HttpServletRequest request, boolean wasCanceled, CommandResult commandResult)
             throws NamingException {
         String forwardKey = null;
 
-        if(commandResult.hasErrors() && !wasCancelled) {
+        if(commandResult.hasErrors() && !wasCanceled) {
             ExecutionResult executionResult = commandResult.getExecutionResult();
 
             if(executionResult != null) {
@@ -117,9 +117,9 @@ public abstract class MainBaseEditAction<A extends ActionForm, S extends BaseSpe
         commandForm.setSpec(spec);
 
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
             
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 E edit = getEdit(request, actionForm);
@@ -128,7 +128,7 @@ public abstract class MainBaseEditAction<A extends ActionForm, S extends BaseSpe
                 commandForm.setEditMode(EditMode.UPDATE);
             }
             
-            forwardKey = handleUpdateOrAbandonResult(actionForm, request, wasCancelled, doEdit(request, commandForm));
+            forwardKey = handleUpdateOrAbandonResult(actionForm, request, wasCanceled, doEdit(request, commandForm));
         } else {
             commandForm.setEditMode(EditMode.LOCK);
 

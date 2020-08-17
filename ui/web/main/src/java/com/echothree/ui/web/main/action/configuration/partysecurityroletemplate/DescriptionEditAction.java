@@ -80,9 +80,9 @@ public class DescriptionEditAction
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    boolean wasCancelled = wasCancelled(request);
+                    boolean wasCanceled = wasCanceled(request);
 
-                    if(wasCancelled) {
+                    if(wasCanceled) {
                         commandForm.setEditMode(EditMode.ABANDON);
                     } else {
                         PartySecurityRoleTemplateDescriptionEdit edit = SecurityUtil.getHome().getPartySecurityRoleTemplateDescriptionEdit();
@@ -94,7 +94,7 @@ public class DescriptionEditAction
                     
                     CommandResult commandResult = SecurityUtil.getHome().editPartySecurityRoleTemplateDescription(getUserVisitPK(request), commandForm);
                     
-                    if(commandResult.hasErrors() && !wasCancelled) {
+                    if(commandResult.hasErrors() && !wasCanceled) {
                         ExecutionResult executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {

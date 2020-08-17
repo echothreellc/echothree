@@ -78,9 +78,9 @@ public class EditAction
         spec.setDepartmentName(originalDepartmentName);
         
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
             
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 DepartmentEdit edit = PartyUtil.getHome().getDepartmentEdit();
@@ -100,7 +100,7 @@ public class EditAction
             
             CommandResult commandResult = PartyUtil.getHome().editDepartment(getUserVisitPK(request), commandForm);
             
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {

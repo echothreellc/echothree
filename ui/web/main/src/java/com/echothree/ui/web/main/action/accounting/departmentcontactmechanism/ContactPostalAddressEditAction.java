@@ -75,9 +75,9 @@ public class ContactPostalAddressEditAction
         spec.setContactMechanismName(contactMechanismName);
 
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
 
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 ContactPostalAddressEdit edit = ContactUtil.getHome().getContactPostalAddressEdit();
@@ -106,7 +106,7 @@ public class ContactPostalAddressEditAction
 
             CommandResult commandResult = ContactUtil.getHome().editContactPostalAddress(getUserVisitPK(request), commandForm);
 
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
