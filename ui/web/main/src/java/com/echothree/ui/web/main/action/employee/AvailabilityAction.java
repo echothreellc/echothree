@@ -54,7 +54,7 @@ public class AvailabilityAction
         if(wasPost(request)) {
             CommandResult commandResult = null;
 
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 SetEmployeeAvailabilityForm commandForm = PartyUtil.getHome().getSetEmployeeAvailabilityForm();
 
                 commandForm.setEmployeeAvailabilityChoice(actionForm.getEmployeeAvailabilityChoice());

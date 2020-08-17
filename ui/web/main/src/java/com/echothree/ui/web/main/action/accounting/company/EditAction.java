@@ -69,9 +69,9 @@ public class EditAction
         spec.setCompanyName(originalCompanyName);
         
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
             
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 CompanyEdit edit = PartyUtil.getHome().getCompanyEdit();
@@ -91,7 +91,7 @@ public class EditAction
             
             CommandResult commandResult = PartyUtil.getHome().editCompany(getUserVisitPK(request), commandForm);
             
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {

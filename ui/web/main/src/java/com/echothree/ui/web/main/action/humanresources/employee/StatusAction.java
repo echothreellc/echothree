@@ -82,7 +82,7 @@ public class StatusAction
         if(wasPost(request)) {
             CommandResult commandResult = null;
 
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 SetEmployeeStatusForm commandForm = PartyUtil.getHome().getSetEmployeeStatusForm();
 
                 commandForm.setEmployeeName(employeeName);

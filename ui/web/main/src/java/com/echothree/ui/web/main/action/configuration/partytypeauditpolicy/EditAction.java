@@ -68,9 +68,9 @@ public class EditAction
         spec.setPartyTypeName(partyTypeName);
         
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
             
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 PartyTypeAuditPolicyEdit edit = PartyUtil.getHome().getPartyTypeAuditPolicyEdit();
@@ -85,7 +85,7 @@ public class EditAction
             
             CommandResult commandResult = PartyUtil.getHome().editPartyTypeAuditPolicy(getUserVisitPK(request), commandForm);
             
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {

@@ -68,7 +68,7 @@ public class PasswordAction
         PasswordActionForm actionForm = (PasswordActionForm)form;
         
         if(wasPost(request)) {
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 SetPasswordForm commandForm = AuthenticationUtil.getHome().getSetPasswordForm();
 
                 commandForm.setOldPassword(actionForm.getOldPassword());

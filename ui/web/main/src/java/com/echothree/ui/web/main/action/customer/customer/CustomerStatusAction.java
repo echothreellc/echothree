@@ -83,7 +83,7 @@ public class CustomerStatusAction
         if(wasPost(request)) {
             CommandResult commandResult = null;
 
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 SetCustomerStatusForm commandForm = CustomerUtil.getHome().getSetCustomerStatusForm();
 
                 commandForm.setCustomerName(customerName);

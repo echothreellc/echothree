@@ -113,7 +113,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         setupParameters(actionForm, request);
 
         if(wasPost(request)) {
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 CommandResult commandResult = doDelete(actionForm, request);
 
                 if(commandResult.hasErrors()) {

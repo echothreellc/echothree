@@ -53,7 +53,7 @@ public abstract class MainBaseStatusAction<A extends ActionForm, R extends BaseS
         setupParameters(actionForm, request);
 
         if(wasPost(request)) {
-            if(!wasCancelled(request)) {
+            if(!wasCanceled(request)) {
                 CommandResult commandResult = doStatus(actionForm, request);
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 R result = (R)executionResult.getResult();

@@ -75,9 +75,9 @@ public class ContactTelephoneEditAction
         spec.setContactMechanismName(contactMechanismName);
 
         if(wasPost(request)) {
-            boolean wasCancelled = wasCancelled(request);
+            boolean wasCanceled = wasCanceled(request);
 
-            if(wasCancelled) {
+            if(wasCanceled) {
                 commandForm.setEditMode(EditMode.ABANDON);
             } else {
                 ContactTelephoneEdit edit = ContactUtil.getHome().getContactTelephoneEdit();
@@ -95,7 +95,7 @@ public class ContactTelephoneEditAction
 
             CommandResult commandResult = ContactUtil.getHome().editContactTelephone(getUserVisitPK(request), commandForm);
 
-            if(commandResult.hasErrors() && !wasCancelled) {
+            if(commandResult.hasErrors() && !wasCanceled) {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {

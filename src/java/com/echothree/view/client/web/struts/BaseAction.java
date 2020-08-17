@@ -62,17 +62,17 @@ public abstract class BaseAction
         return request.getMethod().equals(WebConstants.Method_POST);
     }
     
-    public static boolean wasCancelled(HttpServletRequest request) {
+    public static boolean wasCanceled(HttpServletRequest request) {
         String submitButtonValue = request.getParameter(WebConstants.Parameter_SUBMIT_BUTTON);
-        boolean wasCancelled = false;
+        boolean wasCanceled = false;
         
         if(submitButtonValue != null) {
             if(submitButtonValue.equals(Constants.CANCEL_PROPERTY)) {
-                wasCancelled = true;
+                wasCanceled = true;
             }
         }
         
-        return wasCancelled;
+        return wasCanceled;
     }
     
     public void setupDtAttributes(HttpServletRequest request, String dtIdAttribute) {
