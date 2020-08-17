@@ -24,10 +24,12 @@ import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
+import com.echothree.model.control.purchase.common.exception.DuplicateHandlingInPurchaseOrderStatusTransitionException;
 import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderReferenceException;
 import com.echothree.model.control.purchase.common.exception.InvalidPurchaseOrderStatusException;
 import com.echothree.model.control.purchase.common.exception.PurchaseOrderDuplicateReferenceException;
 import com.echothree.model.control.purchase.common.exception.PurchaseOrderReferenceRequiredException;
+import com.echothree.model.control.purchase.common.exception.UnhandledPurchaseOrderStatusTransitionException;
 import com.echothree.model.control.purchase.common.exception.UnknownPurchaseOrderStatusChoiceException;
 import com.echothree.model.control.purchase.common.workflow.PurchaseOrderStatusConstants;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
@@ -279,10 +281,16 @@ public class PurchaseOrderLogic
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
                     // TODO: What happens moving from ENTRY to ENTRY_COMPLETE?
                     handled = true;
-                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_CANCELED)) {
-                    // TODO: What happens moving from ENTRY to CANCELED?
-                    // TODO: Purchase Order Lines need to be canceled as well.
-                    handled = true;
+                }
+
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, PurchaseOrderStatusConstants.WorkflowStep_CANCELED)) {
+                    if(!handled) {
+                        // TODO: What happens moving from ENTRY to CANCELED?
+                        // TODO: Purchase Order Lines need to be canceled as well.
+                        handled = true;
+                    } else {
+                        handleExecutionError(DuplicateHandlingInPurchaseOrderStatusTransitionException.class, eea, ExecutionErrors.DuplicateHandlingInPurchaseOrderStatusTransition.name(), orderStatusChoice);
+                    }
                 }
             }
 
@@ -290,7 +298,7 @@ public class PurchaseOrderLogic
                 if(handled) {
                     workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, triggerTime, modifiedBy);
                 } else {
-                    // TODO: An error of some sort.
+                    handleExecutionError(UnhandledPurchaseOrderStatusTransitionException.class, eea, ExecutionErrors.UnhandledPurchaseOrderStatusTransition.name(), orderStatusChoice);
                 }
             }
         } else {

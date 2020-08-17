@@ -2219,5 +2219,7 @@ public enum ExecutionErrors {
     PurchaseOrderReferenceRequired,
     PurchaseOrderDuplicateReference,
     InvalidPurchaseOrderReference,
+    DuplicateHandlingInPurchaseOrderStatusTransition,
+    UnhandledPurchaseOrderStatusTransition,
 
 }
