@@ -15,6 +15,6 @@ Feature: Employee purchase order
     Then no error should occur
     And the user begins setting the status of a purchase order
     And the user sets the purchase order's purchase order name to the last purchase order added
-    And the user sets the purchase order's status to ENTRY_TO_ENTRY_COMPLETE
+    And the user sets the purchase order's status to ENTRY_TO_CANCELED
     And the user sets the status of the purchase order
     Then no error should occur
