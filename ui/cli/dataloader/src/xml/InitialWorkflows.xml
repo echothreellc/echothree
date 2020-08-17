@@ -1003,8 +1003,8 @@
             <workflowStep workflowStepName="WRITEOFF" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Writeoff" />
             </workflowStep>
-            <workflowStep workflowStepName="CANCELLED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
-                <workflowStepDescription languageIsoName="en" description="Cancelled" />
+            <workflowStep workflowStepName="CANCELED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Canceled" />
             </workflowStep>
             <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_CODING_APPROVAL" isDefault="true" sortOrder="0">
                 <workflowDestinationDescription languageIsoName="en" description="Entry to Coding Approval" />
