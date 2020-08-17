@@ -4308,9 +4308,9 @@ public class WorkflowControl
             deleteWorkflowEntityStatus(workflowEntityStatus, modifiedBy);
 
             if(workflowDestination != null) {
-                EntityInstance entityInstance = workflowEntityStatus.getEntityInstance();
-                WorkEffortScope workflowEffortScope = workflowEntityStatus.getWorkEffortScope();
-                List<WorkflowDestinationStep> workflowDestinationSteps = getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
+                var entityInstance = workflowEntityStatus.getEntityInstance();
+                var workflowEffortScope = workflowEntityStatus.getWorkEffortScope();
+                var workflowDestinationSteps = getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
 
                 for(WorkflowDestinationStep workflowDestinationStep : workflowDestinationSteps) {
                     workflowEntityStatus = createWorkflowEntityStatus(entityInstance, workflowDestinationStep.getWorkflowStep(),
