@@ -76,6 +76,16 @@ import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeFo
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
+import com.echothree.control.user.offer.common.edit.OfferEdit;
+import com.echothree.control.user.offer.common.edit.OfferItemPriceEdit;
+import com.echothree.control.user.offer.common.form.CreateOfferForm;
+import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
+import com.echothree.control.user.offer.common.form.CreateOfferItemPriceForm;
+import com.echothree.control.user.offer.common.form.DeleteOfferForm;
+import com.echothree.control.user.offer.common.form.DeleteOfferItemForm;
+import com.echothree.control.user.offer.common.form.DeleteOfferItemPriceForm;
+import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
+import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
@@ -210,6 +220,20 @@ public class BasePersona {
     public ItemUnitOfMeasureTypeEdit itemUnitOfMeasureTypeEdit;
 
     public String lastItemName;
+
+    // Offer
+    public CreateOfferForm createOfferForm;
+    public DeleteOfferForm deleteOfferForm;
+    public OfferSpec offerSpec;
+    public OfferEdit offerEdit;
+
+    public CreateOfferItemForm createOfferItemForm;
+    public DeleteOfferItemForm deleteOfferItemForm;
+
+    public CreateOfferItemPriceForm createOfferItemPriceForm;
+    public DeleteOfferItemPriceForm deleteOfferItemPriceForm;
+    public OfferItemPriceSpec offerItemPriceSpec;
+    public OfferItemPriceEdit offerItemPriceEdit;
 
     // Party
     public String lastPartyName;
