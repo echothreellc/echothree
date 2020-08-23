@@ -85,7 +85,6 @@ import com.echothree.control.user.offer.common.form.DeleteOfferForm;
 import com.echothree.control.user.offer.common.form.DeleteOfferItemForm;
 import com.echothree.control.user.offer.common.form.DeleteOfferItemPriceForm;
 import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
-import com.echothree.control.user.offer.common.spec.OfferItemSpec;
 import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
