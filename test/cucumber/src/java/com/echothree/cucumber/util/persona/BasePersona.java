@@ -235,6 +235,8 @@ public class BasePersona {
     public OfferItemPriceSpec offerItemPriceSpec;
     public OfferItemPriceEdit offerItemPriceEdit;
 
+    public String lastOfferName;
+
     // Party
     public String lastPartyName;
 
