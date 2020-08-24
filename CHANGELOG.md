@@ -1,5 +1,15 @@
 # Changelog
 
+## 2020-08-23-01
+
+* Create Purchase Order [38](https://gitlab.echothree.com/echothree/echothree/-/issues/38)
+* Add Offer Tests [84](https://gitlab.echothree.com/echothree/echothree/-/issues/84)
+* Add Offer Item Tests [85](https://gitlab.echothree.com/echothree/echothree/-/issues/85)
+* Allow Cancelation of a Purchase Order During Entry [110](https://gitlab.echothree.com/echothree/echothree/-/issues/110)
+* Add Script to Configure WildFly and Deploy Application [111](https://gitlab.echothree.com/echothree/echothree/-/issues/111)
+* Apache Lucene 8.6.1 Upgrade [112](https://gitlab.echothree.com/echothree/echothree/-/issues/112)
+* Rename Cancelled to Canceled [113](https://gitlab.echothree.com/echothree/echothree/-/issues/113)
+
 ## 2020-08-09-01
 
 * jOOQ 3.13.4 Upgrade [105](https://gitlab.echothree.com/echothree/echothree/-/issues/105)
