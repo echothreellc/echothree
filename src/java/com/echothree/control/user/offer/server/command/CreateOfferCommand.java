@@ -16,7 +16,9 @@
 
 package com.echothree.control.user.offer.server.command;
 
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.offer.common.form.CreateOfferForm;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.offer.server.OfferControl;
@@ -91,9 +93,10 @@ public class CreateOfferCommand
     
     @Override
     protected BaseResult execute() {
-        String offerName = form.getOfferName();
+        var result = OfferResultFactory.getCreateOfferResult();
+        var offerName = form.getOfferName();
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer == null) {
             String salesOrderSequenceName = form.getSalesOrderSequenceName();
@@ -198,8 +201,13 @@ public class CreateOfferCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateOfferName.name(), offerName);
         }
+
+        if(offer != null) {
+            result.setOfferName(offer.getLastDetail().getOfferName());
+            result.setEntityRef(offer.getPrimaryKey().getEntityRef());
+        }
         
-        return null;
+        return result;
     }
     
 }

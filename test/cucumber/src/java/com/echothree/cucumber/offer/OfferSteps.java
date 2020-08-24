@@ -17,6 +17,7 @@
 package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
+import com.echothree.control.user.offer.common.result.CreateOfferResult;
 import com.echothree.control.user.offer.common.result.EditOfferResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -44,15 +45,16 @@ public class OfferSteps implements En {
 
                     assertThat(persona.createOfferForm).isNotNull();
 
-                    var itemService = OfferUtil.getHome();
-                    var createOfferForm = itemService.getCreateOfferForm();
+                    var offerService = OfferUtil.getHome();
+                    var createOfferForm = offerService.getCreateOfferForm();
 
                     createOfferForm.set(persona.createOfferForm.get());
 
-                    var commandResult = itemService.createOffer(persona.userVisitPK, createOfferForm);
-
+                    var commandResult = offerService.createOffer(persona.userVisitPK, createOfferForm);
                     LastCommandResult.commandResult = commandResult;
+                    var result = (CreateOfferResult)commandResult.getExecutionResult().getResult();
 
+                    persona.lastOfferName = commandResult.getHasErrors() ? null : result.getOfferName();
                     persona.createOfferForm = null;
                 });
 
