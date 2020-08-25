@@ -19,7 +19,6 @@ package com.echothree.cucumber.offer;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
-import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -129,7 +128,6 @@ public class OfferItemSteps implements En {
                         deleteOfferItemForm.setItemName(persona.lastItemName);
                     }
                 });
-
     }
 
 }
