@@ -1,5 +1,5 @@
 Feature: Employee offer item
-  An employee wants to add, edit, and delete an offer item
+  An employee wants to add and edit an offer item
 
   Background:
     Given the employee Test begins using the application
