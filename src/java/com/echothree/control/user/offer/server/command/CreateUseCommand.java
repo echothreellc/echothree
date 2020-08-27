@@ -17,6 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseForm;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,6 +69,7 @@ public class CreateUseCommand
     
     @Override
     protected BaseResult execute() {
+        var result = OfferResultFactory.getCreateUseResult();
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String useName = form.getUseName();
         Use use = offerControl.getUseByName(useName);
@@ -93,8 +95,13 @@ public class CreateUseCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateUseName.name(), useName);
         }
-        
-        return null;
+
+        if(use != null) {
+            result.setUseName(use.getLastDetail().getUseName());
+            result.setEntityRef(use.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
