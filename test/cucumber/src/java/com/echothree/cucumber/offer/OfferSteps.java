@@ -18,6 +18,7 @@ package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferResult;
+import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
 import com.echothree.control.user.offer.common.result.EditOfferResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -54,7 +55,11 @@ public class OfferSteps implements En {
                     LastCommandResult.commandResult = commandResult;
                     var result = (CreateOfferResult)commandResult.getExecutionResult().getResult();
 
-                    persona.lastOfferName = commandResult.getHasErrors() ? null : result.getOfferName();
+                    if(result != null) {
+                        persona.lastOfferName = commandResult.getHasErrors() ? null : result.getOfferName();
+                        persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
+                    }
+
                     persona.createOfferForm = null;
                 });
 
