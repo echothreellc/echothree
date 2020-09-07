@@ -1,5 +1,12 @@
 # Changelog
 
+## 2020-09-06-01
+
+* Add Offer Item Price Tests [86](https://gitlab.echothree.com/echothree/echothree/-/issues/86)
+* Add Use Type Tests [115](https://gitlab.echothree.com/echothree/echothree/-/issues/115)
+* Add Use Tests [116](https://gitlab.echothree.com/echothree/echothree/-/issues/116)
+* Add Offer Use Tests [117](https://gitlab.echothree.com/echothree/echothree/-/issues/117)
+
 ## 2020-08-23-01
 
 * Create Purchase Order [38](https://gitlab.echothree.com/echothree/echothree/-/issues/38)
