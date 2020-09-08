@@ -142,12 +142,17 @@ public class OfferBean
     public CommandResult createOfferChainType(UserVisitPK userVisitPK, CreateOfferChainTypeForm form) {
         return new CreateOfferChainTypeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getOfferChainTypes(UserVisitPK userVisitPK, GetOfferChainTypesForm form) {
         return new GetOfferChainTypesCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getOfferChainType(UserVisitPK userVisitPK, GetOfferChainTypeForm form) {
+        return new GetOfferChainTypeCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editOfferChainType(UserVisitPK userVisitPK, EditOfferChainTypeForm form) {
         return new EditOfferChainTypeCommand(userVisitPK, form).run();
