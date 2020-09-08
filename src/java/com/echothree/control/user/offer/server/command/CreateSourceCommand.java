@@ -17,26 +17,22 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateSourceForm;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateSourceCommand
@@ -46,20 +42,20 @@ public class CreateSourceCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Source.name(), SecurityRoles.Create.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SourceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of CreateSourceCommand */
@@ -69,26 +65,29 @@ public class CreateSourceCommand
     
     @Override
     protected BaseResult execute() {
+        var result = OfferResultFactory.getCreateSourceResult();
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
+        Source source = null;
+        var offerName = form.getOfferName();
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            String useName = form.getUseName();
-            Use use = offerControl.getUseByName(useName);
+            var useName = form.getUseName();
+            var use = offerControl.getUseByName(useName);
             
             if(use != null) {
-                OfferUse offerUse = offerControl.getOfferUse(offer, use);
+                var offerUse = offerControl.getOfferUse(offer, use);
                 
                 if(offerUse != null) {
-                    String sourceName = form.getSourceName();
-                    Source source = offerControl.getSourceByName(sourceName);
+                    var sourceName = form.getSourceName();
+
+                    source = offerControl.getSourceByName(sourceName);
                     
                     if(source == null) {
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
                         
-                        offerControl.createSource(sourceName, offerUse, isDefault, sortOrder, getPartyPK());
+                        source = offerControl.createSource(sourceName, offerUse, isDefault, sortOrder, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
                     }
@@ -101,8 +100,13 @@ public class CreateSourceCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
         }
-        
-        return null;
+
+        if(source != null) {
+            result.setSourceName(source.getLastDetail().getSourceName());
+            result.setEntityRef(source.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
