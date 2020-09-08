@@ -45,12 +45,12 @@ public class OfferUseSteps implements En {
 
                     assertThat(persona.createOfferUseForm).isNotNull();
 
-                    var contentUtil = OfferUtil.getHome();
-                    var createOfferUseForm = contentUtil.getCreateOfferUseForm();
+                    var offerUtil = OfferUtil.getHome();
+                    var createOfferUseForm = offerUtil.getCreateOfferUseForm();
 
                     createOfferUseForm.set(persona.createOfferUseForm.get());
 
-                    LastCommandResult.commandResult = contentUtil.createOfferUse(persona.userVisitPK, createOfferUseForm);
+                    LastCommandResult.commandResult = offerUtil.createOfferUse(persona.userVisitPK, createOfferUseForm);
 
                     persona.createOfferUseForm = null;
                 });
@@ -144,10 +144,8 @@ public class OfferUseSteps implements En {
 
                     if(createOfferUseForm != null) {
                         createOfferUseForm.setOfferName(offerName);
-                    } else if(deleteOfferUseForm != null) {
-                        deleteOfferUseForm.setOfferName(offerName);
                     } else {
-                        offerUseSpec.setOfferName(offerName);
+                        Objects.requireNonNullElse(deleteOfferUseForm, offerUseSpec).setOfferName(offerName);
                     }
                 });
 
@@ -163,11 +161,7 @@ public class OfferUseSteps implements En {
 
                     if(createOfferUseForm != null) {
                         createOfferUseForm.setOfferName(persona.lastOfferName);
-                    } else if(deleteOfferUseForm != null) {
-                        deleteOfferUseForm.setOfferName(persona.lastOfferName);
-                    } else {
-                        offerUseSpec.setOfferName(persona.lastOfferName);
-                    }
+                    } else Objects.requireNonNullElse(deleteOfferUseForm, offerUseSpec).setOfferName(persona.lastOfferName);
                 });
 
         When("^the user sets the offer use's use name to \"([^\"]*)\"$",
@@ -182,10 +176,8 @@ public class OfferUseSteps implements En {
 
                     if(createOfferUseForm != null) {
                         createOfferUseForm.setUseName(useName);
-                    } else if(deleteOfferUseForm != null) {
-                        deleteOfferUseForm.setUseName(useName);
                     } else {
-                        offerUseSpec.setUseName(useName);
+                        Objects.requireNonNullElse(deleteOfferUseForm, offerUseSpec).setUseName(useName);
                     }
                 });
 
@@ -201,10 +193,8 @@ public class OfferUseSteps implements En {
 
                     if(createOfferUseForm != null) {
                         createOfferUseForm.setUseName(persona.lastUseName);
-                    } else if(deleteOfferUseForm != null) {
-                        deleteOfferUseForm.setUseName(persona.lastUseName);
                     } else {
-                        offerUseSpec.setUseName(persona.lastUseName);
+                        Objects.requireNonNullElse(deleteOfferUseForm, offerUseSpec).setUseName(persona.lastUseName);
                     }
                 });
 
