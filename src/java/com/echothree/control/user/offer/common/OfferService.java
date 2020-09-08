@@ -80,9 +80,11 @@ public interface OfferService
     // -------------------------------------------------------------------------
     
     CommandResult createOfferChainType(UserVisitPK userVisitPK, CreateOfferChainTypeForm form);
-    
+
     CommandResult getOfferChainTypes(UserVisitPK userVisitPK, GetOfferChainTypesForm form);
-    
+
+    CommandResult getOfferChainType(UserVisitPK userVisitPK, GetOfferChainTypeForm form);
+
     CommandResult editOfferChainType(UserVisitPK userVisitPK, EditOfferChainTypeForm form);
     
     CommandResult deleteOfferChainType(UserVisitPK userVisitPK, DeleteOfferChainTypeForm form);
