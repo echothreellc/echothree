@@ -23,8 +23,6 @@ import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.offer.server.entity.OfferChainType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -73,12 +71,12 @@ public class GetOfferChainTypeCommand
         
         if(offer != null) {
             var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-            String chainKindName = form.getChainKindName();
-            ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
+            var chainKindName = form.getChainKindName();
+            var chainKind = chainControl.getChainKindByName(chainKindName);
 
             if(chainKind != null) {
-                String chainTypeName = form.getChainTypeName();
-                ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+                var chainTypeName = form.getChainTypeName();
+                var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
                 if(chainType != null) {
                     offerChainType = offerControl.getOfferChainType(offer, chainType);
