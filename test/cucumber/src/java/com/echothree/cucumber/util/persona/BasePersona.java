@@ -79,23 +79,27 @@ import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
 import com.echothree.control.user.offer.common.edit.OfferEdit;
 import com.echothree.control.user.offer.common.edit.OfferItemPriceEdit;
 import com.echothree.control.user.offer.common.edit.OfferUseEdit;
+import com.echothree.control.user.offer.common.edit.SourceEdit;
 import com.echothree.control.user.offer.common.edit.UseEdit;
 import com.echothree.control.user.offer.common.edit.UseTypeEdit;
 import com.echothree.control.user.offer.common.form.CreateOfferForm;
 import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
 import com.echothree.control.user.offer.common.form.CreateOfferItemPriceForm;
 import com.echothree.control.user.offer.common.form.CreateOfferUseForm;
+import com.echothree.control.user.offer.common.form.CreateSourceForm;
 import com.echothree.control.user.offer.common.form.CreateUseForm;
 import com.echothree.control.user.offer.common.form.CreateUseTypeForm;
 import com.echothree.control.user.offer.common.form.DeleteOfferForm;
 import com.echothree.control.user.offer.common.form.DeleteOfferItemForm;
 import com.echothree.control.user.offer.common.form.DeleteOfferItemPriceForm;
 import com.echothree.control.user.offer.common.form.DeleteOfferUseForm;
+import com.echothree.control.user.offer.common.form.DeleteSourceForm;
 import com.echothree.control.user.offer.common.form.DeleteUseForm;
 import com.echothree.control.user.offer.common.form.DeleteUseTypeForm;
 import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
 import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.control.user.offer.common.spec.OfferUseSpec;
+import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.control.user.offer.common.spec.UseTypeSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
@@ -256,15 +260,21 @@ public class BasePersona {
     public DeleteUseForm deleteUseForm;
     public UseSpec useSpec;
     public UseEdit useEdit;
-    
+
     public CreateOfferUseForm createOfferUseForm;
     public DeleteOfferUseForm deleteOfferUseForm;
     public OfferUseSpec offerUseSpec;
     public OfferUseEdit offerUseEdit;
 
+    public CreateSourceForm createSourceForm;
+    public DeleteSourceForm deleteSourceForm;
+    public SourceSpec sourceSpec;
+    public SourceEdit sourceEdit;
+
     public String lastOfferName;
     public String lastUseTypeName;
     public String lastUseName;
+    public String lastSourceName;
 
     // Party
     public String lastPartyName;

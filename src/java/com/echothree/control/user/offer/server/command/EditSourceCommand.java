@@ -31,17 +31,15 @@ import com.echothree.model.data.offer.server.entity.SourceDetail;
 import com.echothree.model.data.offer.server.value.SourceDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditSourceCommand
@@ -52,22 +50,22 @@ public class EditSourceCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Source.name(), SecurityRoles.Edit.name())
-                        )))
-                )));
+                ))
+        ));
 
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SourceName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
 
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SourceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of EditSourceCommand */
@@ -88,7 +86,7 @@ public class EditSourceCommand
     @Override
     public Source getEntity(EditSourceResult result) {
         var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
-        Source source = null;
+        Source source;
         String sourceName = spec.getSourceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

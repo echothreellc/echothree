@@ -18,12 +18,12 @@ package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferResult;
-import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
 import com.echothree.control.user.offer.common.result.EditOfferResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
+import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OfferSteps implements En {
@@ -134,8 +134,7 @@ public class OfferSteps implements En {
                     commandForm.setEdit(edit);
                     commandForm.setEditMode(EditMode.UPDATE);
 
-                    var commandResult = OfferUtil.getHome().editOffer(persona.userVisitPK, commandForm);
-                    LastCommandResult.commandResult = commandResult;
+                    LastCommandResult.commandResult = OfferUtil.getHome().editOffer(persona.userVisitPK, commandForm);
 
                     persona.offerSpec = null;
                     persona.offerEdit = null;
@@ -153,10 +152,8 @@ public class OfferSteps implements En {
 
                     if(createOfferForm != null) {
                         createOfferForm.setOfferName(offerName);
-                    } else if(deleteOfferForm != null) {
-                        deleteOfferForm.setOfferName(offerName);
                     } else {
-                        offerSpec.setOfferName(offerName);
+                        Objects.requireNonNullElse(deleteOfferForm, offerSpec).setOfferName(offerName);
                     }
                 });
 
@@ -208,11 +205,7 @@ public class OfferSteps implements En {
 
                     assertThat(createOfferForm != null || offerEdit != null).isTrue();
 
-                    if(createOfferForm != null) {
-                        createOfferForm.setSalesOrderSequenceName(salesOrderSequenceName);
-                    } else {
-                        offerEdit.setSalesOrderSequenceName(salesOrderSequenceName);
-                    }
+                    Objects.requireNonNullElse(createOfferForm, offerEdit).setSalesOrderSequenceName(salesOrderSequenceName);
                 });
 
         When("^the user sets the offer's offer item selector name to \"([^\"]*)\"$",
@@ -223,11 +216,7 @@ public class OfferSteps implements En {
 
                     assertThat(createOfferForm != null || offerEdit != null).isTrue();
 
-                    if(createOfferForm != null) {
-                        createOfferForm.setOfferItemSelectorName(offerItemSelectorName);
-                    } else {
-                        offerEdit.setOfferItemSelectorName(offerItemSelectorName);
-                    }
+                    Objects.requireNonNullElse(createOfferForm, offerEdit).setOfferItemSelectorName(offerItemSelectorName);
                 });
 
         When("^the user sets the offer's offer item price filter name price to \"([^\"]*)\"$",
@@ -238,11 +227,7 @@ public class OfferSteps implements En {
 
                     assertThat(createOfferForm != null || offerEdit != null).isTrue();
 
-                    if(createOfferForm != null) {
-                        createOfferForm.setOfferItemPriceFilterName(offerItemPriceFilterName);
-                    } else {
-                        offerEdit.setOfferItemPriceFilterName(offerItemPriceFilterName);
-                    }
+                    Objects.requireNonNullElse(createOfferForm, offerEdit).setOfferItemPriceFilterName(offerItemPriceFilterName);
                 });
 
         When("^the user sets the offer to (be|not be) the default$",
@@ -254,11 +239,7 @@ public class OfferSteps implements En {
                     assertThat(createOfferForm != null || offerEdit != null).isTrue();
 
                     isDefault = Boolean.valueOf(isDefault.equals("be")).toString();
-                    if(createOfferForm != null) {
-                        createOfferForm.setIsDefault(isDefault);
-                    } else {
-                        offerEdit.setIsDefault(isDefault);
-                    }
+                    Objects.requireNonNullElse(createOfferForm, offerEdit).setIsDefault(isDefault);
                 });
 
         When("^the user sets the offer's sort order to \"([^\"]*)\"$",
@@ -269,11 +250,7 @@ public class OfferSteps implements En {
 
                     assertThat(createOfferForm != null || offerEdit != null).isTrue();
 
-                    if(createOfferForm != null) {
-                        createOfferForm.setSortOrder(sortOrder);
-                    } else {
-                        offerEdit.setSortOrder(sortOrder);
-                    }
+                    Objects.requireNonNullElse(createOfferForm, offerEdit).setSortOrder(sortOrder);
                 });
 
         When("^the user sets the offer's description to \"([^\"]*)\"$",
@@ -284,11 +261,7 @@ public class OfferSteps implements En {
 
                     assertThat(createOfferForm != null || offerEdit != null).isTrue();
 
-                    if(createOfferForm != null) {
-                        createOfferForm.setDescription(description);
-                    } else {
-                        offerEdit.setDescription(description);
-                    }
+                    Objects.requireNonNullElse(createOfferForm, offerEdit).setDescription(description);
                 });
     }
 

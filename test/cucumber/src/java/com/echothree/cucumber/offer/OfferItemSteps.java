@@ -20,6 +20,7 @@ import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
+import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OfferItemSteps implements En {
@@ -77,11 +78,7 @@ public class OfferItemSteps implements En {
 
                     assertThat(createOfferItemForm != null || deleteOfferItemForm != null).isTrue();
 
-                    if(createOfferItemForm != null) {
-                        createOfferItemForm.setOfferName(offerName);
-                    } else {
-                        deleteOfferItemForm.setOfferName(offerName);
-                    }
+                    Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setOfferName(offerName);
                 });
 
         When("^the user sets the offer item's offer name to the last offer added$",
@@ -92,11 +89,7 @@ public class OfferItemSteps implements En {
 
                     assertThat(createOfferItemForm != null || deleteOfferItemForm != null).isTrue();
 
-                    if(createOfferItemForm != null) {
-                        createOfferItemForm.setOfferName(persona.lastOfferName);
-                    } else {
-                        deleteOfferItemForm.setOfferName(persona.lastOfferName);
-                    }
+                    Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setOfferName(persona.lastOfferName);
                 });
 
         When("^the user sets the offer item's item name to \"([^\"]*)\"$",
@@ -107,11 +100,7 @@ public class OfferItemSteps implements En {
 
                     assertThat(createOfferItemForm != null || deleteOfferItemForm != null).isTrue();
 
-                    if(createOfferItemForm != null) {
-                        createOfferItemForm.setItemName(itemName);
-                    } else {
-                        deleteOfferItemForm.setItemName(itemName);
-                    }
+                    Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setItemName(itemName);
                 });
 
         When("^the user sets the offer item's item name to the last item added$",
@@ -122,11 +111,7 @@ public class OfferItemSteps implements En {
 
                     assertThat(createOfferItemForm != null || deleteOfferItemForm != null).isTrue();
 
-                    if(createOfferItemForm != null) {
-                        createOfferItemForm.setItemName(persona.lastItemName);
-                    } else {
-                        deleteOfferItemForm.setItemName(persona.lastItemName);
-                    }
+                    Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setItemName(persona.lastItemName);
                 });
     }
 
