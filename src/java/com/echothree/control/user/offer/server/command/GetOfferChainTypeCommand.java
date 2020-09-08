@@ -81,7 +81,7 @@ public class GetOfferChainTypeCommand
                 ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
                 if(chainType != null) {
-                    offerChainType = offerControl.getOfferChainTypeForUpdate(offer, chainType);
+                    offerChainType = offerControl.getOfferChainType(offer, chainType);
 
                     if(offerChainType == null) {
                         addExecutionError(ExecutionErrors.UnknownOfferChainType.name(), offer.getLastDetail().getOfferName(),
