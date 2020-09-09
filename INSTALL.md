@@ -13,10 +13,22 @@ deploying these applications.
 ## Prerequisites
 
 * CentOS 6
-* AdoptOpenJDK jdk-11.0.3+7
-* Apache Ant 1.10.5
-* MySQL 5.7.23
-* WildFly 20.0.1
+* Amazon Corretto 11 (11.0.8.10.1)
+* Apache Ant 1.10 (1.10.8)
+* MySQL 8.0 (8.0.21 GA)
+* WildFly 20 (20.0.1)
+
+The full version numbers in parentheses are the most recent versions used for testing.
+
+## Amazon Corretto 11
+
+* [What Is Amazon Corretto 11?](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/what-is-corretto-11.html)
+* [Downloads for Amazon Corretto 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html)
+* [Versioned Downloads of Corretto on GitHub](https://github.com/corretto/corretto-11/releases)
+
+## MySQL 8.0
+
+* [Using the MySQL Yum Repository](https://dev.mysql.com/doc/mysql-repo-excerpt/8.0/en/)
 
 ## Recommended Directory Structure
 
@@ -65,12 +77,6 @@ As jboss:
 ```
 $ git checkout git@gitlab.com:echothree/echothree.git EchoThree
 ```
-
-## MySQL Configuration
-
-I would highly recommend installing MySQL on CentOS
-[using the MySQL Yum Repository](https://dev.mysql.com/doc/mysql-repo-excerpt/5.7/en/). You will still need to
-manually run `mysql_upgrade` after upgrades to ensure system tables have been migrated.
 
 ### MySQL Server Configuration
 
