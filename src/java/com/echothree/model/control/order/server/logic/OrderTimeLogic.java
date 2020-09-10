@@ -20,7 +20,7 @@ import com.echothree.model.control.order.common.exception.DuplicateOrderTimeExce
 import com.echothree.model.control.order.common.exception.UnknownOrderTimeException;
 import com.echothree.model.control.order.common.exception.UnknownOrderTimeTypeNameException;
 import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.order.server.entity.OrderTime;

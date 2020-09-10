@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;

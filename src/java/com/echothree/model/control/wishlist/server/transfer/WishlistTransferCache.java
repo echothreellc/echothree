@@ -21,7 +21,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.WishlistControl;

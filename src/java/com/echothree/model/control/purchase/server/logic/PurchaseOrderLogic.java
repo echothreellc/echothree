@@ -21,7 +21,7 @@ import com.echothree.model.control.cancellationpolicy.server.logic.CancellationP
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
 import com.echothree.model.control.purchase.common.exception.DuplicateHandlingInPurchaseOrderStatusTransitionException;

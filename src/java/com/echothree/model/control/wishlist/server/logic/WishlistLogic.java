@@ -20,7 +20,7 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;

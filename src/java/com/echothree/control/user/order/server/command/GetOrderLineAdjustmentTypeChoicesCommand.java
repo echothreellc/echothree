@@ -19,7 +19,7 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.GetOrderLineAdjustmentTypeChoicesForm;
 import com.echothree.control.user.order.common.result.GetOrderLineAdjustmentTypeChoicesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

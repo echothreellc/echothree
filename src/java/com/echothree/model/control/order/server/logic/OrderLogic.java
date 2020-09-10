@@ -32,7 +32,7 @@ import com.echothree.model.control.order.common.exception.UnknownOrderRoleTypeNa
 import com.echothree.model.control.order.common.exception.UnknownOrderSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderSequenceTypeException;
 import com.echothree.model.control.order.common.exception.UnknownOrderTypeNameException;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
@@ -51,7 +51,6 @@ import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.order.server.entity.OrderStatus;
 import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.order.server.entity.OrderTypeDetail;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;

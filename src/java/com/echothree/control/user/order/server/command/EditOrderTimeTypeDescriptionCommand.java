@@ -22,7 +22,7 @@ import com.echothree.control.user.order.common.form.EditOrderTimeTypeDescription
 import com.echothree.control.user.order.common.result.EditOrderTimeTypeDescriptionResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderTimeTypeDescriptionSpec;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

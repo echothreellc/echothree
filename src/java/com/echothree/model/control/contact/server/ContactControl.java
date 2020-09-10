@@ -73,7 +73,7 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.letter.server.LetterControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.shipment.server.ShipmentControl;

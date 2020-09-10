@@ -22,7 +22,7 @@ import com.echothree.control.user.sales.common.form.EditSalesOrderLineTimeForm;
 import com.echothree.control.user.sales.common.result.EditSalesOrderLineTimeResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.control.user.sales.common.spec.SalesOrderLineTimeSpec;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;

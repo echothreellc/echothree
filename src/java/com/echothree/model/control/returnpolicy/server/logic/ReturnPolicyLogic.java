@@ -17,7 +17,7 @@
 package com.echothree.model.control.returnpolicy.server.logic;
 
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.exception.UnknownReturnKindNameException;
 import com.echothree.model.control.returnpolicy.common.exception.UnknownReturnPolicyNameException;

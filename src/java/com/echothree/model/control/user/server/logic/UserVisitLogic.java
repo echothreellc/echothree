@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.user.server.logic;
 
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;

@@ -21,7 +21,7 @@ import com.echothree.control.user.wishlist.common.result.GetWishlistLinesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.order.server.entity.Order;

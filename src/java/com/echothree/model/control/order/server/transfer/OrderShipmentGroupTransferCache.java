@@ -21,7 +21,7 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.item.common.transfer.ItemDeliveryTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;

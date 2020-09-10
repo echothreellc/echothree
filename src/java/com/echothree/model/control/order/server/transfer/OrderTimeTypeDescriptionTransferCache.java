@@ -18,7 +18,7 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
