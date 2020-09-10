@@ -20,7 +20,7 @@ import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.sales.common.exception.CannotDeleteSalesOrderBatchInUseException;
 import com.echothree.model.control.sales.common.exception.IncorrectSalesOrderBatchAmountException;
 import com.echothree.model.control.sales.common.exception.IncorrectSalesOrderBatchCountException;

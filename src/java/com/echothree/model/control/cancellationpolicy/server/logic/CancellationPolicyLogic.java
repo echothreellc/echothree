@@ -21,7 +21,7 @@ import com.echothree.model.control.cancellationpolicy.common.exception.UnknownCa
 import com.echothree.model.control.cancellationpolicy.common.exception.UnknownCancellationPolicyNameException;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;

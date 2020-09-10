@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sales.server.trigger;
 
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.trigger.OrderTypeTrigger;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;

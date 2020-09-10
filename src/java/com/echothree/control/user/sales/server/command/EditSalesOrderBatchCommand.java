@@ -23,7 +23,7 @@ import com.echothree.control.user.sales.common.result.EditSalesOrderBatchResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.control.user.sales.common.spec.SalesOrderBatchSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;

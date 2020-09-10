@@ -18,7 +18,7 @@ package com.echothree.model.control.order.server.logic;
 
 import com.echothree.model.control.order.common.exception.DuplicateOrderLineSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderLineSequenceException;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;

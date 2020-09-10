@@ -19,7 +19,7 @@ package com.echothree.model.control.order.server.logic;
 import com.echothree.model.control.order.common.exception.UnknownOrderLineTimeException;
 import com.echothree.model.control.order.common.exception.UnknownOrderTimeTypeNameException;
 import com.echothree.model.control.order.common.transfer.OrderLineTimeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderLineDetail;

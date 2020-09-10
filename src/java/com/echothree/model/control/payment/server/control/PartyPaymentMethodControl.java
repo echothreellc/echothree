@@ -17,7 +17,7 @@
 package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.choice.PartyPaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
