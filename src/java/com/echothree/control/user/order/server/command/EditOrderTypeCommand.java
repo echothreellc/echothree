@@ -22,7 +22,7 @@ import com.echothree.control.user.order.common.form.EditOrderTypeForm;
 import com.echothree.control.user.order.common.result.EditOrderTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderTypeSpec;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -99,18 +99,18 @@ public class EditOrderTypeCommand
 
     @Override
     public OrderType getEntity(EditOrderTypeResult result) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderType orderType = null;
         String orderTypeName = spec.getOrderTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            orderType = orderControl.getOrderTypeByName(orderTypeName);
+            orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
         } else { // EditMode.UPDATE
-            orderType = orderControl.getOrderTypeByNameForUpdate(orderTypeName);
+            orderType = orderTypeControl.getOrderTypeByNameForUpdate(orderTypeName);
         }
 
         if(orderType != null) {
-            result.setOrderType(orderControl.getOrderTypeTransfer(getUserVisit(), orderType));
+            result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }
@@ -125,9 +125,9 @@ public class EditOrderTypeCommand
 
     @Override
     public void fillInResult(EditOrderTypeResult result, OrderType orderType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
 
-        result.setOrderType(orderControl.getOrderTypeTransfer(getUserVisit(), orderType));
+        result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
     }
 
     OrderType parentOrderType = null;
@@ -137,8 +137,8 @@ public class EditOrderTypeCommand
 
     @Override
     public void doLock(OrderTypeEdit edit, OrderType orderType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderTypeDescription orderTypeDescription = orderControl.getOrderTypeDescription(orderType, getPreferredLanguage());
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, getPreferredLanguage());
         OrderTypeDetail orderTypeDetail = orderType.getLastDetail();
 
         parentOrderType = orderTypeDetail.getParentOrderType();
@@ -161,19 +161,19 @@ public class EditOrderTypeCommand
 
     @Override
     public void canUpdate(OrderType orderType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = edit.getOrderTypeName();
-        OrderType duplicateOrderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType duplicateOrderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(duplicateOrderType == null || orderType.equals(duplicateOrderType)) {
             String parentOrderTypeName = edit.getParentOrderTypeName();
 
             if(parentOrderTypeName != null) {
-                parentOrderType = orderControl.getOrderTypeByName(parentOrderTypeName);
+                parentOrderType = orderTypeControl.getOrderTypeByName(parentOrderTypeName);
             }
 
             if(parentOrderTypeName == null || parentOrderType != null) {
-                if(orderControl.isParentOrderTypeSafe(orderType, parentOrderType)) {
+                if(orderTypeControl.isParentOrderTypeSafe(orderType, parentOrderType)) {
                     var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                     String orderSequenceTypeName = edit.getOrderSequenceTypeName();
 
@@ -216,10 +216,10 @@ public class EditOrderTypeCommand
 
     @Override
     public void doUpdate(OrderType orderType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         PartyPK partyPK = getPartyPK();
-        OrderTypeDetailValue orderTypeDetailValue = orderControl.getOrderTypeDetailValueForUpdate(orderType);
-        OrderTypeDescription orderTypeDescription = orderControl.getOrderTypeDescriptionForUpdate(orderType, getPreferredLanguage());
+        OrderTypeDetailValue orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueForUpdate(orderType);
+        OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescriptionForUpdate(orderType, getPreferredLanguage());
         String description = edit.getDescription();
 
         orderTypeDetailValue.setOrderTypeName(edit.getOrderTypeName());
@@ -230,19 +230,19 @@ public class EditOrderTypeCommand
         orderTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        orderControl.updateOrderTypeFromValue(orderTypeDetailValue, partyPK);
+        orderTypeControl.updateOrderTypeFromValue(orderTypeDetailValue, partyPK);
 
         if(orderTypeDescription == null && description != null) {
-            orderControl.createOrderTypeDescription(orderType, getPreferredLanguage(), description, partyPK);
+            orderTypeControl.createOrderTypeDescription(orderType, getPreferredLanguage(), description, partyPK);
         } else {
             if(orderTypeDescription != null && description == null) {
-                orderControl.deleteOrderTypeDescription(orderTypeDescription, partyPK);
+                orderTypeControl.deleteOrderTypeDescription(orderTypeDescription, partyPK);
             } else {
                 if(orderTypeDescription != null && description != null) {
-                    OrderTypeDescriptionValue orderTypeDescriptionValue = orderControl.getOrderTypeDescriptionValue(orderTypeDescription);
+                    OrderTypeDescriptionValue orderTypeDescriptionValue = orderTypeControl.getOrderTypeDescriptionValue(orderTypeDescription);
 
                     orderTypeDescriptionValue.setDescription(description);
-                    orderControl.updateOrderTypeDescriptionFromValue(orderTypeDescriptionValue, partyPK);
+                    orderTypeControl.updateOrderTypeDescriptionFromValue(orderTypeDescriptionValue, partyPK);
                 }
             }
         }

@@ -17,7 +17,7 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderTypeForm;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -75,16 +75,16 @@ public class CreateOrderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType == null) {
             String parentOrderTypeName = form.getParentOrderTypeName();
             OrderType parentOrderType = null;
 
             if(parentOrderTypeName != null) {
-                parentOrderType = orderControl.getOrderTypeByName(parentOrderTypeName);
+                parentOrderType = orderTypeControl.getOrderTypeByName(parentOrderTypeName);
             }
 
             if(parentOrderTypeName == null || parentOrderType != null) {
@@ -109,11 +109,11 @@ public class CreateOrderTypeCommand
                                 Integer sortOrder = Integer.valueOf(form.getSortOrder());
                                 String description = form.getDescription();
 
-                                orderType = orderControl.createOrderType(orderTypeName, parentOrderType, orderSequenceType, orderWorkflow,
+                                orderType = orderTypeControl.createOrderType(orderTypeName, parentOrderType, orderSequenceType, orderWorkflow,
                                         orderWorkflowEntrance, isDefault, sortOrder, partyPK);
 
                                 if(description != null) {
-                                    orderControl.createOrderTypeDescription(orderType, getPreferredLanguage(), description, partyPK);
+                                    orderTypeControl.createOrderTypeDescription(orderType, getPreferredLanguage(), description, partyPK);
                                 }
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownOrderWorkflowEntranceName.name(), orderWorkflowName, orderWorkflowEntranceName);

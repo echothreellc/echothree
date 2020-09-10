@@ -22,7 +22,7 @@ import com.echothree.control.user.order.common.form.EditOrderTypeDescriptionForm
 import com.echothree.control.user.order.common.result.EditOrderTypeDescriptionResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderTypeDescriptionSpec;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -87,10 +87,10 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public OrderTypeDescription getEntity(EditOrderTypeDescriptionResult result) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderTypeDescription orderTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -99,9 +99,9 @@ public class EditOrderTypeDescriptionCommand
 
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    orderTypeDescription = orderControl.getOrderTypeDescription(orderType, language);
+                    orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, language);
                 } else { // EditMode.UPDATE
-                    orderTypeDescription = orderControl.getOrderTypeDescriptionForUpdate(orderType, language);
+                    orderTypeDescription = orderTypeControl.getOrderTypeDescriptionForUpdate(orderType, language);
                 }
 
                 if(orderTypeDescription == null) {
@@ -124,9 +124,9 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderTypeDescriptionResult result, OrderTypeDescription orderTypeDescription) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
 
-        result.setOrderTypeDescription(orderControl.getOrderTypeDescriptionTransfer(getUserVisit(), orderTypeDescription));
+        result.setOrderTypeDescription(orderTypeControl.getOrderTypeDescriptionTransfer(getUserVisit(), orderTypeDescription));
     }
 
     @Override
@@ -136,11 +136,11 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderTypeDescription orderTypeDescription) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderTypeDescriptionValue orderTypeDescriptionValue = orderControl.getOrderTypeDescriptionValue(orderTypeDescription);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        OrderTypeDescriptionValue orderTypeDescriptionValue = orderTypeControl.getOrderTypeDescriptionValue(orderTypeDescription);
         orderTypeDescriptionValue.setDescription(edit.getDescription());
 
-        orderControl.updateOrderTypeDescriptionFromValue(orderTypeDescriptionValue, getPartyPK());
+        orderTypeControl.updateOrderTypeDescriptionFromValue(orderTypeDescriptionValue, getPartyPK());
     }
     
 }

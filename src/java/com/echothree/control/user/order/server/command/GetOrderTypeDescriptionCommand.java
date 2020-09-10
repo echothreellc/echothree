@@ -19,7 +19,7 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.GetOrderTypeDescriptionForm;
 import com.echothree.control.user.order.common.result.GetOrderTypeDescriptionResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,10 +68,10 @@ public class GetOrderTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderTypeDescriptionResult result = OrderResultFactory.getGetOrderTypeDescriptionResult();
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
         
         if(orderType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -79,10 +79,10 @@ public class GetOrderTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                OrderTypeDescription orderTypeDescription = orderControl.getOrderTypeDescription(orderType, language);
+                OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescription(orderType, language);
 
                 if(orderTypeDescription != null) {
-                    result.setOrderTypeDescription(orderControl.getOrderTypeDescriptionTransfer(getUserVisit(), orderTypeDescription));
+                    result.setOrderTypeDescription(orderTypeControl.getOrderTypeDescriptionTransfer(getUserVisit(), orderTypeDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOrderTypeDescription.name(), orderTypeName, languageIsoName);
                 }
