@@ -17,7 +17,8 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderPriorityDescriptionForm;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPriorityControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -27,10 +28,10 @@ import com.echothree.model.data.order.server.entity.OrderPriorityDescription;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,13 +70,14 @@ public class CreateOrderPriorityDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
             String orderPriorityName = form.getOrderPriorityName();
-            OrderPriority orderPriority = orderControl.getOrderPriorityByName(orderType, orderPriorityName);
+            OrderPriority orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority != null) {
                 var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -83,12 +85,12 @@ public class CreateOrderPriorityDescriptionCommand
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderPriorityDescription orderPriorityDescription = orderControl.getOrderPriorityDescription(orderPriority, language);
+                    OrderPriorityDescription orderPriorityDescription = orderPriorityControl.getOrderPriorityDescription(orderPriority, language);
 
                     if(orderPriorityDescription == null) {
                         String description = form.getDescription();
 
-                        orderControl.createOrderPriorityDescription(orderPriority, language, description, getPartyPK());
+                        orderPriorityControl.createOrderPriorityDescription(orderPriority, language, description, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateOrderPriorityDescription.name(), orderTypeName, orderPriorityName, languageIsoName);
                     }

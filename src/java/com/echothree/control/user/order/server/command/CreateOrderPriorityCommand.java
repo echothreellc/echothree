@@ -18,6 +18,8 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderPriorityForm;
 import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPriorityControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,13 +71,14 @@ public class CreateOrderPriorityCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
             String orderPriorityName = form.getOrderPriorityName();
-            OrderPriority orderPriority = orderControl.getOrderPriorityByName(orderType, orderPriorityName);
+            OrderPriority orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority == null) {
                 PartyPK partyPK = getPartyPK();
@@ -84,10 +87,10 @@ public class CreateOrderPriorityCommand
                 Integer sortOrder = Integer.valueOf(form.getSortOrder());
                 String description = form.getDescription();
 
-                orderPriority = orderControl.createOrderPriority(orderType, orderPriorityName, priority, isDefault, sortOrder, partyPK);
+                orderPriority = orderPriorityControl.createOrderPriority(orderType, orderPriorityName, priority, isDefault, sortOrder, partyPK);
 
                 if(description != null) {
-                    orderControl.createOrderPriorityDescription(orderPriority, getPreferredLanguage(), description, partyPK);
+                    orderPriorityControl.createOrderPriorityDescription(orderPriority, getPreferredLanguage(), description, partyPK);
                 }
             } else {
                 addExecutionError(ExecutionErrors.DuplicateOrderPriorityName.name(), orderTypeName, orderPriorityName);
