@@ -36,11 +36,12 @@ public class OrderShipmentGroupTransferCache
     
     ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);;
     ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);;
+    OrderControl orderControl = (OrderControl) Session.getModelController(OrderControl.class);
     ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);;
     
     /** Creates a new instance of OrderShipmentGroupTransferCache */
-    public OrderShipmentGroupTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderShipmentGroupTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
