@@ -19,7 +19,7 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.GetOrderTypeDescriptionsForm;
 import com.echothree.control.user.order.common.result.GetOrderTypeDescriptionsResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,14 +64,14 @@ public class GetOrderTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderTypeDescriptionsResult result = OrderResultFactory.getGetOrderTypeDescriptionsResult();
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
         
         if(orderType != null) {
-            result.setOrderType(orderControl.getOrderTypeTransfer(getUserVisit(), orderType));
-            result.setOrderTypeDescriptions(orderControl.getOrderTypeDescriptionTransfersByOrderType(getUserVisit(), orderType));
+            result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
+            result.setOrderTypeDescriptions(orderTypeControl.getOrderTypeDescriptionTransfersByOrderType(getUserVisit(), orderType));
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }
