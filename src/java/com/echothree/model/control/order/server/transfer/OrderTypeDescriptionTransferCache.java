@@ -22,13 +22,16 @@ import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderTypeDescription, OrderTypeDescriptionTransfer> {
-    
+
+    OrderControl orderControl = (OrderControl) Session.getModelController(OrderControl.class);
+
     /** Creates a new instance of OrderTypeDescriptionTransferCache */
-    public OrderTypeDescriptionTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(OrderTypeDescription orderTypeDescription) {

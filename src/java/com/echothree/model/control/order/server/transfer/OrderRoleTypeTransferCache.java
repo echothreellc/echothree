@@ -20,13 +20,16 @@ import com.echothree.model.control.order.common.transfer.OrderRoleTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderRoleTypeTransferCache
         extends BaseOrderTransferCache<OrderRoleType, OrderRoleTypeTransfer> {
-    
+
+    OrderControl orderControl = (OrderControl) Session.getModelController(OrderControl.class);
+
     /** Creates a new instance of OrderRoleTypeTransferCache */
-    public OrderRoleTypeTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderRoleTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OrderRoleTypeTransfer getOrderRoleTypeTransfer(OrderRoleType orderRoleType) {

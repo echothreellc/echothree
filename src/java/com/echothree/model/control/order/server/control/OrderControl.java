@@ -236,25 +236,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class OrderControl
-        extends BaseModelControl {
+        extends BaseOrderControl {
     
     /** Creates a new instance of OrderControl */
     public OrderControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Order Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private OrderTransferCaches orderTransferCaches = null;
-    
-    public OrderTransferCaches getOrderTransferCaches(UserVisit userVisit) {
-        if(orderTransferCaches == null) {
-            orderTransferCaches = new OrderTransferCaches(userVisit, this);
-        }
-        
-        return orderTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
