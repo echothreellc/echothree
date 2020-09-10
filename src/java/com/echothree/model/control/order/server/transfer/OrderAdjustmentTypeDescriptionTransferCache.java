@@ -18,7 +18,7 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderAdjustmentTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAdjustmentTypeTransfer;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderAdjustmentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderAdjustmentTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderAdjustmentTypeDescription, OrderAdjustmentTypeDescriptionTransfer> {
 
-    OrderControl orderControl = (OrderControl) Session.getModelController(OrderControl.class);
+    OrderAdjustmentControl orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
 
     /** Creates a new instance of OrderAdjustmentTypeDescriptionTransferCache */
     public OrderAdjustmentTypeDescriptionTransferCache(UserVisit userVisit) {
@@ -38,7 +38,7 @@ public class OrderAdjustmentTypeDescriptionTransferCache
         OrderAdjustmentTypeDescriptionTransfer orderAdjustmentTypeDescriptionTransfer = get(orderAdjustmentTypeDescription);
         
         if(orderAdjustmentTypeDescriptionTransfer == null) {
-            OrderAdjustmentTypeTransfer orderAdjustmentTypeTransfer = orderControl.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentTypeDescription.getOrderAdjustmentType());
+            OrderAdjustmentTypeTransfer orderAdjustmentTypeTransfer = orderAdjustmentControl.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentTypeDescription.getOrderAdjustmentType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAdjustmentTypeDescription.getLanguage());
             
             orderAdjustmentTypeDescriptionTransfer = new OrderAdjustmentTypeDescriptionTransfer(languageTransfer, orderAdjustmentTypeTransfer, orderAdjustmentTypeDescription.getDescription());

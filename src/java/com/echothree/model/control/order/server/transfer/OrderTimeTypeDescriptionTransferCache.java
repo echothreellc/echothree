@@ -18,7 +18,7 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderTimeTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderTimeTypeDescription, OrderTimeTypeDescriptionTransfer> {
 
-    OrderControl orderControl = (OrderControl) Session.getModelController(OrderControl.class);
+    OrderTimeControl orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
 
     /** Creates a new instance of OrderTimeTypeDescriptionTransferCache */
     public OrderTimeTypeDescriptionTransferCache(UserVisit userVisit) {
@@ -38,7 +38,7 @@ public class OrderTimeTypeDescriptionTransferCache
         OrderTimeTypeDescriptionTransfer orderTimeTypeDescriptionTransfer = get(orderTimeTypeDescription);
         
         if(orderTimeTypeDescriptionTransfer == null) {
-            OrderTimeTypeTransfer orderTimeTypeTransfer = orderControl.getOrderTimeTypeTransfer(userVisit, orderTimeTypeDescription.getOrderTimeType());
+            OrderTimeTypeTransfer orderTimeTypeTransfer = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderTimeTypeDescription.getOrderTimeType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTimeTypeDescription.getLanguage());
             
             orderTimeTypeDescriptionTransfer = new OrderTimeTypeDescriptionTransfer(languageTransfer, orderTimeTypeTransfer, orderTimeTypeDescription.getDescription());

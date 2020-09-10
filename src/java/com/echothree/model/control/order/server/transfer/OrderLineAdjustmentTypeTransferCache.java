@@ -17,7 +17,7 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeTransfer;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderLineAdjustmentTypeTransferCache
         extends BaseOrderTransferCache<OrderLineAdjustmentType, OrderLineAdjustmentTypeTransfer> {
 
-    OrderControl orderControl = (OrderControl) Session.getModelController(OrderControl.class);
+    OrderLineAdjustmentControl orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
 
     /** Creates a new instance of OrderLineAdjustmentTypeTransferCache */
     public OrderLineAdjustmentTypeTransferCache(UserVisit userVisit) {
@@ -43,7 +43,7 @@ public class OrderLineAdjustmentTypeTransferCache
             String orderLineAdjustmentTypeName = orderLineAdjustmentTypeDetail.getOrderLineAdjustmentTypeName();
             Boolean isDefault = orderLineAdjustmentTypeDetail.getIsDefault();
             Integer sortOrder = orderLineAdjustmentTypeDetail.getSortOrder();
-            String description = orderControl.getBestOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getLanguage());
+            String description = orderLineAdjustmentControl.getBestOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getLanguage());
             
             orderLineAdjustmentTypeTransfer = new OrderLineAdjustmentTypeTransfer(orderLineAdjustmentTypeName, isDefault, sortOrder, description);
             put(orderLineAdjustmentType, orderLineAdjustmentTypeTransfer);

@@ -18,7 +18,7 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderAliasTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderAliasTransferCache
         extends BaseOrderTransferCache<OrderAlias, OrderAliasTransfer> {
 
-    OrderControl orderControl = (OrderControl) Session.getModelController(OrderControl.class);
+    OrderAliasControl orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
 
     /** Creates a new instance of OrderAliasTransferCache */
     public OrderAliasTransferCache(UserVisit userVisit) {
@@ -39,7 +39,7 @@ public class OrderAliasTransferCache
         OrderAliasTransfer orderAliasTransfer = get(orderAlias);
         
         if(orderAliasTransfer == null) {
-            OrderAliasTypeTransfer orderAliasType = orderControl.getOrderAliasTypeTransfer(userVisit, orderAlias.getOrderAliasType());
+            OrderAliasTypeTransfer orderAliasType = orderAliasControl.getOrderAliasTypeTransfer(userVisit, orderAlias.getOrderAliasType());
             String alias = orderAlias.getAlias();
             
             orderAliasTransfer = new OrderAliasTransfer(orderAliasType, alias);
