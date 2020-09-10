@@ -18,7 +18,10 @@ package com.echothree.model.control.order.server.logic;
 
 import com.echothree.model.control.order.common.exception.DuplicateOrderLineSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderLineSequenceException;
+import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
 import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
+import com.echothree.model.control.order.server.control.OrderLineControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
@@ -66,13 +69,14 @@ public class OrderLineLogic
         
         if(eea == null || !eea.hasExecutionErrors()) {
             var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
             var orderStatus = orderControl.getOrderStatusForUpdate(order);
 
             if(orderLineSequence == null) {
                 orderLineSequence = orderStatus.getOrderLineSequence() + 1;
                 orderStatus.setOrderLineSequence(orderLineSequence);
             } else {
-                orderLine = orderControl.getOrderLineBySequence(order, orderLineSequence);
+                orderLine = orderLineControl.getOrderLineBySequence(order, orderLineSequence);
 
                 if(orderLine == null) {
                     // If the orderLineSequence is > the last one that was recorded in the OrderStatus, jump the
@@ -87,7 +91,7 @@ public class OrderLineLogic
             }
 
             if(orderLine == null) {
-                orderLine = orderControl.createOrderLine(order, orderLineSequence, parentOrderLine, orderShipmentGroup, item, inventoryCondition,
+                orderLine = orderLineControl.createOrderLine(order, orderLineSequence, parentOrderLine, orderShipmentGroup, item, inventoryCondition,
                         unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable, createdBy);
             }
         }
@@ -97,12 +101,13 @@ public class OrderLineLogic
 
     private OrderLine getOrderLineByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName, final String orderLineSequence,
             final EntityPermission entityPermission) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         var order = OrderLogic.getInstance().getOrderByName(eea, orderTypeName, orderName);
         OrderLine orderLine = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            orderLine = orderControl.getOrderLineBySequence(order, Integer.valueOf(orderLineSequence), entityPermission);
+            var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+
+            orderLine = orderLineControl.getOrderLineBySequence(order, Integer.valueOf(orderLineSequence), entityPermission);
             
             if(orderLine == null) {
                 handleExecutionError(UnknownOrderLineSequenceException.class, eea, ExecutionErrors.UnknownOrderLineSequence.name(), orderTypeName, orderName, orderLineSequence);
@@ -121,9 +126,9 @@ public class OrderLineLogic
     }
     
     public Long getOrderTotalWithAdjustments(final Order order) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
         long total = 0;
-        var orderAdjustments = orderControl.getOrderAdjustmentsByOrder(order);
+        var orderAdjustments = orderAdjustmentControl.getOrderAdjustmentsByOrder(order);
 
         total = orderAdjustments.stream().map((orderAdjustment) -> orderAdjustment.getLastDetail().getAmount()).reduce(total, (accumulator, _item) -> accumulator + _item);
 
@@ -131,8 +136,8 @@ public class OrderLineLogic
     }
 
     public Long getOrderLineTotalsWithAdjustments(final Order order) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var orderLines = orderControl.getOrderLinesByOrder(order);
+        var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+        var orderLines = orderLineControl.getOrderLinesByOrder(order);
         long total = 0;
 
         total = orderLines.stream().map((orderLine) -> getOrderLineTotalWithAdjustments(orderLine)).reduce(total, (accumulator, _item) -> accumulator + _item);
@@ -141,10 +146,10 @@ public class OrderLineLogic
     }
 
     public Long getOrderLineTotalWithAdjustments(final OrderLine orderLine) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
         var orderLineDetail = orderLine.getLastDetail();
         long total = orderLineDetail.getQuantity() * orderLineDetail.getUnitAmount();
-        var orderLineAdjustments = orderControl.getOrderLineAdjustmentsByOrderLine(orderLine);
+        var orderLineAdjustments = orderLineAdjustmentControl.getOrderLineAdjustmentsByOrderLine(orderLine);
 
         total = orderLineAdjustments.stream().map((orderLineAdjustment) -> orderLineAdjustment.getLastDetail().getAmount()).reduce(total, (accumulator, _item) -> accumulator + _item);
 
