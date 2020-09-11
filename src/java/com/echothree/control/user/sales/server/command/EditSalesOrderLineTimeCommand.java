@@ -22,7 +22,7 @@ import com.echothree.control.user.sales.common.form.EditSalesOrderLineTimeForm;
 import com.echothree.control.user.sales.common.result.EditSalesOrderLineTimeResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.control.user.sales.common.spec.SalesOrderLineTimeSpec;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
@@ -31,10 +31,10 @@ import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderLineTimeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
@@ -83,16 +83,16 @@ public class EditSalesOrderLineTimeCommand
         OrderLineTime orderLineTime = null;
         
         if(!hasExecutionErrors()) {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
             OrderType orderType = orderLine.getLastDetail().getOrder().getLastDetail().getOrderType();
             String orderTimeTypeName = spec.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    orderLineTime = orderControl.getOrderLineTime(orderLine, orderTimeType);
+                    orderLineTime = orderTimeControl.getOrderLineTime(orderLine, orderTimeType);
                 } else { // EditMode.UPDATE
-                    orderLineTime = orderControl.getOrderLineTimeForUpdate(orderLine, orderTimeType);
+                    orderLineTime = orderTimeControl.getOrderLineTimeForUpdate(orderLine, orderTimeType);
                 }
 
                 if(orderLineTime == null) {
@@ -111,9 +111,9 @@ public class EditSalesOrderLineTimeCommand
 
     @Override
     public void fillInResult(EditSalesOrderLineTimeResult result, OrderLineTime orderLineTime) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
 
-        result.setOrderLineTime(orderControl.getOrderLineTimeTransfer(getUserVisit(), orderLineTime));
+        result.setOrderLineTime(orderTimeControl.getOrderLineTimeTransfer(getUserVisit(), orderLineTime));
     }
 
     @Override
@@ -123,13 +123,13 @@ public class EditSalesOrderLineTimeCommand
 
     @Override
     public void doUpdate(OrderLineTime orderLineTime) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderLineTimeValue orderLineTimeValue = orderControl.getOrderLineTimeValue(orderLineTime);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        OrderLineTimeValue orderLineTimeValue = orderTimeControl.getOrderLineTimeValue(orderLineTime);
         Long time = Long.valueOf(edit.getTime());
         
         orderLineTimeValue.setTime(time);
-        
-        orderControl.updateOrderLineTimeFromValue(orderLineTimeValue, getPartyPK());
+
+        orderTimeControl.updateOrderLineTimeFromValue(orderLineTimeValue, getPartyPK());
     }
 
 }

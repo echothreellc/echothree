@@ -22,7 +22,7 @@ import com.echothree.control.user.sales.common.form.EditSalesOrderTimeForm;
 import com.echothree.control.user.sales.common.result.EditSalesOrderTimeResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.control.user.sales.common.spec.SalesOrderTimeSpec;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderTime;
@@ -30,10 +30,10 @@ import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderTimeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
@@ -80,16 +80,16 @@ public class EditSalesOrderTimeCommand
         OrderTime orderTime = null;
         
         if(!hasExecutionErrors()) {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
             OrderType orderType = order.getLastDetail().getOrderType();
             String orderTimeTypeName = spec.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    orderTime = orderControl.getOrderTime(order, orderTimeType);
+                    orderTime = orderTimeControl.getOrderTime(order, orderTimeType);
                 } else { // EditMode.UPDATE
-                    orderTime = orderControl.getOrderTimeForUpdate(order, orderTimeType);
+                    orderTime = orderTimeControl.getOrderTimeForUpdate(order, orderTimeType);
                 }
 
                 if(orderTime == null) {
@@ -108,9 +108,9 @@ public class EditSalesOrderTimeCommand
 
     @Override
     public void fillInResult(EditSalesOrderTimeResult result, OrderTime orderTime) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
 
-        result.setOrderTime(orderControl.getOrderTimeTransfer(getUserVisit(), orderTime));
+        result.setOrderTime(orderTimeControl.getOrderTimeTransfer(getUserVisit(), orderTime));
     }
 
     @Override
@@ -120,13 +120,13 @@ public class EditSalesOrderTimeCommand
 
     @Override
     public void doUpdate(OrderTime orderTime) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderTimeValue orderTimeValue = orderControl.getOrderTimeValue(orderTime);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        OrderTimeValue orderTimeValue = orderTimeControl.getOrderTimeValue(orderTime);
         Long time = Long.valueOf(edit.getTime());
         
         orderTimeValue.setTime(time);
-        
-        orderControl.updateOrderTimeFromValue(orderTimeValue, getPartyPK());
+
+        orderTimeControl.updateOrderTimeFromValue(orderTimeValue, getPartyPK());
     }
 
 }

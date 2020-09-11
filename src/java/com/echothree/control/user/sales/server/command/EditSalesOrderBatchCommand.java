@@ -23,7 +23,7 @@ import com.echothree.control.user.sales.common.result.EditSalesOrderBatchResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.control.user.sales.common.spec.SalesOrderBatchSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
@@ -129,9 +129,9 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public void doLock(SalesOrderBatchEdit edit, Batch batch) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
         var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
-        OrderBatch orderBatch = orderControl.getOrderBatch(batch);
+        OrderBatch orderBatch = orderBatchControl.getOrderBatch(batch);
         SalesOrderBatch salesOrderBatch = salesOrderBatchControl.getSalesOrderBatch(batch);
         Long count = orderBatch.getCount();
 
@@ -170,13 +170,13 @@ public class EditSalesOrderBatchCommand
     @Override
     public void doUpdate(Batch batch) {
         var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
         PartyPK partyPK = getPartyPK();
         String strCount = edit.getCount();
         Long count = strCount == null ? null : Long.valueOf(strCount);
         String strAmount = edit.getAmount();
         Long amount = strAmount == null ? null : Long.valueOf(strAmount);
-        OrderBatchValue orderBatchValue = orderControl.getOrderBatchValueForUpdate(batch);
+        OrderBatchValue orderBatchValue = orderBatchControl.getOrderBatchValueForUpdate(batch);
         SalesOrderBatchValue salesOrderBatchValue = salesOrderBatchControl.getSalesOrderBatchValueForUpdate(batch);
 
         if(currency != null) {
@@ -188,7 +188,7 @@ public class EditSalesOrderBatchCommand
             salesOrderBatchValue.setPaymentMethodPK(paymentMethod.getPrimaryKey());
         }
 
-        orderControl.updateOrderBatchFromValue(orderBatchValue, partyPK);
+        orderBatchControl.updateOrderBatchFromValue(orderBatchValue, partyPK);
         salesOrderBatchControl.updateSalesOrderBatchFromValue(salesOrderBatchValue, partyPK);
     }
 

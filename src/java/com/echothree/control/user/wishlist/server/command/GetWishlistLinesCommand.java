@@ -22,6 +22,7 @@ import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.order.server.entity.Order;
@@ -65,7 +66,8 @@ public class GetWishlistLinesCommand
             
             if(wishlistName != null) {
                 var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-                Order order = orderControl.getOrderByName(orderControl.getOrderTypeByName(OrderTypes.WISHLIST.name()), wishlistName);
+                var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+                Order order = orderControl.getOrderByName(orderTypeControl.getOrderTypeByName(OrderTypes.WISHLIST.name()), wishlistName);
                 
                 if(order != null && order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName().equals(OrderTypes.WISHLIST.name())) {
                     result.setWishlistLines(wishlistControl.getWishlistLineTransfersByOrder(getUserVisit(), order));

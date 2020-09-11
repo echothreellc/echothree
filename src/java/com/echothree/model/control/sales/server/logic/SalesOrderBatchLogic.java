@@ -20,6 +20,7 @@ import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.sales.common.exception.CannotDeleteSalesOrderBatchInUseException;
 import com.echothree.model.control.sales.common.exception.IncorrectSalesOrderBatchAmountException;
@@ -75,12 +76,13 @@ public class SalesOrderBatchLogic
     
     public Batch createBatch(final ExecutionErrorAccumulator eea, final Currency currency, final PaymentMethod paymentMethod, final Long count,
             final Long amount, final BasePK createdBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
         var batch = BatchLogic.getInstance().createBatch(eea, BatchConstants.BatchType_SALES_ORDER, createdBy);
 
         if(!eea.hasExecutionErrors()) {
-            orderControl.createOrderBatch(batch, currency, count, amount, createdBy);
+            var orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
+
+            orderBatchControl.createOrderBatch(batch, currency, count, amount, createdBy);
             salesOrderBatchControl.createSalesOrderBatch(batch, paymentMethod, createdBy);
         }
 
@@ -125,10 +127,10 @@ public class SalesOrderBatchLogic
             BatchLogic.getInstance().deleteBatch(eea, batch, deletedBy);
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+                var orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
                 var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
 
-                orderControl.deleteOrderBatch(batch, deletedBy);
+                orderBatchControl.deleteOrderBatch(batch, deletedBy);
                 salesOrderBatchControl.deleteSalesOrderBatch(batch, deletedBy);
             }
         } else {
@@ -200,7 +202,8 @@ public class SalesOrderBatchLogic
                 }
             } else if(currentWorkflowStepName.equals(SalesOrderBatchStatusConstants.WorkflowStep_AUDIT)) {
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS, SalesOrderBatchStatusConstants.WorkflowStep_COMPLETE)) {
-                    OrderBatch orderBatch = orderControl.getOrderBatch(batch);
+                    var orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
+                    OrderBatch orderBatch = orderBatchControl.getOrderBatch(batch);
                     Long count = orderBatch.getCount();
                     Long amount = orderBatch.getAmount();
 

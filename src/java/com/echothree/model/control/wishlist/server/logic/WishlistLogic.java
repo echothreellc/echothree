@@ -20,7 +20,7 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
@@ -92,7 +92,6 @@ public class WishlistLogic
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
             OrderLogic orderLogic = OrderLogic.getInstance();
@@ -112,10 +111,12 @@ public class WishlistLogic
                     order = orderLogic.createOrder(ema, orderType, null, null, currency, null, null, null, null, null, null, null, null, null, null, null, createdBy);
 
                     if(!ema.hasExecutionErrors()) {
+                        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+
                         wishlistControl.createWishlist(order, getOrderOfferUse(userVisit, offerUse, companyParty), wishlistType, createdBy);
 
-                        orderControl.createOrderRoleUsingNames(order, companyParty, OrderRoleTypes.BILL_FROM.name(), createdBy);
-                        orderControl.createOrderRoleUsingNames(order, party, OrderRoleTypes.BILL_TO.name(), createdBy);
+                        orderRoleControl.createOrderRoleUsingNames(order, companyParty, OrderRoleTypes.BILL_FROM.name(), createdBy);
+                        orderRoleControl.createOrderRoleUsingNames(order, party, OrderRoleTypes.BILL_TO.name(), createdBy);
                     }
                 }
             }

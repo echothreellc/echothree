@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderLineControl;
 import com.echothree.model.control.wishlist.common.choice.WishlistTypeChoicesBean;
 import com.echothree.model.control.wishlist.common.choice.WishlistTypePriorityChoicesBean;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
@@ -1692,11 +1693,11 @@ public class WishlistControl
     }
     
     public void deleteOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
         List<OrderLine> orderLines = getOrderLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
         orderLines.stream().forEach((orderLine) -> {
-            orderControl.deleteOrderLine(orderLine, deletedBy);
+            orderLineControl.deleteOrderLine(orderLine, deletedBy);
         });
     }
     
