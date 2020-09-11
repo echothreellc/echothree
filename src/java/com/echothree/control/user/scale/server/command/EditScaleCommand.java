@@ -196,7 +196,7 @@ public class EditScaleCommand
     @Override
     public void doUpdate(Scale scale) {
         var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ScaleDetailValue scaleDetailValue = scaleControl.getScaleDetailValueForUpdate(scale);
         ScaleDescription scaleDescription = scaleControl.getScaleDescriptionForUpdate(scale, getPreferredLanguage());
         String description = edit.getDescription();

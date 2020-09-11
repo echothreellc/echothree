@@ -86,7 +86,7 @@ public class CreateTransactionGlAccountCategoryDescriptionCommand
                     TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language);
 
                     if(transactionGlAccountCategoryDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         accountingControl.createTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language, description, getPartyPK());
                     } else {

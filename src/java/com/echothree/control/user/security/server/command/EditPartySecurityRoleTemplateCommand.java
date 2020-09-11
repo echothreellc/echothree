@@ -150,7 +150,7 @@ public class EditPartySecurityRoleTemplateCommand
     @Override
     public void doUpdate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueForUpdate(partySecurityRoleTemplate);
         PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescriptionForUpdate(partySecurityRoleTemplate, getPreferredLanguage());
         String description = edit.getDescription();

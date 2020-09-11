@@ -93,7 +93,7 @@ public class EditOrderAliasTypeDescriptionCommand
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderAliasTypeDescription orderAliasTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);

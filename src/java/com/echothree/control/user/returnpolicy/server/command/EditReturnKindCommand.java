@@ -165,7 +165,7 @@ public class EditReturnKindCommand
     @Override
     public void doUpdate(ReturnKind returnKind) {
         var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ReturnKindDetailValue returnKindDetailValue = returnPolicyControl.getReturnKindDetailValueForUpdate(returnKind);
         ReturnKindDescription returnKindDescription = returnPolicyControl.getReturnKindDescriptionForUpdate(returnKind, getPreferredLanguage());
         String description = edit.getDescription();

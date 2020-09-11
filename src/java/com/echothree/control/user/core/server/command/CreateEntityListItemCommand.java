@@ -79,10 +79,10 @@ public class CreateEntityListItemCommand
 
         if(!hasExecutionErrors()) {
             String entityListItemName = form.getEntityListItemName();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            PartyPK partyPK = getPartyPK();
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var partyPK = getPartyPK();
+            var description = form.getDescription();
 
             entityListItem = EntityAttributeLogic.getInstance().createEntityListItem(this, entityAttribute, entityListItemName, isDefault,
                     sortOrder, partyPK, getPreferredLanguage(), description);

@@ -148,7 +148,7 @@ public class EditSubscriptionKindCommand
     @Override
     public void doUpdate(SubscriptionKind subscriptionKind) {
         var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SubscriptionKindDetailValue subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueForUpdate(subscriptionKind);
         SubscriptionKindDescription subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescriptionForUpdate(subscriptionKind, getPreferredLanguage());
         String description = edit.getDescription();

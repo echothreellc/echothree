@@ -83,10 +83,10 @@ public class CreateItemCategoryCommand
             }
             
             if(parentItemCategoryName == null || parentItemCategory != null) {
-                PartyPK partyPK = getPartyPK();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var partyPK = getPartyPK();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 
                 itemCategory = itemControl.createItemCategory(itemCategoryName, parentItemCategory, null,
                         isDefault, sortOrder, partyPK);

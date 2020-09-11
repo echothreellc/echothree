@@ -81,8 +81,8 @@ public class CreateGeoCodeTimeZoneCommand
                 GeoCodeTimeZone geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone);
                 
                 if(geoCodeTimeZone == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     geoControl.createGeoCodeTimeZone(geoCode, timeZone, isDefault, sortOrder, getPartyPK());
                 } else {

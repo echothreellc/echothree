@@ -80,7 +80,7 @@ public class CreateContactListFrequencyDescriptionCommand
                 ContactListFrequencyDescription contactListFrequencyDescription = contactListControl.getContactListFrequencyDescription(contactListFrequency, language);
                 
                 if(contactListFrequencyDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contactListControl.createContactListFrequencyDescription(contactListFrequency, language, description, getPartyPK());
                 } else {

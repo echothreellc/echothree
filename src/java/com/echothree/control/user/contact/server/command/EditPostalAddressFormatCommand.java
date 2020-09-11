@@ -108,7 +108,7 @@ public class EditPostalAddressFormatCommand
                 if(duplicatePostalAddressFormat == null || postalAddressFormat.equals(duplicatePostalAddressFormat)) {
                     if(lockEntityForUpdate(postalAddressFormat)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             PostalAddressFormatDetailValue postalAddressFormatDetailValue = contactControl.getPostalAddressFormatDetailValueForUpdate(postalAddressFormat);
                             PostalAddressFormatDescription postalAddressFormatDescription = contactControl.getPostalAddressFormatDescriptionForUpdate(postalAddressFormat, getPreferredLanguage());
                             String description = edit.getDescription();

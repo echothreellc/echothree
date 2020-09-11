@@ -66,7 +66,7 @@ public class CreateUnitOfMeasureKindDescriptionCommand
                 UnitOfMeasureKindDescription unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescription(unitOfMeasureKind, language);
                 
                 if(unitOfMeasureKindDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     uomControl.createUnitOfMeasureKindDescription(unitOfMeasureKind, language, description, getPartyPK());
                 } else {

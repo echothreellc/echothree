@@ -80,7 +80,7 @@ public class CreatePartySecurityRoleTemplateDescriptionCommand
                 PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
                 
                 if(partySecurityRoleTemplateDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     securityControl.createPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language, description, getPartyPK());
                 } else {

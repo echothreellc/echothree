@@ -211,7 +211,7 @@ public class EditHarmonizedTariffScheduleCodeCommand
     @Override
     public void doUpdate(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue = itemControl.getHarmonizedTariffScheduleCodeDetailValueForUpdate(harmonizedTariffScheduleCode);
         HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = itemControl.getHarmonizedTariffScheduleCodeTranslationForUpdate(harmonizedTariffScheduleCode, getPreferredLanguage());
         String description = edit.getDescription();

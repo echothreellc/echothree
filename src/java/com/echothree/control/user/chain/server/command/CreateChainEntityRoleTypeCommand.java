@@ -96,9 +96,9 @@ public class CreateChainEntityRoleTypeCommand
                         EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                         
                         if(entityType != null) {
-                            PartyPK partyPK = getPartyPK();
-                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                            String description = form.getDescription();
+                            var partyPK = getPartyPK();
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                            var description = form.getDescription();
 
                             chainEntityRoleType = chainControl.createChainEntityRoleType(chainType, chainEntityRoleTypeName, entityType, sortOrder, partyPK);
 

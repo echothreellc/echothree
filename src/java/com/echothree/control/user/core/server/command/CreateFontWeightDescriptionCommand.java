@@ -80,7 +80,7 @@ public class CreateFontWeightDescriptionCommand
                 FontWeightDescription fontWeightDescription = coreControl.getFontWeightDescription(fontWeight, language);
                 
                 if(fontWeightDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createFontWeightDescription(fontWeight, language, description, getPartyPK());
                 } else {

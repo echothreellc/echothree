@@ -63,7 +63,7 @@ public class DeleteOrderTypeCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
+        var orderTypeName = form.getOrderTypeName();
         OrderType orderType = orderTypeControl.getOrderTypeByNameForUpdate(orderTypeName);
         
         if(orderType != null) {

@@ -70,8 +70,8 @@ public class CreateOrderTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
@@ -79,10 +79,10 @@ public class CreateOrderTimeTypeCommand
             OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType == null) {
-                PartyPK partyPK = getPartyPK();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var partyPK = getPartyPK();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
 
                 orderTimeType = orderTimeControl.createOrderTimeType(orderType, orderTimeTypeName, isDefault, sortOrder, partyPK);
 

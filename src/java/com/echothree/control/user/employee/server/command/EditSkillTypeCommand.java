@@ -104,7 +104,7 @@ public class EditSkillTypeCommand
             if(skillType != null) {
                 if(lockEntityForUpdate(skillType)) {
                     try {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         SkillTypeDetailValue skillTypeDetailValue = employeeControl.getSkillTypeDetailValueForUpdate(skillType);
                         SkillTypeDescription skillTypeDescription = employeeControl.getSkillTypeDescriptionForUpdate(skillType, getPreferredLanguage());
                         String description = edit.getDescription();

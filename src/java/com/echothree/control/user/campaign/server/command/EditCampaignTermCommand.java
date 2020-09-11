@@ -148,7 +148,7 @@ public class EditCampaignTermCommand
     @Override
     public void doUpdate(CampaignTerm campaignTerm) {
         var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CampaignTermDetailValue campaignTermDetailValue = campaignControl.getCampaignTermDetailValueForUpdate(campaignTerm);
         CampaignTermDescription campaignTermDescription = campaignControl.getCampaignTermDescriptionForUpdate(campaignTerm, getPreferredLanguage());
         String description = edit.getDescription();

@@ -110,7 +110,7 @@ public class EditUnitOfMeasureKindCommand
                 if(duplicateUnitOfMeasureKind == null || unitOfMeasureKind.equals(duplicateUnitOfMeasureKind)) {
                     if(lockEntityForUpdate(unitOfMeasureKind)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue = uomControl.getUnitOfMeasureKindDetailValueForUpdate(unitOfMeasureKind);
                             UnitOfMeasureKindDescription unitOfMeasureKindDescription = uomControl.getUnitOfMeasureKindDescriptionForUpdate(unitOfMeasureKind, getPreferredLanguage());
                             String description = edit.getDescription();

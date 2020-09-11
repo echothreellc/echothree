@@ -80,7 +80,7 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
                 EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
 
                 if(entityAttributeEntityAttributeGroup == null) {
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
 
                     coreControl.createEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup, sortOrder, getPartyPK());
                 } else {

@@ -64,7 +64,7 @@ public class CreateMoodDescriptionCommand
                 MoodDescription moodDescription = partyControl.getMoodDescription(mood, language);
                 
                 if(moodDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createMoodDescription(mood, language, description, getPartyPK());
                 } else {

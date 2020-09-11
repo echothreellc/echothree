@@ -109,10 +109,10 @@ public class CreateAppearanceCommand
                         FontWeight fontWeight = fontWeightName == null ? null : AppearanceLogic.getInstance().getFontWeightByName(this, fontWeightName);
 
                         if(!hasExecutionErrors()) {
-                            PartyPK partyPK = getPartyPK();
-                            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                            String description = form.getDescription();
+                            var partyPK = getPartyPK();
+                            var isDefault = Boolean.valueOf(form.getIsDefault());
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                            var description = form.getDescription();
 
                             appearance = coreControl.createAppearance(appearanceName, textColor, backgroundColor, fontStyle, fontWeight, isDefault, sortOrder,
                                     partyPK);

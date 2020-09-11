@@ -166,7 +166,7 @@ public class EditOrderAliasTypeCommand
     @Override
     public void doUpdate(OrderAliasType orderAliasType) {
         var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         OrderAliasTypeDetailValue orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueForUpdate(orderAliasType);
         OrderAliasTypeDescription orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescriptionForUpdate(orderAliasType, getPreferredLanguage());
         String description = edit.getDescription();

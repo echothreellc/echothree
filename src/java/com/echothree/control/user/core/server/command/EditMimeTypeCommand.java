@@ -149,7 +149,7 @@ public class EditMimeTypeCommand
     @Override
     public void doUpdate(MimeType mimeType) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         MimeTypeDetailValue mimeTypeDetailValue = coreControl.getMimeTypeDetailValueForUpdate(mimeType);
         MimeTypeDescription mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, getPreferredLanguage());
         String description = edit.getDescription();

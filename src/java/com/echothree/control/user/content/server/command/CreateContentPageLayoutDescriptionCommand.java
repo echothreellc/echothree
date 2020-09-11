@@ -80,7 +80,7 @@ public class CreateContentPageLayoutDescriptionCommand
                 ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
                 
                 if(contentPageLayoutDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contentControl.createContentPageLayoutDescription(contentPageLayout, language, description, getPartyPK());
                 } else {

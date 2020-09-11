@@ -68,8 +68,8 @@ public class GetOrderAliasesCommand
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderAliasesResult result = OrderResultFactory.getGetOrderAliasesResult();
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderControl = (OrderControl)Session.getModelController(OrderControl.class);

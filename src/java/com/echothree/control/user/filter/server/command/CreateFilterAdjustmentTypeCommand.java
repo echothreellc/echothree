@@ -55,8 +55,8 @@ public class CreateFilterAdjustmentTypeCommand
         FilterAdjustmentType filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             filterControl.createFilterAdjustmentType(filterAdjustmentTypeName, isDefault, sortOrder);
         } else {

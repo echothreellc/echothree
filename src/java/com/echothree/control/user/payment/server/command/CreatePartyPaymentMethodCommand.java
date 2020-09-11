@@ -233,10 +233,10 @@ public class CreatePartyPaymentMethodCommand
                         }
 
                         PartyPK createdBy = getPartyPK();
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         Boolean deleteWhenUnused = Boolean.valueOf(form.getDeleteWhenUnused());
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
 
                         var partyPaymentMethod = partyPaymentMethodControl.createPartyPaymentMethod(party, description,
                                 paymentMethod, deleteWhenUnused, isDefault, sortOrder, createdBy);

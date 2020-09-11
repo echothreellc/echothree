@@ -182,7 +182,7 @@ public class EditLocationCommand
                                         if(inventoryLocationGroup != null) {
                                             if(lockEntityForUpdate(location)) {
                                                 try {
-                                                    PartyPK partyPK = getPartyPK();
+                                                    var partyPK = getPartyPK();
                                                     LocationDetailValue locationDetailValue = warehouseControl.getLocationDetailValueForUpdate(location);
                                                     LocationDescription locationDescription = warehouseControl.getLocationDescriptionForUpdate(location, getPreferredLanguage());
                                                     String description = edit.getDescription();

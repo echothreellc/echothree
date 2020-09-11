@@ -131,7 +131,7 @@ public class EditMoodCommand
                         if(!hasExecutionErrors()) {
                             if(lockEntityForUpdate(mood)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     MoodDetailValue moodDetailValue = partyControl.getMoodDetailValueForUpdate(mood);
                                     MoodDescription moodDescription = partyControl.getMoodDescriptionForUpdate(mood, getPreferredLanguage());
                                     String description = edit.getDescription();

@@ -136,7 +136,7 @@ public class EditCancellationKindCommand
                     if(cancellationSequenceTypeName == null || cancellationSequenceType != null) {
                         if(lockEntityForUpdate(cancellationKind)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 CancellationKindDetailValue cancellationKindDetailValue = cancellationPolicyControl.getCancellationKindDetailValueForUpdate(cancellationKind);
                                 CancellationKindDescription cancellationKindDescription = cancellationPolicyControl.getCancellationKindDescriptionForUpdate(cancellationKind, getPreferredLanguage());
                                 String description = edit.getDescription();

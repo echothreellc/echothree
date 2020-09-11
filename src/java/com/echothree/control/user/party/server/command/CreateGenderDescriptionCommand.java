@@ -64,7 +64,7 @@ public class CreateGenderDescriptionCommand
                 GenderDescription genderDescription = partyControl.getGenderDescription(gender, language);
                 
                 if(genderDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createGenderDescription(gender, language, description, getPartyPK());
                 } else {

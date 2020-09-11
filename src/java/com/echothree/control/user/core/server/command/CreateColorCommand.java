@@ -88,13 +88,13 @@ public class CreateColorCommand
         Color color = coreControl.getColorByName(colorName);
         
         if(color == null) {
-            PartyPK partyPK = getPartyPK();
+            var partyPK = getPartyPK();
             Integer red = Integer.valueOf(form.getRed());
             Integer green = Integer.valueOf(form.getGreen());
             Integer blue = Integer.valueOf(form.getBlue());
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             color = coreControl.createColor(colorName, red, green, blue, isDefault, sortOrder, partyPK);
             

@@ -169,7 +169,7 @@ public class EditPartyApplicationEditorUseCommand
     @Override
     public void doUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PartyApplicationEditorUseDetailValue partyApplicationEditorUseDetailValue = coreControl.getPartyApplicationEditorUseDetailValueForUpdate(partyApplicationEditorUse);
         String strPreferredHeight = edit.getPreferredHeight();
         Integer preferredHeight = strPreferredHeight == null ? null : Integer.valueOf(strPreferredHeight);

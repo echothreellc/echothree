@@ -75,9 +75,9 @@ public class CreatePrinterGroupCommand
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
                 var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 PartyPK createdBy = getPartyPK();
 
                 printerGroup = printerControl.createPrinterGroup(printerGroupName, keepPrintedJobsTime, isDefault, sortOrder, createdBy);

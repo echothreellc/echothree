@@ -86,7 +86,7 @@ public class CreateReturnTypeDescriptionCommand
                     ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescription(returnType, language);
                     
                     if(returnTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         returnPolicyControl.createReturnTypeDescription(returnType, language, description, getPartyPK());
                     } else {

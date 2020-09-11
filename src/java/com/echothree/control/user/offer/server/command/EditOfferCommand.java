@@ -197,7 +197,7 @@ public class EditOfferCommand
                             if(offerItemPriceFilterName == null || offerItemPriceFilter != null) {
                                 if(lockEntityForUpdate(offer)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         OfferDetailValue offerDetailValue = offerControl.getOfferDetailValueForUpdate(offer);
                                         OfferDescription offerDescription = offerControl.getOfferDescriptionForUpdate(offer, getPreferredLanguage());
                                         String description = edit.getDescription();

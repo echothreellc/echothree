@@ -80,7 +80,7 @@ public class CreateItemAliasTypeDescriptionCommand
                 ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, language);
                 
                 if(itemAliasTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemAliasTypeDescription(itemAliasType, language, description, getPartyPK());
                 } else {

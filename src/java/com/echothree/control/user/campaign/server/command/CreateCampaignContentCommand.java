@@ -74,10 +74,10 @@ public class CreateCampaignContentCommand
         CampaignContent campaignContent = campaignControl.getCampaignContentByValue(value);
         
         if(campaignContent == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             campaignContent = campaignControl.createCampaignContent(value, isDefault, sortOrder, partyPK);
             

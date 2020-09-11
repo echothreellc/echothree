@@ -150,7 +150,7 @@ public class EditLeaveTypeCommand
     @Override
     public void doUpdate(LeaveType leaveType) {
         var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         LeaveTypeDetailValue leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueForUpdate(leaveType);
         LeaveTypeDescription leaveTypeDescription = employeeControl.getLeaveTypeDescriptionForUpdate(leaveType, getPreferredLanguage());
         String description = edit.getDescription();

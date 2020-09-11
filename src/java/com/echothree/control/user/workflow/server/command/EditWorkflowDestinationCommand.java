@@ -138,7 +138,7 @@ public class EditWorkflowDestinationCommand
                         if(duplicateWorkflowDestination == null || workflowDestination.equals(duplicateWorkflowDestination)) {
                             if(lockEntityForUpdate(workflowDestination)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     WorkflowDestinationDetailValue workflowDestinationDetailValue = workflowControl.getWorkflowDestinationDetailValueForUpdate(workflowDestination);
                                     WorkflowDestinationDescription workflowDestinationDescription = workflowControl.getWorkflowDestinationDescriptionForUpdate(workflowDestination, getPreferredLanguage());
                                     String description = edit.getDescription();

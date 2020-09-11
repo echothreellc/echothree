@@ -122,9 +122,9 @@ public class CreateCountyCommand
         if(geoCodeAlias == null) {
             String geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
             String countyNumber = form.getCountyNumber();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             geoCode = geoControl.createGeoCode(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, createdBy);
             geoControl.createGeoCodeRelationship(geoCode, stateGeoCode, createdBy);

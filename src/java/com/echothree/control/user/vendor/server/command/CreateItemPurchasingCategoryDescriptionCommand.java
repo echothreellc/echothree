@@ -80,7 +80,7 @@ public class CreateItemPurchasingCategoryDescriptionCommand
                 ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
                 
                 if(itemPurchasingCategoryDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     vendorControl.createItemPurchasingCategoryDescription(itemPurchasingCategory, language, description, getPartyPK());
                 } else {

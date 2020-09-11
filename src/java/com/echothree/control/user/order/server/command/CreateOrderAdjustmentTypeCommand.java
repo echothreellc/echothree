@@ -70,8 +70,8 @@ public class CreateOrderAdjustmentTypeCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
@@ -79,10 +79,10 @@ public class CreateOrderAdjustmentTypeCommand
             OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType == null) {
-                PartyPK partyPK = getPartyPK();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var partyPK = getPartyPK();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
 
                 orderAdjustmentType = orderAdjustmentControl.createOrderAdjustmentType(orderType, orderAdjustmentTypeName, isDefault, sortOrder, partyPK);
 

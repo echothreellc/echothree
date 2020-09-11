@@ -104,7 +104,7 @@ public class EditResponsibilityTypeCommand
             if(responsibilityType != null) {
                 if(lockEntityForUpdate(responsibilityType)) {
                     try {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         ResponsibilityTypeDetailValue responsibilityTypeDetailValue = employeeControl.getResponsibilityTypeDetailValueForUpdate(responsibilityType);
                         ResponsibilityTypeDescription responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescriptionForUpdate(responsibilityType, getPreferredLanguage());
                         String description = edit.getDescription();

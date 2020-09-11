@@ -142,7 +142,7 @@ public class EditRatingTypeCommand
                             if(ratingSequenceName == null || ratingSequence != null) {
                                 if(lockEntityForUpdate(ratingType)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         RatingTypeDetailValue ratingTypeDetailValue = ratingControl.getRatingTypeDetailValueForUpdate(ratingType);
                                         RatingTypeDescription ratingTypeDescription = ratingControl.getRatingTypeDescriptionForUpdate(ratingType, getPreferredLanguage());
                                         String description = edit.getDescription();

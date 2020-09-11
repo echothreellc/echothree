@@ -80,7 +80,7 @@ public class CreateSymbolPositionDescriptionCommand
                 SymbolPositionDescription symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language);
                 
                 if(symbolPositionDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     accountingControl.createSymbolPositionDescription(symbolPosition, language, description, getPartyPK());
                 } else {

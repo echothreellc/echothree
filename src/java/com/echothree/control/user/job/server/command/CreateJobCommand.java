@@ -84,8 +84,8 @@ public class CreateJobCommand
                 var coreControl = getCoreControl();
                 var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 PartyPK createdBy = getPartyPK();
                 
                 runAsParty = partyControl.createParty(jobName, partyType, null, null, null, null, null);

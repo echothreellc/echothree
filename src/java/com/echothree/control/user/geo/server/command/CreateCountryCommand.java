@@ -156,9 +156,9 @@ public class CreateCountryCommand
                                     String strPostalCodeGeoCodeLength = form.getPostalCodeGeoCodeLength();
                                     Integer postalCodeGeoCodeLength = strPostalCodeGeoCodeLength == null ? null : Integer.valueOf(strPostalCodeGeoCodeLength);
                                     String postalCodeExample = form.getPostalCodeExample();
-                                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                    String description = form.getDescription();
+                                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                                    var description = form.getDescription();
 
                                     geoCode = geoControl.createGeoCode(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, createdBy);
                                     geoControl.createGeoCodeCountry(geoCode, telephoneCode, areaCodePattern, areaCodeRequired, areaCodeExample,

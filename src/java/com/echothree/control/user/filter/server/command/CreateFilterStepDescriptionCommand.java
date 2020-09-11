@@ -84,7 +84,7 @@ public class CreateFilterStepDescriptionCommand
                             FilterStepDescription filterStepDescription = filterControl.getFilterStepDescription(filterStep, language);
                             
                             if(filterStepDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 filterControl.createFilterStepDescription(filterStep, language, description, getPartyPK());
                             } else {

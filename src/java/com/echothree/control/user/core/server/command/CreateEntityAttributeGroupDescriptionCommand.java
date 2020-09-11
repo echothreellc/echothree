@@ -80,7 +80,7 @@ public class CreateEntityAttributeGroupDescriptionCommand
                 EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
                 
                 if(entityAttributeGroupDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createEntityAttributeGroupDescription(entityAttributeGroup, language, description, getPartyPK());
                 } else {

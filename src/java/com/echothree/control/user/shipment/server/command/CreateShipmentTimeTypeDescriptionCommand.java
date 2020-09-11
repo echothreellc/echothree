@@ -86,7 +86,7 @@ public class CreateShipmentTimeTypeDescriptionCommand
                     ShipmentTimeTypeDescription shipmentTimeTypeDescription = shipmentControl.getShipmentTimeTypeDescription(shipmentTimeType, language);
 
                     if(shipmentTimeTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         shipmentControl.createShipmentTimeTypeDescription(shipmentTimeType, language, description, getPartyPK());
                     } else {

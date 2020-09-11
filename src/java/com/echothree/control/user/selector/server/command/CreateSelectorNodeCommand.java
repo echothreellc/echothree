@@ -749,10 +749,10 @@ public class CreateSelectorNodeCommand
                                     }
 
                                     if(!hasExecutionErrors()) {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         Boolean isRootSelectorNode = Boolean.valueOf(form.getIsRootSelectorNode());
                                         Boolean negate = Boolean.valueOf(form.getNegate());
-                                        String description = form.getDescription();
+                                        var description = form.getDescription();
 
                                         selectorNode = selectorControl.createSelectorNode(selector, selectorNodeName, isRootSelectorNode,
                                                 selectorNodeType, negate, partyPK);

@@ -129,7 +129,7 @@ public class GetContentCatalogItemCommand
 
                             if(currency != null) {
                                 String contentCatalogName = form.getContentCatalogName();
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 UserVisit userVisit = getUserVisitForUpdate();
 
                                 ContentCatalog contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)

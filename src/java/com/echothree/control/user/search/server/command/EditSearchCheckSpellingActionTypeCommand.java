@@ -148,7 +148,7 @@ public class EditSearchCheckSpellingActionTypeCommand
     @Override
     public void doUpdate(SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueForUpdate(searchCheckSpellingActionType);
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescriptionForUpdate(searchCheckSpellingActionType, getPreferredLanguage());
         String description = edit.getDescription();

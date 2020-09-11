@@ -166,14 +166,14 @@ public class CreateItemDescriptionTypeCommand
                             }
 
                             if(!hasExecutionErrors()) {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 Boolean useParentIfMissing = Boolean.valueOf(form.getUseParentIfMissing());
                                 Boolean includeInIndex = Boolean.valueOf(form.getIncludeInIndex());
                                 Boolean checkContentWebAddress = Boolean.valueOf(form.getCheckContentWebAddress());
                                 Boolean indexDefault = Boolean.valueOf(form.getIndexDefault());
-                                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                String description = form.getDescription();
+                                var isDefault = Boolean.valueOf(form.getIsDefault());
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                var description = form.getDescription();
 
                                 itemDescriptionType = itemControl.createItemDescriptionType(itemDescriptionTypeName, parentItemDescriptionType,
                                         useParentIfMissing, mimeTypeUsageType, checkContentWebAddress, includeInIndex, indexDefault, isDefault, sortOrder,

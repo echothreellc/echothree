@@ -66,7 +66,7 @@ public class CreatePostalAddressElementTypeDescriptionCommand
                 PostalAddressElementTypeDescription postalAddressElementTypeDescription = contactControl.getPostalAddressElementTypeDescription(postalAddressElementType, language);
                 
                 if(postalAddressElementTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contactControl.createPostalAddressElementTypeDescription(postalAddressElementType, language, description);
                 } else {

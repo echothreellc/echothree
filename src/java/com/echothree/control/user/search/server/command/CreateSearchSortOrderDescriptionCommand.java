@@ -86,7 +86,7 @@ public class CreateSearchSortOrderDescriptionCommand
                     SearchSortOrderDescription searchSortOrderDescription = searchControl.getSearchSortOrderDescription(searchSortOrder, language);
                     
                     if(searchSortOrderDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         searchControl.createSearchSortOrderDescription(searchSortOrder, language, description, getPartyPK());
                     } else {

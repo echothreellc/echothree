@@ -59,11 +59,11 @@ public class CreateUnitOfMeasureKindCommand
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind == null) {
-            PartyPK partyPK = getPartyPK();
+            var partyPK = getPartyPK();
             Integer fractionDigits = Integer.valueOf(form.getFractionDigits());
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             unitOfMeasureKind = uomControl.createUnitOfMeasureKind(unitOfMeasureKindName, fractionDigits, isDefault, sortOrder, partyPK);
             

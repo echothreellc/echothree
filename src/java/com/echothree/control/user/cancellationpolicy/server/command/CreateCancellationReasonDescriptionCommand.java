@@ -86,7 +86,7 @@ public class CreateCancellationReasonDescriptionCommand
                     CancellationReasonDescription cancellationReasonDescription = cancellationPolicyControl.getCancellationReasonDescription(cancellationReason, language);
                     
                     if(cancellationReasonDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         cancellationPolicyControl.createCancellationReasonDescription(cancellationReason, language, description, getPartyPK());
                     } else {

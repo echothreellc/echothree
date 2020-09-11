@@ -104,7 +104,7 @@ public class CreateChainActionDescriptionCommand
                                 ChainActionDescription chainActionDescription = chainControl.getChainActionDescription(chainAction, language);
 
                                 if(chainActionDescription == null) {
-                                    String description = form.getDescription();
+                                    var description = form.getDescription();
 
                                     chainControl.createChainActionDescription(chainAction, language, description, getPartyPK());
                                 } else {

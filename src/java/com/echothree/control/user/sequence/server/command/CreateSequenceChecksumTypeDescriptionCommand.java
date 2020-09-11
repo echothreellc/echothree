@@ -80,7 +80,7 @@ public class CreateSequenceChecksumTypeDescriptionCommand
                 SequenceChecksumTypeDescription sequenceChecksumTypeDescription = sequenceControl.getSequenceChecksumTypeDescription(sequenceChecksumType, language);
                 
                 if(sequenceChecksumTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     sequenceControl.createSequenceChecksumTypeDescription(sequenceChecksumType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateSequenceChecksumTypeDescription.name());

@@ -58,7 +58,7 @@ public class LockEntityCommand
         EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
 
         if(!hasExecutionErrors()) {
-            PartyPK partyPK = getPartyPK();
+            var partyPK = getPartyPK();
             
             if(partyPK != null) {
                 var entityLockControl = (EntityLockControl)Session.getModelController(EntityLockControl.class);

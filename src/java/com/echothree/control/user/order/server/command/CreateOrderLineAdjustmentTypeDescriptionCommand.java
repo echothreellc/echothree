@@ -71,8 +71,8 @@ public class CreateOrderLineAdjustmentTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
@@ -88,7 +88,7 @@ public class CreateOrderLineAdjustmentTypeDescriptionCommand
                     OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
 
                     if(orderLineAdjustmentTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         orderLineAdjustmentControl.createOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language, description, getPartyPK());
                     } else {

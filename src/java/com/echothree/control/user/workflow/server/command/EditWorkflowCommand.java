@@ -163,7 +163,7 @@ public class EditWorkflowCommand
                                     if(securityRoleGroupName == null || securityRoleGroup != null) {
                                         if(lockEntityForUpdate(workflow)) {
                                             try {
-                                                PartyPK partyPK = getPartyPK();
+                                                var partyPK = getPartyPK();
                                                 WorkflowDetailValue workflowDetailValue = workflowControl.getWorkflowDetailValueForUpdate(workflow);
                                                 WorkflowDescription workflowDescription = workflowControl.getWorkflowDescriptionForUpdate(workflow, getPreferredLanguage());
                                                 String description = edit.getDescription();

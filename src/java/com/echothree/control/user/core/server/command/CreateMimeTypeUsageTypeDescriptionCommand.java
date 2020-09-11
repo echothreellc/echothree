@@ -66,7 +66,7 @@ public class CreateMimeTypeUsageTypeDescriptionCommand
                 MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription = coreControl.getMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
 
                 if(mimeTypeUsageTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
 
                     coreControl.createMimeTypeUsageTypeDescription(mimeTypeUsageType, language, description);
                 } else {

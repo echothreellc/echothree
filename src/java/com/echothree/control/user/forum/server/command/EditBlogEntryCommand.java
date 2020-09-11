@@ -300,7 +300,7 @@ public class EditBlogEntryCommand
     @Override
     public void doUpdate(ForumMessage forumMessage) {
         var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ForumMessageDetailValue forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
         ForumThreadDetailValue forumThreadDetailValue = forumControl.getForumThreadDetailValueForUpdate(forumMessage.getLastDetail().getForumThreadForUpdate());
         Long postedTime = Long.valueOf(edit.getPostedTime());

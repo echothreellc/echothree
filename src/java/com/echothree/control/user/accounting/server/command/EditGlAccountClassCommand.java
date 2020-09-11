@@ -141,7 +141,7 @@ public class EditGlAccountClassCommand
                         if(accountingControl.isParentGlAccountClassSafe(glAccountClass, parentGlAccountClass)) {
                             if(lockEntityForUpdate(glAccountClass)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     GlAccountClassDetailValue glAccountClassDetailValue = accountingControl.getGlAccountClassDetailValueForUpdate(glAccountClass);
                                     GlAccountClassDescription glAccountClassDescription = accountingControl.getGlAccountClassDescriptionForUpdate(glAccountClass, getPreferredLanguage());
                                     String description = edit.getDescription();

@@ -72,7 +72,7 @@ public class CreateWishlistTypePriorityDescriptionCommand
                     WishlistTypePriorityDescription wishlistTypePriorityDescription = wishlistControl.getWishlistTypePriorityDescription(wishlistTypePriority, language);
                     
                     if(wishlistTypePriorityDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         wishlistControl.createWishlistTypePriorityDescription(wishlistTypePriority, language, description, getPartyPK());
                     } else {

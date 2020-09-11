@@ -77,9 +77,9 @@ public class CreateForumGroupCommand
                 }
                 
                 if(!hasExecutionErrors()) {
-                    PartyPK partyPK = getPartyPK();
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var partyPK = getPartyPK();
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
                     
                     forumGroup = forumControl.createForumGroup(forumGroupName, icon, sortOrder, partyPK);
                     

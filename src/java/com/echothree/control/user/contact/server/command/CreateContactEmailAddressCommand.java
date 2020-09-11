@@ -90,7 +90,7 @@ public class CreateContactEmailAddressCommand
             BasePK createdBy = getPartyPK();
             String emailAddress = form.getEmailAddress();
             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-            String description = form.getDescription();
+            var description = form.getDescription();
             
             PartyContactMechanism partyContactMechanism = ContactEmailAddressLogic.getInstance().createContactEmailAddress(party,
                     emailAddress, allowSolicitation, description, null, createdBy);

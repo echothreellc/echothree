@@ -84,10 +84,10 @@ public class CreateContentSectionCommand
                         ContentSections.ROOT.toString() : parentContentSectionName);
                 
                 if(parentContentSection != null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
-                    PartyPK partyPK = getPartyPK();
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
+                    var partyPK = getPartyPK();
                     
                     contentSection = contentControl.createContentSection(contentCollection, contentSectionName, parentContentSection, isDefault, sortOrder, partyPK);
                     

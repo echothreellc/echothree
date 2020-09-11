@@ -82,14 +82,14 @@ public class CreateTaxCommand
                     GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
                     
                     if(glAccount != null) {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         Boolean includeShippingCharge = Boolean.valueOf(form.getIncludeShippingCharge());
                         Boolean includeProcessingCharge = Boolean.valueOf(form.getIncludeProcessingCharge());
                         Boolean includeInsuranceCharge = Boolean.valueOf(form.getIncludeInsuranceCharge());
                         Integer percent = Integer.valueOf(form.getPercent());
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
                         
                         // TODO: Check glAccount's glAccountCategory to make sure it is appropriate for tax
                         

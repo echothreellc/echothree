@@ -150,7 +150,7 @@ public class EditItemDescriptionTypeUseTypeCommand
     @Override
     public void doUpdate(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueForUpdate(itemDescriptionTypeUseType);
         ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescriptionForUpdate(itemDescriptionTypeUseType, getPreferredLanguage());
         String description = edit.getDescription();

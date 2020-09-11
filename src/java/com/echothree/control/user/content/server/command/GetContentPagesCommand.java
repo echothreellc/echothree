@@ -92,7 +92,7 @@ public class GetContentPagesCommand
 
             if(!hasExecutionErrors()) {
                 String contentSectionName = form.getContentSectionName();
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
                 UserVisit userVisit = getUserVisitForUpdate();
                 
                 contentSection = contentSectionName == null ? contentControl.getDefaultContentSection(contentCollection)

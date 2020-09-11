@@ -77,7 +77,7 @@ public class CreateLocationNameElementCommand
                     Integer offset = Integer.valueOf(form.getOffset());
                     Integer length = Integer.valueOf(form.getLength());
                     String validationPattern = form.getValidationPattern();
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     locationNameElement = warehouseControl.createLocationNameElement(locationType, locationNameElementName, offset,
                             length, validationPattern, createdBy);

@@ -66,7 +66,7 @@ public class CreateEntityAttributeTypeDescriptionCommand
                 EntityAttributeTypeDescription entityAttributeTypeDescription = coreControl.getEntityAttributeTypeDescription(entityAttributeType, language);
                 
                 if(entityAttributeTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createEntityAttributeTypeDescription(entityAttributeType, language, description);
                 } else {

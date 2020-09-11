@@ -86,7 +86,7 @@ public class CreateMessageDescriptionCommand
                             MessageDescription messageDescription = messageControl.getMessageDescription(message, language);
                             
                             if(messageDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 messageControl.createMessageDescription(message, language, description, getPartyPK());
                             } else {

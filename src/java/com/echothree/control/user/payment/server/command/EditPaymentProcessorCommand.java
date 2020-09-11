@@ -150,7 +150,7 @@ public class EditPaymentProcessorCommand
     @Override
     public void doUpdate(PaymentProcessor paymentProcessor) {
         var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PaymentProcessorDetailValue paymentProcessorDetailValue = paymentProcessorControl.getPaymentProcessorDetailValueForUpdate(paymentProcessor);
         PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescriptionForUpdate(paymentProcessor, getPreferredLanguage());
         String description = edit.getDescription();

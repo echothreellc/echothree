@@ -161,7 +161,7 @@ public class EditSearchTypeCommand
     @Override
     public void doUpdate(SearchType searchType) {
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SearchTypeDetailValue searchTypeDetailValue = searchControl.getSearchTypeDetailValueForUpdate(searchType);
         SearchTypeDescription searchTypeDescription = searchControl.getSearchTypeDescriptionForUpdate(searchType, getPreferredLanguage());
         String description = edit.getDescription();

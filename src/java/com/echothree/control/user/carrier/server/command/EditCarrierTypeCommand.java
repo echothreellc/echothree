@@ -150,7 +150,7 @@ public class EditCarrierTypeCommand
     @Override
     public void doUpdate(CarrierType carrierType) {
         var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CarrierTypeDetailValue carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueForUpdate(carrierType);
         CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescriptionForUpdate(carrierType, getPreferredLanguage());
         String description = edit.getDescription();

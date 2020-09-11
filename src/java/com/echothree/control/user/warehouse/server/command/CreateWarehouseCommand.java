@@ -126,8 +126,8 @@ public class CreateWarehouseCommand
                                             PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
                                             BasePK createdBy = getPartyPK();
                                             String name = form.getName();
-                                            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                                            var isDefault = Boolean.valueOf(form.getIsDefault());
+                                            var sortOrder = Integer.valueOf(form.getSortOrder());
                                             
                                             Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                             

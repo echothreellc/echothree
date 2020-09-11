@@ -84,7 +84,7 @@ public class CreatePartyAliasTypeDescriptionCommand
                     PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescription(partyAliasType, language);
 
                     if(partyAliasTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         partyControl.createPartyAliasTypeDescription(partyAliasType, language, description, getPartyPK());
                     } else {

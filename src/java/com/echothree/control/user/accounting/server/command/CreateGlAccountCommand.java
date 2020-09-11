@@ -109,9 +109,9 @@ public class CreateGlAccountCommand
                                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     Boolean isDefault = glAccountCategory == null? null: Boolean.valueOf(form.getIsDefault());
-                                    String description = form.getDescription();
+                                    var description = form.getDescription();
                                     
                                     glAccount = accountingControl.createGlAccount(glAccountName, parentGlAccount, glAccountType,
                                             glAccountClass, glAccountCategory, glResourceType, currency, isDefault, partyPK);

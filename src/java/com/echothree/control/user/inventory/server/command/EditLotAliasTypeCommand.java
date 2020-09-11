@@ -152,7 +152,7 @@ public class EditLotAliasTypeCommand
     @Override
     public void doUpdate(LotAliasType lotAliasType) {
         var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         LotAliasTypeDetailValue lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
         LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());
         String description = edit.getDescription();

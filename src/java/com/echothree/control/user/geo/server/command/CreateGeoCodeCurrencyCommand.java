@@ -81,8 +81,8 @@ public class CreateGeoCodeCurrencyCommand
                 GeoCodeCurrency geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency);
                 
                 if(geoCodeCurrency == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     geoControl.createGeoCodeCurrency(geoCode, currency, isDefault, sortOrder, getPartyPK());
                 } else {

@@ -80,7 +80,7 @@ public class CreatePaymentMethodDescriptionCommand
                 PaymentMethodDescription paymentMethodDescription = paymentMethodControl.getPaymentMethodDescription(paymentMethod, language);
                 
                 if(paymentMethodDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     paymentMethodControl.createPaymentMethodDescription(paymentMethod, language, description, getPartyPK());
                 } else {

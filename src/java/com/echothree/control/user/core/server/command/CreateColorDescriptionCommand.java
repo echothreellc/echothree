@@ -80,7 +80,7 @@ public class CreateColorDescriptionCommand
                 ColorDescription colorDescription = coreControl.getColorDescription(color, language);
                 
                 if(colorDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createColorDescription(color, language, description, getPartyPK());
                 } else {

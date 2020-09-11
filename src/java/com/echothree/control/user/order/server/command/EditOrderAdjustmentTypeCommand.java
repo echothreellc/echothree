@@ -96,7 +96,7 @@ public class EditOrderAdjustmentTypeCommand
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderAdjustmentType orderAdjustmentType = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
@@ -151,7 +151,7 @@ public class EditOrderAdjustmentTypeCommand
     public void canUpdate(OrderAdjustmentType orderAdjustmentType) {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
@@ -169,7 +169,7 @@ public class EditOrderAdjustmentTypeCommand
     @Override
     public void doUpdate(OrderAdjustmentType orderAdjustmentType) {
         var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue = orderAdjustmentControl.getOrderAdjustmentTypeDetailValueForUpdate(orderAdjustmentType);
         OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, getPreferredLanguage());
         String description = edit.getDescription();

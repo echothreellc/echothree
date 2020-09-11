@@ -66,7 +66,7 @@ public class CreateItemPriceTypeDescriptionCommand
                 ItemPriceTypeDescription itemPriceTypeDescription = itemControl.getItemPriceTypeDescription(itemPriceType, language);
                 
                 if(itemPriceTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemPriceTypeDescription(itemPriceType, language, description);
                 } else {

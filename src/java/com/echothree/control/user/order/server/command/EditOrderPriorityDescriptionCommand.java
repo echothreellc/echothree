@@ -93,7 +93,7 @@ public class EditOrderPriorityDescriptionCommand
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderPriorityDescription orderPriorityDescription = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);

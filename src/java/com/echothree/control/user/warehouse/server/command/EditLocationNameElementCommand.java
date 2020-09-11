@@ -123,7 +123,7 @@ public class EditLocationNameElementCommand
                         if(duplicateLocationNameElement == null || locationNameElement.equals(duplicateLocationNameElement)) {
                             if(lockEntityForUpdate(locationNameElement)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     LocationNameElementDetailValue locationNameElementDetailValue = warehouseControl.getLocationNameElementDetailValueForUpdate(locationNameElement);
                                     LocationNameElementDescription locationNameElementDescription = warehouseControl.getLocationNameElementDescriptionForUpdate(locationNameElement, getPreferredLanguage());
                                     String description = edit.getDescription();

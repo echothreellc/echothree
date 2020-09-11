@@ -130,7 +130,7 @@ public class EditUnitOfMeasureTypeCommand
                         if(descriptionCount == 0 || descriptionCount == 3) {
                             if(lockEntityForUpdate(unitOfMeasureType)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     UnitOfMeasureTypeDetailValue unitOfMeasureTypeDetailValue = uomControl.getUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureType);
                                     UnitOfMeasureTypeDescription unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescriptionForUpdate(unitOfMeasureType, getPreferredLanguage());
                                     

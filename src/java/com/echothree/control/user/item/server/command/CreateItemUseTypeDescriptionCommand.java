@@ -66,7 +66,7 @@ public class CreateItemUseTypeDescriptionCommand
                 ItemUseTypeDescription itemUseTypeDescription = itemControl.getItemUseTypeDescription(itemUseType, language);
                 
                 if(itemUseTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemUseTypeDescription(itemUseType, language, description);
                 } else {

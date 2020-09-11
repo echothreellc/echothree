@@ -161,7 +161,7 @@ public class EditSelectorTypeCommand
     @Override
     public void doUpdate(SelectorType selectorType) {
         var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SelectorTypeDetailValue selectorTypeDetailValue = selectorControl.getSelectorTypeDetailValueForUpdate(selectorType);
         SelectorTypeDescription selectorTypeDescription = selectorControl.getSelectorTypeDescriptionForUpdate(selectorType, getPreferredLanguage());
         String description = edit.getDescription();

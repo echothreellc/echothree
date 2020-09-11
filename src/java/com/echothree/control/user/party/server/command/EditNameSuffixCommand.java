@@ -99,7 +99,7 @@ public class EditNameSuffixCommand
             if(nameSuffixPK != null) {
                 if(lockEntityForUpdate(nameSuffixPK)) {
                     try {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         NameSuffixDetailValue nameSuffixDetailValue = partyControl.getNameSuffixDetailValueByPKForUpdate(nameSuffixPK);
                         
                         nameSuffixDetailValue.setDescription(edit.getDescription());

@@ -86,7 +86,7 @@ public class CreateInvoiceLineTypeDescriptionCommand
                     InvoiceLineTypeDescription invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescription(invoiceLineType, language);
                     
                     if(invoiceLineTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         invoiceControl.createInvoiceLineTypeDescription(invoiceLineType, language, description, getPartyPK());
                     } else {

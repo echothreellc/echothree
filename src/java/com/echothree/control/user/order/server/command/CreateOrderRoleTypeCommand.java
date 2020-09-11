@@ -54,7 +54,7 @@ public class CreateOrderRoleTypeCommand
         OrderRoleType orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
         
         if(orderRoleType == null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             orderRoleControl.createOrderRoleType(orderRoleTypeName, sortOrder);
         } else {

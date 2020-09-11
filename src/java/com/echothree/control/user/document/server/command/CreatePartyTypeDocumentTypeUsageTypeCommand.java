@@ -81,8 +81,8 @@ public class CreatePartyTypeDocumentTypeUsageTypeCommand
                 PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = documentControl.getPartyTypeDocumentTypeUsageType(partyType, documentTypeUsageType);
                 
                 if(partyTypeDocumentTypeUsageType == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     documentControl.createPartyTypeDocumentTypeUsageType(partyType, documentTypeUsageType, isDefault, sortOrder, getPartyPK());
                 } else {

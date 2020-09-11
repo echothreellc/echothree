@@ -62,7 +62,7 @@ public class CreateInvoiceRoleTypeCommand
         InvoiceRoleType invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
         
         if(invoiceRoleType == null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             invoiceControl.createInvoiceRoleType(invoiceRoleTypeName, sortOrder);
         } else {

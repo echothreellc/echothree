@@ -80,7 +80,7 @@ public class CreateAppearanceDescriptionCommand
                 AppearanceDescription appearanceDescription = coreControl.getAppearanceDescription(appearance, language);
                 
                 if(appearanceDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createAppearanceDescription(appearance, language, description, getPartyPK());
                 } else {

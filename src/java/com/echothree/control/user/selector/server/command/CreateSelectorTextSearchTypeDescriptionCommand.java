@@ -66,7 +66,7 @@ public class CreateSelectorTextSearchTypeDescriptionCommand
                 SelectorTextSearchTypeDescription selectorTextSearchTypeDescription = selectorControl.getSelectorTextSearchTypeDescription(selectorTextSearchType, language);
                 
                 if(selectorTextSearchTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     selectorControl.createSelectorTextSearchTypeDescription(selectorTextSearchType, language, description);
                 } else {

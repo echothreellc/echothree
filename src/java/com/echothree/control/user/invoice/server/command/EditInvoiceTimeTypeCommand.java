@@ -166,7 +166,7 @@ public class EditInvoiceTimeTypeCommand
     @Override
     public void doUpdate(InvoiceTimeType invoiceTimeType) {
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueForUpdate(invoiceTimeType);
         InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescriptionForUpdate(invoiceTimeType, getPreferredLanguage());
         String description = edit.getDescription();

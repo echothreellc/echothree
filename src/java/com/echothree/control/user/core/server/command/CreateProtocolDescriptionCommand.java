@@ -80,7 +80,7 @@ public class CreateProtocolDescriptionCommand
                 ProtocolDescription protocolDescription = coreControl.getProtocolDescription(protocol, language);
                 
                 if(protocolDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createProtocolDescription(protocol, language, description, getPartyPK());
                 } else {

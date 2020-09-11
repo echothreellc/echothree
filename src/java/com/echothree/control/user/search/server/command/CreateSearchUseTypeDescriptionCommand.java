@@ -80,7 +80,7 @@ public class CreateSearchUseTypeDescriptionCommand
                 SearchUseTypeDescription searchUseTypeDescription = searchControl.getSearchUseTypeDescription(searchUseType, language);
                 
                 if(searchUseTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     searchControl.createSearchUseTypeDescription(searchUseType, language, description, getPartyPK());
                 } else {

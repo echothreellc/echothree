@@ -152,7 +152,7 @@ public class EditTransactionEntityRoleTypeCommand
                             if(entityType != null) {
                                 if(lockEntityForUpdate(transactionEntityRoleType)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         TransactionEntityRoleTypeDetailValue transactionEntityRoleTypeDetailValue = accountingControl.getTransactionEntityRoleTypeDetailValueForUpdate(transactionEntityRoleType);
                                         TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescriptionForUpdate(transactionEntityRoleType, getPreferredLanguage());
                                         String description = edit.getDescription();

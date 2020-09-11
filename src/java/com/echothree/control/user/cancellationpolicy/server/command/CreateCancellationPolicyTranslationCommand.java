@@ -100,7 +100,7 @@ public class CreateCancellationPolicyTranslationCommand
                                 ExecutionErrors.UnknownPolicyMimeTypeName.name(), ExecutionErrors.UnknownPolicyMimeTypeUsage.name());
 
                         if(!hasExecutionErrors()) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
 
                             cancellationPolicyControl.createCancellationPolicyTranslation(cancellationPolicy, language, description, policyMimeType, policy,
                                     getPartyPK());

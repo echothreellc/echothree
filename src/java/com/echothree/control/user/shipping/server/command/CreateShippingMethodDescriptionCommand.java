@@ -80,7 +80,7 @@ public class CreateShippingMethodDescriptionCommand
                     ShippingMethodDescription shippingMethodDescription = shippingControl.getShippingMethodDescription(shippingMethod, language);
                     
                     if(shippingMethodDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         shippingControl.createShippingMethodDescription(shippingMethod, language, description, getPartyPK());
                     } else {

@@ -161,7 +161,7 @@ public class EditSearchSortOrderCommand
     @Override
     public void doUpdate(SearchSortOrder searchSortOrder) {
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SearchSortOrderDetailValue searchSortOrderDetailValue = searchControl.getSearchSortOrderDetailValueForUpdate(searchSortOrder);
         SearchSortOrderDescription searchSortOrderDescription = searchControl.getSearchSortOrderDescriptionForUpdate(searchSortOrder, getPreferredLanguage());
         String description = edit.getDescription();

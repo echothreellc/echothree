@@ -64,7 +64,7 @@ public class CreatePartyTypeUseTypeDescriptionCommand
                 PartyTypeUseTypeDescription partyTypeUseTypeDescription = partyControl.getPartyTypeUseTypeDescription(partyTypeUseType, language);
                 
                 if(partyTypeUseTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createPartyTypeUseTypeDescription(partyTypeUseType, language, description);
                 } else {

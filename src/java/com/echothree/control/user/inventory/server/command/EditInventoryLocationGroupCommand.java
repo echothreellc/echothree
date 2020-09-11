@@ -119,7 +119,7 @@ public class EditInventoryLocationGroupCommand
                     if(duplicateInventoryLocationGroup == null || inventoryLocationGroup.equals(duplicateInventoryLocationGroup)) {
                         if(lockEntityForUpdate(inventoryLocationGroup)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue = inventoryControl.getInventoryLocationGroupDetailValueForUpdate(inventoryLocationGroup);
                                 InventoryLocationGroupDescription inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, getPreferredLanguage());
                                 String description = edit.getDescription();

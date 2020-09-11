@@ -150,7 +150,7 @@ public class EditScaleTypeCommand
     @Override
     public void doUpdate(ScaleType scaleType) {
         var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ScaleTypeDetailValue scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueForUpdate(scaleType);
         ScaleTypeDescription scaleTypeDescription = scaleControl.getScaleTypeDescriptionForUpdate(scaleType, getPreferredLanguage());
         String description = edit.getDescription();

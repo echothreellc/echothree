@@ -139,7 +139,7 @@ public class EditSourceCommand
     @Override
     public void doUpdate(Source source) {
         var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SourceDetailValue sourceDetailValue = geoControl.getSourceDetailValueForUpdate(source);
 
         sourceDetailValue.setSourceName(edit.getSourceName());

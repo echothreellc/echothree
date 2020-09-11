@@ -141,7 +141,7 @@ public class EditItemAccountingCategoryCommand
                         if(accountingControl.isParentItemAccountingCategorySafe(itemAccountingCategory, parentItemAccountingCategory)) {
                             if(lockEntityForUpdate(itemAccountingCategory)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueForUpdate(itemAccountingCategory);
                                     ItemAccountingCategoryDescription itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescriptionForUpdate(itemAccountingCategory, getPreferredLanguage());
                                     String description = edit.getDescription();

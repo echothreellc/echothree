@@ -148,7 +148,7 @@ public class EditHarmonizedTariffScheduleCodeUnitCommand
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueForUpdate(harmonizedTariffScheduleCodeUnit);
         HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
         String description = edit.getDescription();

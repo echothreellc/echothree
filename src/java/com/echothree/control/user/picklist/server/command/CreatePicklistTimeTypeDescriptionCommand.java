@@ -86,7 +86,7 @@ public class CreatePicklistTimeTypeDescriptionCommand
                     PicklistTimeTypeDescription picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescription(picklistTimeType, language);
 
                     if(picklistTimeTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         picklistControl.createPicklistTimeTypeDescription(picklistTimeType, language, description, getPartyPK());
                     } else {

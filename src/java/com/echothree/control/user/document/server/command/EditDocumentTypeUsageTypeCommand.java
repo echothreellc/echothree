@@ -150,7 +150,7 @@ public class EditDocumentTypeUsageTypeCommand
     @Override
     public void doUpdate(DocumentTypeUsageType documentTypeUsageType) {
         var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = documentControl.getDocumentTypeUsageTypeDetailValueForUpdate(documentTypeUsageType);
         DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescriptionForUpdate(documentTypeUsageType, getPreferredLanguage());
         String description = edit.getDescription();

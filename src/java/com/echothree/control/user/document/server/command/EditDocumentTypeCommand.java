@@ -190,7 +190,7 @@ public class EditDocumentTypeCommand
     @Override
     public void doUpdate(DocumentType documentType) {
         var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         DocumentTypeDetailValue documentTypeDetailValue = documentControl.getDocumentTypeDetailValueForUpdate(documentType);
         DocumentTypeDescription documentTypeDescription = documentControl.getDocumentTypeDescriptionForUpdate(documentType, getPreferredLanguage());
         String description = edit.getDescription();

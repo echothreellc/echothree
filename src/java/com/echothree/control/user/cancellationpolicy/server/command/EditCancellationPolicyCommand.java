@@ -181,7 +181,7 @@ public class EditCancellationPolicyCommand
     @Override
     public void doUpdate(CancellationPolicy cancellationPolicy) {
         var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CancellationPolicyDetailValue cancellationPolicyDetailValue = cancellationPolicyControl.getCancellationPolicyDetailValueForUpdate(cancellationPolicy);
         CancellationPolicyTranslation cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslationForUpdate(cancellationPolicy, getPreferredLanguage());
         String description = edit.getDescription();

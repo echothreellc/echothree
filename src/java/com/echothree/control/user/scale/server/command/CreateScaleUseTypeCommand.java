@@ -58,9 +58,9 @@ public class CreateScaleUseTypeCommand
         ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             PartyPK createdBy = getPartyPK();
 
             scaleUseType = scaleControl.createScaleUseType(scaleUseTypeName, isDefault, sortOrder, createdBy);

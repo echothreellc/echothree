@@ -118,8 +118,8 @@ public class CreateContentCategoryItemCommand
                                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 
                                 if(currency != null) {
-                                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                                    var sortOrder = Integer.valueOf(form.getSortOrder());
 
                                     ContentLogic.getInstance().createContentCategoryItem(this, contentCategory, item, inventoryCondition, unitOfMeasureType,
                                             currency, isDefault, sortOrder, getPartyPK());

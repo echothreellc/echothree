@@ -166,7 +166,7 @@ public class EditPicklistTimeTypeCommand
     @Override
     public void doUpdate(PicklistTimeType picklistTimeType) {
         var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueForUpdate(picklistTimeType);
         PicklistTimeTypeDescription picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescriptionForUpdate(picklistTimeType, getPreferredLanguage());
         String description = edit.getDescription();

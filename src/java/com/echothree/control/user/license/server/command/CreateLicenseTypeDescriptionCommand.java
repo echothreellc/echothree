@@ -80,7 +80,7 @@ public class CreateLicenseTypeDescriptionCommand
                 LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, language);
                 
                 if(licenseTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     licenseControl.createLicenseTypeDescription(licenseType, language, description, getPartyPK());
                 } else {

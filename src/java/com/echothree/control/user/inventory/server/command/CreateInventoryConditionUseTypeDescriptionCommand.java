@@ -66,7 +66,7 @@ public class CreateInventoryConditionUseTypeDescriptionCommand
                 InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription = inventoryControl.getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
                 
                 if(inventoryConditionUseTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     inventoryControl.createInventoryConditionUseTypeDescription(inventoryConditionUseType, language, description);
                 } else {

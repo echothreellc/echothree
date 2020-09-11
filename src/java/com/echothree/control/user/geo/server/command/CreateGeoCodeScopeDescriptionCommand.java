@@ -80,7 +80,7 @@ public class CreateGeoCodeScopeDescriptionCommand
                 GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescription(geoCodeScope, language);
                 
                 if(geoCodeScopeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     geoControl.createGeoCodeScopeDescription(geoCodeScope, language, description, getPartyPK());
                 } else {

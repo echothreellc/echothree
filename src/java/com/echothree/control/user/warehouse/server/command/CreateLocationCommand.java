@@ -141,7 +141,7 @@ public class CreateLocationCommand
                                     Integer velocity = Integer.valueOf(form.getVelocity());
                                     var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                     BasePK createdBy = getPartyPK();
-                                    String description = form.getDescription();
+                                    var description = form.getDescription();
                                     
                                     location = warehouseControl.createLocation(warehouseParty, locationName, locationType, locationUseType,
                                             velocity, inventoryLocationGroup, createdBy);

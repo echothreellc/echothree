@@ -164,7 +164,7 @@ public class EditPartyAliasTypeCommand
     @Override
     public void doUpdate(PartyAliasType partyAliasType) {
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PartyAliasTypeDetailValue partyAliasTypeDetailValue = partyControl.getPartyAliasTypeDetailValueForUpdate(partyAliasType);
         PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescriptionForUpdate(partyAliasType, getPreferredLanguage());
         String description = edit.getDescription();

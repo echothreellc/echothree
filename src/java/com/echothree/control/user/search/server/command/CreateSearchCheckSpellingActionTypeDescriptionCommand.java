@@ -80,7 +80,7 @@ public class CreateSearchCheckSpellingActionTypeDescriptionCommand
                 SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
                 
                 if(searchCheckSpellingActionTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     searchControl.createSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language, description, getPartyPK());
                 } else {

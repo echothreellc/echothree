@@ -63,9 +63,9 @@ public class CreateMimeTypeCommand
             EntityAttributeType entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 
             if(entityAttributeType != null) {
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 PartyPK createdBy = getPartyPK();
 
                 mimeType = coreControl.createMimeType(mimeTypeName, entityAttributeType, isDefault, sortOrder, createdBy);

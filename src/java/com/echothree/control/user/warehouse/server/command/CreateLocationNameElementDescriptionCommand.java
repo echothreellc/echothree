@@ -80,7 +80,7 @@ public class CreateLocationNameElementDescriptionCommand
                         LocationNameElementDescription locationNameElementDescription = warehouseControl.getLocationNameElementDescription(locationNameElement, language);
                         
                         if(locationNameElementDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             warehouseControl.createLocationNameElementDescription(locationNameElement, language, description, getPartyPK());
                         } else {

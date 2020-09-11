@@ -148,7 +148,7 @@ public class EditContactListFrequencyCommand
     @Override
     public void doUpdate(ContactListFrequency contactListFrequency) {
         var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContactListFrequencyDetailValue contactListFrequencyDetailValue = contactListControl.getContactListFrequencyDetailValueForUpdate(contactListFrequency);
         ContactListFrequencyDescription contactListFrequencyDescription = contactListControl.getContactListFrequencyDescriptionForUpdate(contactListFrequency, getPreferredLanguage());
         String description = edit.getDescription();

@@ -93,7 +93,7 @@ public class EditOrderTimeTypeDescriptionCommand
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderTimeTypeDescription orderTimeTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);

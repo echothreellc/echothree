@@ -65,10 +65,10 @@ public class CreateLocationTypeCommand
             LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType == null) {
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
                 BasePK createdBy = getPartyPK();
-                String description = form.getDescription();
+                var description = form.getDescription();
                 
                 locationType = warehouseControl.createLocationType(warehouseParty, locationTypeName, isDefault, sortOrder, createdBy);
                 

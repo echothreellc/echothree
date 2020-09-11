@@ -93,7 +93,7 @@ public class EditRatingCommand
                 if(ratingTypeListItem != null) {
                     if(lockEntityForUpdate(rating)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             RatingDetailValue ratingDetailValue = ratingControl.getRatingDetailValueForUpdate(rating);
 
                             ratingDetailValue.setRatingTypeListItemPK(ratingTypeListItem.getPrimaryKey());

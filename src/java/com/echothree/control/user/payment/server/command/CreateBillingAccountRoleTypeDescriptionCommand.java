@@ -74,7 +74,7 @@ public class CreateBillingAccountRoleTypeDescriptionCommand
                 BillingAccountRoleTypeDescription billingAccountRoleTypeDescription = billingControl.getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
                 
                 if(billingAccountRoleTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
 
                     billingControl.createBillingAccountRoleTypeDescription(billingAccountRoleType, language, description);
                 } else {

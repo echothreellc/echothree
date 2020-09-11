@@ -87,10 +87,10 @@ public class CreateEntityTypeCommand
                         null, ExecutionErrors.UnknownLockTimeoutUnitOfMeasureTypeName.name());
 
                 if(!hasExecutionErrors()) {
-                    PartyPK partyPK = getPartyPK();
+                    var partyPK = getPartyPK();
                     Boolean keepAllHistory = Boolean.valueOf(form.getKeepAllHistory());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
 
                     entityType = coreControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout, sortOrder, partyPK);
 

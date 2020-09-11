@@ -153,7 +153,7 @@ public class EditLetterCommand
                                 if(contactListName == null || contactList != null) {
                                     if(lockEntityForUpdate(letter)) {
                                         try {
-                                            PartyPK partyPK = getPartyPK();
+                                            var partyPK = getPartyPK();
                                             LetterDetailValue letterDetailValue = letterControl.getLetterDetailValueForUpdate(letter);
                                             LetterDescription letterDescription = letterControl.getLetterDescriptionForUpdate(letter, getPreferredLanguage());
                                             String description = edit.getDescription();

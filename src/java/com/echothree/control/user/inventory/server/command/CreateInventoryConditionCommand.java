@@ -67,9 +67,9 @@ public class CreateInventoryConditionCommand
     protected BaseResult execute() {
         CreateInventoryConditionResult result = InventoryResultFactory.getCreateInventoryConditionResult();
         String inventoryConditionName = form.getInventoryConditionName();
-        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-        String description = form.getDescription();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
 
         InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().createInventoryCondition(this,
                 inventoryConditionName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());

@@ -171,7 +171,7 @@ public class CreateBlogEntryCommand
                                                                                 String title = form.getTitle();
                                                                                 String rawPostedTime = form.getPostedTime();
                                                                                 Long postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
-                                                                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                                                                                var sortOrder = Integer.valueOf(form.getSortOrder());
                                                                                 String content = form.getContent();
                                                                                 BasePK createdBy = getPartyPK();
 

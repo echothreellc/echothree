@@ -80,7 +80,7 @@ public class CreateCancellationKindDescriptionCommand
                 CancellationKindDescription cancellationKindDescription = cancellationPolicyControl.getCancellationKindDescription(cancellationKind, language);
                 
                 if(cancellationKindDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     cancellationPolicyControl.createCancellationKindDescription(cancellationKind, language, description, getPartyPK());
                 } else {

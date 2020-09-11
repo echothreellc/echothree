@@ -149,7 +149,7 @@ public class EditForumGroupCommand
     @Override
     public void doUpdate(ForumGroup forumGroup) {
         var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ForumGroupDetailValue forumGroupDetailValue = forumControl.getForumGroupDetailValueForUpdate(forumGroup);
         ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, getPreferredLanguage());
         String description = edit.getDescription();

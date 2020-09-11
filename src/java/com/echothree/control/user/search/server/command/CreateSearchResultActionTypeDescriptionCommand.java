@@ -80,7 +80,7 @@ public class CreateSearchResultActionTypeDescriptionCommand
                 SearchResultActionTypeDescription searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescription(searchResultActionType, language);
                 
                 if(searchResultActionTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     searchControl.createSearchResultActionTypeDescription(searchResultActionType, language, description, getPartyPK());
                 } else {

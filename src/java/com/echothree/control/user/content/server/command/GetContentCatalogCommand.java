@@ -88,7 +88,7 @@ public class GetContentCatalogCommand
 
             if(!hasExecutionErrors()) {
                 String contentCatalogName = form.getContentCatalogName();
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
                 
                 contentCatalog = contentCatalogName == null ? contentControl.getDefaultContentCatalog(contentCollection)
                         : contentControl.getContentCatalogByName(contentCollection, contentCatalogName);

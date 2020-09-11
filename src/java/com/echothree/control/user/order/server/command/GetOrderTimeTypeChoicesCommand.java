@@ -68,8 +68,8 @@ public class GetOrderTimeTypeChoicesCommand
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderTimeTypeChoicesResult result = OrderResultFactory.getGetOrderTimeTypeChoicesResult();
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);

@@ -86,7 +86,7 @@ public class CreateEntityTypeDescriptionCommand
                     EntityTypeDescription entityTypeDescription = coreControl.getEntityTypeDescription(entityType, language);
                     
                     if(entityTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         coreControl.createEntityTypeDescription(entityType, language, description, getPartyPK());
                     } else {

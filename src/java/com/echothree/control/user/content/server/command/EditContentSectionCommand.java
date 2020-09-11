@@ -181,7 +181,7 @@ public class EditContentSectionCommand
     @Override
     public void doUpdate(ContentSection contentSection) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContentSectionDetailValue contentSectionDetailValue = contentControl.getContentSectionDetailValueForUpdate(contentSection);
         ContentSectionDescription contentSectionDescription = contentControl.getContentSectionDescriptionForUpdate(contentSection, getPreferredLanguage());
         String description = edit.getDescription();

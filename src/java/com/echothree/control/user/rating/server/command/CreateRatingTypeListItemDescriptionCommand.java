@@ -86,7 +86,7 @@ public class CreateRatingTypeListItemDescriptionCommand
                             RatingTypeListItemDescription ratingTypeListItemDescription = ratingControl.getRatingTypeListItemDescription(ratingTypeListItem, language);
                             
                             if(ratingTypeListItemDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 ratingControl.createRatingTypeListItemDescription(ratingTypeListItem, language, description, getPartyPK());
                             } else {

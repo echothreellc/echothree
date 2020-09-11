@@ -66,7 +66,7 @@ public class CreateSelectorNodeTypeDescriptionCommand
                 SelectorNodeTypeDescription selectorNodeTypeDescription = selectorControl.getSelectorNodeTypeDescription(selectorNodeType, language);
                 
                 if(selectorNodeTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     selectorControl.createSelectorNodeTypeDescription(selectorNodeType, language, description);
                 } else {

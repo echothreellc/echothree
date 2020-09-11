@@ -96,7 +96,7 @@ public class EditOrderLineAdjustmentTypeCommand
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderLineAdjustmentType orderLineAdjustmentType = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
@@ -151,7 +151,7 @@ public class EditOrderLineAdjustmentTypeCommand
     public void canUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
@@ -169,7 +169,7 @@ public class EditOrderLineAdjustmentTypeCommand
     @Override
     public void doUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDetailValueForUpdate(orderLineAdjustmentType);
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, getPreferredLanguage());
         String description = edit.getDescription();

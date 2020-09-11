@@ -56,8 +56,8 @@ public class CreateClubItemTypeCommand
         ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
         
         if(clubItemType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             clubControl.createClubItemType(clubItemTypeName, isDefault, sortOrder);
         } else {
