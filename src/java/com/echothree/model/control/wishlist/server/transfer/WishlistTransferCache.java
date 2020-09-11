@@ -21,7 +21,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.WishlistControl;
@@ -36,7 +36,7 @@ public class WishlistTransferCache
     
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
     OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+    OrderTypeControl orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
     
     /** Creates a new instance of WishlistTransferCache */
     public WishlistTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
@@ -51,7 +51,7 @@ public class WishlistTransferCache
         if(wishlistTransfer == null) {
             OrderDetail orderDetail = order.getActiveDetail();
             Wishlist wishlist = wishlistControl.getWishlist(order);
-            OrderTypeTransfer orderType = orderControl.getOrderTypeTransfer(userVisit, orderDetail.getOrderType());
+            OrderTypeTransfer orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderDetail.getOrderType());
             String orderName = orderDetail.getOrderName();
             CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, orderDetail.getCurrency());
             OfferUseTransfer offerUse = offerControl.getOfferUseTransfer(userVisit, wishlist.getOfferUse());

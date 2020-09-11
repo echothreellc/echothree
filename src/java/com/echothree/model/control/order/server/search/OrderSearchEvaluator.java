@@ -18,6 +18,7 @@ package com.echothree.model.control.order.server.search;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
@@ -321,21 +322,24 @@ public class OrderSearchEvaluator
                 }
             }
         } else {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             Order order = null;
 
             if(parameterCount == 1) {
+                var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+
                 if(orderAliasType == null) {
-                    orderAliasType = orderControl.getDefaultOrderAliasType(orderType);
+                    orderAliasType = orderAliasControl.getDefaultOrderAliasType(orderType);
                 }
 
                 if(orderAliasType != null) {
-                    OrderAlias orderAlias = orderControl.getOrderAliasByAlias(orderAliasType, alias);
+                    OrderAlias orderAlias = orderAliasControl.getOrderAliasByAlias(orderAliasType, alias);
                     
                     order = orderAlias == null ? null : orderAlias.getOrder();
                 }
 
                 if(orderName != null) {
+                    var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+
                     order = orderControl.getOrderByName(orderType, orderName);
                 }
 

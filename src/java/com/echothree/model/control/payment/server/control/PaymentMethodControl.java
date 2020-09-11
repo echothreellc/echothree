@@ -18,7 +18,7 @@ package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPaymentPreferenceControl;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
@@ -389,11 +389,11 @@ public class PaymentMethodControl
     
     public void deletePaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
         var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderPaymentPreferenceControl = (OrderPaymentPreferenceControl)Session.getModelController(OrderPaymentPreferenceControl.class);
         var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
 
         customerControl.deleteCustomerTypePaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
-        orderControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);
+        orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);
         partyPaymentMethodControl.deletePartyPaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
         deletePaymentMethodDescriptionsByPaymentMethod(paymentMethod, deletedBy);
         
