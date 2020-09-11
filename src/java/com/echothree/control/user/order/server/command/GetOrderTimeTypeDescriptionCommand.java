@@ -19,7 +19,8 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.GetOrderTimeTypeDescriptionForm;
 import com.echothree.control.user.order.common.result.GetOrderTimeTypeDescriptionResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -70,14 +71,15 @@ public class GetOrderTimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderTimeTypeDescriptionResult result = OrderResultFactory.getGetOrderTimeTypeDescriptionResult();
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
             String orderTimeTypeName = form.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
                 var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -85,10 +87,10 @@ public class GetOrderTimeTypeDescriptionCommand
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderTimeTypeDescription orderTimeTypeDescription = orderControl.getOrderTimeTypeDescription(orderTimeType, language);
+                    OrderTimeTypeDescription orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescription(orderTimeType, language);
 
                     if(orderTimeTypeDescription != null) {
-                        result.setOrderTimeTypeDescription(orderControl.getOrderTimeTypeDescriptionTransfer(getUserVisit(), orderTimeTypeDescription));
+                        result.setOrderTimeTypeDescription(orderTimeControl.getOrderTimeTypeDescriptionTransfer(getUserVisit(), orderTimeTypeDescription));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownOrderTimeTypeDescription.name(), orderTypeName, orderTimeTypeName, languageIsoName);
                     }

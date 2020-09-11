@@ -19,16 +19,17 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.GetOrderAliasTypesForm;
 import com.echothree.control.user.order.common.result.GetOrderAliasTypesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -64,14 +65,16 @@ public class GetOrderAliasTypesCommand
 
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderAliasTypesResult result = OrderResultFactory.getGetOrderAliasTypesResult();
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            result.setOrderType(orderControl.getOrderTypeTransfer(getUserVisit(), orderType));
-            result.setOrderAliasTypes(orderControl.getOrderAliasTypeTransfers(getUserVisit(), orderType));
+            var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+
+            result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
+            result.setOrderAliasTypes(orderAliasControl.getOrderAliasTypeTransfers(getUserVisit(), orderType));
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }

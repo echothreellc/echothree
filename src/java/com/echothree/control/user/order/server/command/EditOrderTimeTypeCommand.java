@@ -22,7 +22,8 @@ import com.echothree.control.user.order.common.form.EditOrderTimeTypeForm;
 import com.echothree.control.user.order.common.result.EditOrderTimeTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderTimeTypeSpec;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -34,10 +35,10 @@ import com.echothree.model.data.order.server.value.OrderTimeTypeDescriptionValue
 import com.echothree.model.data.order.server.value.OrderTimeTypeDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -92,22 +93,23 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public OrderTimeType getEntity(EditOrderTimeTypeResult result) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderTimeType orderTimeType = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
             String orderTimeTypeName = spec.getOrderTimeTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+                orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
             } else { // EditMode.UPDATE
-                orderTimeType = orderControl.getOrderTimeTypeByNameForUpdate(orderType, orderTimeTypeName);
+                orderTimeType = orderTimeControl.getOrderTimeTypeByNameForUpdate(orderType, orderTimeTypeName);
             }
 
             if(orderTimeType != null) {
-                result.setOrderTimeType(orderControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
+                result.setOrderTimeType(orderTimeControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderTimeTypeName.name(), orderTypeName, orderTimeTypeName);
             }
@@ -125,15 +127,15 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void fillInResult(EditOrderTimeTypeResult result, OrderTimeType orderTimeType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
 
-        result.setOrderTimeType(orderControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
+        result.setOrderTimeType(orderTimeControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
     }
 
     @Override
     public void doLock(OrderTimeTypeEdit edit, OrderTimeType orderTimeType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderTimeTypeDescription orderTimeTypeDescription = orderControl.getOrderTimeTypeDescription(orderTimeType, getPreferredLanguage());
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        OrderTimeTypeDescription orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescription(orderTimeType, getPreferredLanguage());
         OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getLastDetail();
 
         edit.setOrderTimeTypeName(orderTimeTypeDetail.getOrderTimeTypeName());
@@ -147,13 +149,14 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void canUpdate(OrderTimeType orderTimeType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
             String orderTimeTypeName = edit.getOrderTimeTypeName();
-            OrderTimeType duplicateOrderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+            OrderTimeType duplicateOrderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
             if(duplicateOrderTimeType != null && !orderTimeType.equals(duplicateOrderTimeType)) {
                 addExecutionError(ExecutionErrors.DuplicateOrderTimeTypeName.name(), orderTypeName, orderTimeTypeName);
@@ -165,29 +168,29 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void doUpdate(OrderTimeType orderTimeType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         PartyPK partyPK = getPartyPK();
-        OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderControl.getOrderTimeTypeDetailValueForUpdate(orderTimeType);
-        OrderTimeTypeDescription orderTimeTypeDescription = orderControl.getOrderTimeTypeDescriptionForUpdate(orderTimeType, getPreferredLanguage());
+        OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueForUpdate(orderTimeType);
+        OrderTimeTypeDescription orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescriptionForUpdate(orderTimeType, getPreferredLanguage());
         String description = edit.getDescription();
 
         orderTimeTypeDetailValue.setOrderTimeTypeName(edit.getOrderTimeTypeName());
         orderTimeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderTimeTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        orderControl.updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, partyPK);
+        orderTimeControl.updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, partyPK);
 
         if(orderTimeTypeDescription == null && description != null) {
-            orderControl.createOrderTimeTypeDescription(orderTimeType, getPreferredLanguage(), description, partyPK);
+            orderTimeControl.createOrderTimeTypeDescription(orderTimeType, getPreferredLanguage(), description, partyPK);
         } else {
             if(orderTimeTypeDescription != null && description == null) {
-                orderControl.deleteOrderTimeTypeDescription(orderTimeTypeDescription, partyPK);
+                orderTimeControl.deleteOrderTimeTypeDescription(orderTimeTypeDescription, partyPK);
             } else {
                 if(orderTimeTypeDescription != null && description != null) {
-                    OrderTimeTypeDescriptionValue orderTimeTypeDescriptionValue = orderControl.getOrderTimeTypeDescriptionValue(orderTimeTypeDescription);
+                    OrderTimeTypeDescriptionValue orderTimeTypeDescriptionValue = orderTimeControl.getOrderTimeTypeDescriptionValue(orderTimeTypeDescription);
 
                     orderTimeTypeDescriptionValue.setDescription(description);
-                    orderControl.updateOrderTimeTypeDescriptionFromValue(orderTimeTypeDescriptionValue, partyPK);
+                    orderTimeControl.updateOrderTimeTypeDescriptionFromValue(orderTimeTypeDescriptionValue, partyPK);
                 }
             }
         }

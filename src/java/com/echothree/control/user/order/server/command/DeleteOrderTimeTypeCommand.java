@@ -17,17 +17,18 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.DeleteOrderTimeTypeForm;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -64,16 +65,17 @@ public class DeleteOrderTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
             String orderTimeTypeName = form.getOrderTimeTypeName();
-            OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByNameForUpdate(orderType, orderTimeTypeName);
+            OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByNameForUpdate(orderType, orderTimeTypeName);
 
             if(orderTimeType != null) {
-                orderControl.deleteOrderTimeType(orderTimeType, getPartyPK());
+                orderTimeControl.deleteOrderTimeType(orderTimeType, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderTimeTypeName.name(), orderTypeName, orderTimeTypeName);
             }

@@ -72,6 +72,7 @@ public class GetOrderAdjustmentTypesCommand
 
         if(orderType != null) {
             var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
+
             result.setOrderAdjustmentTypes(orderAdjustmentControl.getOrderAdjustmentTypeTransfers(getUserVisit(), orderType));
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);

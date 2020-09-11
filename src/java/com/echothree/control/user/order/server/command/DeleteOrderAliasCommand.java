@@ -18,7 +18,9 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.DeleteOrderAliasForm;
 import com.echothree.control.user.order.server.command.util.OrderAliasUtil;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.Order;
@@ -26,10 +28,10 @@ import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -64,23 +66,25 @@ public class DeleteOrderAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             String orderName = form.getOrderName();
             Order order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
+                var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
                 String orderAliasTypeName = form.getOrderAliasTypeName();
-                OrderAliasType orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+                OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
                 if(orderAliasType != null) {
-                    OrderAlias orderAlias = orderControl.getOrderAliasForUpdate(order, orderAliasType);
+                    OrderAlias orderAlias = orderAliasControl.getOrderAliasForUpdate(order, orderAliasType);
 
                     if(orderAlias != null) {
-                        orderControl.deleteOrderAlias(orderAlias, getPartyPK());
+                        orderAliasControl.deleteOrderAlias(orderAlias, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownOrderAlias.name(), orderTypeName, orderName, orderAliasTypeName);
                     }
