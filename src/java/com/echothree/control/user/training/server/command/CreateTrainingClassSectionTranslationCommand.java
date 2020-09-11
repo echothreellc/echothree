@@ -110,7 +110,7 @@ public class CreateTrainingClassSectionTranslationCommand
                                     ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
 
                             if(!hasExecutionErrors()) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
 
                                 trainingControl.createTrainingClassSectionTranslation(trainingClassSection, language, description, overviewMimeType, overview,
                                         introductionMimeType, introduction, getPartyPK());

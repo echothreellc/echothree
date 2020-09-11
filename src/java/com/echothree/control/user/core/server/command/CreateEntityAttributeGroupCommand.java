@@ -67,9 +67,9 @@ public class CreateEntityAttributeGroupCommand
     protected BaseResult execute() {
         CreateEntityAttributeGroupResult result = CoreResultFactory.getCreateEntityAttributeGroupResult();
         String entityAttributeGroupName = form.getEntityAttributeGroupName();
-        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-        String description = form.getDescription();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
         EntityAttributeGroup entityAttributeGroup = EntityAttributeGroupLogic.getInstance().createEntityAttributeGroup(this,
                 entityAttributeGroupName, isDefault, sortOrder, description, description == null ? null : getPreferredLanguage(),
                 getPartyPK());

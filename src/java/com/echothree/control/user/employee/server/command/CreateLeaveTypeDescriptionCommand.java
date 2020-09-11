@@ -66,7 +66,7 @@ public class CreateLeaveTypeDescriptionCommand
                 LeaveTypeDescription leaveDescription = employeeControl.getLeaveTypeDescription(leaveType, language);
                 
                 if(leaveDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     employeeControl.createLeaveTypeDescription(leaveType, language, description, getPartyPK());
                 } else {

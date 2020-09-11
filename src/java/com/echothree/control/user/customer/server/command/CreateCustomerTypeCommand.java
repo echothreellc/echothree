@@ -234,7 +234,7 @@ public class CreateCustomerTypeCommand
                                                 AllocationPriority allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
                                                 
                                                 if(!hasExecutionErrors()) {
-                                                    PartyPK partyPK = getPartyPK();
+                                                    var partyPK = getPartyPK();
                                                     Boolean defaultHoldUntilComplete = Boolean.valueOf(form.getDefaultHoldUntilComplete());
                                                     Boolean defaultAllowBackorders = Boolean.valueOf(form.getDefaultAllowBackorders());
                                                     Boolean defaultAllowSubstitutions = Boolean.valueOf(form.getDefaultAllowSubstitutions());
@@ -243,9 +243,9 @@ public class CreateCustomerTypeCommand
                                                     Boolean defaultAllowReferenceDuplicates = Boolean.valueOf(form.getDefaultAllowReferenceDuplicates());
                                                     String defaultReferenceValidationPattern = form.getDefaultReferenceValidationPattern();
                                                     Boolean defaultTaxable = Boolean.valueOf(form.getDefaultTaxable());
-                                                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                                    String description = form.getDescription();
+                                                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                                                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                                                    var description = form.getDescription();
 
                                                     customerType = customerControl.createCustomerType(customerTypeName, customerSequence, defaultOfferUse,
                                                             defaultTerm, defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy, defaultCustomerStatus,

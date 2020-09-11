@@ -164,7 +164,7 @@ public class EditShipmentAliasTypeCommand
     @Override
     public void doUpdate(ShipmentAliasType shipmentAliasType) {
         var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue = shipmentControl.getShipmentAliasTypeDetailValueForUpdate(shipmentAliasType);
         ShipmentAliasTypeDescription shipmentAliasTypeDescription = shipmentControl.getShipmentAliasTypeDescriptionForUpdate(shipmentAliasType, getPreferredLanguage());
         String description = edit.getDescription();

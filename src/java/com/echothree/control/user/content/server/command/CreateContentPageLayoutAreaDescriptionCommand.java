@@ -74,7 +74,7 @@ public class CreateContentPageLayoutAreaDescriptionCommand
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
             
             if(contentPageLayoutArea != null) {
@@ -86,7 +86,7 @@ public class CreateContentPageLayoutAreaDescriptionCommand
                     ContentPageLayoutAreaDescription contentPageLayoutAreaDescription = contentControl.getContentPageLayoutAreaDescription(contentPageLayoutArea, language);
                     
                     if(contentPageLayoutAreaDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         contentControl.createContentPageLayoutAreaDescription(contentPageLayoutArea, language, description);
                     } else {

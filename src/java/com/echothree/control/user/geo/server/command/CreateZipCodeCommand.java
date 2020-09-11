@@ -98,9 +98,9 @@ public class CreateZipCodeCommand
             if(geoCodeAlias == null) {
                 BasePK createdBy = getPartyPK();
                 String geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 
                 geoCode = geoControl.createGeoCode(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, createdBy);
                 geoControl.createGeoCodeRelationship(geoCode, countryGeoCode, createdBy);

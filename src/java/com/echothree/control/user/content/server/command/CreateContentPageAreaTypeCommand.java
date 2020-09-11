@@ -61,7 +61,7 @@ public class CreateContentPageAreaTypeCommand
     @Override
     protected BaseResult execute() {
         String contentPageAreaTypeName = form.getContentPageAreaTypeName();
-        String description = form.getDescription();
+        var description = form.getDescription();
         
         ContentPageAreaTypeLogic.getInstance().createContentPageAreaType(this, contentPageAreaTypeName, getPreferredLanguage(),
                 description, getPartyPK());

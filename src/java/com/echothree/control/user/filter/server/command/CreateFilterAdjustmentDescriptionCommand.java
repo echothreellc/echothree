@@ -72,7 +72,7 @@ public class CreateFilterAdjustmentDescriptionCommand
                     FilterAdjustmentDescription filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, language);
                     
                     if(filterAdjustmentDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         filterControl.createFilterAdjustmentDescription(filterAdjustment, language, description, getPartyPK());
                     } else {

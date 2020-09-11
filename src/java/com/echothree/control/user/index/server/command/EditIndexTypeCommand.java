@@ -173,7 +173,7 @@ public class EditIndexTypeCommand
     @Override
     public void doUpdate(IndexType indexType) {
         var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         IndexTypeDetailValue indexTypeDetailValue = indexControl.getIndexTypeDetailValueForUpdate(indexType);
         IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescriptionForUpdate(indexType, getPreferredLanguage());
         String description = edit.getDescription();

@@ -127,7 +127,7 @@ public class EditRatingTypeListItemCommand
                             if(duplicateRatingTypeListItem == null || ratingTypeListItem.equals(duplicateRatingTypeListItem)) {
                                 if(lockEntityForUpdate(ratingTypeListItem)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         RatingTypeListItemDetailValue ratingTypeListItemDetailValue = ratingControl.getRatingTypeListItemDetailValueForUpdate(ratingTypeListItem);
                                         RatingTypeListItemDescription ratingTypeListItemDescription = ratingControl.getRatingTypeListItemDescriptionForUpdate(ratingTypeListItem, getPreferredLanguage());
                                         String description = edit.getDescription();

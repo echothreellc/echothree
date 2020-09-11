@@ -66,7 +66,7 @@ public class CreateClubItemTypeDescriptionCommand
                 ClubItemTypeDescription clubItemTypeDescription = clubControl.getClubItemTypeDescription(clubItemType, language);
                 
                 if(clubItemTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     clubControl.createClubItemTypeDescription(clubItemType, language, description);
                 } else {

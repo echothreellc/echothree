@@ -76,9 +76,9 @@ public class CreateMessageTypeCommand
                     MimeTypeUsageType mimeTypeUsageType = mimeTypeUsageTypeName == null? null: coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                     
                     if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
-                        PartyPK partyPK = getPartyPK();
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var partyPK = getPartyPK();
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
                         
                         messageType = messageControl.createMessageType(entityType, messageTypeName, mimeTypeUsageType, sortOrder,
                                 partyPK);

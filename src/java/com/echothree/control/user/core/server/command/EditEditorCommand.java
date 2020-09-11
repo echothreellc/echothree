@@ -167,7 +167,7 @@ public class EditEditorCommand
     @Override
     public void doUpdate(Editor editor) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         EditorDetailValue editorDetailValue = coreControl.getEditorDetailValueForUpdate(editor);
         EditorDescription editorDescription = coreControl.getEditorDescriptionForUpdate(editor, getPreferredLanguage());
         String strMinimumHeight = edit.getMinimumHeight();

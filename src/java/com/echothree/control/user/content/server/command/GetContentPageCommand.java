@@ -90,7 +90,7 @@ public class GetContentPageCommand
             if(!hasExecutionErrors()) {
                 String contentSectionName = form.getContentSectionName();
                 String contentPageName = form.getContentPageName();
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
 
                 ContentSection contentSection = contentSectionName == null ? contentControl.getDefaultContentSection(contentCollection)
                         : contentControl.getContentSectionByName(contentCollection, contentSectionName);

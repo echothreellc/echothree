@@ -91,7 +91,7 @@ public class GetContentSectionsCommand
 
             if(!hasExecutionErrors()) {
                 String parentContentSectionName = form.getParentContentSectionName();
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
 
                 parentContentSection = parentContentSectionName == null ? null : contentControl.getContentSectionByName(contentCollection, parentContentSectionName);
                 

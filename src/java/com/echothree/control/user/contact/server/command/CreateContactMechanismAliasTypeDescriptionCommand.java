@@ -80,7 +80,7 @@ public class CreateContactMechanismAliasTypeDescriptionCommand
                 ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
                 
                 if(contactMechanismAliasTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contactControl.createContactMechanismAliasTypeDescription(contactMechanismAliasType, language, description, getPartyPK());
                 } else {

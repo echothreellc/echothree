@@ -171,7 +171,7 @@ public class EditSalesOrderBatchCommand
     public void doUpdate(Batch batch) {
         var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
         var orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         String strCount = edit.getCount();
         Long count = strCount == null ? null : Long.valueOf(strCount);
         String strAmount = edit.getAmount();

@@ -125,7 +125,7 @@ public class EditOfferNameElementCommand
                 if(duplicateOfferNameElement == null || offerNameElement.equals(duplicateOfferNameElement)) {
                     if(lockEntityForUpdate(offerNameElement)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             OfferNameElementDetailValue offerNameElementDetailValue = offerControl.getOfferNameElementDetailValueForUpdate(offerNameElement);
                             OfferNameElementDescription offerNameElementDescription = offerControl.getOfferNameElementDescriptionForUpdate(offerNameElement, getPreferredLanguage());
                             String description = edit.getDescription();

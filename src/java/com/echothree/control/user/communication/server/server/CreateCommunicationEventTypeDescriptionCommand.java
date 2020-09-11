@@ -66,7 +66,7 @@ public class CreateCommunicationEventTypeDescriptionCommand
                 CommunicationEventTypeDescription communicationEventTypeDescription = communicationControl.getCommunicationEventTypeDescription(communicationEventType, language);
                 
                 if(communicationEventTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     communicationControl.createCommunicationEventTypeDescription(communicationEventType, language, description);
                 } else {

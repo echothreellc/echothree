@@ -55,8 +55,8 @@ public class CreatePartyTypeUseTypeCommand
         PartyTypeUseType partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
         
         if(partyTypeUseType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             partyControl.createPartyTypeUseType(partyTypeUseTypeName, isDefault, sortOrder);
         } else {

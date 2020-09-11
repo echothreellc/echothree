@@ -64,7 +64,7 @@ public class CreateTimeZoneDescriptionCommand
                 TimeZoneDescription timeZoneDescription = partyControl.getTimeZoneDescription(timeZone, language);
                 
                 if(timeZoneDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createTimeZoneDescription(timeZone, language, description, getPartyPK());
                 } else {

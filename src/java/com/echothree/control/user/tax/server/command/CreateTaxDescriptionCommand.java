@@ -66,7 +66,7 @@ public class CreateTaxDescriptionCommand
                 TaxDescription taxDescription = taxControl.getTaxDescription(tax, language);
                 
                 if(taxDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     taxControl.createTaxDescription(tax, language, description, getPartyPK());
                 } else {

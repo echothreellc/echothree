@@ -104,10 +104,10 @@ public class CreatePicklistTypeCommand
                             WorkflowEntrance picklistWorkflowEntrance = picklistWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(picklistWorkflow, picklistWorkflowEntranceName);
 
                             if(picklistWorkflowEntranceName == null || picklistWorkflowEntrance != null) {
-                                PartyPK partyPK = getPartyPK();
-                                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                String description = form.getDescription();
+                                var partyPK = getPartyPK();
+                                var isDefault = Boolean.valueOf(form.getIsDefault());
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                var description = form.getDescription();
 
                                 picklistType = picklistControl.createPicklistType(picklistTypeName, parentPicklistType, picklistSequenceType, picklistWorkflow,
                                         picklistWorkflowEntrance, isDefault, sortOrder, partyPK);

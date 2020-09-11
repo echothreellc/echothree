@@ -148,7 +148,7 @@ public class EditSelectorKindCommand
     @Override
     public void doUpdate(SelectorKind selectorKind) {
         var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SelectorKindDetailValue selectorKindDetailValue = selectorControl.getSelectorKindDetailValueForUpdate(selectorKind);
         SelectorKindDescription selectorKindDescription = selectorControl.getSelectorKindDescriptionForUpdate(selectorKind, getPreferredLanguage());
         String description = edit.getDescription();

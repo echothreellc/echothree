@@ -122,7 +122,7 @@ public class EditSelectorCommand
                         if(duplicateSelector == null || selector.equals(duplicateSelector)) {
                             if(lockEntityForUpdate(selector)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     SelectorDetailValue selectorDetailValue = selectorControl.getSelectorDetailValueForUpdate(selector);
                                     SelectorDescription selectorDescription = selectorControl.getSelectorDescriptionForUpdate(selector, getPreferredLanguage());
                                     String description = edit.getDescription();

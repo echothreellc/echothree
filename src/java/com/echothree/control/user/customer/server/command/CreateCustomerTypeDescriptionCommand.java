@@ -80,7 +80,7 @@ public class CreateCustomerTypeDescriptionCommand
                 CustomerTypeDescription customerTypeDescription = customerControl.getCustomerTypeDescription(customerType, language);
                 
                 if(customerTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     customerControl.createCustomerTypeDescription(customerType, language, description, getPartyPK());
                 } else {

@@ -148,7 +148,7 @@ public class EditSearchResultActionTypeCommand
     @Override
     public void doUpdate(SearchResultActionType searchResultActionType) {
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = searchControl.getSearchResultActionTypeDetailValueForUpdate(searchResultActionType);
         SearchResultActionTypeDescription searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescriptionForUpdate(searchResultActionType, getPreferredLanguage());
         String description = edit.getDescription();

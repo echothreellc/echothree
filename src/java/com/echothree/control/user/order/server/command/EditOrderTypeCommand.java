@@ -217,7 +217,7 @@ public class EditOrderTypeCommand
     @Override
     public void doUpdate(OrderType orderType) {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         OrderTypeDetailValue orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueForUpdate(orderType);
         OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescriptionForUpdate(orderType, getPreferredLanguage());
         String description = edit.getDescription();

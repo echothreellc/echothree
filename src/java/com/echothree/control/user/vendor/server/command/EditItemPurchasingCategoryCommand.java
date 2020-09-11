@@ -134,7 +134,7 @@ public class EditItemPurchasingCategoryCommand
                         if(vendorControl.isParentItemPurchasingCategorySafe(itemPurchasingCategory, parentItemPurchasingCategory)) {
                             if(lockEntityForUpdate(itemPurchasingCategory)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueForUpdate(itemPurchasingCategory);
                                     ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescriptionForUpdate(itemPurchasingCategory, getPreferredLanguage());
                                     String description = edit.getDescription();

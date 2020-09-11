@@ -75,7 +75,7 @@ public class CreateCommandMessageCommand
             CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
             
             if(commandMessage == null) {
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
                 String translation = form.getTranslation();
 
                 commandMessage = coreControl.createCommandMessage(commandMessageType, commandMessageKey, partyPK);

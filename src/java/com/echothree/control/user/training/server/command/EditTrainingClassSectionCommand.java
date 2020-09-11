@@ -200,7 +200,7 @@ public class EditTrainingClassSectionCommand
     @Override
     public void doUpdate(TrainingClassSection trainingClassSection) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TrainingClassSectionDetailValue trainingClassSectionDetailValue = trainingControl.getTrainingClassSectionDetailValueForUpdate(trainingClassSection);
         TrainingClassSectionTranslation trainingClassSectionTranslation = trainingControl.getTrainingClassSectionTranslationForUpdate(trainingClassSection, getPreferredLanguage());
         String percentageToPass = edit.getPercentageToPass();

@@ -80,7 +80,7 @@ public class CreateSubscriptionKindDescriptionCommand
                 SubscriptionKindDescription subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescription(subscriptionKind, language);
                 
                 if(subscriptionKindDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     subscriptionControl.createSubscriptionKindDescription(subscriptionKind, language, description, getPartyPK());
                 } else {

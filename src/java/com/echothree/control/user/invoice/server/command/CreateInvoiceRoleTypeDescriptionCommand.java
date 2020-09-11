@@ -74,7 +74,7 @@ public class CreateInvoiceRoleTypeDescriptionCommand
                 InvoiceRoleTypeDescription invoiceRoleTypeDescription = invoiceControl.getInvoiceRoleTypeDescription(invoiceRoleType, language);
                 
                 if(invoiceRoleTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     invoiceControl.createInvoiceRoleTypeDescription(invoiceRoleType, language, description);
                 } else {

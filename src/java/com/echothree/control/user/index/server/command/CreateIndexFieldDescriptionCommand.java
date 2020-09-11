@@ -86,7 +86,7 @@ public class CreateIndexFieldDescriptionCommand
                     IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescription(indexField, language);
                     
                     if(indexFieldDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         indexControl.createIndexFieldDescription(indexField, language, description, getPartyPK());
                     } else {

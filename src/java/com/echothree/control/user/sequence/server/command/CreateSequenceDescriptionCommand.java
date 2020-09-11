@@ -86,7 +86,7 @@ public class CreateSequenceDescriptionCommand
                     SequenceDescription sequenceDescription = sequenceControl.getSequenceDescription(sequence, language);
                     
                     if(sequenceDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         sequenceControl.createSequenceDescription(sequence, language, description, getPartyPK());
                     } else {

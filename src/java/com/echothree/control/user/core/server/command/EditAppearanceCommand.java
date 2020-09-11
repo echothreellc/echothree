@@ -195,7 +195,7 @@ public class EditAppearanceCommand
     @Override
     public void doUpdate(Appearance appearance) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         AppearanceDetailValue appearanceDetailValue = coreControl.getAppearanceDetailValueForUpdate(appearance);
         AppearanceDescription appearanceDescription = coreControl.getAppearanceDescriptionForUpdate(appearance, getPreferredLanguage());
         String description = edit.getDescription();

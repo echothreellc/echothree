@@ -86,7 +86,7 @@ public class CreateChainTypeDescriptionCommand
                     ChainTypeDescription chainTypeDescription = chainControl.getChainTypeDescription(chainType, language);
                     
                     if(chainTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         chainControl.createChainTypeDescription(chainType, language, description, getPartyPK());
                     } else {

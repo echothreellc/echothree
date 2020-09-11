@@ -138,7 +138,7 @@ public class EditInventoryConditionCommand
     @Override
     public void doUpdate(InventoryCondition inventoryCondition) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         InventoryConditionDetailValue inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueForUpdate(inventoryCondition);
         InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescriptionForUpdate(inventoryCondition, getPreferredLanguage());
         String description = edit.getDescription();

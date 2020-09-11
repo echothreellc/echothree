@@ -186,7 +186,7 @@ public class EditChainActionSetCommand
     @Override
     public void doUpdate(ChainActionSet chainActionSet) {
         var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ChainActionSetDetailValue chainActionSetDetailValue = chainControl.getChainActionSetDetailValueForUpdate(chainActionSet);
         ChainActionSetDescription chainActionSetDescription = chainControl.getChainActionSetDescriptionForUpdate(chainActionSet, getPreferredLanguage());
         String description = edit.getDescription();

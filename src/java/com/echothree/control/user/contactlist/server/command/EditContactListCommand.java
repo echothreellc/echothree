@@ -206,7 +206,7 @@ public class EditContactListCommand
     @Override
     public void doUpdate(ContactList contactList) {
         var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContactListDetailValue contactListDetailValue = contactListControl.getContactListDetailValueForUpdate(contactList);
         ContactListDescription contactListDescription = contactListControl.getContactListDescriptionForUpdate(contactList, getPreferredLanguage());
         String description = edit.getDescription();

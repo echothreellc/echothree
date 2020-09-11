@@ -70,8 +70,8 @@ public class CreateCustomerTypePaymentMethodCommand
                 
                 if(customerTypePaymentMethod == null) {
                     Integer defaultSelectionPriority = Integer.valueOf(form.getDefaultSelectionPriority());
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     customerControl.createCustomerTypePaymentMethod(customerType, paymentMethod, defaultSelectionPriority, isDefault, sortOrder, getPartyPK());
                 } else {

@@ -85,9 +85,9 @@ public class CreatePartyDocumentCommand
     }
 
     private void createPartyDocument(Party party, DocumentType documentType, MimeType mimeType, ByteArray blob, String clob, CreatePartyDocumentResult result) {
-        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-        String description = form.getDescription();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
 
         PartyDocument partyDocument = DocumentLogic.getInstance().createPartyDocument(this, party, documentType, mimeType, isDefault, sortOrder,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());

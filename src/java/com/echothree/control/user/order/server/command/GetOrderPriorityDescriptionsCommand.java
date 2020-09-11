@@ -69,8 +69,8 @@ public class GetOrderPriorityDescriptionsCommand
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderPriorityDescriptionsResult result = OrderResultFactory.getGetOrderPriorityDescriptionsResult();
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);

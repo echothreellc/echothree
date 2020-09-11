@@ -55,8 +55,8 @@ public class CreateItemTypeCommand
         ItemType itemType = itemControl.getItemTypeByName(itemTypeName);
         
         if(itemType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             itemControl.createItemType(itemTypeName, isDefault, sortOrder);
         } else {

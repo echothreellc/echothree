@@ -65,7 +65,7 @@ public class CreateUserLoginPasswordEncoderTypeDescriptionCommand
                 UserLoginPasswordEncoderTypeDescription userLoginPasswordEncoderTypeDescription = userControl.getUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, language);
                 
                 if(userLoginPasswordEncoderTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     userControl.createUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType, language, description);
                 } // TODO: error, duplicate userLoginPasswordEncoderTypeDescription

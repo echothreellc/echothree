@@ -181,7 +181,7 @@ public class EditReturnPolicyCommand
     @Override
     public void doUpdate(ReturnPolicy returnPolicy) {
         var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ReturnPolicyDetailValue returnPolicyDetailValue = returnPolicyControl.getReturnPolicyDetailValueForUpdate(returnPolicy);
         ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslationForUpdate(returnPolicy, getPreferredLanguage());
         String description = edit.getDescription();

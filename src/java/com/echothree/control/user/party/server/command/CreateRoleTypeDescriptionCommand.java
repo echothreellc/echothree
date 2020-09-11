@@ -63,7 +63,7 @@ public class CreateRoleTypeDescriptionCommand
                 RoleTypeDescription roleTypeDescription = partyControl.getRoleTypeDescription(roleType, language);
                 
                 if(roleTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createRoleTypeDescription(roleType, language, description);
                 } // TODO: error, duplicate roleTypeDescription

@@ -70,8 +70,8 @@ public class GetOrderTypeDescriptionCommand
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderTypeDescriptionResult result = OrderResultFactory.getGetOrderTypeDescriptionResult();
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
         
         if(orderType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);

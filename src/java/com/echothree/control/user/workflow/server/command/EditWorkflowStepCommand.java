@@ -139,7 +139,7 @@ public class EditWorkflowStepCommand
                         if(workflowStepType != null) {
                             if(lockEntityForUpdate(workflowStep)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     WorkflowStepDetailValue workflowStepDetailValue = workflowControl.getWorkflowStepDetailValueForUpdate(workflowStep);
                                     WorkflowStepDescription workflowStepDescription = workflowControl.getWorkflowStepDescriptionForUpdate(workflowStep, getPreferredLanguage());
                                     String description = edit.getDescription();

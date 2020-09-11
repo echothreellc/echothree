@@ -114,9 +114,9 @@ public class CreateAssociateProgramCommand
                         Integer itemIndirectSalePercent = strItemIndirectSalePercent == null? null: Integer.valueOf(strItemIndirectSalePercent);
                         String strItemDirectSalePercent = form.getItemDirectSalePercent();
                         Integer itemDirectSalePercent = strItemDirectSalePercent == null? null: Integer.valueOf(strItemDirectSalePercent);
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
                         
                         associateProgram = associateControl.createAssociateProgram(associateProgramName, associateSequence,
                                 associatePartyContactMechanismSequence, associateReferralSequence, itemIndirectSalePercent,

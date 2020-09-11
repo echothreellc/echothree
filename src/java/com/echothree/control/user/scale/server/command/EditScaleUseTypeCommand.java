@@ -150,7 +150,7 @@ public class EditScaleUseTypeCommand
     @Override
     public void doUpdate(ScaleUseType scaleUseType) {
         var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ScaleUseTypeDetailValue scaleUseTypeDetailValue = scaleControl.getScaleUseTypeDetailValueForUpdate(scaleUseType);
         ScaleUseTypeDescription scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, getPreferredLanguage());
         String description = edit.getDescription();

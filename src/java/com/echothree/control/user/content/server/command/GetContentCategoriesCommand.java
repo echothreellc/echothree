@@ -94,7 +94,7 @@ public class GetContentCategoriesCommand
             }
 
             if(!hasExecutionErrors()) {
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
                 UserVisit userVisit = getUserVisitForUpdate();
                 String contentCatalogName = form.getContentCatalogName();
 

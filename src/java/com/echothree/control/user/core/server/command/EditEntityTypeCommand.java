@@ -178,7 +178,7 @@ public class EditEntityTypeCommand
     @Override
     public void doUpdate(EntityType entityType) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         EntityTypeDetailValue entityTypeDetailValue = coreControl.getEntityTypeDetailValueForUpdate(entityType);
         EntityTypeDescription entityTypeDescription = coreControl.getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());
         String description = edit.getDescription();

@@ -70,7 +70,7 @@ public class CreatePrinterCommand
             if(printerGroup != null) {
                 var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 Integer priority = Integer.valueOf(form.getPriority());
-                String description = form.getDescription();
+                var description = form.getDescription();
                 PartyPK createdBy = getPartyPK();
                 
                 printer = printerControl.createPrinter(printerName, printerGroup, priority, createdBy);

@@ -74,7 +74,7 @@ public class CreateWorkflowTypeDescriptionCommand
                 WorkflowTypeDescription workflowTypeDescription = workflowControl.getWorkflowTypeDescription(workflowType, language);
                 
                 if(workflowTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     workflowControl.createWorkflowTypeDescription(workflowType, language, description);
                 } else {

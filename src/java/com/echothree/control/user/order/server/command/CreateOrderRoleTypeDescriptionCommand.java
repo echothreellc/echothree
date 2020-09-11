@@ -66,7 +66,7 @@ public class CreateOrderRoleTypeDescriptionCommand
                 OrderRoleTypeDescription orderRoleTypeDescription = orderRoleControl.getOrderRoleTypeDescription(orderRoleType, language);
                 
                 if(orderRoleTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     orderRoleControl.createOrderRoleTypeDescription(orderRoleType, language, description);
                 } else {

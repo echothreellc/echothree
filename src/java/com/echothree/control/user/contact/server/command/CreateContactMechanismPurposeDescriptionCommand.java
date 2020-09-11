@@ -66,7 +66,7 @@ public class CreateContactMechanismPurposeDescriptionCommand
                 ContactMechanismPurposeDescription contactMechanismPurposeDescription = contactControl.getContactMechanismPurposeDescription(contactMechanismPurpose, language);
                 
                 if(contactMechanismPurposeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contactControl.createContactMechanismPurposeDescription(contactMechanismPurpose, language, description);
                 } else {

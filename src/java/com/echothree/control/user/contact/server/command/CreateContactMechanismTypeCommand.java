@@ -63,8 +63,8 @@ public class CreateContactMechanismTypeCommand
                 parentContactMechanismType = contactControl.getContactMechanismTypeByName(parentContactMechanismTypeName);
             
             if(parentContactMechanismTypeName == null || parentContactMechanismType != null) {
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
                 
                 contactControl.createContactMechanismType(contactMechanismTypeName, parentContactMechanismType, isDefault, sortOrder);
             } else {

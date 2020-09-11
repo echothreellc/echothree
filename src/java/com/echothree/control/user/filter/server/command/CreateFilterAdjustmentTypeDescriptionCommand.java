@@ -66,7 +66,7 @@ public class CreateFilterAdjustmentTypeDescriptionCommand
                 FilterAdjustmentTypeDescription filterTypeDescription = filterControl.getFilterAdjustmentTypeDescription(filterAdjustmentType, language);
                 
                 if(filterTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     filterControl.createFilterAdjustmentTypeDescription(filterAdjustmentType, language, description);
                 } else {

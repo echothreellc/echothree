@@ -77,10 +77,10 @@ public class CreateShipmentTimeTypeCommand
             ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType == null) {
-                PartyPK partyPK = getPartyPK();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var partyPK = getPartyPK();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
 
                 shipmentTimeType = shipmentControl.createShipmentTimeType(shipmentType, shipmentTimeTypeName, isDefault, sortOrder, partyPK);
 

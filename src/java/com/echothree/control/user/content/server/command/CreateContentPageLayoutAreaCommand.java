@@ -72,7 +72,7 @@ public class CreateContentPageLayoutAreaCommand
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
             
             if(contentPageLayoutArea == null) {

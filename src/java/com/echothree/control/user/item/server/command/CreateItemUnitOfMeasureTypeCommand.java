@@ -69,8 +69,8 @@ public class CreateItemUnitOfMeasureTypeCommand
                         unitOfMeasureType);
                 
                 if(itemUnitOfMeasureType == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     itemControl.createItemUnitOfMeasureType(item, unitOfMeasureType, isDefault, sortOrder, getPartyPK());
                 } else {

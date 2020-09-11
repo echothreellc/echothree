@@ -72,7 +72,7 @@ public class CreateCommandDescriptionCommand
                     CommandDescription commandDescription = coreControl.getCommandDescription(command, language);
                     
                     if(commandDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         coreControl.createCommandDescription(command, language, description, getPartyPK());
                     } else {

@@ -229,7 +229,7 @@ public class EditShipmentTypeCommand
     @Override
     public void doUpdate(ShipmentType shipmentType) {
         var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ShipmentTypeDetailValue shipmentTypeDetailValue = shipmentControl.getShipmentTypeDetailValueForUpdate(shipmentType);
         ShipmentTypeDescription shipmentTypeDescription = shipmentControl.getShipmentTypeDescriptionForUpdate(shipmentType, getPreferredLanguage());
         String description = edit.getDescription();

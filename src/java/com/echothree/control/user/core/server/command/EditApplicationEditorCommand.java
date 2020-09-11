@@ -138,7 +138,7 @@ public class EditApplicationEditorCommand
     @Override
     public void doUpdate(ApplicationEditor applicationEditor) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ApplicationEditorDetailValue applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(applicationEditor);
 
         applicationEditorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

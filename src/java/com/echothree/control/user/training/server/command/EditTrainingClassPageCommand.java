@@ -191,7 +191,7 @@ public class EditTrainingClassPageCommand
     @Override
     public void doUpdate(TrainingClassPage trainingClassPage) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TrainingClassPageDetailValue trainingClassPageDetailValue = trainingControl.getTrainingClassPageDetailValueForUpdate(trainingClassPage);
         TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslationForUpdate(trainingClassPage, getPreferredLanguage());
         String description = edit.getDescription();

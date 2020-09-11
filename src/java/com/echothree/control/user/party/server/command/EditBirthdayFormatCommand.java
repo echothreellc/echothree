@@ -150,7 +150,7 @@ public class EditBirthdayFormatCommand
     @Override
     public void doUpdate(BirthdayFormat birthdayFormat) {
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         BirthdayFormatDetailValue birthdayFormatDetailValue = partyControl.getBirthdayFormatDetailValueForUpdate(birthdayFormat);
         BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescriptionForUpdate(birthdayFormat, getPreferredLanguage());
         String description = edit.getDescription();

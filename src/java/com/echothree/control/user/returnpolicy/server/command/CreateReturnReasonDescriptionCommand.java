@@ -86,7 +86,7 @@ public class CreateReturnReasonDescriptionCommand
                     ReturnReasonDescription returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language);
                     
                     if(returnReasonDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         returnPolicyControl.createReturnReasonDescription(returnReason, language, description, getPartyPK());
                     } else {

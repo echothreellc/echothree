@@ -80,7 +80,7 @@ public class CreatePaymentProcessorDescriptionCommand
                 PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescription(paymentProcessor, language);
                 
                 if(paymentProcessorDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     paymentProcessorControl.createPaymentProcessorDescription(paymentProcessor, language, description, getPartyPK());
                 } else {

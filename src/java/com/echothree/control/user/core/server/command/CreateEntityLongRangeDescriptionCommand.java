@@ -98,7 +98,7 @@ public class CreateEntityLongRangeDescriptionCommand
                             EntityLongRangeDescription entityLongRangeDescription = coreControl.getEntityLongRangeDescription(entityLongRange, language);
                             
                             if(entityLongRangeDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 coreControl.createEntityLongRangeDescription(entityLongRange, language, description, getPartyPK());
                             } else {

@@ -80,7 +80,7 @@ public class CreateDocumentTypeUsageTypeDescriptionCommand
                 DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
                 
                 if(documentTypeUsageTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     documentControl.createDocumentTypeUsageTypeDescription(documentTypeUsageType, language, description, getPartyPK());
                 } else {

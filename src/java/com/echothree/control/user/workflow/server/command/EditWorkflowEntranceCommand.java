@@ -132,7 +132,7 @@ public class EditWorkflowEntranceCommand
                     if(duplicateWorkflowEntrance == null || workflowEntrance.equals(duplicateWorkflowEntrance)) {
                         if(lockEntityForUpdate(workflowEntrance)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 WorkflowEntranceDetailValue workflowEntranceDetailValue = workflowControl.getWorkflowEntranceDetailValueForUpdate(workflowEntrance);
                                 WorkflowEntranceDescription workflowEntranceDescription = workflowControl.getWorkflowEntranceDescriptionForUpdate(workflowEntrance, getPreferredLanguage());
                                 String description = edit.getDescription();

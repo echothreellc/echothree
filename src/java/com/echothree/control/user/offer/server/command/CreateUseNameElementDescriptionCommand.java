@@ -81,7 +81,7 @@ public class CreateUseNameElementDescriptionCommand
                         language);
                 
                 if(useNameElementDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     offerControl.createUseNameElementDescription(useNameElement, language, description, getPartyPK());
                 } else {

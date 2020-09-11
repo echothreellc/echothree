@@ -186,7 +186,7 @@ public class EditItemCategoryCommand
     @Override
     public void doUpdate(ItemCategory itemCategory) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ItemCategoryDetailValue itemCategoryDetailValue = itemControl.getItemCategoryDetailValueForUpdate(itemCategory);
         ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescriptionForUpdate(itemCategory, getPreferredLanguage());
         String description = edit.getDescription();

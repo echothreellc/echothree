@@ -79,7 +79,7 @@ public class CreateOfferDescriptionCommand
                 OfferDescription offerDescription = offerControl.getOfferDescription(offer, language);
                 
                 if(offerDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     offerControl.createOfferDescription(offer, language, description, getPartyPK());
                 } else {

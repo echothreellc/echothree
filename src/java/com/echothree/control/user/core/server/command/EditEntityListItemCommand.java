@@ -178,7 +178,7 @@ public class EditEntityListItemCommand
     @Override
     public void doUpdate(EntityListItem entityListItem) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         EntityListItemDetailValue entityListItemDetailValue = coreControl.getEntityListItemDetailValueForUpdate(entityListItem);
         EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, getPreferredLanguage());
         String description = edit.getDescription();

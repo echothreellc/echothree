@@ -86,7 +86,7 @@ public class CreateInvoiceTimeTypeDescriptionCommand
                     InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, language);
 
                     if(invoiceTimeTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         invoiceControl.createInvoiceTimeTypeDescription(invoiceTimeType, language, description, getPartyPK());
                     } else {

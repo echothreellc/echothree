@@ -170,7 +170,7 @@ public class EditGeoCodeTypeCommand
     @Override
     public void doUpdate(GeoCodeType geoCodeType) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         GeoCodeTypeDetailValue geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueForUpdate(geoCodeType);
         GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescriptionForUpdate(geoCodeType, getPreferredLanguage());
         String description = edit.getDescription();

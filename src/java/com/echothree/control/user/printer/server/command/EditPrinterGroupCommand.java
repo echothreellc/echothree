@@ -168,7 +168,7 @@ public class EditPrinterGroupCommand
     @Override
     public void doUpdate(PrinterGroup printerGroup) {
         var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PrinterGroupDetailValue printerGroupDetailValue = printerControl.getPrinterGroupDetailValueForUpdate(printerGroup);
         PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, getPreferredLanguage());
         String description = edit.getDescription();

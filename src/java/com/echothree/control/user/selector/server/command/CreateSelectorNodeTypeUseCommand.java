@@ -65,7 +65,7 @@ public class CreateSelectorNodeTypeUseCommand
                 SelectorNodeTypeUse selectorNodeTypeUse = selectorControl.getSelectorNodeTypeUse(selectorKind, selectorNodeType);
                 
                 if(selectorNodeTypeUse == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
                     
                     selectorControl.createSelectorNodeTypeUse(selectorKind, selectorNodeType, isDefault);
                 } else {

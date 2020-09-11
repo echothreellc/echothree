@@ -86,7 +86,7 @@ public class CreateContentCatalogDescriptionCommand
                     ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, language);
                     
                     if(contentCatalogDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         contentControl.createContentCatalogDescription(contentCatalog, language, description, getPartyPK());
                     } else {

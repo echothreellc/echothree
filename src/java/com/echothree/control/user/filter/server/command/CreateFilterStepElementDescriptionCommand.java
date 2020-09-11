@@ -90,7 +90,7 @@ public class CreateFilterStepElementDescriptionCommand
                                 FilterStepElementDescription filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, language);
                                 
                                 if(filterStepElementDescription == null) {
-                                    String description = form.getDescription();
+                                    var description = form.getDescription();
                                     
                                     filterControl.createFilterStepElementDescription(filterStepElement, language, description, getPartyPK());
                                 } else {

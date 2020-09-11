@@ -148,7 +148,7 @@ public class EditSearchUseTypeCommand
     @Override
     public void doUpdate(SearchUseType searchUseType) {
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SearchUseTypeDetailValue searchUseTypeDetailValue = searchControl.getSearchUseTypeDetailValueForUpdate(searchUseType);
         SearchUseTypeDescription searchUseTypeDescription = searchControl.getSearchUseTypeDescriptionForUpdate(searchUseType, getPreferredLanguage());
         String description = edit.getDescription();

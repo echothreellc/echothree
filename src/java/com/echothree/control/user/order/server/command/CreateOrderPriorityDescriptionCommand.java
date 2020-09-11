@@ -71,8 +71,8 @@ public class CreateOrderPriorityDescriptionCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
@@ -88,7 +88,7 @@ public class CreateOrderPriorityDescriptionCommand
                     OrderPriorityDescription orderPriorityDescription = orderPriorityControl.getOrderPriorityDescription(orderPriority, language);
 
                     if(orderPriorityDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         orderPriorityControl.createOrderPriorityDescription(orderPriority, language, description, getPartyPK());
                     } else {

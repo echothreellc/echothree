@@ -80,7 +80,7 @@ public class CreateHarmonizedTariffScheduleCodeUnitDescriptionCommand
                 HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
                 
                 if(harmonizedTariffScheduleCodeUnitDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language, description, getPartyPK());
                 } else {

@@ -141,7 +141,7 @@ public class EditContactListContactMechanismPurposeCommand
     @Override
     public void doUpdate(ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
         var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactListContactMechanismPurpose);
 
         contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

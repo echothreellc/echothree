@@ -138,7 +138,7 @@ public class EditPaymentProcessorActionTypeCommand
     @Override
     public void doUpdate(PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PaymentProcessorActionTypeDetailValue paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueForUpdate(paymentProcessorActionType);
         PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionForUpdate(paymentProcessorActionType, getPreferredLanguage());
         String description = edit.getDescription();

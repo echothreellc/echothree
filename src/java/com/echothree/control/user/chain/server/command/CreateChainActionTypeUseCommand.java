@@ -73,7 +73,7 @@ public class CreateChainActionTypeUseCommand
                 ChainActionTypeUse chainActionTypeUse = chainControl.getChainActionTypeUse(chainKind, chainActionType);
                 
                 if(chainActionTypeUse == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
                     
                     chainControl.createChainActionTypeUse(chainKind, chainActionType, isDefault);
                 } else {

@@ -66,7 +66,7 @@ public class CreateItemAliasChecksumTypeDescriptionCommand
                 ItemAliasChecksumTypeDescription itemAliasChecksumTypeDescription = itemControl.getItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
                 
                 if(itemAliasChecksumTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     itemControl.createItemAliasChecksumTypeDescription(itemAliasChecksumType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateItemAliasChecksumTypeDescription.name());

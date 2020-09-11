@@ -72,9 +72,9 @@ public class CreateBirthdayFormatCommand
         
         if(birthdayFormat == null) {
             PartyPK createdBy = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             birthdayFormat = partyControl.createBirthdayFormat(birthdayFormatName, isDefault, sortOrder, createdBy);
             

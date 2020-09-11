@@ -76,8 +76,8 @@ public class CreateOrderTypeCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType == null) {
             String parentOrderTypeName = form.getParentOrderTypeName();
@@ -104,10 +104,10 @@ public class CreateOrderTypeCommand
                             WorkflowEntrance orderWorkflowEntrance = orderWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(orderWorkflow, orderWorkflowEntranceName);
 
                             if(orderWorkflowEntranceName == null || orderWorkflowEntrance != null) {
-                                PartyPK partyPK = getPartyPK();
-                                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                String description = form.getDescription();
+                                var partyPK = getPartyPK();
+                                var isDefault = Boolean.valueOf(form.getIsDefault());
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                var description = form.getDescription();
 
                                 orderType = orderTypeControl.createOrderType(orderTypeName, parentOrderType, orderSequenceType, orderWorkflow,
                                         orderWorkflowEntrance, isDefault, sortOrder, partyPK);

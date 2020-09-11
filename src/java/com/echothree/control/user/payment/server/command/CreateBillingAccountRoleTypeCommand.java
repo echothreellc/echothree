@@ -62,7 +62,7 @@ public class CreateBillingAccountRoleTypeCommand
         BillingAccountRoleType billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         if(billingAccountRoleType == null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
 
             billingControl.createBillingAccountRoleType(billingAccountRoleTypeName, sortOrder);
         } else {

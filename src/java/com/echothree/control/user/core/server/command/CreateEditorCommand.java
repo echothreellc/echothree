@@ -77,7 +77,7 @@ public class CreateEditorCommand
         Editor editor = coreControl.getEditorByName(editorName);
         
         if(editor == null) {
-            PartyPK partyPK = getPartyPK();
+            var partyPK = getPartyPK();
             Boolean hasDimensions = Boolean.valueOf(form.getHasDimensions());
             String strMinimumHeight = form.getMinimumHeight();
             Integer minimumHeight = strMinimumHeight == null ? null : Integer.valueOf(strMinimumHeight);
@@ -91,9 +91,9 @@ public class CreateEditorCommand
             Integer defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
             String strDefaultWidth = form.getDefaultWidth();
             Integer defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             editor = coreControl.createEditor(editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight, maximumWidth, defaultHeight, defaultWidth,
                     isDefault, sortOrder, partyPK);

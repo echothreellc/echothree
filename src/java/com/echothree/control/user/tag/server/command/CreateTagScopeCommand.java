@@ -87,9 +87,9 @@ public class CreateTagScopeCommand
         
         if(tagScope == null) {
             PartyPK createdBy = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             tagScope = tagControl.createTagScope(tagScopeName, isDefault, sortOrder, createdBy);
             

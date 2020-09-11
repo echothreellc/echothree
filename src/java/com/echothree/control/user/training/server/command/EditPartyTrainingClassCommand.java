@@ -157,7 +157,7 @@ public class EditPartyTrainingClassCommand
     @Override
     public void doUpdate(PartyTrainingClass partyTrainingClass) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PartyTrainingClassDetailValue partyTrainingClassDetailValue = trainingControl.getPartyTrainingClassDetailValueForUpdate(partyTrainingClass);
 
         partyTrainingClassDetailValue.setCompletedTime(completedTime);

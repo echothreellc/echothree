@@ -169,7 +169,7 @@ public class EditAssociateProgramCommand
                             if(associateReferralSequenceName == null || associateReferralSequence != null) {
                                 if(lockEntityForUpdate(associateProgram)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         String strItemIndirectSalePercent = edit.getItemIndirectSalePercent();
                                         String strItemDirectSalePercent = edit.getItemDirectSalePercent();
                                         AssociateProgramDetailValue associateProgramDetailValue = associateControl.getAssociateProgramDetailValueForUpdate(associateProgram);

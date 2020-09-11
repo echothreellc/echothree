@@ -217,7 +217,7 @@ public class EditPicklistTypeCommand
     @Override
     public void doUpdate(PicklistType picklistType) {
         var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PicklistTypeDetailValue picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueForUpdate(picklistType);
         PicklistTypeDescription picklistTypeDescription = picklistControl.getPicklistTypeDescriptionForUpdate(picklistType, getPreferredLanguage());
         String description = edit.getDescription();

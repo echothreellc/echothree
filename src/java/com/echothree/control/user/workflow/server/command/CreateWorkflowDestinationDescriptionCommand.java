@@ -92,7 +92,7 @@ public class CreateWorkflowDestinationDescriptionCommand
                         WorkflowDestinationDescription workflowStepDescription = workflowControl.getWorkflowDestinationDescription(workflowDestination, language);
                         
                         if(workflowStepDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             workflowControl.createWorkflowDestinationDescription(workflowDestination, language, description, getPartyPK());
                         } else {

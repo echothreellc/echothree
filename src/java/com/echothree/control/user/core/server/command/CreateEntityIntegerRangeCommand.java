@@ -94,14 +94,14 @@ public class CreateEntityIntegerRangeCommand
                         EntityIntegerRange entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
                         if(entityIntegerRange == null) {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             String strMinimumIntegerValue = form.getMinimumIntegerValue();
                             Integer minimumIntegerValue = strMinimumIntegerValue == null ? null : Integer.valueOf(strMinimumIntegerValue);
                             String strMaximumIntegerValue = form.getMaximumIntegerValue();
                             Integer maximumIntegerValue = strMaximumIntegerValue == null ? null : Integer.valueOf(strMaximumIntegerValue);
-                            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                            String description = form.getDescription();
+                            var isDefault = Boolean.valueOf(form.getIsDefault());
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                            var description = form.getDescription();
 
                             if(minimumIntegerValue == null || maximumIntegerValue == null || maximumIntegerValue >= minimumIntegerValue) {
                                 entityIntegerRange = coreControl.createEntityIntegerRange(entityAttribute, entityIntegerRangeName, minimumIntegerValue,

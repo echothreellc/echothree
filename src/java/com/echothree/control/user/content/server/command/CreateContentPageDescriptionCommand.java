@@ -92,7 +92,7 @@ public class CreateContentPageDescriptionCommand
                         ContentPageDescription contentPageDescription = contentControl.getContentPageDescription(contentPage, language);
                         
                         if(contentPageDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             contentControl.createContentPageDescription(contentPage, language, description, getPartyPK());
                         } else {

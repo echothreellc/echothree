@@ -64,7 +64,7 @@ public class CreateDateTimeFormatDescriptionCommand
                 DateTimeFormatDescription dateTimeFormatDescription = partyControl.getDateTimeFormatDescription(dateTimeFormat, language);
                 
                 if(dateTimeFormatDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createDateTimeFormatDescription(dateTimeFormat, language, description, getPartyPK());
                 } else {

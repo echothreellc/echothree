@@ -80,7 +80,7 @@ public class CreateWorkflowDescriptionCommand
                 WorkflowDescription workflowDescription = workflowControl.getWorkflowDescription(workflow, language);
                 
                 if(workflowDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     workflowControl.createWorkflowDescription(workflow, language, description, getPartyPK());
                 } else {

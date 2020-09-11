@@ -117,7 +117,7 @@ public class EditLocationTypeCommand
                     if(duplicateLocationType == null || locationType.equals(duplicateLocationType)) {
                         if(lockEntityForUpdate(locationType)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 LocationTypeDetailValue locationTypeDetailValue = warehouseControl.getLocationTypeDetailValueForUpdate(locationType);
                                 LocationTypeDescription locationTypeDescription = warehouseControl.getLocationTypeDescriptionForUpdate(locationType, getPreferredLanguage());
                                 String description = edit.getDescription();

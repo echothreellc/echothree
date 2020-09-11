@@ -66,7 +66,7 @@ public class CreateForumTypeDescriptionCommand
                 ForumTypeDescription forumTypeDescription = forumControl.getForumTypeDescription(forumType, language);
                 
                 if(forumTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     forumControl.createForumTypeDescription(forumType, language, description);
                 } else {

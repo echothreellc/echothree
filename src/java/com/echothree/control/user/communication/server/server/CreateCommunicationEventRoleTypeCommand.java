@@ -54,7 +54,7 @@ public class CreateCommunicationEventRoleTypeCommand
         CommunicationEventRoleType communicationEventRoleType = communicationControl.getCommunicationEventRoleTypeByName(communicationEventRoleTypeName);
         
         if(communicationEventRoleType == null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             communicationControl.createCommunicationEventRoleType(communicationEventRoleTypeName, sortOrder);
         } else {

@@ -82,7 +82,7 @@ public class CreateForumMessageAttachmentCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    PartyPK partyPK = getPartyPK();
+                    var partyPK = getPartyPK();
                     String strForumMessageAttachmentSequence = form.getForumMessageAttachmentSequence();
                     Integer forumMessageAttachmentSequence = strForumMessageAttachmentSequence == null ? null : Integer.valueOf(strForumMessageAttachmentSequence);
                     ForumMessageAttachment forumMessageAttachment = null;

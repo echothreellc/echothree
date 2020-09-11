@@ -55,8 +55,8 @@ public class CreateItemInventoryTypeCommand
         ItemInventoryType itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
         
         if(itemInventoryType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             itemControl.createItemInventoryType(itemInventoryTypeName, isDefault, sortOrder);
         } else {

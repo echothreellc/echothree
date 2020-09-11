@@ -66,7 +66,7 @@ public class CreateForumRoleTypeDescriptionCommand
                 ForumRoleTypeDescription forumRoleTypeDescription = forumControl.getForumRoleTypeDescription(forumRoleType, language);
                 
                 if(forumRoleTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     forumControl.createForumRoleTypeDescription(forumRoleType, language, description);
                 } else {

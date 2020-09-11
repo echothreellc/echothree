@@ -80,7 +80,7 @@ public class CreateSequenceEncoderTypeDescriptionCommand
                 SequenceEncoderTypeDescription sequenceEncoderTypeDescription = sequenceControl.getSequenceEncoderTypeDescription(sequenceEncoderType, language);
                 
                 if(sequenceEncoderTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     sequenceControl.createSequenceEncoderTypeDescription(sequenceEncoderType, language, description);
                 } else {

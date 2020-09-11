@@ -149,7 +149,7 @@ public class EditServerCommand
     @Override
     public void doUpdate(Server server) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ServerDetailValue serverDetailValue = coreControl.getServerDetailValueForUpdate(server);
         ServerDescription serverDescription = coreControl.getServerDescriptionForUpdate(server, getPreferredLanguage());
         String description = edit.getDescription();

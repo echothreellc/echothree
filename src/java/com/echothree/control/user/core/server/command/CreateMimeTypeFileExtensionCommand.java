@@ -59,7 +59,7 @@ public class CreateMimeTypeFileExtensionCommand
             MimeTypeFileExtension mimeTypeFileExtension = coreControl.getMimeTypeFileExtension(fileExtension);
             
             if(mimeTypeFileExtension == null) {
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                var isDefault = Boolean.valueOf(form.getIsDefault());
                 
                 coreControl.createMimeTypeFileExtension(mimeType, fileExtension, isDefault);
             } else {

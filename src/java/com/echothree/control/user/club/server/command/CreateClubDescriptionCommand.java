@@ -66,7 +66,7 @@ public class CreateClubDescriptionCommand
                 ClubDescription clubDescription = clubControl.getClubDescription(club, language);
                 
                 if(clubDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     clubControl.createClubDescription(club, language, description, getPartyPK());
                 } else {

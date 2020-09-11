@@ -80,7 +80,7 @@ public class CreateContentCollectionDescriptionCommand
                 ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescription(contentCollection, language);
                 
                 if(contentCollectionDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contentControl.createContentCollectionDescription(contentCollection, language, description, getPartyPK());
                 } else {

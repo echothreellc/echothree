@@ -80,7 +80,7 @@ public class CreateCommandMessageTypeDescriptionCommand
                 CommandMessageTypeDescription commandMessageTypeDescription = coreControl.getCommandMessageTypeDescription(commandMessageType, language);
                 
                 if(commandMessageTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createCommandMessageTypeDescription(commandMessageType, language, description, getPartyPK());
                 } else {

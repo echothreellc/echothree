@@ -150,7 +150,7 @@ public class EditGeoCodeScopeCommand
     @Override
     public void doUpdate(GeoCodeScope geoCodeScope) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         GeoCodeScopeDetailValue geoCodeScopeDetailValue = geoControl.getGeoCodeScopeDetailValueForUpdate(geoCodeScope);
         GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescriptionForUpdate(geoCodeScope, getPreferredLanguage());
         String description = edit.getDescription();

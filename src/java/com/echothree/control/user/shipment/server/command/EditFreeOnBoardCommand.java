@@ -138,7 +138,7 @@ public class EditFreeOnBoardCommand
     @Override
     public void doUpdate(FreeOnBoard freeOnBoard) {
         var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         FreeOnBoardDetailValue freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueForUpdate(freeOnBoard);
         FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescriptionForUpdate(freeOnBoard, getPreferredLanguage());
         String description = edit.getDescription();

@@ -66,7 +66,7 @@ public class CreateLeaveReasonDescriptionCommand
                 LeaveReasonDescription leaveDescription = employeeControl.getLeaveReasonDescription(leaveReason, language);
                 
                 if(leaveDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     employeeControl.createLeaveReasonDescription(leaveReason, language, description, getPartyPK());
                 } else {

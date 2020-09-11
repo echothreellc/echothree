@@ -103,8 +103,8 @@ public class CreateTrainingClassSectionCommand
                         Integer percentageToPass = strPercentageToPass == null ? null : Integer.valueOf(strPercentageToPass);
                         String strQuestionCount = form.getQuestionCount();
                         Integer questionCount = strQuestionCount == null ? null : Integer.valueOf(strQuestionCount);
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
 
                         trainingClassSection = trainingControl.createTrainingClassSection(trainingClass, trainingClassSectionName, percentageToPass,
                                 questionCount, sortOrder, createdBy);

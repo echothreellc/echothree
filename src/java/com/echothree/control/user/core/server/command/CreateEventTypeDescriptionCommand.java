@@ -66,7 +66,7 @@ public class CreateEventTypeDescriptionCommand
                 EventTypeDescription eventTypeDescription = coreControl.getEventTypeDescription(eventType, language);
 
                 if(eventTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
 
                     coreControl.createEventTypeDescription(eventType, language, description);
                 } else {

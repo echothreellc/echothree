@@ -99,7 +99,7 @@ public class CreateTaxClassificationTranslationCommand
                         TaxClassificationTranslation taxClassificationTranslation = taxControl.getTaxClassificationTranslation(taxClassification, language);
 
                         if(taxClassificationTranslation == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
 
                             taxControl.createTaxClassificationTranslation(taxClassification, language, description, overviewMimeType,
                                     overview, getPartyPK());

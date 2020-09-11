@@ -90,9 +90,9 @@ public class CreateRatingTypeCommand
                     }
                     
                     if(ratingSequenceName == null || ratingSequence != null) {
-                        PartyPK partyPK = getPartyPK();
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var partyPK = getPartyPK();
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
                         
                         ratingType = ratingControl.createRatingType(entityType, ratingTypeName, ratingSequence, sortOrder, partyPK);
                         

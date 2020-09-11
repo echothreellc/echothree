@@ -250,9 +250,9 @@ public class CreateChainActionCommand
                                 }
                                 
                                 if(!hasExecutionErrors()) {
-                                    PartyPK partyPK = getPartyPK();
-                                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                    String description = form.getDescription();
+                                    var partyPK = getPartyPK();
+                                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                                    var description = form.getDescription();
 
                                     chainAction = chainControl.createChainAction(chainActionSet, chainActionName, chainActionType, sortOrder, partyPK);
 

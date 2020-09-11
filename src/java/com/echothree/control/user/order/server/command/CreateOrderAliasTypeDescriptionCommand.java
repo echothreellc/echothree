@@ -71,8 +71,8 @@ public class CreateOrderAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
@@ -88,7 +88,7 @@ public class CreateOrderAliasTypeDescriptionCommand
                     OrderAliasTypeDescription orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescription(orderAliasType, language);
 
                     if(orderAliasTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         orderAliasControl.createOrderAliasTypeDescription(orderAliasType, language, description, getPartyPK());
                     } else {

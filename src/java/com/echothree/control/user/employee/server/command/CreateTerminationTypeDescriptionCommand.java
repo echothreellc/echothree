@@ -66,7 +66,7 @@ public class CreateTerminationTypeDescriptionCommand
                 TerminationTypeDescription terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language);
                 
                 if(terminationTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     employeeControl.createTerminationTypeDescription(terminationType, language, description, getPartyPK());
                 } else {

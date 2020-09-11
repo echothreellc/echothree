@@ -162,7 +162,7 @@ public class EditGlAccountCommand
                                     if(glResourceType != null) {
                                         if(lockEntityForUpdate(glAccount)) {
                                             try {
-                                                PartyPK partyPK = getPartyPK();
+                                                var partyPK = getPartyPK();
                                                 GlAccountDetailValue glAccountDetailValue = accountingControl.getGlAccountDetailValueForUpdate(glAccount);
                                                 GlAccountDescription glAccountDescription = accountingControl.getGlAccountDescriptionForUpdate(glAccount, getPreferredLanguage());
                                                 Boolean isDefault = glAccountCategory == null? null: Boolean.valueOf(edit.getIsDefault());

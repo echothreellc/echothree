@@ -96,7 +96,7 @@ public class EditOrderTimeTypeCommand
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderTimeType orderTimeType = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
@@ -151,7 +151,7 @@ public class EditOrderTimeTypeCommand
     public void canUpdate(OrderTimeType orderTimeType) {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
@@ -169,7 +169,7 @@ public class EditOrderTimeTypeCommand
     @Override
     public void doUpdate(OrderTimeType orderTimeType) {
         var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueForUpdate(orderTimeType);
         OrderTimeTypeDescription orderTimeTypeDescription = orderTimeControl.getOrderTimeTypeDescriptionForUpdate(orderTimeType, getPreferredLanguage());
         String description = edit.getDescription();

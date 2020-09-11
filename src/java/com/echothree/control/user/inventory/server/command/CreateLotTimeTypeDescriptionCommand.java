@@ -80,7 +80,7 @@ public class CreateLotTimeTypeDescriptionCommand
                 LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, language);
 
                 if(lotTimeTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
 
                     lotTimeControl.createLotTimeTypeDescription(lotTimeType, language, description, getPartyPK());
                 } else {

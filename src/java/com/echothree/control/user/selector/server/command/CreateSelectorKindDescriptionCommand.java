@@ -80,7 +80,7 @@ public class CreateSelectorKindDescriptionCommand
                 SelectorKindDescription selectorKindDescription = selectorControl.getSelectorKindDescription(selectorKind, language);
                 
                 if(selectorKindDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     selectorControl.createSelectorKindDescription(selectorKind, language, description, getPartyPK());
                 } else {

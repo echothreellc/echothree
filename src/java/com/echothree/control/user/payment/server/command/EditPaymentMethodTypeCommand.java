@@ -138,7 +138,7 @@ public class EditPaymentMethodTypeCommand
     @Override
     public void doUpdate(PaymentMethodType paymentMethodType) {
         var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PaymentMethodTypeDetailValue paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueForUpdate(paymentMethodType);
         PaymentMethodTypeDescription paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescriptionForUpdate(paymentMethodType, getPreferredLanguage());
         String description = edit.getDescription();

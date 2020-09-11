@@ -66,7 +66,7 @@ public class CreateWishlistTypeDescriptionCommand
                 WishlistTypeDescription wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, language);
                 
                 if(wishlistTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     wishlistControl.createWishlistTypeDescription(wishlistType, language, description, getPartyPK());
                 } else {

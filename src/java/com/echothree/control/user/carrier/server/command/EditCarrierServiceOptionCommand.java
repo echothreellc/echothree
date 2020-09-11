@@ -327,7 +327,7 @@ public class EditCarrierServiceOptionCommand
     @Override
     public void doUpdate(CarrierServiceOption carrierServiceOption) {
         var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CarrierServiceOptionValue carrierServiceOptionValue = carrierControl.getCarrierServiceOptionValue(carrierServiceOption);
     
         carrierServiceOptionValue.setIsRecommended(Boolean.valueOf(edit.getIsRecommended()));

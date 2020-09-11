@@ -104,8 +104,8 @@ public class CreateCommunicationSourceCommand
             
             if(communicationSourceType != null) {
                 PartyPK createdBy = getPartyPK();
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 
                 communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
                 

@@ -82,9 +82,9 @@ public class CreateGeoCodeAliasTypeCommand
                 PartyPK createdBy = getPartyPK();
                 String validationPattern = form.getValidationPattern();
                 Boolean isRequired = Boolean.valueOf(form.getIsRequired());
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
 
                 geoAliasType = geoControl.createGeoCodeAliasType(geoCodeType, geoAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, createdBy);
 

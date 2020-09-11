@@ -66,7 +66,7 @@ public class CreateCommunicationEventRoleTypeDescriptionCommand
                 CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription = communicationControl.getCommunicationEventRoleTypeDescription(communicationEventRoleType, language);
                 
                 if(communicationEventRoleTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     communicationControl.createCommunicationEventRoleTypeDescription(communicationEventRoleType, language, description);
                 } else {

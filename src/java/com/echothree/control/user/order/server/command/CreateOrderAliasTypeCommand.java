@@ -71,8 +71,8 @@ public class CreateOrderAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
@@ -82,9 +82,9 @@ public class CreateOrderAliasTypeCommand
             if(orderAliasType == null) {
                 PartyPK createdBy = getPartyPK();
                 String validationPattern = form.getValidationPattern();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
 
                 orderAliasType = orderAliasControl.createOrderAliasType(orderType, orderAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
 

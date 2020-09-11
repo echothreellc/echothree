@@ -55,8 +55,8 @@ public class CreateGlAccountTypeCommand
         GlAccountType glAccountType = accountingControl.getGlAccountTypeByName(glAccountTypeName);
         
         if(glAccountType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             accountingControl.createGlAccountType(glAccountTypeName, isDefault, sortOrder);
         } else {

@@ -156,7 +156,7 @@ public class EditFilterCommand
                                 if(filterItemSelectorName == null || filterItemSelector != null) {
                                     if(lockEntityForUpdate(filter)) {
                                         try {
-                                            PartyPK partyPK = getPartyPK();
+                                            var partyPK = getPartyPK();
                                             FilterDetailValue filterDetailValue = filterControl.getFilterDetailValueForUpdate(filter);
                                             FilterDescription filterDescription = filterControl.getFilterDescriptionForUpdate(filter, getPreferredLanguage());
                                             String description = edit.getDescription();

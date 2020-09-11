@@ -147,7 +147,7 @@ public class EditApplicationCommand
     @Override
     public void doUpdate(Application application) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ApplicationDetailValue applicationDetailValue = coreControl.getApplicationDetailValueForUpdate(application);
         ApplicationDescription applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, getPreferredLanguage());
         String description = edit.getDescription();

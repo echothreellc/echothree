@@ -88,7 +88,7 @@ public class CreateCarrierOptionDescriptionCommand
                     CarrierOptionDescription carrierOptionDescription = carrierControl.getCarrierOptionDescription(carrierOption, language);
                     
                     if(carrierOptionDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         carrierControl.createCarrierOptionDescription(carrierOption, language, description, getPartyPK());
                     } else {

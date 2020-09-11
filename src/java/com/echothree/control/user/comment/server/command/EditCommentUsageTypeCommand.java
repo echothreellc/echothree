@@ -127,7 +127,7 @@ public class EditCommentUsageTypeCommand
                             if(duplicateCommentUsageType == null || commentUsageType.equals(duplicateCommentUsageType)) {
                                     if(lockEntityForUpdate(commentUsageType)) {
                                         try {
-                                            PartyPK partyPK = getPartyPK();
+                                            var partyPK = getPartyPK();
                                             CommentUsageTypeDetailValue commentUsageTypeDetailValue = commentControl.getCommentUsageTypeDetailValueForUpdate(commentUsageType);
                                             CommentUsageTypeDescription commentUsageTypeDescription = commentControl.getCommentUsageTypeDescriptionForUpdate(commentUsageType, getPreferredLanguage());
                                             String description = edit.getDescription();

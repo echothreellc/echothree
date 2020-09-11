@@ -94,10 +94,10 @@ public class CreateInvoiceLineTypeCommand
                     GlAccount defaultGlAccount = defaultGlAccountName == null? null: accountingControl.getGlAccountByName(defaultGlAccountName);
                     
                     if(defaultGlAccountName == null || defaultGlAccount != null) {
-                        PartyPK partyPK = getPartyPK();
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var partyPK = getPartyPK();
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
 
                         invoiceLineType = invoiceControl.createInvoiceLineType(invoiceType, invoiceLineTypeName, parentInvoiceLineType, defaultGlAccount,
                                 isDefault, sortOrder, partyPK);

@@ -80,7 +80,7 @@ public class CreateCurrencyDescriptionCommand
                 CurrencyDescription currencyDescription = accountingControl.getCurrencyDescription(currency, language);
                 
                 if(currencyDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     accountingControl.createCurrencyDescription(currency, language, description, getPartyPK());
                 } else {

@@ -66,7 +66,7 @@ public class CreateTermTypeDescriptionCommand
                 TermTypeDescription termTypeDescription = termControl.getTermTypeDescription(termType, language);
                 
                 if(termTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     termControl.createTermTypeDescription(termType, language, description);
                 } else {

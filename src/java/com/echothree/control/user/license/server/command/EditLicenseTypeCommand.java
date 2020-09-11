@@ -148,7 +148,7 @@ public class EditLicenseTypeCommand
     @Override
     public void doUpdate(LicenseType licenseType) {
         var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         LicenseTypeDetailValue licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueForUpdate(licenseType);
         LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, getPreferredLanguage());
         String description = edit.getDescription();

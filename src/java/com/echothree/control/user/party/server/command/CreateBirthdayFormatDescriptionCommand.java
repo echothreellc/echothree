@@ -78,7 +78,7 @@ public class CreateBirthdayFormatDescriptionCommand
                 BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescription(birthdayFormat, language);
                 
                 if(birthdayFormatDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createBirthdayFormatDescription(birthdayFormat, language, description, getPartyPK());
                 } else {

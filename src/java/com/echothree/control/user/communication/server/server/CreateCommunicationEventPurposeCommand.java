@@ -58,9 +58,9 @@ public class CreateCommunicationEventPurposeCommand
         
         if(communicationEventPurpose == null) {
             PartyPK createdBy = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             communicationEventPurpose = communicationControl.createCommunicationEventPurpose(communicationEventPurposeName, isDefault, sortOrder, createdBy);
             

@@ -66,8 +66,8 @@ public class CreateWorkflowTypeCommand
         WorkflowType workflowType = workflowControl.getWorkflowTypeByName(workflowTypeName);
         
         if(workflowType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             workflowControl.createWorkflowType(workflowTypeName, isDefault, sortOrder);
         } else {

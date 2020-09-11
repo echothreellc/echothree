@@ -86,7 +86,7 @@ public class CreateFilterTypeDescriptionCommand
                     FilterTypeDescription filterTypeDescription = filterControl.getFilterTypeDescription(filterType, language);
                     
                     if(filterTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         filterControl.createFilterTypeDescription(filterType, language, description, getPartyPK());
                     } else {

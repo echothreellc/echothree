@@ -80,7 +80,7 @@ public class CreateGlAccountDescriptionCommand
                 GlAccountDescription glAccountDescription = accountingControl.getGlAccountDescription(glAccount, language);
                 
                 if(glAccountDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     accountingControl.createGlAccountDescription(glAccount, language, description, getPartyPK());
                 } else {

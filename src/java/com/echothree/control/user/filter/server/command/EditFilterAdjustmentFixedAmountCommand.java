@@ -174,7 +174,7 @@ public class EditFilterAdjustmentFixedAmountCommand
                                         if(filterAdjustmentFixedAmount != null) {
                                             if(lockEntityForUpdate(filterAdjustmentFixedAmount)) {
                                                 try {
-                                                    PartyPK partyPK = getPartyPK();
+                                                    var partyPK = getPartyPK();
                                                     FilterAdjustmentFixedAmountValue filterAdjustmentFixedAmountValue = filterControl.getFilterAdjustmentFixedAmountValue(filterAdjustmentFixedAmount);
                                                     
                                                     filterAdjustmentFixedAmountValue.setUnitAmount(Long.valueOf(edit.getUnitAmount()));

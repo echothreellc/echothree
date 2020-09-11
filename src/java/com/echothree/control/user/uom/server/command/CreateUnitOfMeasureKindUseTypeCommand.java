@@ -58,9 +58,9 @@ public class CreateUnitOfMeasureKindUseTypeCommand
         
         if(unitOfMeasureKindUseType == null) {
             Boolean allowMultiple = Boolean.valueOf(form.getAllowMultiple());
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
             Boolean allowFractionDigits = Boolean.valueOf(form.getAllowFractionDigits());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             uomControl.createUnitOfMeasureKindUseType(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);
         } else {

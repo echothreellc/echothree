@@ -80,7 +80,7 @@ public class CreateApplicationDescriptionCommand
                 ApplicationDescription applicationDescription = coreControl.getApplicationDescription(application, language);
                 
                 if(applicationDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createApplicationDescription(application, language, description, getPartyPK());
                 } else {

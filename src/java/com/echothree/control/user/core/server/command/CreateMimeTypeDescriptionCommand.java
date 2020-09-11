@@ -66,7 +66,7 @@ public class CreateMimeTypeDescriptionCommand
                 MimeTypeDescription mimeDescription = coreControl.getMimeTypeDescription(mimeType, language);
                 
                 if(mimeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createMimeTypeDescription(mimeType, language, description, getPartyPK());
                 } else {

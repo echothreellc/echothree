@@ -80,7 +80,7 @@ public class CreateInventoryConditionDescriptionCommand
                 InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
                 
                 if(inventoryConditionDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     inventoryControl.createInventoryConditionDescription(inventoryCondition, language, description, getPartyPK());
                 } else {

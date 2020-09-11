@@ -80,7 +80,7 @@ public class CreateContentForumCommand
                 ContentForum contentForum = contentControl.getContentForum(contentCollection, forum);
                 
                 if(contentForum == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
                     
                     contentControl.createContentForum(contentCollection, forum, isDefault, getPartyPK());
                 } else {
