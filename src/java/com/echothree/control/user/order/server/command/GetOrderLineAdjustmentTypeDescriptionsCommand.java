@@ -19,17 +19,18 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.GetOrderLineAdjustmentTypeDescriptionsForm;
 import com.echothree.control.user.order.common.result.GetOrderLineAdjustmentTypeDescriptionsResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -66,18 +67,19 @@ public class GetOrderLineAdjustmentTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderLineAdjustmentTypeDescriptionsResult result = OrderResultFactory.getGetOrderLineAdjustmentTypeDescriptionsResult();
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
             String orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
-            OrderLineAdjustmentType orderLineAdjustmentType = orderControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
+            OrderLineAdjustmentType orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
             if(orderLineAdjustmentType != null) {
-                result.setOrderLineAdjustmentType(orderControl.getOrderLineAdjustmentTypeTransfer(getUserVisit(), orderLineAdjustmentType));
-                result.setOrderLineAdjustmentTypeDescriptions(orderControl.getOrderLineAdjustmentTypeDescriptionTransfersByOrderLineAdjustmentType(getUserVisit(), orderLineAdjustmentType));
+                result.setOrderLineAdjustmentType(orderLineAdjustmentControl.getOrderLineAdjustmentTypeTransfer(getUserVisit(), orderLineAdjustmentType));
+                result.setOrderLineAdjustmentTypeDescriptions(orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionTransfersByOrderLineAdjustmentType(getUserVisit(), orderLineAdjustmentType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderLineAdjustmentTypeName.name(), orderTypeName, orderLineAdjustmentTypeName);
             }
