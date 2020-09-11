@@ -22,7 +22,8 @@ import com.echothree.control.user.order.common.form.EditOrderAliasTypeForm;
 import com.echothree.control.user.order.common.result.EditOrderAliasTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderAliasTypeSpec;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -34,10 +35,10 @@ import com.echothree.model.data.order.server.value.OrderAliasTypeDescriptionValu
 import com.echothree.model.data.order.server.value.OrderAliasTypeDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -95,23 +96,24 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public OrderAliasType getEntity(EditOrderAliasTypeResult result) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderAliasType orderAliasType = null;
         String orderTypeName = spec.getOrderTypeName();
 
-        orderType = orderControl.getOrderTypeByName(orderTypeName);
+        orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
             String orderAliasTypeName = spec.getOrderAliasTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+                orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
             } else { // EditMode.UPDATE
-                orderAliasType = orderControl.getOrderAliasTypeByNameForUpdate(orderType, orderAliasTypeName);
+                orderAliasType = orderAliasControl.getOrderAliasTypeByNameForUpdate(orderType, orderAliasTypeName);
             }
 
             if(orderAliasType != null) {
-                result.setOrderAliasType(orderControl.getOrderAliasTypeTransfer(getUserVisit(), orderAliasType));
+                result.setOrderAliasType(orderAliasControl.getOrderAliasTypeTransfer(getUserVisit(), orderAliasType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderAliasTypeName.name(), orderTypeName, orderAliasTypeName);
             }
@@ -129,15 +131,15 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void fillInResult(EditOrderAliasTypeResult result, OrderAliasType orderAliasType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
 
-        result.setOrderAliasType(orderControl.getOrderAliasTypeTransfer(getUserVisit(), orderAliasType));
+        result.setOrderAliasType(orderAliasControl.getOrderAliasTypeTransfer(getUserVisit(), orderAliasType));
     }
 
     @Override
     public void doLock(OrderAliasTypeEdit edit, OrderAliasType orderAliasType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderAliasTypeDescription orderAliasTypeDescription = orderControl.getOrderAliasTypeDescription(orderAliasType, getPreferredLanguage());
+        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        OrderAliasTypeDescription orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescription(orderAliasType, getPreferredLanguage());
         OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
 
         edit.setOrderAliasTypeName(orderAliasTypeDetail.getOrderAliasTypeName());
@@ -152,9 +154,9 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void canUpdate(OrderAliasType orderAliasType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
         String orderAliasTypeName = edit.getOrderAliasTypeName();
-        OrderAliasType duplicateOrderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+        OrderAliasType duplicateOrderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
         if(duplicateOrderAliasType != null && !orderAliasType.equals(duplicateOrderAliasType)) {
             addExecutionError(ExecutionErrors.DuplicateOrderAliasTypeName.name(), spec.getOrderTypeName(), orderAliasTypeName);
@@ -163,10 +165,10 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void doUpdate(OrderAliasType orderAliasType) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
         PartyPK partyPK = getPartyPK();
-        OrderAliasTypeDetailValue orderAliasTypeDetailValue = orderControl.getOrderAliasTypeDetailValueForUpdate(orderAliasType);
-        OrderAliasTypeDescription orderAliasTypeDescription = orderControl.getOrderAliasTypeDescriptionForUpdate(orderAliasType, getPreferredLanguage());
+        OrderAliasTypeDetailValue orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueForUpdate(orderAliasType);
+        OrderAliasTypeDescription orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescriptionForUpdate(orderAliasType, getPreferredLanguage());
         String description = edit.getDescription();
 
         orderAliasTypeDetailValue.setOrderAliasTypeName(edit.getOrderAliasTypeName());
@@ -174,17 +176,17 @@ public class EditOrderAliasTypeCommand
         orderAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        orderControl.updateOrderAliasTypeFromValue(orderAliasTypeDetailValue, partyPK);
+        orderAliasControl.updateOrderAliasTypeFromValue(orderAliasTypeDetailValue, partyPK);
 
         if(orderAliasTypeDescription == null && description != null) {
-            orderControl.createOrderAliasTypeDescription(orderAliasType, getPreferredLanguage(), description, partyPK);
+            orderAliasControl.createOrderAliasTypeDescription(orderAliasType, getPreferredLanguage(), description, partyPK);
         } else if(orderAliasTypeDescription != null && description == null) {
-            orderControl.deleteOrderAliasTypeDescription(orderAliasTypeDescription, partyPK);
+            orderAliasControl.deleteOrderAliasTypeDescription(orderAliasTypeDescription, partyPK);
         } else if(orderAliasTypeDescription != null && description != null) {
-            OrderAliasTypeDescriptionValue orderAliasTypeDescriptionValue = orderControl.getOrderAliasTypeDescriptionValue(orderAliasTypeDescription);
+            OrderAliasTypeDescriptionValue orderAliasTypeDescriptionValue = orderAliasControl.getOrderAliasTypeDescriptionValue(orderAliasTypeDescription);
 
             orderAliasTypeDescriptionValue.setDescription(description);
-            orderControl.updateOrderAliasTypeDescriptionFromValue(orderAliasTypeDescriptionValue, partyPK);
+            orderAliasControl.updateOrderAliasTypeDescriptionFromValue(orderAliasTypeDescriptionValue, partyPK);
         }
     }
 

@@ -23,7 +23,9 @@ import com.echothree.control.user.order.common.result.EditOrderAliasResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderAliasSpec;
 import com.echothree.control.user.order.server.command.util.OrderAliasUtil;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.Order;
@@ -33,10 +35,10 @@ import com.echothree.model.data.order.server.entity.OrderAliasTypeDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderAliasValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -88,29 +90,31 @@ public class EditOrderAliasCommand
     
     @Override
     public OrderAlias getEntity(EditOrderAliasResult result) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderAlias orderAlias = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             String orderName = spec.getOrderName();
             Order order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
+                var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
                 String orderAliasTypeName = spec.getOrderAliasTypeName();
 
-                orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+                orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
                 if(orderAliasType != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        orderAlias = orderControl.getOrderAlias(order, orderAliasType);
+                        orderAlias = orderAliasControl.getOrderAlias(order, orderAliasType);
                     } else { // EditMode.UPDATE
-                        orderAlias = orderControl.getOrderAliasForUpdate(order, orderAliasType);
+                        orderAlias = orderAliasControl.getOrderAliasForUpdate(order, orderAliasType);
                     }
 
                     if(orderAlias != null) {
-                        result.setOrderAlias(orderControl.getOrderAliasTransfer(getUserVisit(), orderAlias));
+                        result.setOrderAlias(orderAliasControl.getOrderAliasTransfer(getUserVisit(), orderAlias));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownOrderAlias.name(), orderTypeName, orderName, orderAliasTypeName);
                     }
@@ -134,9 +138,9 @@ public class EditOrderAliasCommand
 
     @Override
     public void fillInResult(EditOrderAliasResult result, OrderAlias orderAlias) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
 
-        result.setOrderAlias(orderControl.getOrderAliasTransfer(getUserVisit(), orderAlias));
+        result.setOrderAlias(orderAliasControl.getOrderAliasTransfer(getUserVisit(), orderAlias));
     }
 
     @Override
@@ -146,9 +150,9 @@ public class EditOrderAliasCommand
 
     @Override
     public void canUpdate(OrderAlias orderAlias) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
         String alias = edit.getAlias();
-        OrderAlias duplicateOrderAlias = orderControl.getOrderAliasByAlias(orderAliasType, alias);
+        OrderAlias duplicateOrderAlias = orderAliasControl.getOrderAliasByAlias(orderAliasType, alias);
 
         if(duplicateOrderAlias != null && !orderAlias.equals(duplicateOrderAlias)) {
             OrderAliasTypeDetail orderAliasTypeDetail = orderAlias.getOrderAliasType().getLastDetail();
@@ -160,12 +164,12 @@ public class EditOrderAliasCommand
 
     @Override
     public void doUpdate(OrderAlias orderAlias) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderAliasValue orderAliasValue = orderControl.getOrderAliasValue(orderAlias);
+        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        OrderAliasValue orderAliasValue = orderAliasControl.getOrderAliasValue(orderAlias);
 
         orderAliasValue.setAlias(edit.getAlias());
 
-        orderControl.updateOrderAliasFromValue(orderAliasValue, getPartyPK());
+        orderAliasControl.updateOrderAliasFromValue(orderAliasValue, getPartyPK());
     }
 
 }
