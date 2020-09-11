@@ -17,7 +17,8 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderAdjustmentTypeForm;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -25,10 +26,10 @@ import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,13 +69,14 @@ public class CreateOrderAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
             String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            OrderAdjustmentType orderAdjustmentType = orderControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+            OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType == null) {
                 PartyPK partyPK = getPartyPK();
@@ -82,10 +84,10 @@ public class CreateOrderAdjustmentTypeCommand
                 Integer sortOrder = Integer.valueOf(form.getSortOrder());
                 String description = form.getDescription();
 
-                orderAdjustmentType = orderControl.createOrderAdjustmentType(orderType, orderAdjustmentTypeName, isDefault, sortOrder, partyPK);
+                orderAdjustmentType = orderAdjustmentControl.createOrderAdjustmentType(orderType, orderAdjustmentTypeName, isDefault, sortOrder, partyPK);
 
                 if(description != null) {
-                    orderControl.createOrderAdjustmentTypeDescription(orderAdjustmentType, getPreferredLanguage(), description, partyPK);
+                    orderAdjustmentControl.createOrderAdjustmentTypeDescription(orderAdjustmentType, getPreferredLanguage(), description, partyPK);
                 }
             } else {
                 addExecutionError(ExecutionErrors.DuplicateOrderAdjustmentTypeName.name(), orderTypeName, orderAdjustmentTypeName);

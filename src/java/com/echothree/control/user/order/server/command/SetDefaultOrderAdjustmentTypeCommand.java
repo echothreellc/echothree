@@ -17,17 +17,18 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.SetDefaultOrderAdjustmentTypeForm;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderAdjustmentTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,17 +64,18 @@ public class SetDefaultOrderAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
             String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue = orderControl.getOrderAdjustmentTypeDetailValueByNameForUpdate(orderType, orderAdjustmentTypeName);
+            OrderAdjustmentTypeDetailValue orderAdjustmentTypeDetailValue = orderAdjustmentControl.getOrderAdjustmentTypeDetailValueByNameForUpdate(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentTypeDetailValue != null) {
                 orderAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
-                orderControl.updateOrderAdjustmentTypeFromValue(orderAdjustmentTypeDetailValue, getPartyPK());
+                orderAdjustmentControl.updateOrderAdjustmentTypeFromValue(orderAdjustmentTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderAdjustmentTypeName.name(), orderTypeName, orderAdjustmentTypeName);
             }
