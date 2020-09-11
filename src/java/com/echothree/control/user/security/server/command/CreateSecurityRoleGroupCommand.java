@@ -80,10 +80,10 @@ public class CreateSecurityRoleGroupCommand
             }
             
             if(parentSecurityRoleGroupName == null || parentSecurityRoleGroup != null) {
-                PartyPK partyPK = getPartyPK();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var partyPK = getPartyPK();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 
                 securityRoleGroup = securityControl.createSecurityRoleGroup(securityRoleGroupName, parentSecurityRoleGroup,
                         isDefault, sortOrder, partyPK);

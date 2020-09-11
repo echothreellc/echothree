@@ -66,7 +66,7 @@ public class CreateAssociateProgramDescriptionCommand
                     AssociateProgramDescription associateProgramDescription = associateControl.getAssociateProgramDescription(associateProgram, language);
                     
                     if(associateProgramDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         associateControl.createAssociateProgramDescription(associateProgram, language, description, getPartyPK());
                     } else {

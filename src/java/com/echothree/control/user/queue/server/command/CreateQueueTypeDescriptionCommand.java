@@ -80,7 +80,7 @@ public class CreateQueueTypeDescriptionCommand
                 QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescription(queueType, language);
                 
                 if(queueTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     queueControl.createQueueTypeDescription(queueType, language, description, getPartyPK());
                 } else {

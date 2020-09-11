@@ -80,7 +80,7 @@ public class CreateContactListTypeDescriptionCommand
                 ContactListTypeDescription contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, language);
                 
                 if(contactListTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contactListControl.createContactListTypeDescription(contactListType, language, description, getPartyPK());
                 } else {

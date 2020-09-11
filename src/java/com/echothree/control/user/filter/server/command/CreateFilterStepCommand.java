@@ -100,8 +100,8 @@ public class CreateFilterStepCommand
                         }
                         
                         if(filterItemSelectorName == null || filterItemSelector != null) {
-                            PartyPK partyPK = getPartyPK();
-                            String description = form.getDescription();
+                            var partyPK = getPartyPK();
+                            var description = form.getDescription();
                             
                             filterStep = filterControl.createFilterStep(filter, filterStepName, filterItemSelector, partyPK);
                             

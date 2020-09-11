@@ -70,7 +70,7 @@ public class CreateRelatedItemCommand
                         RelatedItem relatedItem = itemControl.getRelatedItem(relatedItemType, fromItem, toItem);
 
                         if(relatedItem == null) {
-                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
 
                             itemControl.createRelatedItem(relatedItemType, fromItem, toItem, sortOrder, getPartyPK());
                         } else {

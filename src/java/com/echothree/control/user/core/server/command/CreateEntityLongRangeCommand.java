@@ -94,14 +94,14 @@ public class CreateEntityLongRangeCommand
                         EntityLongRange entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
                         if(entityLongRange == null) {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             String strMinimumLongValue = form.getMinimumLongValue();
                             Long minimumLongValue = strMinimumLongValue == null ? null : Long.valueOf(strMinimumLongValue);
                             String strMaximumLongValue = form.getMaximumLongValue();
                             Long maximumLongValue = strMaximumLongValue == null ? null : Long.valueOf(strMaximumLongValue);
-                            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                            String description = form.getDescription();
+                            var isDefault = Boolean.valueOf(form.getIsDefault());
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                            var description = form.getDescription();
 
                             if(minimumLongValue == null || maximumLongValue == null || maximumLongValue >= minimumLongValue) {
                                 entityLongRange = coreControl.createEntityLongRange(entityAttribute, entityLongRangeName, minimumLongValue,

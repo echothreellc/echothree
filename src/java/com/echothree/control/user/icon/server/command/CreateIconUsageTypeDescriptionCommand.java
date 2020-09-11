@@ -66,7 +66,7 @@ public class CreateIconUsageTypeDescriptionCommand
                 IconUsageTypeDescription iconUsageTypeDescription = iconControl.getIconUsageTypeDescription(iconUsageType, language);
                 
                 if(iconUsageTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     iconControl.createIconUsageTypeDescription(iconUsageType, language, description, getPartyPK());
                 } else {

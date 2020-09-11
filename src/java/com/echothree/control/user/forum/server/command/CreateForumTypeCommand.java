@@ -55,8 +55,8 @@ public class CreateForumTypeCommand
         ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
         
         if(forumType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             forumControl.createForumType(forumTypeName, isDefault, sortOrder);
         } else {

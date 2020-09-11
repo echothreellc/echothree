@@ -147,7 +147,7 @@ public class EditInvoiceLineTypeCommand
                                 if(defaultGlAccountName == null || defaultGlAccount != null) {
                                     if(lockEntityForUpdate(invoiceLineType)) {
                                         try {
-                                            PartyPK partyPK = getPartyPK();
+                                            var partyPK = getPartyPK();
                                             InvoiceLineTypeDetailValue invoiceLineTypeDetailValue = invoiceControl.getInvoiceLineTypeDetailValueForUpdate(invoiceLineType);
                                             InvoiceLineTypeDescription invoiceLineTypeDescription = invoiceControl.getInvoiceLineTypeDescriptionForUpdate(invoiceLineType, getPreferredLanguage());
                                             String description = edit.getDescription();

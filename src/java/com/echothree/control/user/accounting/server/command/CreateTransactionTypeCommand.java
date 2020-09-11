@@ -70,9 +70,9 @@ public class CreateTransactionTypeCommand
         TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType == null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
-            PartyPK partyPK = getPartyPK();
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+            var partyPK = getPartyPK();
             
             transactionType =accountingControl.createTransactionType(transactionTypeName, sortOrder, partyPK);
             

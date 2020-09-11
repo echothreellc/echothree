@@ -80,7 +80,7 @@ public class CreateItemDescriptionTypeDescriptionCommand
                 ItemDescriptionTypeDescription itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescription(itemDescriptionType, language);
                 
                 if(itemDescriptionTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemDescriptionTypeDescription(itemDescriptionType, language, description, getPartyPK());
                 } else {

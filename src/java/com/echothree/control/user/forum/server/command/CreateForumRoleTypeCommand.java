@@ -55,8 +55,8 @@ public class CreateForumRoleTypeCommand
         ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
         
         if(forumRoleType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             forumControl.createForumRoleType(forumRoleTypeName, isDefault, sortOrder);
         } else {

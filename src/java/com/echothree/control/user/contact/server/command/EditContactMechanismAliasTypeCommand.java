@@ -151,7 +151,7 @@ public class EditContactMechanismAliasTypeCommand
     @Override
     public void doUpdate(ContactMechanismAliasType contactMechanismAliasType) {
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = contactControl.getContactMechanismAliasTypeDetailValueForUpdate(contactMechanismAliasType);
         ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = contactControl.getContactMechanismAliasTypeDescriptionForUpdate(contactMechanismAliasType, getPreferredLanguage());
         String description = edit.getDescription();

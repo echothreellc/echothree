@@ -66,7 +66,7 @@ public class CreateCommunicationEventPurposeDescriptionCommand
                 CommunicationEventPurposeDescription communicationEventPurposeDescription = communicationControl.getCommunicationEventPurposeDescription(communicationEventPurpose, language);
                 
                 if(communicationEventPurposeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     communicationControl.createCommunicationEventPurposeDescription(communicationEventPurpose, language, description, getPartyPK());
                 } else {

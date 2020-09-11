@@ -66,7 +66,7 @@ public class CreateRecoveryQuestionDescriptionCommand
                 RecoveryQuestionDescription recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, language);
                 
                 if(recoveryQuestionDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     userControl.createRecoveryQuestionDescription(recoveryQuestion, language, description, getPartyPK());
                 } else {

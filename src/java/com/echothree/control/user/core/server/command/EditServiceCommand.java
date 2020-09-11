@@ -164,7 +164,7 @@ public class EditServiceCommand
     @Override
     public void doUpdate(Service service) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ServiceDetailValue serviceDetailValue = coreControl.getServiceDetailValueForUpdate(service);
         ServiceDescription serviceDescription = coreControl.getServiceDescriptionForUpdate(service, getPreferredLanguage());
         String description = edit.getDescription();

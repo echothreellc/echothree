@@ -184,7 +184,7 @@ public class EditContentPageCommand
     @Override
     public void doUpdate(ContentPage contentPage) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContentPageDetailValue contentPageDetailValue = contentControl.getContentPageDetailValueForUpdate(contentPage);
         ContentPageDescription contentPageDescription = contentControl.getContentPageDescriptionForUpdate(contentPage, getPreferredLanguage());
         String description = edit.getDescription();

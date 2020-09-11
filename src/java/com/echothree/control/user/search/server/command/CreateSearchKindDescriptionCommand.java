@@ -80,7 +80,7 @@ public class CreateSearchKindDescriptionCommand
                 SearchKindDescription searchKindDescription = searchControl.getSearchKindDescription(searchKind, language);
                 
                 if(searchKindDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     searchControl.createSearchKindDescription(searchKind, language, description, getPartyPK());
                 } else {

@@ -18,23 +18,26 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderLineTimeTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderLineTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderLineTimeTransferCache
         extends BaseOrderTransferCache<OrderLineTime, OrderLineTimeTransfer> {
-    
+
+    OrderTimeControl orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+
     /** Creates a new instance of OrderLineTimeTransferCache */
-    public OrderLineTimeTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderLineTimeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OrderLineTimeTransfer getOrderLineTimeTransfer(OrderLineTime orderLineTime) {
         OrderLineTimeTransfer orderLineTimeTransfer = get(orderLineTime);
         
         if(orderLineTimeTransfer == null) {
-            OrderTimeTypeTransfer orderTimeType = orderControl.getOrderTimeTypeTransfer(userVisit, orderLineTime.getOrderTimeType());
+            OrderTimeTypeTransfer orderTimeType = orderTimeControl.getOrderTimeTypeTransfer(userVisit, orderLineTime.getOrderTimeType());
             Long unformattedTime = orderLineTime.getTime();
             String time = formatTypicalDateTime(unformattedTime);
             

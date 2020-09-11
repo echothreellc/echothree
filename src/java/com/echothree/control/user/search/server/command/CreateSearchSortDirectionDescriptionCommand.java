@@ -80,7 +80,7 @@ public class CreateSearchSortDirectionDescriptionCommand
                 SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescription(searchSortDirection, language);
                 
                 if(searchSortDirectionDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     searchControl.createSearchSortDirectionDescription(searchSortDirection, language, description, getPartyPK());
                 } else {

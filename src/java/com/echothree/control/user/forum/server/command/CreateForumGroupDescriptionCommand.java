@@ -66,7 +66,7 @@ public class CreateForumGroupDescriptionCommand
                 ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, language);
                 
                 if(forumGroupDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     forumControl.createForumGroupDescription(forumGroup, language, description, getPartyPK());
                 } else {

@@ -80,7 +80,7 @@ public class CreateLotAliasTypeDescriptionCommand
                 LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, language);
 
                 if(lotAliasTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
 
                     lotAliasControl.createLotAliasTypeDescription(lotAliasType, language, description, getPartyPK());
                 } else {

@@ -150,7 +150,7 @@ public class EditPrinterGroupUseTypeCommand
     @Override
     public void doUpdate(PrinterGroupUseType printerGroupUseType) {
         var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = printerControl.getPrinterGroupUseTypeDetailValueForUpdate(printerGroupUseType);
         PrinterGroupUseTypeDescription printerGroupUseTypeDescription = printerControl.getPrinterGroupUseTypeDescriptionForUpdate(printerGroupUseType, getPreferredLanguage());
         String description = edit.getDescription();

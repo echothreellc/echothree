@@ -17,7 +17,7 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.DeleteOrderTypeDescriptionForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,9 +66,9 @@ public class DeleteOrderTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
         
         if(orderType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -76,10 +76,10 @@ public class DeleteOrderTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OrderTypeDescription orderTypeDescription = orderControl.getOrderTypeDescriptionForUpdate(orderType, language);
+                OrderTypeDescription orderTypeDescription = orderTypeControl.getOrderTypeDescriptionForUpdate(orderType, language);
                 
                 if(orderTypeDescription != null) {
-                    orderControl.deleteOrderTypeDescription(orderTypeDescription, getPartyPK());
+                    orderTypeControl.deleteOrderTypeDescription(orderTypeDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOrderTypeDescription.name(), orderTypeName, languageIsoName);
                 }

@@ -121,7 +121,7 @@ public class EditFilterAdjustmentCommand
                         if(filterAdjustmentSource != null) {
                             if(lockEntityForUpdate(filterAdjustment)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     FilterAdjustmentDetailValue filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueForUpdate(filterAdjustment);
                                     FilterAdjustmentDescription filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, getPreferredLanguage());
                                     String description = edit.getDescription();

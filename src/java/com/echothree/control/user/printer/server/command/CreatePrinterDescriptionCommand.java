@@ -66,7 +66,7 @@ public class CreatePrinterDescriptionCommand
                 PrinterDescription printerDescription = printerControl.getPrinterDescription(printer, language);
                 
                 if(printerDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     printerControl.createPrinterDescription(printer, language, description, getPartyPK());
                 } else {

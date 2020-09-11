@@ -149,7 +149,7 @@ public class EditProtocolCommand
     @Override
     public void doUpdate(Protocol protocol) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ProtocolDetailValue protocolDetailValue = coreControl.getProtocolDetailValueForUpdate(protocol);
         ProtocolDescription protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, getPreferredLanguage());
         String description = edit.getDescription();

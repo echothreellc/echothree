@@ -94,7 +94,7 @@ public class CreateLetterDescriptionCommand
                         LetterDescription letterDescription = letterControl.getLetterDescription(letter, language);
                         
                         if(letterDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             letterControl.createLetterDescription(letter, language, description, getPartyPK());
                         } else {

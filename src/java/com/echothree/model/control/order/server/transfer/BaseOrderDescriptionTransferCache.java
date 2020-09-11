@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
@@ -29,8 +28,8 @@ public abstract class BaseOrderDescriptionTransferCache<K extends BaseEntity, V 
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseOrderDescriptionTransferCache */
-    protected BaseOrderDescriptionTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    protected BaseOrderDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
 }

@@ -166,7 +166,7 @@ public class EditPeriodTypeCommand
                                         if(workflowEntranceName == null || workflowEntrance != null) {
                                             if(lockEntityForUpdate(periodType)) {
                                                 try {
-                                                    PartyPK partyPK = getPartyPK();
+                                                    var partyPK = getPartyPK();
                                                     PeriodTypeDetailValue periodTypeDetailValue = periodControl.getPeriodTypeDetailValueForUpdate(periodType);
                                                     PeriodTypeDescription periodTypeDescription = periodControl.getPeriodTypeDescriptionForUpdate(periodType, getPreferredLanguage());
                                                     String description = edit.getDescription();

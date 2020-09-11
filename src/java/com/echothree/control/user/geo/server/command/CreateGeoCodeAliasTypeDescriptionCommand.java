@@ -86,7 +86,7 @@ public class CreateGeoCodeAliasTypeDescriptionCommand
                     GeoCodeAliasTypeDescription geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescription(geoAliasType, language);
 
                     if(geoAliasTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         geoControl.createGeoCodeAliasTypeDescription(geoAliasType, language, description, getPartyPK());
                     } else {

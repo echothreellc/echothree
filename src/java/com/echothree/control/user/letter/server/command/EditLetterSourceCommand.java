@@ -152,7 +152,7 @@ public class EditLetterSourceCommand
                             if(!hasExecutionErrors()) {
                                 if(lockEntityForUpdate(letterSource)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         LetterSourceDetailValue letterSourceDetailValue = letterControl.getLetterSourceDetailValueForUpdate(letterSource);
                                         LetterSourceDescription letterSourceDescription = letterControl.getLetterSourceDescriptionForUpdate(letterSource, getPreferredLanguage());
                                         String description = edit.getDescription();

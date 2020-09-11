@@ -126,10 +126,10 @@ public class CreateContentCatalogCommand
                 }
                 
                 if(defaultOfferUse != null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
-                    PartyPK partyPK = getPartyPK();
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
+                    var partyPK = getPartyPK();
                     
                     contentCatalog = contentControl.createContentCatalog(contentCollection, contentCatalogName, defaultOfferUse,
                             isDefault, sortOrder, partyPK);

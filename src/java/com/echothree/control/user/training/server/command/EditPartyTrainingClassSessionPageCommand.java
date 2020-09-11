@@ -160,7 +160,7 @@ public class EditPartyTrainingClassSessionPageCommand
     @Override
     public void doUpdate(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PartyTrainingClassSessionPageValue partyTrainingClassSessionPageValue = trainingControl.getPartyTrainingClassSessionPageValue(partyTrainingClassSessionPage);
 
         partyTrainingClassSessionPageValue.setTrainingClassPagePK(trainingClassPage.getPrimaryKey());

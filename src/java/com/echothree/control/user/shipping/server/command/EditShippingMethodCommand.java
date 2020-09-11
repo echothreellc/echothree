@@ -211,7 +211,7 @@ public class EditShippingMethodCommand
     @Override
     public void doUpdate(ShippingMethod shippingMethod) {
         var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ShippingMethodDetailValue shippingMethodDetailValue = shippingControl.getShippingMethodDetailValueForUpdate(shippingMethod);
         ShippingMethodDescription shippingMethodDescription = shippingControl.getShippingMethodDescriptionForUpdate(shippingMethod, getPreferredLanguage());
         String description = edit.getDescription();

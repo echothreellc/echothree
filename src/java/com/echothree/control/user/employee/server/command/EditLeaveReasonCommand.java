@@ -150,7 +150,7 @@ public class EditLeaveReasonCommand
     @Override
     public void doUpdate(LeaveReason leaveReason) {
         var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         LeaveReasonDetailValue leaveReasonDetailValue = employeeControl.getLeaveReasonDetailValueForUpdate(leaveReason);
         LeaveReasonDescription leaveReasonDescription = employeeControl.getLeaveReasonDescriptionForUpdate(leaveReason, getPreferredLanguage());
         String description = edit.getDescription();

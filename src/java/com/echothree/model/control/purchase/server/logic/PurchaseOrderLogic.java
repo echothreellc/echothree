@@ -21,7 +21,8 @@ import com.echothree.model.control.cancellationpolicy.server.logic.CancellationP
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.purchase.common.choice.PurchaseOrderStatusChoicesBean;
 import com.echothree.model.control.purchase.common.exception.DuplicateHandlingInPurchaseOrderStatusTransitionException;
@@ -172,6 +173,7 @@ public class PurchaseOrderLogic
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
                 var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 var userSesson = userControl.getUserSessionByUserVisit(userVisit);;
                 var createdByPartyPK = createdByParty.getPrimaryKey();
@@ -186,9 +188,9 @@ public class PurchaseOrderLogic
                 workflowControl.addEntityToWorkflowUsingNames(null, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS,
                         workflowEntranceName, entityInstance, null, null, createdByPartyPK);
 
-                orderControl.createOrderRole(order, userSesson.getPartyRelationship().getFromParty(), billToOrderRoleType, createdByPartyPK);
+                orderRoleControl.createOrderRole(order, userSesson.getPartyRelationship().getFromParty(), billToOrderRoleType, createdByPartyPK);
 
-                orderControl.createOrderRole(order, createdByParty, placingOrderRoleType, createdByPartyPK);
+                orderRoleControl.createOrderRole(order, createdByParty, placingOrderRoleType, createdByPartyPK);
             }
         }
 
@@ -329,8 +331,8 @@ public class PurchaseOrderLogic
      * @return The Party used for the BILL_TO OrderRoleType. May be null.
      */
     public Party getOrderBillToParty(final Order order) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
+        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+        var billToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
         Party party = null;
         
         if(billToOrderRole != null) {
@@ -375,14 +377,14 @@ public class PurchaseOrderLogic
      * @return The Party that is to be used for the SHIP_TO OrderRoleType. May be null.
      */
     public Party getOrderShipToParty(final Order order, final boolean billToFallback, final BasePK createdBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
+        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+        var shipToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
         
         if(shipToOrderRole == null && billToFallback) {
-            shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
+            shipToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
             
             if(shipToOrderRole != null) {
-                orderControl.createOrderRoleUsingNames(order, shipToOrderRole.getParty(), OrderRoleTypes.SHIP_TO.name(), createdBy);
+                orderRoleControl.createOrderRoleUsingNames(order, shipToOrderRole.getParty(), OrderRoleTypes.SHIP_TO.name(), createdBy);
             }
         }
         

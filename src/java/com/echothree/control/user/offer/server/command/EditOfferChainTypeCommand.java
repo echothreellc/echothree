@@ -127,7 +127,7 @@ public class EditOfferChainTypeCommand
                             if(chainName == null || chain != null) {
                                 if(lockEntityForUpdate(offer)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         OfferChainTypeValue offerChainTypeValue = offerControl.getOfferChainTypeValue(offerChainType);
                                         
                                         offerChainTypeValue.setChainPK(chain == null? null: chain.getPrimaryKey());

@@ -70,10 +70,10 @@ public class CreateProtocolCommand
         Protocol protocol = coreControl.getProtocolByName(protocolName);
         
         if(protocol == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             protocol = coreControl.createProtocol(protocolName, isDefault, sortOrder, partyPK);
             

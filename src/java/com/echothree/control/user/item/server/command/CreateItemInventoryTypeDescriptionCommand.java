@@ -66,7 +66,7 @@ public class CreateItemInventoryTypeDescriptionCommand
                 ItemInventoryTypeDescription itemInventoryTypeDescription = itemControl.getItemInventoryTypeDescription(itemInventoryType, language);
                 
                 if(itemInventoryTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemInventoryTypeDescription(itemInventoryType, language, description);
                 } else {

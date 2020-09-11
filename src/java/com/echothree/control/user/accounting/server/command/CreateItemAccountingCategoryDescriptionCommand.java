@@ -80,7 +80,7 @@ public class CreateItemAccountingCategoryDescriptionCommand
                 ItemAccountingCategoryDescription itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language);
                 
                 if(itemAccountingCategoryDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     accountingControl.createItemAccountingCategoryDescription(itemAccountingCategory, language, description, getPartyPK());
                 } else {

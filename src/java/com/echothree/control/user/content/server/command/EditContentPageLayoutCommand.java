@@ -138,7 +138,7 @@ public class EditContentPageLayoutCommand
     @Override
     public void doUpdate(ContentPageLayout contentPageLayout) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueForUpdate(contentPageLayout);
         ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescriptionForUpdate(contentPageLayout, getPreferredLanguage());
         String description = edit.getDescription();

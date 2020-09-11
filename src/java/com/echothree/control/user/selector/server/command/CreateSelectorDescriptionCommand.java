@@ -78,7 +78,7 @@ public class CreateSelectorDescriptionCommand
                         SelectorDescription selectorDescription = selectorControl.getSelectorDescription(selector, language);
                         
                         if(selectorDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             selectorControl.createSelectorDescription(selector, language, description, getPartyPK());
                         } else {

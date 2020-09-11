@@ -70,10 +70,10 @@ public class CreateTextTransformationCommand
         TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
         
         if(textTransformation == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             textTransformation = coreControl.createTextTransformation(textTransformationName, isDefault, sortOrder, partyPK);
             

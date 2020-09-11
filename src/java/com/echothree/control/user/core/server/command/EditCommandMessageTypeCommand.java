@@ -149,7 +149,7 @@ public class EditCommandMessageTypeCommand
     @Override
     public void doUpdate(CommandMessageType commandMessageType) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CommandMessageTypeDetailValue commandMessageTypeDetailValue = coreControl.getCommandMessageTypeDetailValueForUpdate(commandMessageType);
         CommandMessageTypeDescription commandMessageTypeDescription = coreControl.getCommandMessageTypeDescriptionForUpdate(commandMessageType, getPreferredLanguage());
         String description = edit.getDescription();

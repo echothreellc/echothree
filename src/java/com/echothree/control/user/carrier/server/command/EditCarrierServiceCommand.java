@@ -229,7 +229,7 @@ public class EditCarrierServiceCommand
     @Override
     public void doUpdate(CarrierService carrierService) {
         var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CarrierServiceDetailValue carrierServiceDetailValue = carrierControl.getCarrierServiceDetailValueForUpdate(carrierService);
         CarrierServiceDescription carrierServiceDescription = carrierControl.getCarrierServiceDescriptionForUpdate(carrierService, getPreferredLanguage());
         String description = edit.getDescription();

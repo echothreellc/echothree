@@ -20,7 +20,7 @@ import com.echothree.model.control.order.common.exception.DuplicateOrderTimeExce
 import com.echothree.model.control.order.common.exception.UnknownOrderTimeException;
 import com.echothree.model.control.order.common.exception.UnknownOrderTimeTypeNameException;
 import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.order.server.entity.OrderTime;
@@ -55,8 +55,8 @@ public class OrderTimeLogic
     }
 
     public OrderTimeType getOrderTimeTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderTimeTypeName) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(orderTimeType == null) {
             String orderTypeName = orderType.getLastDetail().getOrderTypeName();
@@ -68,36 +68,36 @@ public class OrderTimeLogic
     }
 
     public void createOrderTime(final ExecutionErrorAccumulator eea, final Order order, final String orderTimeTypeName, final Long time, final BasePK partyPK) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderDetail orderDetail = order.getLastDetail().getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
-        OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+        OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            if(orderControl.orderTimeExists(order, orderTimeType)) {
+            if(orderTimeControl.orderTimeExists(order, orderTimeType)) {
                 handleExecutionError(DuplicateOrderTimeException.class, eea, ExecutionErrors.DuplicateOrderTime.name(), getOrderTypeName(orderType),
                         orderDetail.getOrderName(), orderTimeTypeName);
             } else {
-                orderControl.createOrderTime(order, orderTimeType, time, partyPK);
+                orderTimeControl.createOrderTime(order, orderTimeType, time, partyPK);
             }
         }
     }
 
     public void updateOrderTime(final ExecutionErrorAccumulator eea, final Order order, final String orderTimeTypeName, final Long time, final BasePK partyPK) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderDetail orderDetail = order.getLastDetail().getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
-        OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+        OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderTimeValue orderTimeValue = orderControl.getOrderTimeValueForUpdate(order, orderTimeType);
+            OrderTimeValue orderTimeValue = orderTimeControl.getOrderTimeValueForUpdate(order, orderTimeType);
 
             if(orderTimeValue == null) {
                 handleExecutionError(UnknownOrderTimeException.class, eea, ExecutionErrors.UnknownOrderTime.name(), getOrderTypeName(orderType),
                         orderDetail.getOrderName(), orderTimeTypeName);
             } else {
                 orderTimeValue.setTime(time);
-                orderControl.updateOrderTimeFromValue(orderTimeValue, partyPK);
+                orderTimeControl.updateOrderTimeFromValue(orderTimeValue, partyPK);
             }
         }
     }
@@ -111,32 +111,32 @@ public class OrderTimeLogic
 
     public void createOrUpdateOrderTime(final ExecutionErrorAccumulator eea, final Order order, final String orderTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderDetail orderDetail = order.getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
         OrderTimeType orderTimeType = getOrderTimeTypeByName(eea, orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderTimeValue orderTimeValue = orderControl.getOrderTimeValueForUpdate(order, orderTimeType);
+            OrderTimeValue orderTimeValue = orderTimeControl.getOrderTimeValueForUpdate(order, orderTimeType);
 
             if(orderTimeValue == null) {
-                orderControl.createOrderTime(order, orderTimeType, time, partyPK);
+                orderTimeControl.createOrderTime(order, orderTimeType, time, partyPK);
             } else {
                 orderTimeValue.setTime(time);
-                orderControl.updateOrderTimeFromValue(orderTimeValue, partyPK);
+                orderTimeControl.updateOrderTimeFromValue(orderTimeValue, partyPK);
             }
         }
     }
 
     private OrderTime getOrderTimeEntity(final ExecutionErrorAccumulator eea, final Order order, final String orderTimeTypeName) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderDetail orderDetail = order.getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
         OrderTimeType orderTimeType = getOrderTimeTypeByName(eea, orderType, orderTimeTypeName);
         OrderTime result = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            result = orderControl.getOrderTimeForUpdate(order, orderTimeType);
+            result = orderTimeControl.getOrderTimeForUpdate(order, orderTimeType);
 
             if(result == null) {
                 handleExecutionError(UnknownOrderTimeException.class, eea, ExecutionErrors.UnknownOrderTime.name(), getOrderTypeName(orderType), orderDetail.getOrderName(),
@@ -156,26 +156,26 @@ public class OrderTimeLogic
     public OrderTimeTransfer getOrderTimeTransfer(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Order order, final String orderTimeTypeName) {
         OrderTime orderTime = getOrderTimeEntity(eea, order, orderTimeTypeName);
         
-        return orderTime == null ? null : ((OrderControl)Session.getModelController(OrderControl.class)).getOrderTimeTransfer(userVisit, orderTime);
+        return orderTime == null ? null : ((OrderTimeControl)Session.getModelController(OrderTimeControl.class)).getOrderTimeTransfer(userVisit, orderTime);
     }
 
     public List<OrderTimeTransfer> getOrderTimeTransfersByOrder(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Order order) {
-        return ((OrderControl)Session.getModelController(OrderControl.class)).getOrderTimeTransfersByOrder(userVisit, order);
+        return ((OrderTimeControl)Session.getModelController(OrderTimeControl.class)).getOrderTimeTransfersByOrder(userVisit, order);
     }
 
     public void deleteOrderTime(final ExecutionErrorAccumulator eea, final Order order, final String orderTimeTypeName, final BasePK deletedBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderDetail orderDetail = order.getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
         OrderTimeType orderTimeType = getOrderTimeTypeByName(eea, orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderTime orderTime = orderControl.getOrderTimeForUpdate(order, orderTimeType);
+            OrderTime orderTime = orderTimeControl.getOrderTimeForUpdate(order, orderTimeType);
 
             if(orderTime == null) {
                 handleExecutionError(UnknownOrderTimeException.class, eea, ExecutionErrors.UnknownOrderTime.name(), getOrderTypeName(orderType), orderDetail.getOrderName(), orderTimeTypeName);
             } else {
-                orderControl.deleteOrderTime(orderTime, deletedBy);
+                orderTimeControl.deleteOrderTime(orderTime, deletedBy);
             }
         }
     }

@@ -22,7 +22,8 @@ import com.echothree.control.user.order.common.form.EditOrderLineAdjustmentTypeD
 import com.echothree.control.user.order.common.result.EditOrderLineAdjustmentTypeDescriptionResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderLineAdjustmentTypeDescriptionSpec;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,10 +34,10 @@ import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderLineAdjustmentTypeDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -89,14 +90,15 @@ public class EditOrderLineAdjustmentTypeDescriptionCommand
 
     @Override
     public OrderLineAdjustmentTypeDescription getEntity(EditOrderLineAdjustmentTypeDescriptionResult result) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
             String orderLineAdjustmentTypeName = spec.getOrderLineAdjustmentTypeName();
-            OrderLineAdjustmentType orderLineAdjustmentType = orderControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
+            OrderLineAdjustmentType orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
             if(orderLineAdjustmentType != null) {
                 var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -105,9 +107,9 @@ public class EditOrderLineAdjustmentTypeDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        orderLineAdjustmentTypeDescription = orderControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
+                        orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
                     } else { // EditMode.UPDATE
-                        orderLineAdjustmentTypeDescription = orderControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, language);
+                        orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, language);
                     }
 
                     if(orderLineAdjustmentTypeDescription == null) {
@@ -133,9 +135,9 @@ public class EditOrderLineAdjustmentTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderLineAdjustmentTypeDescriptionResult result, OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
 
-        result.setOrderLineAdjustmentTypeDescription(orderControl.getOrderLineAdjustmentTypeDescriptionTransfer(getUserVisit(), orderLineAdjustmentTypeDescription));
+        result.setOrderLineAdjustmentTypeDescription(orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionTransfer(getUserVisit(), orderLineAdjustmentTypeDescription));
     }
 
     @Override
@@ -145,11 +147,12 @@ public class EditOrderLineAdjustmentTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderLineAdjustmentTypeDescriptionValue orderLineAdjustmentTypeDescriptionValue = orderControl.getOrderLineAdjustmentTypeDescriptionValue(orderLineAdjustmentTypeDescription);
+        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+        OrderLineAdjustmentTypeDescriptionValue orderLineAdjustmentTypeDescriptionValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionValue(orderLineAdjustmentTypeDescription);
+
         orderLineAdjustmentTypeDescriptionValue.setDescription(edit.getDescription());
 
-        orderControl.updateOrderLineAdjustmentTypeDescriptionFromValue(orderLineAdjustmentTypeDescriptionValue, getPartyPK());
+        orderLineAdjustmentControl.updateOrderLineAdjustmentTypeDescriptionFromValue(orderLineAdjustmentTypeDescriptionValue, getPartyPK());
     }
     
 }

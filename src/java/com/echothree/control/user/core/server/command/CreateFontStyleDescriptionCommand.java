@@ -80,7 +80,7 @@ public class CreateFontStyleDescriptionCommand
                 FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, language);
                 
                 if(fontStyleDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createFontStyleDescription(fontStyle, language, description, getPartyPK());
                 } else {

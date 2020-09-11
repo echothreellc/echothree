@@ -17,7 +17,9 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.SetDefaultOrderPriorityForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPriorityControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -63,17 +65,18 @@ public class SetDefaultOrderPriorityCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
             String orderPriorityName = form.getOrderPriorityName();
-            OrderPriorityDetailValue orderPriorityDetailValue = orderControl.getOrderPriorityDetailValueByNameForUpdate(orderType, orderPriorityName);
+            OrderPriorityDetailValue orderPriorityDetailValue = orderPriorityControl.getOrderPriorityDetailValueByNameForUpdate(orderType, orderPriorityName);
 
             if(orderPriorityDetailValue != null) {
                 orderPriorityDetailValue.setIsDefault(Boolean.TRUE);
-                orderControl.updateOrderPriorityFromValue(orderPriorityDetailValue, getPartyPK());
+                orderPriorityControl.updateOrderPriorityFromValue(orderPriorityDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderPriorityName.name(), orderTypeName, orderPriorityName);
             }

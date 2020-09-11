@@ -59,7 +59,7 @@ public class CreateComponentCommand
             Component component = coreControl.getComponentByName(componentVendor, componentName);
             
             if(component == null) {
-                String description = form.getDescription();
+                var description = form.getDescription();
                 
                 coreControl.createComponent(componentVendor, componentName, description, getPartyPK());
             } else {

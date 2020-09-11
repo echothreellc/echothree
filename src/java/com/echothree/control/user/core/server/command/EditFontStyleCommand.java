@@ -147,7 +147,7 @@ public class EditFontStyleCommand
     @Override
     public void doUpdate(FontStyle fontStyle) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         FontStyleDetailValue fontStyleDetailValue = coreControl.getFontStyleDetailValueForUpdate(fontStyle);
         FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, getPreferredLanguage());
         String description = edit.getDescription();

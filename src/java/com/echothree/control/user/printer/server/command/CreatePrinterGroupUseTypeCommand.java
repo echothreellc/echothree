@@ -58,9 +58,9 @@ public class CreatePrinterGroupUseTypeCommand
         PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             PartyPK createdBy = getPartyPK();
 
             printerGroupUseType = printerControl.createPrinterGroupUseType(printerGroupUseTypeName, isDefault, sortOrder, createdBy);

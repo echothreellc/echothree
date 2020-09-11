@@ -72,11 +72,11 @@ public class CreateAllocationPriorityCommand
         AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority == null) {
-            PartyPK partyPK = getPartyPK();
+            var partyPK = getPartyPK();
             Integer priority = Integer.valueOf(form.getPriority());
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
 
             allocationPriority = inventoryControl.createAllocationPriority(allocationPriorityName, priority, isDefault, sortOrder, partyPK);
 

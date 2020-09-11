@@ -57,7 +57,7 @@ public class CreateLanguageDescriptionCommand
         
         if(language != null) {
             String descriptionLanguageIsoName = form.getDescriptionLanguageIsoName();
-            String description = form.getDescription();
+            var description = form.getDescription();
             Language descriptionLanguage = partyControl.getLanguageByIsoName(descriptionLanguageIsoName);
 
             if(descriptionLanguageIsoName != null) {

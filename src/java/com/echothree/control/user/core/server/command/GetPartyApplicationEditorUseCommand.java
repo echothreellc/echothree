@@ -92,7 +92,7 @@ public class GetPartyApplicationEditorUseCommand
                 if(!hasExecutionErrors()) {
                     var coreControl = getCoreControl();
                     PartyApplicationEditorUse partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
-                    PartyPK partyPK = getPartyPK();
+                    var partyPK = getPartyPK();
                     
                     if(partyApplicationEditorUse == null && partyName == null) {
                         partyApplicationEditorUse = coreControl.createPartyApplicationEditorUse(party, applicationEditorUse, null, null, null, partyPK);

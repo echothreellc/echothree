@@ -55,8 +55,8 @@ public class CreateSelectorBooleanTypeCommand
         SelectorBooleanType selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
         
         if(selectorBooleanType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             selectorControl.createSelectorBooleanType(selectorBooleanTypeName, isDefault, sortOrder);
         } else {

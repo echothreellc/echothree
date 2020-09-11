@@ -188,7 +188,7 @@ public class EditTrainingClassQuestionCommand
     @Override
     public void doUpdate(TrainingClassQuestion trainingClassQuestion) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TrainingClassQuestionDetailValue trainingClassQuestionDetailValue = trainingControl.getTrainingClassQuestionDetailValueForUpdate(trainingClassQuestion);
         TrainingClassQuestionTranslation trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslationForUpdate(trainingClassQuestion, getPreferredLanguage());
         String question = edit.getQuestion();

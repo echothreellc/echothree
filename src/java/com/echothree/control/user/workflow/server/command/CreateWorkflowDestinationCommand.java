@@ -83,10 +83,10 @@ public class CreateWorkflowDestinationCommand
                 WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination == null) {
-                    PartyPK partyPK = getPartyPK();
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var partyPK = getPartyPK();
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
                     
                     workflowDestination = workflowControl.createWorkflowDestination(workflowStep, workflowDestinationName, isDefault, sortOrder, partyPK);
                     

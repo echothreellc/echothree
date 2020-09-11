@@ -66,7 +66,7 @@ public class CreateSkillTypeDescriptionCommand
                 SkillTypeDescription skillTypeDescription = employeeControl.getSkillTypeDescription(skillType, language);
                 
                 if(skillTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     employeeControl.createSkillTypeDescription(skillType, language, description, getPartyPK());
                 } else {

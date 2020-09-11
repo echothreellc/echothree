@@ -74,7 +74,7 @@ public class CreateWorkRequirementTypeDescriptionCommand
                     WorkRequirementTypeDescription workRequirementTypeDescription = workRequirementControl.getWorkRequirementTypeDescription(workRequirementType, language);
                     
                     if(workRequirementTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         workRequirementControl.createWorkRequirementTypeDescription(workRequirementType, language, description, getPartyPK());
                     } else {

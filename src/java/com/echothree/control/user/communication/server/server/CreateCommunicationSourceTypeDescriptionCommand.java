@@ -66,7 +66,7 @@ public class CreateCommunicationSourceTypeDescriptionCommand
                 CommunicationSourceTypeDescription communicationSourceTypeDescription = communicationControl.getCommunicationSourceTypeDescription(communicationSourceType, language);
                 
                 if(communicationSourceTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     communicationControl.createCommunicationSourceTypeDescription(communicationSourceType, language, description);
                 } else {

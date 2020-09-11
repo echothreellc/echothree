@@ -66,7 +66,7 @@ public class CreateLocationUseTypeDescriptionCommand
                 LocationUseTypeDescription locationUseTypeDescription = warehouseControl.getLocationUseTypeDescription(locationUseType, language);
                 
                 if(locationUseTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     warehouseControl.createLocationUseTypeDescription(locationUseType, language, description);
                 } else {

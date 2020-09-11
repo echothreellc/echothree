@@ -92,10 +92,10 @@ public class CreateContentPageCommand
                     if(contentPageLayout == null) {
                         addExecutionError(ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
                     } else {
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
-                        PartyPK partyPK = getPartyPK();
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
+                        var partyPK = getPartyPK();
                         
                         contentPage = contentControl.createContentPage(contentSection, contentPageName, contentPageLayout, isDefault, sortOrder, partyPK);
                         

@@ -80,7 +80,7 @@ public class CreateFreeOnBoardDescriptionCommand
                 FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
                 
                 if(freeOnBoardDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     freeOnBoardControl.createFreeOnBoardDescription(freeOnBoard, language, description, getPartyPK());
                 } else {

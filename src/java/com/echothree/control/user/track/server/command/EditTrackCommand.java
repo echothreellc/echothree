@@ -148,7 +148,7 @@ public class EditTrackCommand
     @Override
     public void doUpdate(Track track) {
         var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TrackDetailValue trackDetailValue = trackControl.getTrackDetailValueForUpdate(track);
         TrackDescription trackDescription = trackControl.getTrackDescriptionForUpdate(track, getPreferredLanguage());
         String description = edit.getDescription();

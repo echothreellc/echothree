@@ -92,7 +92,7 @@ public class CreateChainEntityRoleTypeDescriptionCommand
                         ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescription(chainEntityRoleType, language);
 
                         if(chainEntityRoleTypeDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
 
                             chainControl.createChainEntityRoleTypeDescription(chainEntityRoleType, language, description, getPartyPK());
                         } else {

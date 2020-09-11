@@ -107,7 +107,7 @@ public class GetTrainingClassPageCommand
                         
                         if(!hasExecutionErrors()) {
                             UserVisit userVisit = getUserVisit();
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
 
                             result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPage));
 

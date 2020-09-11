@@ -147,7 +147,7 @@ public class EditTextDecorationCommand
     @Override
     public void doUpdate(TextDecoration textDecoration) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TextDecorationDetailValue textDecorationDetailValue = coreControl.getTextDecorationDetailValueForUpdate(textDecoration);
         TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescriptionForUpdate(textDecoration, getPreferredLanguage());
         String description = edit.getDescription();

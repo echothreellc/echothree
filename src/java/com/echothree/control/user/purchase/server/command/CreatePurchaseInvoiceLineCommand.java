@@ -117,7 +117,7 @@ public class CreatePurchaseInvoiceLineCommand
                         
                         if(invoiceLineSequence == null || invoiceControl.getInvoiceLine(invoice, invoiceLineSequence) == null) {
                             Long amount = Long.valueOf(form.getAmount());
-                            String description = form.getDescription();
+                            var description = form.getDescription();
 
                             invoiceLine = PurchaseInvoiceLogic.getInstance().createInvoiceLine(this, invoice, invoiceLineSequence, parentInvoiceLine, amount, invoiceLineType, glAccount,
                                     description, getPartyPK());

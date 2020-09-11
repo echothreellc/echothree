@@ -164,7 +164,7 @@ public class EditBatchAliasTypeCommand
     @Override
     public void doUpdate(BatchAliasType batchAliasType) {
         var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         BatchAliasTypeDetailValue batchAliasTypeDetailValue = batchControl.getBatchAliasTypeDetailValueForUpdate(batchAliasType);
         BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescriptionForUpdate(batchAliasType, getPreferredLanguage());
         String description = edit.getDescription();

@@ -151,7 +151,7 @@ public class EditTransactionGlAccountCategoryCommand
                                 if(glAccountCategory == null || glAccount == null? true: glAccountCategory.equals(glAccount.getLastDetail().getGlAccountCategory())) {
                                     if(lockEntityForUpdate(transactionGlAccountCategory)) {
                                         try {
-                                            PartyPK partyPK = getPartyPK();
+                                            var partyPK = getPartyPK();
                                             TransactionGlAccountCategoryDetailValue transactionGlAccountCategoryDetailValue = accountingControl.getTransactionGlAccountCategoryDetailValueForUpdate(transactionGlAccountCategory);
                                             TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescriptionForUpdate(transactionGlAccountCategory, getPreferredLanguage());
                                             TransactionGlAccount transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);

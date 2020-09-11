@@ -66,7 +66,7 @@ public class CreateCommunicationSourceDescriptionCommand
                 CommunicationSourceDescription communicationSourceDescription = communicationControl.getCommunicationSourceDescription(communicationSource, language);
                 
                 if(communicationSourceDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     communicationControl.createCommunicationSourceDescription(communicationSource, language, description, getPartyPK());
                 } else {

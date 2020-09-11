@@ -98,7 +98,7 @@ public class CreateEntityIntegerRangeDescriptionCommand
                             EntityIntegerRangeDescription entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescription(entityIntegerRange, language);
                             
                             if(entityIntegerRangeDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 coreControl.createEntityIntegerRangeDescription(entityIntegerRange, language, description, getPartyPK());
                             } else {

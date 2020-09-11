@@ -77,9 +77,9 @@ public class CreateSequenceCommand
             String value = form.getValue();
             String rawChunkSize = form.getChunkSize();
             Integer chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
 
             SequenceLogic.getInstance().createSequence(this, sequenceType, sequenceName, value, mask, chunkSize, isDefault,
                     sortOrder, description, getPreferredLanguage(), getPartyPK());

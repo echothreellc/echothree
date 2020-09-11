@@ -16,14 +16,11 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class OrderTransferCaches
         extends BaseTransferCaches {
-    
-    protected OrderControl orderControl;
     
     protected OrderTypeTransferCache orderTypeTransferCache;
     protected OrderTypeDescriptionTransferCache orderTypeDescriptionTransferCache;
@@ -46,141 +43,139 @@ public class OrderTransferCaches
     protected OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache;
     
     /** Creates a new instance of OrderTransferCaches */
-    public OrderTransferCaches(UserVisit userVisit, OrderControl orderControl) {
+    public OrderTransferCaches(UserVisit userVisit) {
         super(userVisit);
-        
-        this.orderControl = orderControl;
     }
     
     public OrderTypeTransferCache getOrderTypeTransferCache() {
         if(orderTypeTransferCache == null)
-            orderTypeTransferCache = new OrderTypeTransferCache(userVisit, orderControl);
+            orderTypeTransferCache = new OrderTypeTransferCache(userVisit);
         
         return orderTypeTransferCache;
     }
     
     public OrderTypeDescriptionTransferCache getOrderTypeDescriptionTransferCache() {
         if(orderTypeDescriptionTransferCache == null)
-            orderTypeDescriptionTransferCache = new OrderTypeDescriptionTransferCache(userVisit, orderControl);
+            orderTypeDescriptionTransferCache = new OrderTypeDescriptionTransferCache(userVisit);
 
         return orderTypeDescriptionTransferCache;
     }
 
     public OrderTimeTypeTransferCache getOrderTimeTypeTransferCache() {
         if(orderTimeTypeTransferCache == null)
-            orderTimeTypeTransferCache = new OrderTimeTypeTransferCache(userVisit, orderControl);
+            orderTimeTypeTransferCache = new OrderTimeTypeTransferCache(userVisit);
 
         return orderTimeTypeTransferCache;
     }
 
     public OrderTimeTypeDescriptionTransferCache getOrderTimeTypeDescriptionTransferCache() {
         if(orderTimeTypeDescriptionTransferCache == null)
-            orderTimeTypeDescriptionTransferCache = new OrderTimeTypeDescriptionTransferCache(userVisit, orderControl);
+            orderTimeTypeDescriptionTransferCache = new OrderTimeTypeDescriptionTransferCache(userVisit);
 
         return orderTimeTypeDescriptionTransferCache;
     }
 
     public OrderPaymentPreferenceTransferCache getOrderPaymentPreferenceTransferCache() {
         if(orderPaymentPreferenceTransferCache == null)
-            orderPaymentPreferenceTransferCache = new OrderPaymentPreferenceTransferCache(userVisit, orderControl);
+            orderPaymentPreferenceTransferCache = new OrderPaymentPreferenceTransferCache(userVisit);
 
         return orderPaymentPreferenceTransferCache;
     }
 
     public OrderShipmentGroupTransferCache getOrderShipmentGroupTransferCache() {
         if(orderShipmentGroupTransferCache == null)
-            orderShipmentGroupTransferCache = new OrderShipmentGroupTransferCache(userVisit, orderControl);
+            orderShipmentGroupTransferCache = new OrderShipmentGroupTransferCache(userVisit);
 
         return orderShipmentGroupTransferCache;
     }
 
     public OrderTimeTransferCache getOrderTimeTransferCache() {
         if(orderTimeTransferCache == null)
-            orderTimeTransferCache = new OrderTimeTransferCache(userVisit, orderControl);
+            orderTimeTransferCache = new OrderTimeTransferCache(userVisit);
 
         return orderTimeTransferCache;
     }
 
     public OrderLineTimeTransferCache getOrderLineTimeTransferCache() {
         if(orderLineTimeTransferCache == null)
-            orderLineTimeTransferCache = new OrderLineTimeTransferCache(userVisit, orderControl);
+            orderLineTimeTransferCache = new OrderLineTimeTransferCache(userVisit);
 
         return orderLineTimeTransferCache;
     }
 
     public OrderAdjustmentTypeTransferCache getOrderAdjustmentTypeTransferCache() {
         if(orderAdjustmentTypeTransferCache == null)
-            orderAdjustmentTypeTransferCache = new OrderAdjustmentTypeTransferCache(userVisit, orderControl);
+            orderAdjustmentTypeTransferCache = new OrderAdjustmentTypeTransferCache(userVisit);
 
         return orderAdjustmentTypeTransferCache;
     }
 
     public OrderAdjustmentTypeDescriptionTransferCache getOrderAdjustmentTypeDescriptionTransferCache() {
         if(orderAdjustmentTypeDescriptionTransferCache == null)
-            orderAdjustmentTypeDescriptionTransferCache = new OrderAdjustmentTypeDescriptionTransferCache(userVisit, orderControl);
+            orderAdjustmentTypeDescriptionTransferCache = new OrderAdjustmentTypeDescriptionTransferCache(userVisit);
 
         return orderAdjustmentTypeDescriptionTransferCache;
     }
 
     public OrderLineAdjustmentTypeTransferCache getOrderLineAdjustmentTypeTransferCache() {
         if(orderLineAdjustmentTypeTransferCache == null)
-            orderLineAdjustmentTypeTransferCache = new OrderLineAdjustmentTypeTransferCache(userVisit, orderControl);
+            orderLineAdjustmentTypeTransferCache = new OrderLineAdjustmentTypeTransferCache(userVisit);
 
         return orderLineAdjustmentTypeTransferCache;
     }
 
     public OrderLineAdjustmentTypeDescriptionTransferCache getOrderLineAdjustmentTypeDescriptionTransferCache() {
         if(orderLineAdjustmentTypeDescriptionTransferCache == null)
-            orderLineAdjustmentTypeDescriptionTransferCache = new OrderLineAdjustmentTypeDescriptionTransferCache(userVisit, orderControl);
+            orderLineAdjustmentTypeDescriptionTransferCache = new OrderLineAdjustmentTypeDescriptionTransferCache(userVisit);
 
         return orderLineAdjustmentTypeDescriptionTransferCache;
     }
 
     public OrderRoleTypeTransferCache getOrderRoleTypeTransferCache() {
         if(orderRoleTypeTransferCache == null)
-            orderRoleTypeTransferCache = new OrderRoleTypeTransferCache(userVisit, orderControl);
+            orderRoleTypeTransferCache = new OrderRoleTypeTransferCache(userVisit);
 
         return orderRoleTypeTransferCache;
     }
 
     public OrderRoleTransferCache getOrderRoleTransferCache() {
         if(orderRoleTransferCache == null)
-            orderRoleTransferCache = new OrderRoleTransferCache(userVisit, orderControl);
+            orderRoleTransferCache = new OrderRoleTransferCache(userVisit);
 
         return orderRoleTransferCache;
     }
 
     public OrderAliasTypeTransferCache getOrderAliasTypeTransferCache() {
         if(orderAliasTypeTransferCache == null)
-            orderAliasTypeTransferCache = new OrderAliasTypeTransferCache(userVisit, orderControl);
+            orderAliasTypeTransferCache = new OrderAliasTypeTransferCache(userVisit);
 
         return orderAliasTypeTransferCache;
     }
 
     public OrderAliasTypeDescriptionTransferCache getOrderAliasTypeDescriptionTransferCache() {
         if(orderAliasTypeDescriptionTransferCache == null)
-            orderAliasTypeDescriptionTransferCache = new OrderAliasTypeDescriptionTransferCache(userVisit, orderControl);
+            orderAliasTypeDescriptionTransferCache = new OrderAliasTypeDescriptionTransferCache(userVisit);
 
         return orderAliasTypeDescriptionTransferCache;
     }
 
     public OrderAliasTransferCache getOrderAliasTransferCache() {
         if(orderAliasTransferCache == null)
-            orderAliasTransferCache = new OrderAliasTransferCache(userVisit, orderControl);
+            orderAliasTransferCache = new OrderAliasTransferCache(userVisit);
 
         return orderAliasTransferCache;
     }
 
     public OrderPriorityTransferCache getOrderPriorityTransferCache() {
         if(orderPriorityTransferCache == null)
-            orderPriorityTransferCache = new OrderPriorityTransferCache(userVisit, orderControl);
+            orderPriorityTransferCache = new OrderPriorityTransferCache(userVisit);
 
         return orderPriorityTransferCache;
     }
 
     public OrderPriorityDescriptionTransferCache getOrderPriorityDescriptionTransferCache() {
         if(orderPriorityDescriptionTransferCache == null)
-            orderPriorityDescriptionTransferCache = new OrderPriorityDescriptionTransferCache(userVisit, orderControl);
+            orderPriorityDescriptionTransferCache = new OrderPriorityDescriptionTransferCache(userVisit);
 
         return orderPriorityDescriptionTransferCache;
     }

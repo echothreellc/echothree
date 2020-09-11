@@ -89,9 +89,9 @@ public class CreateTransactionGlAccountCategoryCommand
 
                     if(glAccountName == null || glAccount != null) {
                         if(glAccountCategory == null || glAccount == null? true: glAccountCategory.equals(glAccount.getLastDetail().getGlAccountCategory())) {
-                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                            String description = form.getDescription();
-                            PartyPK partyPK = getPartyPK();
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                            var description = form.getDescription();
+                            var partyPK = getPartyPK();
 
                             transactionGlAccountCategory = accountingControl.createTransactionGlAccountCategory(transactionType, transactionGlAccountCategoryName, glAccountCategory, sortOrder, partyPK);
                             

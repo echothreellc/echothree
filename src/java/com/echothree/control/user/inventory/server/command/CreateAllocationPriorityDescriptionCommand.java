@@ -80,7 +80,7 @@ public class CreateAllocationPriorityDescriptionCommand
                 AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, language);
 
                 if(allocationPriorityDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
 
                     inventoryControl.createAllocationPriorityDescription(allocationPriority, language, description, getPartyPK());
                 } else {

@@ -59,7 +59,7 @@ public class CreateForumMessageTypePartTypeCommand
         ForumMessageType forumMessageType = forumControl.getForumMessageTypeByName(forumMessageTypeName);
         
         if(forumMessageType != null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             ForumMessageTypePartType forumMessageTypePartType = forumControl.getForumMessageTypePartType(forumMessageType, sortOrder);
             
             if(forumMessageTypePartType == null) {

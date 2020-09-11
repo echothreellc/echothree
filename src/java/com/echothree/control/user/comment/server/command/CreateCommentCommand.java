@@ -110,7 +110,7 @@ public class CreateCommentCommand
         }
         
         if(!hasExecutionErrors()) {
-            String description = form.getDescription();
+            var description = form.getDescription();
             Sequence commentSequence = commentType.getLastDetail().getCommentSequence();
             
             if(commentSequence == null) {

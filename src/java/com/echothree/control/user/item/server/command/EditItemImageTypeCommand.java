@@ -171,7 +171,7 @@ public class EditItemImageTypeCommand
     @Override
     public void doUpdate(ItemImageType itemImageType) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ItemImageTypeDetailValue itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueForUpdate(itemImageType);
         ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescriptionForUpdate(itemImageType, getPreferredLanguage());
         String strQuality = edit.getQuality();

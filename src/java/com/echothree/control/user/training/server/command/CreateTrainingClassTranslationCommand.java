@@ -104,7 +104,7 @@ public class CreateTrainingClassTranslationCommand
                                 ExecutionErrors.UnknownIntroductionMimeTypeName.name(), ExecutionErrors.UnknownIntroductionMimeTypeUsage.name());
 
                         if(!hasExecutionErrors()) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
 
                             trainingControl.createTrainingClassTranslation(trainingClass, language, description, overviewMimeType, overview,
                                     introductionMimeType, introduction, getPartyPK());

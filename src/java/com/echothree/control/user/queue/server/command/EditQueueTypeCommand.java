@@ -148,7 +148,7 @@ public class EditQueueTypeCommand
     @Override
     public void doUpdate(QueueType queueType) {
         var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         QueueTypeDetailValue queueTypeDetailValue = queueControl.getQueueTypeDetailValueForUpdate(queueType);
         QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, getPreferredLanguage());
         String description = edit.getDescription();

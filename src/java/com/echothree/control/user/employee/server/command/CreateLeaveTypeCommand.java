@@ -58,9 +58,9 @@ public class CreateLeaveTypeCommand
         LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
         
         if(leaveType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             PartyPK createdBy = getPartyPK();
 
             leaveType = employeeControl.createLeaveType(leaveTypeName, isDefault, sortOrder, createdBy);

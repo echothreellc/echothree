@@ -227,7 +227,7 @@ public class EditContentCollectionCommand
     @Override
     public void doUpdate(ContentCollection contentCollection) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContentCollectionDetailValue contentCollectionDetailValue = contentControl.getContentCollectionDetailValueForUpdate(contentCollection);
         ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescriptionForUpdate(contentCollection, getPreferredLanguage());
         String description = edit.getDescription();

@@ -144,7 +144,7 @@ public class EditInvoiceTypeCommand
                             if(invoiceSequenceTypeName == null || invoiceSequenceType != null) {
                                 if(lockEntityForUpdate(invoiceType)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         InvoiceTypeDetailValue invoiceTypeDetailValue = invoiceControl.getInvoiceTypeDetailValueForUpdate(invoiceType);
                                         InvoiceTypeDescription invoiceTypeDescription = invoiceControl.getInvoiceTypeDescriptionForUpdate(invoiceType, getPreferredLanguage());
                                         String description = edit.getDescription();

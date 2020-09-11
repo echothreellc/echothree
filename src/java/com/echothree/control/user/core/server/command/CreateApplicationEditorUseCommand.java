@@ -93,10 +93,10 @@ public class CreateApplicationEditorUseCommand
                         Integer defaultHeight = strDefaultHeight == null ? null : Integer.valueOf(strDefaultHeight);
                         String strDefaultWidth = form.getDefaultWidth();
                         Integer defaultWidth = strDefaultWidth == null ? null : Integer.valueOf(strDefaultWidth);
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
                         PartyPK createdBy = getPartyPK();
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         applicationEditorUse = coreControl.createApplicationEditorUse(application, applicationEditorUseName, applicationEditor, defaultHeight,
                                 defaultWidth, isDefault, sortOrder, createdBy);

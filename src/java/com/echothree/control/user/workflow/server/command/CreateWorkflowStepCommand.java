@@ -83,10 +83,10 @@ public class CreateWorkflowStepCommand
                 WorkflowStepType workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
                 
                 if(workflowStepType != null) {
-                    PartyPK partyPK = getPartyPK();
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var partyPK = getPartyPK();
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
                     
                     workflowStep = workflowControl.createWorkflowStep(workflow, workflowStepName, workflowStepType, isDefault,
                             sortOrder, partyPK);

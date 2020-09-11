@@ -80,7 +80,7 @@ public class CreatePicklistTypeDescriptionCommand
                 PicklistTypeDescription picklistTypeDescription = picklistControl.getPicklistTypeDescription(picklistType, language);
                 
                 if(picklistTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     picklistControl.createPicklistTypeDescription(picklistType, language, description, getPartyPK());
                 } else {

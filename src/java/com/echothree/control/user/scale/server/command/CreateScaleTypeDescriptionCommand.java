@@ -66,7 +66,7 @@ public class CreateScaleTypeDescriptionCommand
                 ScaleTypeDescription scaleDescription = scaleControl.getScaleTypeDescription(scaleType, language);
                 
                 if(scaleDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     scaleControl.createScaleTypeDescription(scaleType, language, description, getPartyPK());
                 } else {

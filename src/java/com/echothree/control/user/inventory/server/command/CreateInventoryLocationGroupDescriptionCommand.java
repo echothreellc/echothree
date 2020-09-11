@@ -76,7 +76,7 @@ public class CreateInventoryLocationGroupDescriptionCommand
                     InventoryLocationGroupDescription inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, language);
                     
                     if(inventoryLocationGroupDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, language, description, getPartyPK());
                     } else {

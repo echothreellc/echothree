@@ -54,7 +54,7 @@ public class CreateComponentStageCommand
         ComponentStage componentStage = coreControl.getComponentStageByName(componentStageName);
         
         if(componentStage == null) {
-            String description = form.getDescription();
+            var description = form.getDescription();
             Integer relativeAge = Integer.valueOf(form.getRelativeAge());
             
             coreControl.createComponentStage(componentStageName, description, relativeAge);

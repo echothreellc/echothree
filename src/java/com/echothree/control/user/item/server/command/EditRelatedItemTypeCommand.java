@@ -150,7 +150,7 @@ public class EditRelatedItemTypeCommand
     @Override
     public void doUpdate(RelatedItemType relatedItemType) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         RelatedItemTypeDetailValue relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueForUpdate(relatedItemType);
         RelatedItemTypeDescription relatedItemTypeDescription = itemControl.getRelatedItemTypeDescriptionForUpdate(relatedItemType, getPreferredLanguage());
         String description = edit.getDescription();

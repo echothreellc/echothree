@@ -58,9 +58,9 @@ public class CreateLeaveReasonCommand
         LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
         
         if(leaveReason == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             PartyPK createdBy = getPartyPK();
 
             leaveReason = employeeControl.createLeaveReason(leaveReasonName, isDefault, sortOrder, createdBy);

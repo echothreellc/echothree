@@ -138,7 +138,7 @@ public class EditPaymentProcessorResultCodeCommand
     @Override
     public void doUpdate(PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PaymentProcessorResultCodeDetailValue paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueForUpdate(paymentProcessorResultCode);
         PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionForUpdate(paymentProcessorResultCode, getPreferredLanguage());
         String description = edit.getDescription();

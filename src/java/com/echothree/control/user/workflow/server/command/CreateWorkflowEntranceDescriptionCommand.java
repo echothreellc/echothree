@@ -86,7 +86,7 @@ public class CreateWorkflowEntranceDescriptionCommand
                     WorkflowEntranceDescription workflowStepDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, language);
                     
                     if(workflowStepDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         workflowControl.createWorkflowEntranceDescription(workflowEntrance, language, description, getPartyPK());
                     } else {

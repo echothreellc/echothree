@@ -104,7 +104,7 @@ public class EditTerminationReasonCommand
             if(terminationReason != null) {
                 if(lockEntityForUpdate(terminationReason)) {
                     try {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         TerminationReasonDetailValue terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueForUpdate(terminationReason);
                         TerminationReasonDescription terminationReasonDescription = employeeControl.getTerminationReasonDescriptionForUpdate(terminationReason, getPreferredLanguage());
                         String description = edit.getDescription();

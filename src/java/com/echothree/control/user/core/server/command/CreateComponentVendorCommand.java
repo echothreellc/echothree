@@ -67,7 +67,7 @@ public class CreateComponentVendorCommand
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor == null) {
-            String description = form.getDescription();
+            var description = form.getDescription();
             
             coreControl.createComponentVendor(componentVendorName, description, getPartyPK());
         } else {

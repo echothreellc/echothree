@@ -129,7 +129,7 @@ public class EditSymbolPositionCommand
                 if(duplicateSymbolPosition == null || symbolPosition.equals(duplicateSymbolPosition)) {
                     if(lockEntityForUpdate(symbolPosition)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             SymbolPositionDetailValue symbolPositionDetailValue = accountingControl.getSymbolPositionDetailValueForUpdate(symbolPosition);
                             SymbolPositionDescription symbolPositionDescription = accountingControl.getSymbolPositionDescriptionForUpdate(symbolPosition, getPreferredLanguage());
                             String description = edit.getDescription();

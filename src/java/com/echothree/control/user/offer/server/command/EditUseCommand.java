@@ -130,7 +130,7 @@ public class EditUseCommand
                     if(useType != null) {
                         if(lockEntityForUpdate(use)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 UseDetailValue useDetailValue = offerControl.getUseDetailValueForUpdate(use);
                                 UseDescription useDescription = offerControl.getUseDescriptionForUpdate(use, getPreferredLanguage());
                                 String description = edit.getDescription();

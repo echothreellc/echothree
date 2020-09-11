@@ -66,7 +66,7 @@ public class CreatePrinterGroupDescriptionCommand
                 PrinterGroupDescription printerDescription = printerControl.getPrinterGroupDescription(printerGroup, language);
                 
                 if(printerDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     printerControl.createPrinterGroupDescription(printerGroup, language, description, getPartyPK());
                 } else {

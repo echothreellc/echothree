@@ -122,8 +122,8 @@ public class CreateShippingMethodCommand
 
                 if(itemSelectorName == null || itemSelector != null) {
                     PartyPK createdBy = getPartyPK();
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
 
                     shippingMethod = shippingControl.createShippingMethod(shippingMethodName, geoCodeSelector, itemSelector, sortOrder, createdBy);
 

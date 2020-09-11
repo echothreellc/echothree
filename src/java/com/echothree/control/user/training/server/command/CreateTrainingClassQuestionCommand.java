@@ -98,7 +98,7 @@ public class CreateTrainingClassQuestionCommand
                         PartyPK createdBy = getPartyPK();
                         Boolean askingRequired = Boolean.valueOf(form.getAskingRequired());
                         Boolean passingRequired = Boolean.valueOf(form.getPassingRequired());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
 
                         trainingClassQuestion = trainingControl.createTrainingClassQuestion(trainingClassSection, trainingClassQuestionName, askingRequired,
                                 passingRequired, sortOrder, createdBy);

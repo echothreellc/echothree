@@ -161,7 +161,7 @@ public class EditIndexFieldCommand
     @Override
     public void doUpdate(IndexField indexField) {
         var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         IndexFieldDetailValue indexFieldDetailValue = indexControl.getIndexFieldDetailValueForUpdate(indexField);
         IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescriptionForUpdate(indexField, getPreferredLanguage());
         String description = edit.getDescription();

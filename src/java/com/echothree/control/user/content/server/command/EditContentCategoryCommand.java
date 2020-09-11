@@ -308,7 +308,7 @@ public class EditContentCategoryCommand
     @Override
     public void doUpdate(ContentCategory contentCategory) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContentCategoryDetailValue contentCategoryDetailValue = contentControl.getContentCategoryDetailValueForUpdate(contentCategory);
         ContentCategoryDescription contentCategoryDescription = contentControl.getContentCategoryDescriptionForUpdate(contentCategory, getPreferredLanguage());
         String description = edit.getDescription();

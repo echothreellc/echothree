@@ -80,7 +80,7 @@ public class CreateContentWebAddressDescriptionCommand
                 ContentWebAddressDescription contentWebAddressDescription = contentControl.getContentWebAddressDescription(contentWebAddress, language);
                 
                 if(contentWebAddressDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contentControl.createContentWebAddressDescription(contentWebAddress, language, description, getPartyPK());
                 } else {

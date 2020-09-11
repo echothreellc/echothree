@@ -101,7 +101,7 @@ public class GetTrainingClassSectionCommand
 
                     if(!hasExecutionErrors()) {
                         UserVisit userVisit = getUserVisit();
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
 
                         result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
 

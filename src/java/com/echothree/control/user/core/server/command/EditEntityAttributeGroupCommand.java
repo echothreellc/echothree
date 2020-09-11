@@ -147,7 +147,7 @@ public class EditEntityAttributeGroupCommand
     @Override
     public void doUpdate(EntityAttributeGroup entityAttributeGroup) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueForUpdate(entityAttributeGroup);
         EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, getPreferredLanguage());
         String description = edit.getDescription();

@@ -20,7 +20,8 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderBatchControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
@@ -37,6 +38,7 @@ public class SalesOrderBatchTransferCache
     CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
     PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
     OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+    OrderBatchControl orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
     SalesOrderBatchControl salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     
@@ -53,7 +55,7 @@ public class SalesOrderBatchTransferCache
         
         if(salesOrderBatchTransfer == null) {
             var batchDetail = batch.getLastDetail();
-            var orderBatch = orderControl.getOrderBatch(batch);
+            var orderBatch = orderBatchControl.getOrderBatch(batch);
             var salesOrderBatch = salesOrderBatchControl.getSalesOrderBatch(batch);
             var batchTypeTransfer = batchControl.getBatchTypeTransfer(userVisit, batchDetail.getBatchType());
             var batchName = batchDetail.getBatchName();

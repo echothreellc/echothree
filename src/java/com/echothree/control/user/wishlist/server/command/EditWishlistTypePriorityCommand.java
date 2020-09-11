@@ -121,7 +121,7 @@ public class EditWishlistTypePriorityCommand
                     if(duplicateWishlistTypePriority == null || wishlistTypePriority.equals(duplicateWishlistTypePriority)) {
                         if(lockEntityForUpdate(wishlistTypePriority)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue = wishlistControl.getWishlistTypePriorityDetailValueForUpdate(wishlistTypePriority);
                                 WishlistTypePriorityDescription wishlistTypePriorityDescription = wishlistControl.getWishlistTypePriorityDescriptionForUpdate(wishlistTypePriority, getPreferredLanguage());
                                 String description = edit.getDescription();

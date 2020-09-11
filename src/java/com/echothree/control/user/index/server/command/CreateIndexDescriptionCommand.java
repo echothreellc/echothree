@@ -80,7 +80,7 @@ public class CreateIndexDescriptionCommand
                 IndexDescription indexDescription = indexControl.getIndexDescription(index, language);
                 
                 if(indexDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     indexControl.createIndexDescription(index, language, description, getPartyPK());
                 } else {

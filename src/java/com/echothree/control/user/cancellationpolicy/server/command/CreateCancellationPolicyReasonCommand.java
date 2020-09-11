@@ -85,8 +85,8 @@ public class CreateCancellationPolicyReasonCommand
                     CancellationPolicyReason cancellationPolicyReason = cancellationPolicyControl.getCancellationPolicyReason(cancellationPolicy, cancellationReason);
                     
                     if(cancellationPolicyReason == null) {
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
                         
                         cancellationPolicyControl.createCancellationPolicyReason(cancellationPolicy, cancellationReason, isDefault, sortOrder, getPartyPK());
                     } else {

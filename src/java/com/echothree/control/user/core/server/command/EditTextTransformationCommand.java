@@ -147,7 +147,7 @@ public class EditTextTransformationCommand
     @Override
     public void doUpdate(TextTransformation textTransformation) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TextTransformationDetailValue textTransformationDetailValue = coreControl.getTextTransformationDetailValueForUpdate(textTransformation);
         TextTransformationDescription textTransformationDescription = coreControl.getTextTransformationDescriptionForUpdate(textTransformation, getPreferredLanguage());
         String description = edit.getDescription();

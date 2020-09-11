@@ -73,7 +73,7 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.letter.server.LetterControl;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderShipmentGroupControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.shipment.server.ShipmentControl;
@@ -2649,7 +2649,7 @@ public class ContactControl
         var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderShipmentGroupControl = (OrderShipmentGroupControl)Session.getModelController(OrderShipmentGroupControl.class);
         var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
         var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         
@@ -2661,7 +2661,7 @@ public class ContactControl
         communicationControl.deleteCommunicationEventsByPartyContactMechanism(partyContactMechanism, deletedBy);
         invoiceControl.deleteInvoiceRolesByPartyContactMechanism(partyContactMechanism, deletedBy);
         letterControl.deleteLetterSourcesByPartyContactMechanism(partyContactMechanism, deletedBy);
-        orderControl.deleteOrderShipmentGroupsByPartyContactMechanism(partyContactMechanism, deletedBy);
+        orderShipmentGroupControl.deleteOrderShipmentGroupsByPartyContactMechanism(partyContactMechanism, deletedBy);
         partyPaymentMethodControl.deletePartyPaymentMethodCreditCardsByPartyContactMechanism(partyContactMechanism, deletedBy);
         shipmentControl.deleteShipmentsByPartyContactMechanism(partyContactMechanism, deletedBy);
         

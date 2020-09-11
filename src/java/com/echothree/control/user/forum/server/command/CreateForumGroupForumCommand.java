@@ -66,8 +66,8 @@ public class CreateForumGroupForumCommand
                         forum);
                 
                 if(forumGroupForum == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     forumControl.createForumGroupForum(forumGroup, forum, isDefault, sortOrder, getPartyPK());
                 } else {

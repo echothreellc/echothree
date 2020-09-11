@@ -80,7 +80,7 @@ public class CreateItemImageTypeDescriptionCommand
                 ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, language);
                 
                 if(itemImageTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemImageTypeDescription(itemImageType, language, description, getPartyPK());
                 } else {

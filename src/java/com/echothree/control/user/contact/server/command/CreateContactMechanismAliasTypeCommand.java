@@ -72,11 +72,11 @@ public class CreateContactMechanismAliasTypeCommand
         ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
         
         if(contactMechanismAliasType == null) {
-            PartyPK partyPK = getPartyPK();
+            var partyPK = getPartyPK();
             String validationPattern = form.getValidationPattern();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
 
             contactMechanismAliasType = contactControl.createContactMechanismAliasType(contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder,
                     getPartyPK());

@@ -65,8 +65,8 @@ public class CreateForumTypeMessageTypeCommand
                 ForumTypeMessageType forumTypeMessageType = forumControl.getForumTypeMessageType(forumType, forumMessageType);
                 
                 if(forumTypeMessageType == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     forumControl.createForumTypeMessageType(forumType, forumMessageType, isDefault, sortOrder);
                 } else {

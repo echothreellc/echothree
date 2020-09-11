@@ -107,7 +107,7 @@ public class EditRecoveryQuestionCommand
                 if(duplicateRecoveryQuestion == null || recoveryQuestion.equals(duplicateRecoveryQuestion)) {
                     if(lockEntityForUpdate(recoveryQuestion)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             RecoveryQuestionDetailValue recoveryQuestionDetailValue = userControl.getRecoveryQuestionDetailValueForUpdate(recoveryQuestion);
                             RecoveryQuestionDescription recoveryQuestionDescription = userControl.getRecoveryQuestionDescriptionForUpdate(recoveryQuestion, getPreferredLanguage());
                             String description = edit.getDescription();

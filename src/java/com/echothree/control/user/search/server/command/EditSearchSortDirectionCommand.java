@@ -148,7 +148,7 @@ public class EditSearchSortDirectionCommand
     @Override
     public void doUpdate(SearchSortDirection searchSortDirection) {
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SearchSortDirectionDetailValue searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueForUpdate(searchSortDirection);
         SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescriptionForUpdate(searchSortDirection, getPreferredLanguage());
         String description = edit.getDescription();

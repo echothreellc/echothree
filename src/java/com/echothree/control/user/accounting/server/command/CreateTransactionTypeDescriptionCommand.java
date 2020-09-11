@@ -81,7 +81,7 @@ public class CreateTransactionTypeDescriptionCommand
                 TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, language);
                 
                 if(transactionTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     accountingControl.createTransactionTypeDescription(transactionType, language, description, getPartyPK());
                 } else {

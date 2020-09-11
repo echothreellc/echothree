@@ -123,8 +123,8 @@ public class CreateContentCollectionCommand
             }
 
             if(defaultOfferUse != null) {
-                String description = form.getDescription();
-                PartyPK partyPK = getPartyPK();
+                var description = form.getDescription();
+                var partyPK = getPartyPK();
 
                 contentCollection = contentControl.createContentCollection(contentCollectionName, defaultOfferUse, partyPK);
                 contentControl.createContentSection(contentCollection, ContentSections.ROOT.toString(), null, Boolean.FALSE, 0, partyPK);

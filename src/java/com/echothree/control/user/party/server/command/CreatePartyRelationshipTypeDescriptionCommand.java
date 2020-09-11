@@ -63,7 +63,7 @@ public class CreatePartyRelationshipTypeDescriptionCommand
                 PartyRelationshipTypeDescription partyRelationshipTypeDescription = partyControl.getPartyRelationshipTypeDescription(partyRelationshipType, language);
                 
                 if(partyRelationshipTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     partyControl.createPartyRelationshipTypeDescription(partyRelationshipType, language, description);
                 } // TODO: error, duplicate partyRelationshipTypeDescription

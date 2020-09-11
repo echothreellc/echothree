@@ -66,7 +66,7 @@ public class CreateItemDeliveryTypeDescriptionCommand
                 ItemDeliveryTypeDescription itemDeliveryTypeDescription = itemControl.getItemDeliveryTypeDescription(itemDeliveryType, language);
                 
                 if(itemDeliveryTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemDeliveryTypeDescription(itemDeliveryType, language, description);
                 } else {

@@ -86,7 +86,7 @@ public class CreateCommentUsageTypeDescriptionCommand
                             CommentUsageTypeDescription commentUsageTypeDescription = commentControl.getCommentUsageTypeDescription(commentUsageType, language);
                             
                             if(commentUsageTypeDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 commentControl.createCommentUsageTypeDescription(commentUsageType, language, description, getPartyPK());
                             } else {

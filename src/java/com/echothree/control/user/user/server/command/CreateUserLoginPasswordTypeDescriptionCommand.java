@@ -65,7 +65,7 @@ public class CreateUserLoginPasswordTypeDescriptionCommand
                 UserLoginPasswordTypeDescription userLoginPasswordTypeDescription = userControl.getUserLoginPasswordTypeDescription(userLoginPasswordType, language);
                 
                 if(userLoginPasswordTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     userControl.createUserLoginPasswordTypeDescription(userLoginPasswordType, language, description);
                 } // TODO: error, duplicate userLoginPasswordTypeDescription

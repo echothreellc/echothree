@@ -76,7 +76,7 @@ public class CreateOfferNameElementCommand
             Integer offset = Integer.valueOf(form.getOffset());
             Integer length = Integer.valueOf(form.getLength());
             String validationPattern = form.getValidationPattern();
-            String description = form.getDescription();
+            var description = form.getDescription();
             
             offerNameElement = offerControl.createOfferNameElement(offerNameElementName, offset, length, validationPattern,
                     createdBy);

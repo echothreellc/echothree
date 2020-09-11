@@ -69,8 +69,8 @@ public class CreateSequenceChecksumTypeCommand
         SequenceChecksumType sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
         
         if(sequenceChecksumType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             sequenceControl.createSequenceChecksumType(sequenceChecksumTypeName, isDefault, sortOrder);
         } else {

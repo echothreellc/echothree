@@ -88,7 +88,7 @@ public class CreateCarrierServiceDescriptionCommand
                     CarrierServiceDescription carrierServiceDescription = carrierControl.getCarrierServiceDescription(carrierService, language);
                     
                     if(carrierServiceDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         carrierControl.createCarrierServiceDescription(carrierService, language, description, getPartyPK());
                     } else {

@@ -66,7 +66,7 @@ public class CreateSelectorBooleanTypeDescriptionCommand
                 SelectorBooleanTypeDescription selectorBooleanTypeDescription = selectorControl.getSelectorBooleanTypeDescription(selectorBooleanType, language);
                 
                 if(selectorBooleanTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     selectorControl.createSelectorBooleanTypeDescription(selectorBooleanType, language, description);
                 } else {

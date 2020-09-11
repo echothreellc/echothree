@@ -17,7 +17,7 @@
 package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPaymentPreferenceControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.choice.PartyPaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
@@ -360,9 +360,9 @@ public class PartyPaymentMethodControl
     }
 
     public void deletePartyPaymentMethod(PartyPaymentMethod partyPaymentMethod, BasePK deletedBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        
-        orderControl.deleteOrderPaymentPreferencesByPartyPaymentMethod(partyPaymentMethod, deletedBy);
+        var orderPaymentPreferenceControl = (OrderPaymentPreferenceControl)Session.getModelController(OrderPaymentPreferenceControl.class);
+
+        orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPartyPaymentMethod(partyPaymentMethod, deletedBy);
         
         var partyPaymentMethodDetail = partyPaymentMethod.getLastDetailForUpdate();
         partyPaymentMethodDetail.setThruTime(session.START_TIME_LONG);

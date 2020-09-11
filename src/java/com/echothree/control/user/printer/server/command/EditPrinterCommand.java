@@ -160,7 +160,7 @@ public class EditPrinterCommand
     @Override
     public void doUpdate(Printer printer) {
         var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PrinterDetailValue printerDetailValue = printerControl.getPrinterDetailValueForUpdate(printer);
         PrinterDescription printerDescription = printerControl.getPrinterDescriptionForUpdate(printer, getPreferredLanguage());
         String description = edit.getDescription();

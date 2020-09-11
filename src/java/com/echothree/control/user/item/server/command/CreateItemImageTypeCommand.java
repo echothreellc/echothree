@@ -80,12 +80,12 @@ public class CreateItemImageTypeCommand
             MimeType preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
 
             if(preferredMimeTypeName == null || preferredMimeType != null) {
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
                 String strQuality = form.getQuality();
                 Integer quality = strQuality == null ? null : Integer.valueOf(strQuality);
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
 
                 itemImageType = itemControl.createItemImageType(itemImageTypeName, preferredMimeType, quality, isDefault, sortOrder, getPartyPK());
 

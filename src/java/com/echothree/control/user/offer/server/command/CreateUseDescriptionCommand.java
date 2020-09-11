@@ -79,7 +79,7 @@ public class CreateUseDescriptionCommand
                 UseDescription useDescription = offerControl.getUseDescription(use, language);
                 
                 if(useDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     offerControl.createUseDescription(use, language, description, getPartyPK());
                 } else {

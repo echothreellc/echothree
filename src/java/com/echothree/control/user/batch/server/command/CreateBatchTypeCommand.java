@@ -104,10 +104,10 @@ public class CreateBatchTypeCommand
                             WorkflowEntrance batchWorkflowEntrance = batchWorkflowEntranceName == null ? null : workflowControl.getWorkflowEntranceByName(batchWorkflow, batchWorkflowEntranceName);
 
                             if(batchWorkflowEntranceName == null || batchWorkflowEntrance != null) {
-                                PartyPK partyPK = getPartyPK();
-                                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                String description = form.getDescription();
+                                var partyPK = getPartyPK();
+                                var isDefault = Boolean.valueOf(form.getIsDefault());
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                var description = form.getDescription();
 
                                 batchType = batchControl.createBatchType(batchTypeName, parentBatchType, batchSequenceType, batchWorkflow,
                                         batchWorkflowEntrance, isDefault, sortOrder, partyPK);

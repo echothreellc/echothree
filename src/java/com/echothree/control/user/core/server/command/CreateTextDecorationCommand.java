@@ -70,10 +70,10 @@ public class CreateTextDecorationCommand
         TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
         
         if(textDecoration == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             textDecoration = coreControl.createTextDecoration(textDecorationName, isDefault, sortOrder, partyPK);
             

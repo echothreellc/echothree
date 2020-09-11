@@ -86,7 +86,7 @@ public class DeleteEntityTagCommand
                     EntityTag entityTag = tagControl.getEntityTagForUpdate(taggedEntityInstance, tag);
                     
                     if(entityTag != null) {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
 
                         tagControl.deleteEntityTag(entityTag, partyPK);
 

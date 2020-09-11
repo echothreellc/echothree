@@ -182,7 +182,7 @@ public class EditTaxClassificationCommand
     @Override
     public void doUpdate(TaxClassification taxClassification) {
         var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TaxClassificationDetailValue taxClassificationDetailValue = taxControl.getTaxClassificationDetailValueForUpdate(taxClassification);
         TaxClassificationTranslation taxClassificationTranslation = taxControl.getTaxClassificationTranslationForUpdate(taxClassification, getPreferredLanguage());
         String description = edit.getDescription();

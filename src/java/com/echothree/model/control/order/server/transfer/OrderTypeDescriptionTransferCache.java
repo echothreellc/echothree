@@ -18,24 +18,27 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderTypeDescription, OrderTypeDescriptionTransfer> {
-    
+
+    OrderTypeControl orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+
     /** Creates a new instance of OrderTypeDescriptionTransferCache */
-    public OrderTypeDescriptionTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(OrderTypeDescription orderTypeDescription) {
         OrderTypeDescriptionTransfer orderTypeDescriptionTransfer = get(orderTypeDescription);
         
         if(orderTypeDescriptionTransfer == null) {
-            OrderTypeTransfer orderTypeTransfer = orderControl.getOrderTypeTransfer(userVisit, orderTypeDescription.getOrderType());
+            OrderTypeTransfer orderTypeTransfer = orderTypeControl.getOrderTypeTransfer(userVisit, orderTypeDescription.getOrderType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTypeDescription.getLanguage());
             
             orderTypeDescriptionTransfer = new OrderTypeDescriptionTransfer(languageTransfer, orderTypeTransfer, orderTypeDescription.getDescription());

@@ -92,8 +92,8 @@ public class CreateCurrencyCommand
                 String groupingSeparator = form.getGroupingSeparator();
                 Integer groupingSize = Integer.valueOf(form.getGroupingSize());
                 String minusSign = form.getMinusSign();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
                 String symbol = form.getSymbol();
                 Boolean symbolOnListStart = symbol == null? null: Boolean.valueOf(form.getSymbolOnListStart());
                 Boolean symbolOnListMember = symbol == null? null: Boolean.valueOf(form.getSymbolOnListMember());

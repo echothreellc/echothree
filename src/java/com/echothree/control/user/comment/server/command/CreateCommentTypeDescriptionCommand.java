@@ -80,7 +80,7 @@ public class CreateCommentTypeDescriptionCommand
                         CommentTypeDescription commentTypeDescription = commentControl.getCommentTypeDescription(commentType, language);
                         
                         if(commentTypeDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             commentControl.createCommentTypeDescription(commentType, language, description, getPartyPK());
                         } else {

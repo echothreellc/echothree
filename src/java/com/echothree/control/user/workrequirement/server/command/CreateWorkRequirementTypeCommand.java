@@ -141,8 +141,8 @@ public class CreateWorkRequirementTypeCommand
                                             Long.valueOf(maximumTimeAllowed)).convertToLowestUnitOfMeasureType();
                                     PartyPK createdBy = getPartyPK();
                                     Boolean allowReassignment = Boolean.valueOf(form.getAllowReassignment());
-                                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                    String description = form.getDescription();
+                                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                                    var description = form.getDescription();
 
                                     workRequirementType = workRequirementControl.createWorkRequirementType(workEffortType, workRequirementTypeName,
                                             workRequirementSequence, workflowStep,

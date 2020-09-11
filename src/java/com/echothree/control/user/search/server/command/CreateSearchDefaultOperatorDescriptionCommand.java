@@ -80,7 +80,7 @@ public class CreateSearchDefaultOperatorDescriptionCommand
                 SearchDefaultOperatorDescription searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescription(searchDefaultOperator, language);
                 
                 if(searchDefaultOperatorDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     searchControl.createSearchDefaultOperatorDescription(searchDefaultOperator, language, description, getPartyPK());
                 } else {

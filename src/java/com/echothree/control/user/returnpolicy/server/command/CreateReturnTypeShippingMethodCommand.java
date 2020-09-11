@@ -99,8 +99,8 @@ public class CreateReturnTypeShippingMethodCommand
                                     shippingMethod);
                             
                             if(returnTypeShippingMethod == null) {
-                                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                                var isDefault = Boolean.valueOf(form.getIsDefault());
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
                                 
                                 returnPolicyControl.createReturnTypeShippingMethod(returnType, shippingMethod, isDefault, sortOrder, getPartyPK());
                             } else {

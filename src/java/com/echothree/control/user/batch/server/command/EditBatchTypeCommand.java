@@ -217,7 +217,7 @@ public class EditBatchTypeCommand
     @Override
     public void doUpdate(BatchType batchType) {
         var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         BatchTypeDetailValue batchTypeDetailValue = batchControl.getBatchTypeDetailValueForUpdate(batchType);
         BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescriptionForUpdate(batchType, getPreferredLanguage());
         String description = edit.getDescription();

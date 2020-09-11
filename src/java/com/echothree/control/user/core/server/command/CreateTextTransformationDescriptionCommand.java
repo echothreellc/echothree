@@ -80,7 +80,7 @@ public class CreateTextTransformationDescriptionCommand
                 TextTransformationDescription textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, language);
                 
                 if(textTransformationDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createTextTransformationDescription(textTransformation, language, description, getPartyPK());
                 } else {

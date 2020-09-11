@@ -52,9 +52,9 @@ public class CreatePersonalTitleCommand
     @Override
     protected BaseResult execute() {
         CreatePersonalTitleResult result = PartyResultFactory.getCreatePersonalTitleResult();
-        String description = form.getDescription();
-        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         PersonalTitle personalTitle = partyControl.createPersonalTitle(description, isDefault, sortOrder, getPartyPK());

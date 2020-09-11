@@ -148,7 +148,7 @@ public class EditFilterKindCommand
     @Override
     public void doUpdate(FilterKind filterKind) {
         var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         FilterKindDetailValue filterKindDetailValue = filterControl.getFilterKindDetailValueForUpdate(filterKind);
         FilterKindDescription filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, getPreferredLanguage());
         String description = edit.getDescription();

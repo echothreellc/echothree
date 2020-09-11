@@ -131,7 +131,7 @@ public class EditSubscriptionTypeCommand
                         if(subscriptionSequenceName == null || subscriptionSequence != null) {
                             if(lockEntityForUpdate(subscriptionType)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     SubscriptionTypeDetailValue subscriptionTypeDetailValue = subscriptionControl.getSubscriptionTypeDetailValueForUpdate(subscriptionType);
                                     SubscriptionTypeDescription subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescriptionForUpdate(subscriptionType, getPreferredLanguage());
                                     String description = edit.getDescription();

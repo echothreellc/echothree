@@ -98,7 +98,7 @@ public class CreateEntityListItemDescriptionCommand
                             EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, language);
                             
                             if(entityListItemDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 coreControl.createEntityListItemDescription(entityListItem, language, description, getPartyPK());
                             } else {

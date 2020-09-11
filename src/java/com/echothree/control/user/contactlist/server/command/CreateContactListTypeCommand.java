@@ -96,11 +96,11 @@ public class CreateContactListTypeCommand
                             : chainControl.getChainByName(chainControl.getChainTypeByName(chainKind, ChainConstants.ChainType_UNSUBSCRIBE), unsubscribeChainName);
 
                     if(unsubscribeChainName == null || unsubscribeChain != null) {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         Boolean usedForSolicitation = Boolean.valueOf(form.getUsedForSolicitation());
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
 
                         contactListType = contactListControl.createContactListType(contactListTypeName, confirmationRequestChain, subscribeChain,
                                 unsubscribeChain, usedForSolicitation, isDefault, sortOrder, partyPK);

@@ -72,7 +72,7 @@ public class CreateWorkEffortScopeDescriptionCommand
                     WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, language);
                     
                     if(workEffortScopeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         workEffortControl.createWorkEffortScopeDescription(workEffortScope, language, description, getPartyPK());
                     } else {

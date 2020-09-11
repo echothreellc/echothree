@@ -80,7 +80,7 @@ public class CreateTextDecorationDescriptionCommand
                 TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, language);
                 
                 if(textDecorationDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createTextDecorationDescription(textDecoration, language, description, getPartyPK());
                 } else {

@@ -80,7 +80,7 @@ public class CreateItemCategoryDescriptionCommand
                 ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescription(itemCategory, language);
                 
                 if(itemCategoryDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createItemCategoryDescription(itemCategory, language, description, getPartyPK());
                 } else {

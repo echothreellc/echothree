@@ -341,7 +341,7 @@ public class EditCarrierOptionCommand
     @Override
     public void doUpdate(CarrierOption carrierOption) {
         var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CarrierOptionDetailValue carrierOptionDetailValue = carrierControl.getCarrierOptionDetailValueForUpdate(carrierOption);
         CarrierOptionDescription carrierOptionDescription = carrierControl.getCarrierOptionDescriptionForUpdate(carrierOption, getPreferredLanguage());
         String description = edit.getDescription();

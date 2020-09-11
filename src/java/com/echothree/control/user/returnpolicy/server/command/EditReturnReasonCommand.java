@@ -127,7 +127,7 @@ public class EditReturnReasonCommand
                     if(duplicateReturnReason == null || returnReason.equals(duplicateReturnReason)) {
                         if(lockEntityForUpdate(returnReason)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 ReturnReasonDetailValue returnReasonDetailValue = returnPolicyControl.getReturnReasonDetailValueForUpdate(returnReason);
                                 ReturnReasonDescription returnReasonDescription = returnPolicyControl.getReturnReasonDescriptionForUpdate(returnReason, getPreferredLanguage());
                                 String description = edit.getDescription();

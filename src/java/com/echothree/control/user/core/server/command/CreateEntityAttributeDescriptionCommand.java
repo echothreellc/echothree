@@ -92,7 +92,7 @@ public class CreateEntityAttributeDescriptionCommand
                         EntityAttributeDescription entityAttributeDescription = coreControl.getEntityAttributeDescription(entityAttribute, language);
                         
                         if(entityAttributeDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             coreControl.createEntityAttributeDescription(entityAttribute, language, description, getPartyPK());
                         } else {

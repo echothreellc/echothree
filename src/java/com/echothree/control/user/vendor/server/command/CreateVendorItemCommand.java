@@ -156,7 +156,7 @@ public class CreateVendorItemCommand
                             if(returnPolicyName == null || returnPolicy != null) {
                                 var coreControl = getCoreControl();
                                 var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 Integer priority = Integer.valueOf(form.getPriority());
                                 BasePK createdBy = getPartyPK();
                                 

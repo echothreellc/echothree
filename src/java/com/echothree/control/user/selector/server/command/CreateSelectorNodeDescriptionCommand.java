@@ -84,7 +84,7 @@ public class CreateSelectorNodeDescriptionCommand
                             SelectorNodeDescription selectorNodeDescription = selectorControl.getSelectorNodeDescription(selectorNode, language);
                             
                             if(selectorNodeDescription == null) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
                                 
                                 selectorControl.createSelectorNodeDescription(selectorNode, language, description, getPartyPK());
                             } else {
