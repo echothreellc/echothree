@@ -17,17 +17,18 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.SetDefaultOrderTimeTypeForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderTimeTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,17 +64,18 @@ public class SetDefaultOrderTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
             String orderTimeTypeName = form.getOrderTimeTypeName();
-            OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderControl.getOrderTimeTypeDetailValueByNameForUpdate(orderType, orderTimeTypeName);
+            OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderTimeControl.getOrderTimeTypeDetailValueByNameForUpdate(orderType, orderTimeTypeName);
 
             if(orderTimeTypeDetailValue != null) {
                 orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
-                orderControl.updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, getPartyPK());
+                orderTimeControl.updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderTimeTypeName.name(), orderTypeName, orderTimeTypeName);
             }

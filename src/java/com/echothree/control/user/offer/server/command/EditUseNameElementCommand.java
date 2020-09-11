@@ -125,7 +125,7 @@ public class EditUseNameElementCommand
                 if(duplicateUseNameElement == null || useNameElement.equals(duplicateUseNameElement)) {
                     if(lockEntityForUpdate(useNameElement)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             UseNameElementDetailValue useNameElementDetailValue = offerControl.getUseNameElementDetailValueForUpdate(useNameElement);
                             UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
                             String description = edit.getDescription();

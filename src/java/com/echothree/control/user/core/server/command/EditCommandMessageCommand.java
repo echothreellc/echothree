@@ -156,7 +156,7 @@ public class EditCommandMessageCommand
     @Override
     public void doUpdate(CommandMessage commandMessage) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CommandMessageDetailValue commandMessageDetailValue = coreControl.getCommandMessageDetailValueForUpdate(commandMessage);
         CommandMessageTranslation commandMessageTranslation = coreControl.getCommandMessageTranslationForUpdate(commandMessage, getPreferredLanguage());
         String translation = edit.getTranslation();

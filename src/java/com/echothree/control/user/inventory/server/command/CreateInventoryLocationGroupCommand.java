@@ -74,9 +74,9 @@ public class CreateInventoryLocationGroupCommand
                 var coreControl = getCoreControl();
                 var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 BasePK createdBy = getPartyPK();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 
                 inventoryLocationGroup = inventoryControl.createInventoryLocationGroup(warehouseParty, inventoryLocationGroupName,
                         isDefault, sortOrder, getPartyPK());

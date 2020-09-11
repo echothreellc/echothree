@@ -166,7 +166,7 @@ public class EditShipmentTimeTypeCommand
     @Override
     public void doUpdate(ShipmentTimeType shipmentTimeType) {
         var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = shipmentControl.getShipmentTimeTypeDetailValueForUpdate(shipmentTimeType);
         ShipmentTimeTypeDescription shipmentTimeTypeDescription = shipmentControl.getShipmentTimeTypeDescriptionForUpdate(shipmentTimeType, getPreferredLanguage());
         String description = edit.getDescription();

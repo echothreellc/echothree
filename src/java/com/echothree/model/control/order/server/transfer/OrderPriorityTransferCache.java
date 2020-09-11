@@ -17,17 +17,20 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderPriorityDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderPriorityTransferCache
         extends BaseOrderTransferCache<OrderPriority, OrderPriorityTransfer> {
-    
+
+    OrderPriorityControl orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
+
     /** Creates a new instance of OrderPriorityTransferCache */
-    public OrderPriorityTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderPriorityTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
@@ -41,7 +44,7 @@ public class OrderPriorityTransferCache
             Integer priority = orderPriorityDetail.getPriority();
             Boolean isDefault = orderPriorityDetail.getIsDefault();
             Integer sortOrder = orderPriorityDetail.getSortOrder();
-            String description = orderControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
+            String description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
             
             orderPriorityTransfer = new OrderPriorityTransfer(orderPriorityName, priority, isDefault, sortOrder, description);
             put(orderPriority, orderPriorityTransfer);

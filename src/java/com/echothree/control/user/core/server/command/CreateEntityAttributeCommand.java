@@ -298,7 +298,7 @@ public class CreateEntityAttributeCommand
                         }
 
                         if(!hasExecutionErrors()) {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             String entityAttributeName = form.getEntityAttributeName();
                             Boolean trackRevisions = Boolean.valueOf(form.getTrackRevisions());
                             String strCheckContentWebAddress = form.getCheckContentWebAddress();
@@ -320,8 +320,8 @@ public class CreateEntityAttributeCommand
                             Long lowerLimitLongValue = strLowerLimitLongValue == null ? null : Long.valueOf(strLowerLimitLongValue);
                             String strLowerRangeLongValue = form.getLowerRangeLongValue();
                             Long lowerRangeLongValue = strLowerRangeLongValue == null ? null : Long.valueOf(strLowerRangeLongValue);
-                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                            String description = form.getDescription();
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                            var description = form.getDescription();
 
                             entityAttribute = EntityAttributeLogic.getInstance().createEntityAttribute(this, entityType,
                                     entityAttributeName, entityAttributeType, trackRevisions, checkContentWebAddress,

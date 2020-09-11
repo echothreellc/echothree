@@ -97,8 +97,8 @@ public class CreateTrainingClassPageCommand
 
                     if(!hasExecutionErrors()) {
                         PartyPK createdBy = getPartyPK();
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
 
                         trainingClassPage = trainingControl.createTrainingClassPage(trainingClassSection, trainingClassPageName, sortOrder, createdBy);
 

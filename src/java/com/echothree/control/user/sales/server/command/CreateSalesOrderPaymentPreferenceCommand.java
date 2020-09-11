@@ -103,7 +103,7 @@ public class CreateSalesOrderPaymentPreferenceCommand
             Boolean wasPresent = strWasPresent == null ? null : Boolean.valueOf(strWasPresent);
             String strMaximumAmount = form.getMaximumAmount();
             Long maximumAmount = strMaximumAmount == null ? null : Long.valueOf(strMaximumAmount);
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
 
             orderPaymentPreference = SalesOrderPaymentPreferenceLogic.getInstance().createSalesOrderPaymentPreference(session,
                     this, order, orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount,

@@ -77,10 +77,10 @@ public class CreateCommentUsageTypeCommand
                     CommentUsageType commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
                     
                     if(commentUsageType == null) {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         Boolean selectedByDefault = Boolean.valueOf(form.getSelectedByDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
                         
                         commentUsageType = commentControl.createCommentUsageType(commentType, commentUsageTypeName, selectedByDefault, sortOrder, partyPK);
                         

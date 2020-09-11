@@ -80,7 +80,7 @@ public class CreateContentPageAreaTypeDescriptionCommand
                 ContentPageAreaTypeDescription contentPageAreaTypeDescription = contentControl.getContentPageAreaTypeDescription(contentPageAreaType, language);
                 
                 if(contentPageAreaTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contentControl.createContentPageAreaTypeDescription(contentPageAreaType, language, description, getPartyPK());
                 } else {

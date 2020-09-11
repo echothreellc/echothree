@@ -159,7 +159,7 @@ public class EditContentWebAddressCommand
     @Override
     public void doUpdate(ContentWebAddress contentWebAddress) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContentWebAddressDetailValue contentWebAddressDetailValue = contentControl.getContentWebAddressDetailValueForUpdate(contentWebAddress);
         ContentWebAddressDescription contentWebAddressDescription = contentControl.getContentWebAddressDescriptionForUpdate(contentWebAddress, getPreferredLanguage());
         String description = edit.getDescription();

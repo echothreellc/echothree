@@ -83,10 +83,10 @@ public class CreateIndexTypeCommand
                 EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
 
                 if(!hasExecutionErrors()) {
-                    PartyPK partyPK = getPartyPK();
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var partyPK = getPartyPK();
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
 
                     indexType = indexControl.createIndexType(indexTypeName, entityType, isDefault, sortOrder, partyPK);
 

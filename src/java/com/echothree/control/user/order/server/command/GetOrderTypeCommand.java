@@ -20,7 +20,7 @@ import com.echothree.control.user.order.common.form.GetOrderTypeForm;
 import com.echothree.control.user.order.common.result.GetOrderTypeResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -65,13 +65,13 @@ public class GetOrderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderTypeResult result = OrderResultFactory.getGetOrderTypeResult();
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
         
         if(orderType != null) {
-            result.setOrderType(orderControl.getOrderTypeTransfer(getUserVisit(), orderType));
+            result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
             
             sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         } else {

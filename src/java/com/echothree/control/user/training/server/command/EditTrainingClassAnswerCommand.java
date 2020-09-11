@@ -220,7 +220,7 @@ public class EditTrainingClassAnswerCommand
     @Override
     public void doUpdate(TrainingClassAnswer trainingClassAnswer) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TrainingClassAnswerDetailValue trainingClassAnswerDetailValue = trainingControl.getTrainingClassAnswerDetailValueForUpdate(trainingClassAnswer);
         TrainingClassAnswerTranslation trainingClassAnswerTranslation = trainingControl.getTrainingClassAnswerTranslationForUpdate(trainingClassAnswer, getPreferredLanguage());
         String answer = edit.getAnswer();

@@ -18,24 +18,27 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderAliasTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderAliasTypeDescription, OrderAliasTypeDescriptionTransfer> {
-    
+
+    OrderAliasControl orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+
     /** Creates a new instance of OrderAliasTypeDescriptionTransferCache */
-    public OrderAliasTypeDescriptionTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderAliasTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(OrderAliasTypeDescription orderAliasTypeDescription) {
         OrderAliasTypeDescriptionTransfer orderAliasTypeDescriptionTransfer = get(orderAliasTypeDescription);
         
         if(orderAliasTypeDescriptionTransfer == null) {
-            OrderAliasTypeTransfer orderAliasTypeTransfer = orderControl.getOrderAliasTypeTransfer(userVisit, orderAliasTypeDescription.getOrderAliasType());
+            OrderAliasTypeTransfer orderAliasTypeTransfer = orderAliasControl.getOrderAliasTypeTransfer(userVisit, orderAliasTypeDescription.getOrderAliasType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderAliasTypeDescription.getLanguage());
             
             orderAliasTypeDescriptionTransfer = new OrderAliasTypeDescriptionTransfer(languageTransfer, orderAliasTypeTransfer, orderAliasTypeDescription.getDescription());

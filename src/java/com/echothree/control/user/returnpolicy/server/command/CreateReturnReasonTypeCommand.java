@@ -85,8 +85,8 @@ public class CreateReturnReasonTypeCommand
                     ReturnReasonType returnReasonType = returnPolicyControl.getReturnReasonType(returnReason, returnType);
                     
                     if(returnReasonType == null) {
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
                         
                         returnPolicyControl.createReturnReasonType(returnReason, returnType, isDefault, sortOrder, getPartyPK());
                     } else {

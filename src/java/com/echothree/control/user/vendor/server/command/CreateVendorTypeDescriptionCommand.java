@@ -80,7 +80,7 @@ public class CreateVendorTypeDescriptionCommand
                 VendorTypeDescription vendorTypeDescription = vendorControl.getVendorTypeDescription(vendorType, language);
                 
                 if(vendorTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     vendorControl.createVendorTypeDescription(vendorType, language, description, getPartyPK());
                 } else {

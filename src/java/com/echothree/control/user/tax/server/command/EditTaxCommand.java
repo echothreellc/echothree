@@ -141,7 +141,7 @@ public class EditTaxCommand
                             if(glAccount != null) {
                                 if(lockEntityForUpdate(tax)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         TaxDetailValue taxDetailValue = taxControl.getTaxDetailValueForUpdate(tax);
                                         TaxDescription taxDescription = taxControl.getTaxDescriptionForUpdate(tax, getPreferredLanguage());
                                         String description = edit.getDescription();

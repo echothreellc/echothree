@@ -108,7 +108,7 @@ public class EditWishlistTypeCommand
                 if(duplicateWishlistType == null || wishlistType.equals(duplicateWishlistType)) {
                     if(lockEntityForUpdate(wishlistType)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             WishlistTypeDetailValue wishlistTypeDetailValue = wishlistControl.getWishlistTypeDetailValueForUpdate(wishlistType);
                             WishlistTypeDescription wishlistTypeDescription = wishlistControl.getWishlistTypeDescriptionForUpdate(wishlistType, getPreferredLanguage());
                             String description = edit.getDescription();

@@ -74,10 +74,10 @@ public class CreateTrackCommand
         Track track = trackControl.getTrackByValue(value);
         
         if(track == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             track = trackControl.createTrack(value, isDefault, sortOrder, partyPK);
             

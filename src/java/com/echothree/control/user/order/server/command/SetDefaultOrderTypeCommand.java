@@ -17,7 +17,7 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.SetDefaultOrderTypeForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,13 +61,13 @@ public class SetDefaultOrderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderTypeDetailValue orderTypeDetailValue = orderControl.getOrderTypeDetailValueByNameForUpdate(orderTypeName);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeName = form.getOrderTypeName();
+        OrderTypeDetailValue orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueByNameForUpdate(orderTypeName);
         
         if(orderTypeDetailValue != null) {
             orderTypeDetailValue.setIsDefault(Boolean.TRUE);
-            orderControl.updateOrderTypeFromValue(orderTypeDetailValue, getPartyPK());
+            orderTypeControl.updateOrderTypeFromValue(orderTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }

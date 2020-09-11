@@ -80,7 +80,7 @@ public class CreateJobDescriptionCommand
                 JobDescription jobDescription = jobControl.getJobDescription(job, language);
                 
                 if(jobDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     jobControl.createJobDescription(job, language, description, getPartyPK());
                 } else {

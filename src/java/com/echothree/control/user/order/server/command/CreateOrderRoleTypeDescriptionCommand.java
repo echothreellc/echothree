@@ -17,7 +17,7 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderRoleTypeDescriptionForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.order.server.entity.OrderRoleTypeDescription;
@@ -53,9 +53,9 @@ public class CreateOrderRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
         String orderRoleTypeName = form.getOrderRoleTypeName();
-        OrderRoleType orderRoleType = orderControl.getOrderRoleTypeByName(orderRoleTypeName);
+        OrderRoleType orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
         
         if(orderRoleType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -63,12 +63,12 @@ public class CreateOrderRoleTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OrderRoleTypeDescription orderRoleTypeDescription = orderControl.getOrderRoleTypeDescription(orderRoleType, language);
+                OrderRoleTypeDescription orderRoleTypeDescription = orderRoleControl.getOrderRoleTypeDescription(orderRoleType, language);
                 
                 if(orderRoleTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
-                    orderControl.createOrderRoleTypeDescription(orderRoleType, language, description);
+                    orderRoleControl.createOrderRoleTypeDescription(orderRoleType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateOrderRoleTypeDescription.name());
                 }

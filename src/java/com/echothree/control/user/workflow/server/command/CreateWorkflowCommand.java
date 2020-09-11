@@ -101,9 +101,9 @@ public class CreateWorkflowCommand
                             SecurityRoleGroup securityRoleGroup = securityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
                             
                             if(securityRoleGroupName == null || securityRoleGroup != null) {
-                                PartyPK partyPK = getPartyPK();
-                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                String description = form.getDescription();
+                                var partyPK = getPartyPK();
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                var description = form.getDescription();
 
                                 workflow = workflowControl.createWorkflow(workflowName, workflowType, selectorType, securityRoleGroup, sortOrder, partyPK);
 

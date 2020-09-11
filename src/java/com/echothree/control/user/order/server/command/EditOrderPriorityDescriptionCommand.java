@@ -22,7 +22,8 @@ import com.echothree.control.user.order.common.form.EditOrderPriorityDescription
 import com.echothree.control.user.order.common.result.EditOrderPriorityDescriptionResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.common.spec.OrderPriorityDescriptionSpec;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPriorityControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,10 +34,10 @@ import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderPriorityDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -89,14 +90,15 @@ public class EditOrderPriorityDescriptionCommand
 
     @Override
     public OrderPriorityDescription getEntity(EditOrderPriorityDescriptionResult result) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         OrderPriorityDescription orderPriorityDescription = null;
         String orderTypeName = spec.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
             String orderPriorityName = spec.getOrderPriorityName();
-            OrderPriority orderPriority = orderControl.getOrderPriorityByName(orderType, orderPriorityName);
+            OrderPriority orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority != null) {
                 var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -105,9 +107,9 @@ public class EditOrderPriorityDescriptionCommand
 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        orderPriorityDescription = orderControl.getOrderPriorityDescription(orderPriority, language);
+                        orderPriorityDescription = orderPriorityControl.getOrderPriorityDescription(orderPriority, language);
                     } else { // EditMode.UPDATE
-                        orderPriorityDescription = orderControl.getOrderPriorityDescriptionForUpdate(orderPriority, language);
+                        orderPriorityDescription = orderPriorityControl.getOrderPriorityDescriptionForUpdate(orderPriority, language);
                     }
 
                     if(orderPriorityDescription == null) {
@@ -133,9 +135,9 @@ public class EditOrderPriorityDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderPriorityDescriptionResult result, OrderPriorityDescription orderPriorityDescription) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
 
-        result.setOrderPriorityDescription(orderControl.getOrderPriorityDescriptionTransfer(getUserVisit(), orderPriorityDescription));
+        result.setOrderPriorityDescription(orderPriorityControl.getOrderPriorityDescriptionTransfer(getUserVisit(), orderPriorityDescription));
     }
 
     @Override
@@ -145,11 +147,11 @@ public class EditOrderPriorityDescriptionCommand
 
     @Override
     public void doUpdate(OrderPriorityDescription orderPriorityDescription) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderPriorityDescriptionValue orderPriorityDescriptionValue = orderControl.getOrderPriorityDescriptionValue(orderPriorityDescription);
+        var orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
+        OrderPriorityDescriptionValue orderPriorityDescriptionValue = orderPriorityControl.getOrderPriorityDescriptionValue(orderPriorityDescription);
         orderPriorityDescriptionValue.setDescription(edit.getDescription());
 
-        orderControl.updateOrderPriorityDescriptionFromValue(orderPriorityDescriptionValue, getPartyPK());
+        orderPriorityControl.updateOrderPriorityDescriptionFromValue(orderPriorityDescriptionValue, getPartyPK());
     }
     
 }

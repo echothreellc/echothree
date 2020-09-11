@@ -99,7 +99,7 @@ public class EditPersonalTitleCommand
             if(personalTitlePK != null) {
                 if(lockEntityForUpdate(personalTitlePK)) {
                     try {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         PersonalTitleDetailValue personalTitleDetailValue = partyControl.getPersonalTitleDetailValueByPKForUpdate(personalTitlePK);
                         
                         personalTitleDetailValue.setDescription(edit.getDescription());

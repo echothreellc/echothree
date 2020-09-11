@@ -123,7 +123,7 @@ public class EditUseTypeCommand
                 if(duplicateUseType == null || useType.equals(duplicateUseType)) {
                     if(lockEntityForUpdate(useType)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             UseTypeDetailValue useTypeDetailValue = offerControl.getUseTypeDetailValueForUpdate(useType);
                             UseTypeDescription useTypeDescription = offerControl.getUseTypeDescriptionForUpdate(useType, getPreferredLanguage());
                             String description = edit.getDescription();

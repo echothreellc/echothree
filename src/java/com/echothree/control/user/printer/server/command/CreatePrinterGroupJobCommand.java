@@ -78,7 +78,7 @@ public class CreatePrinterGroupJobCommand
             final CreatePrinterGroupJobResult result) {
         Integer copies = Integer.valueOf(form.getCopies());
         Integer priority = Integer.valueOf(form.getPriority());
-        String description = form.getDescription();
+        var description = form.getDescription();
 
         PrinterGroupJob printerGroupJob = PrinterGroupJobLogic.getInstance().createPrinterGroupJob(this, printerGroup, copies, priority, mimeType,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());

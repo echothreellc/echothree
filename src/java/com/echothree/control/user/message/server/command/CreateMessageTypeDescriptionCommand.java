@@ -80,7 +80,7 @@ public class CreateMessageTypeDescriptionCommand
                         MessageTypeDescription messageTypeDescription = messageControl.getMessageTypeDescription(messageType, language);
                         
                         if(messageTypeDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             messageControl.createMessageTypeDescription(messageType, language, description, getPartyPK());
                         } else {

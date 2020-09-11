@@ -97,7 +97,7 @@ public class CreateContactWebAddressCommand
             var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             BasePK createdBy = getPartyPK();
             String url = form.getUrl();
-            String description = form.getDescription();
+            var description = form.getDescription();
             String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
 
             ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());

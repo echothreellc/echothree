@@ -129,7 +129,7 @@ public class EditGlResourceTypeCommand
                 if(duplicateGlResourceType == null || glResourceType.equals(duplicateGlResourceType)) {
                     if(lockEntityForUpdate(glResourceType)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             GlResourceTypeDetailValue glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueForUpdate(glResourceType);
                             GlResourceTypeDescription glResourceTypeDescription = accountingControl.getGlResourceTypeDescriptionForUpdate(glResourceType, getPreferredLanguage());
                             String description = edit.getDescription();

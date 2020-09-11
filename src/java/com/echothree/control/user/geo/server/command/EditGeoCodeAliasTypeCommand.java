@@ -166,7 +166,7 @@ public class EditGeoCodeAliasTypeCommand
     @Override
     public void doUpdate(GeoCodeAliasType geoAliasType) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         GeoCodeAliasTypeDetailValue geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueForUpdate(geoAliasType);
         GeoCodeAliasTypeDescription geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescriptionForUpdate(geoAliasType, getPreferredLanguage());
         String description = edit.getDescription();

@@ -18,7 +18,7 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderRoleTransfer;
 import com.echothree.model.control.order.common.transfer.OrderRoleTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.order.server.entity.OrderRole;
@@ -28,11 +28,12 @@ import com.echothree.util.server.persistence.Session;
 public class OrderRoleTransferCache
         extends BaseOrderTransferCache<OrderRole, OrderRoleTransfer> {
 
+    OrderRoleControl orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of OrderRoleTransferCache */
-    public OrderRoleTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderRoleTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         setIncludeEntityInstance(true);
     }
@@ -42,7 +43,7 @@ public class OrderRoleTransferCache
         
         if(orderRoleTransfer == null) {
             PartyTransfer party = partyControl.getPartyTransfer(userVisit, orderRole.getParty());
-            OrderRoleTypeTransfer orderRoleType = orderControl.getOrderRoleTypeTransfer(userVisit, orderRole.getOrderRoleType());
+            OrderRoleTypeTransfer orderRoleType = orderRoleControl.getOrderRoleTypeTransfer(userVisit, orderRole.getOrderRoleType());
 
             orderRoleTransfer = new OrderRoleTransfer(party, orderRoleType);
             put(orderRole, orderRoleTransfer);

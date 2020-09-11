@@ -18,24 +18,27 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderPriorityDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderPriorityDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderPriorityDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderPriorityDescription, OrderPriorityDescriptionTransfer> {
-    
+
+    OrderPriorityControl orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
+
     /** Creates a new instance of OrderPriorityDescriptionTransferCache */
-    public OrderPriorityDescriptionTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderPriorityDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OrderPriorityDescriptionTransfer getOrderPriorityDescriptionTransfer(OrderPriorityDescription orderPriorityDescription) {
         OrderPriorityDescriptionTransfer orderPriorityDescriptionTransfer = get(orderPriorityDescription);
         
         if(orderPriorityDescriptionTransfer == null) {
-            OrderPriorityTransfer orderPriorityTransfer = orderControl.getOrderPriorityTransfer(userVisit, orderPriorityDescription.getOrderPriority());
+            OrderPriorityTransfer orderPriorityTransfer = orderPriorityControl.getOrderPriorityTransfer(userVisit, orderPriorityDescription.getOrderPriority());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderPriorityDescription.getLanguage());
             
             orderPriorityDescriptionTransfer = new OrderPriorityDescriptionTransfer(languageTransfer, orderPriorityTransfer, orderPriorityDescription.getDescription());

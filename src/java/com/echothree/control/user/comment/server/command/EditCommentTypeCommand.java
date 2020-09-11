@@ -142,7 +142,7 @@ public class EditCommentTypeCommand
                             if(commentSequenceName == null || commentSequence != null) {
                                 if(lockEntityForUpdate(commentType)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         CommentTypeDetailValue commentTypeDetailValue = commentControl.getCommentTypeDetailValueForUpdate(commentType);
                                         CommentTypeDescription commentTypeDescription = commentControl.getCommentTypeDescriptionForUpdate(commentType, getPreferredLanguage());
                                         String description = edit.getDescription();

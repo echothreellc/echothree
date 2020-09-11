@@ -122,7 +122,7 @@ public class EditEmployeeTypeCommand
                 if(duplicateEmployeeType == null || employeeType.equals(duplicateEmployeeType)) {
                     if(lockEntityForUpdate(employeeType)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             EmployeeTypeDetailValue employeeTypeDetailValue = employeeControl.getEmployeeTypeDetailValueForUpdate(employeeType);
                             EmployeeTypeDescription employeeTypeDescription = employeeControl.getEmployeeTypeDescriptionForUpdate(employeeType, getPreferredLanguage());
                             String description = edit.getDescription();

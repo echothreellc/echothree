@@ -154,7 +154,7 @@ public class EditFilterAdjustmentPercentCommand
                                         if(filterAdjustmentPercent != null) {
                                             if(lockEntityForUpdate(filterAdjustmentPercent)) {
                                                 try {
-                                                    PartyPK partyPK = getPartyPK();
+                                                    var partyPK = getPartyPK();
                                                     FilterAdjustmentPercentValue filterAdjustmentPercentValue = filterControl.getFilterAdjustmentPercentValue(filterAdjustmentPercent);
                                                     
                                                     filterAdjustmentPercentValue.setPercent(Integer.valueOf(edit.getPercent()));

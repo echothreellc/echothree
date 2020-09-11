@@ -66,7 +66,7 @@ public class CreateResponsibilityTypeDescriptionCommand
                 ResponsibilityTypeDescription responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescription(responsibilityType, language);
                 
                 if(responsibilityTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     employeeControl.createResponsibilityTypeDescription(responsibilityType, language, description, getPartyPK());
                 } else {

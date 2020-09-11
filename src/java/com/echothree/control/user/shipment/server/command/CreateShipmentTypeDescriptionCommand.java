@@ -80,7 +80,7 @@ public class CreateShipmentTypeDescriptionCommand
                 ShipmentTypeDescription shipmentTypeDescription = shipmentControl.getShipmentTypeDescription(shipmentType, language);
                 
                 if(shipmentTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     shipmentControl.createShipmentTypeDescription(shipmentType, language, description, getPartyPK());
                 } else {

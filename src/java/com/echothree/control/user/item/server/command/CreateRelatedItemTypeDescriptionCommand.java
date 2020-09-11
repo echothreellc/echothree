@@ -80,7 +80,7 @@ public class CreateRelatedItemTypeDescriptionCommand
                 RelatedItemTypeDescription relatedItemTypeDescription = itemControl.getRelatedItemTypeDescription(relatedItemType, language);
                 
                 if(relatedItemTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     itemControl.createRelatedItemTypeDescription(relatedItemType, language, description, getPartyPK());
                 } else {

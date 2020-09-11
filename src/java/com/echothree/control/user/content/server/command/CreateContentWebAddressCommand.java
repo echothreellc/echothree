@@ -76,8 +76,8 @@ public class CreateContentWebAddressCommand
             ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
             
             if(contentCollection != null) {
-                String description = form.getDescription();
-                PartyPK partyPK = getPartyPK();
+                var description = form.getDescription();
+                var partyPK = getPartyPK();
                 
                 contentWebAddress = contentControl.createContentWebAddress(contentWebAddressName, contentCollection, partyPK);
                 

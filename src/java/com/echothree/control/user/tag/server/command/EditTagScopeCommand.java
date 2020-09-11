@@ -150,7 +150,7 @@ public class EditTagScopeCommand
     @Override
     public void doUpdate(TagScope tagScope) {
         var tagControl = (TagControl)Session.getModelController(TagControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         TagScopeDetailValue tagScopeDetailValue = tagControl.getTagScopeDetailValueForUpdate(tagScope);
         TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescriptionForUpdate(tagScope, getPreferredLanguage());
         String description = edit.getDescription();

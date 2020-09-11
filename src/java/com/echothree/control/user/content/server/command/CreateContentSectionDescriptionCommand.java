@@ -86,7 +86,7 @@ public class CreateContentSectionDescriptionCommand
                     ContentSectionDescription contentSectionDescription = contentControl.getContentSectionDescription(contentSection, language);
                     
                     if(contentSectionDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         contentControl.createContentSectionDescription(contentSection, language, description, getPartyPK());
                     } else {

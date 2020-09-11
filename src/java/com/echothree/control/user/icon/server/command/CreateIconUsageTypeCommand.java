@@ -58,9 +58,9 @@ public class CreateIconUsageTypeCommand
         
         if(iconUsageType == null) {
             PartyPK createdBy = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             
             iconUsageType = iconControl.createIconUsageType(iconUsageTypeName, isDefault, sortOrder, createdBy);
             

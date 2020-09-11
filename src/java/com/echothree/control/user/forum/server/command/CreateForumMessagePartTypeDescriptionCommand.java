@@ -66,7 +66,7 @@ public class CreateForumMessagePartTypeDescriptionCommand
                 ForumMessagePartTypeDescription forumMessagePartTypeDescription = forumControl.getForumMessagePartTypeDescription(forumMessagePartType, language);
                 
                 if(forumMessagePartTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     forumControl.createForumMessagePartTypeDescription(forumMessagePartType, language, description);
                 } else {

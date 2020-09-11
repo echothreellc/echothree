@@ -17,7 +17,7 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderRoleTypeForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -49,14 +49,14 @@ public class CreateOrderRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
         String orderRoleTypeName = form.getOrderRoleTypeName();
-        OrderRoleType orderRoleType = orderControl.getOrderRoleTypeByName(orderRoleTypeName);
+        OrderRoleType orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
         
         if(orderRoleType == null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
-            orderControl.createOrderRoleType(orderRoleTypeName, sortOrder);
+            orderRoleControl.createOrderRoleType(orderRoleTypeName, sortOrder);
         } else {
             addExecutionError(ExecutionErrors.DuplicateOrderRoleTypeName.name(), orderRoleTypeName);
         }

@@ -18,39 +18,16 @@ package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.payment.common.PaymentMethodTypes;
-import com.echothree.model.control.payment.common.choice.PartyPaymentMethodChoicesBean;
+import com.echothree.model.control.order.server.control.OrderPaymentPreferenceControl;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
-import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
-import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodContactMechanismTransferCache;
-import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentMethodDescriptionTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentMethodTransferCache;
-import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
-import com.echothree.model.data.party.common.pk.NameSuffixPK;
-import com.echothree.model.data.party.common.pk.PersonalTitlePK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.NameSuffix;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
-import com.echothree.model.data.payment.common.pk.PartyPaymentMethodPK;
 import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
 import com.echothree.model.data.payment.common.pk.PaymentMethodTypePK;
 import com.echothree.model.data.payment.common.pk.PaymentProcessorPK;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCard;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCardSecurityCode;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethodDetail;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
@@ -58,41 +35,27 @@ import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDetail;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
-import com.echothree.model.data.payment.server.factory.PartyPaymentMethodContactMechanismFactory;
-import com.echothree.model.data.payment.server.factory.PartyPaymentMethodCreditCardFactory;
-import com.echothree.model.data.payment.server.factory.PartyPaymentMethodCreditCardSecurityCodeFactory;
-import com.echothree.model.data.payment.server.factory.PartyPaymentMethodDetailFactory;
-import com.echothree.model.data.payment.server.factory.PartyPaymentMethodFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodCheckFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodCreditCardFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodDescriptionFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodDetailFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodFactory;
-import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardSecurityCodeValue;
-import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardValue;
-import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailValue;
 import com.echothree.model.data.payment.server.value.PaymentMethodCheckValue;
 import com.echothree.model.data.payment.server.value.PaymentMethodCreditCardValue;
 import com.echothree.model.data.payment.server.value.PaymentMethodDescriptionValue;
 import com.echothree.model.data.payment.server.value.PaymentMethodDetailValue;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class PaymentMethodControl
         extends BasePaymentControl {
@@ -426,11 +389,11 @@ public class PaymentMethodControl
     
     public void deletePaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
         var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderPaymentPreferenceControl = (OrderPaymentPreferenceControl)Session.getModelController(OrderPaymentPreferenceControl.class);
         var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
 
         customerControl.deleteCustomerTypePaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
-        orderControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);
+        orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);
         partyPaymentMethodControl.deletePartyPaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
         deletePaymentMethodDescriptionsByPaymentMethod(paymentMethod, deletedBy);
         

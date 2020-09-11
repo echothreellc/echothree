@@ -86,7 +86,7 @@ public class CreateTransactionEntityRoleTypeDescriptionCommand
                     TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescription(transactionEntityRoleType, language);
 
                     if(transactionEntityRoleTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         accountingControl.createTransactionEntityRoleTypeDescription(transactionEntityRoleType, language, description, getPartyPK());
                     } else {

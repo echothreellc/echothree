@@ -86,7 +86,7 @@ public class CreateBatchAliasTypeDescriptionCommand
                     BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescription(batchAliasType, language);
 
                     if(batchAliasTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         batchControl.createBatchAliasTypeDescription(batchAliasType, language, description, getPartyPK());
                     } else {

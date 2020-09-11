@@ -76,7 +76,7 @@ public class CreateUseNameElementCommand
             Integer offset = Integer.valueOf(form.getOffset());
             Integer length = Integer.valueOf(form.getLength());
             String validationPattern = form.getValidationPattern();
-            String description = form.getDescription();
+            var description = form.getDescription();
             
             useNameElement = offerControl.createUseNameElement(useNameElementName, offset, length, validationPattern, createdBy);
             

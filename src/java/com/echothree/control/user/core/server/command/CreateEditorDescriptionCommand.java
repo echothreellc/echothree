@@ -80,7 +80,7 @@ public class CreateEditorDescriptionCommand
                 EditorDescription editorDescription = coreControl.getEditorDescription(editor, language);
                 
                 if(editorDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createEditorDescription(editor, language, description, getPartyPK());
                 } else {

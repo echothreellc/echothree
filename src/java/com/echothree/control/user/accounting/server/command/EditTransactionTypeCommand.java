@@ -126,7 +126,7 @@ public class EditTransactionTypeCommand
                 if(duplicateTransactionType == null || transactionType.equals(duplicateTransactionType)) {
                     if(lockEntityForUpdate(transactionType)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             TransactionTypeDetailValue transactionTypeDetailValue = accountingControl.getTransactionTypeDetailValueForUpdate(transactionType);
                             TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescriptionForUpdate(transactionType, getPreferredLanguage());
                             String description = edit.getDescription();

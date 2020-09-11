@@ -80,7 +80,7 @@ public class CreateServerDescriptionCommand
                 ServerDescription serverDescription = coreControl.getServerDescription(server, language);
                 
                 if(serverDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createServerDescription(server, language, description, getPartyPK());
                 } else {

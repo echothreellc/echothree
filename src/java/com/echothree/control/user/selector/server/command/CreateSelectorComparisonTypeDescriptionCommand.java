@@ -66,7 +66,7 @@ public class CreateSelectorComparisonTypeDescriptionCommand
                 SelectorComparisonTypeDescription selectorComparisonTypeDescription = selectorControl.getSelectorComparisonTypeDescription(selectorComparisonType, language);
                 
                 if(selectorComparisonTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     selectorControl.createSelectorComparisonTypeDescription(selectorComparisonType, language, description);
                 } else {

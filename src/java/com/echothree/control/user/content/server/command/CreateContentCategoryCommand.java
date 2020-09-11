@@ -198,9 +198,9 @@ public class CreateContentCategoryCommand
                                 if(contentCategoryItemSelectorName != null && contentCategoryItemSelector == null) {
                                     addExecutionError(ExecutionErrors.UnknownContentCategoryItemSelectorName.name(), contentCategoryItemSelectorName);
                                 } else {
-                                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                    String description = form.getDescription();
+                                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                                    var description = form.getDescription();
                                     PartyPK createdBy = getPartyPK();
                                     
                                     contentCategory = contentControl.createContentCategory(contentCatalog, contentCategoryName,

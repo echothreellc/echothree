@@ -189,7 +189,7 @@ public class EditPartyTrainingClassSessionAnswerCommand
     @Override
     public void doUpdate(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PartyTrainingClassSessionAnswerValue partyTrainingClassSessionAnswerValue = trainingControl.getPartyTrainingClassSessionAnswerValue(partyTrainingClassSessionAnswer);
 
         partyTrainingClassSessionAnswerValue.setTrainingClassAnswerPK(trainingClassAnswer == null ? null : trainingClassAnswer.getPrimaryKey());

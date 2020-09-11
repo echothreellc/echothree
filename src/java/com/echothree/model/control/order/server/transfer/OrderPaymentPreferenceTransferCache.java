@@ -17,7 +17,6 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderPaymentPreferenceTransfer;
-import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
@@ -36,8 +35,8 @@ public class OrderPaymentPreferenceTransferCache
     PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
-    public OrderPaymentPreferenceTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderPaymentPreferenceTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

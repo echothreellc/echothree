@@ -150,7 +150,7 @@ public class EditChainActionTypeCommand
     @Override
     public void doUpdate(ChainActionType chainActionType) {
         var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ChainActionTypeDetailValue chainActionTypeDetailValue = chainControl.getChainActionTypeDetailValueForUpdate(chainActionType);
         ChainActionTypeDescription chainActionTypeDescription = chainControl.getChainActionTypeDescriptionForUpdate(chainActionType, getPreferredLanguage());
         String description = edit.getDescription();

@@ -180,7 +180,7 @@ public class EditReturnTypeCommand
     @Override
     public void doUpdate(ReturnType returnType) {
         var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ReturnTypeDetailValue returnTypeDetailValue = returnPolicyControl.getReturnTypeDetailValueForUpdate(returnType);
         ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescriptionForUpdate(returnType, getPreferredLanguage());
         String description = edit.getDescription();

@@ -81,8 +81,8 @@ public class CreateOfferCustomerTypeCommand
                 OfferCustomerType offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
 
                 if(offerCustomerType == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
 
                     offerControl.createOfferCustomerType(offer, customerType, isDefault, sortOrder, getPartyPK());
                 } else {

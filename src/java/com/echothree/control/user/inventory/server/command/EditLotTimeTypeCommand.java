@@ -150,7 +150,7 @@ public class EditLotTimeTypeCommand
     @Override
     public void doUpdate(LotTimeType lotTimeType) {
         var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         LotTimeTypeDetailValue lotTimeTypeDetailValue = lotTimeControl.getLotTimeTypeDetailValueForUpdate(lotTimeType);
         LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, getPreferredLanguage());
         String description = edit.getDescription();

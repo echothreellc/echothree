@@ -152,7 +152,7 @@ public class EditAllocationPriorityCommand
     @Override
     public void doUpdate(AllocationPriority allocationPriority) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         AllocationPriorityDetailValue allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueForUpdate(allocationPriority);
         AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, getPreferredLanguage());
         String description = edit.getDescription();

@@ -80,7 +80,7 @@ public class CreateGlResourceTypeDescriptionCommand
                 GlResourceTypeDescription glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language);
                 
                 if(glResourceTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     accountingControl.createGlResourceTypeDescription(glResourceType, language, description, getPartyPK());
                 } else {

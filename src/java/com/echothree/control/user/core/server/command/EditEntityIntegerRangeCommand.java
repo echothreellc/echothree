@@ -192,7 +192,7 @@ public class EditEntityIntegerRangeCommand
     @Override
     public void doUpdate(EntityIntegerRange entityIntegerRange) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueForUpdate(entityIntegerRange);
         EntityIntegerRangeDescription entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescriptionForUpdate(entityIntegerRange, getPreferredLanguage());
         String strMinimumIntegerValue = edit.getMinimumIntegerValue();

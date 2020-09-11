@@ -80,7 +80,7 @@ public class CreateTagScopeDescriptionCommand
                 TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescription(tagScope, language);
                 
                 if(tagScopeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     tagControl.createTagScopeDescription(tagScope, language, description, getPartyPK());
                 } else {

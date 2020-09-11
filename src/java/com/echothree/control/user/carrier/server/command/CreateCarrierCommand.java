@@ -174,8 +174,8 @@ public class CreateCarrierCommand
                                         BasePK createdBy = getPartyPK();
                                         String name = form.getName();
                                         String accountValidationPattern = form.getAccountValidationPattern();
-                                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                                        var sortOrder = Integer.valueOf(form.getSortOrder());
 
                                         Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone,
                                                 preferredDateTimeFormat, createdBy);

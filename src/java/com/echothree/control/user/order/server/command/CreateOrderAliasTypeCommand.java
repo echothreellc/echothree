@@ -17,7 +17,8 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderAliasTypeForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -25,10 +26,10 @@ import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,25 +70,26 @@ public class CreateOrderAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
             String orderAliasTypeName = form.getOrderAliasTypeName();
-            OrderAliasType orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+            OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType == null) {
                 PartyPK createdBy = getPartyPK();
                 String validationPattern = form.getValidationPattern();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
 
-                orderAliasType = orderControl.createOrderAliasType(orderType, orderAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
+                orderAliasType = orderAliasControl.createOrderAliasType(orderType, orderAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
 
                 if(description != null) {
-                    orderControl.createOrderAliasTypeDescription(orderAliasType, getPreferredLanguage(), description, createdBy);
+                    orderAliasControl.createOrderAliasTypeDescription(orderAliasType, getPreferredLanguage(), description, createdBy);
                 }
             } else {
                 addExecutionError(ExecutionErrors.DuplicateOrderAliasTypeName.name(), orderTypeName, orderAliasTypeName);

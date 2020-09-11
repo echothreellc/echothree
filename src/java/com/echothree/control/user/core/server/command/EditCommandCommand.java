@@ -143,7 +143,7 @@ public class EditCommandCommand
     @Override
     public void doUpdate(Command command) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CommandDetailValue commandDetailValue = coreControl.getCommandDetailValueForUpdate(command);
         CommandDescription commandDescription = coreControl.getCommandDescriptionForUpdate(command, getPreferredLanguage());
         String description = edit.getDescription();

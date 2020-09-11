@@ -127,7 +127,7 @@ public class CreateContactTelephoneCommand
                             BasePK createdBy = getPartyPK();
                             String telephoneExtension = form.getTelephoneExtension();
                             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
                             
                             ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.TELECOM_ADDRESS.name());

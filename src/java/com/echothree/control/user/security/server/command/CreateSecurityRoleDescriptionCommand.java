@@ -86,7 +86,7 @@ public class CreateSecurityRoleDescriptionCommand
                     SecurityRoleDescription securityRoleDescription = securityControl.getSecurityRoleDescription(securityRole, language);
                     
                     if(securityRoleDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         securityControl.createSecurityRoleDescription(securityRole, language, description, getPartyPK());
                     } else {

@@ -148,7 +148,7 @@ public class EditSearchDefaultOperatorCommand
     @Override
     public void doUpdate(SearchDefaultOperator searchDefaultOperator) {
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueForUpdate(searchDefaultOperator);
         SearchDefaultOperatorDescription searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, getPreferredLanguage());
         String description = edit.getDescription();

@@ -74,7 +74,7 @@ public class CreateLocationTypeDescriptionCommand
                     LocationTypeDescription locationTypeDescription = warehouseControl.getLocationTypeDescription(locationType, language);
                     
                     if(locationTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         
                         warehouseControl.createLocationTypeDescription(locationType, language, description, getPartyPK());
                     } else {

@@ -74,7 +74,7 @@ public class CreateInvoiceLineUseTypeDescriptionCommand
                 InvoiceLineUseTypeDescription invoiceLineUseTypeDescription = invoiceControl.getInvoiceLineUseTypeDescription(invoiceLineUseType, language);
                 
                 if(invoiceLineUseTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     invoiceControl.createInvoiceLineUseTypeDescription(invoiceLineUseType, language, description);
                 } else {

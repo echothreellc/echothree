@@ -80,7 +80,7 @@ public class CreateServiceDescriptionCommand
                 ServiceDescription serviceDescription = coreControl.getServiceDescription(service, language);
                 
                 if(serviceDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     coreControl.createServiceDescription(service, language, description, getPartyPK());
                 } else {

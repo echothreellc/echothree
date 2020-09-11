@@ -80,7 +80,7 @@ public class CreateGeoCodeTypeDescriptionCommand
                 GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescription(geoCodeType, language);
                 
                 if(geoCodeTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     geoControl.createGeoCodeTypeDescription(geoCodeType, language, description, getPartyPK());
                 } else {

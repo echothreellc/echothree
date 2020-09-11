@@ -54,7 +54,7 @@ public class CreateSelectorNodeTypeCommand
         SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
         
         if(selectorNodeType == null) {
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             selectorControl.createSelectorNodeType(selectorNodeTypeName, sortOrder);
         } else {

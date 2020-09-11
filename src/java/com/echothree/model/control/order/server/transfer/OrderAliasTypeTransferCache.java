@@ -18,17 +18,22 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderAliasTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderAliasTypeTransferCache
         extends BaseOrderTransferCache<OrderAliasType, OrderAliasTypeTransfer> {
-    
+
+    OrderTypeControl orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+    OrderAliasControl orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+
     /** Creates a new instance of OrderAliasTypeTransferCache */
-    public OrderAliasTypeTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderAliasTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
@@ -38,12 +43,12 @@ public class OrderAliasTypeTransferCache
         
         if(orderAliasTypeTransfer == null) {
             OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
-            OrderTypeTransfer orderType = orderControl.getOrderTypeTransfer(userVisit, orderAliasTypeDetail.getOrderType());
+            OrderTypeTransfer orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderAliasTypeDetail.getOrderType());
             String orderAliasTypeName = orderAliasTypeDetail.getOrderAliasTypeName();
             String validationPattern = orderAliasTypeDetail.getValidationPattern();
             Boolean isDefault = orderAliasTypeDetail.getIsDefault();
             Integer sortOrder = orderAliasTypeDetail.getSortOrder();
-            String description = orderControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage());
+            String description = orderAliasControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage());
             
             orderAliasTypeTransfer = new OrderAliasTypeTransfer(orderType, orderAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(orderAliasType, orderAliasTypeTransfer);

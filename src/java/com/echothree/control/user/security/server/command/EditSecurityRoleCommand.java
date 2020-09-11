@@ -162,7 +162,7 @@ public class EditSecurityRoleCommand
     @Override
     public void doUpdate(SecurityRole securityRole) {
         var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SecurityRoleDetailValue securityRoleDetailValue = securityControl.getSecurityRoleDetailValueForUpdate(securityRole);
         SecurityRoleDescription securityRoleDescription = securityControl.getSecurityRoleDescriptionForUpdate(securityRole, getPreferredLanguage());
         String description = edit.getDescription();

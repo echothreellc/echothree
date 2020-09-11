@@ -19,16 +19,17 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.GetOrderAliasTypeChoicesForm;
 import com.echothree.control.user.order.common.result.GetOrderAliasTypeChoicesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAliasControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -65,16 +66,17 @@ public class GetOrderAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
         GetOrderAliasTypeChoicesResult result = OrderResultFactory.getGetOrderAliasTypeChoicesResult();
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
             String defaultOrderAliasTypeChoice = form.getDefaultOrderAliasTypeChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-            result.setOrderAliasTypeChoices(orderControl.getOrderAliasTypeChoices(defaultOrderAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
+            result.setOrderAliasTypeChoices(orderAliasControl.getOrderAliasTypeChoices(defaultOrderAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
                     orderType));
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);

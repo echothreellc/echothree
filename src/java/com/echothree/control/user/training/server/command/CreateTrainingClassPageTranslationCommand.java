@@ -106,7 +106,7 @@ public class CreateTrainingClassPageTranslationCommand
                                     ExecutionErrors.UnknownPageMimeTypeName.name(), ExecutionErrors.UnknownPageMimeTypeUsage.name());
 
                             if(!hasExecutionErrors()) {
-                                String description = form.getDescription();
+                                var description = form.getDescription();
 
                                 trainingControl.createTrainingClassPageTranslation(trainingClassPage, language, description, pageMimeType, page,
                                         getPartyPK());

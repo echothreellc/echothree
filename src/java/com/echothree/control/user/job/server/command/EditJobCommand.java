@@ -120,7 +120,7 @@ public class EditJobCommand
                 if(duplicateJob == null || job.equals(duplicateJob)) {
                     if(lockEntityForUpdate(job)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             JobDetailValue jobDetailValue = jobControl.getJobDetailValueForUpdate(job);
                             JobDescription jobDescription = jobControl.getJobDescriptionForUpdate(job, getPreferredLanguage());
                             String description = edit.getDescription();

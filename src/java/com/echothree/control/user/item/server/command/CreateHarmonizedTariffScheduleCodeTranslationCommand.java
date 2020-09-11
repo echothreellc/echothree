@@ -99,7 +99,7 @@ public class CreateHarmonizedTariffScheduleCodeTranslationCommand
                         HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = itemControl.getHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
 
                         if(harmonizedTariffScheduleCodeTranslation == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
 
                             itemControl.createHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language, description, overviewMimeType,
                                     overview, getPartyPK());

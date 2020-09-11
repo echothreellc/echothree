@@ -127,7 +127,7 @@ public class EditCancellationReasonCommand
                     if(duplicateCancellationReason == null || cancellationReason.equals(duplicateCancellationReason)) {
                         if(lockEntityForUpdate(cancellationReason)) {
                             try {
-                                PartyPK partyPK = getPartyPK();
+                                var partyPK = getPartyPK();
                                 CancellationReasonDetailValue cancellationReasonDetailValue = cancellationPolicyControl.getCancellationReasonDetailValueForUpdate(cancellationReason);
                                 CancellationReasonDescription cancellationReasonDescription = cancellationPolicyControl.getCancellationReasonDescriptionForUpdate(cancellationReason, getPreferredLanguage());
                                 String description = edit.getDescription();

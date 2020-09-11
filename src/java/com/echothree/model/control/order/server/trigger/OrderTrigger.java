@@ -17,7 +17,7 @@
 package com.echothree.model.control.order.server.trigger;
 
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.sales.server.trigger.SalesOrderTrigger;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;

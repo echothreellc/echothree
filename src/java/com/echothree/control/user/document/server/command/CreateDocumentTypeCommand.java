@@ -94,12 +94,12 @@ public class CreateDocumentTypeCommand
                 }
 
                 if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
-                    PartyPK partyPK = getPartyPK();
+                    var partyPK = getPartyPK();
                     String strMaximumPageCount = form.getMaximumPages();
                     Integer maximumPageCount = strMaximumPageCount == null ? null : Integer.valueOf(form.getMaximumPages());
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
 
                     documentType = documentControl.createDocumentType(documentTypeName, parentDocumentType, mimeTypeUsageType, maximumPageCount, isDefault,
                             sortOrder, partyPK);

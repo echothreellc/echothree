@@ -89,7 +89,7 @@ public class GetContentCatalogsCommand
             }
 
             if(!hasExecutionErrors()) {
-                PartyPK partyPK = getPartyPK();
+                var partyPK = getPartyPK();
 
                 AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(), contentCollection.getPrimaryKey(), partyPK);
 

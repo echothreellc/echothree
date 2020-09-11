@@ -77,7 +77,7 @@ public class CreateAssociateCommand
                     MimeType summaryMimeType = coreControl.getMimeTypeByName(summaryMimeTypeName);
                     
                     if(summaryMimeType != null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
                         String summary = form.getSummary();
                         
                         associateControl.createAssociate(associateProgram, associateName, party, description, summaryMimeType,

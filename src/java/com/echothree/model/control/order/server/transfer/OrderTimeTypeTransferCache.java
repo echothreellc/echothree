@@ -17,17 +17,20 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderTimeTypeTransferCache
         extends BaseOrderTransferCache<OrderTimeType, OrderTimeTypeTransfer> {
-    
+
+    OrderTimeControl orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+
     /** Creates a new instance of OrderTimeTypeTransferCache */
-    public OrderTimeTypeTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderTimeTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
@@ -40,7 +43,7 @@ public class OrderTimeTypeTransferCache
             String orderTimeTypeName = orderTimeTypeDetail.getOrderTimeTypeName();
             Boolean isDefault = orderTimeTypeDetail.getIsDefault();
             Integer sortOrder = orderTimeTypeDetail.getSortOrder();
-            String description = orderControl.getBestOrderTimeTypeDescription(orderTimeType, getLanguage());
+            String description = orderTimeControl.getBestOrderTimeTypeDescription(orderTimeType, getLanguage());
             
             orderTimeTypeTransfer = new OrderTimeTypeTransfer(orderTimeTypeName, isDefault, sortOrder, description);
             put(orderTimeType, orderTimeTypeTransfer);

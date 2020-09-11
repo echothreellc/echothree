@@ -114,7 +114,7 @@ public class CreateTrainingClassAnswerCommand
                                 } else {
                                     PartyPK createdBy = getPartyPK();
                                     Boolean isCorrect = Boolean.valueOf(form.getIsCorrect());
-                                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                                    var sortOrder = Integer.valueOf(form.getSortOrder());
 
                                     trainingClassAnswer = trainingControl.createTrainingClassAnswer(trainingClassQuestion, trainingClassAnswerName, isCorrect,
                                             sortOrder, createdBy);

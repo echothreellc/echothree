@@ -87,7 +87,7 @@ public class CreateApplicationEditorUseDescriptionCommand
                     ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, language);
 
                     if(applicationEditorUseDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         coreControl.createApplicationEditorUseDescription(applicationEditorUse, language, description, getPartyPK());
                     } else {

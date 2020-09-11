@@ -80,7 +80,7 @@ public class CreatePeriodKindDescriptionCommand
                 PeriodKindDescription periodKindDescription = periodControl.getPeriodKindDescription(periodKind, language);
                 
                 if(periodKindDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     periodControl.createPeriodKindDescription(periodKind, language, description, getPartyPK());
                 } else {

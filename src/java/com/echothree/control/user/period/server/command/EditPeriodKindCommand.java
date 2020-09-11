@@ -150,7 +150,7 @@ public class EditPeriodKindCommand
                             if(workflowEntranceName == null || workflowEntrance != null) {
                                 if(lockEntityForUpdate(periodKind)) {
                                     try {
-                                        PartyPK partyPK = getPartyPK();
+                                        var partyPK = getPartyPK();
                                         PeriodKindDetailValue periodKindDetailValue = periodControl.getPeriodKindDetailValueForUpdate(periodKind);
                                         PeriodKindDescription periodKindDescription = periodControl.getPeriodKindDescriptionForUpdate(periodKind, getPreferredLanguage());
                                         String description = edit.getDescription();

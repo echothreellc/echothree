@@ -64,7 +64,7 @@ public class CreatePartyTypeUseCommand
                 PartyTypeUse partyTypeUse = partyControl.getPartyTypeUse(partyTypeUseType, partyType);
                 
                 if(partyTypeUse == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
                     
                     partyControl.createPartyTypeUse(partyTypeUseType, partyType, isDefault);
                 } else {

@@ -86,7 +86,7 @@ public class CreateShipmentAliasTypeDescriptionCommand
                     ShipmentAliasTypeDescription shipmentAliasTypeDescription = shipmentControl.getShipmentAliasTypeDescription(shipmentAliasType, language);
 
                     if(shipmentAliasTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         shipmentControl.createShipmentAliasTypeDescription(shipmentAliasType, language, description, getPartyPK());
                     } else {

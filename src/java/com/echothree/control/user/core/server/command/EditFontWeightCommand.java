@@ -147,7 +147,7 @@ public class EditFontWeightCommand
     @Override
     public void doUpdate(FontWeight fontWeight) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         FontWeightDetailValue fontWeightDetailValue = coreControl.getFontWeightDetailValueForUpdate(fontWeight);
         FontWeightDescription fontWeightDescription = coreControl.getFontWeightDescriptionForUpdate(fontWeight, getPreferredLanguage());
         String description = edit.getDescription();

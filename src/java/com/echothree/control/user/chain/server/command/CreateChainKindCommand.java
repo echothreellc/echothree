@@ -71,10 +71,10 @@ public class CreateChainKindCommand
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
 
             chainKind = chainControl.createChainKind(chainKindName, isDefault, sortOrder, partyPK);
 

@@ -315,7 +315,7 @@ public class EditItemDescriptionCommand
     @Override
     public void doUpdate(ItemDescription itemDescription) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
 
         if(mimeType == null) {
             String stringDescription = edit.getStringDescription();

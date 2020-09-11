@@ -108,7 +108,7 @@ public class EditGenderCommand
                 if(duplicateGender == null || gender.equals(duplicateGender)) {
                     if(lockEntityForUpdate(gender)) {
                         try {
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
                             GenderDetailValue genderDetailValue = partyControl.getGenderDetailValueForUpdate(gender);
                             GenderDescription genderDescription = partyControl.getGenderDescriptionForUpdate(gender, getPreferredLanguage());
                             String description = edit.getDescription();

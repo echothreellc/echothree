@@ -80,7 +80,7 @@ public class CreateLetterSourceDescriptionCommand
                 LetterSourceDescription letterSourceDescription = letterControl.getLetterSourceDescription(letterSource, language);
                 
                 if(letterSourceDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     letterControl.createLetterSourceDescription(letterSource, language, description, getPartyPK());
                 } else {

@@ -210,7 +210,7 @@ public class EditPartyDocumentCommand
         ByteArray blob = edit.getBlob();
         String clob = edit.getClob();
         Integer pages = DocumentLogic.getInstance().getPages(mimeType, blob, clob);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
 
         partyDocumentValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         partyDocumentValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
@@ -232,7 +232,7 @@ public class EditPartyDocumentCommand
         DocumentClob documentClob = null;
         String oldEntityAttributeTypeName = document.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
 
         if(oldEntityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
             documentBlob = documentControl.getDocumentBlobForUpdate(document);
@@ -265,7 +265,7 @@ public class EditPartyDocumentCommand
         var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentDescription documentDescription = documentControl.getDocumentDescriptionForUpdate(document, getPreferredLanguage());
         String description = edit.getDescription();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
 
         if(documentDescription == null && description != null) {
             documentControl.createDocumentDescription(document, getPreferredLanguage(), description, partyPK);

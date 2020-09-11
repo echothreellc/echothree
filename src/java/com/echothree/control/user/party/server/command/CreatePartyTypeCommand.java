@@ -73,10 +73,10 @@ public class CreatePartyTypeCommand
                 SequenceType billingAccountSequenceType = billingAccountSequenceTypeName == null ? null : sequenceControl.getSequenceTypeByName(billingAccountSequenceTypeName);
 
                 if(billingAccountSequenceTypeName == null || billingAccountSequenceType != null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
                     Boolean allowUserLogins = Boolean.valueOf(form.getAllowUserLogins());
                     Boolean allowPartyAliases = Boolean.valueOf(form.getAllowPartyAliases());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
 
                     partyControl.createPartyType(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowPartyAliases, isDefault,
                             sortOrder);

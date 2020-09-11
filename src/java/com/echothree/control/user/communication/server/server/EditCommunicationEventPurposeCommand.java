@@ -104,7 +104,7 @@ public class EditCommunicationEventPurposeCommand
             if(communicationEventPurpose != null) {
                 if(lockEntityForUpdate(communicationEventPurpose)) {
                     try {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = communicationControl.getCommunicationEventPurposeDetailValueForUpdate(communicationEventPurpose);
                         CommunicationEventPurposeDescription communicationEventPurposeDescription = communicationControl.getCommunicationEventPurposeDescriptionForUpdate(communicationEventPurpose, getPreferredLanguage());
                         String description = edit.getDescription();

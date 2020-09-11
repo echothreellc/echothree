@@ -71,10 +71,10 @@ public class CreateHarmonizedTariffScheduleCodeUseTypeCommand
         HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
         
         if(harmonizedTariffScheduleCodeUseType == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
 
             harmonizedTariffScheduleCodeUseType = itemControl.createHarmonizedTariffScheduleCodeUseType(harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, partyPK);
 

@@ -167,7 +167,7 @@ public class EditItemAliasTypeCommand
     @Override
     public void doUpdate(ItemAliasType itemAliasType) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ItemAliasTypeDetailValue itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueForUpdate(itemAliasType);
         ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescriptionForUpdate(itemAliasType, getPreferredLanguage());
         String description = edit.getDescription();

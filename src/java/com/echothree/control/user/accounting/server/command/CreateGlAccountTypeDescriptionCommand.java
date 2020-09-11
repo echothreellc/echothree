@@ -66,7 +66,7 @@ public class CreateGlAccountTypeDescriptionCommand
                 GlAccountTypeDescription glAccountTypeDescription = accountingControl.getGlAccountTypeDescription(glAccountType, language);
                 
                 if(glAccountTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     accountingControl.createGlAccountTypeDescription(glAccountType, language, description);
                 } else {

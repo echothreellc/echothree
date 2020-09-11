@@ -272,7 +272,7 @@ public class EditCountryCommand
     public void doUpdate(GeoCode geoCode) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         GeoCodeDetailValue geoCodeDetailValue = geoControl.getGeoCodeDetailValueForUpdate(geoCode);
         GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescriptionForUpdate(geoCode, getPreferredLanguage());
         GeoCodeCountryValue geoCodeCountryValue = geoControl.getGeoCodeCountryValueForUpdate(geoCode);

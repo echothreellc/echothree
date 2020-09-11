@@ -104,7 +104,7 @@ public class EditTerminationTypeCommand
             if(terminationType != null) {
                 if(lockEntityForUpdate(terminationType)) {
                     try {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         TerminationTypeDetailValue terminationTypeDetailValue = employeeControl.getTerminationTypeDetailValueForUpdate(terminationType);
                         TerminationTypeDescription terminationTypeDescription = employeeControl.getTerminationTypeDescriptionForUpdate(terminationType, getPreferredLanguage());
                         String description = edit.getDescription();

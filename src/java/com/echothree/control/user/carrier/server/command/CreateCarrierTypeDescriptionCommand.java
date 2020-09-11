@@ -80,7 +80,7 @@ public class CreateCarrierTypeDescriptionCommand
                 CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescription(carrierType, language);
                 
                 if(carrierTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     carrierControl.createCarrierTypeDescription(carrierType, language, description, getPartyPK());
                 } else {

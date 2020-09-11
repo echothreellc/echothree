@@ -86,7 +86,7 @@ public class CreatePicklistAliasTypeDescriptionCommand
                     PicklistAliasTypeDescription picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescription(picklistAliasType, language);
 
                     if(picklistAliasTypeDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         picklistControl.createPicklistAliasTypeDescription(picklistAliasType, language, description, getPartyPK());
                     } else {

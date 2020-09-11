@@ -81,9 +81,9 @@ public class CreatePartyAliasTypeCommand
                 if(partyAliasType == null) {
                     PartyPK createdBy = getPartyPK();
                     String validationPattern = form.getValidationPattern();
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                    String description = form.getDescription();
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
+                    var description = form.getDescription();
 
                     partyAliasType = partyControl.createPartyAliasType(partyType, partyAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
 

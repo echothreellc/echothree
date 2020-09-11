@@ -296,7 +296,7 @@ public class EditEntityAttributeCommand
     @Override
     public void doUpdate(EntityAttribute entityAttribute) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         EntityAttributeDetailValue entityAttributeDetailValue = coreControl.getEntityAttributeDetailValueForUpdate(entityAttribute);
         EntityAttributeDescription entityAttributeDescription = coreControl.getEntityAttributeDescriptionForUpdate(entityAttribute, getPreferredLanguage());
         String strCheckContentWebAddress = edit.getCheckContentWebAddress();

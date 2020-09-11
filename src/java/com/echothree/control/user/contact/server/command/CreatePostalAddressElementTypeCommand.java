@@ -55,8 +55,8 @@ public class CreatePostalAddressElementTypeCommand
         PostalAddressElementType postalAddressElementType = contactControl.getPostalAddressElementTypeByName(postalAddressElementTypeName);
         
         if(postalAddressElementType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             contactControl.createPostalAddressElementType(postalAddressElementTypeName, isDefault, sortOrder);
         } else {

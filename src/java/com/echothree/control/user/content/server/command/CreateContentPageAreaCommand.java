@@ -95,7 +95,7 @@ public class CreateContentPageAreaCommand
                 ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     ContentPageLayout contentPageLayout = contentPage.getLastDetail().getContentPageLayout();
                     ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
@@ -113,7 +113,7 @@ public class CreateContentPageAreaCommand
                                 MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
                                 
                                 if(mimeType != null) {
-                                    String description = form.getDescription();
+                                    var description = form.getDescription();
                                     ByteArray contentPageAreaBlob = form.getContentPageAreaBlob();
                                     String contentPageAreaClob = form.getContentPageAreaClob();
                                     String contentPageAreaUrl = form.getContentPageAreaUrl();

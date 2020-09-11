@@ -68,8 +68,8 @@ public class CreateShipmentTypeShippingMethodCommand
                         shippingMethod);
                 
                 if(shipmentTypeShippingMethod == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     shipmentControl.createShipmentTypeShippingMethod(shipmentType, shippingMethod, isDefault, sortOrder, getPartyPK());
                 } else {

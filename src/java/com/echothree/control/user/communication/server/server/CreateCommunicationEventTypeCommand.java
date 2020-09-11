@@ -55,8 +55,8 @@ public class CreateCommunicationEventTypeCommand
         CommunicationEventType communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
         
         if(communicationEventType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             communicationControl.createCommunicationEventType(communicationEventTypeName, isDefault, sortOrder);
         } else {

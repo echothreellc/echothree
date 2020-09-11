@@ -92,7 +92,7 @@ public class CreateContentCategoryDescriptionCommand
                         ContentCategoryDescription contentCategoryDescription = contentControl.getContentCategoryDescription(contentCategory, language);
                         
                         if(contentCategoryDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             contentControl.createContentCategoryDescription(contentCategory, language, description, getPartyPK());
                         } else {

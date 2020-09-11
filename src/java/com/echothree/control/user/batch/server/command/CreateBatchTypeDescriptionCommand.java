@@ -80,7 +80,7 @@ public class CreateBatchTypeDescriptionCommand
                 BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescription(batchType, language);
                 
                 if(batchTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     batchControl.createBatchTypeDescription(batchType, language, description, getPartyPK());
                 } else {

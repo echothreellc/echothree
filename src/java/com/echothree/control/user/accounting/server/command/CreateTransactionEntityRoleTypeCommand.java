@@ -90,9 +90,9 @@ public class CreateTransactionEntityRoleTypeCommand
                     EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
-                        PartyPK partyPK = getPartyPK();
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
+                        var partyPK = getPartyPK();
                         
                         transactionEntityRoleType = accountingControl.createTransactionEntityRoleType(transactionType, transactionEntityRoleTypeName, entityType, sortOrder, partyPK);
 

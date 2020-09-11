@@ -58,9 +58,9 @@ public class CreateScaleTypeCommand
         ScaleType scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
         
         if(scaleType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
             PartyPK createdBy = getPartyPK();
 
             scaleType = scaleControl.createScaleType(scaleTypeName, isDefault, sortOrder, createdBy);

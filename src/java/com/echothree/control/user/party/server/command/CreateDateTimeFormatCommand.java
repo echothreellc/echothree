@@ -89,10 +89,10 @@ public class CreateDateTimeFormatCommand
             String unixTimeFormatSeconds = form.getUnixTimeFormatSeconds();
             String shortDateSeparator = form.getShortDateSeparator();
             String timeSeparator = form.getTimeSeparator();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
-            PartyPK partyPK = getPartyPK();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+            var partyPK = getPartyPK();
             
             dateTimeFormat = partyControl.createDateTimeFormat(dateTimeFormatName, javaShortDateFormat, javaAbbrevDateFormat,
                     javaAbbrevDateFormatWeekday, javaLongDateFormat, javaLongDateFormatWeekday, javaTimeFormat,

@@ -19,7 +19,7 @@ package com.echothree.model.control.order.server.logic;
 import com.echothree.model.control.order.common.exception.UnknownOrderLineTimeException;
 import com.echothree.model.control.order.common.exception.UnknownOrderTimeTypeNameException;
 import com.echothree.model.control.order.common.transfer.OrderLineTimeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderLineDetail;
@@ -55,8 +55,8 @@ public class OrderLineTimeLogic
     }
 
     public OrderTimeType getOrderTimeTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderTimeTypeName) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(orderTimeType == null) {
             String orderTypeName = orderType.getLastDetail().getOrderTypeName();
@@ -68,38 +68,38 @@ public class OrderLineTimeLogic
     }
 
     public void createOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time, final BasePK partyPK) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
-        OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+        OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            if(orderControl.orderLineTimeExists(orderLine, orderTimeType)) {
+            if(orderTimeControl.orderLineTimeExists(orderLine, orderTimeType)) {
                 handleExecutionError(UnknownOrderLineTimeException.class, eea, ExecutionErrors.DuplicateOrderLineTime.name(), getOrderTypeName(orderType),
                         orderDetail.getOrderName(), orderLineDetail.getOrderLineSequence().toString(), orderTimeTypeName);
             } else {
-                orderControl.createOrderLineTime(orderLine, orderTimeType, time, partyPK);
+                orderTimeControl.createOrderLineTime(orderLine, orderTimeType, time, partyPK);
             }
         }
     }
 
     public void updateOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time, final BasePK partyPK) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
-        OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
+        OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderLineTimeValue orderLineTimeValue = orderControl.getOrderLineTimeValueForUpdate(orderLine, orderTimeType);
+            OrderLineTimeValue orderLineTimeValue = orderTimeControl.getOrderLineTimeValueForUpdate(orderLine, orderTimeType);
 
             if(orderLineTimeValue == null) {
                 handleExecutionError(UnknownOrderLineTimeException.class, eea, ExecutionErrors.UnknownOrderLineTime.name(), getOrderTypeName(orderType),
                         orderDetail.getOrderName(), orderLineDetail.getOrderLineSequence().toString(), orderTimeTypeName);
             } else {
                 orderLineTimeValue.setTime(time);
-                orderControl.updateOrderLineTimeFromValue(orderLineTimeValue, partyPK);
+                orderTimeControl.updateOrderLineTimeFromValue(orderLineTimeValue, partyPK);
             }
         }
     }
@@ -113,26 +113,26 @@ public class OrderLineTimeLogic
 
     public void createOrUpdateOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
         OrderTimeType orderTimeType = getOrderTimeTypeByName(eea, orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderLineTimeValue orderLineTimeValue = orderControl.getOrderLineTimeValueForUpdate(orderLine, orderTimeType);
+            OrderLineTimeValue orderLineTimeValue = orderTimeControl.getOrderLineTimeValueForUpdate(orderLine, orderTimeType);
 
             if(orderLineTimeValue == null) {
-                orderControl.createOrderLineTime(orderLine, orderTimeType, time, partyPK);
+                orderTimeControl.createOrderLineTime(orderLine, orderTimeType, time, partyPK);
             } else {
                 orderLineTimeValue.setTime(time);
-                orderControl.updateOrderLineTimeFromValue(orderLineTimeValue, partyPK);
+                orderTimeControl.updateOrderLineTimeFromValue(orderLineTimeValue, partyPK);
             }
         }
     }
 
     private OrderLineTime getOrderLineTimeEntity(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
@@ -140,7 +140,7 @@ public class OrderLineTimeLogic
         OrderLineTime result = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            result = orderControl.getOrderLineTimeForUpdate(orderLine, orderTimeType);
+            result = orderTimeControl.getOrderLineTimeForUpdate(orderLine, orderTimeType);
 
             if(result == null) {
                 handleExecutionError(UnknownOrderLineTimeException.class, eea, ExecutionErrors.UnknownOrderLineTime.name(), getOrderTypeName(orderType),
@@ -161,28 +161,28 @@ public class OrderLineTimeLogic
             final String orderTimeTypeName) {
         OrderLineTime orderLineTime = getOrderLineTimeEntity(eea, orderLine, orderTimeTypeName);
         
-        return orderLineTime == null ? null : ((OrderControl)Session.getModelController(OrderControl.class)).getOrderLineTimeTransfer(userVisit, orderLineTime);
+        return orderLineTime == null ? null : ((OrderTimeControl)Session.getModelController(OrderTimeControl.class)).getOrderLineTimeTransfer(userVisit, orderLineTime);
     }
 
     public List<OrderLineTimeTransfer> getOrderLineTimeTransfersByOrder(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final OrderLine orderLine) {
-        return ((OrderControl)Session.getModelController(OrderControl.class)).getOrderLineTimeTransfersByOrderLine(userVisit, orderLine);
+        return ((OrderTimeControl)Session.getModelController(OrderTimeControl.class)).getOrderLineTimeTransfersByOrderLine(userVisit, orderLine);
     }
 
     public void deleteOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final BasePK deletedBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
         OrderTimeType orderTimeType = getOrderTimeTypeByName(eea, orderType, orderTimeTypeName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderLineTime orderLineTime = orderControl.getOrderLineTimeForUpdate(orderLine, orderTimeType);
+            OrderLineTime orderLineTime = orderTimeControl.getOrderLineTimeForUpdate(orderLine, orderTimeType);
 
             if(orderLineTime == null) {
                 handleExecutionError(UnknownOrderLineTimeException.class, eea, ExecutionErrors.UnknownOrderLineTime.name(), getOrderTypeName(orderType),
                         orderDetail.getOrderName(), orderLineDetail.getOrderLineSequence().toString(), orderTimeTypeName);
             } else {
-                orderControl.deleteOrderLineTime(orderLineTime, deletedBy);
+                orderTimeControl.deleteOrderLineTime(orderLineTime, deletedBy);
             }
         }
     }

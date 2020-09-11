@@ -79,8 +79,8 @@ public class CreateApplicationEditorCommand
                 ApplicationEditor applicationEditor = coreControl.getApplicationEditor(application, editor);
                 
                 if(applicationEditor == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     
                     coreControl.createApplicationEditor(application, editor, isDefault, sortOrder, getPartyPK());
                 } else {

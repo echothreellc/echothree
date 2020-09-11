@@ -80,7 +80,7 @@ public class CreateEmployeeTypeDescriptionCommand
                 EmployeeTypeDescription employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, language);
                 
                 if(employeeTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     employeeControl.createEmployeeTypeDescription(employeeType, language, description, getPartyPK());
                 } else {

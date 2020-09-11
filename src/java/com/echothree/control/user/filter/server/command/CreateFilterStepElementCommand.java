@@ -112,8 +112,8 @@ public class CreateFilterStepElementCommand
                                 FilterAdjustment filterAdjustment = filterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
                                 
                                 if(filterAdjustmentName == null || filterAdjustment != null) {
-                                    String description = form.getDescription();
-                                    PartyPK partyPK = getPartyPK();
+                                    var description = form.getDescription();
+                                    var partyPK = getPartyPK();
                                     
                                     filterStepElement = filterControl.createFilterStepElement(filterStep, filterStepElementName,
                                             filterItemSelector, filterAdjustment, partyPK);

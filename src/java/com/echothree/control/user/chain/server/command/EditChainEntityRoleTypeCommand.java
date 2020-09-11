@@ -196,7 +196,7 @@ public class EditChainEntityRoleTypeCommand
     @Override
     public void doUpdate(ChainEntityRoleType chainEntityRoleType) {
         var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ChainEntityRoleTypeDetailValue chainEntityRoleTypeDetailValue = chainControl.getChainEntityRoleTypeDetailValueForUpdate(chainEntityRoleType);
         ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescriptionForUpdate(chainEntityRoleType, getPreferredLanguage());
         String description = edit.getDescription();

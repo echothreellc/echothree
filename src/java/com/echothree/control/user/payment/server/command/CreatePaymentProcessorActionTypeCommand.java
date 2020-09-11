@@ -67,9 +67,9 @@ public class CreatePaymentProcessorActionTypeCommand
     protected BaseResult execute() {
         CreatePaymentProcessorActionTypeResult result = PaymentResultFactory.getCreatePaymentProcessorActionTypeResult();
         String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
-        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-        String description = form.getDescription();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
 
         PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().createPaymentProcessorActionType(this,
                 paymentProcessorActionTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());

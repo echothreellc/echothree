@@ -235,7 +235,7 @@ public class EditWorkEffortScopeCommand
     @Override
     public void doUpdate(WorkEffortScope workEffortScope) {
         var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         WorkEffortScopeDetailValue workEffortScopeDetailValue = workEffortControl.getWorkEffortScopeDetailValueForUpdate(workEffortScope);
         WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescriptionForUpdate(workEffortScope, getPreferredLanguage());
         String description = edit.getDescription();

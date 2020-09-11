@@ -66,7 +66,7 @@ public class CreatePostalAddressFormatDescriptionCommand
                 PostalAddressFormatDescription postalAddressFormatDescription = contactControl.getPostalAddressFormatDescription(postalAddressFormat, language);
                 
                 if(postalAddressFormatDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     contactControl.createPostalAddressFormatDescription(postalAddressFormat, language, description, getPartyPK());
                 } else {

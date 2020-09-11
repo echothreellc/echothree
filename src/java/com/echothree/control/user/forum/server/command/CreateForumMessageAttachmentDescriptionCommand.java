@@ -74,7 +74,7 @@ public class CreateForumMessageAttachmentDescriptionCommand
                     ForumMessageAttachmentDescription forumMessageAttachmentDescription = forumControl.getForumMessageAttachmentDescription(forumMessageAttachment, language);
 
                     if(forumMessageAttachmentDescription == null) {
-                        String description = form.getDescription();
+                        var description = form.getDescription();
 
                         forumControl.createForumMessageAttachmentDescription(forumMessageAttachment, language, description, getPartyPK());
                     } else {

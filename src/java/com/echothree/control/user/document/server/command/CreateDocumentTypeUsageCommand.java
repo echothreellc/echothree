@@ -80,8 +80,8 @@ public class CreateDocumentTypeUsageCommand
                 DocumentTypeUsage documentTypeUsage = documentControl.getDocumentTypeUsage(documentTypeUsageType, documentType);
                 
                 if(documentTypeUsage == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                    Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
+                    var sortOrder = Integer.valueOf(form.getSortOrder());
                     String strMaximumInstances = form.getMaximumInstances();
                     Integer maximumInstances = strMaximumInstances == null ? null : Integer.valueOf(strMaximumInstances);
                     

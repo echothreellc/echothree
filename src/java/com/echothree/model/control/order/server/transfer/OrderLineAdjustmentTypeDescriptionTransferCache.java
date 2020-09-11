@@ -18,24 +18,27 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeTransfer;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OrderLineAdjustmentTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderLineAdjustmentTypeDescription, OrderLineAdjustmentTypeDescriptionTransfer> {
-    
+
+    OrderLineAdjustmentControl orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+
     /** Creates a new instance of OrderLineAdjustmentTypeDescriptionTransferCache */
-    public OrderLineAdjustmentTypeDescriptionTransferCache(UserVisit userVisit, OrderControl orderControl) {
-        super(userVisit, orderControl);
+    public OrderLineAdjustmentTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
         OrderLineAdjustmentTypeDescriptionTransfer orderLineAdjustmentTypeDescriptionTransfer = get(orderLineAdjustmentTypeDescription);
         
         if(orderLineAdjustmentTypeDescriptionTransfer == null) {
-            OrderLineAdjustmentTypeTransfer orderLineAdjustmentTypeTransfer = orderControl.getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentTypeDescription.getOrderLineAdjustmentType());
+            OrderLineAdjustmentTypeTransfer orderLineAdjustmentTypeTransfer = orderLineAdjustmentControl.getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentTypeDescription.getOrderLineAdjustmentType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, orderLineAdjustmentTypeDescription.getLanguage());
             
             orderLineAdjustmentTypeDescriptionTransfer = new OrderLineAdjustmentTypeDescriptionTransfer(languageTransfer, orderLineAdjustmentTypeTransfer, orderLineAdjustmentTypeDescription.getDescription());

@@ -108,7 +108,7 @@ public class GetTrainingClassQuestionCommand
                         
                         if(!hasExecutionErrors()) {
                             UserVisit userVisit = getUserVisit();
-                            PartyPK partyPK = getPartyPK();
+                            var partyPK = getPartyPK();
 
                             result.setTrainingClassQuestion(trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestion));
 

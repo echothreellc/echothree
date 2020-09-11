@@ -80,7 +80,7 @@ public class CreateReturnKindDescriptionCommand
                 ReturnKindDescription returnKindDescription = returnPolicyControl.getReturnKindDescription(returnKind, language);
                 
                 if(returnKindDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     returnPolicyControl.createReturnKindDescription(returnKind, language, description, getPartyPK());
                 } else {

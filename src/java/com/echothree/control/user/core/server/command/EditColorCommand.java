@@ -153,7 +153,7 @@ public class EditColorCommand
     @Override
     public void doUpdate(Color color) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ColorDetailValue colorDetailValue = coreControl.getColorDetailValueForUpdate(color);
         ColorDescription colorDescription = coreControl.getColorDescriptionForUpdate(color, getPreferredLanguage());
         String description = edit.getDescription();

@@ -120,7 +120,7 @@ public class EditMessageTypeCommand
                         if(duplicateMessageType == null || messageType.equals(duplicateMessageType)) {
                             if(lockEntityForUpdate(messageType)) {
                                 try {
-                                    PartyPK partyPK = getPartyPK();
+                                    var partyPK = getPartyPK();
                                     MessageTypeDetailValue messageTypeDetailValue = messageControl.getMessageTypeDetailValueForUpdate(messageType);
                                     MessageTypeDescription messageTypeDescription = messageControl.getMessageTypeDescriptionForUpdate(messageType, getPreferredLanguage());
                                     String description = edit.getDescription();

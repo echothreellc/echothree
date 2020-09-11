@@ -161,7 +161,7 @@ public class EditChainTypeCommand
     @Override
     public void doUpdate(ChainType chainType) {
         var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ChainTypeDetailValue chainTypeDetailValue = chainControl.getChainTypeDetailValueForUpdate(chainType);
         ChainTypeDescription chainTypeDescription = chainControl.getChainTypeDescriptionForUpdate(chainType, getPreferredLanguage());
         String description = edit.getDescription();

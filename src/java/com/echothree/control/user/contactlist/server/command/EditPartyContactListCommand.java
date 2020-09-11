@@ -171,7 +171,7 @@ public class EditPartyContactListCommand
     @Override
     public void doUpdate(PartyContactList partyContactList) {
         var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PartyContactListDetailValue partyContactListDetailValue = contactListControl.getPartyContactListDetailValueForUpdate(partyContactList);
 
         partyContactListDetailValue.setPreferredContactListContactMechanismPurposePK(preferredContactListContactMechanismPurpose == null ? null : preferredContactListContactMechanismPurpose.getPrimaryKey());

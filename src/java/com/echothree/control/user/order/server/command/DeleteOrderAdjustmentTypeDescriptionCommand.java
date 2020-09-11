@@ -17,7 +17,8 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.DeleteOrderAdjustmentTypeDescriptionForm;
-import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -27,10 +28,10 @@ import com.echothree.model.data.order.server.entity.OrderAdjustmentTypeDescripti
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,13 +69,14 @@ public class DeleteOrderAdjustmentTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
+        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeName = form.getOrderTypeName();
+        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
+            var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
             String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            OrderAdjustmentType orderAdjustmentType = orderControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+            OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType != null) {
                 var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -82,10 +84,10 @@ public class DeleteOrderAdjustmentTypeDescriptionCommand
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = orderControl.getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, language);
+                    OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionForUpdate(orderAdjustmentType, language);
 
                     if(orderAdjustmentTypeDescription != null) {
-                        orderControl.deleteOrderAdjustmentTypeDescription(orderAdjustmentTypeDescription, getPartyPK());
+                        orderAdjustmentControl.deleteOrderAdjustmentTypeDescription(orderAdjustmentTypeDescription, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownOrderAdjustmentTypeDescription.name(), orderTypeName, orderAdjustmentTypeName, languageIsoName);
                     }

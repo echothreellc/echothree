@@ -66,7 +66,7 @@ public class CreateTerminationReasonDescriptionCommand
                 TerminationReasonDescription terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, language);
                 
                 if(terminationReasonDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     employeeControl.createTerminationReasonDescription(terminationReason, language, description, getPartyPK());
                 } else {

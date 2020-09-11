@@ -148,7 +148,7 @@ public class EditCampaignMediumCommand
     @Override
     public void doUpdate(CampaignMedium campaignMedium) {
         var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         CampaignMediumDetailValue campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueForUpdate(campaignMedium);
         CampaignMediumDescription campaignMediumDescription = campaignControl.getCampaignMediumDescriptionForUpdate(campaignMedium, getPreferredLanguage());
         String description = edit.getDescription();

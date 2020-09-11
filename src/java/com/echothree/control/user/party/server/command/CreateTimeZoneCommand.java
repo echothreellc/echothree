@@ -63,10 +63,10 @@ public class CreateTimeZoneCommand
             timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             
             if(timeZone == null) {
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
-                PartyPK partyPK = getPartyPK();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
+                var partyPK = getPartyPK();
                 
                 timeZone = partyControl.createTimeZone(javaTimeZoneName, unixTimeZoneName, isDefault, sortOrder, partyPK);
                 

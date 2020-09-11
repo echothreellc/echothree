@@ -70,8 +70,8 @@ public class CreateForumForumThreadCommand
                     ForumForumThread forumForumThread = forumControl.getForumForumThread(forum, forumThread);
 
                     if(forumForumThread == null) {
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
 
                         forumControl.createForumForumThread(forum, forumThread, isDefault, sortOrder, getPartyPK());
                     } else {

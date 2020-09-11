@@ -179,7 +179,7 @@ public class EditApplicationEditorUseCommand
     @Override
     public void doUpdate(ApplicationEditorUse applicationEditorUse) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ApplicationEditorUseDetailValue applicationEditorUseDetailValue = coreControl.getApplicationEditorUseDetailValueForUpdate(applicationEditorUse);
         ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, getPreferredLanguage());
         String strDefaultHeight = edit.getDefaultHeight();

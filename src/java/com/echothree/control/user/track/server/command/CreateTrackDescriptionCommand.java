@@ -80,7 +80,7 @@ public class CreateTrackDescriptionCommand
                 TrackDescription trackDescription = trackControl.getTrackDescription(track, language);
                 
                 if(trackDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     trackControl.createTrackDescription(track, language, description, getPartyPK());
                 } else {

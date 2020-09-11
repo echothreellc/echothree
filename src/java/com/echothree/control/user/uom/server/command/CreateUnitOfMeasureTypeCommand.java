@@ -80,10 +80,10 @@ public class CreateUnitOfMeasureTypeCommand
                             + (symbol == null ? 0 : 1);
 
                     if(descriptionCount == 0 || descriptionCount == 3) {
-                        PartyPK partyPK = getPartyPK();
+                        var partyPK = getPartyPK();
                         Boolean suppressSymbolSeparator = Boolean.valueOf(form.getSuppressSymbolSeparator());
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
 
                         unitOfMeasureType = uomControl.createUnitOfMeasureType(unitOfMeasureKind, unitOfMeasureTypeName,
                                 symbolPosition, suppressSymbolSeparator, isDefault, sortOrder, partyPK);

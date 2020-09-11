@@ -62,7 +62,7 @@ public class CreateForumMessagePartTypeCommand
             MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
             
             if(mimeTypeUsageTypeName == null || mimeTypeUsageType != null) {
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
                 
                 forumControl.createForumMessagePartType(forumMessagePartTypeName, mimeTypeUsageType, sortOrder);
             } else {

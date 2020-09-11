@@ -200,7 +200,7 @@ public class EditSequenceTypeCommand
     @Override
     public void doUpdate(SequenceType sequenceType) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         SequenceTypeDetailValue sequenceTypeDetailValue = sequenceControl.getSequenceTypeDetailValueForUpdate(sequenceType);
         SequenceTypeDescription sequenceTypeDescription = sequenceControl.getSequenceTypeDescriptionForUpdate(sequenceType, getPreferredLanguage());
         String rawChunkSize = edit.getChunkSize();

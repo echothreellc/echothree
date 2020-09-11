@@ -188,7 +188,7 @@ public class EditForumCommand
     @Override
     public void doUpdate(Forum forum) {
         var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ForumDetailValue forumDetailValue = forumControl.getForumDetailValueForUpdate(forum);
         ForumDescription forumDescription = forumControl.getForumDescriptionForUpdate(forum, getPreferredLanguage());
         String description = edit.getDescription();

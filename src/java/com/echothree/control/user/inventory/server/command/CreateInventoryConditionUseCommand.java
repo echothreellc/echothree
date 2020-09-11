@@ -64,7 +64,7 @@ public class CreateInventoryConditionUseCommand
                 InventoryConditionUse inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType, inventoryCondition);
                 
                 if(inventoryConditionUse == null) {
-                    Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                    var isDefault = Boolean.valueOf(form.getIsDefault());
                     
                     inventoryControl.createInventoryConditionUse(inventoryConditionUseType, inventoryCondition, isDefault, getPartyPK());
                 } else {

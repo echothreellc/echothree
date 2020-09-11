@@ -104,9 +104,9 @@ public class CreateMessageCommand
                     if(message == null) {
                         String mimeTypeName = form.getMimeTypeName();
                         Boolean includeByDefault = Boolean.valueOf(form.getIncludeByDefault());
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                        String description = form.getDescription();
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
+                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                        var description = form.getDescription();
                         BasePK createdBy = getPartyPK();
                         
                         if(mimeTypeName == null) {

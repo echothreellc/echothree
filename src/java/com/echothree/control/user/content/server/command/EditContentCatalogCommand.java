@@ -237,7 +237,7 @@ public class EditContentCatalogCommand
     @Override
     public void doUpdate(ContentCatalog contentCatalog) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ContentCatalogDetailValue contentCatalogDetailValue = contentControl.getContentCatalogDetailValueForUpdate(contentCatalog);
         ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescriptionForUpdate(contentCatalog, getPreferredLanguage());
         String description = edit.getDescription();

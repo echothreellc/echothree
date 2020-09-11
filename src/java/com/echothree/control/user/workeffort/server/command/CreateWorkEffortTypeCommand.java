@@ -166,8 +166,8 @@ public class CreateWorkEffortTypeCommand
                                             new Conversion(uomControl, maximumTimeAllowedUnitOfMeasureType,
                                                 Long.valueOf(maximumTimeAllowed)).convertToLowestUnitOfMeasureType();
                                         PartyPK createdBy = getPartyPK();
-                                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                                        String description = form.getDescription();
+                                        var sortOrder = Integer.valueOf(form.getSortOrder());
+                                        var description = form.getDescription();
 
                                         workEffortType = workEffortControl.createWorkEffortType(workEffortTypeName, entityType, workEffortSequence,
                                                 scheduledTimeConversion == null? null: scheduledTimeConversion.getQuantity(),

@@ -71,9 +71,9 @@ public class CreateContentPageLayoutCommand
     protected BaseResult execute() {
         CreateContentPageLayoutResult result = ContentResultFactory.getCreateContentPageLayoutResult();
         String contentPageLayoutName = form.getContentPageLayoutName();
-        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-        String description = form.getDescription();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
 
         ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
                 contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());

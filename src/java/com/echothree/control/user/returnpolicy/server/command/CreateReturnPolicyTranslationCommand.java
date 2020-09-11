@@ -100,7 +100,7 @@ public class CreateReturnPolicyTranslationCommand
                                 ExecutionErrors.UnknownPolicyMimeTypeName.name(), ExecutionErrors.UnknownPolicyMimeTypeUsage.name());
 
                         if(!hasExecutionErrors()) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
 
                             returnPolicyControl.createReturnPolicyTranslation(returnPolicy, language, description, policyMimeType, policy,
                                     getPartyPK());

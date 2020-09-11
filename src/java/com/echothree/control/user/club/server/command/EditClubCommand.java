@@ -156,7 +156,7 @@ public class EditClubCommand
                                 if(currencyIsoName == null || currency != null) {
                                     if(lockEntityForUpdate(club)) {
                                         try {
-                                            PartyPK partyPK = getPartyPK();
+                                            var partyPK = getPartyPK();
                                             ClubDetailValue clubDetailValue = clubControl.getClubDetailValueForUpdate(club);
                                             ClubDescription clubDescription = clubControl.getClubDescriptionForUpdate(club, getPreferredLanguage());
                                             String description = edit.getDescription();

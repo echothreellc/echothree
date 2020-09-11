@@ -151,7 +151,7 @@ public class EditFilterStepCommand
                                 if(filterItemSelectorName == null || filterItemSelector != null) {
                                     if(lockEntityForUpdate(filterStep)) {
                                         try {
-                                            PartyPK partyPK = getPartyPK();
+                                            var partyPK = getPartyPK();
                                             FilterStepDetailValue filterStepDetailValue = filterControl.getFilterStepDetailValueForUpdate(filterStep);
                                             FilterStepDescription filterStepDescription = filterControl.getFilterStepDescriptionForUpdate(filterStep, getPreferredLanguage());
                                             String description = edit.getDescription();

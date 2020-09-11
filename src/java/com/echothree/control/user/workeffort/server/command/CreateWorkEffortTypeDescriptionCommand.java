@@ -66,7 +66,7 @@ public class CreateWorkEffortTypeDescriptionCommand
                 WorkEffortTypeDescription workEffortTypeDescription = workEffortControl.getWorkEffortTypeDescription(workEffortType, language);
                 
                 if(workEffortTypeDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     workEffortControl.createWorkEffortTypeDescription(workEffortType, language, description, getPartyPK());
                 } else {

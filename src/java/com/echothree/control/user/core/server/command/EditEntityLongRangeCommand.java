@@ -192,7 +192,7 @@ public class EditEntityLongRangeCommand
     @Override
     public void doUpdate(EntityLongRange entityLongRange) {
         var coreControl = getCoreControl();
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         EntityLongRangeDetailValue entityLongRangeDetailValue = coreControl.getEntityLongRangeDetailValueForUpdate(entityLongRange);
         EntityLongRangeDescription entityLongRangeDescription = coreControl.getEntityLongRangeDescriptionForUpdate(entityLongRange, getPreferredLanguage());
         String strMinimumLongValue = edit.getMinimumLongValue();

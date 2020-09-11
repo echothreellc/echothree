@@ -204,7 +204,7 @@ public class EditBlogCommentCommand
     @Override
     public void doUpdate(ForumMessage forumMessage) {
         var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         ForumMessageDetailValue forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
 
         forumMessageDetailValue.setIconPK(forumMessageIcon == null? null: forumMessageIcon.getPrimaryKey());

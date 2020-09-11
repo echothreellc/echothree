@@ -57,8 +57,8 @@ public class CreateLocationUseTypeCommand
         
         if(locationUseType == null) {
             Boolean allowMultiple = Boolean.valueOf(form.getAllowMultiple());
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
             
             warehouseControl.createLocationUseType(locationUseTypeName, allowMultiple, isDefault, sortOrder);
         } else {

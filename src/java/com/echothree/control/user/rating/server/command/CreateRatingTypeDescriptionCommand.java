@@ -80,7 +80,7 @@ public class CreateRatingTypeDescriptionCommand
                         RatingTypeDescription ratingTypeDescription = ratingControl.getRatingTypeDescription(ratingType, language);
                         
                         if(ratingTypeDescription == null) {
-                            String description = form.getDescription();
+                            var description = form.getDescription();
                             
                             ratingControl.createRatingTypeDescription(ratingType, language, description, getPartyPK());
                             } else {

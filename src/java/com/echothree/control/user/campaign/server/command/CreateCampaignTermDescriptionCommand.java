@@ -80,7 +80,7 @@ public class CreateCampaignTermDescriptionCommand
                 CampaignTermDescription campaignTermDescription = campaignControl.getCampaignTermDescription(campaignTerm, language);
                 
                 if(campaignTermDescription == null) {
-                    String description = form.getDescription();
+                    var description = form.getDescription();
                     
                     campaignControl.createCampaignTermDescription(campaignTerm, language, description, getPartyPK());
                 } else {

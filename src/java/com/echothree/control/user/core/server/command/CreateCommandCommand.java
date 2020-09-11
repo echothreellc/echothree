@@ -61,9 +61,9 @@ public class CreateCommandCommand
             Command command = coreControl.getCommandByName(componentVendor, commandName);
             
             if(command == null) {
-                PartyPK partyPK = getPartyPK();
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+                var partyPK = getPartyPK();
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 
                 command = coreControl.createCommand(componentVendor, commandName, sortOrder, partyPK);
                 

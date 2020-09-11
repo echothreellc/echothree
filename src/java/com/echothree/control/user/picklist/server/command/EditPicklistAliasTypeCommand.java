@@ -164,7 +164,7 @@ public class EditPicklistAliasTypeCommand
     @Override
     public void doUpdate(PicklistAliasType picklistAliasType) {
         var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
-        PartyPK partyPK = getPartyPK();
+        var partyPK = getPartyPK();
         PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = picklistControl.getPicklistAliasTypeDetailValueForUpdate(picklistAliasType);
         PicklistAliasTypeDescription picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescriptionForUpdate(picklistAliasType, getPreferredLanguage());
         String description = edit.getDescription();

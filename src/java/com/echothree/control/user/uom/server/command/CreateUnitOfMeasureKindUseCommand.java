@@ -73,7 +73,7 @@ public class CreateUnitOfMeasureKindUseCommand
                     UnitOfMeasureKindUse unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
                     
                     if(unitOfMeasureKindUse == null) {
-                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                        var isDefault = Boolean.valueOf(form.getIsDefault());
                         Integer sortorder = Integer.valueOf(form.getSortOrder());
                         
                         uomControl.createUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortorder,
