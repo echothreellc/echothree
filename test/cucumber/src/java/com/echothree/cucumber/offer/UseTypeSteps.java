@@ -94,7 +94,7 @@ public class UseTypeSteps implements En {
                     assertThat(persona.deleteUseTypeForm).isNull();
                     assertThat(persona.entityListItemSpec).isNull();
 
-                    persona.useTypeSpec = OfferUtil.getHome().getUseTypeSpec();
+                    persona.useTypeSpec = OfferUtil.getHome().getUseTypeUniversalSpec();
                 });
 
         When("^the user begins editing the use type$",
