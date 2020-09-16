@@ -18,9 +18,7 @@ package com.echothree.ui.web.main.action.advertising.usetype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.edit.UseTypeEdit;
-import com.echothree.control.user.offer.common.form.EditUseTypeForm;
 import com.echothree.control.user.offer.common.result.EditUseTypeResult;
-import com.echothree.control.user.offer.common.spec.UseTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -62,9 +60,9 @@ public class EditAction
         
         try {
             if(forwardKey == null) {
-                EditActionForm actionForm = (EditActionForm)form;
-                EditUseTypeForm commandForm = OfferUtil.getHome().getEditUseTypeForm();
-                UseTypeSpec spec = OfferUtil.getHome().getUseTypeSpec();
+                var actionForm = (EditActionForm)form;
+                var commandForm = OfferUtil.getHome().getEditUseTypeForm();
+                var spec = OfferUtil.getHome().getUseTypeUniversalSpec();
                 
                 if(originalUseTypeName == null)
                     originalUseTypeName = actionForm.getOriginalUseTypeName();
