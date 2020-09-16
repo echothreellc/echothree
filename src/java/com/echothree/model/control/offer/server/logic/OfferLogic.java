@@ -20,7 +20,7 @@ import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferNameException;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;

@@ -18,7 +18,7 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteOfferItemForm;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

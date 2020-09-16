@@ -22,7 +22,7 @@ import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.transfer.DepartmentTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;

@@ -36,7 +36,7 @@ import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;

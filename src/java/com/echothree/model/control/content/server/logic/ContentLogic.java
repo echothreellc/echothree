@@ -21,7 +21,7 @@ import com.echothree.model.control.content.common.exception.MalformedUrlExceptio
 import com.echothree.model.control.content.common.exception.UnknownContentWebAddressNameException;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;

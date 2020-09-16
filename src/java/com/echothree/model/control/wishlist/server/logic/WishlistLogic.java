@@ -17,7 +17,7 @@
 package com.echothree.model.control.wishlist.server.logic;
 
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderRoleControl;

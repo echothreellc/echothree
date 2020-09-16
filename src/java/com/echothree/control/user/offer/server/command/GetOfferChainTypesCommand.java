@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.form.GetOfferChainTypesForm;
 import com.echothree.control.user.offer.common.result.GetOfferChainTypesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

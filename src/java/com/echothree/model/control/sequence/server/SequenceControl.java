@@ -17,7 +17,7 @@
 package com.echothree.model.control.sequence.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;

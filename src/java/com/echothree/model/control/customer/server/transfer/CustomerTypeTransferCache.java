@@ -22,7 +22,7 @@ import com.echothree.model.control.customer.common.CustomerProperties;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;

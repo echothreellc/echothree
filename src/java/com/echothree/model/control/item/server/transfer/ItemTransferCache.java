@@ -38,7 +38,7 @@ import com.echothree.model.control.item.common.transfer.ItemTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.rating.common.RatingConstants;

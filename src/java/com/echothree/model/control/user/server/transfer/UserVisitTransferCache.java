@@ -22,7 +22,7 @@ import com.echothree.model.control.associate.common.transfer.AssociateReferralTr
 import com.echothree.model.control.associate.server.AssociateControl;
 import com.echothree.model.control.campaign.server.CampaignControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;

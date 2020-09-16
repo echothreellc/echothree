@@ -26,7 +26,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.common.exception.MissingDefaultCustomerTypeException;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;

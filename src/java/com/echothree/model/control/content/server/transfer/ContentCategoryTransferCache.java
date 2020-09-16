@@ -22,7 +22,7 @@ import com.echothree.model.control.content.common.transfer.ContentCatalogTransfe
 import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;

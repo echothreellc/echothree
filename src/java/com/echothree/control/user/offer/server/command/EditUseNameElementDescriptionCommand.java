@@ -22,7 +22,7 @@ import com.echothree.control.user.offer.common.form.EditUseNameElementDescriptio
 import com.echothree.control.user.offer.common.result.EditUseNameElementDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseNameElementDescriptionSpec;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

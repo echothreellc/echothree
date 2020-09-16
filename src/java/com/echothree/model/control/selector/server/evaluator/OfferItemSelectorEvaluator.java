@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.filter.server.evaluator.FilteredItemFixedPrice;
 import com.echothree.model.control.filter.server.evaluator.OfferItemPriceFilterEvaluator;
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.ComponentVendor;

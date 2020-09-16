@@ -19,7 +19,7 @@ package com.echothree.model.control.wishlist.server.transfer;
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;

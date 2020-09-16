@@ -29,7 +29,7 @@ import com.echothree.model.control.customer.common.workflow.CustomerCreditStatus
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;

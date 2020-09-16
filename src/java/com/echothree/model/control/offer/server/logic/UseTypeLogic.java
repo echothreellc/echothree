@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.DuplicateUseTypeNameException;
 import com.echothree.model.control.offer.common.exception.UnknownDefaultUseTypeException;
 import com.echothree.model.control.offer.common.exception.UnknownUseTypeNameException;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.server.entity.Language;
