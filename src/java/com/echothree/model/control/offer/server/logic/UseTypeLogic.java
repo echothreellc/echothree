@@ -1,0 +1,147 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2020 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.offer.server.logic;
+
+import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.offer.common.exception.DuplicateUseTypeNameException;
+import com.echothree.model.control.offer.common.exception.UnknownDefaultUseTypeException;
+import com.echothree.model.control.offer.common.exception.UnknownUseTypeNameException;
+import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
+
+public class UseTypeLogic
+        extends BaseLogic {
+
+    private UseTypeLogic() {
+        super();
+    }
+
+    private static class UseTypeLogicHolder {
+        static UseTypeLogic instance = new UseTypeLogic();
+    }
+
+    public static UseTypeLogic getInstance() {
+        return UseTypeLogic.UseTypeLogicHolder.instance;
+    }
+
+    public UseType createUseType(final ExecutionErrorAccumulator eea, final String useTypeName,
+            final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
+            final BasePK createdBy) {
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        UseType useType = offerControl.getUseTypeByName(useTypeName);
+
+        if(useType == null) {
+            useType = offerControl.createUseType(useTypeName, isDefault, sortOrder, createdBy);
+
+            if(description != null) {
+                offerControl.createUseTypeDescription(useType, language, description, createdBy);
+            }
+        } else {
+            handleExecutionError(DuplicateUseTypeNameException.class, eea, ExecutionErrors.DuplicateUseTypeName.name(), useTypeName);
+        }
+
+        return useType;
+    }
+
+    public UseType getUseTypeByName(final ExecutionErrorAccumulator eea, final String useTypeName,
+            final EntityPermission entityPermission) {
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        UseType useType = offerControl.getUseTypeByName(useTypeName, entityPermission);
+
+        if(useType == null) {
+            handleExecutionError(UnknownUseTypeNameException.class, eea, ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
+        }
+
+        return useType;
+    }
+
+    public UseType getUseTypeByName(final ExecutionErrorAccumulator eea, final String useTypeName) {
+        return getUseTypeByName(eea, useTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public UseType getUseTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String useTypeName) {
+        return getUseTypeByName(eea, useTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public UseType getUseTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final UseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+        UseType useType = null;
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        String useTypeName = universalSpec.getUseTypeName();
+        int parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 0:
+                if(allowDefault) {
+                    useType = offerControl.getDefaultUseType(entityPermission);
+
+                    if(useType == null) {
+                        handleExecutionError(UnknownDefaultUseTypeException.class, eea, ExecutionErrors.UnknownDefaultUseType.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+                break;
+            case 1:
+                if(useTypeName == null) {
+                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.UseType.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        useType = offerControl.getUseTypeByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    useType = getUseTypeByName(eea, useTypeName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return useType;
+    }
+
+    public UseType getUseTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final UseTypeUniversalSpec universalSpec, boolean allowDefault) {
+        return getUseTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public UseType getUseTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final UseTypeUniversalSpec universalSpec, boolean allowDefault) {
+        return getUseTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteUseType(final ExecutionErrorAccumulator eea, final UseType useType,
+            final BasePK deletedBy) {
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
+        offerControl.deleteUseType(useType, deletedBy);
+    }
+}

@@ -27,6 +27,9 @@ import com.echothree.control.user.inventory.common.result.EditInventoryCondition
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
+import com.echothree.control.user.offer.common.OfferUtil;
+import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
+import com.echothree.control.user.offer.common.result.EditUseTypeResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
@@ -63,6 +66,133 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createUseType(final DataFetchingEnvironment env,
+            @GraphQLName("useTypeName") @GraphQLNonNull final String useTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getCreateUseTypeForm();
+
+            commandForm.setUseTypeName(useTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = OfferUtil.getHome().createUseType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateUseTypeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteUseType(final DataFetchingEnvironment env,
+            @GraphQLName("useTypeName") @GraphQLNonNull final String useTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getDeleteUseTypeForm();
+
+            commandForm.setUseTypeName(useTypeName);
+
+            var commandResult = OfferUtil.getHome().deleteUseType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editUseType(final DataFetchingEnvironment env,
+            @GraphQLName("originalUseTypeName") final String originalUseTypeName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("useTypeName") final String useTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = OfferUtil.getHome().getUseTypeUniversalSpec();
+
+            spec.setUseTypeName(originalUseTypeName);
+            spec.setUlid(id);
+
+            var commandForm = OfferUtil.getHome().getEditUseTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = OfferUtil.getHome().editUseType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditUseTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getUseType().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("useTypeName"))
+                    edit.setUseTypeName(useTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = OfferUtil.getHome().editUseType(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultUseType(final DataFetchingEnvironment env,
+            @GraphQLName("useTypeName") @GraphQLNonNull final String useTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getSetDefaultUseTypeForm();
+
+            commandForm.setUseTypeName(useTypeName);
+
+            var commandResult = OfferUtil.getHome().setDefaultUseType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation

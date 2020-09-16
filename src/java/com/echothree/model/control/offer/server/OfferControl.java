@@ -54,7 +54,10 @@ import com.echothree.model.data.chain.common.pk.ChainPK;
 import com.echothree.model.data.chain.common.pk.ChainTypePK;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainType;
+import com.echothree.model.data.core.common.pk.AppearancePK;
+import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.factory.AppearanceFactory;
 import com.echothree.model.data.customer.common.pk.CustomerTypePK;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.filter.common.pk.FilterPK;
@@ -1910,13 +1913,21 @@ public class OfferControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.UseType */
-    public UseType getUseTypeByEntityInstance(EntityInstance entityInstance) {
-        UseTypePK pk = new UseTypePK(entityInstance.getEntityUniqueId());
-        UseType useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
+    public UseType getUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new UseTypePK(entityInstance.getEntityUniqueId());
+        var useType = UseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
         return useType;
     }
-    
+
+    public UseType getUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public UseType getUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<UseType> getUseTypes(EntityPermission entityPermission) {
         String query = null;
         
@@ -1945,8 +1956,8 @@ public class OfferControl
     public List<UseType> getUseTypesForUpdate() {
         return getUseTypes(EntityPermission.READ_WRITE);
     }
-    
-    private UseType getUseTypeByName(String useTypeName, EntityPermission entityPermission) {
+
+    public UseType getUseTypeByName(String useTypeName, EntityPermission entityPermission) {
         UseType useType = null;
         
         try {
@@ -1991,7 +2002,7 @@ public class OfferControl
         return getUseTypeDetailValueForUpdate(getUseTypeByNameForUpdate(useTypeName));
     }
     
-    private UseType getDefaultUseType(EntityPermission entityPermission) {
+    public UseType getDefaultUseType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
