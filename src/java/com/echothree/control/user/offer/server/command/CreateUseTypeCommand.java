@@ -17,32 +17,31 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseTypeForm;
+import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CreateUseTypeCommand
         extends BaseSimpleCommand<CreateUseTypeForm> {
-
+    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-
+    
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -66,27 +65,16 @@ public class CreateUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var result = OfferResultFactory.getCreateUseTypeResult();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        CreateUseTypeResult result = OfferResultFactory.getCreateUseTypeResult();
         String useTypeName = form.getUseTypeName();
-        UseType useType = offerControl.getUseTypeByName(useTypeName);
-        
-        if(useType == null) {
-            var partyPK = getPartyPK();
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            var description = form.getDescription();
-            
-            useType = offerControl.createUseType(useTypeName, isDefault, sortOrder, partyPK);
-            
-            if(description != null) {
-                offerControl.createUseTypeDescription(useType, getPreferredLanguage(), description, partyPK);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateUseTypeName.name(), useTypeName);
-        }
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
 
-        if(useType != null) {
+        UseType useType = UseTypeLogic.getInstance().createUseType(this,
+                useTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
+
+        if(useType != null && !hasExecutionErrors()) {
             result.setUseTypeName(useType.getLastDetail().getUseTypeName());
             result.setEntityRef(useType.getPrimaryKey().getEntityRef());
         }

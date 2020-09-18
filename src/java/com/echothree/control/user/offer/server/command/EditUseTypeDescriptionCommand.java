@@ -19,8 +19,8 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.UseTypeDescriptionEdit;
 import com.echothree.control.user.offer.common.form.EditUseTypeDescriptionForm;
-import com.echothree.control.user.offer.common.result.EditUseTypeDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.control.user.offer.common.result.EditUseTypeDescriptionResult;
 import com.echothree.control.user.offer.common.spec.UseTypeDescriptionSpec;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -89,22 +89,26 @@ public class EditUseTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     UseTypeDescription useTypeDescription = offerControl.getUseTypeDescription(useType, language);
                     
                     if(useTypeDescription != null) {
-                        result.setUseTypeDescription(offerControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
-                        
-                        if(lockEntity(useType)) {
-                            UseTypeDescriptionEdit edit = OfferEditFactory.getUseTypeDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(useTypeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                        if(editMode.equals(EditMode.LOCK)) {
+                            result.setUseTypeDescription(offerControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
+
+                            if(lockEntity(useType)) {
+                                UseTypeDescriptionEdit edit = OfferEditFactory.getUseTypeDescriptionEdit();
+
+                                result.setEdit(edit);
+                                edit.setDescription(useTypeDescription.getDescription());
+                            } else {
+                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                            }
+
+                            result.setEntityLock(getEntityLockTransfer(useType));
+                        } else { // EditMode.ABANDON
+                            unlockEntity(useType);
                         }
-                        
-                        result.setEntityLock(getEntityLockTransfer(useType));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownUseTypeDescription.name());
                     }

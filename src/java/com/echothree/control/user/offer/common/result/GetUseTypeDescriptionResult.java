@@ -16,12 +16,13 @@
 
 package com.echothree.control.user.offer.common.result;
 
-import com.echothree.control.user.offer.common.edit.UseTypeEdit;
-import com.echothree.util.common.command.BaseEditResult;
+import com.echothree.model.control.offer.common.transfer.UseTypeDescriptionTransfer;
+import com.echothree.util.common.command.BaseResult;
 
-public interface EditUseTypeResult
-        extends GetUseTypeResult, BaseEditResult<UseTypeEdit> {
+public interface GetUseTypeDescriptionResult
+        extends BaseResult {
     
-    // Nothing additional beyond GetUseTypeResult, BaseEditResult<UseTypeEdit>
+    UseTypeDescriptionTransfer getUseTypeDescription();
+    void setUseTypeDescription(UseTypeDescriptionTransfer useTypeDescription);
     
 }

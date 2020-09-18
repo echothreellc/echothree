@@ -170,9 +170,11 @@ public interface OfferService
     // -------------------------------------------------------------------------
     
     CommandResult createUseTypeDescription(UserVisitPK userVisitPK, CreateUseTypeDescriptionForm form);
-    
+
     CommandResult getUseTypeDescriptions(UserVisitPK userVisitPK, GetUseTypeDescriptionsForm form);
-    
+
+    CommandResult getUseTypeDescription(UserVisitPK userVisitPK, GetUseTypeDescriptionForm form);
+
     CommandResult editUseTypeDescription(UserVisitPK userVisitPK, EditUseTypeDescriptionForm form);
     
     CommandResult deleteUseTypeDescription(UserVisitPK userVisitPK, DeleteUseTypeDescriptionForm form);

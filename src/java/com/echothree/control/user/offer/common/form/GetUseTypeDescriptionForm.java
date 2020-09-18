@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.result;
+package com.echothree.control.user.offer.common.form;
 
-import com.echothree.control.user.offer.common.edit.UseTypeEdit;
-import com.echothree.util.common.command.BaseEditResult;
+import com.echothree.control.user.offer.common.spec.UseTypeDescriptionSpec;
 
-public interface EditUseTypeResult
-        extends GetUseTypeResult, BaseEditResult<UseTypeEdit> {
+public interface GetUseTypeDescriptionForm
+        extends UseTypeDescriptionSpec {
     
-    // Nothing additional beyond GetUseTypeResult, BaseEditResult<UseTypeEdit>
+    // Nothing additional beyond UseTypeDescriptionSpec
     
 }

@@ -49,7 +49,7 @@ public class DeleteUseTypeDescriptionCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.GlAccountCategory.name(), SecurityRoles.Description.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.Description.name())
                         )))
                 )));
         
