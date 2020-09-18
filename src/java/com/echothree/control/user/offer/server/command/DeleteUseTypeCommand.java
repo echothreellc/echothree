@@ -17,13 +17,12 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteUseTypeForm;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -31,17 +30,16 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class DeleteUseTypeCommand
         extends BaseSimpleCommand<DeleteUseTypeForm> {
-
+    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-
+    
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -62,14 +60,11 @@ public class DeleteUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String useTypeName = form.getUseTypeName();
-        UseType useType = offerControl.getUseTypeByNameForUpdate(useTypeName);
+        UseType useType = UseTypeLogic.getInstance().getUseTypeByNameForUpdate(this, useTypeName);
         
-        if(useType != null) {
-            offerControl.deleteUseType(useType, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
+        if(!hasExecutionErrors()) {
+            UseTypeLogic.getInstance().deleteUseType(this, useType, getPartyPK());
         }
         
         return null;

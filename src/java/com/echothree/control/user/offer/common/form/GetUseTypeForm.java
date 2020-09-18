@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.offer.common.form;
 
-import com.echothree.control.user.offer.common.spec.UseTypeSpec;
+import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
 
 public interface GetUseTypeForm
-        extends UseTypeSpec {
+        extends UseTypeUniversalSpec {
     
-    // Nothing additional beyond UseTypeSpec
+    // Nothing additional beyond UseTypeUniversalSpec
     
 }

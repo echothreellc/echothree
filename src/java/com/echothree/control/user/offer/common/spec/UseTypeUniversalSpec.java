@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.result;
+package com.echothree.control.user.offer.common.spec;
 
-import com.echothree.control.user.offer.common.edit.UseTypeEdit;
-import com.echothree.util.common.command.BaseEditResult;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface EditUseTypeResult
-        extends GetUseTypeResult, BaseEditResult<UseTypeEdit> {
+public interface UseTypeUniversalSpec
+        extends UseTypeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond GetUseTypeResult, BaseEditResult<UseTypeEdit>
+    // Nothing additional beyond UseTypeSpec, UniversalEntitySpec
     
 }

@@ -331,12 +331,17 @@ public class OfferBean
     public CommandResult createUseTypeDescription(UserVisitPK userVisitPK, CreateUseTypeDescriptionForm form) {
         return new CreateUseTypeDescriptionCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getUseTypeDescriptions(UserVisitPK userVisitPK, GetUseTypeDescriptionsForm form) {
         return new GetUseTypeDescriptionsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getUseTypeDescription(UserVisitPK userVisitPK, GetUseTypeDescriptionForm form) {
+        return new GetUseTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editUseTypeDescription(UserVisitPK userVisitPK, EditUseTypeDescriptionForm form) {
         return new EditUseTypeDescriptionCommand(userVisitPK, form).run();

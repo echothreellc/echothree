@@ -21,6 +21,6 @@ import com.echothree.control.user.offer.common.edit.UseTypeEdit;
 public interface CreateUseTypeForm
         extends UseTypeEdit {
     
-    // Nothing additional beyond CreateUseTypeForm
+    // Nothing additional beyond UseTypeEdit
     
 }

@@ -17,8 +17,8 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseTypeDescriptionsForm;
-import com.echothree.control.user.offer.common.result.GetUseTypeDescriptionsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.control.user.offer.common.result.GetUseTypeDescriptionsResult;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -59,7 +59,7 @@ public class GetUseTypeDescriptionsCommand
     
     /** Creates a new instance of GetUseTypeDescriptionsCommand */
     public GetUseTypeDescriptionsCommand(UserVisitPK userVisitPK, GetUseTypeDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -71,7 +71,7 @@ public class GetUseTypeDescriptionsCommand
         
         if(useType != null) {
             result.setUseType(offerControl.getUseTypeTransfer(getUserVisit(), useType));
-            result.setUseTypeDescriptions(offerControl.getUseTypeDescriptionTransfers(getUserVisit(), useType));
+            result.setUseTypeDescriptions(offerControl.getUseTypeDescriptionTransfersByUseType(getUserVisit(), useType));
         } else {
             addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
         }

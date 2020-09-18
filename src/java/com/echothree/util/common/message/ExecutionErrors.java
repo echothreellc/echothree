@@ -2221,5 +2221,6 @@ public enum ExecutionErrors {
     InvalidPurchaseOrderReference,
     DuplicateHandlingInPurchaseOrderStatusTransition,
     UnhandledPurchaseOrderStatusTransition,
+    UnknownDefaultUseType,
 
 }

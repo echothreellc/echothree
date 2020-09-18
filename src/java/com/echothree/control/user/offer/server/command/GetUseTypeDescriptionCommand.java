@@ -16,16 +16,22 @@
 
 package com.echothree.control.user.offer.server.command;
 
-import com.echothree.control.user.offer.common.form.GetUseTypeChoicesForm;
+import com.echothree.control.user.offer.common.form.GetUseTypeDescriptionForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.control.user.offer.common.result.GetUseTypeDescriptionResult;
 import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.offer.server.entity.UseTypeDescription;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -35,40 +41,58 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GetUseTypeChoicesCommand
-        extends BaseSimpleCommand<GetUseTypeChoicesForm> {
+public class GetUseTypeDescriptionCommand
+        extends BaseSimpleCommand<GetUseTypeDescriptionForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.Choices.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.Description.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("DefaultUseTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("UseTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of GetUseTypeChoicesCommand */
-    public GetUseTypeChoicesCommand(UserVisitPK userVisitPK, GetUseTypeChoicesForm form) {
+    /** Creates a new instance of GetUseTypeDescriptionCommand */
+    public GetUseTypeDescriptionCommand(UserVisitPK userVisitPK, GetUseTypeDescriptionForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        var result = OfferResultFactory.getGetUseTypeChoicesResult();
-        var defaultUseTypeChoice = form.getDefaultUseTypeChoice();
-        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        GetUseTypeDescriptionResult result = OfferResultFactory.getGetUseTypeDescriptionResult();
+        String useTypeName = form.getUseTypeName();
+        UseType useType = offerControl.getUseTypeByName(useTypeName);
         
-        result.setUseTypeChoices(offerControl.getUseTypeChoices(defaultUseTypeChoice,
-                getPreferredLanguage(), allowNullChoice));
-
+        if(useType != null) {
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = form.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            
+            if(language != null) {
+                UseTypeDescription useTypeDescription = offerControl.getUseTypeDescription(useType, language);
+                
+                if(useTypeDescription != null) {
+                    result.setUseTypeDescription(offerControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownUseTypeDescription.name(), useTypeName, languageIsoName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
+        }
+        
         return result;
     }
     

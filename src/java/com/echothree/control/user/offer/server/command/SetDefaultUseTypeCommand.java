@@ -44,10 +44,9 @@ public class SetDefaultUseTypeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.Edit.name())
-                        )))
+                    new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.Edit.name())
+                    )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(

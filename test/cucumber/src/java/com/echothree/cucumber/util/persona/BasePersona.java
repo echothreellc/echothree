@@ -102,6 +102,7 @@ import com.echothree.control.user.offer.common.spec.OfferUseSpec;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.control.user.offer.common.spec.UseTypeSpec;
+import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
@@ -253,7 +254,7 @@ public class BasePersona {
 
     public CreateUseTypeForm createUseTypeForm;
     public DeleteUseTypeForm deleteUseTypeForm;
-    public UseTypeSpec useTypeSpec;
+    public UseTypeUniversalSpec useTypeSpec;
     public UseTypeEdit useTypeEdit;
 
     public CreateUseForm createUseForm;

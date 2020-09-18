@@ -23,6 +23,6 @@ public interface GetUseTypeChoicesResult
         extends BaseResult {
     
     UseTypeChoicesBean getUseTypeChoices();
-    void setUseTypeChoices(UseTypeChoicesBean useTypeChoicesBean);
+    void setUseTypeChoices(UseTypeChoicesBean useTypeChoices);
     
 }

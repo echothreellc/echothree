@@ -17,16 +17,16 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseTypeForm;
-import com.echothree.control.user.offer.common.result.GetUseTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.control.user.offer.common.result.GetUseTypeResult;
 import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.logic.UseTypeLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -54,7 +54,11 @@ public class GetUseTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("UseTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("UseTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -65,16 +69,12 @@ public class GetUseTypeCommand
     
     @Override
     protected UseType getEntity() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        String useTypeName = form.getUseTypeName();
-        UseType useType = offerControl.getUseTypeByName(useTypeName);
-        
+        UseType useType = UseTypeLogic.getInstance().getUseTypeByUniversalSpec(this, form, true);
+
         if(useType != null) {
             sendEventUsingNames(useType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
         }
-        
+
         return useType;
     }
     
@@ -82,11 +82,11 @@ public class GetUseTypeCommand
     protected BaseResult getTransfer(UseType useType) {
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetUseTypeResult result = OfferResultFactory.getGetUseTypeResult();
-        
+
         if(useType != null) {
             result.setUseType(offerControl.getUseTypeTransfer(getUserVisit(), useType));
         }
-        
+
         return result;
     }
     

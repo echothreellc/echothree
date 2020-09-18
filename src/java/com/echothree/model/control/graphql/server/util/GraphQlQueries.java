@@ -80,6 +80,9 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
+import com.echothree.control.user.offer.common.OfferUtil;
+import com.echothree.control.user.offer.server.command.GetUseTypeCommand;
+import com.echothree.control.user.offer.server.command.GetUseTypesCommand;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatsCommand;
@@ -155,6 +158,7 @@ import com.echothree.model.control.inventory.server.graphql.InventoryConditionOb
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
+import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
@@ -209,6 +213,7 @@ import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
+import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
@@ -244,6 +249,56 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("useType")
+    public static UseTypeObject useType(final DataFetchingEnvironment env,
+            @GraphQLName("useTypeName") final String useTypeName,
+            @GraphQLName("id") final String id) {
+        UseType useType;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetUseTypeForm();
+
+            commandForm.setUseTypeName(useTypeName);
+            commandForm.setUlid(id);
+
+            useType = new GetUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return useType == null ? null : new UseTypeObject(useType);
+    }
+
+    @GraphQLField
+    @GraphQLName("useTypes")
+    public static Collection<UseTypeObject> useTypes(final DataFetchingEnvironment env) {
+        Collection<UseType> useTypes;
+        Collection<UseTypeObject> useTypeObjects;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetUseTypesForm();
+
+            useTypes = new GetUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(useTypes == null) {
+            useTypeObjects = Collections.EMPTY_LIST;
+        } else {
+            useTypeObjects = new ArrayList<>(useTypes.size());
+
+            useTypes.stream().map((useType) -> {
+                return new UseTypeObject(useType);
+            }).forEachOrdered((useTypeObject) -> {
+                useTypeObjects.add(useTypeObject);
+            });
+        }
+
+        return useTypeObjects;
+    }
 
     @GraphQLField
     @GraphQLName("freeOnBoard")
