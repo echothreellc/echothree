@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.edit.UseTypeDescriptionEdit;
 import com.echothree.model.control.offer.common.transfer.UseTypeDescriptionTransfer;
 import com.echothree.util.common.command.BaseEditResult;
 
-public interface EditUseTypeDescriptionResult
+public interface EditUseTypeDescriptionResult 
         extends BaseEditResult<UseTypeDescriptionEdit> {
     
     UseTypeDescriptionTransfer getUseTypeDescription();

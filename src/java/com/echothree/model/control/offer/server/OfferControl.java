@@ -2280,7 +2280,7 @@ public class OfferControl
         return getOfferTransferCaches(userVisit).getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(useTypeDescription);
     }
     
-    public List<UseTypeDescriptionTransfer> getUseTypeDescriptionTransfers(UserVisit userVisit, UseType useType) {
+    public List<UseTypeDescriptionTransfer> getUseTypeDescriptionTransfersByUseType(UserVisit userVisit, UseType useType) {
         List<UseTypeDescription> useTypeDescriptions = getUseTypeDescriptionsByUseType(useType);
         List<UseTypeDescriptionTransfer> useTypeDescriptionTransfers = new ArrayList<>(useTypeDescriptions.size());
         

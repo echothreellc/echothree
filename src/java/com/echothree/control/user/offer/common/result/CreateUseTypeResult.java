@@ -17,12 +17,12 @@
 package com.echothree.control.user.offer.common.result;
 
 import com.echothree.control.user.offer.common.spec.UseTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateUseTypeResult
-        extends UseTypeSpec, BaseResult {
+        extends UseTypeSpec, EntityRefSpec, BaseResult {
     
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+    // Nothing additional beyond UseTypeSpec, EntityRefSpec, BaseResult
     
 }

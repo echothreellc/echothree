@@ -20,7 +20,7 @@ import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
 public interface UseTypeUniversalSpec
         extends UseTypeSpec, UniversalEntitySpec {
-
+    
     // Nothing additional beyond UseTypeSpec, UniversalEntitySpec
     
 }

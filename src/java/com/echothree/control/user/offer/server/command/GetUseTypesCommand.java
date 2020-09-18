@@ -17,8 +17,8 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseTypesForm;
-import com.echothree.control.user.offer.common.result.GetUseTypesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.control.user.offer.common.result.GetUseTypesResult;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
