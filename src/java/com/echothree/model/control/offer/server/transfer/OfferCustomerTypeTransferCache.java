@@ -29,10 +29,11 @@ public class OfferCustomerTypeTransferCache
         extends BaseOfferTransferCache<OfferCustomerType, OfferCustomerTypeTransfer> {
     
     CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-    
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
     /** Creates a new instance of OfferCustomerTypeTransferCache */
-    public OfferCustomerTypeTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferCustomerTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(OfferCustomerType offerCustomerType) {

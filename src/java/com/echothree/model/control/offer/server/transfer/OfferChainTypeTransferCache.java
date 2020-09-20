@@ -30,13 +30,12 @@ import com.echothree.util.server.persistence.Session;
 public class OfferChainTypeTransferCache
         extends BaseOfferTransferCache<OfferChainType, OfferChainTypeTransfer> {
     
-    ChainControl chainControl;
-    
+    ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
     /** Creates a new instance of OfferChainTypeTransferCache */
-    public OfferChainTypeTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
-        
-        chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+    public OfferChainTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OfferChainTypeTransfer getOfferChainTypeTransfer(OfferChainType offerChainType) {

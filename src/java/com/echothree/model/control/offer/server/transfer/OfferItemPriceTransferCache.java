@@ -51,6 +51,7 @@ public class OfferItemPriceTransferCache
     
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
     InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
     UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
     
     TransferProperties transferProperties;
@@ -72,8 +73,8 @@ public class OfferItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of OfferItemPriceTransferCache */
-    public OfferItemPriceTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferItemPriceTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

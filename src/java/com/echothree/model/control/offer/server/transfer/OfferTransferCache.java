@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.offer.common.OfferOptions;
@@ -44,7 +43,7 @@ import java.util.Set;
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
     FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
@@ -65,8 +64,8 @@ public class OfferTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of OfferTransferCache */
-    public OfferTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         Set<String> options = session.getOptions();
         if(options != null) {

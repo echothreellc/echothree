@@ -22,13 +22,16 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.offer.server.entity.UseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class UseTypeDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<UseTypeDescription, UseTypeDescriptionTransfer> {
-    
+
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
     /** Creates a new instance of UseTypeDescriptionTransferCache */
-    public UseTypeDescriptionTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public UseTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public UseTypeDescriptionTransfer getUseTypeDescriptionTransfer(UseTypeDescription useTypeDescription) {

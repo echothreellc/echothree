@@ -34,7 +34,8 @@ public class OfferItemTransferCache
         extends BaseOfferTransferCache<OfferItem, OfferItemTransfer> {
     
     ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
     boolean includeOfferItemPrices;
 
     TransferProperties transferProperties;
@@ -44,8 +45,8 @@ public class OfferItemTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of OfferItemTransferCache */
-    public OfferItemTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferItemTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         Set<String> options = session.getOptions();
         if(options != null) {

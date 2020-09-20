@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -25,13 +24,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseOfferTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    OfferControl offerControl;
-    
     /** Creates a new instance of BaseOfferTransferCache */
-    protected BaseOfferTransferCache(UserVisit userVisit, OfferControl offerControl) {
+    protected BaseOfferTransferCache(UserVisit userVisit) {
         super(userVisit);
-        
-        this.offerControl = offerControl;
     }
     
 }

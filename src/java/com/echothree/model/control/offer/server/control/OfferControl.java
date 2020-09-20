@@ -167,25 +167,11 @@ import java.util.List;
 import java.util.Map;
 
 public class OfferControl
-        extends BaseModelControl {
+        extends BaseOfferControl {
     
     /** Creates a new instance of OfferControl */
     public OfferControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Offer Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private OfferTransferCaches offerTransferCaches = null;
-    
-    public OfferTransferCaches getOfferTransferCaches(UserVisit userVisit) {
-        if(offerTransferCaches == null) {
-            offerTransferCaches = new OfferTransferCaches(userVisit, this);
-        }
-        
-        return offerTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
