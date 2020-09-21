@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.form.GetUseTypeForm;
 import com.echothree.control.user.offer.common.result.GetUseTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -80,11 +80,11 @@ public class GetUseTypeCommand
     
     @Override
     protected BaseResult getTransfer(UseType useType) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         GetUseTypeResult result = OfferResultFactory.getGetUseTypeResult();
 
         if(useType != null) {
-            result.setUseType(offerControl.getUseTypeTransfer(getUserVisit(), useType));
+            result.setUseType(useTypeControl.getUseTypeTransfer(getUserVisit(), useType));
         }
 
         return result;

@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetUseTypeDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetUseTypeDescriptionsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,14 +64,14 @@ public class GetUseTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         GetUseTypeDescriptionsResult result = OfferResultFactory.getGetUseTypeDescriptionsResult();
         String useTypeName = form.getUseTypeName();
-        UseType useType = offerControl.getUseTypeByName(useTypeName);
+        UseType useType = useTypeControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
-            result.setUseType(offerControl.getUseTypeTransfer(getUserVisit(), useType));
-            result.setUseTypeDescriptions(offerControl.getUseTypeDescriptionTransfersByUseType(getUserVisit(), useType));
+            result.setUseType(useTypeControl.getUseTypeTransfer(getUserVisit(), useType));
+            result.setUseTypeDescriptions(useTypeControl.getUseTypeDescriptionTransfersByUseType(getUserVisit(), useType));
         } else {
             addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
         }

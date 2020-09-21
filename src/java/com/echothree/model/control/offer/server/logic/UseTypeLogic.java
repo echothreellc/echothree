@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.DuplicateUseTypeNameException;
 import com.echothree.model.control.offer.common.exception.UnknownDefaultUseTypeException;
 import com.echothree.model.control.offer.common.exception.UnknownUseTypeNameException;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -53,14 +53,14 @@ public class UseTypeLogic
     public UseType createUseType(final ExecutionErrorAccumulator eea, final String useTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        UseType useType = offerControl.getUseTypeByName(useTypeName);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        UseType useType = useTypeControl.getUseTypeByName(useTypeName);
 
         if(useType == null) {
-            useType = offerControl.createUseType(useTypeName, isDefault, sortOrder, createdBy);
+            useType = useTypeControl.createUseType(useTypeName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                offerControl.createUseTypeDescription(useType, language, description, createdBy);
+                useTypeControl.createUseTypeDescription(useType, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicateUseTypeNameException.class, eea, ExecutionErrors.DuplicateUseTypeName.name(), useTypeName);
@@ -71,8 +71,8 @@ public class UseTypeLogic
 
     public UseType getUseTypeByName(final ExecutionErrorAccumulator eea, final String useTypeName,
             final EntityPermission entityPermission) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        UseType useType = offerControl.getUseTypeByName(useTypeName, entityPermission);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        UseType useType = useTypeControl.getUseTypeByName(useTypeName, entityPermission);
 
         if(useType == null) {
             handleExecutionError(UnknownUseTypeNameException.class, eea, ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
@@ -92,14 +92,14 @@ public class UseTypeLogic
     public UseType getUseTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         UseType useType = null;
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         String useTypeName = universalSpec.getUseTypeName();
         int parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:
                 if(allowDefault) {
-                    useType = offerControl.getDefaultUseType(entityPermission);
+                    useType = useTypeControl.getDefaultUseType(entityPermission);
 
                     if(useType == null) {
                         handleExecutionError(UnknownDefaultUseTypeException.class, eea, ExecutionErrors.UnknownDefaultUseType.name());
@@ -114,7 +114,7 @@ public class UseTypeLogic
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.UseType.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        useType = offerControl.getUseTypeByEntityInstance(entityInstance, entityPermission);
+                        useType = useTypeControl.getUseTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
                     useType = getUseTypeByName(eea, useTypeName, entityPermission);
@@ -140,8 +140,8 @@ public class UseTypeLogic
 
     public void deleteUseType(final ExecutionErrorAccumulator eea, final UseType useType,
             final BasePK deletedBy) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
 
-        offerControl.deleteUseType(useType, deletedBy);
+        useTypeControl.deleteUseType(useType, deletedBy);
     }
 }

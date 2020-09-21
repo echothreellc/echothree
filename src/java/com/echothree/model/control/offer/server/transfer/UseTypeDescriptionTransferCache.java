@@ -18,7 +18,7 @@ package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.UseTypeDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.offer.server.entity.UseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class UseTypeDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<UseTypeDescription, UseTypeDescriptionTransfer> {
 
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    UseTypeControl useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTypeDescriptionTransferCache */
     public UseTypeDescriptionTransferCache(UserVisit userVisit) {
@@ -38,7 +38,7 @@ public class UseTypeDescriptionTransferCache
         UseTypeDescriptionTransfer useTypeDescriptionTransfer = get(useTypeDescription);
         
         if(useTypeDescriptionTransfer == null) {
-            UseTypeTransfer useTypeTransfer = offerControl.getUseTypeTransfer(userVisit, useTypeDescription.getUseType());
+            UseTypeTransfer useTypeTransfer = useTypeControl.getUseTypeTransfer(userVisit, useTypeDescription.getUseType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, useTypeDescription.getLanguage());
             
             useTypeDescriptionTransfer = new UseTypeDescriptionTransfer(languageTransfer, useTypeTransfer, useTypeDescription.getDescription());

@@ -19,6 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.CreateUseForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -74,8 +75,9 @@ public class CreateUseCommand
         Use use = offerControl.getUseByName(useName);
         
         if(use == null) {
+            var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
             String useTypeName = form.getUseTypeName();
-            UseType useType = offerControl.getUseTypeByName(useTypeName);
+            UseType useType = useTypeControl.getUseTypeByName(useTypeName);
             
             if(useType != null) {
                 var partyPK = getPartyPK();

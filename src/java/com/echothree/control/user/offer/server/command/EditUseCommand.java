@@ -23,6 +23,7 @@ import com.echothree.control.user.offer.common.result.EditUseResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -123,8 +124,9 @@ public class EditUseCommand
                 Use duplicateUse = offerControl.getUseByName(useName);
                 
                 if(duplicateUse == null || use.equals(duplicateUse)) {
+                    var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
                     String useTypeName = edit.getUseTypeName();
-                    UseType useType = offerControl.getUseTypeByName(useTypeName);
+                    UseType useType = useTypeControl.getUseTypeByName(useTypeName);
                     
                     if(useType != null) {
                         if(lockEntityForUpdate(use)) {
