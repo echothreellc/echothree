@@ -5085,7 +5085,7 @@ public class SearchControl
 
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Party party = getPartyControl().getPartyByPK(new PartyPK(Long.valueOf(rs.getLong(1))));
+                    Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
 
                     employeeResultTransfers.add(new EmployeeResultTransfer(party.getLastDetail().getPartyName(),
                             includeEmployee ? employeeControl.getEmployeeTransfer(userVisit, party) : null));
@@ -5127,7 +5127,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Leave leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(Long.valueOf(rs.getLong(1))));
+                    Leave leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
 
                     leaveResultTransfers.add(new LeaveResultTransfer(leave.getLastDetail().getLeaveName(),
                             includeLeave ? employeeControl.getLeaveTransfer(userVisit, leave) : null));
@@ -5266,7 +5266,7 @@ public class SearchControl
 
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    ForumMessage forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(Long.valueOf(rs.getLong(1))));
+                    ForumMessage forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(rs.getLong(1)));
 
                     forumMessageResultTransfers.add(new ForumMessageResultTransfer(forumMessage.getLastDetail().getForumMessageName(),
                             includeForumMessage ? forumControl.getForumMessageTransfer(userVisit, forumMessage) : null));
@@ -5309,7 +5309,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Batch batch = batchControl.getBatchByPK(new BatchPK(Long.valueOf(rs.getLong(1))));
+                    Batch batch = batchControl.getBatchByPK(new BatchPK(rs.getLong(1)));
 
                     salesOrderBatchResultTransfers.add(new SalesOrderBatchResultTransfer(batch.getLastDetail().getBatchName(),
                             includeSalesOrderBatch ? salesOrderBatchControl.getSalesOrderBatchTransfer(userVisit, batch) : null));
@@ -5346,7 +5346,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    OrderPK orderPK = new OrderPK(Long.valueOf(rs.getLong(1)));
+                    OrderPK orderPK = new OrderPK(rs.getLong(1));
                     Order order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
 
                     EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(orderPK);
@@ -5396,7 +5396,7 @@ public class SearchControl
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(Long.valueOf(rs.getLong(1))));
+                        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
                         EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
                         EntityAttributeDetail entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
                         EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
@@ -5431,7 +5431,7 @@ public class SearchControl
 
                 try (ResultSet rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(Long.valueOf(rs.getLong(1))));
+                        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
                         EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
                         EntityAttributeDetail entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
                         EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
@@ -5478,7 +5478,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    ContentCategory contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContentCategoryPK(Long.valueOf(rs.getLong(1))));
+                    ContentCategory contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContentCategoryPK(rs.getLong(1)));
                     ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
                     ContentCatalogDetail contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
 
@@ -5523,7 +5523,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    SecurityRoleGroup securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(Long.valueOf(rs.getLong(1))));
+                    SecurityRoleGroup securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(rs.getLong(1)));
 
                     SecurityRoleGroupResultTransfers.add(new SecurityRoleGroupResultTransfer(securityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
                             includeSecurityRoleGroup ? securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup) : null));
@@ -5565,7 +5565,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    SecurityRole securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRolePK(Long.valueOf(rs.getLong(1))));
+                    SecurityRole securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRolePK(rs.getLong(1)));
                     SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
 
                     securityRoleResultTransfers.add(new SecurityRoleResultTransfer(securityRoleDetail.getSecurityRoleName(),
@@ -5609,7 +5609,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new HarmonizedTariffScheduleCodePK(Long.valueOf(rs.getLong(1))));
+                    HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new HarmonizedTariffScheduleCodePK(rs.getLong(1)));
                     HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
 
                     harmonizedTariffScheduleCodeResultTransfers.add(new HarmonizedTariffScheduleCodeResultTransfer(
@@ -5654,7 +5654,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    EntityType entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(Long.valueOf(rs.getLong(1))));
+                    EntityType entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(rs.getLong(1)));
                     EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
 
                     entityTypeResultTransfers.add(new EntityTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
@@ -5697,7 +5697,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContactMechanismPK(Long.valueOf(rs.getLong(1))));
+                    ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContactMechanismPK(rs.getLong(1)));
                     ContactMechanismDetail contactMechanismDetail = contactMechanism.getLastDetail();
 
                     contactMechanismResultTransfers.add(new ContactMechanismResultTransfer(contactMechanismDetail.getContactMechanismName(),
@@ -5740,7 +5740,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Offer offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(Long.valueOf(rs.getLong(1))));
+                    Offer offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(rs.getLong(1)));
                     OfferDetail offerDetail = offer.getLastDetail();
 
                     offerResultTransfers.add(new OfferResultTransfer(offerDetail.getOfferName(),
@@ -5783,7 +5783,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Use use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UsePK(Long.valueOf(rs.getLong(1))));
+                    Use use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UsePK(rs.getLong(1)));
                     UseDetail useDetail = use.getLastDetail();
 
                     useResultTransfers.add(new UseResultTransfer(useDetail.getUseName(),
@@ -5826,7 +5826,7 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    UseType useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(Long.valueOf(rs.getLong(1))));
+                    UseType useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
                     UseTypeDetail useTypeDetail = useType.getLastDetail();
 
                     useTypeResultTransfers.add(new UseTypeResultTransfer(useTypeDetail.getUseTypeName(),
