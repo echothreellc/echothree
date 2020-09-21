@@ -1,5 +1,17 @@
 # Changelog
 
+## 2020-09-20-01
+
+* Add Source Tests [118](https://gitlab.echothree.com/echothree/echothree/-/issues/118)
+* Add GetOfferChainType UC [119](https://gitlab.echothree.com/echothree/echothree/-/issues/119)
+* Add GetUseNameElement UC [120](https://gitlab.echothree.com/echothree/echothree/-/issues/120)
+* Add GetOfferNameElement UC [121](https://gitlab.echothree.com/echothree/echothree/-/issues/121)
+* Apache Lucene 8.6.2 Upgrade [122](https://gitlab.echothree.com/echothree/echothree/-/issues/122)
+* MySQL Connector/J 8.0.21 Upgrade [123](https://gitlab.echothree.com/echothree/echothree/-/issues/123)
+* Update INSTALL.md's JDK, Ant and MySQL Versions [124](https://gitlab.echothree.com/echothree/echothree/-/issues/124)
+* Break Up OrderControl [125](https://gitlab.echothree.com/echothree/echothree/-/issues/125)
+* GraphQL Objects and Mutations for Use Types [137](https://gitlab.echothree.com/echothree/echothree/-/issues/137)
+
 ## 2020-09-06-01
 
 * Add Offer Item Price Tests [86](https://gitlab.echothree.com/echothree/echothree/-/issues/86)
