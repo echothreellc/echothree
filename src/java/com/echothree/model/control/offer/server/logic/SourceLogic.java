@@ -18,6 +18,7 @@ package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.offer.common.exception.UnknownSourceNameException;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -40,8 +41,8 @@ public class SourceLogic
     }
     
     public Source getSourceByName(final ExecutionErrorAccumulator eea, final String sourceName) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        Source source = offerControl.getSourceByName(sourceName);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        Source source = sourceControl.getSourceByName(sourceName);
 
         if(source == null) {
             handleExecutionError(UnknownSourceNameException.class, eea, ExecutionErrors.UnknownSourceName.name(), sourceName);
