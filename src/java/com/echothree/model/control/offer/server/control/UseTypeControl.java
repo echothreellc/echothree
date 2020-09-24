@@ -17,154 +17,36 @@
 package com.echothree.model.control.offer.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.offer.common.choice.OfferChoicesBean;
-import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
-import com.echothree.model.control.offer.common.choice.UseChoicesBean;
 import com.echothree.model.control.offer.common.choice.UseTypeChoicesBean;
-import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferNameElementDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.common.transfer.SourceTransfer;
-import com.echothree.model.control.offer.common.transfer.UseDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.UseNameElementDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
-import com.echothree.model.control.offer.common.transfer.UseTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
-import com.echothree.model.control.offer.server.transfer.OfferChainTypeTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferCustomerTypeTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferItemPriceTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferItemTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferNameElementDescriptionTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferNameElementTransferCache;
-import com.echothree.model.control.offer.server.transfer.OfferUseTransferCache;
-import com.echothree.model.control.offer.server.transfer.UseNameElementDescriptionTransferCache;
-import com.echothree.model.control.offer.server.transfer.UseNameElementTransferCache;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.chain.common.pk.ChainPK;
-import com.echothree.model.data.chain.common.pk.ChainTypePK;
-import com.echothree.model.data.chain.server.entity.Chain;
-import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.customer.common.pk.CustomerTypePK;
-import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.filter.common.pk.FilterPK;
-import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemPriceType;
-import com.echothree.model.data.offer.common.pk.OfferItemPricePK;
-import com.echothree.model.data.offer.common.pk.OfferNameElementPK;
-import com.echothree.model.data.offer.common.pk.OfferPK;
-import com.echothree.model.data.offer.common.pk.OfferUsePK;
-import com.echothree.model.data.offer.common.pk.SourcePK;
-import com.echothree.model.data.offer.common.pk.UseNameElementPK;
-import com.echothree.model.data.offer.common.pk.UsePK;
 import com.echothree.model.data.offer.common.pk.UseTypePK;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferChainType;
-import com.echothree.model.data.offer.server.entity.OfferCustomerType;
-import com.echothree.model.data.offer.server.entity.OfferDescription;
-import com.echothree.model.data.offer.server.entity.OfferDetail;
-import com.echothree.model.data.offer.server.entity.OfferItem;
-import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
-import com.echothree.model.data.offer.server.entity.OfferItemPrice;
-import com.echothree.model.data.offer.server.entity.OfferItemVariablePrice;
-import com.echothree.model.data.offer.server.entity.OfferNameElement;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
-import com.echothree.model.data.offer.server.entity.OfferNameElementDetail;
-import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.OfferUseDetail;
-import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.offer.server.entity.SourceDetail;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseDescription;
-import com.echothree.model.data.offer.server.entity.UseDetail;
-import com.echothree.model.data.offer.server.entity.UseNameElement;
-import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
-import com.echothree.model.data.offer.server.entity.UseNameElementDetail;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.offer.server.entity.UseTypeDescription;
 import com.echothree.model.data.offer.server.entity.UseTypeDetail;
-import com.echothree.model.data.offer.server.factory.OfferChainTypeFactory;
-import com.echothree.model.data.offer.server.factory.OfferCustomerTypeFactory;
-import com.echothree.model.data.offer.server.factory.OfferDescriptionFactory;
-import com.echothree.model.data.offer.server.factory.OfferDetailFactory;
-import com.echothree.model.data.offer.server.factory.OfferFactory;
-import com.echothree.model.data.offer.server.factory.OfferItemFactory;
-import com.echothree.model.data.offer.server.factory.OfferItemFixedPriceFactory;
-import com.echothree.model.data.offer.server.factory.OfferItemPriceFactory;
-import com.echothree.model.data.offer.server.factory.OfferItemVariablePriceFactory;
-import com.echothree.model.data.offer.server.factory.OfferNameElementDescriptionFactory;
-import com.echothree.model.data.offer.server.factory.OfferNameElementDetailFactory;
-import com.echothree.model.data.offer.server.factory.OfferNameElementFactory;
-import com.echothree.model.data.offer.server.factory.OfferUseDetailFactory;
-import com.echothree.model.data.offer.server.factory.OfferUseFactory;
-import com.echothree.model.data.offer.server.factory.SourceDetailFactory;
-import com.echothree.model.data.offer.server.factory.SourceFactory;
-import com.echothree.model.data.offer.server.factory.UseDescriptionFactory;
-import com.echothree.model.data.offer.server.factory.UseDetailFactory;
-import com.echothree.model.data.offer.server.factory.UseFactory;
-import com.echothree.model.data.offer.server.factory.UseNameElementDescriptionFactory;
-import com.echothree.model.data.offer.server.factory.UseNameElementDetailFactory;
-import com.echothree.model.data.offer.server.factory.UseNameElementFactory;
 import com.echothree.model.data.offer.server.factory.UseTypeDescriptionFactory;
 import com.echothree.model.data.offer.server.factory.UseTypeDetailFactory;
 import com.echothree.model.data.offer.server.factory.UseTypeFactory;
-import com.echothree.model.data.offer.server.value.OfferChainTypeValue;
-import com.echothree.model.data.offer.server.value.OfferCustomerTypeValue;
-import com.echothree.model.data.offer.server.value.OfferDescriptionValue;
-import com.echothree.model.data.offer.server.value.OfferDetailValue;
-import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
-import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
-import com.echothree.model.data.offer.server.value.OfferNameElementDescriptionValue;
-import com.echothree.model.data.offer.server.value.OfferNameElementDetailValue;
-import com.echothree.model.data.offer.server.value.OfferUseDetailValue;
-import com.echothree.model.data.offer.server.value.SourceDetailValue;
-import com.echothree.model.data.offer.server.value.UseDescriptionValue;
-import com.echothree.model.data.offer.server.value.UseDetailValue;
-import com.echothree.model.data.offer.server.value.UseNameElementDescriptionValue;
-import com.echothree.model.data.offer.server.value.UseNameElementDetailValue;
 import com.echothree.model.data.offer.server.value.UseTypeDescriptionValue;
 import com.echothree.model.data.offer.server.value.UseTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.selector.common.pk.SelectorPK;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.factory.SelectorFactory;
-import com.echothree.model.data.sequence.common.pk.SequencePK;
-import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.common.transfer.HistoryTransfer;
-import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class UseTypeControl
         extends BaseOfferControl {
 
-    /** Creates a new instance of OfferControl */
+    /** Creates a new instance of UseTypeControl */
     public UseTypeControl() {
         super();
     }
@@ -427,10 +309,10 @@ public class UseTypeControl
     }
     
     public void deleteUseType(UseType useType, BasePK deletedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
 
         deleteUseTypeDescriptionsByUseType(useType, deletedBy);
-        offerControl.deleteUsesByUseType(useType, deletedBy);
+        useControl.deleteUsesByUseType(useType, deletedBy);
         
         UseTypeDetail useTypeDetail = useType.getLastDetailForUpdate();
         useTypeDetail.setThruTime(session.START_TIME_LONG);
