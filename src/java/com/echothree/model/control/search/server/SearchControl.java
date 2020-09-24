@@ -26,6 +26,7 @@ import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
@@ -5771,7 +5772,7 @@ public class SearchControl
         }
         
         try {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var useControl = (UseControl)Session.getModelController(UseControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5787,7 +5788,7 @@ public class SearchControl
                     UseDetail useDetail = use.getLastDetail();
 
                     useResultTransfers.add(new UseResultTransfer(useDetail.getUseName(),
-                            includeUse ? offerControl.getUseTransfer(userVisit, use) : null));
+                            includeUse ? useControl.getUseTransfer(userVisit, use) : null));
                 }
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);

@@ -20,7 +20,7 @@ import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentCollectionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,7 +31,7 @@ import java.util.Set;
 public class ContentCollectionTransferCache
         extends BaseContentTransferCache<ContentCollection, ContentCollectionTransfer> {
 
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     boolean includeContentCatalogs;
     boolean includeContentForums;
     boolean includeContentSections;
@@ -60,7 +60,7 @@ public class ContentCollectionTransferCache
         if(contentCollectionTransfer == null) {
             ContentCollectionDetail contentCollectionDetail = contentCollection.getLastDetail();
             String contentCollectionName = contentCollectionDetail.getContentCollectionName();
-            OfferUseTransfer defaultOfferUse = offerControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
+            OfferUseTransfer defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
             String description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
             
             contentCollectionTransfer = new ContentCollectionTransfer(contentCollectionName, defaultOfferUse, description);

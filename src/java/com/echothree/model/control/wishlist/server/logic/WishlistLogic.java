@@ -17,7 +17,7 @@
 package com.echothree.model.control.wishlist.server.logic;
 
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
@@ -127,8 +127,8 @@ public class WishlistLogic
                 OrderLine orderLine = wishlistControl.getWishlistLineByItemForUpdate(order, item, inventoryCondition, unitOfMeasureType);
 
                 if(orderLine == null) {
-                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-                    OfferItemFixedPrice offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
+                    var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                    OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
                     Long unitAmount = offerItemFixedPrice.getUnitPrice();
                     AssociateReferral associateReferral = userVisit.getAssociateReferral();
 

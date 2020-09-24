@@ -27,6 +27,7 @@ import com.echothree.model.control.customer.common.exception.MissingDefaultCusto
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
@@ -241,9 +242,9 @@ public class SalesOrderLogic
 
         if(eea == null || !eea.hasExecutionErrors()) {
             if(source == null) {
-                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
 
-                source = offerControl.getDefaultSource();
+                source = sourceControl.getDefaultSource();
 
                 if(source == null) {
                     handleExecutionError(MissingDefaultSourceException.class, eea, ExecutionErrors.MissingDefaultSource.name());

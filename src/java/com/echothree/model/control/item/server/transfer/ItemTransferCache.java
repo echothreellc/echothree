@@ -37,8 +37,10 @@ import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
+import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.rating.common.RatingConstants;
@@ -52,7 +54,6 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
@@ -325,7 +326,9 @@ public class ItemTransferCache
             }
 
             if(includeOfferItems) {
-                itemTransfer.setOfferItems(ListWrapperBuilder.getInstance().filter(transferProperties, offerControl.getOfferItemTransfersByItem(userVisit, item)));
+                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+
+                itemTransfer.setOfferItems(ListWrapperBuilder.getInstance().filter(transferProperties, offerItemControl.getOfferItemTransfersByItem(userVisit, item)));
             }
 
             if(includeVendorItems) {

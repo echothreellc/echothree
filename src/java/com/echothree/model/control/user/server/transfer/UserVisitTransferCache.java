@@ -22,7 +22,7 @@ import com.echothree.model.control.associate.common.transfer.AssociateReferralTr
 import com.echothree.model.control.associate.server.AssociateControl;
 import com.echothree.model.control.campaign.server.CampaignControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
@@ -49,7 +49,7 @@ public class UserVisitTransferCache
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
     AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
     CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     
     boolean includeUserVisitCampaigns;
@@ -81,7 +81,7 @@ public class UserVisitTransferCache
             Long unformattedLastCommandTime = userVisitEntity.getLastCommandTime();
             String lastCommandTime = formatTypicalDateTime(unformattedLastCommandTime);
             OfferUse offerUse = userVisitEntity.getOfferUse();
-            OfferUseTransfer offerUseTransfer = offerUse == null ? null : offerControl.getOfferUseTransfer(userVisit, offerUse);
+            OfferUseTransfer offerUseTransfer = offerUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, offerUse);
             AssociateReferral associateReferral = userVisitEntity.getAssociateReferral();
             AssociateReferralTransfer associateReferralTransfer = associateReferral == null ? null : associateControl.getAssociateReferralTransfer(userVisit, associateReferral);
             Long unformattedRetainUntilTime = userVisitEntity.getRetainUntilTime();

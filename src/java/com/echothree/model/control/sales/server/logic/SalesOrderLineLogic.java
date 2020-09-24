@@ -28,7 +28,7 @@ import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceException;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderTypes;
@@ -130,7 +130,6 @@ public class SalesOrderLineLogic
         if(eea == null || !eea.hasExecutionErrors()) {
             var salesOrderShipmentGroupLogic = SalesOrderShipmentGroupLogic.getInstance();
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
             var orderDetail = order.getLastDetail();
             var itemDetail = item.getLastDetail();
@@ -210,7 +209,8 @@ public class SalesOrderLineLogic
 
                 // Verify unitAmount.
                 if(offerItem != null) {
-                    var offerItemPrice = offerControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
+                    var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                    var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
 
                     if(offerItemPrice == null) {
                         handleExecutionError(UnknownOfferItemPriceException.class, eea, ExecutionErrors.UnknownOfferItemPrice.name());
@@ -221,7 +221,7 @@ public class SalesOrderLineLogic
                             // We'll accept the supplied unitAmount as long as it passes the limit checks later on. Any enforcement of
                             // security should come in the UC.
                             if(unitAmount == null) {
-                                var offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
+                                var offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
 
                                 unitAmount = offerItemFixedPrice.getUnitPrice();
                             }
@@ -229,7 +229,7 @@ public class SalesOrderLineLogic
                             if(unitAmount == null) {
                                 handleExecutionError(UnitAmountRequiredException.class, eea, ExecutionErrors.UnitAmountRequired.name());
                             } else {
-                                var offerItemVariablePrice = offerControl.getOfferItemVariablePrice(offerItemPrice);
+                                var offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
 
                                 if(unitAmount < offerItemVariablePrice.getMinimumUnitPrice()) {
                                     handleExecutionError(UnitAmountBelowMinimumUnitPriceException.class, eea, ExecutionErrors.UnitAmountBelowMinimumUnitPrice.name());

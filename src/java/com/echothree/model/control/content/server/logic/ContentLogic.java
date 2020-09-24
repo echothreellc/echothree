@@ -21,7 +21,8 @@ import com.echothree.model.control.content.common.exception.MalformedUrlExceptio
 import com.echothree.model.control.content.common.exception.UnknownContentWebAddressNameException;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
@@ -122,15 +123,15 @@ public class ContentLogic
 
     /** Checks across all Offers utilized in a ContentCatalog, and finds the lowest price that the ContentCatalogItem is offered for. */
     private Long getLowestUnitPrice(final ContentCatalogItem contentCatalogItem) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
         Set<OfferUse> offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
         long unitPrice = Integer.MAX_VALUE;
 
         for(OfferUse offerUse : offerUses) {
-            OfferItem offerItem = offerControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
-            OfferItemPrice offerItemPrice = offerControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
+            OfferItem offerItem = offerItemControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
+            OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
                     contentCatalogItem.getUnitOfMeasureType(), contentCatalogItem.getCurrency());
-            OfferItemFixedPrice offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
+            OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
 
             unitPrice = Math.min(unitPrice, offerItemFixedPrice.getUnitPrice());
         }
@@ -141,14 +142,14 @@ public class ContentLogic
     /** Checks across all Offers utilized in a ContentCatalog, and finds an OfferItemVariablePrice for this ContentCatalogItem. All
      OfferItemVariablePrices should be the same, so we'll just use the first one that's found. */
     private OfferItemVariablePrice getOfferItemVariablePrice(final ContentCatalogItem contentCatalogItem) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
         Set<OfferUse> offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
         Iterator<OfferUse> offerUsesIterator = offerUses.iterator();
         OfferUse offerUse = offerUsesIterator.hasNext() ? offerUsesIterator.next() : null;
-        OfferItem offerItem = offerUse == null ? null : offerControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
-        OfferItemPrice offerItemPrice = offerItem == null ? null : offerControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
+        OfferItem offerItem = offerUse == null ? null : offerItemControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
+        OfferItemPrice offerItemPrice = offerItem == null ? null : offerItemControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
                 contentCatalogItem.getUnitOfMeasureType(), contentCatalogItem.getCurrency());
-        OfferItemVariablePrice offerItemVariablePrice = offerItemPrice == null ? null : offerControl.getOfferItemVariablePrice(offerItemPrice);
+        OfferItemVariablePrice offerItemVariablePrice = offerItemPrice == null ? null : offerItemControl.getOfferItemVariablePrice(offerItemPrice);
 
         return offerItemVariablePrice;
     }
@@ -240,8 +241,8 @@ public class ContentLogic
     }
 
     public void updateContentCatalogItemPricesByOfferItemPrice(final OfferItemPrice offerItemPrice, final BasePK updatedBy) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        Iterable<OfferUse> offerUses = offerControl.getOfferUsesByOffer(offerItemPrice.getOfferItem().getOffer());
+        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+        Iterable<OfferUse> offerUses = offerUseControl.getOfferUsesByOffer(offerItemPrice.getOfferItem().getOffer());
         Iterable<ContentCatalog> contentCatalogs = getContentCatalogsByOfferUses(offerUses);
         Iterable<ContentCatalogItem> contentCatalogItems = getContentCatalogItemsByContentCatalogs(contentCatalogs, offerItemPrice);
 
@@ -350,10 +351,10 @@ public class ContentLogic
 
     private Set<ContentCategory> getContentCategoriesByOffer(Offer offer) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
         Set<ContentCategory> contentCategories = new HashSet<>();
-        
-        offerControl.getOfferUsesByOffer(offer).stream().forEach((offerUse) -> {
+
+        offerUseControl.getOfferUsesByOffer(offer).stream().forEach((offerUse) -> {
             contentCategories.addAll(contentControl.getContentCategoriesByDefaultOfferUse(offerUse));
         });
         

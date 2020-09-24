@@ -20,7 +20,7 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.UseAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.offer.server.entity.Use;
@@ -35,8 +35,8 @@ import org.apache.lucene.util.BytesRef;
 
 public class UseIndexer
         extends BaseIndexer<Use> {
-    
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
+    UseControl useControl = (UseControl)Session.getModelController(UseControl.class);
 
     /** Creates a new instance of UseIndexer */
     public UseIndexer(final ExecutionErrorAccumulator eea, final Index index) {
@@ -50,13 +50,13 @@ public class UseIndexer
     
     @Override
     protected Use getEntity(final EntityInstance entityInstance) {
-        return offerControl.getUseByEntityInstance(entityInstance);
+        return useControl.getUseByEntityInstance(entityInstance);
     }
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final Use use) {
         UseDetail useDetail = use.getLastDetail();
-        String description = offerControl.getBestUseDescription(use, language);
+        String description = useControl.getBestUseDescription(use, language);
         Document document = new Document();
 
         document.add(new Field(IndexConstants.IndexField_EntityRef, use.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));

@@ -22,8 +22,7 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.order.server.control.OrderControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
@@ -43,8 +42,7 @@ public class WishlistLineTransferCache
     
     InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
     ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
     
     /** Creates a new instance of WishlistLineTransferCache */
@@ -70,7 +68,7 @@ public class WishlistLineTransferCache
             Long unformattedUnitAmount = orderLineDetail.getUnitAmount();
             String unitAmount = AmountUtils.getInstance().formatPriceLine(order.getLastDetail().getCurrency(), unformattedUnitAmount);
             String description = orderLineDetail.getDescription();
-            OfferUseTransfer offerUse = offerControl.getOfferUseTransfer(userVisit, wishlistLine.getOfferUse());
+            OfferUseTransfer offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlistLine.getOfferUse());
             WishlistTypePriorityTransfer wishlistTypePriority = wishlistControl.getWishlistTypePriorityTransfer(userVisit, wishlistLine.getWishlistTypePriority());
             AssociateReferralTransfer associateReferral = null; // TODO
             String comment = wishlistLine.getComment();
