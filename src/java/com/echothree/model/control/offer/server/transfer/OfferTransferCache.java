@@ -22,6 +22,7 @@ import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.party.common.transfer.DepartmentTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
@@ -45,6 +46,7 @@ public class OfferTransferCache
     
     OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
     FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+    OfferNameElementControl offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
     SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
@@ -122,7 +124,7 @@ public class OfferTransferCache
             }
 
             if(includeOfferNameElements) {
-                offerTransfer.setOfferNameElements(ListWrapperBuilder.getInstance().filter(transferProperties, offerControl.getOfferNameElementTransfers(userVisit)));
+                offerTransfer.setOfferNameElements(ListWrapperBuilder.getInstance().filter(transferProperties, offerNameElementControl.getOfferNameElementTransfers(userVisit)));
             }
         }
         

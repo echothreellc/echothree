@@ -23,6 +23,7 @@ import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -35,6 +36,7 @@ public class OfferItemTransferCache
     
     ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
     OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferItemControl offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
 
     boolean includeOfferItemPrices;
 
@@ -79,7 +81,8 @@ public class OfferItemTransferCache
             put(offerItem, offerItemTransfer);
 
             if(includeOfferItemPrices) {
-                offerItemTransfer.setOfferItemPrices(ListWrapperBuilder.getInstance().filter(transferProperties, offerControl.getOfferItemPriceTransfersByOfferItem(userVisit, offerItem)));
+                offerItemTransfer.setOfferItemPrices(ListWrapperBuilder.getInstance().filter(transferProperties,
+                        offerItemControl.getOfferItemPriceTransfersByOfferItem(userVisit, offerItem)));
             }
         }
         

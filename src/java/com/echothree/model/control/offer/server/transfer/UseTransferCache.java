@@ -19,6 +19,7 @@ package com.echothree.model.control.offer.server.transfer;
 import com.echothree.model.control.offer.common.transfer.UseTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseDetail;
@@ -28,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class UseTransferCache
         extends BaseOfferTransferCache<Use, UseTransfer> {
 
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    UseControl useControl = (UseControl)Session.getModelController(UseControl.class);
     UseTypeControl useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTransferCache */
@@ -47,7 +48,7 @@ public class UseTransferCache
             UseTypeTransfer useType = useTypeControl.getUseTypeTransfer(userVisit, useDetail.getUseType());
             Boolean isDefault = useDetail.getIsDefault();
             Integer sortOrder = useDetail.getSortOrder();
-            String description = offerControl.getBestUseDescription(use, getLanguage());
+            String description = useControl.getBestUseDescription(use, getLanguage());
             
             useTransfer = new UseTransfer(useName, useType, isDefault, sortOrder, description);
             put(use, useTransfer);

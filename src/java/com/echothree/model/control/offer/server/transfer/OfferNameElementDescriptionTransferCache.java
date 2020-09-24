@@ -17,9 +17,7 @@
 package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.OfferNameElementDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class OfferNameElementDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<OfferNameElementDescription, OfferNameElementDescriptionTransfer> {
 
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferNameElementControl offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementDescriptionTransferCache */
     public OfferNameElementDescriptionTransferCache(UserVisit userVisit) {
@@ -35,12 +33,11 @@ public class OfferNameElementDescriptionTransferCache
     }
     
     public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(OfferNameElementDescription offerNameElementDescription) {
-        OfferNameElementDescriptionTransfer offerNameElementDescriptionTransfer = get(offerNameElementDescription);
+        var offerNameElementDescriptionTransfer = get(offerNameElementDescription);
         
         if(offerNameElementDescriptionTransfer == null) {
-            OfferNameElementTransfer offerNameElementTransfer = offerControl.getOfferNameElementTransfer(userVisit,
-                    offerNameElementDescription.getOfferNameElement());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, offerNameElementDescription.getLanguage());
+            var offerNameElementTransfer = offerNameElementControl.getOfferNameElementTransfer(userVisit, offerNameElementDescription.getOfferNameElement());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, offerNameElementDescription.getLanguage());
             
             offerNameElementDescriptionTransfer = new OfferNameElementDescriptionTransfer(languageTransfer, offerNameElementTransfer,
                     offerNameElementDescription.getDescription());

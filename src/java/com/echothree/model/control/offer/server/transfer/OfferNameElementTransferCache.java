@@ -18,6 +18,7 @@ package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferNameElementDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -26,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class OfferNameElementTransferCache
         extends BaseOfferTransferCache<OfferNameElement, OfferNameElementTransfer> {
 
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferNameElementControl offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementTransferCache */
     public OfferNameElementTransferCache(UserVisit userVisit) {
@@ -44,7 +45,7 @@ public class OfferNameElementTransferCache
             Integer offset = offerNameElementDetail.getOffset();
             Integer length = offerNameElementDetail.getLength();
             String validationPattern = offerNameElementDetail.getValidationPattern();
-            String description = offerControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
+            String description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
             
             offerNameElementTransfer = new OfferNameElementTransfer(offerNameElementName, offset, length, validationPattern,
                     description);
