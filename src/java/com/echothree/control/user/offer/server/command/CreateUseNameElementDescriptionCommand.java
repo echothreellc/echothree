@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseNameElementDescriptionForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -67,9 +67,9 @@ public class CreateUseNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);
+        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -77,13 +77,13 @@ public class CreateUseNameElementDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescription(useNameElement,
+                UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement,
                         language);
                 
                 if(useNameElementDescription == null) {
                     var description = form.getDescription();
                     
-                    offerControl.createUseNameElementDescription(useNameElement, language, description, getPartyPK());
+                    useNameElementControl.createUseNameElementDescription(useNameElement, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateUseNameElementDescription.name());
                 }

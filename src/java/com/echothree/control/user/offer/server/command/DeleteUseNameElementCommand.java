@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteUseNameElementForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,12 +62,12 @@ public class DeleteUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = offerControl.getUseNameElementByNameForUpdate(useNameElementName);
+        UseNameElement useNameElement = useNameElementControl.getUseNameElementByNameForUpdate(useNameElementName);
         
         if(useNameElement != null) {
-            offerControl.deleteUseNameElement(useNameElement, getPartyPK());
+            useNameElementControl.deleteUseNameElement(useNameElement, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), useNameElementName);
         }

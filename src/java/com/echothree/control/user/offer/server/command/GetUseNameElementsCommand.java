@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetUseNameElementsForm;
 import com.echothree.control.user.offer.common.result.GetUseNameElementsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,17 +62,17 @@ public class GetUseNameElementsCommand
     
     @Override
     protected Collection<UseNameElement> getEntities() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         
-        return offerControl.getUseNameElements();
+        return useNameElementControl.getUseNameElements();
     }
     
     @Override
     protected BaseResult getTransfers(Collection<UseNameElement> entities) {
         GetUseNameElementsResult result = OfferResultFactory.getGetUseNameElementsResult();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
 
-        result.setUseNameElements(offerControl.getUseNameElementTransfers(getUserVisit(), entities));
+        result.setUseNameElements(useNameElementControl.getUseNameElementTransfers(getUserVisit(), entities));
         
         return result;
     }

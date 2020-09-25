@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseNameElementForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -67,9 +67,9 @@ public class CreateUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);
+        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement == null) {
             BasePK createdBy = getPartyPK();
@@ -78,10 +78,10 @@ public class CreateUseNameElementCommand
             String validationPattern = form.getValidationPattern();
             var description = form.getDescription();
             
-            useNameElement = offerControl.createUseNameElement(useNameElementName, offset, length, validationPattern, createdBy);
+            useNameElement = useNameElementControl.createUseNameElement(useNameElementName, offset, length, validationPattern, createdBy);
             
             if(description != null) {
-                offerControl.createUseNameElementDescription(useNameElement, getPreferredLanguage(), description, createdBy);
+                useNameElementControl.createUseNameElementDescription(useNameElement, getPreferredLanguage(), description, createdBy);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateUseNameElementName.name(), useNameElementName);

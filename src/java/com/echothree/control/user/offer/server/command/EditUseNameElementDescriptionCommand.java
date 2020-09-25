@@ -22,7 +22,7 @@ import com.echothree.control.user.offer.common.form.EditUseNameElementDescriptio
 import com.echothree.control.user.offer.common.result.EditUseNameElementDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseNameElementDescriptionSpec;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -78,10 +78,10 @@ public class EditUseNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         EditUseNameElementDescriptionResult result = OfferResultFactory.getEditUseNameElementDescriptionResult();
         String useNameElementName = spec.getUseNameElementName();
-        UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);
+        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -90,10 +90,10 @@ public class EditUseNameElementDescriptionCommand
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescription(useNameElement, language);
+                    UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language);
                     
                     if(useNameElementDescription != null) {
-                        result.setUseNameElementDescription(offerControl.getUseNameElementDescriptionTransfer(getUserVisit(), useNameElementDescription));
+                        result.setUseNameElementDescription(useNameElementControl.getUseNameElementDescriptionTransfer(getUserVisit(), useNameElementDescription));
                         
                         if(lockEntity(useNameElement)) {
                             UseNameElementDescriptionEdit edit = OfferEditFactory.getUseNameElementDescriptionEdit();
@@ -109,7 +109,7 @@ public class EditUseNameElementDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownUseNameElementDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    UseNameElementDescriptionValue useNameElementDescriptionValue = offerControl.getUseNameElementDescriptionValueForUpdate(useNameElement, language);
+                    UseNameElementDescriptionValue useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValueForUpdate(useNameElement, language);
                     
                     if(useNameElementDescriptionValue != null) {
                         if(lockEntityForUpdate(useNameElement)) {
@@ -118,7 +118,7 @@ public class EditUseNameElementDescriptionCommand
                                 
                                 useNameElementDescriptionValue.setDescription(description);
                                 
-                                offerControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, getPartyPK());
+                                useNameElementControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, getPartyPK());
                             } finally {
                                 unlockEntity(useNameElement);
                             }

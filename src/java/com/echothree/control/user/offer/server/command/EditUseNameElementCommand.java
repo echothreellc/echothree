@@ -22,7 +22,7 @@ import com.echothree.control.user.offer.common.form.EditUseNameElementForm;
 import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -81,18 +81,18 @@ public class EditUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         EditUseNameElementResult result = OfferResultFactory.getEditUseNameElementResult();
         
         if(editMode.equals(EditMode.LOCK)) {
             String useNameElementName = spec.getUseNameElementName();
-            UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);
+            UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
             
             if(useNameElement != null) {
-                result.setUseNameElement(offerControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
+                result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
                 
                 if(lockEntity(useNameElement)) {
-                    UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
+                    UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
                     UseNameElementEdit edit = OfferEditFactory.getUseNameElementEdit();
                     UseNameElementDetail useNameElementDetail = useNameElement.getLastDetail();
                     
@@ -115,18 +115,18 @@ public class EditUseNameElementCommand
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
             String useNameElementName = spec.getUseNameElementName();
-            UseNameElement useNameElement = offerControl.getUseNameElementByNameForUpdate(useNameElementName);
+            UseNameElement useNameElement = useNameElementControl.getUseNameElementByNameForUpdate(useNameElementName);
             
             if(useNameElement != null) {
                 useNameElementName = edit.getUseNameElementName();
-                UseNameElement duplicateUseNameElement = offerControl.getUseNameElementByName(useNameElementName);
+                UseNameElement duplicateUseNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
                 
                 if(duplicateUseNameElement == null || useNameElement.equals(duplicateUseNameElement)) {
                     if(lockEntityForUpdate(useNameElement)) {
                         try {
                             var partyPK = getPartyPK();
-                            UseNameElementDetailValue useNameElementDetailValue = offerControl.getUseNameElementDetailValueForUpdate(useNameElement);
-                            UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
+                            UseNameElementDetailValue useNameElementDetailValue = useNameElementControl.getUseNameElementDetailValueForUpdate(useNameElement);
+                            UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
                             String description = edit.getDescription();
                             
                             useNameElementDetailValue.setUseNameElementName(edit.getUseNameElementName());
@@ -134,17 +134,17 @@ public class EditUseNameElementCommand
                             useNameElementDetailValue.setLength(Integer.valueOf(edit.getLength()));
                             useNameElementDetailValue.setValidationPattern(edit.getValidationPattern());
                             
-                            offerControl.updateUseNameElementFromValue(useNameElementDetailValue, partyPK);
+                            useNameElementControl.updateUseNameElementFromValue(useNameElementDetailValue, partyPK);
                             
                             if(useNameElementDescription == null && description != null) {
-                                offerControl.createUseNameElementDescription(useNameElement, getPreferredLanguage(), description, partyPK);
+                                useNameElementControl.createUseNameElementDescription(useNameElement, getPreferredLanguage(), description, partyPK);
                             } else if(useNameElementDescription != null && description == null) {
-                                offerControl.deleteUseNameElementDescription(useNameElementDescription, partyPK);
+                                useNameElementControl.deleteUseNameElementDescription(useNameElementDescription, partyPK);
                             } else if(useNameElementDescription != null && description != null) {
-                                UseNameElementDescriptionValue useNameElementDescriptionValue = offerControl.getUseNameElementDescriptionValue(useNameElementDescription);
+                                UseNameElementDescriptionValue useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValue(useNameElementDescription);
                                 
                                 useNameElementDescriptionValue.setDescription(description);
-                                offerControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, partyPK);
+                                useNameElementControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, partyPK);
                             }
                         } finally {
                             unlockEntity(useNameElement);

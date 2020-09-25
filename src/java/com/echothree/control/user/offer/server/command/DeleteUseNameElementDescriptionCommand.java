@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteUseNameElementDescriptionForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,9 +66,9 @@ public class DeleteUseNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);
+        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -76,10 +76,10 @@ public class DeleteUseNameElementDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescriptionForUpdate(useNameElement, language);
+                UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, language);
                 
                 if(useNameElementDescription != null) {
-                    offerControl.deleteUseNameElementDescription(useNameElementDescription, getPartyPK());
+                    useNameElementControl.deleteUseNameElementDescription(useNameElementDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUseNameElementDescription.name());
                 }

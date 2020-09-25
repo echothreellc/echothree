@@ -18,7 +18,7 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseNameElementForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +61,9 @@ public class GetUseNameElementCommand
     
     @Override
     protected UseNameElement getEntity() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         var sourceName = form.getUseNameElementName();
-        var source = offerControl.getUseNameElementByName(sourceName);
+        var source = useNameElementControl.getUseNameElementByName(sourceName);
         
         if(source == null) {
             addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), sourceName);
@@ -74,11 +74,11 @@ public class GetUseNameElementCommand
     
     @Override
     protected BaseResult getTransfer(UseNameElement source) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         var result = OfferResultFactory.getGetUseNameElementResult();
         
         if(source != null) {
-            result.setUseNameElement(offerControl.getUseNameElementTransfer(getUserVisit(), source));
+            result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), source));
         }
         
         return result;
