@@ -53,7 +53,7 @@ public class CreateMimeTypeUsageCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         String mimeTypeName = form.getMimeTypeName();
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 

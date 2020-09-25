@@ -196,7 +196,7 @@ public class GetContentCatalogItemCommand
         GetContentCatalogItemResult result = ContentResultFactory.getGetContentCatalogItemResult();
 
         if (contentCatalogItem != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             result.setContentCatalogItem(contentControl.getContentCatalogItemTransfer(getUserVisit(), contentCatalogItem));
         }

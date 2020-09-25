@@ -66,7 +66,7 @@ public class UserVisitSearchFacetLogic
     }
     
     private List<EntityIntegerRangeDetail> getEntityIntegerRangeDetails(final EntityAttribute entityAttribute) {
-        final CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        final var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         final List<EntityIntegerRange> entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
         final List<EntityIntegerRangeDetail> entityIntegerRangeDetails = new ArrayList<>(entityIntegerRanges.size());
         
@@ -78,7 +78,7 @@ public class UserVisitSearchFacetLogic
     }
     
     private List<EntityLongRangeDetail> getEntityLongRangeDetails(final EntityAttribute entityAttribute) {
-        final CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        final var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         final List<EntityLongRange> entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
         final List<EntityLongRangeDetail> entityLongRangeDetails = new ArrayList<>(entityLongRanges.size());
         

@@ -128,7 +128,7 @@ public class GetContentCategoryCommand
         GetContentCategoryResult result = ContentResultFactory.getGetContentCategoryResult();
 
         if (contentCategory != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             result.setContentCategory(contentControl.getContentCategoryTransfer(getUserVisit(), contentCategory));
         }
