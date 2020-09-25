@@ -18,7 +18,7 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferNameElementForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,9 +61,9 @@ public class GetOfferNameElementCommand
     
     @Override
     protected OfferNameElement getEntity() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
         var offerNameElementName = form.getOfferNameElementName();
-        var offerNameElement = offerControl.getOfferNameElementByName(offerNameElementName);
+        var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement == null) {
             addExecutionError(ExecutionErrors.UnknownOfferNameElementName.name(), offerNameElementName);
@@ -74,11 +74,11 @@ public class GetOfferNameElementCommand
     
     @Override
     protected BaseResult getTransfer(OfferNameElement offerNameElement) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
         var result = OfferResultFactory.getGetOfferNameElementResult();
         
         if(offerNameElement != null) {
-            result.setOfferNameElement(offerControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));
+            result.setOfferNameElement(offerNameElementControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));
         }
         
         return result;

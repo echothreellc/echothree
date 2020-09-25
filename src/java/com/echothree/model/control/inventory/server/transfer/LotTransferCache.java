@@ -38,7 +38,7 @@ import java.util.Set;
 public class LotTransferCache
         extends BaseInventoryTransferCache<Lot, LotTransfer> {
 
-    AccountingControl accountingControl = (AccountingControl) Session.getModelController(AccountingControl.class);
+    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
     ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);

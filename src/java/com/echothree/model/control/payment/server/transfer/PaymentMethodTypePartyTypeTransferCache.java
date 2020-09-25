@@ -28,7 +28,7 @@ public class PaymentMethodTypePartyTypeTransferCache
         extends BasePaymentTransferCache<PaymentMethodTypePartyType, PaymentMethodTypePartyTypeTransfer> {
     
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl) Session.getModelController(PaymentMethodTypeControl.class);
+    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of PaymentMethodTypePartyTypeTransferCache */

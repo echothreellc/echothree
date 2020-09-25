@@ -19,7 +19,10 @@ package com.echothree.control.user.content.server.command;
 import com.echothree.control.user.content.common.form.CreateContentCatalogForm;
 import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,13 +32,12 @@ import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -87,20 +89,22 @@ public class CreateContentCatalogCommand
             ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog == null) {
-                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                 String defaultOfferName = form.getDefaultOfferName();
                 String defaultUseName = form.getDefaultUseName();
                 String defaultSourceName = form.getDefaultSourceName();
                 OfferUse defaultOfferUse = null;
 
                 if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
+                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                     Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
                     
                     if(defaultOffer != null) {
-                        Use defaultUse = offerControl.getUseByName(defaultUseName);
+                        var useControl = (UseControl)Session.getModelController(UseControl.class);
+                        Use defaultUse = useControl.getUseByName(defaultUseName);
                         
                         if(defaultUse != null) {
-                            defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
+                            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                            defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                             
                             if(defaultOfferUse == null) {
                                 addExecutionError(ExecutionErrors.UnknownDefaultOfferUse.name());
@@ -112,7 +116,8 @@ public class CreateContentCatalogCommand
                         addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                     }
                 } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                    Source source = offerControl.getSourceByName(defaultSourceName);
+                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                    Source source = sourceControl.getSourceByName(defaultSourceName);
                     
                     if(source != null) {
                         defaultOfferUse = source.getLastDetail().getOfferUse();

@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetSourceChoicesForm;
 import com.echothree.control.user.offer.common.result.GetSourceChoicesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -63,12 +63,12 @@ public class GetSourceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         GetSourceChoicesResult result = OfferResultFactory.getGetSourceChoicesResult();
         String defaultSourceChoice = form.getDefaultSourceChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setSourceChoices(offerControl.getSourceChoices(defaultSourceChoice, getPreferredLanguage(), allowNullChoice));
+        result.setSourceChoices(sourceControl.getSourceChoices(defaultSourceChoice, getPreferredLanguage(), allowNullChoice));
         
         return result;
     }

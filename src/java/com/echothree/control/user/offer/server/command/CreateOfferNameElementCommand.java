@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferNameElementForm;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -67,9 +67,9 @@ public class CreateOfferNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
         String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerControl.getOfferNameElementByName(offerNameElementName);
+        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement == null) {
             BasePK createdBy = getPartyPK();
@@ -78,11 +78,11 @@ public class CreateOfferNameElementCommand
             String validationPattern = form.getValidationPattern();
             var description = form.getDescription();
             
-            offerNameElement = offerControl.createOfferNameElement(offerNameElementName, offset, length, validationPattern,
+            offerNameElement = offerNameElementControl.createOfferNameElement(offerNameElementName, offset, length, validationPattern,
                     createdBy);
             
             if(description != null) {
-                offerControl.createOfferNameElementDescription(offerNameElement, getPreferredLanguage(), description, createdBy);
+                offerNameElementControl.createOfferNameElementDescription(offerNameElement, getPreferredLanguage(), description, createdBy);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateOfferNameElementName.name(), offerNameElementName);

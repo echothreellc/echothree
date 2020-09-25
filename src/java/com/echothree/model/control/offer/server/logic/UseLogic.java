@@ -17,7 +17,8 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.offer.common.exception.UnknownUseNameException;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -40,8 +41,8 @@ public class UseLogic
     }
     
     public Use getUseByName(final ExecutionErrorAccumulator eea, final String useName) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        Use use = offerControl.getUseByName(useName);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        Use use = useControl.getUseByName(useName);
 
         if(use == null) {
             handleExecutionError(UnknownUseNameException.class, eea, ExecutionErrors.UnknownUseName.name(), useName);

@@ -127,7 +127,7 @@ public class GetContentPageCommand
         GetContentPageResult result = ContentResultFactory.getGetContentPageResult();
 
         if (contentPage != null) {
-            ContentControl contentControl = (ContentControl) Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             result.setContentPage(contentControl.getContentPageTransfer(getUserVisit(), contentPage));
         }

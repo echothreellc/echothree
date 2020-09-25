@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetUseNameElementDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetUseNameElementDescriptionsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,14 +64,14 @@ public class GetUseNameElementDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
         GetUseNameElementDescriptionsResult result = OfferResultFactory.getGetUseNameElementDescriptionsResult();
         String useNameElementName = form.getUseNameElementName();
-        UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);
+        UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
-            result.setUseNameElement(offerControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
-            result.setUseNameElementDescriptions(offerControl.getUseNameElementDescriptionTransfers(getUserVisit(), useNameElement));
+            result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
+            result.setUseNameElementDescriptions(useNameElementControl.getUseNameElementDescriptionTransfers(getUserVisit(), useNameElement));
         } else {
             addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), useNameElementName);
         }

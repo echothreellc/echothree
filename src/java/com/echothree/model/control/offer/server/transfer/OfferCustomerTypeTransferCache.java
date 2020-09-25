@@ -20,7 +20,7 @@ import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -29,10 +29,11 @@ public class OfferCustomerTypeTransferCache
         extends BaseOfferTransferCache<OfferCustomerType, OfferCustomerTypeTransfer> {
     
     CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-    
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
     /** Creates a new instance of OfferCustomerTypeTransferCache */
-    public OfferCustomerTypeTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferCustomerTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(OfferCustomerType offerCustomerType) {

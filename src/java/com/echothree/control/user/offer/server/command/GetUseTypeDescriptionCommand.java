@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetUseTypeDescriptionForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.result.GetUseTypeDescriptionResult;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,10 +68,10 @@ public class GetUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         GetUseTypeDescriptionResult result = OfferResultFactory.getGetUseTypeDescriptionResult();
         String useTypeName = form.getUseTypeName();
-        UseType useType = offerControl.getUseTypeByName(useTypeName);
+        UseType useType = useTypeControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -79,10 +79,10 @@ public class GetUseTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseTypeDescription useTypeDescription = offerControl.getUseTypeDescription(useType, language);
+                UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescription(useType, language);
                 
                 if(useTypeDescription != null) {
-                    result.setUseTypeDescription(offerControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
+                    result.setUseTypeDescription(useTypeControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUseTypeDescription.name(), useTypeName, languageIsoName);
                 }

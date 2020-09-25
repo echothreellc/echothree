@@ -18,7 +18,10 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateSourceForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -65,29 +68,32 @@ public class CreateSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var result = OfferResultFactory.getCreateSourceResult();
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var result = OfferResultFactory.getCreateSourceResult();
         Source source = null;
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
+            var useControl = (UseControl)Session.getModelController(UseControl.class);
             var useName = form.getUseName();
-            var use = offerControl.getUseByName(useName);
+            var use = useControl.getUseByName(useName);
             
             if(use != null) {
-                var offerUse = offerControl.getOfferUse(offer, use);
+                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                var offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse != null) {
+                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
                     var sourceName = form.getSourceName();
 
-                    source = offerControl.getSourceByName(sourceName);
+                    source = sourceControl.getSourceByName(sourceName);
                     
                     if(source == null) {
                         var isDefault = Boolean.valueOf(form.getIsDefault());
                         var sortOrder = Integer.valueOf(form.getSortOrder());
                         
-                        source = offerControl.createSource(sourceName, offerUse, isDefault, sortOrder, getPartyPK());
+                        source = sourceControl.createSource(sourceName, offerUse, isDefault, sortOrder, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
                     }

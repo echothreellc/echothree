@@ -38,7 +38,7 @@ public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
 
     PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
-    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl) Session.getModelController(PaymentMethodTypeControl.class);
+    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
     PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
 
     boolean includeComments;

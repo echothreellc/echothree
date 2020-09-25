@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteSourceForm;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,15 +62,15 @@ public class DeleteSourceCommand
 
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         String sourceName = form.getSourceName();
-        Source source = offerControl.getSourceByNameForUpdate(sourceName);
+        Source source = sourceControl.getSourceByNameForUpdate(sourceName);
 
         if(source != null) {
             OfferUse offerUse = source.getLastDetail().getOfferUse();
 
-            if(offerControl.countSourcesByOfferUse(offerUse) > 1) {
-                offerControl.deleteSource(source, getPartyPK());
+            if(sourceControl.countSourcesByOfferUse(offerUse) > 1) {
+                sourceControl.deleteSource(source, getPartyPK());
             } else {
                 OfferUseDetail offerUseDetail = offerUse.getLastDetail();
                 

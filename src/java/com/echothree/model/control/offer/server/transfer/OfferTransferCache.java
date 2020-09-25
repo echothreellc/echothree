@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.party.common.transfer.DepartmentTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
@@ -44,8 +44,9 @@ import java.util.Set;
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
     FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+    OfferNameElementControl offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
     SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
@@ -65,8 +66,8 @@ public class OfferTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of OfferTransferCache */
-    public OfferTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         Set<String> options = session.getOptions();
         if(options != null) {
@@ -123,7 +124,7 @@ public class OfferTransferCache
             }
 
             if(includeOfferNameElements) {
-                offerTransfer.setOfferNameElements(ListWrapperBuilder.getInstance().filter(transferProperties, offerControl.getOfferNameElementTransfers(userVisit)));
+                offerTransfer.setOfferNameElements(ListWrapperBuilder.getInstance().filter(transferProperties, offerNameElementControl.getOfferNameElementTransfers(userVisit)));
             }
         }
         

@@ -22,7 +22,8 @@ import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -38,10 +39,10 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -100,7 +101,8 @@ public class GetOfferItemPriceCommand
             Item item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                OfferItem offerItem = offerControl.getOfferItem(offer, item);
+                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
 
                 if(offerItem != null) {
                     var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
@@ -119,7 +121,7 @@ public class GetOfferItemPriceCommand
                             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
                             if(currency != null) {
-                                offerItemPrice = offerControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
+                                offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
 
                                 if(offerItemPrice == null) {
                                     addExecutionError(ExecutionErrors.UnknownOfferItemPrice.name(), offer.getLastDetail().getOfferName(),
@@ -152,16 +154,16 @@ public class GetOfferItemPriceCommand
     
     @Override
     protected BaseResult getTransfer(OfferItemPrice offerItemPrice) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetOfferItemPriceResult result = OfferResultFactory.getGetOfferItemPriceResult();
 
         if(offerItemPrice != null) {
+            var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
             UserVisit userVisit = getUserVisit();
 
-            result.setOfferItemPrice(offerControl.getOfferItemPriceTransfer(userVisit, offerItemPrice));
+            result.setOfferItemPrice(offerItemControl.getOfferItemPriceTransfer(userVisit, offerItemPrice));
 
             if(Boolean.parseBoolean(form.getIncludeHistory())) {
-                result.setHistory(offerControl.getOfferItemPriceHistory(userVisit, offerItemPrice));
+                result.setHistory(offerItemControl.getOfferItemPriceHistory(userVisit, offerItemPrice));
             }
         }
         

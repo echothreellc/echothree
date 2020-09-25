@@ -18,17 +18,20 @@ package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.common.transfer.SourceTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.offer.server.entity.SourceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class SourceTransferCache
         extends BaseOfferTransferCache<Source, SourceTransfer> {
-    
+
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
     /** Creates a new instance of SourceTransferCache */
-    public SourceTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public SourceTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public SourceTransfer getSourceTransfer(Source source) {
@@ -37,7 +40,7 @@ public class SourceTransferCache
         if(sourceTransfer == null) {
             SourceDetail sourceDetail = source.getLastDetail();
             String sourceName = sourceDetail.getSourceName();
-            OfferUseTransfer offerUseTransfer = offerControl.getOfferUseTransfer(userVisit, sourceDetail.getOfferUse());
+            OfferUseTransfer offerUseTransfer = offerUseControl.getOfferUseTransfer(userVisit, sourceDetail.getOfferUse());
             Boolean isDefault = sourceDetail.getIsDefault();
             Integer sortOrder = sourceDetail.getSortOrder();
             

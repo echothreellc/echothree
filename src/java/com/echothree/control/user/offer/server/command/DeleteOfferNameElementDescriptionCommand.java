@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteOfferNameElementDescriptionForm;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,9 +66,9 @@ public class DeleteOfferNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
         String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerControl.getOfferNameElementByName(offerNameElementName);
+        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -76,10 +76,10 @@ public class DeleteOfferNameElementDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OfferNameElementDescription offerNameElementDescription = offerControl.getOfferNameElementDescriptionForUpdate(offerNameElement, language);
+                OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, language);
                 
                 if(offerNameElementDescription != null) {
-                    offerControl.deleteOfferNameElementDescription(offerNameElementDescription, getPartyPK());
+                    offerNameElementControl.deleteOfferNameElementDescription(offerNameElementDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOfferNameElementDescription.name());
                 }

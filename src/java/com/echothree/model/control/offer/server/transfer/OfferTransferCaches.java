@@ -16,14 +16,11 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
 public class OfferTransferCaches
         extends BaseTransferCaches {
-    
-    protected OfferControl offerControl;
     
     protected OfferTransferCache offerTransferCache;
     protected OfferDescriptionTransferCache offerDescriptionTransferCache;
@@ -43,120 +40,118 @@ public class OfferTransferCaches
     protected OfferChainTypeTransferCache offerChainTypeTransferCache;
     
     /** Creates a new instance of OfferTransferCaches */
-    public OfferTransferCaches(UserVisit userVisit, OfferControl offerControl) {
+    public OfferTransferCaches(UserVisit userVisit) {
         super(userVisit);
-        
-        this.offerControl = offerControl;
     }
     
     public OfferTransferCache getOfferTransferCache() {
         if(offerTransferCache == null)
-            offerTransferCache = new OfferTransferCache(userVisit, offerControl);
+            offerTransferCache = new OfferTransferCache(userVisit);
         
         return offerTransferCache;
     }
     
     public OfferDescriptionTransferCache getOfferDescriptionTransferCache() {
         if(offerDescriptionTransferCache == null)
-            offerDescriptionTransferCache = new OfferDescriptionTransferCache(userVisit, offerControl);
+            offerDescriptionTransferCache = new OfferDescriptionTransferCache(userVisit);
         
         return offerDescriptionTransferCache;
     }
     
     public OfferUseTransferCache getOfferUseTransferCache() {
         if(offerUseTransferCache == null)
-            offerUseTransferCache = new OfferUseTransferCache(userVisit, offerControl);
+            offerUseTransferCache = new OfferUseTransferCache(userVisit);
         
         return offerUseTransferCache;
     }
     
     public SourceTransferCache getSourceTransferCache() {
         if(sourceTransferCache == null)
-            sourceTransferCache = new SourceTransferCache(userVisit, offerControl);
+            sourceTransferCache = new SourceTransferCache(userVisit);
         
         return sourceTransferCache;
     }
     
     public OfferItemPriceTransferCache getOfferItemPriceTransferCache() {
         if(offerItemPriceTransferCache == null)
-            offerItemPriceTransferCache = new OfferItemPriceTransferCache(userVisit, offerControl);
+            offerItemPriceTransferCache = new OfferItemPriceTransferCache(userVisit);
         
         return offerItemPriceTransferCache;
     }
     
     public OfferItemTransferCache getOfferItemTransferCache() {
         if(offerItemTransferCache == null)
-            offerItemTransferCache = new OfferItemTransferCache(userVisit, offerControl);
+            offerItemTransferCache = new OfferItemTransferCache(userVisit);
         
         return offerItemTransferCache;
     }
     
     public OfferNameElementDescriptionTransferCache getOfferNameElementDescriptionTransferCache() {
         if(offerNameElementDescriptionTransferCache == null)
-            offerNameElementDescriptionTransferCache = new OfferNameElementDescriptionTransferCache(userVisit, offerControl);
+            offerNameElementDescriptionTransferCache = new OfferNameElementDescriptionTransferCache(userVisit);
         
         return offerNameElementDescriptionTransferCache;
     }
     
     public OfferNameElementTransferCache getOfferNameElementTransferCache() {
         if(offerNameElementTransferCache == null)
-            offerNameElementTransferCache = new OfferNameElementTransferCache(userVisit, offerControl);
+            offerNameElementTransferCache = new OfferNameElementTransferCache(userVisit);
         
         return offerNameElementTransferCache;
     }
     
     public UseNameElementDescriptionTransferCache getUseNameElementDescriptionTransferCache() {
         if(useNameElementDescriptionTransferCache == null)
-            useNameElementDescriptionTransferCache = new UseNameElementDescriptionTransferCache(userVisit, offerControl);
+            useNameElementDescriptionTransferCache = new UseNameElementDescriptionTransferCache(userVisit);
         
         return useNameElementDescriptionTransferCache;
     }
     
     public UseNameElementTransferCache getUseNameElementTransferCache() {
         if(useNameElementTransferCache == null)
-            useNameElementTransferCache = new UseNameElementTransferCache(userVisit, offerControl);
+            useNameElementTransferCache = new UseNameElementTransferCache(userVisit);
         
         return useNameElementTransferCache;
     }
     
     public UseDescriptionTransferCache getUseDescriptionTransferCache() {
         if(useDescriptionTransferCache == null)
-            useDescriptionTransferCache = new UseDescriptionTransferCache(userVisit, offerControl);
+            useDescriptionTransferCache = new UseDescriptionTransferCache(userVisit);
         
         return useDescriptionTransferCache;
     }
     
     public UseTransferCache getUseTransferCache() {
         if(useTransferCache == null)
-            useTransferCache = new UseTransferCache(userVisit, offerControl);
+            useTransferCache = new UseTransferCache(userVisit);
         
         return useTransferCache;
     }
     
     public UseTypeDescriptionTransferCache getUseTypeDescriptionTransferCache() {
         if(useTypeDescriptionTransferCache == null)
-            useTypeDescriptionTransferCache = new UseTypeDescriptionTransferCache(userVisit, offerControl);
+            useTypeDescriptionTransferCache = new UseTypeDescriptionTransferCache(userVisit);
         
         return useTypeDescriptionTransferCache;
     }
     
     public UseTypeTransferCache getUseTypeTransferCache() {
         if(useTypeTransferCache == null)
-            useTypeTransferCache = new UseTypeTransferCache(userVisit, offerControl);
+            useTypeTransferCache = new UseTypeTransferCache(userVisit);
         
         return useTypeTransferCache;
     }
     
     public OfferCustomerTypeTransferCache getOfferCustomerTypeTransferCache() {
         if(offerCustomerTypeTransferCache == null)
-            offerCustomerTypeTransferCache = new OfferCustomerTypeTransferCache(userVisit, offerControl);
+            offerCustomerTypeTransferCache = new OfferCustomerTypeTransferCache(userVisit);
         
         return offerCustomerTypeTransferCache;
     }
     
     public OfferChainTypeTransferCache getOfferChainTypeTransferCache() {
         if(offerChainTypeTransferCache == null)
-            offerChainTypeTransferCache = new OfferChainTypeTransferCache(userVisit, offerControl);
+            offerChainTypeTransferCache = new OfferChainTypeTransferCache(userVisit);
         
         return offerChainTypeTransferCache;
     }

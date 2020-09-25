@@ -22,7 +22,7 @@ import com.echothree.control.user.offer.common.form.EditUseDescriptionForm;
 import com.echothree.control.user.offer.common.result.EditUseDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseDescriptionSpec;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -78,10 +78,10 @@ public class EditUseDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         EditUseDescriptionResult result = OfferResultFactory.getEditUseDescriptionResult();
         String useName = spec.getUseName();
-        Use use = offerControl.getUseByName(useName);
+        Use use = useControl.getUseByName(useName);
         
         if(use != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -90,10 +90,10 @@ public class EditUseDescriptionCommand
             
             if(language != null) {
                 if(editMode.equals(EditMode.LOCK)) {
-                    UseDescription useDescription = offerControl.getUseDescription(use, language);
+                    UseDescription useDescription = useControl.getUseDescription(use, language);
                     
                     if(useDescription != null) {
-                        result.setUseDescription(offerControl.getUseDescriptionTransfer(getUserVisit(), useDescription));
+                        result.setUseDescription(useControl.getUseDescriptionTransfer(getUserVisit(), useDescription));
                         
                         if(lockEntity(use)) {
                             UseDescriptionEdit edit = OfferEditFactory.getUseDescriptionEdit();
@@ -109,7 +109,7 @@ public class EditUseDescriptionCommand
                         addExecutionError(ExecutionErrors.UnknownUseDescription.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    UseDescriptionValue useDescriptionValue = offerControl.getUseDescriptionValueForUpdate(use, language);
+                    UseDescriptionValue useDescriptionValue = useControl.getUseDescriptionValueForUpdate(use, language);
                     
                     if(useDescriptionValue != null) {
                         if(lockEntityForUpdate(use)) {
@@ -118,7 +118,7 @@ public class EditUseDescriptionCommand
                                 
                                 useDescriptionValue.setDescription(description);
                                 
-                                offerControl.updateUseDescriptionFromValue(useDescriptionValue, getPartyPK());
+                                useControl.updateUseDescriptionFromValue(useDescriptionValue, getPartyPK());
                             } finally {
                                 unlockEntity(use);
                             }

@@ -18,17 +18,20 @@ package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.OfferDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.offer.server.entity.OfferDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class OfferDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<OfferDescription, OfferDescriptionTransfer> {
-    
+
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
     /** Creates a new instance of OfferDescriptionTransferCache */
-    public OfferDescriptionTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OfferDescriptionTransfer getOfferDescriptionTransfer(OfferDescription offerDescription) {

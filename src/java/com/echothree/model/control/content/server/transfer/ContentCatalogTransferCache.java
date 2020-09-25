@@ -23,7 +23,7 @@ import com.echothree.model.control.content.common.transfer.ContentCategoryTransf
 import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -36,7 +36,7 @@ import java.util.Set;
 public class ContentCatalogTransferCache
         extends BaseContentTransferCache<ContentCatalog, ContentCatalogTransfer> {
 
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     
     boolean includeContentCatalogItems;
     boolean includeContentCatalogCategories;
@@ -91,7 +91,7 @@ public class ContentCatalogTransferCache
             ContentCollectionTransfer contentCollectionTransfer = filterContentCollection ? null : contentControl.getContentCollectionTransfer(userVisit, contentCatalogDetail.getContentCollection());
             String contentCatalogName = filterContentCatalogName ? null : contentCatalogDetail.getContentCatalogName();
             OfferUse defaultOfferUse = filterDefaultOfferUse ? null : contentCatalogDetail.getDefaultOfferUse();
-            OfferUseTransfer defaultOfferUseTransfer = defaultOfferUse == null ? null : offerControl.getOfferUseTransfer(userVisit, defaultOfferUse);
+            OfferUseTransfer defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
             Boolean isDefault = filterIsDefault ? null : contentCatalogDetail.getIsDefault();
             Integer sortOrder = filterSortOrder ? null : contentCatalogDetail.getSortOrder();
             String description = filterDescription ? null : contentControl.getBestContentCatalogDescription(contentCatalog, getLanguage());

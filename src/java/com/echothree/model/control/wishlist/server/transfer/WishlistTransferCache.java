@@ -19,7 +19,7 @@ package com.echothree.model.control.wishlist.server.transfer;
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
@@ -35,7 +35,7 @@ public class WishlistTransferCache
         extends BaseWishlistTransferCache<Order, WishlistTransfer> {
     
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     OrderTypeControl orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
     
     /** Creates a new instance of WishlistTransferCache */
@@ -54,7 +54,7 @@ public class WishlistTransferCache
             OrderTypeTransfer orderType = orderTypeControl.getOrderTypeTransfer(userVisit, orderDetail.getOrderType());
             String orderName = orderDetail.getOrderName();
             CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, orderDetail.getCurrency());
-            OfferUseTransfer offerUse = offerControl.getOfferUseTransfer(userVisit, wishlist.getOfferUse());
+            OfferUseTransfer offerUse = offerUseControl.getOfferUseTransfer(userVisit, wishlist.getOfferUse());
             WishlistTypeTransfer wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
             
             wishlistTransfer = new WishlistTransfer(orderType, orderName, currency, offerUse, wishlistType);

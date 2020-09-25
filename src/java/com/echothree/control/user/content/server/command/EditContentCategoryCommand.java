@@ -24,7 +24,10 @@ import com.echothree.control.user.content.common.result.EditContentCategoryResul
 import com.echothree.control.user.content.common.spec.ContentCategorySpec;
 import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -34,16 +37,13 @@ import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDescription;
-import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.value.ContentCategoryDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentCategoryDetailValue;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.OfferUseDetail;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
@@ -51,10 +51,10 @@ import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -166,13 +166,13 @@ public class EditContentCategoryCommand
     @Override
     public void doLock(ContentCategoryEdit edit, ContentCategory contentCategory) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         var contentCategoryDescription = contentControl.getContentCategoryDescription(contentCategory, getPreferredLanguage());
         var contentCategoryDetail = contentCategory.getLastDetail();
         var parentContentCategory = contentCategoryDetail.getParentContentCategory();
         var defaultOfferUse = contentCategoryDetail.getDefaultOfferUse();
         var defaultOfferUseDetail = defaultOfferUse == null ? null : defaultOfferUse.getLastDetail();
-        var sources = defaultOfferUse == null ? null : offerControl.getSourcesByOfferUse(defaultOfferUse); // List of Sources if there are any for the OfferUse
+        var sources = defaultOfferUse == null ? null : sourceControl.getSourcesByOfferUse(defaultOfferUse); // List of Sources if there are any for the OfferUse
         var defaultSourceName = sources == null ? null : sources.iterator().next().getLastDetail().getSourceName(); // From the List, the first available Source's SourceName
         var contentCategoryItemSelector = contentCategoryDetail.getContentCategoryItemSelector();
 
@@ -218,10 +218,12 @@ public class EditContentCategoryCommand
                         Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                         if(defaultOffer != null) {
-                            Use defaultUse = offerControl.getUseByName(defaultUseName);
+                            var useControl = (UseControl)Session.getModelController(UseControl.class);
+                            Use defaultUse = useControl.getUseByName(defaultUseName);
 
                             if(defaultUse != null) {
-                                defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
+                                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                                defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                                 if(defaultOfferUse == null) {
                                     addExecutionError(ExecutionErrors.UnknownDefaultOfferUse.name());
@@ -233,7 +235,8 @@ public class EditContentCategoryCommand
                             addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                         }
                     } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                        Source source = offerControl.getSourceByName(defaultSourceName);
+                        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                        Source source = sourceControl.getSourceByName(defaultSourceName);
 
                         if(source != null) {
                             defaultOfferUse = source.getLastDetail().getOfferUse();

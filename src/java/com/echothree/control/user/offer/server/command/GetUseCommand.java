@@ -20,7 +20,9 @@ import com.echothree.control.user.offer.common.form.GetUseForm;
 import com.echothree.control.user.offer.common.result.GetUseResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -66,9 +68,9 @@ public class GetUseCommand
     
     @Override
     protected Use getEntity() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         String useName = form.getUseName();
-        Use use = offerControl.getUseByName(useName);
+        Use use = useControl.getUseByName(useName);
         
         if(use != null) {
             sendEventUsingNames(use.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
@@ -81,14 +83,15 @@ public class GetUseCommand
     
     @Override
     protected BaseResult getTransfer(Use use) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetUseResult result = OfferResultFactory.getGetUseResult();
         
         if(use != null) {
+            var useControl = (UseControl)Session.getModelController(UseControl.class);
+            var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
             UserVisit userVisit = getUserVisit();
             
-            result.setUse(offerControl.getUseTransfer(userVisit, use));
-            result.setUseNameElements(offerControl.getUseNameElementTransfers(userVisit));
+            result.setUse(useControl.getUseTransfer(userVisit, use));
+            result.setUseNameElements(useNameElementControl.getUseNameElementTransfers(userVisit));
         }
         
         return result;

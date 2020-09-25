@@ -19,10 +19,10 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.UseTypeEdit;
 import com.echothree.control.user.offer.common.form.EditUseTypeForm;
-import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.result.EditUseTypeResult;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,7 +32,6 @@ import com.echothree.model.data.offer.server.entity.UseTypeDescription;
 import com.echothree.model.data.offer.server.entity.UseTypeDetail;
 import com.echothree.model.data.offer.server.value.UseTypeDescriptionValue;
 import com.echothree.model.data.offer.server.value.UseTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -104,15 +103,15 @@ public class EditUseTypeCommand
     
     @Override
     public void fillInResult(EditUseTypeResult result, UseType useType) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         
-        result.setUseType(offerControl.getUseTypeTransfer(getUserVisit(), useType));
+        result.setUseType(useTypeControl.getUseTypeTransfer(getUserVisit(), useType));
     }
     
     @Override
     public void doLock(UseTypeEdit edit, UseType useType) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        UseTypeDescription useTypeDescription = offerControl.getUseTypeDescription(useType, getPreferredLanguage());
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescription(useType, getPreferredLanguage());
         UseTypeDetail useTypeDetail = useType.getLastDetail();
         
         edit.setUseTypeName(useTypeDetail.getUseTypeName());
@@ -126,9 +125,9 @@ public class EditUseTypeCommand
         
     @Override
     public void canUpdate(UseType useType) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         String useTypeName = edit.getUseTypeName();
-        UseType duplicateUseType = offerControl.getUseTypeByName(useTypeName);
+        UseType duplicateUseType = useTypeControl.getUseTypeByName(useTypeName);
 
         if(duplicateUseType != null && !useType.equals(duplicateUseType)) {
             addExecutionError(ExecutionErrors.DuplicateUseTypeName.name(), useTypeName);
@@ -137,27 +136,27 @@ public class EditUseTypeCommand
     
     @Override
     public void doUpdate(UseType useType) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         var partyPK = getPartyPK();
-        UseTypeDetailValue useTypeDetailValue = offerControl.getUseTypeDetailValueForUpdate(useType);
-        UseTypeDescription useTypeDescription = offerControl.getUseTypeDescriptionForUpdate(useType, getPreferredLanguage());
+        UseTypeDetailValue useTypeDetailValue = useTypeControl.getUseTypeDetailValueForUpdate(useType);
+        UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescriptionForUpdate(useType, getPreferredLanguage());
         String description = edit.getDescription();
 
         useTypeDetailValue.setUseTypeName(edit.getUseTypeName());
         useTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         useTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        offerControl.updateUseTypeFromValue(useTypeDetailValue, partyPK);
+        useTypeControl.updateUseTypeFromValue(useTypeDetailValue, partyPK);
 
         if(useTypeDescription == null && description != null) {
-            offerControl.createUseTypeDescription(useType, getPreferredLanguage(), description, partyPK);
+            useTypeControl.createUseTypeDescription(useType, getPreferredLanguage(), description, partyPK);
         } else if(useTypeDescription != null && description == null) {
-            offerControl.deleteUseTypeDescription(useTypeDescription, partyPK);
+            useTypeControl.deleteUseTypeDescription(useTypeDescription, partyPK);
         } else if(useTypeDescription != null && description != null) {
-            UseTypeDescriptionValue useTypeDescriptionValue = offerControl.getUseTypeDescriptionValue(useTypeDescription);
+            UseTypeDescriptionValue useTypeDescriptionValue = useTypeControl.getUseTypeDescriptionValue(useTypeDescription);
 
             useTypeDescriptionValue.setDescription(description);
-            offerControl.updateUseTypeDescriptionFromValue(useTypeDescriptionValue, partyPK);
+            useTypeControl.updateUseTypeDescriptionFromValue(useTypeDescriptionValue, partyPK);
         }
     }
     

@@ -26,7 +26,8 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -45,12 +46,12 @@ import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
 import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -119,7 +120,8 @@ public class EditOfferItemPriceCommand
             Item item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                OfferItem offerItem = offerControl.getOfferItem(offer, item);
+                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
                 
                 if(offerItem != null) {
                     var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
@@ -139,14 +141,14 @@ public class EditOfferItemPriceCommand
                             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                             
                             if(currency != null) {
-                                OfferItemPrice offerItemPrice = offerControl.getOfferItemPrice(offerItem, inventoryCondition,
+                                OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition,
                                         unitOfMeasureType, currency);
                                 
                                 if(offerItemPrice != null) {
                                     String itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
                                     
                                     if(editMode.equals(EditMode.LOCK)) {
-                                        result.setOfferItemPrice(offerControl.getOfferItemPriceTransfer(getUserVisit(), offerItemPrice));
+                                        result.setOfferItemPrice(offerItemControl.getOfferItemPriceTransfer(getUserVisit(), offerItemPrice));
                                         
                                         if(lockEntity(offerItem)) {
                                             OfferItemPriceEdit edit = OfferEditFactory.getOfferItemPriceEdit();
@@ -154,11 +156,11 @@ public class EditOfferItemPriceCommand
                                             result.setEdit(edit);
                                             
                                             if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-                                                OfferItemFixedPrice offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
+                                                OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
                                                 
                                                 edit.setUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemFixedPrice.getUnitPrice()));
                                             } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-                                                OfferItemVariablePrice offerItemVariablePrice = offerControl.getOfferItemVariablePrice(offerItemPrice);
+                                                OfferItemVariablePrice offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
                                                 
                                                 edit.setMinimumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getMinimumUnitPrice()));
                                                 edit.setMaximumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getMaximumUnitPrice()));
@@ -180,7 +182,7 @@ public class EditOfferItemPriceCommand
                                                 
                                                 if(lockEntityForUpdate(offerItem)) {
                                                     try {
-                                                        OfferItemFixedPriceValue offerItemFixedPriceValue = offerControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
+                                                        OfferItemFixedPriceValue offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
                                                         
                                                         offerItemFixedPriceValue.setUnitPrice(unitPrice);
                                                         
@@ -223,7 +225,7 @@ public class EditOfferItemPriceCommand
                                             if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
                                                 if(lockEntityForUpdate(offerItem)) {
                                                     try {
-                                                        OfferItemVariablePriceValue offerItemVariablePriceValue = offerControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
+                                                        OfferItemVariablePriceValue offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
                                                         
                                                         offerItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
                                                         offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);

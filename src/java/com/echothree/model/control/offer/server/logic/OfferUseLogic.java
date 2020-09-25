@@ -18,7 +18,9 @@ package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
 import com.echothree.model.control.offer.common.exception.UnknownUseNameException;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
@@ -43,8 +45,8 @@ public class OfferUseLogic
     }
     
     public Use getUseByName(final ExecutionErrorAccumulator eea, final String useName) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        Use use = offerControl.getUseByName(useName);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        Use use = useControl.getUseByName(useName);
 
         if(use == null) {
             handleExecutionError(UnknownUseNameException.class, eea, ExecutionErrors.UnknownUseName.name(), useName);
@@ -54,7 +56,6 @@ public class OfferUseLogic
     }
 
     public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Offer offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
         OfferUse offerUse = null;
         
@@ -62,10 +63,13 @@ public class OfferUseLogic
             Use use = UseLogic.getInstance().getUseByName(eea, useName);
             
             if(use != null) {
-                offerUse = offerControl.getOfferUse(offer, use);
+                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
+                offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse == null) {
-                    handleExecutionError(UnknownOfferUseException.class, eea, ExecutionErrors.UnknownOfferUse.name(), offerName, useName);
+                    handleExecutionError(UnknownOfferUseException.class, eea, ExecutionErrors.UnknownOfferUse.name(),
+                            offerName, useName);
                 }
             }
         }

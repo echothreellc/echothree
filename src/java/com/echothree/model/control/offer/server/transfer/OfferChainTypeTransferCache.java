@@ -21,7 +21,7 @@ import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.offer.server.entity.OfferChainType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -30,13 +30,12 @@ import com.echothree.util.server.persistence.Session;
 public class OfferChainTypeTransferCache
         extends BaseOfferTransferCache<OfferChainType, OfferChainTypeTransfer> {
     
-    ChainControl chainControl;
-    
+    ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
     /** Creates a new instance of OfferChainTypeTransferCache */
-    public OfferChainTypeTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
-        
-        chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+    public OfferChainTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public OfferChainTypeTransfer getOfferChainTypeTransfer(OfferChainType offerChainType) {

@@ -21,7 +21,7 @@ import com.echothree.model.control.chain.common.exception.UnknownChainKindNameEx
 import com.echothree.model.control.chain.common.exception.UnknownChainTypeNameException;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.chain.server.entity.Chain;

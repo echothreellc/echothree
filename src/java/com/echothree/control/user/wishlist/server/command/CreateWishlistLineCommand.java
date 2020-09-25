@@ -21,7 +21,8 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.common.InventoryConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.uom.server.UomControl;
@@ -42,10 +43,10 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -104,9 +105,9 @@ public class CreateWishlistLineCommand
                             accountingControl.getCurrencyByIsoName(currencyIsoName);
                         
                         if(currency != null) {
-                            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                            var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
                             String sourceName = form.getSourceName();
-                            Source source = sourceName == null? offerControl.getDefaultSource(): offerControl.getSourceByName(sourceName);
+                            Source source = sourceName == null? sourceControl.getDefaultSource(): sourceControl.getSourceByName(sourceName);
                             
                             if(source != null) {
                                 var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
@@ -114,8 +115,9 @@ public class CreateWishlistLineCommand
                                 Item item = itemControl.getItemByName(itemName);
                                 
                                 if(item != null) {
+                                    var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
                                     Offer offer = source.getLastDetail().getOfferUse().getLastDetail().getOffer();
-                                    OfferItem offerItem = offerControl.getOfferItem(offer, item);
+                                    OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
                                     
                                     if(offerItem != null) {
                                         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
@@ -147,7 +149,7 @@ public class CreateWishlistLineCommand
                                                 uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                                             
                                             if(unitOfMeasureType != null) {
-                                                OfferItemPrice offerItemPrice = offerControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
+                                                OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
                                                 
                                                 if(offerItemPrice != null) {
                                                     String strQuantity = form.getQuantity();

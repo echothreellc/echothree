@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.item.server;
 
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeChoicesBean;
@@ -78,6 +78,7 @@ import com.echothree.model.control.item.common.transfer.ItemWeightTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeDescriptionTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
+import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeTransferCache;
 import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeUnitTransferCache;
 import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeUseTypeTransferCache;
@@ -113,10 +114,8 @@ import com.echothree.model.control.item.server.transfer.ItemWeightTransferCache;
 import com.echothree.model.control.item.server.transfer.RelatedItemTransferCache;
 import com.echothree.model.control.item.server.transfer.RelatedItemTypeDescriptionTransferCache;
 import com.echothree.model.control.item.server.transfer.RelatedItemTypeTransferCache;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -344,7 +343,6 @@ import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.factory.PartyFactory;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
@@ -2028,7 +2026,7 @@ public class ItemControl
     }
     
     public void deleteItemUnitOfMeasureType(ItemUnitOfMeasureType itemUnitOfMeasureType, BasePK deletedBy) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
         var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         Item item = itemUnitOfMeasureType.getItem();
         UnitOfMeasureType unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
@@ -2042,7 +2040,7 @@ public class ItemControl
         deleteItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         deleteItemVolumeByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         deleteItemWeightByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
-        offerControl.deleteOfferItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
+        offerItemControl.deleteOfferItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         vendorControl.deleteVendorItemCostsByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         
         itemUnitOfMeasureType.setThruTime(session.START_TIME_LONG);
@@ -5522,7 +5520,7 @@ public class ItemControl
     }
     
     public void deleteItemPrice(ItemPrice itemPrice, BasePK deletedBy) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
         Item item = itemPrice.getItem();
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
         
@@ -5544,8 +5542,8 @@ public class ItemControl
         itemPrice.store();
         
         sendEventUsingNames(itemPrice.getItemPK(), EventTypes.MODIFY.name(), itemPrice.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-        
-        offerControl.deleteOfferItemPrices(offerControl.getOfferItemPricesForUpdate(item, itemPrice.getInventoryCondition(),
+
+        offerItemControl.deleteOfferItemPrices(offerItemControl.getOfferItemPricesForUpdate(item, itemPrice.getInventoryCondition(),
                 itemPrice.getUnitOfMeasureType(), itemPrice.getCurrency()), deletedBy);
     }
     

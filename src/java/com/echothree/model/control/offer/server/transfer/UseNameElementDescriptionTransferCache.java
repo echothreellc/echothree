@@ -17,27 +17,27 @@
 package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.offer.common.transfer.UseNameElementDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class UseNameElementDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<UseNameElementDescription, UseNameElementDescriptionTransfer> {
-    
+
+    UseNameElementControl useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+
     /** Creates a new instance of UseNameElementDescriptionTransferCache */
-    public UseNameElementDescriptionTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public UseNameElementDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UseNameElementDescription useNameElementDescription) {
-        UseNameElementDescriptionTransfer useNameElementDescriptionTransfer = get(useNameElementDescription);
+        var useNameElementDescriptionTransfer = get(useNameElementDescription);
         
         if(useNameElementDescriptionTransfer == null) {
-            UseNameElementTransfer useNameElementTransfer = offerControl.getUseNameElementTransfer(userVisit,
-                    useNameElementDescription.getUseNameElement());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, useNameElementDescription.getLanguage());
+            var useNameElementTransfer = useNameElementControl.getUseNameElementTransfer(userVisit, useNameElementDescription.getUseNameElement());
+            var languageTransfer = partyControl.getLanguageTransfer(userVisit, useNameElementDescription.getLanguage());
             
             useNameElementDescriptionTransfer = new UseNameElementDescriptionTransfer(languageTransfer, useNameElementTransfer,
                     useNameElementDescription.getDescription());

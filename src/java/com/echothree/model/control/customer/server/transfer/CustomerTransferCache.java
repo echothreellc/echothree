@@ -36,7 +36,7 @@ import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
@@ -92,7 +92,7 @@ public class CustomerTransferCache
     CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
     DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
     InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
     PartyFreeOnBoardControl partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
@@ -193,7 +193,7 @@ public class CustomerTransferCache
             Customer customer = customerControl.getCustomer(party);
             String customerName = customer.getCustomerName();
             CustomerTypeTransfer customerTypeTransfer = customerControl.getCustomerTypeTransfer(userVisit, customer.getCustomerType());
-            OfferUseTransfer initialOfferUse = offerControl.getOfferUseTransfer(userVisit, customer.getInitialOfferUse());
+            OfferUseTransfer initialOfferUse = offerUseControl.getOfferUseTransfer(userVisit, customer.getInitialOfferUse());
             CancellationPolicy cancellationPolicy = customer.getCancellationPolicy();
             CancellationPolicyTransfer cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
             ReturnPolicy returnPolicy = customer.getReturnPolicy();

@@ -19,7 +19,8 @@ package com.echothree.model.control.offer.server.transfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -30,12 +31,14 @@ import com.echothree.util.server.persistence.Session;
 
 public class OfferUseTransferCache
         extends BaseOfferTransferCache<OfferUse, OfferUseTransfer> {
-    
+
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
     SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    
+    UseControl useControl = (UseControl)Session.getModelController(UseControl.class);
+
     /** Creates a new instance of OfferUseTransferCache */
-    public OfferUseTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferUseTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
@@ -46,7 +49,7 @@ public class OfferUseTransferCache
         if(offerUseTransfer == null) {
             OfferUseDetail offerUseDetail = offerUse.getLastDetail();
             OfferTransfer offerTransfer = offerControl.getOfferTransfer(userVisit, offerUseDetail.getOffer());
-            UseTransfer useTransfer = offerControl.getUseTransfer(userVisit, offerUseDetail.getUse());
+            UseTransfer useTransfer = useControl.getUseTransfer(userVisit, offerUseDetail.getUse());
             Sequence salesOrderSequence = offerUseDetail.getSalesOrderSequence();
             SequenceTransfer salesOrderSequenceTransfer = salesOrderSequence == null? null:sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
             

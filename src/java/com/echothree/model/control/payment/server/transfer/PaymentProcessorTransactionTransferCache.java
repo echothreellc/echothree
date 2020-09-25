@@ -31,9 +31,9 @@ public class PaymentProcessorTransactionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTransaction, PaymentProcessorTransactionTransfer> {
 
     PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
-    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl) Session.getModelController(PaymentProcessorActionTypeControl.class);
-    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl) Session.getModelController(PaymentProcessorResultCodeControl.class);
-    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl) Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
 
     boolean includePaymentProcessorTransactionCodes;
     

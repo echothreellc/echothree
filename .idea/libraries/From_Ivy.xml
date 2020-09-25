@@ -114,6 +114,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/infinispan-core.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/icu4j.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/threeten-extra.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/javax.mail.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />

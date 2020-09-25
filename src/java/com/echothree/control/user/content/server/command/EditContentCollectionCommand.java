@@ -23,7 +23,10 @@ import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentCollectionResult;
 import com.echothree.control.user.content.common.spec.ContentCollectionSpec;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -38,15 +41,14 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.OfferUseDetail;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -135,12 +137,12 @@ public class EditContentCollectionCommand
     @Override
     public void doLock(ContentCollectionEdit edit, ContentCollection contentCollection) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescription(contentCollection, getPreferredLanguage());
         ContentCollectionDetail contentCollectionDetail = contentCollection.getLastDetail();
         OfferUse offerUse = contentCollectionDetail.getDefaultOfferUse();
         OfferUseDetail defaultOfferUseDetail = offerUse.getLastDetail();
-        List<Source> sources = offerControl.getSourcesByOfferUse(offerUse);
+        List<Source> sources = sourceControl.getSourcesByOfferUse(offerUse);
 
         edit.setContentCollectionName(contentCollectionDetail.getContentCollectionName());
         edit.setDefaultOfferName(defaultOfferUseDetail.getOffer().getLastDetail().getOfferName());
@@ -170,10 +172,12 @@ public class EditContentCollectionCommand
                 Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
-                    Use defaultUse = offerControl.getUseByName(defaultUseName);
+                    var useControl = (UseControl)Session.getModelController(UseControl.class);
+                    Use defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
-                        defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
+                        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                        defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                         if(defaultOfferUse == null) {
                             addExecutionError(ExecutionErrors.UnknownDefaultOfferUse.name());
@@ -185,7 +189,8 @@ public class EditContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                Source source = offerControl.getSourceByName(defaultSourceName);
+                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                Source source = sourceControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
                     defaultOfferUse = source.getLastDetail().getOfferUse();
@@ -193,8 +198,9 @@ public class EditContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultSourceName.name(), defaultSourceName);
                 }
             } else {
+                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
                 // If all three parameters are null, then try to get the default Source and use its OfferUse.
-                Source source = offerControl.getDefaultSource();
+                Source source = sourceControl.getDefaultSource();
 
                 if(source != null) {
                     defaultOfferUse = source.getLastDetail().getOfferUse();

@@ -17,19 +17,19 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseTypeForm;
-import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.result.GetUseTypeResult;
-import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.offer.server.logic.UseTypeLogic;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
+import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -80,11 +80,11 @@ public class GetUseTypeCommand
     
     @Override
     protected BaseResult getTransfer(UseType useType) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
         GetUseTypeResult result = OfferResultFactory.getGetUseTypeResult();
 
         if(useType != null) {
-            result.setUseType(offerControl.getUseTypeTransfer(getUserVisit(), useType));
+            result.setUseType(useTypeControl.getUseTypeTransfer(getUserVisit(), useType));
         }
 
         return result;

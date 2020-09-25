@@ -24,7 +24,8 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -51,6 +52,8 @@ public class OfferItemPriceTransferCache
     
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
     InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferItemControl offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
     UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
     
     TransferProperties transferProperties;
@@ -72,8 +75,8 @@ public class OfferItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of OfferItemPriceTransferCache */
-    public OfferItemPriceTransferCache(UserVisit userVisit, OfferControl offerControl) {
-        super(userVisit, offerControl);
+    public OfferItemPriceTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -103,7 +106,7 @@ public class OfferItemPriceTransferCache
     private OfferItemPriceTransfer getOfferItemPriceTransfer(OfferItemPrice offerItemPrice, OfferItemFixedPrice offerItemFixedPrice,
             OfferItemVariablePrice offerItemVariablePrice) {
         OfferItem offerItem = filterOfferItem ? null : offerItemPrice.getOfferItem();
-        OfferItemTransfer offerItemTransfer = offerItem == null ? null : offerControl.getOfferItemTransfer(userVisit, offerItem);
+        OfferItemTransfer offerItemTransfer = offerItem == null ? null : offerItemControl.getOfferItemTransfer(userVisit, offerItem);
         InventoryCondition inventoryCondition = filterInventoryCondition ? null : offerItemPrice.getInventoryCondition();
         InventoryConditionTransfer inventoryConditionTransfer = inventoryCondition == null ? null : inventoryControl.getInventoryConditionTransfer(userVisit, inventoryCondition);
         UnitOfMeasureType unitOfMeasureType = filterUnitOfMeasureType ? null : offerItemPrice.getUnitOfMeasureType();
@@ -144,7 +147,7 @@ public class OfferItemPriceTransferCache
         String itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
         
         if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
-            List<OfferItemFixedPrice> offerItemFixedPriceHistory = offerControl.getOfferItemFixedPriceHistory(offerItemPrice);
+            List<OfferItemFixedPrice> offerItemFixedPriceHistory = offerItemControl.getOfferItemFixedPriceHistory(offerItemPrice);
             
             historyTransfers = new ArrayList<>(offerItemFixedPriceHistory.size());
             
@@ -158,7 +161,7 @@ public class OfferItemPriceTransferCache
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
         } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
-            List<OfferItemVariablePrice> offerItemVariablePriceHistory = offerControl.getOfferItemVariablePriceHistory(offerItemPrice);
+            List<OfferItemVariablePrice> offerItemVariablePriceHistory = offerItemControl.getOfferItemVariablePriceHistory(offerItemPrice);
             
             historyTransfers = new ArrayList<>(offerItemVariablePriceHistory.size());
             
@@ -185,9 +188,9 @@ public class OfferItemPriceTransferCache
             String itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
 
             if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
-                offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
+                offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
             } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
-                offerItemVariablePrice = offerControl.getOfferItemVariablePrice(offerItemPrice);
+                offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
             }
             
             offerItemPriceTransfer = getOfferItemPriceTransfer(offerItemPrice, offerItemFixedPrice, offerItemVariablePrice);

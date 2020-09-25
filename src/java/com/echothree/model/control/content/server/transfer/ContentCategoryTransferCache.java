@@ -22,7 +22,7 @@ import com.echothree.model.control.content.common.transfer.ContentCatalogTransfe
 import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
@@ -37,8 +37,8 @@ import java.util.Set;
 
 public class ContentCategoryTransferCache
         extends BaseContentTransferCache<ContentCategory, ContentCategoryTransfer> {
-    
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
     
     boolean includeContentCategoryItems;
@@ -97,7 +97,7 @@ public class ContentCategoryTransferCache
             ContentCategory parentContentCategory = filterParentContentCategory ? null : contentCategoryDetail.getParentContentCategory();
             ContentCategoryTransfer parentContentCategoryTransfer = parentContentCategory == null ? null : contentControl.getContentCategoryTransfer(userVisit, parentContentCategory);
             OfferUse defaultOfferUse = filterDefaultOfferUse ? null : contentCategoryDetail.getDefaultOfferUse();
-            OfferUseTransfer defaultOfferUseTransfer = defaultOfferUse == null ? null : offerControl.getOfferUseTransfer(userVisit, defaultOfferUse);
+            OfferUseTransfer defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
             Selector contentCategoryItemSelector = filterContentCategoryItemSelector ? null : contentCategoryDetail.getContentCategoryItemSelector();
             SelectorTransfer contentCategoryItemSelectorTransfer = contentCategoryItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, contentCategoryItemSelector);
             Boolean isDefault = filterIsDefault ? null : contentCategoryDetail.getIsDefault();

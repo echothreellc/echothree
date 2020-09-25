@@ -22,7 +22,7 @@ import com.echothree.model.control.customer.common.CustomerProperties;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
@@ -39,7 +39,7 @@ public class CustomerTypeTransferCache
     CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
     FreeOnBoardControl freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
     InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
     ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
     SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
     TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
@@ -112,7 +112,7 @@ public class CustomerTypeTransferCache
             var customerSequence = filterCustomerSequence ? null : customerTypeDetail.getCustomerSequence();
             var customerSequenceTransfer = customerSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, customerSequence);
             var defaultOfferUse = filterDefaultOfferUse ? null : customerTypeDetail.getDefaultOfferUse();
-            var defaultOfferUseTransfer = defaultOfferUse == null ? null : offerControl.getOfferUseTransfer(userVisit, defaultOfferUse);
+            var defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
             var defaultTerm = filterDefaultTerm ? null : customerTypeDetail.getDefaultTerm();
             var defaultTermTransfer = defaultTerm == null ? null : termControl.getTermTransfer(userVisit, defaultTerm);
             var defaultFreeOnBoard = filterDefaultFreeOnBoard ? null : customerTypeDetail.getDefaultFreeOnBoard();

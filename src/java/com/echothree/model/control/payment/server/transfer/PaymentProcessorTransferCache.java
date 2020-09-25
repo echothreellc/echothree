@@ -31,8 +31,8 @@ public class PaymentProcessorTransferCache
         extends BasePaymentTransferCache<PaymentProcessor, PaymentProcessorTransfer> {
 
     PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
-    PaymentProcessorTypeControl paymentProcessorTypeControl = (PaymentProcessorTypeControl) Session.getModelController(PaymentProcessorTypeControl.class);
-    PaymentProcessorTransactionControl paymentProcessorTransactionControl = (PaymentProcessorTransactionControl) Session.getModelController(PaymentProcessorTransactionControl.class);
+    PaymentProcessorTypeControl paymentProcessorTypeControl = (PaymentProcessorTypeControl)Session.getModelController(PaymentProcessorTypeControl.class);
+    PaymentProcessorTransactionControl paymentProcessorTransactionControl = (PaymentProcessorTransactionControl)Session.getModelController(PaymentProcessorTransactionControl.class);
 
     boolean includeComments;
     boolean includePaymentProcessorTransactions;

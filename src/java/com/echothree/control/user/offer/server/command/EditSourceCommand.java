@@ -22,14 +22,13 @@ import com.echothree.control.user.offer.common.form.EditSourceForm;
 import com.echothree.control.user.offer.common.result.EditSourceResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.offer.server.entity.SourceDetail;
 import com.echothree.model.data.offer.server.value.SourceDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -85,18 +84,18 @@ public class EditSourceCommand
 
     @Override
     public Source getEntity(EditSourceResult result) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         Source source;
         String sourceName = spec.getSourceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            source = geoControl.getSourceByName(sourceName);
+            source = sourceControl.getSourceByName(sourceName);
         } else { // EditMode.UPDATE
-            source = geoControl.getSourceByNameForUpdate(sourceName);
+            source = sourceControl.getSourceByNameForUpdate(sourceName);
         }
 
         if(source != null) {
-            result.setSource(geoControl.getSourceTransfer(getUserVisit(), source));
+            result.setSource(sourceControl.getSourceTransfer(getUserVisit(), source));
         } else {
             addExecutionError(ExecutionErrors.UnknownSourceName.name(), sourceName);
         }
@@ -111,9 +110,9 @@ public class EditSourceCommand
 
     @Override
     public void fillInResult(EditSourceResult result, Source source) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
 
-        result.setSource(geoControl.getSourceTransfer(getUserVisit(), source));
+        result.setSource(sourceControl.getSourceTransfer(getUserVisit(), source));
     }
 
     @Override
@@ -127,9 +126,9 @@ public class EditSourceCommand
 
     @Override
     public void canUpdate(Source source) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         String sourceName = edit.getSourceName();
-        Source duplicateSource = geoControl.getSourceByName(sourceName);
+        Source duplicateSource = sourceControl.getSourceByName(sourceName);
 
         if(duplicateSource != null && !source.equals(duplicateSource)) {
             addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
@@ -138,15 +137,15 @@ public class EditSourceCommand
 
     @Override
     public void doUpdate(Source source) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         var partyPK = getPartyPK();
-        SourceDetailValue sourceDetailValue = geoControl.getSourceDetailValueForUpdate(source);
+        SourceDetailValue sourceDetailValue = sourceControl.getSourceDetailValueForUpdate(source);
 
         sourceDetailValue.setSourceName(edit.getSourceName());
         sourceDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         sourceDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        geoControl.updateSourceFromValue(sourceDetailValue, partyPK);
+        sourceControl.updateSourceFromValue(sourceDetailValue, partyPK);
     }
 
 }

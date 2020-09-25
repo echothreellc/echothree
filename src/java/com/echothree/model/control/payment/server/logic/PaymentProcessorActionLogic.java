@@ -55,7 +55,7 @@ public class PaymentProcessorActionLogic
                     paymentProcessor.getLastDetail().getPaymentProcessorType(), paymentProcessorActionType);
 
             if(!eea.hasExecutionErrors()) {
-                var paymentProcessorActionControl = (PaymentProcessorActionControl) Session.getModelController(PaymentProcessorActionControl.class);
+                var paymentProcessorActionControl = (PaymentProcessorActionControl)Session.getModelController(PaymentProcessorActionControl.class);
 
                 paymentProcessorAction = paymentProcessorActionControl.getPaymentProcessorAction(paymentProcessor, paymentProcessorTypeAction);
 
@@ -83,7 +83,7 @@ public class PaymentProcessorActionLogic
                     paymentProcessor.getLastDetail().getPaymentProcessorType(), paymentProcessorActionType);
 
             if(!eea.hasExecutionErrors()) {
-                var paymentProcessorActionControl = (PaymentProcessorActionControl) Session.getModelController(PaymentProcessorActionControl.class);
+                var paymentProcessorActionControl = (PaymentProcessorActionControl)Session.getModelController(PaymentProcessorActionControl.class);
 
                 paymentProcessorAction = paymentProcessorActionControl.getPaymentProcessorAction(paymentProcessor, paymentProcessorTypeAction, entityPermission);
 

@@ -19,7 +19,9 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetOfferUseForm;
 import com.echothree.control.user.offer.common.result.GetOfferUseResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -27,10 +29,10 @@ import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -73,11 +75,13 @@ public class GetOfferUseCommand
         OfferUse offerUse = null;
         
         if(offer != null) {
+            var useControl = (UseControl)Session.getModelController(UseControl.class);
             String useName = form.getUseName();
-            Use use = offerControl.getUseByName(useName);
+            Use use = useControl.getUseByName(useName);
             
             if(use != null) {
-                offerUse = offerControl.getOfferUse(offer, use);
+                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse == null) {
                     addExecutionError(ExecutionErrors.UnknownOfferUse.name(), offer.getLastDetail().getOfferName(),
@@ -95,11 +99,12 @@ public class GetOfferUseCommand
     
     @Override
     protected BaseResult getTransfer(OfferUse offerUse) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetOfferUseResult result = OfferResultFactory.getGetOfferUseResult();
 
         if(offerUse != null) {
-            result.setOfferUse(offerControl.getOfferUseTransfer(getUserVisit(), offerUse));
+            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
+            result.setOfferUse(offerUseControl.getOfferUseTransfer(getUserVisit(), offerUse));
         }
         
         return result;

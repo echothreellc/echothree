@@ -34,9 +34,8 @@ import com.echothree.model.control.customer.server.transfer.CustomerTypePaymentM
 import com.echothree.model.control.customer.server.transfer.CustomerTypeShippingMethodTransferCache;
 import com.echothree.model.control.customer.server.transfer.CustomerTypeTransferCache;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -72,7 +71,6 @@ import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;

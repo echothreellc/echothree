@@ -19,7 +19,10 @@ package com.echothree.control.user.content.server.command;
 import com.echothree.control.user.content.common.form.CreateContentCategoryForm;
 import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -125,10 +128,12 @@ public class CreateContentCategoryCommand
                             Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
                             
                             if(defaultOffer != null) {
-                                Use defaultUse = offerControl.getUseByName(defaultUseName);
+                                var useControl = (UseControl)Session.getModelController(UseControl.class);
+                                Use defaultUse = useControl.getUseByName(defaultUseName);
                                 
                                 if(defaultUse != null) {
-                                    defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
+                                    var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                                    defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                                     
                                     if(defaultOfferUse == null) {
                                         addExecutionError(ExecutionErrors.UnknownDefaultOfferUse.name());
@@ -140,7 +145,8 @@ public class CreateContentCategoryCommand
                                 addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                             }
                         } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                            Source source = offerControl.getSourceByName(defaultSourceName);
+                            var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                            Source source = sourceControl.getSourceByName(defaultSourceName);
                             
                             if(source != null) {
                                 defaultOfferUse = source.getLastDetail().getOfferUse();

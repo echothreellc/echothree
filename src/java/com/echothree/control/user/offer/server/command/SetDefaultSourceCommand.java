@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.SetDefaultSourceForm;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,13 +62,13 @@ public class SetDefaultSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         String sourceName = form.getSourceName();
-        SourceDetailValue sourceDetailValue = offerControl.getSourceDetailValueByNameForUpdate(sourceName);
+        SourceDetailValue sourceDetailValue = sourceControl.getSourceDetailValueByNameForUpdate(sourceName);
         
         if(sourceDetailValue != null) {
             sourceDetailValue.setIsDefault(Boolean.TRUE);
-            offerControl.updateSourceFromValue(sourceDetailValue, getPartyPK());
+            sourceControl.updateSourceFromValue(sourceDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSourceName.name(), sourceName);
         }

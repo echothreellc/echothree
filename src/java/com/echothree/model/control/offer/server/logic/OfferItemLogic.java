@@ -17,7 +17,8 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemException;
-import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -42,11 +43,12 @@ public class OfferItemLogic
     }
 
     public OfferItem getOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        OfferItem offerItem = offerControl.getOfferItem(offer, item);
+        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+        OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
 
         if(offerItem == null) {
-            handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(), offer.getLastDetail().getOfferName(), item.getLastDetail().getItemName());
+            handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(),
+                    offer.getLastDetail().getOfferName(), item.getLastDetail().getItemName());
         }
 
         return offerItem;
