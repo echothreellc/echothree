@@ -19,6 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
@@ -31,10 +32,10 @@ import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -87,7 +88,8 @@ public class CreateOfferItemCommand
                 PartyCompany partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
                 
                 if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
-                    OfferItem offerItem = offerControl.getOfferItem(offer, item);
+                    var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                    OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
                     
                     if(offerItem == null) {
                         OfferLogic.getInstance().createOfferItem(offer, item, getPartyPK());

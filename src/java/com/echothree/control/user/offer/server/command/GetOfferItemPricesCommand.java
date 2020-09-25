@@ -21,6 +21,7 @@ import com.echothree.control.user.offer.common.result.GetOfferItemPricesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,10 +31,10 @@ import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -88,10 +89,11 @@ public class GetOfferItemPricesCommand
             item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                offerItem = offerControl.getOfferItem(offer, item);
+                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                offerItem = offerItemControl.getOfferItem(offer, item);
                 
                 if(offerItem != null) {
-                    offerItemPrices = offerControl.getOfferItemPricesByOfferItem(offerItem);
+                    offerItemPrices = offerItemControl.getOfferItemPricesByOfferItem(offerItem);
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offer.getLastDetail().getOfferName(),
                             item.getLastDetail().getItemName());
@@ -112,13 +114,14 @@ public class GetOfferItemPricesCommand
         
         if (entities != null) {
             OfferControl offerControl = (OfferControl) Session.getModelController(OfferControl.class);
+            var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
             ItemControl itemControl = (ItemControl) Session.getModelController(ItemControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
             result.setItem(itemControl.getItemTransfer(userVisit, item));
-            result.setOfferItem(offerControl.getOfferItemTransfer(userVisit, offerItem));
-            result.setOfferItemPrices(offerControl.getOfferItemPriceTransfers(userVisit, entities));
+            result.setOfferItem(offerItemControl.getOfferItemTransfer(userVisit, offerItem));
+            result.setOfferItemPrices(offerItemControl.getOfferItemPriceTransfers(userVisit, entities));
         }
         
         return result;

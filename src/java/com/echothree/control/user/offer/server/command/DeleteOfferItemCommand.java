@@ -19,6 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.DeleteOfferItemForm;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -27,10 +28,10 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -77,7 +78,8 @@ public class DeleteOfferItemCommand
             Item item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                OfferItem offerItem = offerControl.getOfferItemForUpdate(offer, item);
+                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                OfferItem offerItem = offerItemControl.getOfferItemForUpdate(offer, item);
                 
                 if(offerItem != null) {
                     OfferLogic.getInstance().deleteOfferItem(offerItem, getPartyPK());
