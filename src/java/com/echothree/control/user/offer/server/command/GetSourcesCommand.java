@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetSourcesForm;
 import com.echothree.control.user.offer.common.result.GetSourcesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,17 +62,17 @@ public class GetSourcesCommand
     
     @Override
     protected Collection<Source> getEntities() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         
-        return offerControl.getSources();
+        return sourceControl.getSources();
     }
     
     @Override
     protected BaseResult getTransfers(Collection<Source> entities) {
         GetSourcesResult result = OfferResultFactory.getGetSourcesResult();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         
-        result.setSources(offerControl.getSourceTransfers(getUserVisit(), entities));
+        result.setSources(sourceControl.getSourceTransfers(getUserVisit(), entities));
         
         return result;
     }

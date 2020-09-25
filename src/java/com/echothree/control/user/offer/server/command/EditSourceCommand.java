@@ -22,7 +22,7 @@ import com.echothree.control.user.offer.common.form.EditSourceForm;
 import com.echothree.control.user.offer.common.result.EditSourceResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -84,18 +84,18 @@ public class EditSourceCommand
 
     @Override
     public Source getEntity(EditSourceResult result) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         Source source;
         String sourceName = spec.getSourceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            source = offerControl.getSourceByName(sourceName);
+            source = sourceControl.getSourceByName(sourceName);
         } else { // EditMode.UPDATE
-            source = offerControl.getSourceByNameForUpdate(sourceName);
+            source = sourceControl.getSourceByNameForUpdate(sourceName);
         }
 
         if(source != null) {
-            result.setSource(offerControl.getSourceTransfer(getUserVisit(), source));
+            result.setSource(sourceControl.getSourceTransfer(getUserVisit(), source));
         } else {
             addExecutionError(ExecutionErrors.UnknownSourceName.name(), sourceName);
         }
@@ -110,9 +110,9 @@ public class EditSourceCommand
 
     @Override
     public void fillInResult(EditSourceResult result, Source source) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
 
-        result.setSource(offerControl.getSourceTransfer(getUserVisit(), source));
+        result.setSource(sourceControl.getSourceTransfer(getUserVisit(), source));
     }
 
     @Override
@@ -126,9 +126,9 @@ public class EditSourceCommand
 
     @Override
     public void canUpdate(Source source) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         String sourceName = edit.getSourceName();
-        Source duplicateSource = offerControl.getSourceByName(sourceName);
+        Source duplicateSource = sourceControl.getSourceByName(sourceName);
 
         if(duplicateSource != null && !source.equals(duplicateSource)) {
             addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
@@ -137,15 +137,15 @@ public class EditSourceCommand
 
     @Override
     public void doUpdate(Source source) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         var partyPK = getPartyPK();
-        SourceDetailValue sourceDetailValue = offerControl.getSourceDetailValueForUpdate(source);
+        SourceDetailValue sourceDetailValue = sourceControl.getSourceDetailValueForUpdate(source);
 
         sourceDetailValue.setSourceName(edit.getSourceName());
         sourceDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         sourceDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        offerControl.updateSourceFromValue(sourceDetailValue, partyPK);
+        sourceControl.updateSourceFromValue(sourceDetailValue, partyPK);
     }
 
 }
