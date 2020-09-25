@@ -24,6 +24,9 @@ import com.echothree.control.user.content.common.result.EditContentCatalogResult
 import com.echothree.control.user.content.common.spec.ContentCatalogSpec;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -38,10 +41,10 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.OfferUseDetail;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -143,12 +146,12 @@ public class EditContentCatalogCommand
     @Override
     public void doLock(ContentCatalogEdit edit, ContentCatalog contentCatalog) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
         ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, getPreferredLanguage());
         ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
         OfferUse offerUse = contentCatalogDetail.getDefaultOfferUse();
         OfferUseDetail defaultOfferUseDetail = offerUse.getLastDetail();
-        var sources = defaultOfferUse == null ? null : offerControl.getSourcesByOfferUse(defaultOfferUse); // List of Sources if there are any for the OfferUse
+        var sources = defaultOfferUse == null ? null : sourceControl.getSourcesByOfferUse(defaultOfferUse); // List of Sources if there are any for the OfferUse
         var defaultSourceName = sources == null ? null : sources.iterator().next().getLastDetail().getSourceName(); // From the List, the first available Source's SourceName
 
         edit.setContentCatalogName(contentCatalogDetail.getContentCatalogName());
@@ -181,10 +184,12 @@ public class EditContentCatalogCommand
                 var defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
-                    Use defaultUse = offerControl.getUseByName(defaultUseName);
+                    var useControl = (UseControl)Session.getModelController(UseControl.class);
+                    Use defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
-                        defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
+                        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                        defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                         if(defaultOfferUse == null) {
                             addExecutionError(ExecutionErrors.UnknownDefaultOfferUse.name());
@@ -196,7 +201,8 @@ public class EditContentCatalogCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                var source = offerControl.getSourceByName(defaultSourceName);
+                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                var source = sourceControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
                     defaultOfferUse = source.getLastDetail().getOfferUse();

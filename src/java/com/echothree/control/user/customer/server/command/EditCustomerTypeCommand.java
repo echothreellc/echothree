@@ -30,6 +30,9 @@ import com.echothree.model.control.customer.common.workflow.CustomerStatusConsta
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
@@ -126,6 +129,7 @@ public class EditCustomerTypeCommand
                 result.setCustomerType(customerControl.getCustomerTypeTransfer(getUserVisit(), customerType));
                 
                 if(lockEntity(customerType)) {
+                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
                     var customerTypeDescription = customerControl.getCustomerTypeDescription(customerType, getPreferredLanguage());
                     var edit = CustomerEditFactory.getCustomerTypeEdit();
                     var customerTypeDetail = customerType.getLastDetail();
@@ -140,7 +144,7 @@ public class EditCustomerTypeCommand
                     var defaultArGlAccount = customerTypeDetail.getDefaultArGlAccount();
                     var allocationPriority = customerTypeDetail.getAllocationPriority();
 
-                    var sources = defaultOfferUse == null ? null : offerControl.getSourcesByOfferUse(defaultOfferUse);
+                    var sources = defaultOfferUse == null ? null : sourceControl.getSourcesByOfferUse(defaultOfferUse);
                     var sourcesIterator = sources == null ? null : sources.iterator();
                     var defaultSource = sourcesIterator == null ? null : sourcesIterator.hasNext() ? sourcesIterator.next() : null;
 
@@ -209,10 +213,12 @@ public class EditCustomerTypeCommand
                             var defaultOffer = offerControl.getOfferByName(defaultOfferName);
                             
                             if(defaultOffer != null) {
-                                var defaultUse = offerControl.getUseByName(defaultUseName);
+                                var useControl = (UseControl)Session.getModelController(UseControl.class);
+                                var defaultUse = useControl.getUseByName(defaultUseName);
                                 
                                 if(defaultUse != null) {
-                                    defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
+                                    var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                                    defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                                     
                                     if(defaultOfferUse == null) {
                                         addExecutionError(ExecutionErrors.UnknownDefaultOfferUse.name());
@@ -224,7 +230,8 @@ public class EditCustomerTypeCommand
                                 addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                             }
                         } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                            var source = offerControl.getSourceByName(defaultSourceName);
+                            var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                            var source = sourceControl.getSourceByName(defaultSourceName);
                             
                             if(source != null) {
                                 defaultOfferUse = source.getLastDetail().getOfferUse();

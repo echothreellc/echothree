@@ -30,6 +30,9 @@ import com.echothree.model.control.customer.common.workflow.CustomerCreditStatus
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
@@ -236,7 +239,6 @@ public class CreateCustomerWithLoginCommand
                                         }
 
                                         if(term != null) {
-                                            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                                             String initialOfferName = form.getInitialOfferName();
                                             String initialUseName = form.getInitialUseName();
                                             String initialSourceName = form.getInitialSourceName();
@@ -244,13 +246,16 @@ public class CreateCustomerWithLoginCommand
                                             boolean invalidInitialOfferOrSourceSpecification = false;
 
                                             if(initialOfferName != null && initialUseName != null && initialSourceName == null) {
+                                                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                                                 Offer initialOffer = offerControl.getOfferByName(initialOfferName);
 
                                                 if(initialOffer != null) {
-                                                    Use initialUse = offerControl.getUseByName(initialUseName);
+                                                    var useControl = (UseControl)Session.getModelController(UseControl.class);
+                                                    Use initialUse = useControl.getUseByName(initialUseName);
 
                                                     if(initialUse != null) {
-                                                        initialOfferUse = offerControl.getOfferUse(initialOffer, initialUse);
+                                                        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                                                        initialOfferUse = offerUseControl.getOfferUse(initialOffer, initialUse);
 
                                                         if(initialOfferUse == null) {
                                                             addExecutionError(ExecutionErrors.UnknownInitialOfferUse.name());
@@ -262,8 +267,10 @@ public class CreateCustomerWithLoginCommand
                                                     addExecutionError(ExecutionErrors.UnknownInitialOfferName.name(), initialOfferName);
                                                 }
                                             } else {
+                                                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+
                                                 if(initialOfferName == null && initialUseName == null && initialSourceName != null) {
-                                                    Source source = offerControl.getSourceByName(initialSourceName);
+                                                    Source source = sourceControl.getSourceByName(initialSourceName);
 
                                                     if(source != null) {
                                                         initialOfferUse = source.getLastDetail().getOfferUse();
@@ -275,7 +282,7 @@ public class CreateCustomerWithLoginCommand
 
                                                     if(initialOfferUse == null) {
                                                         // If all three parameters are null, then try to get the default Source and use its OfferUse.
-                                                        Source source = offerControl.getDefaultSource();
+                                                        Source source = sourceControl.getDefaultSource();
 
                                                         if(source != null) {
                                                             initialOfferUse = source.getLastDetail().getOfferUse();

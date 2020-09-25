@@ -26,6 +26,7 @@ import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.document.common.DocumentConstants;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.term.server.TermControl;
@@ -180,8 +181,8 @@ public class CreateCommunicationEventCommand
                             List<PartyContactMechanism> partyContactMechanisms = contactControl.getPartyContactMechanismsByEmailAddress(emailAddress);
 
                             if(partyContactMechanisms.isEmpty()) {
-                                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-                                Source source = offerControl.getDefaultSource();
+                                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                                Source source = sourceControl.getDefaultSource();
 
                                 if(source != null) {
                                     var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);

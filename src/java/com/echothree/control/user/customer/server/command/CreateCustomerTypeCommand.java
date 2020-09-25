@@ -26,6 +26,9 @@ import com.echothree.model.control.customer.common.workflow.CustomerStatusConsta
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
@@ -143,10 +146,12 @@ public class CreateCustomerTypeCommand
                     Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
                     
                     if(defaultOffer != null) {
-                        Use defaultUse = offerControl.getUseByName(defaultUseName);
+                        var useControl = (UseControl)Session.getModelController(UseControl.class);
+                        Use defaultUse = useControl.getUseByName(defaultUseName);
                         
                         if(defaultUse != null) {
-                            defaultOfferUse = offerControl.getOfferUse(defaultOffer, defaultUse);
+                            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                            defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                             
                             if(defaultOfferUse == null) {
                                 addExecutionError(ExecutionErrors.UnknownDefaultOfferUse.name());
@@ -158,7 +163,8 @@ public class CreateCustomerTypeCommand
                         addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                     }
                 } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                    Source source = offerControl.getSourceByName(defaultSourceName);
+                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                    Source source = sourceControl.getSourceByName(defaultSourceName);
                     
                     if(source != null) {
                         defaultOfferUse = source.getLastDetail().getOfferUse();
