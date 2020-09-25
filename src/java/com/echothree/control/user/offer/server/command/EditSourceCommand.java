@@ -84,18 +84,18 @@ public class EditSourceCommand
 
     @Override
     public Source getEntity(EditSourceResult result) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Source source;
         String sourceName = spec.getSourceName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            source = geoControl.getSourceByName(sourceName);
+            source = offerControl.getSourceByName(sourceName);
         } else { // EditMode.UPDATE
-            source = geoControl.getSourceByNameForUpdate(sourceName);
+            source = offerControl.getSourceByNameForUpdate(sourceName);
         }
 
         if(source != null) {
-            result.setSource(geoControl.getSourceTransfer(getUserVisit(), source));
+            result.setSource(offerControl.getSourceTransfer(getUserVisit(), source));
         } else {
             addExecutionError(ExecutionErrors.UnknownSourceName.name(), sourceName);
         }
@@ -110,9 +110,9 @@ public class EditSourceCommand
 
     @Override
     public void fillInResult(EditSourceResult result, Source source) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
-        result.setSource(geoControl.getSourceTransfer(getUserVisit(), source));
+        result.setSource(offerControl.getSourceTransfer(getUserVisit(), source));
     }
 
     @Override
@@ -126,9 +126,9 @@ public class EditSourceCommand
 
     @Override
     public void canUpdate(Source source) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String sourceName = edit.getSourceName();
-        Source duplicateSource = geoControl.getSourceByName(sourceName);
+        Source duplicateSource = offerControl.getSourceByName(sourceName);
 
         if(duplicateSource != null && !source.equals(duplicateSource)) {
             addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
@@ -137,15 +137,15 @@ public class EditSourceCommand
 
     @Override
     public void doUpdate(Source source) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         var partyPK = getPartyPK();
-        SourceDetailValue sourceDetailValue = geoControl.getSourceDetailValueForUpdate(source);
+        SourceDetailValue sourceDetailValue = offerControl.getSourceDetailValueForUpdate(source);
 
         sourceDetailValue.setSourceName(edit.getSourceName());
         sourceDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         sourceDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        geoControl.updateSourceFromValue(sourceDetailValue, partyPK);
+        offerControl.updateSourceFromValue(sourceDetailValue, partyPK);
     }
 
 }
