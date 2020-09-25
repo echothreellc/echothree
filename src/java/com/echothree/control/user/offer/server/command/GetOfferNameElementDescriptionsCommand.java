@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetOfferNameElementDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetOfferNameElementDescriptionsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,14 +64,14 @@ public class GetOfferNameElementDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
         GetOfferNameElementDescriptionsResult result = OfferResultFactory.getGetOfferNameElementDescriptionsResult();
         String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerControl.getOfferNameElementByName(offerNameElementName);
+        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
-            result.setOfferNameElement(offerControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));
-            result.setOfferNameElementDescriptions(offerControl.getOfferNameElementDescriptionTransfers(getUserVisit(), offerNameElement));
+            result.setOfferNameElement(offerNameElementControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));
+            result.setOfferNameElementDescriptions(offerNameElementControl.getOfferNameElementDescriptionTransfers(getUserVisit(), offerNameElement));
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferNameElementName.name(), offerNameElementName);
         }
