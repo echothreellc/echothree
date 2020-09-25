@@ -27,7 +27,7 @@ public class PaymentProcessorActionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorAction, PaymentProcessorActionTransfer> {
 
     PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
-    PaymentProcessorTypeActionControl paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl) Session.getModelController(PaymentProcessorTypeActionControl.class);
+    PaymentProcessorTypeActionControl paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl)Session.getModelController(PaymentProcessorTypeActionControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
     public PaymentProcessorActionTransferCache(UserVisit userVisit) {

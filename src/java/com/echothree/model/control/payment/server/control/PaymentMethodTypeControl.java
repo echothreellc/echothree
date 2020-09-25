@@ -293,7 +293,7 @@ public class PaymentMethodTypeControl
     }
 
     public void deletePaymentMethodType(final PaymentMethodType paymentMethodType, final BasePK deletedBy) {
-        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl) Session.getModelController(PaymentMethodTypePartyTypeControl.class);
+        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl)Session.getModelController(PaymentMethodTypePartyTypeControl.class);
 
         paymentMethodTypePartyTypeControl.deletePaymentMethodTypePartyTypesByPaymentMethodType(paymentMethodType, deletedBy);
         deletePaymentMethodTypeDescriptionsByPaymentMethodType(paymentMethodType, deletedBy);

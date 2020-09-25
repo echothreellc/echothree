@@ -155,7 +155,7 @@ public class WorkflowEntranceLogic
                     var workflowEntrancePartyType = getWorkflowEntrancePartyType(eea, workflowEntrance, partyType);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
                         workflowEntranceSecurityRole = workflowControl.getWorkflowEntranceSecurityRole(workflowEntrancePartyType,
                                 securityRole, entityPermission);
@@ -207,7 +207,7 @@ public class WorkflowEntranceLogic
                 var selector = SelectorLogic.getInstance().getSelectorByName(eea, selectorType, selectorName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
                     workflowEntranceSelector = workflowControl.getWorkflowEntranceSelector(workflowEntrance,
                             selector, entityPermission);
@@ -256,7 +256,7 @@ public class WorkflowEntranceLogic
 
     public WorkflowEntranceStep getWorkflowEntranceStep(final ExecutionErrorAccumulator eea,
             WorkflowEntrance workflowEntrance, WorkflowStep entranceWorkflowStep) {
-        var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         var workflowEntranceStep = workflowControl.getWorkflowEntranceStep(workflowEntrance, entranceWorkflowStep);
 
         if(workflowEntranceStep == null) {

@@ -65,7 +65,7 @@ public class LotLogic
         }
 
         if(!eea.hasExecutionErrors()) {
-            var lotControl = (LotControl) Session.getModelController(LotControl.class);
+            var lotControl = (LotControl)Session.getModelController(LotControl.class);
 
             lot = lotControl.getLotByName(lotName);
             if(lot == null) {

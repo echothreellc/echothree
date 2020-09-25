@@ -280,8 +280,8 @@ public class PaymentProcessorActionTypeControl
     }
 
     public void deletePaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType, final BasePK deletedBy) {
-        var paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl) Session.getModelController(PaymentProcessorTypeActionControl.class);
-        var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl) Session.getModelController(PaymentProcessorTransactionControl.class);
+        var paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl)Session.getModelController(PaymentProcessorTypeActionControl.class);
+        var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl)Session.getModelController(PaymentProcessorTransactionControl.class);
 
         paymentProcessorTypeActionControl.deletePaymentProcessorTypeActionsByPaymentProcessorActionType(paymentProcessorActionType, deletedBy);
         paymentProcessorTransactionControl.deletePaymentProcessorTransactionsByPaymentProcessorActionType(paymentProcessorActionType, deletedBy);

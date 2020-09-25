@@ -223,7 +223,7 @@ public class WorkflowDestinationLogic
                     var workflowDestinationPartyType = getWorkflowDestinationPartyType(eea, workflowDestination, partyType);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
                         workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRole(workflowDestinationPartyType,
                                 securityRole, entityPermission);
@@ -277,7 +277,7 @@ public class WorkflowDestinationLogic
                 var selector = SelectorLogic.getInstance().getSelectorByName(eea, selectorType, selectorName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
                     workflowDestinationSelector = workflowControl.getWorkflowDestinationSelector(workflowDestination,
                             selector, entityPermission);
@@ -327,7 +327,7 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestinationStep getWorkflowDestinationStep(final ExecutionErrorAccumulator eea,
             WorkflowDestination workflowDestination, WorkflowStep destinationWorkflowStep) {
-        var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         var workflowDestinationStep = workflowControl.getWorkflowDestinationStep(workflowDestination, destinationWorkflowStep);
 
         if(workflowDestinationStep == null) {

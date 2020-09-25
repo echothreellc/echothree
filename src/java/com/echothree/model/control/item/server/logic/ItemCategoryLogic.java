@@ -81,7 +81,7 @@ public class ItemCategoryLogic
 
 
     public ItemCategory getDefaultItemCategory(final ExecutionErrorAccumulator eea) {
-        ItemControl itemControl = (ItemControl) Session.getModelController(ItemControl.class);
+        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = itemControl.getDefaultItemCategory();
 
         if(itemCategory == null) {

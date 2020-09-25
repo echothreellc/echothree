@@ -26,8 +26,8 @@ import com.echothree.util.server.persistence.Session;
 public class PartyFreeOnBoardTransferCache
         extends BaseShipmentTransferCache<PartyFreeOnBoard, PartyFreeOnBoardTransfer> {
 
-    FreeOnBoardControl freeOnBoardControl = (FreeOnBoardControl) Session.getModelController(FreeOnBoardControl.class);
-    PartyControl partyControl = (PartyControl) Session.getModelController(PartyControl.class);
+    FreeOnBoardControl freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of FreeOnBoardTransferCache */
     public PartyFreeOnBoardTransferCache(UserVisit userVisit) {

@@ -98,7 +98,7 @@ public class GetContentPageLayoutAreaCommand
         GetContentPageLayoutAreaResult result = ContentResultFactory.getGetContentPageLayoutAreaResult();
 
         if (contentPageLayoutArea != null) {
-            ContentControl contentControl = (ContentControl) Session.getModelController(ContentControl.class);
+            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             result.setContentPageLayoutArea(contentControl.getContentPageLayoutAreaTransfer(getUserVisit(), contentPageLayoutArea));
         }

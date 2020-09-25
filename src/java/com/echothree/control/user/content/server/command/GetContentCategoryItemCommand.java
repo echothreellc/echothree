@@ -229,7 +229,7 @@ public class GetContentCategoryItemCommand
         GetContentCategoryItemResult result = ContentResultFactory.getGetContentCategoryItemResult();
 
         if (contentCategoryItem != null) {
-            ContentControl contentControl = (ContentControl) Session.getModelController(ContentControl.class);
+            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             result.setContentCategoryItem(contentControl.getContentCategoryItemTransfer(getUserVisit(), contentCategoryItem));
         }

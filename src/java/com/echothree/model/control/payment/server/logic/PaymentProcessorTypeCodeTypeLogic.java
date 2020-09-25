@@ -209,7 +209,7 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeTypeDescription createPaymentProcessorTypeCodeTypeDescription(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType, final Language language,
             final String description, final BasePK createdBy) {
-        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl) Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl)Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, language);
 
         if(paymentProcessorTypeCodeTypeDescription == null) {

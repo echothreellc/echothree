@@ -120,7 +120,7 @@ public class ItemLogic
             final Long purchaseOrderStartTime, final Long purchaseOrderEndTime, final Boolean allowClubDiscounts, final Boolean allowCouponDiscounts,
             final Boolean allowAssociatePayments, final UnitOfMeasureKind unitOfMeasureKind, final ItemPriceType itemPriceType,
             final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final StylePath stylePath, final BasePK createdBy) {
-        var itemControl = (ItemControl) Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         Item item = null;
         
         if(itemCategory == null) {
