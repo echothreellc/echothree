@@ -20,6 +20,7 @@ import com.echothree.control.user.offer.common.form.GetOfferUsesForm;
 import com.echothree.control.user.offer.common.result.GetOfferUsesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -27,10 +28,10 @@ import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -76,7 +77,9 @@ public class GetOfferUsesCommand
         offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            offerUses = offerControl.getOfferUsesByOffer(offer);
+            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
+            offerUses = offerUseControl.getOfferUsesByOffer(offer);
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
         }
@@ -90,10 +93,11 @@ public class GetOfferUsesCommand
         
         if(entities != null) {
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
-            result.setOfferUses(offerControl.getOfferUseTransfers(userVisit, entities));
+            result.setOfferUses(offerUseControl.getOfferUseTransfers(userVisit, entities));
         }
         
         return result;

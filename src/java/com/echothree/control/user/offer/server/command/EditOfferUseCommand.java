@@ -23,6 +23,8 @@ import com.echothree.control.user.offer.common.result.EditOfferUseResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferUseSpec;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -36,11 +38,11 @@ import com.echothree.model.data.offer.server.value.OfferUseDetailValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -88,15 +90,18 @@ public class EditOfferUseCommand
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
+            var useControl = (UseControl)Session.getModelController(UseControl.class);
             String useName = spec.getUseName();
-            Use use = offerControl.getUseByName(useName);
+            Use use = useControl.getUseByName(useName);
             
             if(use != null) {
+                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
                 if(editMode.equals(EditMode.LOCK)) {
-                    OfferUse offerUse = offerControl.getOfferUse(offer, use);
+                    OfferUse offerUse = offerUseControl.getOfferUse(offer, use);
                     
                     if(offerUse != null) {
-                        result.setOfferUse(offerControl.getOfferUseTransfer(getUserVisit(), offerUse));
+                        result.setOfferUse(offerUseControl.getOfferUseTransfer(getUserVisit(), offerUse));
                         
                         if(lockEntity(offerUse)) {
                             OfferUseEdit edit = OfferEditFactory.getOfferUseEdit();
@@ -114,7 +119,7 @@ public class EditOfferUseCommand
                         addExecutionError(ExecutionErrors.UnknownOfferUse.name());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    OfferUse offerUse = offerControl.getOfferUseForUpdate(offer, use);
+                    OfferUse offerUse = offerUseControl.getOfferUseForUpdate(offer, use);
                     
                     if(offerUse != null) {
                         String salesOrderSequenceName = edit.getSalesOrderSequenceName();
@@ -134,11 +139,11 @@ public class EditOfferUseCommand
                         if(salesOrderSequenceName == null || salesOrderSequence != null) {
                             if(lockEntityForUpdate(offerUse)) {
                                 try {
-                                    OfferUseDetailValue offerUseDetailValue = offerControl.getOfferUseDetailValueForUpdate(offerUse);
+                                    OfferUseDetailValue offerUseDetailValue = offerUseControl.getOfferUseDetailValueForUpdate(offerUse);
                                     
                                     offerUseDetailValue.setSalesOrderSequencePK(salesOrderSequence == null? null: salesOrderSequence.getPrimaryKey());
-                                    
-                                    offerControl.updateOfferUseFromValue(offerUseDetailValue, getPartyPK());
+
+                                    offerUseControl.updateOfferUseFromValue(offerUseDetailValue, getPartyPK());
                                 } finally {
                                     unlockEntity(offerUse);
                                 }

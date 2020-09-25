@@ -18,6 +18,9 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferUseForm;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.SourceControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,11 +33,11 @@ import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -77,11 +80,13 @@ public class CreateOfferUseCommand
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
+            var useControl = (UseControl)Session.getModelController(UseControl.class);
             String useName = form.getUseName();
-            Use use = offerControl.getUseByName(useName);
+            Use use = useControl.getUseByName(useName);
             
             if(use != null) {
-                OfferUse offerUse = offerControl.getOfferUse(offer, use);
+                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                OfferUse offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse == null) {
                     String salesOrderSequenceName = form.getSalesOrderSequenceName();
@@ -99,14 +104,15 @@ public class CreateOfferUseCommand
                     }
                     
                     if(salesOrderSequenceName == null || salesOrderSequence != null) {
+                        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
                         String sourceName = new StringBuilder(offerName).append(useName).toString();
-                        Source source = offerControl.getSourceByName(sourceName);
+                        Source source = sourceControl.getSourceByName(sourceName);
                         
                         if(source == null) {
                             BasePK partyPK = getPartyPK();
                             
-                            offerUse = offerControl.createOfferUse(offer, use, salesOrderSequence, partyPK);
-                            offerControl.createSource(sourceName, offerUse, Boolean.FALSE, 1, partyPK);
+                            offerUse = offerUseControl.createOfferUse(offer, use, salesOrderSequence, partyPK);
+                            sourceControl.createSource(sourceName, offerUse, Boolean.FALSE, 1, partyPK);
                         }  else {
                             addExecutionError(ExecutionErrors.DuplicateSourceName.name(), sourceName);
                         }
