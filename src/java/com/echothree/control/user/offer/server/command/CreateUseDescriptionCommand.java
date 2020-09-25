@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseDescriptionForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,20 +68,20 @@ public class CreateUseDescriptionCommand
     @Override
     protected BaseResult execute() {
         String useName = form.getUseName();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        Use use = offerControl.getUseByName(useName);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        Use use = useControl.getUseByName(useName);
         
         if(use != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             if(language != null) {
-                UseDescription useDescription = offerControl.getUseDescription(use, language);
+                UseDescription useDescription = useControl.getUseDescription(use, language);
                 
                 if(useDescription == null) {
                     var description = form.getDescription();
                     
-                    offerControl.createUseDescription(use, language, description, getPartyPK());
+                    useControl.createUseDescription(use, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateUseDescription.name());
                 }

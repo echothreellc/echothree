@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteUseDescriptionForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,9 +66,9 @@ public class DeleteUseDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         String useName = form.getUseName();
-        Use use = offerControl.getUseByName(useName);
+        Use use = useControl.getUseByName(useName);
         
         if(use != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -76,10 +76,10 @@ public class DeleteUseDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseDescription useDescription = offerControl.getUseDescriptionForUpdate(use, language);
+                UseDescription useDescription = useControl.getUseDescriptionForUpdate(use, language);
                 
                 if(useDescription != null) {
-                    offerControl.deleteUseDescription(useDescription, getPartyPK());
+                    useControl.deleteUseDescription(useDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUseDescription.name());
                 }

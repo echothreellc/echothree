@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetUsesForm;
 import com.echothree.control.user.offer.common.result.GetUsesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -63,21 +63,21 @@ public class GetUsesCommand
     
     @Override
     protected Collection<Use> getEntities() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         
-        return offerControl.getUses();
+        return useControl.getUses();
     }
     
     @Override
     protected BaseResult getTransfers(Collection<Use> entities) {
         GetUsesResult result = OfferResultFactory.getGetUsesResult();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         
         if(session.hasLimit(UseFactory.class)) {
-            result.setUseCount(offerControl.countUses());
+            result.setUseCount(useControl.countUses());
         }
 
-        result.setUses(offerControl.getUseTransfers(getUserVisit(), entities));
+        result.setUses(useControl.getUseTransfers(getUserVisit(), entities));
         
         return result;
     }

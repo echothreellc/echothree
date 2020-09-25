@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteUseForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,12 +62,12 @@ public class DeleteUseCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         String useName = form.getUseName();
-        Use use = offerControl.getUseByNameForUpdate(useName);
+        Use use = useControl.getUseByNameForUpdate(useName);
         
         if(use != null) {
-            offerControl.deleteUse(use, getPartyPK());
+            useControl.deleteUse(use, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUseName.name(), useName);
         }

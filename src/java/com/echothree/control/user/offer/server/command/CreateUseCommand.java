@@ -18,7 +18,7 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -70,9 +70,9 @@ public class CreateUseCommand
     @Override
     protected BaseResult execute() {
         var result = OfferResultFactory.getCreateUseResult();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         String useName = form.getUseName();
-        Use use = offerControl.getUseByName(useName);
+        Use use = useControl.getUseByName(useName);
         
         if(use == null) {
             var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
@@ -85,10 +85,10 @@ public class CreateUseCommand
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
                 
-                use = offerControl.createUse(useName, useType, isDefault, sortOrder, partyPK);
+                use = useControl.createUse(useName, useType, isDefault, sortOrder, partyPK);
                 
                 if(description != null) {
-                    offerControl.createUseDescription(use, getPreferredLanguage(), description, partyPK);
+                    useControl.createUseDescription(use, getPreferredLanguage(), description, partyPK);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);

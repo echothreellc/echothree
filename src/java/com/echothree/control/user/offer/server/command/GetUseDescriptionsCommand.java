@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetUseDescriptionsForm;
 import com.echothree.control.user.offer.common.result.GetUseDescriptionsResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,14 +64,14 @@ public class GetUseDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         GetUseDescriptionsResult result = OfferResultFactory.getGetUseDescriptionsResult();
         String useName = form.getUseName();
-        Use use = offerControl.getUseByName(useName);
+        Use use = useControl.getUseByName(useName);
         
         if(use != null) {
-            result.setUse(offerControl.getUseTransfer(getUserVisit(), use));
-            result.setUseDescriptions(offerControl.getUseDescriptionTransfers(getUserVisit(), use));
+            result.setUse(useControl.getUseTransfer(getUserVisit(), use));
+            result.setUseDescriptions(useControl.getUseDescriptionTransfers(getUserVisit(), use));
         } else {
             addExecutionError(ExecutionErrors.UnknownUseName.name(), useName);
         }

@@ -17,7 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.SetDefaultUseForm;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,13 +62,13 @@ public class SetDefaultUseCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
         String useName = form.getUseName();
-        UseDetailValue useDetailValue = offerControl.getUseDetailValueByNameForUpdate(useName);
+        UseDetailValue useDetailValue = useControl.getUseDetailValueByNameForUpdate(useName);
         
         if(useDetailValue != null) {
             useDetailValue.setIsDefault(Boolean.TRUE);
-            offerControl.updateUseFromValue(useDetailValue, getPartyPK());
+            useControl.updateUseFromValue(useDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUseName.name(), useName);
         }
