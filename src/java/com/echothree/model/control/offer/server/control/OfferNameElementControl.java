@@ -21,6 +21,7 @@ import com.echothree.model.control.offer.common.transfer.OfferNameElementDescrip
 import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
 import com.echothree.model.control.offer.server.transfer.OfferNameElementDescriptionTransferCache;
 import com.echothree.model.control.offer.server.transfer.OfferNameElementTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.OfferNameElementPK;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
@@ -73,7 +74,23 @@ public class OfferNameElementControl
         return offerNameElement;
     }
     
-    private OfferNameElement getOfferNameElementByName(String offerNameElementName, EntityPermission entityPermission) {
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OfferNameElement */
+    public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new OfferNameElementPK(entityInstance.getEntityUniqueId());
+        var offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return offerNameElement;
+    }
+
+    public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance) {
+        return getOfferNameElementByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OfferNameElement getOfferNameElementByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getOfferNameElementByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
+    public OfferNameElement getOfferNameElementByName(String offerNameElementName, EntityPermission entityPermission) {
         OfferNameElement offerNameElement = null;
         
         try {
