@@ -53,7 +53,7 @@ public class OfferNameElementLogic
             final Integer offset, final Integer length, final String validationPattern, final Language language, final String description,
             final BasePK createdBy) {
         var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
+        var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
 
         if(offerNameElement == null) {
             offerNameElement = offerNameElementControl.createOfferNameElement(offerNameElementName, offset, length, validationPattern,
@@ -73,7 +73,7 @@ public class OfferNameElementLogic
     public OfferNameElement getOfferNameElementByName(final ExecutionErrorAccumulator eea, final String offerNameElementName,
             final EntityPermission entityPermission) {
         var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName, entityPermission);
+        var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName, entityPermission);
 
         if(offerNameElement == null) {
             handleExecutionError(UnknownOfferNameElementNameException.class, eea, ExecutionErrors.UnknownOfferNameElementName.name(), offerNameElementName);
@@ -92,27 +92,24 @@ public class OfferNameElementLogic
 
     public OfferNameElement getOfferNameElementByUniversalSpec(final ExecutionErrorAccumulator eea,
             final OfferNameElementUniversalSpec universalSpec, final EntityPermission entityPermission) {
-        OfferNameElement offerNameElement = null;
         var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
-        String offerNameElementName = universalSpec.getOfferNameElementName();
+        var offerNameElementName = universalSpec.getOfferNameElementName();
         int parameterCount = (offerNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        OfferNameElement offerNameElement = null;
 
-        switch(parameterCount) {
-            case 1:
-                if(offerNameElementName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.OfferNameElement.name());
+        if(parameterCount == 1) {
+            if(offerNameElementName == null) {
+                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHOTHREE.name(), EntityTypes.OfferNameElement.name());
 
-                    if(!eea.hasExecutionErrors()) {
-                        offerNameElement = offerNameElementControl.getOfferNameElementByEntityInstance(entityInstance, entityPermission);
-                    }
-                } else {
-                    offerNameElement = getOfferNameElementByName(eea, offerNameElementName, entityPermission);
+                if(!eea.hasExecutionErrors()) {
+                    offerNameElement = offerNameElementControl.getOfferNameElementByEntityInstance(entityInstance, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            } else {
+                offerNameElement = getOfferNameElementByName(eea, offerNameElementName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return offerNameElement;
