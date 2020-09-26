@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.form;
+package com.echothree.control.user.offer.common.result;
 
-import com.echothree.control.user.offer.common.spec.OfferNameElementUniversalSpec;
+import com.echothree.model.control.offer.common.transfer.OfferNameElementDescriptionTransfer;
+import com.echothree.util.common.command.BaseResult;
 
-public interface GetOfferNameElementForm
-        extends OfferNameElementUniversalSpec {
+public interface GetOfferNameElementDescriptionResult
+        extends BaseResult {
     
-    // Nothing additional beyond OfferNameElementUniversalSpec
+    OfferNameElementDescriptionTransfer getOfferNameElementDescription();
+    void setOfferNameElementDescription(OfferNameElementDescriptionTransfer offerNameElementDescription);
     
 }

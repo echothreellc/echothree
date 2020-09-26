@@ -73,7 +73,14 @@ public class OfferNameElementControl
         
         return offerNameElement;
     }
-    
+
+    public long countOfferNameElements() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offernameelements, offernameelementdetails " +
+                "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid");
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.OfferNameElement */
     public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferNameElementPK(entityInstance.getEntityUniqueId());
@@ -343,7 +350,7 @@ public class OfferNameElementControl
         return getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache().getOfferNameElementDescriptionTransfer(offerNameElementDescription);
     }
     
-    public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfers(UserVisit userVisit, OfferNameElement offerNameElement) {
+    public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfersByOfferNameElement(UserVisit userVisit, OfferNameElement offerNameElement) {
         List<OfferNameElementDescription> offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElement(offerNameElement);
         List<OfferNameElementDescriptionTransfer> offerNameElementDescriptionTransfers = new ArrayList<>(offerNameElementDescriptions.size());
         OfferNameElementDescriptionTransferCache offerNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache();

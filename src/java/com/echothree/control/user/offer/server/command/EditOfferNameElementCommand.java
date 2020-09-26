@@ -21,8 +21,9 @@ import com.echothree.control.user.offer.common.edit.OfferNameElementEdit;
 import com.echothree.control.user.offer.common.form.EditOfferNameElementForm;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.control.user.offer.common.spec.OfferNameElementSpec;
+import com.echothree.control.user.offer.common.spec.OfferNameElementUniversalSpec;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
+import com.echothree.model.control.offer.server.logic.OfferNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -35,9 +36,7 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -47,7 +46,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditOfferNameElementCommand
-        extends BaseEditCommand<OfferNameElementSpec, OfferNameElementEdit> {
+        extends BaseAbstractEditCommand<OfferNameElementUniversalSpec, OfferNameElementEdit, EditOfferNameElementResult, OfferNameElement, OfferNameElement> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -62,7 +61,11 @@ public class EditOfferNameElementCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OfferNameElementName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OfferNameElementName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -80,87 +83,84 @@ public class EditOfferNameElementCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    public EditOfferNameElementResult getResult() {
+        return OfferResultFactory.getEditOfferNameElementResult();
+    }
+    
+    @Override
+    public OfferNameElementEdit getEdit() {
+        return OfferEditFactory.getOfferNameElementEdit();
+    }
+    
+    @Override
+    public OfferNameElement getEntity(EditOfferNameElementResult result) {
+        return OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+    }
+    
+    @Override
+    public OfferNameElement getLockEntity(OfferNameElement offerNameElement) {
+        return offerNameElement;
+    }
+    
+    @Override
+    public void fillInResult(EditOfferNameElementResult result, OfferNameElement offerNameElement) {
         var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
-        EditOfferNameElementResult result = OfferResultFactory.getEditOfferNameElementResult();
         
-        if(editMode.equals(EditMode.LOCK)) {
-            String offerNameElementName = spec.getOfferNameElementName();
-            OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
-            
-            if(offerNameElement != null) {
-                result.setOfferNameElement(offerNameElementControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));
-                
-                if(lockEntity(offerNameElement)) {
-                    OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, getPreferredLanguage());
-                    OfferNameElementEdit edit = OfferEditFactory.getOfferNameElementEdit();
-                    OfferNameElementDetail offerNameElementDetail = offerNameElement.getLastDetail();
-                    
-                    result.setEdit(edit);
-                    edit.setOfferNameElementName(offerNameElementDetail.getOfferNameElementName());
-                    edit.setOffset(offerNameElementDetail.getOffset().toString());
-                    edit.setLength(offerNameElementDetail.getLength().toString());
-                    edit.setValidationPattern(offerNameElementDetail.getValidationPattern());
-                    
-                    if(offerNameElementDescription != null) {
-                        edit.setDescription(offerNameElementDescription.getDescription());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(offerNameElement));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOfferNameElementName.name(), offerNameElementName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            String offerNameElementName = spec.getOfferNameElementName();
-            OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByNameForUpdate(offerNameElementName);
-            
-            if(offerNameElement != null) {
-                offerNameElementName = edit.getOfferNameElementName();
-                OfferNameElement duplicateOfferNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
-                
-                if(duplicateOfferNameElement == null || offerNameElement.equals(duplicateOfferNameElement)) {
-                    if(lockEntityForUpdate(offerNameElement)) {
-                        try {
-                            var partyPK = getPartyPK();
-                            OfferNameElementDetailValue offerNameElementDetailValue = offerNameElementControl.getOfferNameElementDetailValueForUpdate(offerNameElement);
-                            OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, getPreferredLanguage());
-                            String description = edit.getDescription();
-                            
-                            offerNameElementDetailValue.setOfferNameElementName(edit.getOfferNameElementName());
-                            offerNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
-                            offerNameElementDetailValue.setLength(Integer.valueOf(edit.getLength()));
-                            offerNameElementDetailValue.setValidationPattern(edit.getValidationPattern());
-                            
-                            offerNameElementControl.updateOfferNameElementFromValue(offerNameElementDetailValue, partyPK);
-                            
-                            if(offerNameElementDescription == null && description != null) {
-                                offerNameElementControl.createOfferNameElementDescription(offerNameElement, getPreferredLanguage(), description, partyPK);
-                            } else if(offerNameElementDescription != null && description == null) {
-                                offerNameElementControl.deleteOfferNameElementDescription(offerNameElementDescription, partyPK);
-                            } else if(offerNameElementDescription != null && description != null) {
-                                OfferNameElementDescriptionValue offerNameElementDescriptionValue = offerNameElementControl.getOfferNameElementDescriptionValue(offerNameElementDescription);
-                                
-                                offerNameElementDescriptionValue.setDescription(description);
-                                offerNameElementControl.updateOfferNameElementDescriptionFromValue(offerNameElementDescriptionValue, partyPK);
-                            }
-                        } finally {
-                            unlockEntity(offerNameElement);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateOfferNameElementName.name(), offerNameElementName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOfferNameElementName.name(), offerNameElementName);
-            }
+        result.setOfferNameElement(offerNameElementControl.getOfferNameElementTransfer(getUserVisit(), offerNameElement));
+    }
+    
+    @Override
+    public void doLock(OfferNameElementEdit edit, OfferNameElement offerNameElement) {
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, getPreferredLanguage());
+        OfferNameElementDetail offerNameElementDetail = offerNameElement.getLastDetail();
+        
+        edit.setOfferNameElementName(offerNameElementDetail.getOfferNameElementName());
+        edit.setOffset(offerNameElementDetail.getOffset().toString());
+        edit.setLength(offerNameElementDetail.getLength().toString());
+        edit.setValidationPattern(offerNameElementDetail.getValidationPattern());
+
+        if(offerNameElementDescription != null) {
+            edit.setDescription(offerNameElementDescription.getDescription());
         }
+    }
         
-        return result;
+    @Override
+    public void canUpdate(OfferNameElement offerNameElement) {
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        String offerNameElementName = edit.getOfferNameElementName();
+        OfferNameElement duplicateOfferNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
+
+        if(duplicateOfferNameElement != null && !offerNameElement.equals(duplicateOfferNameElement)) {
+            addExecutionError(ExecutionErrors.DuplicateOfferNameElementName.name(), offerNameElementName);
+        }
+    }
+    
+    @Override
+    public void doUpdate(OfferNameElement offerNameElement) {
+        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var partyPK = getPartyPK();
+        OfferNameElementDetailValue offerNameElementDetailValue = offerNameElementControl.getOfferNameElementDetailValueForUpdate(offerNameElement);
+        OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescriptionForUpdate(offerNameElement, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        offerNameElementDetailValue.setOfferNameElementName(edit.getOfferNameElementName());
+        offerNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
+        offerNameElementDetailValue.setLength(Integer.valueOf(edit.getLength()));
+        offerNameElementDetailValue.setValidationPattern(edit.getValidationPattern());
+
+        offerNameElementControl.updateOfferNameElementFromValue(offerNameElementDetailValue, partyPK);
+
+        if(offerNameElementDescription == null && description != null) {
+            offerNameElementControl.createOfferNameElementDescription(offerNameElement, getPreferredLanguage(), description, partyPK);
+        } else if(offerNameElementDescription != null && description == null) {
+            offerNameElementControl.deleteOfferNameElementDescription(offerNameElementDescription, partyPK);
+        } else if(offerNameElementDescription != null && description != null) {
+            OfferNameElementDescriptionValue offerNameElementDescriptionValue = offerNameElementControl.getOfferNameElementDescriptionValue(offerNameElementDescription);
+
+            offerNameElementDescriptionValue.setDescription(description);
+            offerNameElementControl.updateOfferNameElementDescriptionFromValue(offerNameElementDescriptionValue, partyPK);
+        }
     }
     
 }

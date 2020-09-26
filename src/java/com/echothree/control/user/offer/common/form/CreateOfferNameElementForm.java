@@ -21,6 +21,6 @@ import com.echothree.control.user.offer.common.edit.OfferNameElementEdit;
 public interface CreateOfferNameElementForm
         extends OfferNameElementEdit {
     
-    // Nothing additional beyond CreateOfferNameElementForm
+    // Nothing additional beyond OfferNameElementEdit
     
 }

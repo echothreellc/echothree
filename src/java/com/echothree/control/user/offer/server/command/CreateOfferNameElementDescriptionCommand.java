@@ -41,10 +41,10 @@ import java.util.List;
 
 public class CreateOfferNameElementDescriptionCommand
         extends BaseSimpleCommand<CreateOfferNameElementDescriptionForm> {
-
+    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-
+    
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -77,8 +77,7 @@ public class CreateOfferNameElementDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement,
-                        language);
+                OfferNameElementDescription offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, language);
                 
                 if(offerNameElementDescription == null) {
                     var description = form.getDescription();

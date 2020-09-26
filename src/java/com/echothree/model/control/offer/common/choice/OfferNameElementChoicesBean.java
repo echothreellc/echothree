@@ -14,13 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.form;
+package com.echothree.model.control.offer.common.choice;
 
-import com.echothree.control.user.offer.common.spec.OfferNameElementUniversalSpec;
+import com.echothree.view.common.BaseChoicesBean;
+import java.util.List;
 
-public interface GetOfferNameElementForm
-        extends OfferNameElementUniversalSpec {
-    
-    // Nothing additional beyond OfferNameElementUniversalSpec
+public class OfferNameElementChoicesBean
+        extends BaseChoicesBean {
+
+    /** Creates a new instance of OfferNameElementChoicesBean */
+    public OfferNameElementChoicesBean(List<String> labels, List<String> values, String defaultValue) {
+        super(labels, values, defaultValue);
+    }
     
 }

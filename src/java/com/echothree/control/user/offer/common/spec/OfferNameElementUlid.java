@@ -21,7 +21,7 @@ import com.echothree.util.common.form.BaseSpec;
 public interface OfferNameElementUlid
         extends BaseSpec {
     
-    String getUseTypeUlid();
-    void setUseTypeUlid(String useTypeUlid);
+    String getOfferNameElementUlid();
+    void setOfferNameElementUlid(String offerNameElementUlid);
     
 }

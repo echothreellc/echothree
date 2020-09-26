@@ -17,11 +17,11 @@
 package com.echothree.control.user.offer.common.form;
 
 import com.echothree.control.user.offer.common.edit.OfferNameElementEdit;
-import com.echothree.control.user.offer.common.spec.OfferNameElementSpec;
+import com.echothree.control.user.offer.common.spec.OfferNameElementUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditOfferNameElementForm
-        extends BaseEditForm<OfferNameElementSpec, OfferNameElementEdit> {
+        extends BaseEditForm<OfferNameElementUniversalSpec, OfferNameElementEdit> {
     
     // Nothing additional beyond BaseEditForm
     

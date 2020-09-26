@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.offer.common.form;
 
-import com.echothree.control.user.offer.common.spec.OfferNameElementUniversalSpec;
+import com.echothree.control.user.offer.common.spec.OfferNameElementDescriptionSpec;
 
-public interface GetOfferNameElementForm
-        extends OfferNameElementUniversalSpec {
+public interface GetOfferNameElementDescriptionForm
+        extends OfferNameElementDescriptionSpec {
     
-    // Nothing additional beyond OfferNameElementUniversalSpec
+    // Nothing additional beyond OfferNameElementDescriptionSpec
     
 }

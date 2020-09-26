@@ -17,13 +17,11 @@
 package com.echothree.control.user.offer.common.result;
 
 import com.echothree.control.user.offer.common.edit.OfferNameElementEdit;
-import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
 import com.echothree.util.common.command.BaseEditResult;
 
 public interface EditOfferNameElementResult
-        extends BaseEditResult<OfferNameElementEdit> {
+        extends GetOfferNameElementResult, BaseEditResult<OfferNameElementEdit> {
     
-    OfferNameElementTransfer getOfferNameElement();
-    void setOfferNameElement(OfferNameElementTransfer offerNameElement);
+    // Nothing additional beyond GetOfferNameElementResult, BaseEditResult<OfferNameElementEdit>
     
 }
