@@ -21,8 +21,9 @@ import com.echothree.control.user.offer.common.edit.UseNameElementEdit;
 import com.echothree.control.user.offer.common.form.EditUseNameElementForm;
 import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
+import com.echothree.control.user.offer.common.spec.UseNameElementUniversalSpec;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
+import com.echothree.model.control.offer.server.logic.UseNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -35,9 +36,7 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -47,7 +46,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditUseNameElementCommand
-        extends BaseEditCommand<UseNameElementSpec, UseNameElementEdit> {
+        extends BaseAbstractEditCommand<UseNameElementUniversalSpec, UseNameElementEdit, EditUseNameElementResult, UseNameElement, UseNameElement> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -62,7 +61,11 @@ public class EditUseNameElementCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -80,87 +83,84 @@ public class EditUseNameElementCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    public EditUseNameElementResult getResult() {
+        return OfferResultFactory.getEditUseNameElementResult();
+    }
+    
+    @Override
+    public UseNameElementEdit getEdit() {
+        return OfferEditFactory.getUseNameElementEdit();
+    }
+    
+    @Override
+    public UseNameElement getEntity(EditUseNameElementResult result) {
+        return UseNameElementLogic.getInstance().getUseNameElementByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+    }
+    
+    @Override
+    public UseNameElement getLockEntity(UseNameElement useNameElement) {
+        return useNameElement;
+    }
+    
+    @Override
+    public void fillInResult(EditUseNameElementResult result, UseNameElement useNameElement) {
         var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
-        EditUseNameElementResult result = OfferResultFactory.getEditUseNameElementResult();
         
-        if(editMode.equals(EditMode.LOCK)) {
-            String useNameElementName = spec.getUseNameElementName();
-            UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
-            
-            if(useNameElement != null) {
-                result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
-                
-                if(lockEntity(useNameElement)) {
-                    UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
-                    UseNameElementEdit edit = OfferEditFactory.getUseNameElementEdit();
-                    UseNameElementDetail useNameElementDetail = useNameElement.getLastDetail();
-                    
-                    result.setEdit(edit);
-                    edit.setUseNameElementName(useNameElementDetail.getUseNameElementName());
-                    edit.setOffset(useNameElementDetail.getOffset().toString());
-                    edit.setLength(useNameElementDetail.getLength().toString());
-                    edit.setValidationPattern(useNameElementDetail.getValidationPattern());
-                    
-                    if(useNameElementDescription != null) {
-                        edit.setDescription(useNameElementDescription.getDescription());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(useNameElement));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), useNameElementName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            String useNameElementName = spec.getUseNameElementName();
-            UseNameElement useNameElement = useNameElementControl.getUseNameElementByNameForUpdate(useNameElementName);
-            
-            if(useNameElement != null) {
-                useNameElementName = edit.getUseNameElementName();
-                UseNameElement duplicateUseNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
-                
-                if(duplicateUseNameElement == null || useNameElement.equals(duplicateUseNameElement)) {
-                    if(lockEntityForUpdate(useNameElement)) {
-                        try {
-                            var partyPK = getPartyPK();
-                            UseNameElementDetailValue useNameElementDetailValue = useNameElementControl.getUseNameElementDetailValueForUpdate(useNameElement);
-                            UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
-                            String description = edit.getDescription();
-                            
-                            useNameElementDetailValue.setUseNameElementName(edit.getUseNameElementName());
-                            useNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
-                            useNameElementDetailValue.setLength(Integer.valueOf(edit.getLength()));
-                            useNameElementDetailValue.setValidationPattern(edit.getValidationPattern());
-                            
-                            useNameElementControl.updateUseNameElementFromValue(useNameElementDetailValue, partyPK);
-                            
-                            if(useNameElementDescription == null && description != null) {
-                                useNameElementControl.createUseNameElementDescription(useNameElement, getPreferredLanguage(), description, partyPK);
-                            } else if(useNameElementDescription != null && description == null) {
-                                useNameElementControl.deleteUseNameElementDescription(useNameElementDescription, partyPK);
-                            } else if(useNameElementDescription != null && description != null) {
-                                UseNameElementDescriptionValue useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValue(useNameElementDescription);
-                                
-                                useNameElementDescriptionValue.setDescription(description);
-                                useNameElementControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, partyPK);
-                            }
-                        } finally {
-                            unlockEntity(useNameElement);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateUseNameElementName.name(), useNameElementName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), useNameElementName);
-            }
+        result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
+    }
+    
+    @Override
+    public void doLock(UseNameElementEdit edit, UseNameElement useNameElement) {
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
+        UseNameElementDetail useNameElementDetail = useNameElement.getLastDetail();
+        
+        edit.setUseNameElementName(useNameElementDetail.getUseNameElementName());
+        edit.setOffset(useNameElementDetail.getOffset().toString());
+        edit.setLength(useNameElementDetail.getLength().toString());
+        edit.setValidationPattern(useNameElementDetail.getValidationPattern());
+
+        if(useNameElementDescription != null) {
+            edit.setDescription(useNameElementDescription.getDescription());
         }
+    }
         
-        return result;
+    @Override
+    public void canUpdate(UseNameElement useNameElement) {
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        String useNameElementName = edit.getUseNameElementName();
+        UseNameElement duplicateUseNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
+
+        if(duplicateUseNameElement != null && !useNameElement.equals(duplicateUseNameElement)) {
+            addExecutionError(ExecutionErrors.DuplicateUseNameElementName.name(), useNameElementName);
+        }
+    }
+    
+    @Override
+    public void doUpdate(UseNameElement useNameElement) {
+        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var partyPK = getPartyPK();
+        UseNameElementDetailValue useNameElementDetailValue = useNameElementControl.getUseNameElementDetailValueForUpdate(useNameElement);
+        UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        useNameElementDetailValue.setUseNameElementName(edit.getUseNameElementName());
+        useNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
+        useNameElementDetailValue.setLength(Integer.valueOf(edit.getLength()));
+        useNameElementDetailValue.setValidationPattern(edit.getValidationPattern());
+
+        useNameElementControl.updateUseNameElementFromValue(useNameElementDetailValue, partyPK);
+
+        if(useNameElementDescription == null && description != null) {
+            useNameElementControl.createUseNameElementDescription(useNameElement, getPreferredLanguage(), description, partyPK);
+        } else if(useNameElementDescription != null && description == null) {
+            useNameElementControl.deleteUseNameElementDescription(useNameElementDescription, partyPK);
+        } else if(useNameElementDescription != null && description != null) {
+            UseNameElementDescriptionValue useNameElementDescriptionValue = useNameElementControl.getUseNameElementDescriptionValue(useNameElementDescription);
+
+            useNameElementDescriptionValue.setDescription(description);
+            useNameElementControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, partyPK);
+        }
     }
     
 }

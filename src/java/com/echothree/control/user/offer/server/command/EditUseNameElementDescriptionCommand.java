@@ -19,8 +19,8 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.UseNameElementDescriptionEdit;
 import com.echothree.control.user.offer.common.form.EditUseNameElementDescriptionForm;
-import com.echothree.control.user.offer.common.result.EditUseNameElementDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.control.user.offer.common.result.EditUseNameElementDescriptionResult;
 import com.echothree.control.user.offer.common.spec.UseNameElementDescriptionSpec;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -89,22 +89,26 @@ public class EditUseNameElementDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language);
                     
                     if(useNameElementDescription != null) {
-                        result.setUseNameElementDescription(useNameElementControl.getUseNameElementDescriptionTransfer(getUserVisit(), useNameElementDescription));
-                        
-                        if(lockEntity(useNameElement)) {
-                            UseNameElementDescriptionEdit edit = OfferEditFactory.getUseNameElementDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(useNameElementDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                        if(editMode.equals(EditMode.LOCK)) {
+                            result.setUseNameElementDescription(useNameElementControl.getUseNameElementDescriptionTransfer(getUserVisit(), useNameElementDescription));
+
+                            if(lockEntity(useNameElement)) {
+                                UseNameElementDescriptionEdit edit = OfferEditFactory.getUseNameElementDescriptionEdit();
+
+                                result.setEdit(edit);
+                                edit.setDescription(useNameElementDescription.getDescription());
+                            } else {
+                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                            }
+
+                            result.setEntityLock(getEntityLockTransfer(useNameElement));
+                        } else { // EditMode.ABANDON
+                            unlockEntity(useNameElement);
                         }
-                        
-                        result.setEntityLock(getEntityLockTransfer(useNameElement));
                     } else {
                         addExecutionError(ExecutionErrors.UnknownUseNameElementDescription.name());
                     }
