@@ -29,6 +29,7 @@ import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
+import com.echothree.control.user.offer.common.result.CreateUseNameElementResult;
 import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
 import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
