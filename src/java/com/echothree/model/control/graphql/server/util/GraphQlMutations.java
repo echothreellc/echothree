@@ -29,8 +29,10 @@ import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
+import com.echothree.control.user.offer.common.result.CreateUseNameElementResult;
 import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
+import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
 import com.echothree.control.user.offer.common.result.EditUseTypeResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
@@ -171,6 +173,118 @@ public class GraphQlMutations
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = OfferUtil.getHome().editOfferNameElement(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createUseNameElement(final DataFetchingEnvironment env,
+            @GraphQLName("useNameElementName") @GraphQLNonNull final String useNameElementName,
+            @GraphQLName("offset") @GraphQLNonNull final String offset,
+            @GraphQLName("length") @GraphQLNonNull final String length,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getCreateUseNameElementForm();
+
+            commandForm.setUseNameElementName(useNameElementName);
+            commandForm.setOffset(offset);
+            commandForm.setLength(length);
+            commandForm.setValidationPattern(validationPattern);
+            commandForm.setDescription(description);
+
+            var commandResult = OfferUtil.getHome().createUseNameElement(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateUseNameElementResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteUseNameElement(final DataFetchingEnvironment env,
+            @GraphQLName("useNameElementName") @GraphQLNonNull final String useNameElementName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getDeleteUseNameElementForm();
+
+            commandForm.setUseNameElementName(useNameElementName);
+
+            var commandResult = OfferUtil.getHome().deleteUseNameElement(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editUseNameElement(final DataFetchingEnvironment env,
+            @GraphQLName("originalUseNameElementName") final String originalUseNameElementName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("useNameElementName") final String useNameElementName,
+            @GraphQLName("offset") final String offset,
+            @GraphQLName("length") final String length,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = OfferUtil.getHome().getUseNameElementUniversalSpec();
+
+            spec.setUseNameElementName(originalUseNameElementName);
+            spec.setUlid(id);
+
+            var commandForm = OfferUtil.getHome().getEditUseNameElementForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = OfferUtil.getHome().editUseNameElement(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditUseNameElementResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getUseNameElement().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("useNameElementName"))
+                    edit.setUseNameElementName(useNameElementName);
+                if(arguments.containsKey("offset"))
+                    edit.setOffset(offset);
+                if(arguments.containsKey("length"))
+                    edit.setLength(length);
+                if(arguments.containsKey("validationPattern"))
+                    edit.setValidationPattern(validationPattern);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = OfferUtil.getHome().editUseNameElement(getUserVisitPK(env), commandForm);
             }
 
             commandResultObject.setCommandResult(commandResult);

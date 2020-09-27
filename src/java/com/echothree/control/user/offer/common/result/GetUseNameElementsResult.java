@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetUseNameElementsResult
         extends BaseResult {
     
+    Long getUseNameElementCount();
+    void setUseNameElementCount(Long useNameElementCount);
+
     List<UseNameElementTransfer> getUseNameElements();
     void setUseNameElements(List<UseNameElementTransfer> useNameElements);
     

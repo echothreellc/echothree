@@ -14,15 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.result;
+package com.echothree.control.user.offer.common.spec;
 
-import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetUseNameElementResult
-        extends BaseResult {
+public interface UseNameElementUniversalSpec
+        extends UseNameElementSpec, UniversalEntitySpec {
     
-    UseNameElementTransfer getUseNameElement();
-    void setUseNameElement(UseNameElementTransfer useNameElement);
+    // Nothing additional beyond UseNameElementSpec, UniversalEntitySpec
     
 }

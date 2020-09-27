@@ -25,10 +25,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -59,7 +59,7 @@ public class GetUseNameElementDescriptionsCommand
     
     /** Creates a new instance of GetUseNameElementDescriptionsCommand */
     public GetUseNameElementDescriptionsCommand(UserVisitPK userVisitPK, GetUseNameElementDescriptionsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -71,7 +71,7 @@ public class GetUseNameElementDescriptionsCommand
         
         if(useNameElement != null) {
             result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
-            result.setUseNameElementDescriptions(useNameElementControl.getUseNameElementDescriptionTransfers(getUserVisit(), useNameElement));
+            result.setUseNameElementDescriptions(useNameElementControl.getUseNameElementDescriptionTransfersByUseNameElement(getUserVisit(), useNameElement));
         } else {
             addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), useNameElementName);
         }

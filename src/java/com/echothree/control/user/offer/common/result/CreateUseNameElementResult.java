@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.offer.common.result;
 
-import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
+import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
-public interface GetUseNameElementResult
-        extends BaseResult {
+public interface CreateUseNameElementResult
+        extends UseNameElementSpec, EntityRefSpec, BaseResult {
     
-    UseNameElementTransfer getUseNameElement();
-    void setUseNameElement(UseNameElementTransfer useNameElement);
+    // Nothing additional beyond UseNameElementSpec, EntityRefSpec, BaseResult
     
 }

@@ -198,9 +198,11 @@ public interface OfferService
     // -------------------------------------------------------------------------
     
     CommandResult createUseNameElementDescription(UserVisitPK userVisitPK, CreateUseNameElementDescriptionForm form);
-    
+
     CommandResult getUseNameElementDescriptions(UserVisitPK userVisitPK, GetUseNameElementDescriptionsForm form);
-    
+
+    CommandResult getUseNameElementDescription(UserVisitPK userVisitPK, GetUseNameElementDescriptionForm form);
+
     CommandResult editUseNameElementDescription(UserVisitPK userVisitPK, EditUseNameElementDescriptionForm form);
     
     CommandResult deleteUseNameElementDescription(UserVisitPK userVisitPK, DeleteUseNameElementDescriptionForm form);

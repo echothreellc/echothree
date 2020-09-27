@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.offer.common.form;
 
-import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
+import com.echothree.control.user.offer.common.spec.UseNameElementUniversalSpec;
 
 public interface GetUseNameElementForm
-        extends UseNameElementSpec {
+        extends UseNameElementUniversalSpec {
     
-    // Nothing additional beyond UseNameElementSpec
+    // Nothing additional beyond UseNameElementUniversalSpec
     
 }

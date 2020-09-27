@@ -389,12 +389,17 @@ public class OfferBean
     public CommandResult createUseNameElementDescription(UserVisitPK userVisitPK, CreateUseNameElementDescriptionForm form) {
         return new CreateUseNameElementDescriptionCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getUseNameElementDescriptions(UserVisitPK userVisitPK, GetUseNameElementDescriptionsForm form) {
         return new GetUseNameElementDescriptionsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getUseNameElementDescription(UserVisitPK userVisitPK, GetUseNameElementDescriptionForm form) {
+        return new GetUseNameElementDescriptionCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editUseNameElementDescription(UserVisitPK userVisitPK, EditUseNameElementDescriptionForm form) {
         return new EditUseNameElementDescriptionCommand(userVisitPK, form).run();

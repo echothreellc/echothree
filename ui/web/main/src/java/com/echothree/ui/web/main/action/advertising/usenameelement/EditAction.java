@@ -64,7 +64,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditUseNameElementForm commandForm = OfferUtil.getHome().getEditUseNameElementForm();
-                UseNameElementSpec spec = OfferUtil.getHome().getUseNameElementSpec();
+                var spec = OfferUtil.getHome().getUseNameElementUniversalSpec();
                 
                 if(originalTypeOfferName == null)
                     originalTypeOfferName = actionForm.getOriginalUseNameElementName();

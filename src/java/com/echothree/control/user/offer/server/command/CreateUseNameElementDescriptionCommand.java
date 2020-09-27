@@ -41,10 +41,10 @@ import java.util.List;
 
 public class CreateUseNameElementDescriptionCommand
         extends BaseSimpleCommand<CreateUseNameElementDescriptionForm> {
-
+    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-
+    
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -77,8 +77,7 @@ public class CreateUseNameElementDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement,
-                        language);
+                UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language);
                 
                 if(useNameElementDescription == null) {
                     var description = form.getDescription();

@@ -24,9 +24,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
+import com.echothree.model.data.offer.server.factory.UseNameElementFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,6 +72,10 @@ public class GetUseNameElementsCommand
     protected BaseResult getTransfers(Collection<UseNameElement> entities) {
         GetUseNameElementsResult result = OfferResultFactory.getGetUseNameElementsResult();
         var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        
+        if(session.hasLimit(UseNameElementFactory.class)) {
+            result.setUseNameElementCount(useNameElementControl.countUseNameElements());
+        }
 
         result.setUseNameElements(useNameElementControl.getUseNameElementTransfers(getUserVisit(), entities));
         

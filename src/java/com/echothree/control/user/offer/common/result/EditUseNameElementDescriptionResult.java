@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.edit.UseNameElementDescriptionEdi
 import com.echothree.model.control.offer.common.transfer.UseNameElementDescriptionTransfer;
 import com.echothree.util.common.command.BaseEditResult;
 
-public interface EditUseNameElementDescriptionResult
+public interface EditUseNameElementDescriptionResult 
         extends BaseEditResult<UseNameElementDescriptionEdit> {
     
     UseNameElementDescriptionTransfer getUseNameElementDescription();

@@ -21,10 +21,14 @@ import com.echothree.model.control.offer.common.transfer.UseNameElementDescripti
 import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
 import com.echothree.model.control.offer.server.transfer.UseNameElementDescriptionTransferCache;
 import com.echothree.model.control.offer.server.transfer.UseNameElementTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.offer.common.pk.OfferNameElementPK;
 import com.echothree.model.data.offer.common.pk.UseNameElementPK;
+import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
 import com.echothree.model.data.offer.server.entity.UseNameElementDetail;
+import com.echothree.model.data.offer.server.factory.OfferNameElementFactory;
 import com.echothree.model.data.offer.server.factory.UseNameElementDescriptionFactory;
 import com.echothree.model.data.offer.server.factory.UseNameElementDetailFactory;
 import com.echothree.model.data.offer.server.factory.UseNameElementFactory;
@@ -73,7 +77,30 @@ public class UseNameElementControl
         return useNameElement;
     }
 
-    private UseNameElement getUseNameElementByName(String useNameElementName, EntityPermission entityPermission) {
+    public long countUseNameElements() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM usenameelements, usenameelementdetails " +
+                "WHERE usene_activedetailid = usenedt_usenameelementdetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UseNameElement */
+    public UseNameElement getUseNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new UseNameElementPK(entityInstance.getEntityUniqueId());
+        var useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return useNameElement;
+    }
+
+    public UseNameElement getUseNameElementByEntityInstance(EntityInstance entityInstance) {
+        return getUseNameElementByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public UseNameElement getUseNameElementByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getUseNameElementByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public UseNameElement getUseNameElementByName(String useNameElementName, EntityPermission entityPermission) {
         UseNameElement useNameElement = null;
 
         try {
@@ -326,7 +353,7 @@ public class UseNameElementControl
         return getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache().getUseNameElementDescriptionTransfer(useNameElementDescription);
     }
 
-    public List<UseNameElementDescriptionTransfer> getUseNameElementDescriptionTransfers(UserVisit userVisit, UseNameElement useNameElement) {
+    public List<UseNameElementDescriptionTransfer> getUseNameElementDescriptionTransfersByUseNameElement(UserVisit userVisit, UseNameElement useNameElement) {
         List<UseNameElementDescription> useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElement(useNameElement);
         List<UseNameElementDescriptionTransfer> useNameElementDescriptionTransfers = new ArrayList<>(useNameElementDescriptions.size());
         UseNameElementDescriptionTransferCache useNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache();
