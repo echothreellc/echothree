@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetOfferNameElementsResult
         extends BaseResult {
     
+    Long getOfferNameElementCount();
+    void setOfferNameElementCount(Long offerNameElementCount);
+
     List<OfferNameElementTransfer> getOfferNameElements();
     void setOfferNameElements(List<OfferNameElementTransfer> offerNameElements);
     

@@ -17,31 +17,29 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteOfferNameElementForm;
-import com.echothree.model.control.offer.server.control.OfferNameElementControl;
+import com.echothree.model.control.offer.server.logic.OfferNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class DeleteOfferNameElementCommand
         extends BaseSimpleCommand<DeleteOfferNameElementForm> {
-
+    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-
+    
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -62,14 +60,11 @@ public class DeleteOfferNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
         String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByNameForUpdate(offerNameElementName);
+        OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByNameForUpdate(this, offerNameElementName);
         
-        if(offerNameElement != null) {
-            offerNameElementControl.deleteOfferNameElement(offerNameElement, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOfferNameElementName.name(), offerNameElementName);
+        if(!hasExecutionErrors()) {
+            OfferNameElementLogic.getInstance().deleteOfferNameElement(this, offerNameElement, getPartyPK());
         }
         
         return null;

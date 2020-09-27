@@ -24,9 +24,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
+import com.echothree.model.data.offer.server.factory.OfferNameElementFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,6 +72,10 @@ public class GetOfferNameElementsCommand
     protected BaseResult getTransfers(Collection<OfferNameElement> entities) {
         GetOfferNameElementsResult result = OfferResultFactory.getGetOfferNameElementsResult();
         var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        
+        if(session.hasLimit(OfferNameElementFactory.class)) {
+            result.setOfferNameElementCount(offerNameElementControl.countOfferNameElements());
+        }
 
         result.setOfferNameElements(offerNameElementControl.getOfferNameElementTransfers(getUserVisit(), entities));
         

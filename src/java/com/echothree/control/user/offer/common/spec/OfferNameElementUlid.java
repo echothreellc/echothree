@@ -14,13 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.form;
+package com.echothree.control.user.offer.common.spec;
 
-import com.echothree.control.user.offer.common.spec.OfferNameElementUniversalSpec;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface GetOfferNameElementForm
-        extends OfferNameElementUniversalSpec {
+public interface OfferNameElementUlid
+        extends BaseSpec {
     
-    // Nothing additional beyond OfferNameElementUniversalSpec
+    String getOfferNameElementUlid();
+    void setOfferNameElementUlid(String offerNameElementUlid);
     
 }

@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.edit.OfferNameElementDescriptionE
 import com.echothree.model.control.offer.common.transfer.OfferNameElementDescriptionTransfer;
 import com.echothree.util.common.command.BaseEditResult;
 
-public interface EditOfferNameElementDescriptionResult
+public interface EditOfferNameElementDescriptionResult 
         extends BaseEditResult<OfferNameElementDescriptionEdit> {
     
     OfferNameElementDescriptionTransfer getOfferNameElementDescription();

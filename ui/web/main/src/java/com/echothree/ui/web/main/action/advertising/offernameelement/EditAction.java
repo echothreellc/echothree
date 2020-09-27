@@ -20,7 +20,6 @@ import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.edit.OfferNameElementEdit;
 import com.echothree.control.user.offer.common.form.EditOfferNameElementForm;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
-import com.echothree.control.user.offer.common.spec.OfferNameElementSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,7 +63,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditOfferNameElementForm commandForm = OfferUtil.getHome().getEditOfferNameElementForm();
-                OfferNameElementSpec spec = OfferUtil.getHome().getOfferNameElementSpec();
+                var spec = OfferUtil.getHome().getOfferNameElementUniversalSpec();
                 
                 if(originalTypeOfferName == null)
                     originalTypeOfferName = actionForm.getOriginalOfferNameElementName();

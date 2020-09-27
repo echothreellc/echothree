@@ -21,6 +21,7 @@ import com.echothree.model.control.offer.common.transfer.OfferNameElementDescrip
 import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
 import com.echothree.model.control.offer.server.transfer.OfferNameElementDescriptionTransferCache;
 import com.echothree.model.control.offer.server.transfer.OfferNameElementTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.OfferNameElementPK;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
@@ -72,8 +73,31 @@ public class OfferNameElementControl
         
         return offerNameElement;
     }
+
+    public long countOfferNameElements() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offernameelements, offernameelementdetails " +
+                "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OfferNameElement */
+    public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new OfferNameElementPK(entityInstance.getEntityUniqueId());
+        var offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return offerNameElement;
+    }
+
+    public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance) {
+        return getOfferNameElementByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OfferNameElement getOfferNameElementByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getOfferNameElementByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
     
-    private OfferNameElement getOfferNameElementByName(String offerNameElementName, EntityPermission entityPermission) {
+    public OfferNameElement getOfferNameElementByName(String offerNameElementName, EntityPermission entityPermission) {
         OfferNameElement offerNameElement = null;
         
         try {
@@ -326,7 +350,7 @@ public class OfferNameElementControl
         return getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache().getOfferNameElementDescriptionTransfer(offerNameElementDescription);
     }
     
-    public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfers(UserVisit userVisit, OfferNameElement offerNameElement) {
+    public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfersByOfferNameElement(UserVisit userVisit, OfferNameElement offerNameElement) {
         List<OfferNameElementDescription> offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElement(offerNameElement);
         List<OfferNameElementDescriptionTransfer> offerNameElementDescriptionTransfers = new ArrayList<>(offerNameElementDescriptions.size());
         OfferNameElementDescriptionTransferCache offerNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache();

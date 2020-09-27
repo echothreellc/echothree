@@ -17,32 +17,31 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferNameElementForm;
-import com.echothree.model.control.offer.server.control.OfferNameElementControl;
+import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.model.control.offer.server.logic.OfferNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CreateOfferNameElementCommand
         extends BaseSimpleCommand<CreateOfferNameElementForm> {
-
+    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-
+    
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -67,28 +66,23 @@ public class CreateOfferNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        CreateOfferNameElementResult result = OfferResultFactory.getCreateOfferNameElementResult();
         String offerNameElementName = form.getOfferNameElementName();
-        OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
-        
-        if(offerNameElement == null) {
-            BasePK createdBy = getPartyPK();
-            Integer offset = Integer.valueOf(form.getOffset());
-            Integer length = Integer.valueOf(form.getLength());
-            String validationPattern = form.getValidationPattern();
-            var description = form.getDescription();
-            
-            offerNameElement = offerNameElementControl.createOfferNameElement(offerNameElementName, offset, length, validationPattern,
-                    createdBy);
-            
-            if(description != null) {
-                offerNameElementControl.createOfferNameElementDescription(offerNameElement, getPreferredLanguage(), description, createdBy);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateOfferNameElementName.name(), offerNameElementName);
+        Integer offset = Integer.valueOf(form.getOffset());
+        Integer length = Integer.valueOf(form.getLength());
+        String validationPattern = form.getValidationPattern();
+        var description = form.getDescription();
+
+        OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().createOfferNameElement(this,
+                offerNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
+                getPartyPK());
+
+        if(offerNameElement != null && !hasExecutionErrors()) {
+            result.setOfferNameElementName(offerNameElement.getLastDetail().getOfferNameElementName());
+            result.setEntityRef(offerNameElement.getPrimaryKey().getEntityRef());
         }
-        
-        return null;
+
+        return result;
     }
     
 }
