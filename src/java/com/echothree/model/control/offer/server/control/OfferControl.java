@@ -117,14 +117,22 @@ public class OfferControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Offer */
-    public Offer getOfferByEntityInstance(EntityInstance entityInstance) {
-        OfferPK pk = new OfferPK(entityInstance.getEntityUniqueId());
-        Offer offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
+    public Offer getOfferByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new OfferPK(entityInstance.getEntityUniqueId());
+        var offer = OfferFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
         return offer;
     }
+
+    public Offer getOfferByEntityInstance(EntityInstance entityInstance) {
+        return getOfferByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Offer getOfferByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getOfferByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
     
-    private Offer getDefaultOffer(EntityPermission entityPermission) {
+    public Offer getDefaultOffer(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -155,7 +163,7 @@ public class OfferControl
         return getDefaultOfferForUpdate().getLastDetailForUpdate().getOfferDetailValue().clone();
     }
     
-    private Offer getOfferByName(String offerName, EntityPermission entityPermission) {
+    public Offer getOfferByName(String offerName, EntityPermission entityPermission) {
         Offer offer = null;
         
         try {

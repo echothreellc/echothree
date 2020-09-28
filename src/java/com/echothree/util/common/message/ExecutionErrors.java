@@ -2223,5 +2223,7 @@ public enum ExecutionErrors {
     UnhandledPurchaseOrderStatusTransition,
     UnknownDefaultUseType,
     CannotDeleteUseTypeInUse,
+    CannotDeleteOfferInUse,
+    UnknownDefaultOffer,
 
 }
