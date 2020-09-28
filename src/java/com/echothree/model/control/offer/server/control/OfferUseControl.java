@@ -17,32 +17,18 @@
 package com.echothree.model.control.offer.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.offer.common.choice.UseChoicesBean;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
-import com.echothree.model.control.offer.common.transfer.UseDescriptionTransfer;
-import com.echothree.model.control.offer.common.transfer.UseTransfer;
 import com.echothree.model.control.offer.server.transfer.OfferUseTransferCache;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.OfferPK;
 import com.echothree.model.data.offer.common.pk.OfferUsePK;
 import com.echothree.model.data.offer.common.pk.UsePK;
-import com.echothree.model.data.offer.common.pk.UseTypePK;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.OfferUseDetail;
 import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseDescription;
-import com.echothree.model.data.offer.server.entity.UseDetail;
-import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.offer.server.factory.OfferUseDetailFactory;
 import com.echothree.model.data.offer.server.factory.OfferUseFactory;
-import com.echothree.model.data.offer.server.factory.UseDescriptionFactory;
-import com.echothree.model.data.offer.server.factory.UseDetailFactory;
-import com.echothree.model.data.offer.server.factory.UseFactory;
 import com.echothree.model.data.offer.server.value.OfferUseDetailValue;
-import com.echothree.model.data.offer.server.value.UseDescriptionValue;
-import com.echothree.model.data.offer.server.value.UseDetailValue;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -54,7 +40,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class OfferUseControl
@@ -83,6 +68,22 @@ public class OfferUseControl
         sendEventUsingNames(offerUse.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
 
         return offerUse;
+    }
+
+    public long countOfferUsesByOffer(Offer offer) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM offeruses, offerusedetails "
+                + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?",
+                offer);
+    }
+
+    public long countOfferUsesByUse(Use use) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM offeruses, offerusedetails "
+                + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?",
+                use);
     }
 
     private List<OfferUse> getOfferUsesByOffer(Offer offer, EntityPermission entityPermission) {

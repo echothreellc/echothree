@@ -17,26 +17,20 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.control.user.offer.common.spec.OfferUniversalSpec;
-import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.CannotDeleteOfferInUseException;
-import com.echothree.model.control.offer.common.exception.CannotDeleteUseTypeInUseException;
 import com.echothree.model.control.offer.common.exception.DuplicateOfferNameException;
-import com.echothree.model.control.offer.common.exception.DuplicateUseTypeNameException;
 import com.echothree.model.control.offer.common.exception.UnknownDefaultOfferException;
-import com.echothree.model.control.offer.common.exception.UnknownDefaultUseTypeException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferNameException;
-import com.echothree.model.control.offer.common.exception.UnknownUseTypeNameException;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.control.UseControl;
-import com.echothree.model.control.offer.server.control.UseTypeControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -47,7 +41,6 @@ import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemVariablePrice;
-import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
 import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
 import com.echothree.model.data.party.server.entity.Language;
@@ -262,10 +255,9 @@ public class OfferLogic
     }
 
     public void deleteOffer(final ExecutionErrorAccumulator eea, final Offer offer, final BasePK deletedBy) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
-//        if(useControl.countUsesByOffer(offer) == 0) {
-        if(true) {
+        if(offerUseControl.countOfferUsesByOffer(offer) == 0) {
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
             offerControl.deleteOffer(offer, deletedBy);
