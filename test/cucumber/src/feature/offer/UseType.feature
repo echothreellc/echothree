@@ -48,7 +48,7 @@ Feature: Employee use type
     And the user begins deleting an use type
     And the user sets the use type's use type name to "CUCUMBER_USE_TYPE"
     And the user deletes the use type
-    Then an execution error should occur
+    Then the execution error CannotDeleteUseTypeInUse should occur
     And the user begins deleting an use
     And the user sets the use's use name to "CUCUMBER_USE"
     And the user deletes the use
