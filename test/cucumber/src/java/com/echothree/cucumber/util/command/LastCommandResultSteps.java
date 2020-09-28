@@ -26,9 +26,7 @@ public class LastCommandResultSteps implements En {
     private Scenario scenario;
 
     public LastCommandResultSteps() {
-        Before((Scenario scenario) ->
-                this.scenario = scenario
-        );
+        Before((Scenario scenario) -> this.scenario = scenario);
 
         Then("^no error should occur$", () -> {
             var commandResult = LastCommandResult.commandResult;
@@ -98,17 +96,16 @@ public class LastCommandResultSteps implements En {
             assertThat(commandResult.hasExecutionErrors()).isTrue();
         });
 
-        Then("^the execution error ([a-zA-Z0-9-_]*) should occur$",
-                (String executionError) -> {
-                    var commandResult = LastCommandResult.commandResult;
+        Then("^the execution error ([a-zA-Z0-9-_]*) should occur$", (String executionError) -> {
+            var commandResult = LastCommandResult.commandResult;
 
-                    assertThat(commandResult).isNotNull();
-                    assertThat(commandResult.hasExecutionErrors()).isTrue();
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasExecutionErrors()).isTrue();
 
-                    var executionResult = commandResult.getExecutionResult();
-                    var executionErrors = executionResult.getExecutionErrors();
-                    executionErrors.containsKey(Messages.EXECUTION_ERROR, executionError);
-                });
+            var executionResult = commandResult.getExecutionResult();
+            var executionErrors = executionResult.getExecutionErrors();
+            executionErrors.containsKey(Messages.EXECUTION_ERROR, executionError);
+        });
     }
 
 }
