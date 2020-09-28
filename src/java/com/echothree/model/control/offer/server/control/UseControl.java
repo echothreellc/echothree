@@ -88,8 +88,16 @@ public class UseControl
     public long countUses() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                        "FROM uses, usedetails " +
-                        "WHERE use_activedetailid = usedt_usedetailid");
+                "FROM uses, usedetails " +
+                "WHERE use_activedetailid = usedt_usedetailid");
+    }
+
+    public long countUsesByUseType(final UseType useType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM uses, usedetails " +
+                "WHERE use_activedetailid = usedt_usedetailid AND usedt_usetyp_usetypeid = ?",
+                useType);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Use */
