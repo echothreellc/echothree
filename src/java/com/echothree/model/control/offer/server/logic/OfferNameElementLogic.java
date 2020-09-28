@@ -131,4 +131,5 @@ public class OfferNameElementLogic
 
         offerNameElementControl.deleteOfferNameElement(offerNameElement, deletedBy);
     }
+
 }
