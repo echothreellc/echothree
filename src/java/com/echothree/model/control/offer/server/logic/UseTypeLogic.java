@@ -21,9 +21,11 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.offer.common.exception.CannotDeleteUseTypeInUseException;
 import com.echothree.model.control.offer.common.exception.DuplicateUseTypeNameException;
 import com.echothree.model.control.offer.common.exception.UnknownDefaultUseTypeException;
 import com.echothree.model.control.offer.common.exception.UnknownUseTypeNameException;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.server.entity.UseType;
@@ -140,8 +142,14 @@ public class UseTypeLogic
 
     public void deleteUseType(final ExecutionErrorAccumulator eea, final UseType useType,
             final BasePK deletedBy) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useControl = (UseControl)Session.getModelController(UseControl.class);
 
-        useTypeControl.deleteUseType(useType, deletedBy);
+        if(useControl.countUsesByUseType(useType) == 0) {
+            var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+
+            useTypeControl.deleteUseType(useType, deletedBy);
+        } else {
+            handleExecutionError(CannotDeleteUseTypeInUseException.class, eea, ExecutionErrors.CannotDeleteUseTypeInUse.name());
+        }
     }
 }
