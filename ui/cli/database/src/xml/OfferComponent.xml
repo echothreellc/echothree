@@ -566,23 +566,6 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="OfferItemTimes" nameSingular="OfferItemTime" columnPrefix="ofrit">
-                   <columns>
-                        <column name="OfferItemTimeId" type="EID" nullAllowed="false" />
-                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
-                        <column name="MaxItemCreatedTime" type="Time" nullAllowed="true" />
-                        <column name="MaxItemModifiedTime" type="Time" nullAllowed="true" />
-                        <column name="MaxItemDeletedTime" type="Time" nullAllowed="true" />
-                   </columns>
-                    <indexes>
-                        <index type="PrimaryKey">
-                            <indexColumn name="OfferItemTimeId" />
-                        </index>
-                        <index type="Unique">
-                            <indexColumn name="OfferId" />
-                        </index>
-                    </indexes>
-                </table>
                 <table namePlural="OfferItems" nameSingular="OfferItem" columnPrefix="ofri">
                     <columns>
                         <column name="OfferItemId" type="EID" nullAllowed="false" />
