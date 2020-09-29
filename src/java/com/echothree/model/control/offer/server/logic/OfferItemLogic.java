@@ -190,7 +190,6 @@ public class OfferItemLogic
 
     public void updateOfferItemFixedPriceFromValue(final OfferItemFixedPriceValue offerItemFixedPriceValue, final BasePK updatedBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-
         var offerItemFixedPrice = offerItemControl.updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, updatedBy);
 
         if(offerItemFixedPrice != null) {
@@ -217,7 +216,6 @@ public class OfferItemLogic
 
     public void updateOfferItemVariablePriceFromValue(final OfferItemVariablePriceValue offerItemVariablePriceValue, final BasePK updatedBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-
         var offerItemVariablePrice = offerItemControl.updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, updatedBy);
 
         if(offerItemVariablePrice != null) {
