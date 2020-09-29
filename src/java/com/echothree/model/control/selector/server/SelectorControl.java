@@ -1875,6 +1875,8 @@ public class SelectorControl
         securityControl.deleteSecurityRolePartyTypesBySelector(selector, deletedBy);
         deleteSelectorNodesBySelector(selector, deletedBy);
         deleteSelectorDescriptionsBySelector(selector, deletedBy);
+
+        removeSelectorTimeBySelector(selector);
         
         SelectorDetail selectorDetail = selector.getLastDetailForUpdate();
         selectorDetail.setThruTime(session.START_TIME_LONG);
@@ -2080,30 +2082,42 @@ public class SelectorControl
     //   Selector Times
     // --------------------------------------------------------------------------------
     
-    public SelectorTime createSelectorTime(Selector selector, Long lastEvaluationTime, Long maxEntityCreatedTime, Long maxEntityModifiedTime, Long maxEntityDeletedTime) {
-        return SelectorTimeFactory.getInstance().create(selector, lastEvaluationTime, maxEntityCreatedTime, maxEntityModifiedTime, maxEntityDeletedTime);
+    public SelectorTime createSelectorTime(Selector selector) {
+        return SelectorTimeFactory.getInstance().create(selector, null, null, null, null);
     }
-    
-    public SelectorTime getSelectorTimeForUpdate(Selector selector) {
-        SelectorTime selectorTime = null;
-        
-        try {
-            PreparedStatement ps = SelectorTimeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
+
+    private static final Map<EntityPermission, String> getSelectorTimeQueries = Map.of(
+            EntityPermission.READ_ONLY,
+            "SELECT _ALL_ " +
+                    "FROM selectortimes " +
+                    "WHERE sltm_sl_selectorid = ?",
+            EntityPermission.READ_WRITE,
+            "SELECT _ALL_ " +
                     "FROM selectortimes " +
                     "WHERE sltm_sl_selectorid = ? " +
-                    "FOR UPDATE");
-            
-            ps.setLong(1, selector.getPrimaryKey().getEntityId());
-            
-            selectorTime = SelectorTimeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorTime;
+                    "FOR UPDATE"
+    );
+
+    private SelectorTime getSelectorTime(Selector selector, EntityPermission entityPermission) {
+        return SelectorTimeFactory.getInstance().getEntityFromQuery(entityPermission, getSelectorTimeQueries, selector);
     }
-    
+
+    public SelectorTime getSelectorTime(Selector selector) {
+        return getSelectorTime(selector, EntityPermission.READ_ONLY);
+    }
+
+    public SelectorTime getSelectorTimeForUpdate(Selector selector) {
+        return getSelectorTime(selector, EntityPermission.READ_WRITE);
+    }
+
+    public void removeSelectorTimeBySelector(Selector selector) {
+        SelectorTime selectorTime = getSelectorTimeForUpdate(selector);
+
+        if(selectorTime != null) {
+            selectorTime.remove();
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Selector Nodes
     // --------------------------------------------------------------------------------
