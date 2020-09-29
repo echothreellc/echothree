@@ -23,7 +23,7 @@ import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
@@ -283,7 +283,7 @@ public class ContentLogic
         OfferUse offerUse = getContentCategoryDefaultOfferUse(contentCategory);
         Offer offer = offerUse.getLastDetail().getOffer();
 
-        if(OfferLogic.getInstance().getOfferItemPrice(eea, offer, item, inventoryCondition, unitOfMeasureType, currency) != null) {
+        if(OfferItemLogic.getInstance().getOfferItemPrice(eea, offer, item, inventoryCondition, unitOfMeasureType, currency) != null) {
             var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
             ContentCatalog contentCatalog = contentCategoryDetail.getContentCatalog();

@@ -22,6 +22,7 @@ import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.transfer.OfferChainTypeTransferCache;
 import com.echothree.model.control.offer.server.transfer.OfferCustomerTypeTransferCache;
 import com.echothree.model.data.chain.common.pk.ChainPK;
@@ -79,7 +80,8 @@ public class OfferControl
     // --------------------------------------------------------------------------------
     //   Offers
     // --------------------------------------------------------------------------------
-    
+
+    /** Use the function in OfferLogic instead. */
     public Offer createOffer(String offerName, Sequence salesOrderSequence, Party departmentParty, Selector offerItemSelector,
             Filter offerItemPriceFilter, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         Offer defaultOffer = getDefaultOffer();
@@ -247,8 +249,7 @@ public class OfferControl
         return getOffers(EntityPermission.READ_WRITE);
     }
     
-    /** Gets a List that contains all the Selectors used by Offers.
-     */
+    /** Gets a List that contains all the Selectors used by Offers. */
     public List<Selector> getDistinctOfferItemSelectors() {
         PreparedStatement ps = SelectorFactory.getInstance().prepareStatement(
                 "SELECT DISTINCT _ALL_ " +
@@ -374,14 +375,14 @@ public class OfferControl
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
         updateOfferFromValue(offerDetailValue, true, updatedBy);
     }
-    
+
+    /** Use the function in OfferLogic instead. */
     public void deleteOffer(Offer offer, BasePK deletedBy) {
-        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
         var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
         deleteOfferCustomerTypesByOffer(offer, deletedBy);
         deleteOfferChainTypesByOffer(offer, deletedBy);
-        offerItemControl.deleteOfferItemsByOffer(offer, deletedBy);
+        OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, deletedBy);
         offerUseControl.deleteOfferUsesByOffer(offer, deletedBy);
         deleteOfferDescriptionsByOffer(offer, deletedBy);
         

@@ -28,7 +28,7 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -185,8 +185,8 @@ public class EditOfferItemPriceCommand
                                                         OfferItemFixedPriceValue offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
                                                         
                                                         offerItemFixedPriceValue.setUnitPrice(unitPrice);
-                                                        
-                                                        OfferLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, getPartyPK());
+
+                                                        OfferItemLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, getPartyPK());
                                                     } finally {
                                                         unlockEntity(offerItem);
                                                     }
@@ -230,8 +230,8 @@ public class EditOfferItemPriceCommand
                                                         offerItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
                                                         offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);
                                                         offerItemVariablePriceValue.setUnitPriceIncrement(unitPriceIncrement);
-                                                        
-                                                        OfferLogic.getInstance().updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, getPartyPK());
+
+                                                        OfferItemLogic.getInstance().updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, getPartyPK());
                                                     } finally {
                                                         unlockEntity(offerItem);
                                                     }
