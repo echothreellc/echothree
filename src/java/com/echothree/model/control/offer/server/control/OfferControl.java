@@ -40,11 +40,13 @@ import com.echothree.model.data.offer.server.entity.OfferChainType;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.offer.server.entity.OfferDescription;
 import com.echothree.model.data.offer.server.entity.OfferDetail;
+import com.echothree.model.data.offer.server.entity.OfferTime;
 import com.echothree.model.data.offer.server.factory.OfferChainTypeFactory;
 import com.echothree.model.data.offer.server.factory.OfferCustomerTypeFactory;
 import com.echothree.model.data.offer.server.factory.OfferDescriptionFactory;
 import com.echothree.model.data.offer.server.factory.OfferDetailFactory;
 import com.echothree.model.data.offer.server.factory.OfferFactory;
+import com.echothree.model.data.offer.server.factory.OfferTimeFactory;
 import com.echothree.model.data.offer.server.value.OfferChainTypeValue;
 import com.echothree.model.data.offer.server.value.OfferCustomerTypeValue;
 import com.echothree.model.data.offer.server.value.OfferDescriptionValue;
@@ -68,6 +70,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class OfferControl
         extends BaseOfferControl {
@@ -386,6 +389,8 @@ public class OfferControl
         OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, deletedBy);
         offerUseControl.deleteOfferUsesByOffer(offer, deletedBy);
         deleteOfferDescriptionsByOffer(offer, deletedBy);
+
+        removeOfferTimeByOffer(offer);
         
         OfferDetail offerDetail = offer.getLastDetailForUpdate();
         offerDetail.setThruTime(session.START_TIME_LONG);
@@ -578,7 +583,47 @@ public class OfferControl
             deleteOfferDescription(offerDescription, deletedBy);
         });
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Offer Times
+    // --------------------------------------------------------------------------------
+
+    public OfferTime createOfferTime(Offer offer) {
+        return OfferTimeFactory.getInstance().create(offer, null, null, null, null);
+    }
+
+    private static final Map<EntityPermission, String> getOfferTimeQueries = Map.of(
+            EntityPermission.READ_ONLY,
+            "SELECT _ALL_ " +
+                    "FROM offertimes " +
+                    "WHERE ofrtm_ofr_offerid = ?",
+            EntityPermission.READ_WRITE,
+            "SELECT _ALL_ " +
+                    "FROM offertimes " +
+                    "WHERE ofrtm_ofr_offerid = ? " +
+                    "FOR UPDATE"
+    );
+
+    private OfferTime getOfferTime(Offer offer, EntityPermission entityPermission) {
+        return OfferTimeFactory.getInstance().getEntityFromQuery(entityPermission, getOfferTimeQueries, offer);
+    }
+
+    public OfferTime getOfferTime(Offer offer) {
+        return getOfferTime(offer, EntityPermission.READ_ONLY);
+    }
+
+    public OfferTime getOfferTimeForUpdate(Offer offer) {
+        return getOfferTime(offer, EntityPermission.READ_WRITE);
+    }
+
+    public void removeOfferTimeByOffer(Offer offer) {
+        OfferTime offerTime = getOfferTimeForUpdate(offer);
+
+        if(offerTime != null) {
+            offerTime.remove();
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Offer Customer Types
     // --------------------------------------------------------------------------------
