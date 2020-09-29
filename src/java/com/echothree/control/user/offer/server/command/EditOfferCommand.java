@@ -25,6 +25,7 @@ import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -208,7 +209,7 @@ public class EditOfferCommand
                                         offerDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                                         offerDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-                                        offerControl.updateOfferFromValue(offerDetailValue, partyPK);
+                                        OfferLogic.getInstance().updateOfferFromValue(offerDetailValue, partyPK);
 
                                         if(offerDescription == null && description != null) {
                                             offerControl.createOfferDescription(offer, getPreferredLanguage(), description, partyPK);

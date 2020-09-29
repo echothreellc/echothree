@@ -371,7 +371,8 @@ public class OfferControl
             sendEventUsingNames(offerPK, EventTypes.MODIFY.name(), null, null, updatedBy);
         }
     }
-    
+
+    /** Use the function in OfferLogic instead. */
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
         updateOfferFromValue(offerDetailValue, true, updatedBy);
     }

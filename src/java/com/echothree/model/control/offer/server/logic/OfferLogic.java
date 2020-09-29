@@ -41,6 +41,7 @@ import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemVariablePrice;
+import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
 import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
 import com.echothree.model.data.party.server.entity.Language;
@@ -158,6 +159,12 @@ public class OfferLogic
     public Offer getOfferByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final OfferUniversalSpec universalSpec, boolean allowDefault) {
         return getOfferByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
+        offerControl.updateOfferFromValue(offerDetailValue, updatedBy);
     }
 
     public void deleteOffer(final ExecutionErrorAccumulator eea, final Offer offer, final BasePK deletedBy) {
