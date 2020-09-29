@@ -447,11 +447,15 @@ public class OfferItemControl
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             var offerItemFixedPrice = getOfferItemFixedPriceForUpdate(offerItemPrice);
 
-            deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
+            if(offerItemFixedPrice != null) {
+                deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
+            }
         } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
             var offerItemVariablePrice = getOfferItemVariablePriceForUpdate(offerItemPrice);
 
-            deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
+            if(offerItemVariablePrice != null) {
+                deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
+            }
         }
 
         sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.MODIFY.name(), offerItemPrice.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
