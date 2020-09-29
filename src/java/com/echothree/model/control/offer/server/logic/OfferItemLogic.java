@@ -20,12 +20,10 @@ import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceException;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
@@ -56,6 +54,10 @@ public class OfferItemLogic
         return OfferItemLogicHolder.instance;
     }
 
+    // --------------------------------------------------------------------------------
+    //   Offer Items
+    // --------------------------------------------------------------------------------
+
     public OfferItem createOfferItem(final Offer offer, final Item item, final BasePK createdBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
 
@@ -64,7 +66,7 @@ public class OfferItemLogic
 
     public OfferItem getOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-        OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
+        var offerItem = offerItemControl.getOfferItem(offer, item);
 
         if(offerItem == null) {
             handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(),
@@ -98,6 +100,10 @@ public class OfferItemLogic
         });
     }
 
+    // --------------------------------------------------------------------------------
+    //   Offer Item Prices
+    // --------------------------------------------------------------------------------
+
     public OfferItemPrice createOfferItemPrice(final OfferItem offerItem, final InventoryCondition inventoryCondition,
             final UnitOfMeasureType unitOfMeasureType, final Currency currency, final BasePK createdBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
@@ -108,8 +114,8 @@ public class OfferItemLogic
     public OfferItemPrice getOfferItemPrice(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
             final InventoryCondition inventoryCondition, final UnitOfMeasureType unitOfMeasureType, final Currency currency) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+        var offerItem = offerItemControl.getOfferItem(offer, item);
         OfferItemPrice offerItemPrice = null;
-        OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
 
         if(offerItem != null) {
             offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
@@ -172,6 +178,10 @@ public class OfferItemLogic
         deleteOfferItemPrices(offerItemControl.getOfferItemPricesByItemAndUnitOfMeasureTypeForUpdate(item, unitOfMeasureType), deletedBy);
     }
 
+    // --------------------------------------------------------------------------------
+    //   Offer Item Fixed Prices
+    // --------------------------------------------------------------------------------
+
     public OfferItemFixedPrice createOfferItemFixedPrice(final OfferItemPrice offerItemPrice, final Long unitPrice, final BasePK createdBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
 
@@ -181,7 +191,7 @@ public class OfferItemLogic
     public void updateOfferItemFixedPriceFromValue(final OfferItemFixedPriceValue offerItemFixedPriceValue, final BasePK updatedBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
 
-        OfferItemFixedPrice offerItemFixedPrice = offerItemControl.updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, updatedBy);
+        var offerItemFixedPrice = offerItemControl.updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, updatedBy);
 
         if(offerItemFixedPrice != null) {
             ContentLogic.getInstance().updateContentCatalogItemPricesByOfferItemPrice(offerItemFixedPrice.getOfferItemPrice(), updatedBy);
@@ -194,6 +204,10 @@ public class OfferItemLogic
         offerItemControl.deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
     }
 
+    // --------------------------------------------------------------------------------
+    //   Offer Item Variable Prices
+    // --------------------------------------------------------------------------------
+
     public OfferItemVariablePrice createOfferItemVariablePrice(final OfferItemPrice offerItemPrice, final Long minimumUnitPrice,
             final Long maximumUnitPrice, final Long unitPriceIncrement, final BasePK createdBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
@@ -204,7 +218,7 @@ public class OfferItemLogic
     public void updateOfferItemVariablePriceFromValue(final OfferItemVariablePriceValue offerItemVariablePriceValue, final BasePK updatedBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
 
-        OfferItemVariablePrice offerItemVariablePrice = offerItemControl.updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, updatedBy);
+        var offerItemVariablePrice = offerItemControl.updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, updatedBy);
 
         if(offerItemVariablePrice != null) {
             ContentLogic.getInstance().updateContentCatalogItemPricesByOfferItemPrice(offerItemVariablePrice.getOfferItemPrice(), updatedBy);
