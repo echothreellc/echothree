@@ -135,23 +135,10 @@ public class OfferItemLogic
 
     public void deleteOfferItemPrice(final OfferItemPrice offerItemPrice, final BasePK deletedBy) {
         var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-
-        ContentLogic.getInstance().deleteContentCategoryItemByOfferItemPrice(offerItemPrice, deletedBy);
-
         var offerItem = offerItemPrice.getOfferItemForUpdate();
         var item = offerItem.getItem();
-        var itemPriceType = item.getLastDetail().getItemPriceType();
-        var itemPriceTypeName = itemPriceType.getItemPriceTypeName();
 
-        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            var offerItemFixedPrice = offerItemControl.getOfferItemFixedPriceForUpdate(offerItemPrice);
-
-            deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
-        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-            var offerItemVariablePrice = offerItemControl.getOfferItemVariablePriceForUpdate(offerItemPrice);
-
-            deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
-        }
+        ContentLogic.getInstance().deleteContentCategoryItemByOfferItemPrice(offerItemPrice, deletedBy);
 
         offerItemControl.deleteOfferItemPrice(offerItemPrice, deletedBy);
 
@@ -197,12 +184,6 @@ public class OfferItemLogic
         }
     }
 
-    public void deleteOfferItemFixedPrice(final OfferItemFixedPrice offerItemFixedPrice, final BasePK deletedBy) {
-        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-
-        offerItemControl.deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
-    }
-
     // --------------------------------------------------------------------------------
     //   Offer Item Variable Prices
     // --------------------------------------------------------------------------------
@@ -221,12 +202,6 @@ public class OfferItemLogic
         if(offerItemVariablePrice != null) {
             ContentLogic.getInstance().updateContentCatalogItemPricesByOfferItemPrice(offerItemVariablePrice.getOfferItemPrice(), updatedBy);
         }
-    }
-
-    public void deleteOfferItemVariablePrice(final OfferItemVariablePrice offerItemVariablePrice, final BasePK deletedBy) {
-        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-
-        offerItemControl.deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
     }
 
 }

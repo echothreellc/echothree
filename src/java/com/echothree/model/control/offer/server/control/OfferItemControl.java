@@ -447,15 +447,11 @@ public class OfferItemControl
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             var offerItemFixedPrice = getOfferItemFixedPriceForUpdate(offerItemPrice);
 
-            if(offerItemFixedPrice != null) {
-                deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
-            }
+            deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
         } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
             var offerItemVariablePrice = getOfferItemVariablePriceForUpdate(offerItemPrice);
 
-            if(offerItemVariablePrice != null) {
-                deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
-            }
+            deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
         }
 
         sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.MODIFY.name(), offerItemPrice.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
@@ -554,8 +550,7 @@ public class OfferItemControl
         return offerItemFixedPrice;
     }
 
-    /** Use the function in OfferItemLogic instead. */
-    public void deleteOfferItemFixedPrice(OfferItemFixedPrice offerItemFixedPrice, BasePK deletedBy) {
+    private void deleteOfferItemFixedPrice(OfferItemFixedPrice offerItemFixedPrice, BasePK deletedBy) {
         offerItemFixedPrice.setThruTime(session.START_TIME_LONG);
         offerItemFixedPrice.store();
 
@@ -659,8 +654,7 @@ public class OfferItemControl
         return offerItemVariablePrice;
     }
 
-    /** Use the function in OfferItemLogic instead. */
-    public void deleteOfferItemVariablePrice(OfferItemVariablePrice offerItemVariablePrice, BasePK deletedBy) {
+    private void deleteOfferItemVariablePrice(OfferItemVariablePrice offerItemVariablePrice, BasePK deletedBy) {
         offerItemVariablePrice.setThruTime(session.START_TIME_LONG);
         offerItemVariablePrice.store();
 
