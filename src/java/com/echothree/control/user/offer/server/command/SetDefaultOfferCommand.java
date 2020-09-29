@@ -18,6 +18,7 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.SetDefaultOfferForm;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,7 +69,7 @@ public class SetDefaultOfferCommand
         
         if(offerDetailValue != null) {
             offerDetailValue.setIsDefault(Boolean.TRUE);
-            offerControl.updateOfferFromValue(offerDetailValue, getPartyPK());
+            OfferLogic.getInstance().updateOfferFromValue(offerDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
         }

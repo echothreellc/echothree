@@ -115,6 +115,7 @@ import com.echothree.model.control.item.server.transfer.RelatedItemTransferCache
 import com.echothree.model.control.item.server.transfer.RelatedItemTypeDescriptionTransferCache;
 import com.echothree.model.control.item.server.transfer.RelatedItemTypeTransferCache;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
@@ -2026,7 +2027,6 @@ public class ItemControl
     }
     
     public void deleteItemUnitOfMeasureType(ItemUnitOfMeasureType itemUnitOfMeasureType, BasePK deletedBy) {
-        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
         var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         Item item = itemUnitOfMeasureType.getItem();
         UnitOfMeasureType unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
@@ -2040,7 +2040,7 @@ public class ItemControl
         deleteItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         deleteItemVolumeByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         deleteItemWeightByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
-        offerItemControl.deleteOfferItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
+        OfferItemLogic.getInstance().deleteOfferItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         vendorControl.deleteVendorItemCostsByItemAndUnitOfMeasureType(item, unitOfMeasureType, deletedBy);
         
         itemUnitOfMeasureType.setThruTime(session.START_TIME_LONG);
@@ -5543,8 +5543,9 @@ public class ItemControl
         
         sendEventUsingNames(itemPrice.getItemPK(), EventTypes.MODIFY.name(), itemPrice.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
 
-        offerItemControl.deleteOfferItemPrices(offerItemControl.getOfferItemPricesForUpdate(item, itemPrice.getInventoryCondition(),
-                itemPrice.getUnitOfMeasureType(), itemPrice.getCurrency()), deletedBy);
+        OfferItemLogic.getInstance().deleteOfferItemPrices(offerItemControl.getOfferItemPricesForUpdate(item,
+                itemPrice.getInventoryCondition(), itemPrice.getUnitOfMeasureType(), itemPrice.getCurrency()),
+                deletedBy);
     }
     
     public void deleteItemPrices(List<ItemPrice> itemPrices, BasePK deletedBy) {

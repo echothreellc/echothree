@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -92,7 +92,7 @@ public class CreateOfferItemCommand
                     OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
                     
                     if(offerItem == null) {
-                        OfferLogic.getInstance().createOfferItem(offer, item, getPartyPK());
+                        OfferItemLogic.getInstance().createOfferItem(offer, item, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateOfferItem.name(), offerName, itemName);
                     }

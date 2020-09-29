@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.form.CreateOfferForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.FilterControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,6 +32,7 @@ import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
@@ -42,10 +43,10 @@ import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -91,112 +92,102 @@ public class CreateOfferCommand
     @Override
     protected BaseResult execute() {
         var result = OfferResultFactory.getCreateOfferResult();
-        var offerName = form.getOfferName();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        var offer = offerControl.getOfferByName(offerName);
-        
-        if(offer == null) {
-            String salesOrderSequenceName = form.getSalesOrderSequenceName();
-            Sequence salesOrderSequence = null;
-            
-            if(salesOrderSequenceName != null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
-                
-                if(sequenceType != null) {
-                    salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.SALES_ORDER.name());
-                }
+        Offer offer = null;
+        String salesOrderSequenceName = form.getSalesOrderSequenceName();
+        Sequence salesOrderSequence = null;
+
+        if(salesOrderSequenceName != null) {
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
+
+            if(sequenceType != null) {
+                salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
+            } else {
+                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.SALES_ORDER.name());
             }
-            
-            if(salesOrderSequenceName == null || salesOrderSequence != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                String companyName = form.getCompanyName();
-                PartyCompany partyCompany = companyName == null? partyControl.getDefaultPartyCompany():
-                    partyControl.getPartyCompanyByName(companyName);
-                Party partyCompanyParty = partyCompany == null? null: partyCompany.getParty();
-                
-                if(companyName == null || partyCompanyParty != null) {
-                    String divisionName = form.getDivisionName();
-                    PartyDivision partyDivision = divisionName == null? partyControl.getDefaultPartyDivision(partyCompanyParty):
-                        partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
-                    Party partyDivisionParty = partyDivision == null? null: partyDivision.getParty();
-                    
-                    if(divisionName == null || partyDivisionParty != null) {
-                        String departmentName = form.getDepartmentName();
-                        PartyDepartment partyDepartment = departmentName == null? partyControl.getDefaultPartyDepartment(partyDivisionParty):
-                            partyControl.getPartyDepartmentByName(partyDivisionParty, departmentName);
-                        Party partyDepartmentParty = partyDepartment == null? null: partyDepartment.getParty();
-                        
-                        if(departmentName == null || partyDepartmentParty != null) {
-                            String offerItemSelectorName = form.getOfferItemSelectorName();
-                            Selector offerItemSelector = null;
-                            
-                            if(offerItemSelectorName != null) {
-                                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-                                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
-                                
-                                if(selectorKind != null) {
-                                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
-                                            SelectorConstants.SelectorType_OFFER);
-                                    
-                                    if(selectorType != null) {
-                                        offerItemSelector = selectorControl.getSelectorByName(selectorType, offerItemSelectorName);
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorType_OFFER);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
-                                }
-                            }
-                            
-                            if(offerItemSelectorName == null || offerItemSelector != null) {
-                                String offerItemPriceFilterName = form.getOfferItemPriceFilterName();
-                                Filter offerItemPriceFilter = null;
-                                
-                                if(offerItemPriceFilterName != null) {
-                                    var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
-                                    FilterKind filterKind = filterControl.getFilterKindByName(FilterConstants.FilterKind_PRICE);
-                                    FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterConstants.FilterType_OFFER_ITEM_PRICE);
-                                    
-                                    if(filterType != null) {
-                                        offerItemPriceFilter = filterControl.getFilterByName(filterType, offerItemPriceFilterName);
-                                    }
-                                }
-                                
-                                if(offerItemPriceFilterName == null || offerItemPriceFilter != null) {
-                                    var partyPK = getPartyPK();
-                                    var isDefault = Boolean.valueOf(form.getIsDefault());
-                                    var sortOrder = Integer.valueOf(form.getSortOrder());
-                                    var description = form.getDescription();
+        }
 
-                                    offer = offerControl.createOffer(offerName, salesOrderSequence, partyDepartmentParty, offerItemSelector,
-                                            offerItemPriceFilter, isDefault, sortOrder, partyPK);
+        if(salesOrderSequenceName == null || salesOrderSequence != null) {
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String companyName = form.getCompanyName();
+            PartyCompany partyCompany = companyName == null? partyControl.getDefaultPartyCompany():
+                partyControl.getPartyCompanyByName(companyName);
+            Party partyCompanyParty = partyCompany == null? null: partyCompany.getParty();
 
-                                    if(description != null) {
-                                        offerControl.createOfferDescription(offer, getPreferredLanguage(), description, partyPK);
-                                    }
+            if(companyName == null || partyCompanyParty != null) {
+                String divisionName = form.getDivisionName();
+                PartyDivision partyDivision = divisionName == null? partyControl.getDefaultPartyDivision(partyCompanyParty):
+                    partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
+                Party partyDivisionParty = partyDivision == null? null: partyDivision.getParty();
+
+                if(divisionName == null || partyDivisionParty != null) {
+                    String departmentName = form.getDepartmentName();
+                    PartyDepartment partyDepartment = departmentName == null? partyControl.getDefaultPartyDepartment(partyDivisionParty):
+                        partyControl.getPartyDepartmentByName(partyDivisionParty, departmentName);
+                    Party partyDepartmentParty = partyDepartment == null? null: partyDepartment.getParty();
+
+                    if(departmentName == null || partyDepartmentParty != null) {
+                        String offerItemSelectorName = form.getOfferItemSelectorName();
+                        Selector offerItemSelector = null;
+
+                        if(offerItemSelectorName != null) {
+                            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
+
+                            if(selectorKind != null) {
+                                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
+                                        SelectorConstants.SelectorType_OFFER);
+
+                                if(selectorType != null) {
+                                    offerItemSelector = selectorControl.getSelectorByName(selectorType, offerItemSelectorName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownOfferItemPriceFilterName.name(), offerItemPriceFilterName);
+                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorType_OFFER);
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownOfferItemSelectorName.name(), offerItemSelectorName);
+                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
+                            }
+                        }
+
+                        if(offerItemSelectorName == null || offerItemSelector != null) {
+                            String offerItemPriceFilterName = form.getOfferItemPriceFilterName();
+                            Filter offerItemPriceFilter = null;
+
+                            if(offerItemPriceFilterName != null) {
+                                var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+                                FilterKind filterKind = filterControl.getFilterKindByName(FilterConstants.FilterKind_PRICE);
+                                FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterConstants.FilterType_OFFER_ITEM_PRICE);
+
+                                if(filterType != null) {
+                                    offerItemPriceFilter = filterControl.getFilterByName(filterType, offerItemPriceFilterName);
+                                }
+                            }
+
+                            if(offerItemPriceFilterName == null || offerItemPriceFilter != null) {
+                                var offerName = form.getOfferName();
+                                var isDefault = Boolean.valueOf(form.getIsDefault());
+                                var sortOrder = Integer.valueOf(form.getSortOrder());
+                                var description = form.getDescription();
+
+                                offer = OfferLogic.getInstance().createOffer(this, offerName, salesOrderSequence,
+                                        partyDepartmentParty, offerItemSelector, offerItemPriceFilter, isDefault, sortOrder,
+                                        getPreferredLanguage(), description, getPartyPK());
+                            } else {
+                                addExecutionError(ExecutionErrors.UnknownOfferItemPriceFilterName.name(), offerItemPriceFilterName);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownDepartmentName.name(), departmentName);
+                            addExecutionError(ExecutionErrors.UnknownOfferItemSelectorName.name(), offerItemSelectorName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownDivisionName.name(), divisionName);
+                        addExecutionError(ExecutionErrors.UnknownDepartmentName.name(), departmentName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
+                    addExecutionError(ExecutionErrors.UnknownDivisionName.name(), divisionName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSalesOrderSequenceName.name(), salesOrderSequenceName);
+                addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
             }
         } else {
-            addExecutionError(ExecutionErrors.DuplicateOfferName.name(), offerName);
+            addExecutionError(ExecutionErrors.UnknownSalesOrderSequenceName.name(), salesOrderSequenceName);
         }
 
         if(offer != null) {

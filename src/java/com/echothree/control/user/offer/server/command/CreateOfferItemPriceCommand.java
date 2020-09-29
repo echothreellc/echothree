@@ -23,7 +23,7 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -133,9 +133,9 @@ public class CreateOfferItemPriceCommand
                                             if(strUnitPrice != null) {
                                                 Long unitPrice = Long.valueOf(strUnitPrice);
                                                 
-                                                offerItemPrice = OfferLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
+                                                offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
                                                         unitOfMeasureType, currency, createdBy);
-                                                OfferLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
+                                                OfferItemLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
                                             } else {
                                                 addExecutionError(ExecutionErrors.MissingUnitPrice.name());
                                             }
@@ -166,9 +166,9 @@ public class CreateOfferItemPriceCommand
                                             }
                                             
                                             if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
-                                                offerItemPrice = OfferLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
+                                                offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
                                                         unitOfMeasureType, currency, createdBy);
-                                                OfferLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
+                                                OfferItemLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
                                                         unitPriceIncrement, createdBy);
                                             }
                                         } else {

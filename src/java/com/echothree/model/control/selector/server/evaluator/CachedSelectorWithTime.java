@@ -31,7 +31,7 @@ public class CachedSelectorWithTime
         
         selectorTime = selectorControl.getSelectorTimeForUpdate(selector);
         if(selectorTime == null) {
-            selectorControl.createSelectorTime(selector, null, null, null, null);
+            selectorControl.createSelectorTime(selector);
             selectorTime = selectorControl.getSelectorTimeForUpdate(selector);
         }
     }

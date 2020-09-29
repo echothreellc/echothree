@@ -152,4 +152,5 @@ public class UseTypeLogic
             handleExecutionError(CannotDeleteUseTypeInUseException.class, eea, ExecutionErrors.CannotDeleteUseTypeInUse.name());
         }
     }
+
 }

@@ -23,7 +23,7 @@ import com.echothree.model.control.filter.server.evaluator.OfferItemPriceFilterE
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -75,7 +75,7 @@ public class OfferItemSelectorEvaluator
         InventoryCondition inventoryCondition = itemPrice.getInventoryCondition();
         UnitOfMeasureType unitOfMeasureType = itemPrice.getUnitOfMeasureType();
         Currency currency = itemPrice.getCurrency();
-        OfferItemPrice offerItemPrice = OfferLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency, evaluatedBy);
+        OfferItemPrice offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency, evaluatedBy);
         
         if(itemPriceType.equals(fixedItemPriceType)) {
             Item item = offerItem.getItem();
@@ -83,15 +83,15 @@ public class OfferItemSelectorEvaluator
             Filter filter = offer.getLastDetail().getOfferItemPriceFilter();
             FilteredItemFixedPrice filteredItemFixedPrice = offerItemPriceFilterEvaluator.evaluate(item, itemPrice, itemFixedPrice,
                     filter);
-            
-            OfferLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, filteredItemFixedPrice.getUnitPrice(), evaluatedBy);
+
+            OfferItemLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, filteredItemFixedPrice.getUnitPrice(), evaluatedBy);
         } else if(itemPriceType.equals(variableItemPriceType)) {
             ItemVariablePrice itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
             Long minimumUnitPrice = itemVariablePrice.getMinimumUnitPrice();
             Long maximumUnitPrice = itemVariablePrice.getMaximumUnitPrice();
             Long unitPriceIncrement = itemVariablePrice.getUnitPriceIncrement();
-            
-            OfferLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, evaluatedBy);
+
+            OfferItemLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, evaluatedBy);
         } else
             throw new IllegalArgumentException();
         
@@ -115,7 +115,7 @@ public class OfferItemSelectorEvaluator
 
                 offerItemFixedPriceValue.setUnitPrice(unitPrice);
 
-                OfferLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, evaluatedBy);
+                OfferItemLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, evaluatedBy);
             }
         } else if(itemPriceType.equals(variableItemPriceType)) {
             OfferItemVariablePrice offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
@@ -133,7 +133,7 @@ public class OfferItemSelectorEvaluator
                 offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);
                 offerItemVariablePriceValue.setUnitPriceIncrement(unitPriceIncrement);
 
-                OfferLogic.getInstance().updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, evaluatedBy);
+                OfferItemLogic.getInstance().updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, evaluatedBy);
             }
         } else {
             throw new IllegalArgumentException();
@@ -153,7 +153,7 @@ public class OfferItemSelectorEvaluator
             List<ItemPrice> itemPrices = itemControl.getItemPricesByItem(item);
             if (offerItem == null) {
                 // New item in this offer, create it, don't worry about sync'ing prices.
-                offerItem = OfferLogic.getInstance().createOfferItem(offer, item, evaluatedBy);
+                offerItem = OfferItemLogic.getInstance().createOfferItem(offer, item, evaluatedBy);
                 
                 for(ItemPrice itemPrice: itemPrices) {
                     createOfferItemPrice(offer, offerItem, itemPriceType, itemPrice);
@@ -175,7 +175,7 @@ public class OfferItemSelectorEvaluator
                     }
                 }
                 offerItemPrices.stream().forEach((offerItemPrice) -> {
-                    OfferLogic.getInstance().deleteOfferItemPrice(offerItemPrice,  evaluatedBy);
+                    OfferItemLogic.getInstance().deleteOfferItemPrice(offerItemPrice,  evaluatedBy);
                 });
             }
         });
@@ -186,7 +186,7 @@ public class OfferItemSelectorEvaluator
             log.info("--- OfferItemSelectorEvaluator.deleteItemFromOffers(offers = " + offers + ", item = " + item + ")");
         
         offers.stream().map((offer) -> offerItemControl.getOfferItemForUpdate(offer, item)).filter((offerItem) -> (offerItem != null)).forEach((offerItem) -> {
-            OfferLogic.getInstance().deleteOfferItem(offerItem, evaluatedBy);
+            OfferItemLogic.getInstance().deleteOfferItem(offerItem, evaluatedBy);
         });
     }
     
@@ -325,7 +325,7 @@ public class OfferItemSelectorEvaluator
                         if(lastModifiedTime > lastEvaluationTime) {
                             if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
                                 log.info("--- selector modified since last evaluation");
-                            offerItemControl.deleteOfferItemsByOffers(offers, evaluatedBy);
+                            OfferItemLogic.getInstance().deleteOfferItemsByOffers(offers, evaluatedBy);
                             
                             cachedSelectorWithTime.setLastEvaluationTime(null);
                             cachedSelectorWithTime.setMaxEntityCreatedTime(null);

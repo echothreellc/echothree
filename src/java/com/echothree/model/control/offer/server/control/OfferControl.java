@@ -22,6 +22,7 @@ import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.transfer.OfferChainTypeTransferCache;
 import com.echothree.model.control.offer.server.transfer.OfferCustomerTypeTransferCache;
 import com.echothree.model.data.chain.common.pk.ChainPK;
@@ -39,11 +40,13 @@ import com.echothree.model.data.offer.server.entity.OfferChainType;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.offer.server.entity.OfferDescription;
 import com.echothree.model.data.offer.server.entity.OfferDetail;
+import com.echothree.model.data.offer.server.entity.OfferTime;
 import com.echothree.model.data.offer.server.factory.OfferChainTypeFactory;
 import com.echothree.model.data.offer.server.factory.OfferCustomerTypeFactory;
 import com.echothree.model.data.offer.server.factory.OfferDescriptionFactory;
 import com.echothree.model.data.offer.server.factory.OfferDetailFactory;
 import com.echothree.model.data.offer.server.factory.OfferFactory;
+import com.echothree.model.data.offer.server.factory.OfferTimeFactory;
 import com.echothree.model.data.offer.server.value.OfferChainTypeValue;
 import com.echothree.model.data.offer.server.value.OfferCustomerTypeValue;
 import com.echothree.model.data.offer.server.value.OfferDescriptionValue;
@@ -67,6 +70,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class OfferControl
         extends BaseOfferControl {
@@ -79,7 +83,8 @@ public class OfferControl
     // --------------------------------------------------------------------------------
     //   Offers
     // --------------------------------------------------------------------------------
-    
+
+    /** Use the function in OfferLogic instead. */
     public Offer createOffer(String offerName, Sequence salesOrderSequence, Party departmentParty, Selector offerItemSelector,
             Filter offerItemPriceFilter, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         Offer defaultOffer = getDefaultOffer();
@@ -117,14 +122,22 @@ public class OfferControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Offer */
-    public Offer getOfferByEntityInstance(EntityInstance entityInstance) {
-        OfferPK pk = new OfferPK(entityInstance.getEntityUniqueId());
-        Offer offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
+    public Offer getOfferByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new OfferPK(entityInstance.getEntityUniqueId());
+        var offer = OfferFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
         return offer;
     }
+
+    public Offer getOfferByEntityInstance(EntityInstance entityInstance) {
+        return getOfferByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Offer getOfferByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getOfferByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
     
-    private Offer getDefaultOffer(EntityPermission entityPermission) {
+    public Offer getDefaultOffer(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -155,7 +168,7 @@ public class OfferControl
         return getDefaultOfferForUpdate().getLastDetailForUpdate().getOfferDetailValue().clone();
     }
     
-    private Offer getOfferByName(String offerName, EntityPermission entityPermission) {
+    public Offer getOfferByName(String offerName, EntityPermission entityPermission) {
         Offer offer = null;
         
         try {
@@ -239,8 +252,7 @@ public class OfferControl
         return getOffers(EntityPermission.READ_WRITE);
     }
     
-    /** Gets a List that contains all the Selectors used by Offers.
-     */
+    /** Gets a List that contains all the Selectors used by Offers. */
     public List<Selector> getDistinctOfferItemSelectors() {
         PreparedStatement ps = SelectorFactory.getInstance().prepareStatement(
                 "SELECT DISTINCT _ALL_ " +
@@ -362,20 +374,23 @@ public class OfferControl
             sendEventUsingNames(offerPK, EventTypes.MODIFY.name(), null, null, updatedBy);
         }
     }
-    
+
+    /** Use the function in OfferLogic instead. */
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
         updateOfferFromValue(offerDetailValue, true, updatedBy);
     }
-    
+
+    /** Use the function in OfferLogic instead. */
     public void deleteOffer(Offer offer, BasePK deletedBy) {
-        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
         var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
         deleteOfferCustomerTypesByOffer(offer, deletedBy);
         deleteOfferChainTypesByOffer(offer, deletedBy);
-        offerItemControl.deleteOfferItemsByOffer(offer, deletedBy);
+        OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, deletedBy);
         offerUseControl.deleteOfferUsesByOffer(offer, deletedBy);
         deleteOfferDescriptionsByOffer(offer, deletedBy);
+
+        removeOfferTimeByOffer(offer);
         
         OfferDetail offerDetail = offer.getLastDetailForUpdate();
         offerDetail.setThruTime(session.START_TIME_LONG);
@@ -568,7 +583,47 @@ public class OfferControl
             deleteOfferDescription(offerDescription, deletedBy);
         });
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Offer Times
+    // --------------------------------------------------------------------------------
+
+    public OfferTime createOfferTime(Offer offer) {
+        return OfferTimeFactory.getInstance().create(offer, null, null, null, null);
+    }
+
+    private static final Map<EntityPermission, String> getOfferTimeQueries = Map.of(
+            EntityPermission.READ_ONLY,
+            "SELECT _ALL_ " +
+                    "FROM offertimes " +
+                    "WHERE ofrtm_ofr_offerid = ?",
+            EntityPermission.READ_WRITE,
+            "SELECT _ALL_ " +
+                    "FROM offertimes " +
+                    "WHERE ofrtm_ofr_offerid = ? " +
+                    "FOR UPDATE"
+    );
+
+    private OfferTime getOfferTime(Offer offer, EntityPermission entityPermission) {
+        return OfferTimeFactory.getInstance().getEntityFromQuery(entityPermission, getOfferTimeQueries, offer);
+    }
+
+    public OfferTime getOfferTime(Offer offer) {
+        return getOfferTime(offer, EntityPermission.READ_ONLY);
+    }
+
+    public OfferTime getOfferTimeForUpdate(Offer offer) {
+        return getOfferTime(offer, EntityPermission.READ_WRITE);
+    }
+
+    public void removeOfferTimeByOffer(Offer offer) {
+        OfferTime offerTime = getOfferTimeForUpdate(offer);
+
+        if(offerTime != null) {
+            offerTime.remove();
+        }
+    }
+
     // --------------------------------------------------------------------------------
     //   Offer Customer Types
     // --------------------------------------------------------------------------------

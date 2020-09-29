@@ -20,7 +20,7 @@ import com.echothree.control.user.offer.common.form.DeleteOfferItemForm;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -82,7 +82,7 @@ public class DeleteOfferItemCommand
                 OfferItem offerItem = offerItemControl.getOfferItemForUpdate(offer, item);
                 
                 if(offerItem != null) {
-                    OfferLogic.getInstance().deleteOfferItem(offerItem, getPartyPK());
+                    OfferItemLogic.getInstance().deleteOfferItem(offerItem, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offerName, itemName);
                 }

@@ -22,7 +22,7 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -112,7 +112,7 @@ public class DeleteOfferItemPriceCommand
                                         currency);
                                 
                                 if(offerItemPrice != null) {
-                                    OfferLogic.getInstance().deleteOfferItemPrice(offerItemPrice, getPartyPK());
+                                    OfferItemLogic.getInstance().deleteOfferItemPrice(offerItemPrice, getPartyPK());
                                 } else {
                                     addExecutionError(ExecutionErrors.UnknownOfferItemPrice.name(), offerName, itemName, inventoryConditionName,
                                             unitOfMeasureTypeName, currencyIsoName);

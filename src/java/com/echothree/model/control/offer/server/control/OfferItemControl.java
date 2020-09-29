@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
+import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.offer.server.transfer.OfferItemPriceTransferCache;
 import com.echothree.model.control.offer.server.transfer.OfferItemTransferCache;
@@ -209,9 +210,9 @@ public class OfferItemControl
         return getOfferItemTransfers(userVisit, getOfferItemsByItem(item));
     }
 
-    /** Use the function in OfferLogic instead. */
+    /** Use the function in OfferItemLogic instead. */
     public void deleteOfferItem(OfferItem offerItem, BasePK deletedBy) {
-        deleteOfferItemPricesByOfferItem(offerItem, deletedBy);
+        OfferItemLogic.getInstance().deleteOfferItemPricesByOfferItem(offerItem, deletedBy);
 
         offerItem.setThruTime(session.START_TIME_LONG);
         offerItem.store();
@@ -219,27 +220,11 @@ public class OfferItemControl
         sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
     }
 
-    public void deleteOfferItems(List<OfferItem> offerItems, BasePK deletedBy) {
-        offerItems.stream().forEach((offerItem) -> {
-            OfferLogic.getInstance().deleteOfferItem(offerItem, deletedBy);
-        });
-    }
-
-    public void deleteOfferItemsByOffer(Offer offer, BasePK deletedBy) {
-        deleteOfferItems(getOfferItemsByOfferForUpdate(offer), deletedBy);
-    }
-
-    public void deleteOfferItemsByOffers(List<Offer> offers, BasePK deletedBy) {
-        offers.stream().forEach((offer) -> {
-            deleteOfferItemsByOffer(offer, deletedBy);
-        });
-    }
-
     // --------------------------------------------------------------------------------
     //   Offer Item Prices
     // --------------------------------------------------------------------------------
 
-    /** Use the function in OfferLogic instead. */
+    /** Use the function in OfferItemLogic instead. */
     public OfferItemPrice createOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
         OfferItemPrice offerItemPrice = OfferItemPriceFactory.getInstance().create(offerItem, inventoryCondition, unitOfMeasureType, currency,
@@ -449,52 +434,34 @@ public class OfferItemControl
         return getOfferItemPriceTransfers(userVisit, getOfferItemPricesByOfferItem(offerItem));
     }
 
-    /** Use the function in OfferLogic instead. */
+    /** Use the function in OfferItemLogic instead. */
     public void deleteOfferItemPrice(OfferItemPrice offerItemPrice, BasePK deletedBy) {
         offerItemPrice.setThruTime(session.START_TIME_LONG);
         offerItemPrice.store();
 
-        OfferItem offerItem = offerItemPrice.getOfferItemForUpdate();
-        Item item = offerItem.getItem();
-        ItemPriceType itemPriceType = item.getLastDetail().getItemPriceType();
-        String itemPriceTypeName = itemPriceType.getItemPriceTypeName();
+        var offerItem = offerItemPrice.getOfferItemForUpdate();
+        var item = offerItem.getItem();
+        var itemPriceType = item.getLastDetail().getItemPriceType();
+        var itemPriceTypeName = itemPriceType.getItemPriceTypeName();
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            OfferItemFixedPrice offerItemFixedPrice = getOfferItemFixedPriceForUpdate(offerItemPrice);
+            var offerItemFixedPrice = getOfferItemFixedPriceForUpdate(offerItemPrice);
 
-            OfferLogic.getInstance().deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
+            deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
         } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-            OfferItemVariablePrice offerItemVariablePrice = getOfferItemVariablePriceForUpdate(offerItemPrice);
+            var offerItemVariablePrice = getOfferItemVariablePriceForUpdate(offerItemPrice);
 
-            OfferLogic.getInstance().deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
+            deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
         }
 
         sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.MODIFY.name(), offerItemPrice.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-
-        if(countOfferItemPricesByItem(item) == 0) {
-            OfferLogic.getInstance().deleteOfferItem(offerItem, deletedBy);
-        }
-    }
-
-    public void deleteOfferItemPrices(List<OfferItemPrice> offerItemPrices, BasePK deletedBy) {
-        offerItemPrices.stream().forEach((offerItemPrice) -> {
-            OfferLogic.getInstance().deleteOfferItemPrice(offerItemPrice, deletedBy);
-        });
-    }
-
-    public void deleteOfferItemPricesByOfferItem(OfferItem offerItem, BasePK deletedBy) {
-        deleteOfferItemPrices(getOfferItemPricesByOfferItemForUpdate(offerItem), deletedBy);
-    }
-
-    public void deleteOfferItemPricesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        deleteOfferItemPrices(getOfferItemPricesByItemAndUnitOfMeasureTypeForUpdate(item, unitOfMeasureType), deletedBy);
     }
 
     // --------------------------------------------------------------------------------
     //   Offer Item Fixed Prices
     // --------------------------------------------------------------------------------
 
-    /** Use the function in OfferLogic instead. */
+    /** Use the function in OfferItemLogic instead. */
     public OfferItemFixedPrice createOfferItemFixedPrice(OfferItemPrice offerItemPrice, Long unitPrice, BasePK createdBy) {
         OfferItemFixedPrice offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPrice,
                 unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -559,7 +526,7 @@ public class OfferItemControl
                 offerItemPrice);
     }
 
-    /** Use the function in OfferLogic instead. */
+    /** Use the function in OfferItemLogic instead. */
     public OfferItemFixedPrice updateOfferItemFixedPriceFromValue(OfferItemFixedPriceValue offerItemFixedPriceValue, BasePK updatedBy) {
         OfferItemFixedPrice offerItemFixedPrice = null;
 
@@ -583,8 +550,7 @@ public class OfferItemControl
         return offerItemFixedPrice;
     }
 
-    /** Use the function in OfferLogic instead. */
-    public void deleteOfferItemFixedPrice(OfferItemFixedPrice offerItemFixedPrice, BasePK deletedBy) {
+    private void deleteOfferItemFixedPrice(OfferItemFixedPrice offerItemFixedPrice, BasePK deletedBy) {
         offerItemFixedPrice.setThruTime(session.START_TIME_LONG);
         offerItemFixedPrice.store();
 
@@ -596,7 +562,7 @@ public class OfferItemControl
     //   Offer Item Variable Prices
     // --------------------------------------------------------------------------------
 
-    /** Use the function in OfferLogic instead. */
+    /** Use the function in OfferItemLogic instead. */
     public OfferItemVariablePrice createOfferItemVariablePrice(OfferItemPrice offerItemPrice, Long minimumUnitPrice, Long maximumUnitPrice,
             Long unitPriceIncrement, BasePK createdBy) {
         OfferItemVariablePrice offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
@@ -662,7 +628,7 @@ public class OfferItemControl
                 offerItemPrice);
     }
 
-    /** Use the function in OfferLogic instead. */
+    /** Use the function in OfferItemLogic instead. */
     public OfferItemVariablePrice updateOfferItemVariablePriceFromValue(OfferItemVariablePriceValue offerItemVariablePriceValue, BasePK updatedBy) {
         OfferItemVariablePrice offerItemVariablePrice = null;
 
@@ -688,8 +654,7 @@ public class OfferItemControl
         return offerItemVariablePrice;
     }
 
-    /** Use the function in OfferLogic instead. */
-    public void deleteOfferItemVariablePrice(OfferItemVariablePrice offerItemVariablePrice, BasePK deletedBy) {
+    private void deleteOfferItemVariablePrice(OfferItemVariablePrice offerItemVariablePrice, BasePK deletedBy) {
         offerItemVariablePrice.setThruTime(session.START_TIME_LONG);
         offerItemVariablePrice.store();
 
