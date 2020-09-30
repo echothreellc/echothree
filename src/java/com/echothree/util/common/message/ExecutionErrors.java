@@ -2224,6 +2224,8 @@ public enum ExecutionErrors {
     UnknownDefaultUseType,
     CannotDeleteUseTypeInUse,
     CannotDeleteOfferInUse,
+    CannotDeleteUseInUse,
     UnknownDefaultOffer,
+    UnknownDefaultUse,
 
 }

@@ -17,21 +17,19 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteUseForm;
-import com.echothree.model.control.offer.server.control.UseControl;
+import com.echothree.model.control.offer.server.logic.UseLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -62,16 +60,13 @@ public class DeleteUseCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
         String useName = form.getUseName();
-        Use use = useControl.getUseByNameForUpdate(useName);
-        
-        if(use != null) {
-            useControl.deleteUse(use, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownUseName.name(), useName);
+        Use use = UseLogic.getInstance().getUseByNameForUpdate(this, useName);
+
+        if(!hasExecutionErrors()) {
+            UseLogic.getInstance().deleteUse(this, use, getPartyPK());
         }
-        
+
         return null;
     }
     
