@@ -16,12 +16,18 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.model.control.offer.common.exception.CannotDeleteOfferUseInUseException;
+import com.echothree.model.control.offer.common.exception.CannotDeleteUseInUseException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
+import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class OfferUseLogic
@@ -39,7 +45,8 @@ public class OfferUseLogic
         return OfferUseLogicHolder.instance;
     }
     
-    public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName) {
+    public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName,
+            final EntityPermission entityPermission) {
         var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
         var use = UseLogic.getInstance().getUseByName(eea, useName);
         OfferUse offerUse = null;
@@ -57,5 +64,26 @@ public class OfferUseLogic
 
         return offerUse;
     }
-    
+
+    public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName) {
+        return getOfferUseByName(eea, offerName, useName, EntityPermission.READ_ONLY);
+    }
+
+    public OfferUse getOfferUseByNameForUpdate(final ExecutionErrorAccumulator eea, final String offerName, final String useName) {
+        return getOfferUseByName(eea, offerName, useName, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteOfferUse(final ExecutionErrorAccumulator eea, final OfferUse offerUse, final BasePK deletedBy) {
+//        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+//
+//        if(offerUseControl.countOfferUsesByUse(use) == 0) {
+        if(true) {
+            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
+            offerUseControl.deleteOfferUse(offerUse, deletedBy);
+        } else {
+            handleExecutionError(CannotDeleteOfferUseInUseException.class, eea, ExecutionErrors.CannotDeleteOfferUseInUse.name());
+        }
+    }
+
 }
