@@ -24,6 +24,7 @@ import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
+import com.echothree.model.control.offer.server.logic.UseLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -34,11 +35,11 @@ import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.offer.server.value.UseDescriptionValue;
 import com.echothree.model.data.offer.server.value.UseDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -140,8 +141,8 @@ public class EditUseCommand
                                 useDetailValue.setUseTypePK(useType.getPrimaryKey());
                                 useDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                                 useDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                useControl.updateUseFromValue(useDetailValue, partyPK);
+
+                                UseLogic.getInstance().updateUseFromValue(useDetailValue, partyPK);
                                 
                                 if(useDescription == null && description != null) {
                                     useControl.createUseDescription(use, getPreferredLanguage(), description, partyPK);

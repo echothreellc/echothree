@@ -18,23 +18,20 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateUseForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.offer.server.control.UseControl;
-import com.echothree.model.control.offer.server.control.UseTypeControl;
+import com.echothree.model.control.offer.server.logic.UseLogic;
+import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -70,31 +67,18 @@ public class CreateUseCommand
     @Override
     protected BaseResult execute() {
         var result = OfferResultFactory.getCreateUseResult();
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
-        String useName = form.getUseName();
-        Use use = useControl.getUseByName(useName);
-        
-        if(use == null) {
-            var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
-            String useTypeName = form.getUseTypeName();
-            UseType useType = useTypeControl.getUseTypeByName(useTypeName);
-            
-            if(useType != null) {
-                var partyPK = getPartyPK();
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
-                
-                use = useControl.createUse(useName, useType, isDefault, sortOrder, partyPK);
-                
-                if(description != null) {
-                    useControl.createUseDescription(use, getPreferredLanguage(), description, partyPK);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateUseName.name(), useName);
+        var useTypeName = form.getUseTypeName();
+        var useType = UseTypeLogic.getInstance().getUseTypeByName(this, useTypeName);
+        Use use = null;
+
+        if(!hasExecutionErrors()) {
+            var useName = form.getUseName();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+
+            use = UseLogic.getInstance().createUse(this, useName, useType, isDefault, sortOrder,
+                    getPreferredLanguage(), description, getPartyPK());
         }
 
         if(use != null) {

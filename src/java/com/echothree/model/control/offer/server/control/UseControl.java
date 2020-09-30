@@ -101,13 +101,21 @@ public class UseControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Use */
-    public Use getUseByEntityInstance(EntityInstance entityInstance) {
-        UsePK pk = new UsePK(entityInstance.getEntityUniqueId());
-        Use use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public Use getUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new UsePK(entityInstance.getEntityUniqueId());
+        var use = UseFactory.getInstance().getEntityFromPK(entityPermission, pk);
 
         return use;
     }
 
+    public Use getUseByEntityInstance(EntityInstance entityInstance) {
+        return getUseByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Use getUseByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getUseByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
     private List<Use> getUses(EntityPermission entityPermission) {
         String query = null;
 
@@ -137,7 +145,7 @@ public class UseControl
         return getUses(EntityPermission.READ_WRITE);
     }
 
-    private Use getUseByName(String useName, EntityPermission entityPermission) {
+    public Use getUseByName(String useName, EntityPermission entityPermission) {
         Use use = null;
 
         try {
@@ -182,7 +190,7 @@ public class UseControl
         return getUseDetailValueForUpdate(getUseByNameForUpdate(useName));
     }
 
-    private Use getDefaultUse(EntityPermission entityPermission) {
+    public Use getDefaultUse(EntityPermission entityPermission) {
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
