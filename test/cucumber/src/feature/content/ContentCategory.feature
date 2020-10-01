@@ -21,7 +21,7 @@ Feature: Employee content category
     And the user sets the content catalog's default source name to "TEST0001B"
     And the user sets the content catalog's sort order to "1"
     And the user sets the content catalog to be the default
-    And the user sets the content catalog's description to "Cucumber Collection"
+    And the user sets the content catalog's description to "Cucumber Catalog"
     And the user adds the new content catalog
     Then no error should occur
     And the user begins entering a new content category
@@ -31,7 +31,7 @@ Feature: Employee content category
     And the user sets the content category's default source name to "TEST0001B"
     And the user sets the content category's sort order to "1"
     And the user sets the content category to be the default
-    And the user sets the content category's description to "Cucumber Collection"
+    And the user sets the content category's description to "Cucumber Category"
     And the user adds the new content category
     Then no error should occur
     And the user begins specifying a content category to edit
