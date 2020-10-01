@@ -1007,7 +1007,15 @@ public class ContentControl
         
         return contentCollection;
     }
-    
+
+    public long countContentCollectionsByDefaultOfferUse(OfferUse defaultOfferUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM contentcollections, contentcollectiondetails " +
+                        "WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid " +
+                        "AND cntcdt_defaultofferuseid = ?", defaultOfferUse);
+    }
+
     public List<ContentCollection> getContentCollections() {
         List<ContentCollection> contentCollections = null;
         
@@ -2726,6 +2734,15 @@ public class ContentControl
                 contentCollection, Session.MAX_TIME);
     }
 
+    public long countContentCatalogsByDefaultOfferUse(OfferUse defaultOfferUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM contentcatalogs, contentcatalogdetails " +
+                        "WHERE cntct_activedetailid = cntctdt_contentcatalogdetailid " +
+                        "AND cntctdt_defaultofferuseid = ?", defaultOfferUse);
+    }
+
+
     private List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection, EntityPermission entityPermission) {
         List<ContentCatalog> contentCatalogs = null;
         
@@ -3733,7 +3750,7 @@ public class ContentControl
         
         return contentCategory;
     }
-    
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentCategory */
     public ContentCategory getContentCategoryByEntityInstance(EntityInstance entityInstance) {
         ContentCategoryPK pk = new ContentCategoryPK(entityInstance.getEntityUniqueId());
@@ -3763,6 +3780,14 @@ public class ContentControl
                 "FROM contentcategories, contentcategorydetails " +
                 "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?",
                 parentContentCategory);
+    }
+
+    public long countContentCategoriesByDefaultOfferUse(OfferUse defaultOfferUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM contentcategories, contentcategorydetails " +
+                        "WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid " +
+                        "AND cntcgdt_defaultofferuseid = ?", defaultOfferUse);
     }
 
     private List<ContentCategory> getContentCategories(ContentCatalog contentCatalog, EntityPermission entityPermission) {
