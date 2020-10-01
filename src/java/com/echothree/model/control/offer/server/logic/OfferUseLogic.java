@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.common.exception.CannotDeleteOfferUseInUseException;
 import com.echothree.model.control.offer.common.exception.CannotDeleteUseInUseException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
@@ -54,7 +55,7 @@ public class OfferUseLogic
         if(!eea.hasExecutionErrors()) {
             var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
-            offerUse = offerUseControl.getOfferUse(offer, use);
+            offerUse = offerUseControl.getOfferUse(offer, use, entityPermission);
 
             if(offerUse == null) {
                 handleExecutionError(UnknownOfferUseException.class, eea, ExecutionErrors.UnknownOfferUse.name(),
@@ -74,10 +75,11 @@ public class OfferUseLogic
     }
 
     public void deleteOfferUse(final ExecutionErrorAccumulator eea, final OfferUse offerUse, final BasePK deletedBy) {
-//        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-//
-//        if(offerUseControl.countOfferUsesByUse(use) == 0) {
-        if(true) {
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+
+        if(contentControl.countContentCollectionsByDefaultOfferUse(offerUse) == 0
+                && contentControl.countContentCatalogsByDefaultOfferUse(offerUse) == 0
+                && contentControl.countContentCategoriesByDefaultOfferUse(offerUse) == 0) {
             var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
             offerUseControl.deleteOfferUse(offerUse, deletedBy);
