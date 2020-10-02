@@ -2742,7 +2742,6 @@ public class ContentControl
                         "AND cntctdt_defaultofferuseid = ?", defaultOfferUse);
     }
 
-
     private List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection, EntityPermission entityPermission) {
         List<ContentCatalog> contentCatalogs = null;
         
