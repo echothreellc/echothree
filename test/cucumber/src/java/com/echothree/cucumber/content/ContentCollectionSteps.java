@@ -174,6 +174,17 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultOfferName(defaultOfferName);
                 });
 
+        When("^the user sets the content collection's default offer name to the last offer added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultOfferName(persona.lastOfferName);
+                });
+
         When("^the user sets the content collection's default use name to \"([^\"]*)\"$",
                 (String defaultUseName) -> {
                     var persona = CurrentPersona.persona;
@@ -185,6 +196,17 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultUseName(defaultUseName);
                 });
 
+        When("^the user sets the content collection's default use name to the last use added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultUseName(persona.lastUseName);
+                });
+
         When("^the user sets the content collection's default source name to \"([^\"]*)\"$",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
@@ -194,6 +216,17 @@ public class ContentCollectionSteps implements En {
                     assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
 
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultSourceName(defaultSourceName);
+                });
+
+        When("^the user sets the content collection's default source name to the last source added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCollectionForm = persona.createContentCollectionForm;
+                    var contentCollectionEdit = persona.contentCollectionEdit;
+
+                    assertThat(createContentCollectionForm != null || contentCollectionEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultSourceName(persona.lastSourceName);
                 });
 
         When("^the user sets the content collection's description to \"([^\"]*)\"$",

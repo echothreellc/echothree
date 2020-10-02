@@ -93,8 +93,8 @@ Feature: Employee offer use
     Then no error should occur
     And the user begins entering a new content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
-    And the user sets the content collection's default offer name to "CUCUMBER_OFFER"
-    And the user sets the content collection's default use name to "CUCUMBER_USE"
+    And the user sets the content collection's default offer name to the last offer added
+    And the user sets the content collection's default use name to the last use added
     And the user sets the content collection's description to "Cucumber Collection"
     And the user adds the new content collection
     Then no error should occur
@@ -156,16 +156,16 @@ Feature: Employee offer use
     Then no error should occur
     And the user begins entering a new content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
-    And the user sets the content collection's default offer name to "CUCUMBER_OFFER"
-    And the user sets the content collection's default use name to "CUCUMBER_USE"
+    And the user sets the content collection's default offer name to the last offer added
+    And the user sets the content collection's default use name to the last use added
     And the user sets the content collection's description to "Cucumber Collection"
     And the user adds the new content collection
     Then no error should occur
     And the user begins entering a new content catalog
     And the user sets the content catalog's content collection name to "CucumberCollection"
     And the user sets the content catalog's content catalog name to "CucumberCatalog"
-    And the user sets the content catalog's default offer name to "CUCUMBER_OFFER"
-    And the user sets the content catalog's default use name to "CUCUMBER_USE"
+    And the user sets the content catalog's default offer name to the last offer added
+    And the user sets the content catalog's default use name to the last use added
     And the user sets the content catalog's sort order to "1"
     And the user sets the content catalog to be the default
     And the user sets the content catalog's description to "Cucumber Catalog"
@@ -234,16 +234,16 @@ Feature: Employee offer use
     Then no error should occur
     And the user begins entering a new content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
-    And the user sets the content collection's default offer name to "CUCUMBER_OFFER"
-    And the user sets the content collection's default use name to "CUCUMBER_USE"
+    And the user sets the content collection's default offer name to the last offer added
+    And the user sets the content collection's default use name to the last use added
     And the user sets the content collection's description to "Cucumber Collection"
     And the user adds the new content collection
     Then no error should occur
     And the user begins entering a new content catalog
     And the user sets the content catalog's content collection name to "CucumberCollection"
     And the user sets the content catalog's content catalog name to "CucumberCatalog"
-    And the user sets the content catalog's default offer name to "CUCUMBER_OFFER"
-    And the user sets the content catalog's default use name to "CUCUMBER_USE"
+    And the user sets the content catalog's default offer name to the last offer added
+    And the user sets the content catalog's default use name to the last use added
     And the user sets the content catalog's sort order to "1"
     And the user sets the content catalog to be the default
     And the user sets the content catalog's description to "Cucumber Catalog"
@@ -253,8 +253,8 @@ Feature: Employee offer use
     And the user sets the content category's content collection name to "CucumberCollection"
     And the user sets the content category's content catalog name to "CucumberCatalog"
     And the user sets the content category's content category name to "CucumberCategory"
-    And the user sets the content category's default offer name to "CUCUMBER_OFFER"
-    And the user sets the content category's default use name to "CUCUMBER_USE"
+    And the user sets the content category's default offer name to the last offer added
+    And the user sets the content category's default use name to the last use added
     And the user sets the content category's sort order to "1"
     And the user sets the content category to be the default
     And the user sets the content category's description to "Cucumber Category"
