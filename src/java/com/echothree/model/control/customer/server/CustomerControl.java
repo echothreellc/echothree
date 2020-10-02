@@ -158,7 +158,15 @@ public class CustomerControl
 
         return customerType;
     }
-    
+
+    public long countCustomerTypesByDefaultOfferUse(OfferUse defaultOfferUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM customertypes, customertypedetails " +
+                        "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
+                        "AND cutydt_defaultofferuseid = ?", defaultOfferUse);
+    }
+
     private List<CustomerType> getCustomerTypes(EntityPermission entityPermission) {
         String query = null;
         
@@ -611,7 +619,16 @@ public class CustomerControl
 
         return customer;
     }
-    
+
+    public long countCustomersByInitialOfferUse(OfferUse initialOfferUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM customers " +
+                        "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
+                        "AND cu_initialofferuseid = ?",
+                initialOfferUse, Session.MAX_TIME);
+    }
+
     public Customer getCustomer(Party party, EntityPermission entityPermission) {
         Customer customer;
         

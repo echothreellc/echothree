@@ -17,13 +17,11 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.exception.CannotDeleteOfferUseInUseException;
-import com.echothree.model.control.offer.common.exception.CannotDeleteUseInUseException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -76,10 +74,13 @@ public class OfferUseLogic
 
     public void deleteOfferUse(final ExecutionErrorAccumulator eea, final OfferUse offerUse, final BasePK deletedBy) {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
         if(contentControl.countContentCollectionsByDefaultOfferUse(offerUse) == 0
                 && contentControl.countContentCatalogsByDefaultOfferUse(offerUse) == 0
-                && contentControl.countContentCategoriesByDefaultOfferUse(offerUse) == 0) {
+                && contentControl.countContentCategoriesByDefaultOfferUse(offerUse) == 0
+                && customerControl.countCustomerTypesByDefaultOfferUse(offerUse) == 0
+                && customerControl.countCustomersByInitialOfferUse(offerUse) == 0) {
             var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
             offerUseControl.deleteOfferUse(offerUse, deletedBy);
