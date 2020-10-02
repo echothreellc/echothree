@@ -203,7 +203,7 @@ public class OfferUseControl
         return getOfferUsesBySalesOrderSequence(salesOrderSequence, EntityPermission.READ_WRITE);
     }
 
-    private OfferUse getOfferUse(Offer offer, Use use, EntityPermission entityPermission) {
+    public OfferUse getOfferUse(Offer offer, Use use, EntityPermission entityPermission) {
         OfferUse offerUse = null;
 
         try {

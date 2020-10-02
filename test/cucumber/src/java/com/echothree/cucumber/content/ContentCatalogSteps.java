@@ -193,6 +193,17 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultOfferName(defaultOfferName);
                 });
 
+        When("^the user sets the content catalog's default offer name to the last offer added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCatalogForm = persona.createContentCatalogForm;
+                    var contentCatalogEdit = persona.contentCatalogEdit;
+
+                    assertThat(createContentCatalogForm != null || contentCatalogEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultOfferName(persona.lastOfferName);
+                });
+
         When("^the user sets the content catalog's default use name to \"([^\"]*)\"$",
                 (String defaultUseName) -> {
                     var persona = CurrentPersona.persona;
@@ -204,6 +215,17 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultUseName(defaultUseName);
                 });
 
+        When("^the user sets the content catalog's default use name to the last use added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCatalogForm = persona.createContentCatalogForm;
+                    var contentCatalogEdit = persona.contentCatalogEdit;
+
+                    assertThat(createContentCatalogForm != null || contentCatalogEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultUseName(persona.lastUseName);
+                });
+
         When("^the user sets the content catalog's default source name to \"([^\"]*)\"$",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
@@ -213,6 +235,17 @@ public class ContentCatalogSteps implements En {
                     assertThat(createContentCatalogForm != null || contentCatalogEdit != null).isTrue();
 
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultSourceName(defaultSourceName);
+                });
+
+        When("^the user sets the content catalog's default source name to the last source added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCatalogForm = persona.createContentCatalogForm;
+                    var contentCatalogEdit = persona.contentCatalogEdit;
+
+                    assertThat(createContentCatalogForm != null || contentCatalogEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultSourceName(persona.lastSourceName);
                 });
 
         When("^the user sets the content catalog to (be|not be) the default$",

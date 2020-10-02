@@ -223,6 +223,17 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultOfferName(defaultOfferName);
                 });
 
+        When("^the user sets the content category's default offer name to the last offer added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCategoryForm = persona.createContentCategoryForm;
+                    var contentCategoryEdit = persona.contentCategoryEdit;
+
+                    assertThat(createContentCategoryForm != null || contentCategoryEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultOfferName(persona.lastOfferName);
+                });
+
         When("^the user sets the content category's default use name to \"([^\"]*)\"$",
                 (String defaultUseName) -> {
                     var persona = CurrentPersona.persona;
@@ -234,6 +245,17 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultUseName(defaultUseName);
                 });
 
+        When("^the user sets the content category's default use name to the last use added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCategoryForm = persona.createContentCategoryForm;
+                    var contentCategoryEdit = persona.contentCategoryEdit;
+
+                    assertThat(createContentCategoryForm != null || contentCategoryEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultUseName(persona.lastUseName);
+                });
+
         When("^the user sets the content category's default source name to \"([^\"]*)\"$",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
@@ -243,6 +265,17 @@ public class ContentCategorySteps implements En {
                     assertThat(createContentCategoryForm != null || contentCategoryEdit != null).isTrue();
 
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultSourceName(defaultSourceName);
+                });
+
+        When("^the user sets the content category's default source name to the last source added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createContentCategoryForm = persona.createContentCategoryForm;
+                    var contentCategoryEdit = persona.contentCategoryEdit;
+
+                    assertThat(createContentCategoryForm != null || contentCategoryEdit != null).isTrue();
+
+                    Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultSourceName(persona.lastSourceName);
                 });
 
         When("^the user sets the content category to (be|not be) the default$",

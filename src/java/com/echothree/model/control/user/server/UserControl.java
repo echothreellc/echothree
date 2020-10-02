@@ -646,17 +646,69 @@ public class UserControl
 
         return userVisit;
     }
-    
+
+    public long countUserVisitsByUserKey(UserKey userKey) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM uservisits " +
+                        "WHERE uvis_ukey_userkeyid = ? AND uvis_thrutime = ?",
+                userKey, Session.MAX_TIME);
+    }
+
+    public long countUserVisitsByPreferredLanguage(Language preferredLanguage) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM uservisits " +
+                        "WHERE uvis_preferredlanguageid = ? AND uvis_thrutime = ?",
+                preferredLanguage, Session.MAX_TIME);
+    }
+
+    public long countUserVisitsByPreferredCurrency(Currency preferredCurrency) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM uservisits " +
+                        "WHERE uvis_preferredcurrencyid = ? AND uvis_thrutime = ?",
+                preferredCurrency, Session.MAX_TIME);
+    }
+
+    public long countUserVisitsByPreferredTimeZone(TimeZone preferredTimeZone) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM uservisits " +
+                        "WHERE uvis_preferredtimezoneid = ? AND uvis_thrutime = ?",
+                preferredTimeZone, Session.MAX_TIME);
+    }
+
+    public long countUserVisitsByPreferredDateTimeFormat(DateTimeFormat preferredDateTimeFormat) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM uservisits " +
+                        "WHERE uvis_preferreddatetimeformatid = ? AND uvis_thrutime = ?",
+                preferredDateTimeFormat, Session.MAX_TIME);
+    }
+
+    public long countUserVisitsByOfferUse(OfferUse offerUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM uservisits " +
+                        "WHERE uvis_ofruse_offeruseid = ? AND uvis_thrutime = ?",
+                offerUse, Session.MAX_TIME);
+    }
+
+    public long countUserVisitsByAssociateReferral(AssociateReferral associateReferral) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM uservisits " +
+                        "WHERE uvis_ascrfr_associatereferralid = ? AND uvis_thrutime = ?",
+                associateReferral, Session.MAX_TIME);
+    }
+
     public UserVisit getUserVisitByPK(UserVisitPK userVisitPK) {
-        UserVisit userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, userVisitPK);
-        
-        return userVisit;
+        return UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, userVisitPK);
     }
     
     public UserVisit getUserVisitByPKForUpdate(UserVisitPK userVisitPK) {
-        UserVisit userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisitPK);
-        
-        return userVisit;
+        return UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisitPK);
     }
 
     public void deleteUserVisit(UserVisit userVisit) {

@@ -16,17 +16,20 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.offer.common.exception.CannotDeleteOfferUseInUseException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
-import com.echothree.model.control.offer.common.exception.UnknownUseNameException;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.offer.server.control.UseControl;
-import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.control.sales.server.control.SalesOrderControl;
+import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
-import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class OfferUseLogic
@@ -44,37 +47,57 @@ public class OfferUseLogic
         return OfferUseLogicHolder.instance;
     }
     
-    public Use getUseByName(final ExecutionErrorAccumulator eea, final String useName) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
-        Use use = useControl.getUseByName(useName);
+    public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName,
+            final EntityPermission entityPermission) {
+        var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
+        var use = UseLogic.getInstance().getUseByName(eea, useName);
+        OfferUse offerUse = null;
 
-        if(use == null) {
-            handleExecutionError(UnknownUseNameException.class, eea, ExecutionErrors.UnknownUseName.name(), useName);
+        if(!eea.hasExecutionErrors()) {
+            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
+            offerUse = offerUseControl.getOfferUse(offer, use, entityPermission);
+
+            if(offerUse == null) {
+                handleExecutionError(UnknownOfferUseException.class, eea, ExecutionErrors.UnknownOfferUse.name(),
+                        offerName, useName);
+            }
         }
 
-        return use;
+        return offerUse;
     }
 
     public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName) {
-        Offer offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
-        OfferUse offerUse = null;
-        
-        if(offer != null) {
-            Use use = UseLogic.getInstance().getUseByName(eea, useName);
-            
-            if(use != null) {
-                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-
-                offerUse = offerUseControl.getOfferUse(offer, use);
-                
-                if(offerUse == null) {
-                    handleExecutionError(UnknownOfferUseException.class, eea, ExecutionErrors.UnknownOfferUse.name(),
-                            offerName, useName);
-                }
-            }
-        }
-        
-        return offerUse;
+        return getOfferUseByName(eea, offerName, useName, EntityPermission.READ_ONLY);
     }
-    
+
+    public OfferUse getOfferUseByNameForUpdate(final ExecutionErrorAccumulator eea, final String offerName, final String useName) {
+        return getOfferUseByName(eea, offerName, useName, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteOfferUse(final ExecutionErrorAccumulator eea, final OfferUse offerUse, final BasePK deletedBy) {
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+
+        if(contentControl.countContentCollectionsByDefaultOfferUse(offerUse) == 0
+                && contentControl.countContentCatalogsByDefaultOfferUse(offerUse) == 0
+                && contentControl.countContentCategoriesByDefaultOfferUse(offerUse) == 0
+                && customerControl.countCustomerTypesByDefaultOfferUse(offerUse) == 0
+                && customerControl.countCustomersByInitialOfferUse(offerUse) == 0
+                && salesOrderControl.countSalesOrdersByOfferUse(offerUse) == 0
+                && salesOrderControl.countSalesOrderLinesByOfferUse(offerUse) == 0
+                && userControl.countUserVisitsByOfferUse(offerUse) == 0
+                && wishlistControl.countWishlistsByOfferUse(offerUse) == 0
+                && wishlistControl.countWishlistLinesByOfferUse(offerUse) == 0) {
+            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+
+            offerUseControl.deleteOfferUse(offerUse, deletedBy);
+        } else {
+            handleExecutionError(CannotDeleteOfferUseInUseException.class, eea, ExecutionErrors.CannotDeleteOfferUseInUse.name());
+        }
+    }
+
 }

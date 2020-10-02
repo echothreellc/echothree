@@ -1021,7 +1021,23 @@ public class WishlistControl
         
         return wishlist;
     }
-    
+
+    public long countWishlistsByOfferUse(final OfferUse offerUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM wishlists " +
+                        "WHERE wshl_ofruse_offeruseid = ? AND wshl_thrutime = ?",
+                offerUse, Session.MAX_TIME_LONG);
+    }
+
+    public long countWishlistsByWishlistType(final WishlistType wishlistType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM wishlists " +
+                        "WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?",
+                wishlistType, Session.MAX_TIME_LONG);
+    }
+
     private Wishlist getWishlist(Order order, EntityPermission entityPermission) {
         Wishlist wishlist = null;
         
@@ -1150,7 +1166,31 @@ public class WishlistControl
         
         return wishlistLine;
     }
-    
+
+    public long countWishlistLinesByOfferUse(final OfferUse offerUse) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM wishlistlines " +
+                        "WHERE wshll_ofruse_offeruseid = ? AND wshll_thrutime = ?",
+                offerUse, Session.MAX_TIME_LONG);
+    }
+
+    public long countWishlistLinesByWishlistTypePriority(final WishlistTypePriority wishlistTypePriority) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM wishlistlines " +
+                        "WHERE wshll_wshltyprty_wishlisttypepriorityid = ? AND wshll_thrutime = ?",
+                wishlistTypePriority, Session.MAX_TIME_LONG);
+    }
+
+    public long countWishlistLinesByAssociateReferral(final AssociateReferral associateReferral) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM wishlistlines " +
+                        "WHERE wshll_ascrfr_associatereferralid = ? AND wshll_thrutime = ?",
+                associateReferral, Session.MAX_TIME_LONG);
+    }
+
     private List<WishlistLine> getWishlistLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority,
             EntityPermission entityPermission) {
         List<WishlistLine> wishlistLines = null;
