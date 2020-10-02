@@ -579,12 +579,18 @@
                         <index type="PrimaryKey">
                             <indexColumn name="FilterEntranceStepId" />
                         </index>
-                        <index type="Multiple" name="Index1">
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterId" />
+                            <indexColumn name="FilterStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
                             <indexColumn name="FilterId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple">
+                        <index type="Multiple" name="Index3">
                             <indexColumn name="FilterStepId" />
+                            <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>
