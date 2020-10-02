@@ -164,7 +164,8 @@ public class CustomerControl
                 "SELECT COUNT(*) " +
                         "FROM customertypes, customertypedetails " +
                         "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
-                        "AND cutydt_defaultofferuseid = ?", defaultOfferUse);
+                        "AND cutydt_defaultofferuseid = ?",
+                defaultOfferUse);
     }
 
     private List<CustomerType> getCustomerTypes(EntityPermission entityPermission) {
@@ -624,8 +625,7 @@ public class CustomerControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                         "FROM customers " +
-                        "WHERE cuty_activedetailid = cutydt_customertypedetailid " +
-                        "AND cu_initialofferuseid = ?",
+                        "WHERE cu_initialofferuseid = ? AND cu_thrutime = ?",
                 initialOfferUse, Session.MAX_TIME);
     }
 
