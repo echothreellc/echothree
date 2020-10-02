@@ -22,6 +22,7 @@ import com.echothree.model.control.offer.common.exception.CannotDeleteOfferUseIn
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.sales.server.control.SalesOrderControl;
+import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -77,6 +78,7 @@ public class OfferUseLogic
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
 
         if(contentControl.countContentCollectionsByDefaultOfferUse(offerUse) == 0
                 && contentControl.countContentCatalogsByDefaultOfferUse(offerUse) == 0
@@ -84,7 +86,8 @@ public class OfferUseLogic
                 && customerControl.countCustomerTypesByDefaultOfferUse(offerUse) == 0
                 && customerControl.countCustomersByInitialOfferUse(offerUse) == 0
                 && salesOrderControl.countSalesOrdersByOfferUse(offerUse) == 0
-                && salesOrderControl.countSalesOrderLinesByOfferUse(offerUse) == 0) {
+                && salesOrderControl.countSalesOrderLinesByOfferUse(offerUse) == 0
+                && userControl.countUserVisitsByOfferUse(offerUse) == 0) {
             var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
             offerUseControl.deleteOfferUse(offerUse, deletedBy);
