@@ -148,6 +148,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib/wildfly-client-all.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/xercesImpl.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/xml-apis.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/Saxon-HE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/org.osgi.service.component.annotations.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -218,6 +220,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/classgraph-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-digester-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/rome-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/Saxon-HE-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib/jFormatString.jar!/" />
@@ -301,6 +304,10 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/xalan-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/xercesImpl-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/xml-apis-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/org.osgi.service.component.annotations.jar!/OSGI-OPT/src" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/Saxon-HE-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/itext-sources.jar!/core" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/itext-sources.jar!/rups" />
     </SOURCES>
   </library>
 </component>

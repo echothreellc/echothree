@@ -47,6 +47,7 @@
         <dependency org="mysql" name="mysql-connector-java" rev="8.0.21" conf="sources->sources" />
         <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.6" conf="sources->sources" />
         <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" conf="sources->sources" />
+        <dependency org="net.sf.saxon" name="Saxon-HE" rev="10.2" conf="sources->sources" />
         <dependency org="net.sf.textile4j" name="textile4j" rev="1.2" conf="sources->sources" />
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="sources->sources" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="sources->sources" />
@@ -129,6 +130,7 @@
         <dependency org="mysql" name="mysql-connector-java" rev="8.0.21" conf="javadoc->javadoc" />
         <dependency org="net.sf.ezmorph" name="ezmorph" rev="1.0.6" conf="javadoc->javadoc" />
         <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" conf="javadoc->javadoc" />
+        <dependency org="net.sf.saxon" name="Saxon-HE" rev="10.2" conf="javadoc->javadoc" />
         <dependency org="net.sf.textile4j" name="textile4j" rev="1.2" conf="javadoc->javadoc" />
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="javadoc->javadoc" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="javadoc->javadoc" />
@@ -216,6 +218,7 @@
         <dependency org="net.sf.json-lib" name="json-lib" rev="2.4" conf="binaries->default">
             <artifact name="json-lib" e:classifier="jdk15" ext="jar"/>
         </dependency>
+        <dependency org="net.sf.saxon" name="Saxon-HE" rev="10.2" conf="binaries->default" />
         <dependency org="net.sf.textile4j" name="textile4j" rev="1.2" conf="binaries->default" />
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="binaries->default" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="binaries->default" />
