@@ -338,29 +338,31 @@ ${javadoc.copyright}
         <fileset dir="${dir.home}/lib/pmd/lib">
             <include name="*.jar" />
         </fileset>  
-    </path>         
-                
+    </path>
+
     <target name="pmd" depends="generated">
         <taskdef
-            name="pmd"
-            classname="net.sourceforge.pmd.ant.PMDTask"
-            classpathref="pmd.classpath" />
-
-        <pmd shortFilenames="true">
+                name="pmd"
+                classname="net.sourceforge.pmd.ant.PMDTask"
+                classpathref="pmd.classpath" />
+        <pmd
+                shortFilenames="true"
+                noCache="true">
             <sourceLanguage name="java" version="11" />
             <ruleset>rulesets/java/quickstart.xml</ruleset>
             <formatter
-                type="xml"
-                toFile="${dir.home}/generated/pmd/report.xml">
+                    type="xml"
+                    toFile="${dir.home}/generated/pmd/report.xml">
+                <param name="encoding" value="UTF-8" />
             </formatter>
             <fileset dir="java">
                 <include name="**/*.java" />
             </fileset>
-<!--
+            <!--
             <fileset dir="${dir.home}/generated/data/java">
                 <include name="**/*.java" />
             </fileset>
--->
+            -->
         </pmd>
         <xslt in="${dir.home}/generated/pmd/report.xml"
               style="${dir.home}/lib/pmd/etc/xslt/wz-pmd-report.xslt"
@@ -368,7 +370,6 @@ ${javadoc.copyright}
             <classpath location="${dir.build.lib}/Saxon-HE.jar" />
         </xslt>
     </target>
-
 
     <target name="clean-generated">
         <echo message="Deleting directory ../build" />
