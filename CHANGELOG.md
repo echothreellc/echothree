@@ -1,5 +1,23 @@
 # Changelog
 
+## 2020-10-04-01
+
+* Disallow Deleting the OfferUse If It's In Use [102](https://gitlab.echothree.com/echothree/echothree/-/issues/102)
+* GraphQL Objects and Mutations for Offer Name Elements [128](https://gitlab.echothree.com/echothree/echothree/-/issues/128)
+* GraphQL Objects and Mutations for Use Name Elements [132](https://gitlab.echothree.com/echothree/echothree/-/issues/132)
+* Break Up OfferControl [138](https://gitlab.echothree.com/echothree/echothree/-/issues/138)
+* cucumber-java8/cucumber-junit 6.7.0 Upgrade [139](https://gitlab.echothree.com/echothree/echothree/-/issues/139)
+* ROME 1.15.0 Upgrade [140](https://gitlab.echothree.com/echothree/echothree/-/issues/140)
+* graphql-java-annotations 8.1 Upgrade [141](https://gitlab.echothree.com/echothree/echothree/-/issues/141)
+* ClassGraph 4.8.90 Upgrade [142](https://gitlab.echothree.com/echothree/echothree/-/issues/142)
+* Spring 5.2.9.RELEASE Upgrade [145](https://gitlab.echothree.com/echothree/echothree/-/issues/145)
+* JaCoCo 0.8.6 Upgrade [146](https://gitlab.echothree.com/echothree/echothree/-/issues/146)
+* FilterEntranceSteps Missing Unique Index on FilterId/FilterStepId [147](https://gitlab.echothree.com/echothree/echothree/-/issues/147)
+* Disallow Deleting the Offer If It's In Use [160](https://gitlab.echothree.com/echothree/echothree/-/issues/160)
+* Disallow Deleting the Use If It's In Use [161](https://gitlab.echothree.com/echothree/echothree/-/issues/161)
+* Disallow Deleting the UseType If It's In Use [162](https://gitlab.echothree.com/echothree/echothree/-/issues/162)
+* PMD 6.28.0 Upgrade [164](https://gitlab.echothree.com/echothree/echothree/-/issues/164)
+
 ## 2020-09-20-01
 
 * Add Source Tests [118](https://gitlab.echothree.com/echothree/echothree/-/issues/118)
