@@ -347,16 +347,11 @@ ${javadoc.copyright}
             classpathref="pmd.classpath" />
 
         <pmd shortFilenames="true">
-            <sourceLanguage name="java" version="1.8" />
-            <ruleset>java-unusedcode</ruleset>
-            <ruleset>java-basic</ruleset>
-            <ruleset>java-imports</ruleset>
+            <sourceLanguage name="java" version="11" />
+            <ruleset>rulesets/java/quickstart.xml</ruleset>
             <formatter
                 type="xml"
                 toFile="${dir.home}/generated/pmd/report.xml">
-<!--
-                <param name="linkPrefix" value="${dir.home}/generated/javadoc/src-html" />
--->
             </formatter>
             <fileset dir="java">
                 <include name="**/*.java" />
@@ -369,7 +364,9 @@ ${javadoc.copyright}
         </pmd>
         <xslt in="${dir.home}/generated/pmd/report.xml"
               style="${dir.home}/lib/pmd/etc/xslt/wz-pmd-report.xslt"
-              out="${dir.home}/generated/pmd/index.html"/>
+              out="${dir.home}/generated/pmd/index.html">
+            <classpath location="${dir.build.lib}/Saxon-HE.jar" />
+        </xslt>
     </target>
 
 
