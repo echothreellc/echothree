@@ -255,7 +255,6 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import static java.util.Collections.emptyList;
 import javax.naming.NamingException;
 
@@ -347,7 +346,7 @@ public final class GraphQlQueries
         }
 
         if(offerNameElements == null) {
-            offerNameElementObjects = Collections.EMPTY_LIST;
+            offerNameElementObjects = emptyList();
         } else {
             offerNameElementObjects = new ArrayList<>(offerNameElements.size());
 
@@ -397,7 +396,7 @@ public final class GraphQlQueries
         }
 
         if(useNameElements == null) {
-            useNameElementObjects = Collections.EMPTY_LIST;
+            useNameElementObjects = emptyList();
         } else {
             useNameElementObjects = new ArrayList<>(useNameElements.size());
 
@@ -447,7 +446,7 @@ public final class GraphQlQueries
         }
 
         if(useTypes == null) {
-            useTypeObjects = Collections.EMPTY_LIST;
+            useTypeObjects = emptyList();
         } else {
             useTypeObjects = new ArrayList<>(useTypes.size());
 
@@ -497,7 +496,7 @@ public final class GraphQlQueries
         }
 
         if(freeOnBoards == null) {
-            freeOnBoardObjects = Collections.EMPTY_LIST;
+            freeOnBoardObjects = emptyList();
         } else {
             freeOnBoardObjects = new ArrayList<>(freeOnBoards.size());
 
@@ -595,7 +594,7 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorTransactions == null) {
-            paymentProcessorTransactionObjects = Collections.EMPTY_LIST;
+            paymentProcessorTransactionObjects = emptyList();
         } else {
             paymentProcessorTransactionObjects = new ArrayList<>(paymentProcessorTransactions.size());
 
@@ -645,7 +644,7 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessors == null) {
-            paymentProcessorObjects = Collections.EMPTY_LIST;
+            paymentProcessorObjects = emptyList();
         } else {
             paymentProcessorObjects = new ArrayList<>(paymentProcessors.size());
 
@@ -695,7 +694,7 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorTypes == null) {
-            paymentProcessorTypeObjects = Collections.EMPTY_LIST;
+            paymentProcessorTypeObjects = emptyList();
         } else {
             paymentProcessorTypeObjects = new ArrayList<>(paymentProcessorTypes.size());
 
@@ -745,7 +744,7 @@ public final class GraphQlQueries
         }
 
         if(paymentMethodTypes == null) {
-            paymentMethodTypeObjects = Collections.EMPTY_LIST;
+            paymentMethodTypeObjects = emptyList();
         } else {
             paymentMethodTypeObjects = new ArrayList<>(paymentMethodTypes.size());
 
@@ -795,7 +794,7 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorResultCodes == null) {
-            paymentProcessorResultCodeObjects = Collections.EMPTY_LIST;
+            paymentProcessorResultCodeObjects = emptyList();
         } else {
             paymentProcessorResultCodeObjects = new ArrayList<>(paymentProcessorResultCodes.size());
 
@@ -845,7 +844,7 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorActionTypes == null) {
-            paymentProcessorActionTypeObjects = Collections.EMPTY_LIST;
+            paymentProcessorActionTypeObjects = emptyList();
         } else {
             paymentProcessorActionTypeObjects = new ArrayList<>(paymentProcessorActionTypes.size());
 
@@ -895,7 +894,7 @@ public final class GraphQlQueries
         }
 
         if(appearances == null) {
-            appearanceObjects = Collections.EMPTY_LIST;
+            appearanceObjects = emptyList();
         } else {
             appearanceObjects = new ArrayList<>(appearances.size());
 
@@ -944,7 +943,7 @@ public final class GraphQlQueries
         }
 
         if(entityInstances == null) {
-            entityInstanceObjects = Collections.EMPTY_LIST;
+            entityInstanceObjects = emptyList();
         } else {
             entityInstanceObjects = new ArrayList<>(entityInstances.size());
 
@@ -995,7 +994,7 @@ public final class GraphQlQueries
         }
 
         if(entityTypes == null) {
-            entityTypeObjects = Collections.EMPTY_LIST;
+            entityTypeObjects = emptyList();
         } else {
             entityTypeObjects = new ArrayList<>(entityTypes.size());
 
@@ -1041,7 +1040,7 @@ public final class GraphQlQueries
         }
 
         if(componentVendors == null) {
-            componentVendorObjects = Collections.EMPTY_LIST;
+            componentVendorObjects = emptyList();
         } else {
             componentVendorObjects = new ArrayList<>(componentVendors.size());
 
@@ -1087,7 +1086,7 @@ public final class GraphQlQueries
         }
 
         if(inventoryConditions == null) {
-            inventoryConditionObjects = Collections.EMPTY_LIST;
+            inventoryConditionObjects = emptyList();
         } else {
             inventoryConditionObjects = new ArrayList<>(inventoryConditions.size());
 
@@ -1137,7 +1136,7 @@ public final class GraphQlQueries
         }
 
         if(lots == null) {
-            lotObjects = Collections.EMPTY_LIST;
+            lotObjects = emptyList();
         } else {
             lotObjects = new ArrayList<>(lots.size());
 
@@ -1187,7 +1186,7 @@ public final class GraphQlQueries
         }
         
         if(contentPageLayouts == null) {
-            contentPageLayoutObjects = Collections.EMPTY_LIST;
+            contentPageLayoutObjects = emptyList();
         } else {
             contentPageLayoutObjects = new ArrayList<>(contentPageLayouts.size());
 
@@ -1248,7 +1247,7 @@ public final class GraphQlQueries
         }
         
         if(contentPageLayoutAreas == null) {
-            contentPageLayoutAreaObjects = Collections.EMPTY_LIST;
+            contentPageLayoutAreaObjects = emptyList();
         } else {
             contentPageLayoutAreaObjects = new ArrayList<>(contentPageLayoutAreas.size());
 
@@ -1298,7 +1297,7 @@ public final class GraphQlQueries
         }
         
         if(contentPageAreaTypes == null) {
-            contentPageAreaTypeObjects = Collections.EMPTY_LIST;
+            contentPageAreaTypeObjects = emptyList();
         } else {
             contentPageAreaTypeObjects = new ArrayList<>(contentPageAreaTypes.size());
 
@@ -1346,7 +1345,7 @@ public final class GraphQlQueries
         }
         
         if(contentWebAddresses == null) {
-            contentWebAddressObjects = Collections.EMPTY_LIST;
+            contentWebAddressObjects = emptyList();
         } else {
             contentWebAddressObjects = new ArrayList<>(contentWebAddresses.size());
 
@@ -1394,7 +1393,7 @@ public final class GraphQlQueries
         }
         
         if(contentCollections == null) {
-            contentCollectionObjects = Collections.EMPTY_LIST;
+            contentCollectionObjects = emptyList();
         } else {
             contentCollectionObjects = new ArrayList<>(contentCollections.size());
 
@@ -1465,7 +1464,7 @@ public final class GraphQlQueries
         }
         
         if(contentSections == null) {
-            contentSectionObjects = Collections.EMPTY_LIST;
+            contentSectionObjects = emptyList();
         } else {
             contentSectionObjects = new ArrayList<>(contentSections.size());
 
@@ -1538,7 +1537,7 @@ public final class GraphQlQueries
         }
         
         if(contentPages == null) {
-            contentPageObjects = Collections.EMPTY_LIST;
+            contentPageObjects = emptyList();
         } else {
             contentPageObjects = new ArrayList<>(contentPages.size());
 
@@ -1601,7 +1600,7 @@ public final class GraphQlQueries
         }
         
         if(contentPageAreas == null) {
-            contentPageAreaObjects = Collections.EMPTY_LIST;
+            contentPageAreaObjects = emptyList();
         } else {
             contentPageAreaObjects = new ArrayList<>(contentPageAreas.size());
 
@@ -1670,7 +1669,7 @@ public final class GraphQlQueries
         }
         
         if(contentCatalogs == null) {
-            contentCatalogObjects = Collections.EMPTY_LIST;
+            contentCatalogObjects = emptyList();
         } else {
             contentCatalogObjects = new ArrayList<>(contentCatalogs.size());
 
@@ -1749,7 +1748,7 @@ public final class GraphQlQueries
         }
         
         if(contentCatalogItems == null) {
-            contentCatalogItemObjects = Collections.EMPTY_LIST;
+            contentCatalogItemObjects = emptyList();
         } else {
             contentCatalogItemObjects = new ArrayList<>(contentCatalogItems.size());
 
@@ -1824,7 +1823,7 @@ public final class GraphQlQueries
         }
         
         if(contentCategories == null) {
-            contentCategoryObjects = Collections.EMPTY_LIST;
+            contentCategoryObjects = emptyList();
         } else {
             contentCategoryObjects = new ArrayList<>(contentCategories.size());
 
@@ -1907,7 +1906,7 @@ public final class GraphQlQueries
         }
         
         if(contentCategoryItems == null) {
-            contentCategoryItemObjects = Collections.EMPTY_LIST;
+            contentCategoryItemObjects = emptyList();
         } else {
             contentCategoryItemObjects = new ArrayList<>(contentCategoryItems.size());
 
@@ -1955,7 +1954,7 @@ public final class GraphQlQueries
         }
 
         if(mimeTypeFileExtensions == null) {
-            mimeTypeFileExtensionObjects = Collections.EMPTY_LIST;
+            mimeTypeFileExtensionObjects = emptyList();
         } else {
             mimeTypeFileExtensionObjects = new ArrayList<>(mimeTypeFileExtensions.size());
 
@@ -2003,7 +2002,7 @@ public final class GraphQlQueries
         }
 
         if(mimeTypeUsageTypes == null) {
-            mimeTypeUsageTypeObjects = Collections.EMPTY_LIST;
+            mimeTypeUsageTypeObjects = emptyList();
         } else {
             mimeTypeUsageTypeObjects = new ArrayList<>(mimeTypeUsageTypes.size());
 
@@ -2054,7 +2053,7 @@ public final class GraphQlQueries
         }
 
         if(mimeTypes == null) {
-            mimeTypeObjects = Collections.EMPTY_LIST;
+            mimeTypeObjects = emptyList();
         } else {
             mimeTypeObjects = new ArrayList<>(mimeTypes.size());
 
@@ -2102,7 +2101,7 @@ public final class GraphQlQueries
         }
 
         if(queueTypes == null) {
-            queueTypeObjects = Collections.EMPTY_LIST;
+            queueTypeObjects = emptyList();
         } else {
             queueTypeObjects = new ArrayList<>(queueTypes.size());
 
@@ -2157,7 +2156,7 @@ public final class GraphQlQueries
         }
 
         if(unitOfMeasureKindUses == null) {
-            unitOfMeasureKindUseObjects = Collections.EMPTY_LIST;
+            unitOfMeasureKindUseObjects = emptyList();
         } else {
             unitOfMeasureKindUseObjects = new ArrayList<>(unitOfMeasureKindUses.size());
 
@@ -2210,7 +2209,7 @@ public final class GraphQlQueries
         }
         
         if(unitOfMeasureTypes == null) {
-            unitOfMeasureTypeObjects = Collections.EMPTY_LIST;
+            unitOfMeasureTypeObjects = emptyList();
         } else {
             unitOfMeasureTypeObjects = new ArrayList<>(unitOfMeasureTypes.size());
 
@@ -2258,7 +2257,7 @@ public final class GraphQlQueries
         }
         
         if(unitOfMeasureKinds == null) {
-            unitOfMeasureKindObjects = Collections.EMPTY_LIST;
+            unitOfMeasureKindObjects = emptyList();
         } else {
             unitOfMeasureKindObjects = new ArrayList<>(unitOfMeasureKinds.size());
 
@@ -2306,7 +2305,7 @@ public final class GraphQlQueries
         }
         
         if(unitOfMeasureKindUseTypes == null) {
-            unitOfMeasureKindUseTypeObjects = Collections.EMPTY_LIST;
+            unitOfMeasureKindUseTypeObjects = emptyList();
         } else {
             unitOfMeasureKindUseTypeObjects = new ArrayList<>(unitOfMeasureKindUseTypes.size());
 
@@ -2354,7 +2353,7 @@ public final class GraphQlQueries
         }
         
         if(entityAttributeTypes == null) {
-            entityAttributeTypeObjects = Collections.EMPTY_LIST;
+            entityAttributeTypeObjects = emptyList();
         } else {
             entityAttributeTypeObjects = new ArrayList<>(entityAttributeTypes.size());
 
@@ -2425,7 +2424,7 @@ public final class GraphQlQueries
         }
         
         if(colors == null) {
-            colorObjects = Collections.EMPTY_LIST;
+            colorObjects = emptyList();
         } else {
             colorObjects = new ArrayList<>(colors.size());
 
@@ -2475,7 +2474,7 @@ public final class GraphQlQueries
         }
         
         if(fontStyles == null) {
-            fontStyleObjects = Collections.EMPTY_LIST;
+            fontStyleObjects = emptyList();
         } else {
             fontStyleObjects = new ArrayList<>(fontStyles.size());
 
@@ -2525,7 +2524,7 @@ public final class GraphQlQueries
         }
         
         if(fontWeights == null) {
-            fontWeightObjects = Collections.EMPTY_LIST;
+            fontWeightObjects = emptyList();
         } else {
             fontWeightObjects = new ArrayList<>(fontWeights.size());
 
@@ -2575,7 +2574,7 @@ public final class GraphQlQueries
         }
         
         if(textDecorations == null) {
-            textDecorationObjects = Collections.EMPTY_LIST;
+            textDecorationObjects = emptyList();
         } else {
             textDecorationObjects = new ArrayList<>(textDecorations.size());
 
@@ -2625,7 +2624,7 @@ public final class GraphQlQueries
         }
         
         if(textTransformations == null) {
-            textTransformationObjects = Collections.EMPTY_LIST;
+            textTransformationObjects = emptyList();
         } else {
             textTransformationObjects = new ArrayList<>(textTransformations.size());
 
@@ -2701,7 +2700,7 @@ public final class GraphQlQueries
         }
         
         if(recoveryQuestions == null) {
-            recoveryQuestionObjects = Collections.EMPTY_LIST;
+            recoveryQuestionObjects = emptyList();
         } else {
             recoveryQuestionObjects = new ArrayList<>(recoveryQuestions.size());
 
@@ -2769,7 +2768,7 @@ public final class GraphQlQueries
         }
         
         if(currencies == null) {
-            currencyObjects = Collections.EMPTY_LIST;
+            currencyObjects = emptyList();
         } else {
             currencyObjects = new ArrayList<>(currencies.size());
 
@@ -2819,7 +2818,7 @@ public final class GraphQlQueries
         }
         
         if(languages == null) {
-            languageObjects = Collections.EMPTY_LIST;
+            languageObjects = emptyList();
         } else {
             languageObjects = new ArrayList<>(languages.size());
 
@@ -2869,7 +2868,7 @@ public final class GraphQlQueries
         }
         
         if(dateTimeFormats == null) {
-            dateTimeFormatObjects = Collections.EMPTY_LIST;
+            dateTimeFormatObjects = emptyList();
         } else {
             dateTimeFormatObjects = new ArrayList<>(dateTimeFormats.size());
 
@@ -2919,7 +2918,7 @@ public final class GraphQlQueries
         }
         
         if(timeZones == null) {
-            timeZoneObjects = Collections.EMPTY_LIST;
+            timeZoneObjects = emptyList();
         } else {
             timeZoneObjects = new ArrayList<>(timeZones.size());
 
@@ -2995,7 +2994,7 @@ public final class GraphQlQueries
         }
         
         if(itemCategories == null) {
-            itemCategoryObjects = Collections.EMPTY_LIST;
+            itemCategoryObjects = emptyList();
         } else {
             itemCategoryObjects = new ArrayList<>(itemCategories.size());
 
