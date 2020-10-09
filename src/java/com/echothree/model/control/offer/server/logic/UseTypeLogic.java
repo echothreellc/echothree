@@ -56,7 +56,7 @@ public class UseTypeLogic
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
         var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
-        UseType useType = useTypeControl.getUseTypeByName(useTypeName);
+        var useType = useTypeControl.getUseTypeByName(useTypeName);
 
         if(useType == null) {
             useType = useTypeControl.createUseType(useTypeName, isDefault, sortOrder, createdBy);
@@ -74,7 +74,7 @@ public class UseTypeLogic
     public UseType getUseTypeByName(final ExecutionErrorAccumulator eea, final String useTypeName,
             final EntityPermission entityPermission) {
         var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
-        UseType useType = useTypeControl.getUseTypeByName(useTypeName, entityPermission);
+        var useType = useTypeControl.getUseTypeByName(useTypeName, entityPermission);
 
         if(useType == null) {
             handleExecutionError(UnknownUseTypeNameException.class, eea, ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
@@ -95,7 +95,7 @@ public class UseTypeLogic
             final UseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         UseType useType = null;
         var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
-        String useTypeName = universalSpec.getUseTypeName();
+        var useTypeName = universalSpec.getUseTypeName();
         int parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
