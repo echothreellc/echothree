@@ -17,22 +17,19 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetUseForm;
-import com.echothree.control.user.offer.common.result.GetUseResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
+import com.echothree.model.control.offer.server.logic.UseLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,12 +50,16 @@ public class GetUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Use.name(), SecurityRoles.Review.name())
-                        )))
-                )));
-        
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("UseName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                new FieldDefinition("UseName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        ));
     }
     
     /** Creates a new instance of GetUseCommand */
@@ -68,14 +69,10 @@ public class GetUseCommand
     
     @Override
     protected Use getEntity() {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
-        String useName = form.getUseName();
-        Use use = useControl.getUseByName(useName);
-        
-        if(use != null) {
+        var use = UseLogic.getInstance().getUseByUniversalSpec(this, form, true);
+
+        if(!hasExecutionErrors()) {
             sendEventUsingNames(use.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownUseName.name(), useName);
         }
         
         return use;
@@ -83,12 +80,12 @@ public class GetUseCommand
     
     @Override
     protected BaseResult getTransfer(Use use) {
-        GetUseResult result = OfferResultFactory.getGetUseResult();
+        var result = OfferResultFactory.getGetUseResult();
         
         if(use != null) {
             var useControl = (UseControl)Session.getModelController(UseControl.class);
             var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             result.setUse(useControl.getUseTransfer(userVisit, use));
             result.setUseNameElements(useNameElementControl.getUseNameElementTransfers(userVisit));
