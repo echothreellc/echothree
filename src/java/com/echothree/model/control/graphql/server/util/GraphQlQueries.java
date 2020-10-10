@@ -83,10 +83,12 @@ import com.echothree.control.user.item.server.command.GetItemCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementsCommand;
+import com.echothree.control.user.offer.server.command.GetUseCommand;
 import com.echothree.control.user.offer.server.command.GetUseNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetUseNameElementsCommand;
 import com.echothree.control.user.offer.server.command.GetUseTypeCommand;
 import com.echothree.control.user.offer.server.command.GetUseTypesCommand;
+import com.echothree.control.user.offer.server.command.GetUsesCommand;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatsCommand;
@@ -164,6 +166,7 @@ import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferNameElementObject;
 import com.echothree.model.control.offer.server.graphql.UseNameElementObject;
+import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
@@ -220,6 +223,7 @@ import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
+import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -251,12 +255,60 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import static java.util.Collections.emptyList;
 import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("use")
+    public static UseObject use(final DataFetchingEnvironment env,
+            @GraphQLName("useName") final String useName,
+            @GraphQLName("id") final String id) {
+        Use use;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetUseForm();
+
+            commandForm.setUseName(useName);
+            commandForm.setUlid(id);
+
+            use = new GetUseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return use == null ? null : new UseObject(use);
+    }
+
+    @GraphQLField
+    @GraphQLName("uses")
+    public static Collection<UseObject> uses(final DataFetchingEnvironment env) {
+        Collection<Use> uses;
+        Collection<UseObject> useObjects;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetUsesForm();
+
+            uses = new GetUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(uses == null) {
+            useObjects = emptyList();
+        } else {
+            useObjects = new ArrayList<>(uses.size());
+
+            uses.stream()
+                    .map(UseObject::new)
+                    .forEachOrdered(useObjects::add);
+        }
+
+        return useObjects;
+    }
 
     @GraphQLField
     @GraphQLName("offerNameElement")
@@ -294,15 +346,13 @@ public final class GraphQlQueries
         }
 
         if(offerNameElements == null) {
-            offerNameElementObjects = Collections.EMPTY_LIST;
+            offerNameElementObjects = emptyList();
         } else {
             offerNameElementObjects = new ArrayList<>(offerNameElements.size());
 
-            offerNameElements.stream().map((offerNameElement) -> {
-                return new OfferNameElementObject(offerNameElement);
-            }).forEachOrdered((offerNameElementObject) -> {
-                offerNameElementObjects.add(offerNameElementObject);
-            });
+            offerNameElements.stream()
+                    .map(OfferNameElementObject::new)
+                    .forEachOrdered(offerNameElementObjects::add);
         }
 
         return offerNameElementObjects;
@@ -344,15 +394,13 @@ public final class GraphQlQueries
         }
 
         if(useNameElements == null) {
-            useNameElementObjects = Collections.EMPTY_LIST;
+            useNameElementObjects = emptyList();
         } else {
             useNameElementObjects = new ArrayList<>(useNameElements.size());
 
-            useNameElements.stream().map((useNameElement) -> {
-                return new UseNameElementObject(useNameElement);
-            }).forEachOrdered((useNameElementObject) -> {
-                useNameElementObjects.add(useNameElementObject);
-            });
+            useNameElements.stream()
+                    .map(UseNameElementObject::new)
+                    .forEachOrdered(useNameElementObjects::add);
         }
 
         return useNameElementObjects;
@@ -394,15 +442,13 @@ public final class GraphQlQueries
         }
 
         if(useTypes == null) {
-            useTypeObjects = Collections.EMPTY_LIST;
+            useTypeObjects = emptyList();
         } else {
             useTypeObjects = new ArrayList<>(useTypes.size());
 
-            useTypes.stream().map((useType) -> {
-                return new UseTypeObject(useType);
-            }).forEachOrdered((useTypeObject) -> {
-                useTypeObjects.add(useTypeObject);
-            });
+            useTypes.stream()
+                    .map(UseTypeObject::new)
+                    .forEachOrdered(useTypeObjects::add);
         }
 
         return useTypeObjects;
@@ -444,15 +490,13 @@ public final class GraphQlQueries
         }
 
         if(freeOnBoards == null) {
-            freeOnBoardObjects = Collections.EMPTY_LIST;
+            freeOnBoardObjects = emptyList();
         } else {
             freeOnBoardObjects = new ArrayList<>(freeOnBoards.size());
 
-            freeOnBoards.stream().map((freeOnBoard) -> {
-                return new FreeOnBoardObject(freeOnBoard);
-            }).forEachOrdered((freeOnBoardObject) -> {
-                freeOnBoardObjects.add(freeOnBoardObject);
-            });
+            freeOnBoards.stream()
+                    .map(FreeOnBoardObject::new)
+                    .forEachOrdered(freeOnBoardObjects::add);
         }
 
         return freeOnBoardObjects;
@@ -542,15 +586,13 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorTransactions == null) {
-            paymentProcessorTransactionObjects = Collections.EMPTY_LIST;
+            paymentProcessorTransactionObjects = emptyList();
         } else {
             paymentProcessorTransactionObjects = new ArrayList<>(paymentProcessorTransactions.size());
 
-            paymentProcessorTransactions.stream().map((paymentProcessorTransaction) -> {
-                return new PaymentProcessorTransactionObject(paymentProcessorTransaction);
-            }).forEachOrdered((paymentProcessorTransactionObject) -> {
-                paymentProcessorTransactionObjects.add(paymentProcessorTransactionObject);
-            });
+            paymentProcessorTransactions.stream()
+                    .map(PaymentProcessorTransactionObject::new)
+                    .forEachOrdered(paymentProcessorTransactionObjects::add);
         }
 
         return paymentProcessorTransactionObjects;
@@ -592,15 +634,13 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessors == null) {
-            paymentProcessorObjects = Collections.EMPTY_LIST;
+            paymentProcessorObjects = emptyList();
         } else {
             paymentProcessorObjects = new ArrayList<>(paymentProcessors.size());
 
-            paymentProcessors.stream().map((paymentProcessor) -> {
-                return new PaymentProcessorObject(paymentProcessor);
-            }).forEachOrdered((paymentProcessorObject) -> {
-                paymentProcessorObjects.add(paymentProcessorObject);
-            });
+            paymentProcessors.stream()
+                    .map(PaymentProcessorObject::new)
+                    .forEachOrdered(paymentProcessorObjects::add);
         }
 
         return paymentProcessorObjects;
@@ -642,15 +682,13 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorTypes == null) {
-            paymentProcessorTypeObjects = Collections.EMPTY_LIST;
+            paymentProcessorTypeObjects = emptyList();
         } else {
             paymentProcessorTypeObjects = new ArrayList<>(paymentProcessorTypes.size());
 
-            paymentProcessorTypes.stream().map((paymentProcessorType) -> {
-                return new PaymentProcessorTypeObject(paymentProcessorType);
-            }).forEachOrdered((paymentProcessorTypeObject) -> {
-                paymentProcessorTypeObjects.add(paymentProcessorTypeObject);
-            });
+            paymentProcessorTypes.stream()
+                    .map(PaymentProcessorTypeObject::new)
+                    .forEachOrdered(paymentProcessorTypeObjects::add);
         }
 
         return paymentProcessorTypeObjects;
@@ -692,15 +730,13 @@ public final class GraphQlQueries
         }
 
         if(paymentMethodTypes == null) {
-            paymentMethodTypeObjects = Collections.EMPTY_LIST;
+            paymentMethodTypeObjects = emptyList();
         } else {
             paymentMethodTypeObjects = new ArrayList<>(paymentMethodTypes.size());
 
-            paymentMethodTypes.stream().map((paymentMethodType) -> {
-                return new PaymentMethodTypeObject(paymentMethodType);
-            }).forEachOrdered((paymentMethodTypeObject) -> {
-                paymentMethodTypeObjects.add(paymentMethodTypeObject);
-            });
+            paymentMethodTypes.stream()
+                    .map(PaymentMethodTypeObject::new)
+                    .forEachOrdered(paymentMethodTypeObjects::add);
         }
 
         return paymentMethodTypeObjects;
@@ -742,15 +778,13 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorResultCodes == null) {
-            paymentProcessorResultCodeObjects = Collections.EMPTY_LIST;
+            paymentProcessorResultCodeObjects = emptyList();
         } else {
             paymentProcessorResultCodeObjects = new ArrayList<>(paymentProcessorResultCodes.size());
 
-            paymentProcessorResultCodes.stream().map((paymentProcessorResultCode) -> {
-                return new PaymentProcessorResultCodeObject(paymentProcessorResultCode);
-            }).forEachOrdered((paymentProcessorResultCodeObject) -> {
-                paymentProcessorResultCodeObjects.add(paymentProcessorResultCodeObject);
-            });
+            paymentProcessorResultCodes.stream()
+                    .map(PaymentProcessorResultCodeObject::new)
+                    .forEachOrdered(paymentProcessorResultCodeObjects::add);
         }
 
         return paymentProcessorResultCodeObjects;
@@ -792,15 +826,13 @@ public final class GraphQlQueries
         }
 
         if(paymentProcessorActionTypes == null) {
-            paymentProcessorActionTypeObjects = Collections.EMPTY_LIST;
+            paymentProcessorActionTypeObjects = emptyList();
         } else {
             paymentProcessorActionTypeObjects = new ArrayList<>(paymentProcessorActionTypes.size());
 
-            paymentProcessorActionTypes.stream().map((paymentProcessorActionType) -> {
-                return new PaymentProcessorActionTypeObject(paymentProcessorActionType);
-            }).forEachOrdered((paymentProcessorActionTypeObject) -> {
-                paymentProcessorActionTypeObjects.add(paymentProcessorActionTypeObject);
-            });
+            paymentProcessorActionTypes.stream()
+                    .map(PaymentProcessorActionTypeObject::new)
+                    .forEachOrdered(paymentProcessorActionTypeObjects::add);
         }
 
         return paymentProcessorActionTypeObjects;
@@ -842,7 +874,7 @@ public final class GraphQlQueries
         }
 
         if(appearances == null) {
-            appearanceObjects = Collections.EMPTY_LIST;
+            appearanceObjects = emptyList();
         } else {
             appearanceObjects = new ArrayList<>(appearances.size());
 
@@ -891,7 +923,7 @@ public final class GraphQlQueries
         }
 
         if(entityInstances == null) {
-            entityInstanceObjects = Collections.EMPTY_LIST;
+            entityInstanceObjects = emptyList();
         } else {
             entityInstanceObjects = new ArrayList<>(entityInstances.size());
 
@@ -942,7 +974,7 @@ public final class GraphQlQueries
         }
 
         if(entityTypes == null) {
-            entityTypeObjects = Collections.EMPTY_LIST;
+            entityTypeObjects = emptyList();
         } else {
             entityTypeObjects = new ArrayList<>(entityTypes.size());
 
@@ -988,7 +1020,7 @@ public final class GraphQlQueries
         }
 
         if(componentVendors == null) {
-            componentVendorObjects = Collections.EMPTY_LIST;
+            componentVendorObjects = emptyList();
         } else {
             componentVendorObjects = new ArrayList<>(componentVendors.size());
 
@@ -1034,15 +1066,13 @@ public final class GraphQlQueries
         }
 
         if(inventoryConditions == null) {
-            inventoryConditionObjects = Collections.EMPTY_LIST;
+            inventoryConditionObjects = emptyList();
         } else {
             inventoryConditionObjects = new ArrayList<>(inventoryConditions.size());
 
-            inventoryConditions.stream().map((inventoryCondition) -> {
-                return new InventoryConditionObject(inventoryCondition);
-            }).forEachOrdered((inventoryConditionObject) -> {
-                inventoryConditionObjects.add(inventoryConditionObject);
-            });
+            inventoryConditions.stream()
+                    .map(InventoryConditionObject::new)
+                    .forEachOrdered(inventoryConditionObjects::add);
         }
 
         return inventoryConditionObjects;
@@ -1084,15 +1114,13 @@ public final class GraphQlQueries
         }
 
         if(lots == null) {
-            lotObjects = Collections.EMPTY_LIST;
+            lotObjects = emptyList();
         } else {
             lotObjects = new ArrayList<>(lots.size());
 
-            lots.stream().map((lot) -> {
-                return new LotObject(lot);
-            }).forEachOrdered((lotObject) -> {
-                lotObjects.add(lotObject);
-            });
+            lots.stream()
+                    .map(LotObject::new)
+                    .forEachOrdered(lotObjects::add);
         }
 
         return lotObjects;
@@ -1134,15 +1162,13 @@ public final class GraphQlQueries
         }
         
         if(contentPageLayouts == null) {
-            contentPageLayoutObjects = Collections.EMPTY_LIST;
+            contentPageLayoutObjects = emptyList();
         } else {
             contentPageLayoutObjects = new ArrayList<>(contentPageLayouts.size());
 
-            contentPageLayouts.stream().map((contentPageLayout) -> {
-                return new ContentPageLayoutObject(contentPageLayout);
-            }).forEachOrdered((contentPageLayoutObject) -> {
-                contentPageLayoutObjects.add(contentPageLayoutObject);
-            });
+            contentPageLayouts.stream()
+                    .map(ContentPageLayoutObject::new)
+                    .forEachOrdered(contentPageLayoutObjects::add);
         }
         
         return contentPageLayoutObjects;
@@ -1195,15 +1221,13 @@ public final class GraphQlQueries
         }
         
         if(contentPageLayoutAreas == null) {
-            contentPageLayoutAreaObjects = Collections.EMPTY_LIST;
+            contentPageLayoutAreaObjects = emptyList();
         } else {
             contentPageLayoutAreaObjects = new ArrayList<>(contentPageLayoutAreas.size());
 
-            contentPageLayoutAreas.stream().map((contentPageLayoutArea) -> {
-                return new ContentPageLayoutAreaObject(contentPageLayoutArea);
-            }).forEachOrdered((contentPageLayoutAreaObject) -> {
-                contentPageLayoutAreaObjects.add(contentPageLayoutAreaObject);
-            });
+            contentPageLayoutAreas.stream()
+                    .map(ContentPageLayoutAreaObject::new)
+                    .forEachOrdered(contentPageLayoutAreaObjects::add);
         }
         
         return contentPageLayoutAreaObjects;
@@ -1245,15 +1269,13 @@ public final class GraphQlQueries
         }
         
         if(contentPageAreaTypes == null) {
-            contentPageAreaTypeObjects = Collections.EMPTY_LIST;
+            contentPageAreaTypeObjects = emptyList();
         } else {
             contentPageAreaTypeObjects = new ArrayList<>(contentPageAreaTypes.size());
 
-            contentPageAreaTypes.stream().map((contentPageAreaType) -> {
-                return new ContentPageAreaTypeObject(contentPageAreaType);
-            }).forEachOrdered((contentPageAreaTypeObject) -> {
-                contentPageAreaTypeObjects.add(contentPageAreaTypeObject);
-            });
+            contentPageAreaTypes.stream()
+                    .map(ContentPageAreaTypeObject::new)
+                    .forEachOrdered(contentPageAreaTypeObjects::add);
         }
         
         return contentPageAreaTypeObjects;
@@ -1293,15 +1315,13 @@ public final class GraphQlQueries
         }
         
         if(contentWebAddresses == null) {
-            contentWebAddressObjects = Collections.EMPTY_LIST;
+            contentWebAddressObjects = emptyList();
         } else {
             contentWebAddressObjects = new ArrayList<>(contentWebAddresses.size());
 
-            contentWebAddresses.stream().map((contentWebAddress) -> {
-                return new ContentWebAddressObject(contentWebAddress);
-            }).forEachOrdered((contentWebAddressObject) -> {
-                contentWebAddressObjects.add(contentWebAddressObject);
-            });
+            contentWebAddresses.stream()
+                    .map(ContentWebAddressObject::new)
+                    .forEachOrdered(contentWebAddressObjects::add);
         }
         
         return contentWebAddressObjects;
@@ -1341,15 +1361,13 @@ public final class GraphQlQueries
         }
         
         if(contentCollections == null) {
-            contentCollectionObjects = Collections.EMPTY_LIST;
+            contentCollectionObjects = emptyList();
         } else {
             contentCollectionObjects = new ArrayList<>(contentCollections.size());
 
-            contentCollections.stream().map((contentCollection) -> {
-                return new ContentCollectionObject(contentCollection);
-            }).forEachOrdered((contentCollectionObject) -> {
-                contentCollectionObjects.add(contentCollectionObject);
-            });
+            contentCollections.stream()
+                    .map(ContentCollectionObject::new)
+                    .forEachOrdered(contentCollectionObjects::add);
         }
         
         return contentCollectionObjects;
@@ -1412,15 +1430,13 @@ public final class GraphQlQueries
         }
         
         if(contentSections == null) {
-            contentSectionObjects = Collections.EMPTY_LIST;
+            contentSectionObjects = emptyList();
         } else {
             contentSectionObjects = new ArrayList<>(contentSections.size());
 
-            contentSections.stream().map((contentSection) -> {
-                return new ContentSectionObject(contentSection);
-            }).forEachOrdered((contentSectionObject) -> {
-                contentSectionObjects.add(contentSectionObject);
-            });
+            contentSections.stream()
+                    .map(ContentSectionObject::new)
+                    .forEachOrdered(contentSectionObjects::add);
         }
         
         return contentSectionObjects;
@@ -1485,15 +1501,13 @@ public final class GraphQlQueries
         }
         
         if(contentPages == null) {
-            contentPageObjects = Collections.EMPTY_LIST;
+            contentPageObjects = emptyList();
         } else {
             contentPageObjects = new ArrayList<>(contentPages.size());
 
-            contentPages.stream().map((contentPage) -> {
-                return new ContentPageObject(contentPage);
-            }).forEachOrdered((contentPageObject) -> {
-                contentPageObjects.add(contentPageObject);
-            });
+            contentPages.stream()
+                    .map(ContentPageObject::new)
+                    .forEachOrdered(contentPageObjects::add);
         }
         
         return contentPageObjects;
@@ -1548,15 +1562,13 @@ public final class GraphQlQueries
         }
         
         if(contentPageAreas == null) {
-            contentPageAreaObjects = Collections.EMPTY_LIST;
+            contentPageAreaObjects = emptyList();
         } else {
             contentPageAreaObjects = new ArrayList<>(contentPageAreas.size());
 
-            contentPageAreas.stream().map((contentPageArea) -> {
-                return new ContentPageAreaObject(contentPageArea);
-            }).forEachOrdered((contentPageAreaObject) -> {
-                contentPageAreaObjects.add(contentPageAreaObject);
-            });
+            contentPageAreas.stream()
+                    .map(ContentPageAreaObject::new)
+                    .forEachOrdered(contentPageAreaObjects::add);
         }
         
         return contentPageAreaObjects;
@@ -1617,15 +1629,13 @@ public final class GraphQlQueries
         }
         
         if(contentCatalogs == null) {
-            contentCatalogObjects = Collections.EMPTY_LIST;
+            contentCatalogObjects = emptyList();
         } else {
             contentCatalogObjects = new ArrayList<>(contentCatalogs.size());
 
-            contentCatalogs.stream().map((contentCatalog) -> {
-                return new ContentCatalogObject(contentCatalog);
-            }).forEachOrdered((contentCatalogObject) -> {
-                contentCatalogObjects.add(contentCatalogObject);
-            });
+            contentCatalogs.stream()
+                    .map(ContentCatalogObject::new)
+                    .forEachOrdered(contentCatalogObjects::add);
         }
         
         return contentCatalogObjects;
@@ -1696,15 +1706,13 @@ public final class GraphQlQueries
         }
         
         if(contentCatalogItems == null) {
-            contentCatalogItemObjects = Collections.EMPTY_LIST;
+            contentCatalogItemObjects = emptyList();
         } else {
             contentCatalogItemObjects = new ArrayList<>(contentCatalogItems.size());
 
-            contentCatalogItems.stream().map((contentCatalogItem) -> {
-                return new ContentCatalogItemObject(contentCatalogItem);
-            }).forEachOrdered((contentCatalogItemObject) -> {
-                contentCatalogItemObjects.add(contentCatalogItemObject);
-            });
+            contentCatalogItems.stream()
+                    .map(ContentCatalogItemObject::new)
+                    .forEachOrdered(contentCatalogItemObjects::add);
         }
         
         return contentCatalogItemObjects;
@@ -1771,15 +1779,13 @@ public final class GraphQlQueries
         }
         
         if(contentCategories == null) {
-            contentCategoryObjects = Collections.EMPTY_LIST;
+            contentCategoryObjects = emptyList();
         } else {
             contentCategoryObjects = new ArrayList<>(contentCategories.size());
 
-            contentCategories.stream().map((contentCategory) -> {
-                return new ContentCategoryObject(contentCategory);
-            }).forEachOrdered((contentCategoryObject) -> {
-                contentCategoryObjects.add(contentCategoryObject);
-            });
+            contentCategories.stream()
+                    .map(ContentCategoryObject::new)
+                    .forEachOrdered(contentCategoryObjects::add);
         }
         
         return contentCategoryObjects;
@@ -1854,15 +1860,13 @@ public final class GraphQlQueries
         }
         
         if(contentCategoryItems == null) {
-            contentCategoryItemObjects = Collections.EMPTY_LIST;
+            contentCategoryItemObjects = emptyList();
         } else {
             contentCategoryItemObjects = new ArrayList<>(contentCategoryItems.size());
 
-            contentCategoryItems.stream().map((contentCategoryItem) -> {
-                return new ContentCategoryItemObject(contentCategoryItem);
-            }).forEachOrdered((contentCategoryItemObject) -> {
-                contentCategoryItemObjects.add(contentCategoryItemObject);
-            });
+            contentCategoryItems.stream()
+                    .map(ContentCategoryItemObject::new)
+                    .forEachOrdered(contentCategoryItemObjects::add);
         }
         
         return contentCategoryItemObjects;
@@ -1902,15 +1906,13 @@ public final class GraphQlQueries
         }
 
         if(mimeTypeFileExtensions == null) {
-            mimeTypeFileExtensionObjects = Collections.EMPTY_LIST;
+            mimeTypeFileExtensionObjects = emptyList();
         } else {
             mimeTypeFileExtensionObjects = new ArrayList<>(mimeTypeFileExtensions.size());
 
-            mimeTypeFileExtensions.stream().map((mimeTypeFileExtension) -> {
-                return new MimeTypeFileExtensionObject(mimeTypeFileExtension);
-            }).forEachOrdered((mimeTypeFileExtensionObject) -> {
-                mimeTypeFileExtensionObjects.add(mimeTypeFileExtensionObject);
-            });
+            mimeTypeFileExtensions.stream()
+                    .map(MimeTypeFileExtensionObject::new)
+                    .forEachOrdered(mimeTypeFileExtensionObjects::add);
         }
 
         return mimeTypeFileExtensionObjects;
@@ -1950,15 +1952,13 @@ public final class GraphQlQueries
         }
 
         if(mimeTypeUsageTypes == null) {
-            mimeTypeUsageTypeObjects = Collections.EMPTY_LIST;
+            mimeTypeUsageTypeObjects = emptyList();
         } else {
             mimeTypeUsageTypeObjects = new ArrayList<>(mimeTypeUsageTypes.size());
 
-            mimeTypeUsageTypes.stream().map((mimeTypeUsageType) -> {
-                return new MimeTypeUsageTypeObject(mimeTypeUsageType);
-            }).forEachOrdered((mimeTypeUsageTypeObject) -> {
-                mimeTypeUsageTypeObjects.add(mimeTypeUsageTypeObject);
-            });
+            mimeTypeUsageTypes.stream()
+                    .map(MimeTypeUsageTypeObject::new)
+                    .forEachOrdered(mimeTypeUsageTypeObjects::add);
         }
 
         return mimeTypeUsageTypeObjects;
@@ -2001,15 +2001,13 @@ public final class GraphQlQueries
         }
 
         if(mimeTypes == null) {
-            mimeTypeObjects = Collections.EMPTY_LIST;
+            mimeTypeObjects = emptyList();
         } else {
             mimeTypeObjects = new ArrayList<>(mimeTypes.size());
 
-            mimeTypes.stream().map((mimeType) -> {
-                return new MimeTypeObject(mimeType);
-            }).forEachOrdered((mimeTypeObject) -> {
-                mimeTypeObjects.add(mimeTypeObject);
-            });
+            mimeTypes.stream()
+                    .map(MimeTypeObject::new)
+                    .forEachOrdered(mimeTypeObjects::add);
         }
 
         return mimeTypeObjects;
@@ -2049,15 +2047,13 @@ public final class GraphQlQueries
         }
 
         if(queueTypes == null) {
-            queueTypeObjects = Collections.EMPTY_LIST;
+            queueTypeObjects = emptyList();
         } else {
             queueTypeObjects = new ArrayList<>(queueTypes.size());
 
-            queueTypes.stream().map((queueType) -> {
-                return new QueueTypeObject(queueType);
-            }).forEachOrdered((queueTypeObject) -> {
-                queueTypeObjects.add(queueTypeObject);
-            });
+            queueTypes.stream()
+                    .map(QueueTypeObject::new)
+                    .forEachOrdered(queueTypeObjects::add);
         }
 
         return queueTypeObjects;
@@ -2104,15 +2100,13 @@ public final class GraphQlQueries
         }
 
         if(unitOfMeasureKindUses == null) {
-            unitOfMeasureKindUseObjects = Collections.EMPTY_LIST;
+            unitOfMeasureKindUseObjects = emptyList();
         } else {
             unitOfMeasureKindUseObjects = new ArrayList<>(unitOfMeasureKindUses.size());
 
-            unitOfMeasureKindUses.stream().map((unitOfMeasureKindUse) -> {
-                return new UnitOfMeasureKindUseObject(unitOfMeasureKindUse);
-            }).forEachOrdered((unitOfMeasureKindUseObject) -> {
-                unitOfMeasureKindUseObjects.add(unitOfMeasureKindUseObject);
-            });
+            unitOfMeasureKindUses.stream()
+                    .map(UnitOfMeasureKindUseObject::new)
+                    .forEachOrdered(unitOfMeasureKindUseObjects::add);
         }
 
         return unitOfMeasureKindUseObjects;
@@ -2157,15 +2151,13 @@ public final class GraphQlQueries
         }
         
         if(unitOfMeasureTypes == null) {
-            unitOfMeasureTypeObjects = Collections.EMPTY_LIST;
+            unitOfMeasureTypeObjects = emptyList();
         } else {
             unitOfMeasureTypeObjects = new ArrayList<>(unitOfMeasureTypes.size());
 
-            unitOfMeasureTypes.stream().map((unitOfMeasureType) -> {
-                return new UnitOfMeasureTypeObject(unitOfMeasureType);
-            }).forEachOrdered((unitOfMeasureTypeObject) -> {
-                unitOfMeasureTypeObjects.add(unitOfMeasureTypeObject);
-            });
+            unitOfMeasureTypes.stream()
+                    .map(UnitOfMeasureTypeObject::new)
+                    .forEachOrdered(unitOfMeasureTypeObjects::add);
         }
         
         return unitOfMeasureTypeObjects;
@@ -2205,15 +2197,13 @@ public final class GraphQlQueries
         }
         
         if(unitOfMeasureKinds == null) {
-            unitOfMeasureKindObjects = Collections.EMPTY_LIST;
+            unitOfMeasureKindObjects = emptyList();
         } else {
             unitOfMeasureKindObjects = new ArrayList<>(unitOfMeasureKinds.size());
 
-            unitOfMeasureKinds.stream().map((unitOfMeasureKind) -> {
-                return new UnitOfMeasureKindObject(unitOfMeasureKind);
-            }).forEachOrdered((unitOfMeasureKindObject) -> {
-                unitOfMeasureKindObjects.add(unitOfMeasureKindObject);
-            });
+            unitOfMeasureKinds.stream()
+                    .map(UnitOfMeasureKindObject::new)
+                    .forEachOrdered(unitOfMeasureKindObjects::add);
         }
         
         return unitOfMeasureKindObjects;
@@ -2253,15 +2243,13 @@ public final class GraphQlQueries
         }
         
         if(unitOfMeasureKindUseTypes == null) {
-            unitOfMeasureKindUseTypeObjects = Collections.EMPTY_LIST;
+            unitOfMeasureKindUseTypeObjects = emptyList();
         } else {
             unitOfMeasureKindUseTypeObjects = new ArrayList<>(unitOfMeasureKindUseTypes.size());
 
-            unitOfMeasureKindUseTypes.stream().map((unitOfMeasureKindUseType) -> {
-                return new UnitOfMeasureKindUseTypeObject(unitOfMeasureKindUseType);
-            }).forEachOrdered((unitOfMeasureKindUseTypeObject) -> {
-                unitOfMeasureKindUseTypeObjects.add(unitOfMeasureKindUseTypeObject);
-            });
+            unitOfMeasureKindUseTypes.stream()
+                    .map(UnitOfMeasureKindUseTypeObject::new)
+                    .forEachOrdered(unitOfMeasureKindUseTypeObjects::add);
         }
         
         return unitOfMeasureKindUseTypeObjects;
@@ -2301,15 +2289,13 @@ public final class GraphQlQueries
         }
         
         if(entityAttributeTypes == null) {
-            entityAttributeTypeObjects = Collections.EMPTY_LIST;
+            entityAttributeTypeObjects = emptyList();
         } else {
             entityAttributeTypeObjects = new ArrayList<>(entityAttributeTypes.size());
 
-            entityAttributeTypes.stream().map((entityAttributeType) -> {
-                return new EntityAttributeTypeObject(entityAttributeType);
-            }).forEachOrdered((entityAttributeTypeObject) -> {
-                entityAttributeTypeObjects.add(entityAttributeTypeObject);
-            });
+            entityAttributeTypes.stream()
+                    .map(EntityAttributeTypeObject::new)
+                    .forEachOrdered(entityAttributeTypeObjects::add);
         }
         
         return entityAttributeTypeObjects;
@@ -2372,15 +2358,13 @@ public final class GraphQlQueries
         }
         
         if(colors == null) {
-            colorObjects = Collections.EMPTY_LIST;
+            colorObjects = emptyList();
         } else {
             colorObjects = new ArrayList<>(colors.size());
 
-            colors.stream().map((color) -> {
-                return new ColorObject(color);
-            }).forEachOrdered((colorObject) -> {
-                colorObjects.add(colorObject);
-            });
+            colors.stream()
+                    .map(ColorObject::new)
+                    .forEachOrdered(colorObjects::add);
         }
         
         return colorObjects;
@@ -2422,15 +2406,13 @@ public final class GraphQlQueries
         }
         
         if(fontStyles == null) {
-            fontStyleObjects = Collections.EMPTY_LIST;
+            fontStyleObjects = emptyList();
         } else {
             fontStyleObjects = new ArrayList<>(fontStyles.size());
 
-            fontStyles.stream().map((fontStyle) -> {
-                return new FontStyleObject(fontStyle);
-            }).forEachOrdered((fontStyleObject) -> {
-                fontStyleObjects.add(fontStyleObject);
-            });
+            fontStyles.stream()
+                    .map(FontStyleObject::new)
+                    .forEachOrdered(fontStyleObjects::add);
         }
         
         return fontStyleObjects;
@@ -2472,15 +2454,13 @@ public final class GraphQlQueries
         }
         
         if(fontWeights == null) {
-            fontWeightObjects = Collections.EMPTY_LIST;
+            fontWeightObjects = emptyList();
         } else {
             fontWeightObjects = new ArrayList<>(fontWeights.size());
 
-            fontWeights.stream().map((fontWeight) -> {
-                return new FontWeightObject(fontWeight);
-            }).forEachOrdered((fontWeightObject) -> {
-                fontWeightObjects.add(fontWeightObject);
-            });
+            fontWeights.stream()
+                    .map(FontWeightObject::new)
+                    .forEachOrdered(fontWeightObjects::add);
         }
         
         return fontWeightObjects;
@@ -2522,15 +2502,13 @@ public final class GraphQlQueries
         }
         
         if(textDecorations == null) {
-            textDecorationObjects = Collections.EMPTY_LIST;
+            textDecorationObjects = emptyList();
         } else {
             textDecorationObjects = new ArrayList<>(textDecorations.size());
 
-            textDecorations.stream().map((textDecoration) -> {
-                return new TextDecorationObject(textDecoration);
-            }).forEachOrdered((textDecorationObject) -> {
-                textDecorationObjects.add(textDecorationObject);
-            });
+            textDecorations.stream()
+                    .map(TextDecorationObject::new)
+                    .forEachOrdered(textDecorationObjects::add);
         }
         
         return textDecorationObjects;
@@ -2572,15 +2550,13 @@ public final class GraphQlQueries
         }
         
         if(textTransformations == null) {
-            textTransformationObjects = Collections.EMPTY_LIST;
+            textTransformationObjects = emptyList();
         } else {
             textTransformationObjects = new ArrayList<>(textTransformations.size());
 
-            textTransformations.stream().map((textTransformation) -> {
-                return new TextTransformationObject(textTransformation);
-            }).forEachOrdered((textTransformationObject) -> {
-                textTransformationObjects.add(textTransformationObject);
-            });
+            textTransformations.stream()
+                    .map(TextTransformationObject::new)
+                    .forEachOrdered(textTransformationObjects::add);
         }
         
         return textTransformationObjects;
@@ -2648,15 +2624,13 @@ public final class GraphQlQueries
         }
         
         if(recoveryQuestions == null) {
-            recoveryQuestionObjects = Collections.EMPTY_LIST;
+            recoveryQuestionObjects = emptyList();
         } else {
             recoveryQuestionObjects = new ArrayList<>(recoveryQuestions.size());
 
-            recoveryQuestions.stream().map((recoveryQuestion) -> {
-                return new RecoveryQuestionObject(recoveryQuestion);
-            }).forEachOrdered((recoveryQuestionObject) -> {
-                recoveryQuestionObjects.add(recoveryQuestionObject);
-            });
+            recoveryQuestions.stream()
+                    .map(RecoveryQuestionObject::new)
+                    .forEachOrdered(recoveryQuestionObjects::add);
         }
         
         return recoveryQuestionObjects;
@@ -2716,15 +2690,13 @@ public final class GraphQlQueries
         }
         
         if(currencies == null) {
-            currencyObjects = Collections.EMPTY_LIST;
+            currencyObjects = emptyList();
         } else {
             currencyObjects = new ArrayList<>(currencies.size());
 
-            currencies.stream().map((currency) -> {
-                return new CurrencyObject(currency);
-            }).forEachOrdered((currencyObject) -> {
-                currencyObjects.add(currencyObject);
-            });
+            currencies.stream()
+                    .map(CurrencyObject::new)
+                    .forEachOrdered(currencyObjects::add);
         }
         
         return currencyObjects;
@@ -2766,15 +2738,13 @@ public final class GraphQlQueries
         }
         
         if(languages == null) {
-            languageObjects = Collections.EMPTY_LIST;
+            languageObjects = emptyList();
         } else {
             languageObjects = new ArrayList<>(languages.size());
 
-            languages.stream().map((language) -> {
-                return new LanguageObject(language);
-            }).forEachOrdered((languageObject) -> {
-                languageObjects.add(languageObject);
-            });
+            languages.stream()
+                    .map(LanguageObject::new)
+                    .forEachOrdered(languageObjects::add);
         }
         
         return languageObjects;
@@ -2816,15 +2786,13 @@ public final class GraphQlQueries
         }
         
         if(dateTimeFormats == null) {
-            dateTimeFormatObjects = Collections.EMPTY_LIST;
+            dateTimeFormatObjects = emptyList();
         } else {
             dateTimeFormatObjects = new ArrayList<>(dateTimeFormats.size());
 
-            dateTimeFormats.stream().map((dateTimeFormat) -> {
-                return new DateTimeFormatObject(dateTimeFormat);
-            }).forEachOrdered((dateTimeFormatObject) -> {
-                dateTimeFormatObjects.add(dateTimeFormatObject);
-            });
+            dateTimeFormats.stream()
+                    .map(DateTimeFormatObject::new)
+                    .forEachOrdered(dateTimeFormatObjects::add);
         }
         
         return dateTimeFormatObjects;
@@ -2866,15 +2834,13 @@ public final class GraphQlQueries
         }
         
         if(timeZones == null) {
-            timeZoneObjects = Collections.EMPTY_LIST;
+            timeZoneObjects = emptyList();
         } else {
             timeZoneObjects = new ArrayList<>(timeZones.size());
 
-            timeZones.stream().map((timeZone) -> {
-                return new TimeZoneObject(timeZone);
-            }).forEachOrdered((timeZoneObject) -> {
-                timeZoneObjects.add(timeZoneObject);
-            });
+            timeZones.stream()
+                    .map(TimeZoneObject::new)
+                    .forEachOrdered(timeZoneObjects::add);
         }
         
         return timeZoneObjects;
@@ -2942,15 +2908,13 @@ public final class GraphQlQueries
         }
         
         if(itemCategories == null) {
-            itemCategoryObjects = Collections.EMPTY_LIST;
+            itemCategoryObjects = emptyList();
         } else {
             itemCategoryObjects = new ArrayList<>(itemCategories.size());
 
-            itemCategories.stream().map((itemCategory) -> {
-                return new ItemCategoryObject(itemCategory);
-            }).forEachOrdered((itemCategoryObject) -> {
-                itemCategoryObjects.add(itemCategoryObject);
-            });
+            itemCategories.stream()
+                    .map(ItemCategoryObject::new)
+                    .forEachOrdered(itemCategoryObjects::add);
         }
         
         return itemCategoryObjects;
@@ -2971,11 +2935,9 @@ public final class GraphQlQueries
         
         Collection<PersonalTitleObject> personalTitleObjects = new ArrayList<>(personalTitles.size());
         
-        personalTitles.stream().map((personalTitle) -> {
-            return new PersonalTitleObject(personalTitle);
-        }).forEachOrdered((personalTitleObject) -> {
-            personalTitleObjects.add(personalTitleObject);
-        });
+        personalTitles.stream()
+                .map(PersonalTitleObject::new)
+                .forEachOrdered(personalTitleObjects::add);
         
         return personalTitleObjects;
     }
@@ -2995,11 +2957,9 @@ public final class GraphQlQueries
 
         Collection<NameSuffixObject> nameSuffixObjects = new ArrayList<>(nameSuffixes.size());
 
-        nameSuffixes.stream().map((nameSuffix) -> {
-            return new NameSuffixObject(nameSuffix);
-        }).forEachOrdered((nameSuffixObject) -> {
-            nameSuffixObjects.add(nameSuffixObject);
-        });
+        nameSuffixes.stream()
+                .map(NameSuffixObject::new)
+                .forEachOrdered(nameSuffixObjects::add);
         
         return nameSuffixObjects;
     }
