@@ -25,7 +25,7 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;

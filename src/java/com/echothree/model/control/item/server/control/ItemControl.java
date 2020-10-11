@@ -116,7 +116,7 @@ import com.echothree.model.control.item.server.transfer.RelatedItemTypeDescripti
 import com.echothree.model.control.item.server.transfer.RelatedItemTypeTransferCache;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.server.entity.Currency;

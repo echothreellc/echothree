@@ -29,7 +29,7 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

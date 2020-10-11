@@ -28,7 +28,7 @@ import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.selector.server.logic.SelectorNodeTypeLogic;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.ComponentVendor;

@@ -39,7 +39,7 @@ import com.echothree.model.control.uom.server.transfer.UnitOfMeasureKindUseTypeT
 import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeDescriptionTransferCache;
 import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeTransferCache;
 import com.echothree.model.control.uom.server.transfer.UomTransferCaches;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.core.server.entity.EntityInstance;

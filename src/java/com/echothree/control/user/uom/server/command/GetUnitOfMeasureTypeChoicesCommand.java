@@ -21,7 +21,7 @@ import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesR
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;

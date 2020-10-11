@@ -25,7 +25,7 @@ import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;

@@ -32,7 +32,7 @@ import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.core.server.entity.EntityInstance;

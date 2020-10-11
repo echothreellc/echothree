@@ -91,7 +91,7 @@ import com.echothree.model.control.search.server.transfer.SearchTypeTransferCach
 import com.echothree.model.control.search.server.transfer.SearchUseTypeDescriptionTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchUseTypeTransferCache;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;

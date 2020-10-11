@@ -52,7 +52,7 @@ import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;

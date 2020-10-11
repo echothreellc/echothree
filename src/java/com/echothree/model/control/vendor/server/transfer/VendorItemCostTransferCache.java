@@ -23,7 +23,7 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.vendor.common.transfer.VendorItemCostTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;

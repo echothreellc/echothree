@@ -32,7 +32,7 @@ import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.SearchKind;

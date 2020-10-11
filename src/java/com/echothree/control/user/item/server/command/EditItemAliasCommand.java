@@ -25,7 +25,7 @@ import com.echothree.control.user.item.common.spec.ItemAliasSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemAliasChecksumTypeLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.item.server.entity.ItemAliasType;

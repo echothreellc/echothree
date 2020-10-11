@@ -22,7 +22,7 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.util.server.persistence.Session;

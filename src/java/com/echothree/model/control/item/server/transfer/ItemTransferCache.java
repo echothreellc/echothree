@@ -53,7 +53,7 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;

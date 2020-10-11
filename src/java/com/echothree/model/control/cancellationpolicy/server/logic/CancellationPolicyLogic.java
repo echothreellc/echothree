@@ -23,7 +23,7 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderLineControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.util.common.message.ExecutionErrors;
