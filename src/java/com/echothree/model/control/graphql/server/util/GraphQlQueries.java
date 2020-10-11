@@ -81,8 +81,10 @@ import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
+import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementsCommand;
+import com.echothree.control.user.offer.server.command.GetOffersCommand;
 import com.echothree.control.user.offer.server.command.GetUseCommand;
 import com.echothree.control.user.offer.server.command.GetUseNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetUseNameElementsCommand;
@@ -165,6 +167,7 @@ import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferNameElementObject;
+import com.echothree.model.control.offer.server.graphql.OfferObject;
 import com.echothree.model.control.offer.server.graphql.UseNameElementObject;
 import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
@@ -222,6 +225,7 @@ import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
+import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
@@ -261,6 +265,54 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("offer")
+    public static OfferObject offer(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") final String offerName,
+            @GraphQLName("id") final String id) {
+        Offer offer;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOfferForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setUlid(id);
+
+            offer = new GetOfferCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return offer == null ? null : new OfferObject(offer);
+    }
+
+    @GraphQLField
+    @GraphQLName("offers")
+    public static Collection<OfferObject> offers(final DataFetchingEnvironment env) {
+        Collection<Offer> offers;
+        Collection<OfferObject> offerObjects;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOffersForm();
+
+            offers = new GetOffersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(offers == null) {
+            offerObjects = emptyList();
+        } else {
+            offerObjects = new ArrayList<>(offers.size());
+
+            offers.stream()
+                    .map(OfferObject::new)
+                    .forEachOrdered(offerObjects::add);
+        }
+
+        return offerObjects;
+    }
 
     @GraphQLField
     @GraphQLName("use")

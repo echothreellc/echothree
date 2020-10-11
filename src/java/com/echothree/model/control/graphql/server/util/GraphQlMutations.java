@@ -29,10 +29,12 @@ import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
+import com.echothree.control.user.offer.common.result.CreateOfferResult;
 import com.echothree.control.user.offer.common.result.CreateUseNameElementResult;
 import com.echothree.control.user.offer.common.result.CreateUseResult;
 import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
+import com.echothree.control.user.offer.common.result.EditOfferResult;
 import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
 import com.echothree.control.user.offer.common.result.EditUseResult;
 import com.echothree.control.user.offer.common.result.EditUseTypeResult;
@@ -61,6 +63,8 @@ import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import com.echothree.model.control.graphql.server.graphql.CommandResultWithIdObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
@@ -72,6 +76,154 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createOffer(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName,
+            @GraphQLName("companyName") final String companyName,
+            @GraphQLName("divisionName") final String divisionName,
+            @GraphQLName("departmentName") final String departmentName,
+            @GraphQLName("offerItemSelectorName") final String offerItemSelectorName,
+            @GraphQLName("offerItemPriceFilterName") final String offerItemPriceFilterName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getCreateOfferForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setSalesOrderSequenceName(salesOrderSequenceName);
+            commandForm.setCompanyName(companyName);
+            commandForm.setDivisionName(divisionName);
+            commandForm.setDepartmentName(departmentName);
+            commandForm.setOfferItemSelectorName(offerItemSelectorName);
+            commandForm.setOfferItemPriceFilterName(offerItemPriceFilterName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = OfferUtil.getHome().createOffer(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateOfferResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteOffer(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getDeleteOfferForm();
+
+            commandForm.setOfferName(offerName);
+
+            var commandResult = OfferUtil.getHome().deleteOffer(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editOffer(final DataFetchingEnvironment env,
+            @GraphQLName("originalOfferName") final String originalOfferName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("offerName") final String offerName,
+            @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName,
+            @GraphQLName("offerItemSelectorName") final String offerItemSelectorName,
+            @GraphQLName("offerItemPriceFilterName") final String offerItemPriceFilterName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = OfferUtil.getHome().getOfferUniversalSpec();
+
+            spec.setOfferName(originalOfferName);
+            spec.setUlid(id);
+
+            var commandForm = OfferUtil.getHome().getEditOfferForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = OfferUtil.getHome().editOffer(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditOfferResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getOffer().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("offerName"))
+                    edit.setOfferName(offerName);
+                if(arguments.containsKey("salesOrderSequenceName"))
+                    edit.setSalesOrderSequenceName(salesOrderSequenceName);
+                if(arguments.containsKey("offerItemSelectorName"))
+                    edit.setOfferItemSelectorName(offerItemSelectorName);
+                if(arguments.containsKey("offerItemPriceFilterName"))
+                    edit.setOfferItemPriceFilterName(offerItemPriceFilterName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = OfferUtil.getHome().editOffer(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultOffer(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getSetDefaultOfferForm();
+
+            commandForm.setOfferName(offerName);
+
+            var commandResult = OfferUtil.getHome().setDefaultOffer(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation
