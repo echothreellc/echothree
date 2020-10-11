@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.queue.server;
+package com.echothree.model.control.queue.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.queue.common.choice.QueueTypeChoicesBean;

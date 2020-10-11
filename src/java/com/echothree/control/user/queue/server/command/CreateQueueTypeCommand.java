@@ -18,10 +18,9 @@ package com.echothree.control.user.queue.server.command;
 
 import com.echothree.control.user.queue.common.form.CreateQueueTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.queue.server.QueueControl;
+import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

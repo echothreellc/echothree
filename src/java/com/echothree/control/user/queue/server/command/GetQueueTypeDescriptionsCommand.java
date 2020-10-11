@@ -20,7 +20,7 @@ import com.echothree.control.user.queue.common.form.GetQueueTypeDescriptionsForm
 import com.echothree.control.user.queue.common.result.GetQueueTypeDescriptionsResult;
 import com.echothree.control.user.queue.common.result.QueueResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.queue.server.QueueControl;
+import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.queue.server.entity.QueueType;
