@@ -23,7 +23,7 @@ import com.echothree.model.control.offer.common.exception.UnknownOfferUseExcepti
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.sales.server.control.SalesOrderControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

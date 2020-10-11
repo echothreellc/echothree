@@ -22,7 +22,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.common.transfer.OrderTransfer;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;

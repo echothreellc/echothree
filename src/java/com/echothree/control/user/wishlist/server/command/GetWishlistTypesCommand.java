@@ -19,7 +19,7 @@ package com.echothree.control.user.wishlist.server.command;
 import com.echothree.control.user.wishlist.common.form.GetWishlistTypesForm;
 import com.echothree.control.user.wishlist.common.result.GetWishlistTypesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;

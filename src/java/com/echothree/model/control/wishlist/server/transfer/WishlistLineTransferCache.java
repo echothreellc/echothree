@@ -28,7 +28,7 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderLineDetail;

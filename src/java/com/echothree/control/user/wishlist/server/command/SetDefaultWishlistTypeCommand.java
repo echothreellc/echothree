@@ -17,7 +17,7 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.SetDefaultWishlistTypeForm;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;

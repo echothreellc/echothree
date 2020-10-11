@@ -24,7 +24,7 @@ import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
