@@ -22,8 +22,8 @@ import com.echothree.control.user.authentication.common.form.GetEmployeeLoginDef
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.control.user.authentication.common.result.GetEmployeeLoginDefaultsResult;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyRelationship;

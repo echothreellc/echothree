@@ -19,7 +19,7 @@ package com.echothree.model.control.term.server.logic;
 import com.echothree.model.control.term.common.exception.UnknownDefaultTermException;
 import com.echothree.model.control.term.common.exception.UnknownPartyTermException;
 import com.echothree.model.control.term.common.exception.UnknownTermNameException;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.term.server.entity.PartyTerm;
 import com.echothree.model.data.term.server.entity.Term;

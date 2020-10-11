@@ -22,7 +22,7 @@ import com.echothree.control.user.party.common.form.EditMoodDescriptionForm;
 import com.echothree.control.user.party.common.result.EditMoodDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.MoodDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Mood;
 import com.echothree.model.data.party.server.entity.MoodDescription;

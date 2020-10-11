@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.queue.server.graphql;
 
-import com.echothree.model.control.queue.server.QueueControl;
+import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDetail;
 import com.echothree.util.server.persistence.Session;

@@ -20,7 +20,7 @@ import com.echothree.control.user.period.common.form.GetPeriodKindsForm;
 import com.echothree.control.user.period.common.result.GetPeriodKindsResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.period.server.PeriodControl;
+import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

@@ -20,7 +20,7 @@ import com.echothree.control.user.employee.common.form.GetEmployeeTypeForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.result.GetEmployeeTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

@@ -17,16 +17,14 @@
 package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
-import com.echothree.model.control.comment.server.CommentControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

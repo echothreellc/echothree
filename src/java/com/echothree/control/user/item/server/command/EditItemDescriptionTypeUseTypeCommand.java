@@ -22,7 +22,7 @@ import com.echothree.control.user.item.common.form.EditItemDescriptionTypeUseTyp
 import com.echothree.control.user.item.common.result.EditItemDescriptionTypeUseTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeSpec;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,7 +31,6 @@ import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDes
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDetail;
 import com.echothree.model.data.item.server.value.ItemDescriptionTypeUseTypeDescriptionValue;
 import com.echothree.model.data.item.server.value.ItemDescriptionTypeUseTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

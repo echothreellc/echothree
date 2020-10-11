@@ -18,8 +18,8 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupCapacityForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupCapacity;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;

@@ -22,13 +22,12 @@ import com.echothree.control.user.employee.common.form.EditResponsibilityTypeFor
 import com.echothree.control.user.employee.common.result.EditResponsibilityTypeResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.ResponsibilityTypeSpec;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDetail;
 import com.echothree.model.data.employee.server.value.ResponsibilityTypeDescriptionValue;
 import com.echothree.model.data.employee.server.value.ResponsibilityTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

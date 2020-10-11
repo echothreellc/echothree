@@ -17,13 +17,13 @@
 package com.echothree.model.control.contact.server.indexer;
 
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
-import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;

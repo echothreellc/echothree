@@ -16,17 +16,17 @@
 
 package com.echothree.model.control.customer.server.transfer;
 
-import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.customer.common.CustomerProperties;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;

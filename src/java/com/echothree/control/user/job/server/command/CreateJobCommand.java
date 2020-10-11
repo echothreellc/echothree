@@ -17,14 +17,13 @@
 package com.echothree.control.user.job.server.command;
 
 import com.echothree.control.user.job.common.form.CreateJobForm;
-import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.job.server.JobControl;
+import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.party.common.pk.PartyPK;

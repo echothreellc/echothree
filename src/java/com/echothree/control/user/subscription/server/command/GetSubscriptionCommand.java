@@ -20,7 +20,7 @@ import com.echothree.control.user.subscription.common.form.GetSubscriptionForm;
 import com.echothree.control.user.subscription.common.result.GetSubscriptionResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.subscription.server.SubscriptionControl;
+import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

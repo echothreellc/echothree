@@ -17,8 +17,7 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.CreateRecoveryQuestionForm;
-import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.util.common.message.ExecutionErrors;

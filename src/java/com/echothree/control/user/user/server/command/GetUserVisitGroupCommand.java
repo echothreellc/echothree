@@ -20,7 +20,7 @@ import com.echothree.control.user.user.common.form.GetUserVisitGroupForm;
 import com.echothree.control.user.user.common.result.GetUserVisitGroupResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.common.message.ExecutionErrors;

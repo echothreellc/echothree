@@ -20,7 +20,7 @@ import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypeForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortTypeResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;

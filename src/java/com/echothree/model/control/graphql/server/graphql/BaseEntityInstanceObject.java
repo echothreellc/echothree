@@ -17,7 +17,7 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.core.server.entity.EntityInstance;

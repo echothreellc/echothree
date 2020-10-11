@@ -42,9 +42,9 @@ import com.echothree.model.control.inventory.server.transfer.InventoryConditionU
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTypeTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupCapacityTransferCache;
 import com.echothree.model.control.inventory.server.transfer.PartyInventoryLevelTransferCache;
-import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
 import com.echothree.model.data.accounting.server.entity.GlAccount;

@@ -22,8 +22,8 @@ import com.echothree.control.user.customer.common.form.EditCustomerTypeShippingM
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeShippingMethodResult;
 import com.echothree.control.user.customer.common.spec.CustomerTypeShippingMethodSpec;
-import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
 import com.echothree.model.data.customer.server.value.CustomerTypeShippingMethodValue;

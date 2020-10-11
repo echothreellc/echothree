@@ -23,10 +23,10 @@ import com.echothree.control.user.shipping.common.result.EditShippingMethodDescr
 import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.control.user.shipping.common.spec.ShippingMethodDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;

@@ -17,20 +17,20 @@
 package com.echothree.model.control.user.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
-import com.echothree.model.control.associate.server.AssociateControl;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
 import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.offer.server.entity.OfferUse;

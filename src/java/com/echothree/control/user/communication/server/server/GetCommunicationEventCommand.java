@@ -19,7 +19,7 @@ package com.echothree.control.user.communication.server.server;
 import com.echothree.control.user.communication.common.form.GetCommunicationEventForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.control.user.communication.common.result.GetCommunicationEventResult;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

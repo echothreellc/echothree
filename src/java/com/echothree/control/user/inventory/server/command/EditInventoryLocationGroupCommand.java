@@ -23,13 +23,12 @@ import com.echothree.control.user.inventory.common.result.EditInventoryLocationG
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDescription;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDetail;
 import com.echothree.model.data.inventory.server.value.InventoryLocationGroupDescriptionValue;
 import com.echothree.model.data.inventory.server.value.InventoryLocationGroupDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;

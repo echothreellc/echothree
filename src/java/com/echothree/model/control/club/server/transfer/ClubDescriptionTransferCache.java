@@ -18,7 +18,7 @@ package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.model.control.club.common.transfer.ClubDescriptionTransfer;
 import com.echothree.model.control.club.common.transfer.ClubTransfer;
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.club.server.entity.ClubDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

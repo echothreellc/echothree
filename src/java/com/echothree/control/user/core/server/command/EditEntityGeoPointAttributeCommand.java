@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditEntityGeoPointAttributeFo
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityGeoPointAttributeSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;

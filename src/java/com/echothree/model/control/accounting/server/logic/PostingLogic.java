@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.period.common.PeriodConstants;
-import com.echothree.model.control.period.server.PeriodControl;
+import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountSummary;
 import com.echothree.model.data.accounting.server.entity.Transaction;

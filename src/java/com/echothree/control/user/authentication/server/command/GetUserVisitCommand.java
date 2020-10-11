@@ -19,7 +19,7 @@ package com.echothree.control.user.authentication.server.command;
 import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserKeyDetail;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.common.ContentPageAreaTypes;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;

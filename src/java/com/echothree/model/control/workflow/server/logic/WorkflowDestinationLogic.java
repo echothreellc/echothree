@@ -28,11 +28,10 @@ import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDest
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSecurityRoleGroupException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSelectorTypeException;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDetail;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;

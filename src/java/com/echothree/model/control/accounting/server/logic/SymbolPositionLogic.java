@@ -17,7 +17,7 @@
 package com.echothree.model.control.accounting.server.logic;
 
 import com.echothree.model.control.accounting.common.exception.UnknownSymbolPositionNameException;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;

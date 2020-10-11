@@ -22,9 +22,8 @@ import com.echothree.control.user.core.common.form.EditCommandMessageTypeDescrip
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditCommandMessageTypeDescriptionResult;
 import com.echothree.control.user.core.common.spec.CommandMessageTypeDescriptionSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.CommandMessageType;

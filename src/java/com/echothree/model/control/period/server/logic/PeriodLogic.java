@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.period.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.period.server.PeriodControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.period.server.control.PeriodControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.period.server.entity.Period;

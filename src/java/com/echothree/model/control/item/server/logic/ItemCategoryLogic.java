@@ -18,7 +18,7 @@ package com.echothree.model.control.item.server.logic;
 
 import com.echothree.model.control.item.common.exception.MissingDefaultItemCategoryException;
 import com.echothree.model.control.item.common.exception.UnknownItemCategoryNameException;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

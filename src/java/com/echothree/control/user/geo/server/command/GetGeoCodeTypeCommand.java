@@ -20,7 +20,7 @@ import com.echothree.control.user.geo.common.form.GetGeoCodeTypeForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.result.GetGeoCodeTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

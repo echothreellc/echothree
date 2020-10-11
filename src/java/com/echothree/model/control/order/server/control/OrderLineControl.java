@@ -17,7 +17,7 @@
 package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.inventory.common.pk.InventoryConditionPK;

@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
-import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

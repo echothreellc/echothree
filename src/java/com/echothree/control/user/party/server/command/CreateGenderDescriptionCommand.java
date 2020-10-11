@@ -17,7 +17,7 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateGenderDescriptionForm;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.party.server.entity.GenderDescription;
 import com.echothree.model.data.party.server.entity.Language;

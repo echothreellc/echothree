@@ -18,10 +18,10 @@ package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.CreateSubscriptionTypeChainForm;
 import com.echothree.model.control.chain.common.ChainConstants;
-import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.subscription.server.SubscriptionControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
+import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainKind;

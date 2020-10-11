@@ -43,7 +43,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityAttributeN
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstanceResult;
 import com.echothree.model.control.core.server.database.EntityInstancesByBlobEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByBooleanEntityAttributeQuery;
@@ -59,13 +59,13 @@ import com.echothree.model.control.core.server.database.EntityInstancesByMultipl
 import com.echothree.model.control.core.server.database.EntityInstancesByNameEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByTimeEntityAttributeQuery;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueConstants;
-import com.echothree.model.control.queue.server.QueueControl;
+import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;

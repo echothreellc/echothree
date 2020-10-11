@@ -16,9 +16,9 @@
 
 package com.echothree.util.server.persistence.translator;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.invoice.common.InvoiceTypes;
-import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -27,7 +27,6 @@ import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.invoice.server.factory.InvoiceFactory;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.EntityNames;
 import com.echothree.util.common.persistence.Names;
 import com.echothree.util.common.persistence.Targets;

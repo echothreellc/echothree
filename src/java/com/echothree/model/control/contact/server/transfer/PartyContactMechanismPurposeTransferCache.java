@@ -17,7 +17,7 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismPurposeTransfer;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurposeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

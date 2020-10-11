@@ -18,9 +18,9 @@ package com.echothree.model.control.track.server.transfer;
 
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.common.transfer.UserVisitTrackTransfer;
-import com.echothree.model.control.track.server.TrackControl;
+import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.track.server.entity.UserVisitTrack;
 import com.echothree.model.data.user.server.entity.UserVisit;

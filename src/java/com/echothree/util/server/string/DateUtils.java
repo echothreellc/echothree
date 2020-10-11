@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.string;
 
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
 import com.echothree.model.data.party.server.entity.TimeZone;

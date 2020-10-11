@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.model.control.core.common.exception.UnknownMimeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownMimeTypeUsageException;
 import com.echothree.model.control.core.common.exception.UnknownMimeTypeUsageTypeNameException;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;

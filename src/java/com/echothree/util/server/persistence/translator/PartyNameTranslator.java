@@ -16,13 +16,10 @@
 
 package com.echothree.util.server.persistence.translator;
 
-import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;

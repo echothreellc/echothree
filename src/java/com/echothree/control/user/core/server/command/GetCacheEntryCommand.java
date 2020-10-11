@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.GetCacheEntryForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.GetCacheEntryResult;
 import com.echothree.model.control.core.common.transfer.CacheEntryTransfer;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

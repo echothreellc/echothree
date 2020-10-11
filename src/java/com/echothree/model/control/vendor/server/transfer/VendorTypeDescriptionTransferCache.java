@@ -19,7 +19,7 @@ package com.echothree.model.control.vendor.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeDescriptionTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorTypeDescription;
 

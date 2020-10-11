@@ -17,7 +17,7 @@
 package com.echothree.control.user.track.server.command;
 
 import com.echothree.control.user.track.common.form.CreateUserVisitTrackForm;
-import com.echothree.model.control.track.server.TrackControl;
+import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;

@@ -18,7 +18,7 @@ package com.echothree.model.control.license.server.transfer;
 
 import com.echothree.model.control.license.common.LicenseOptions;
 import com.echothree.model.control.license.common.transfer.LicenseTypeTransfer;
-import com.echothree.model.control.license.server.LicenseControl;
+import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.data.license.server.entity.LicenseType;
 import com.echothree.model.data.license.server.entity.LicenseTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

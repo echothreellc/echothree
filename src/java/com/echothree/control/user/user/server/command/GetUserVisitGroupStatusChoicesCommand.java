@@ -19,7 +19,7 @@ package com.echothree.control.user.user.server.command;
 import com.echothree.control.user.user.common.form.GetUserVisitGroupStatusChoicesForm;
 import com.echothree.control.user.user.common.result.GetUserVisitGroupStatusChoicesResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.common.message.ExecutionErrors;

@@ -22,8 +22,8 @@ import com.echothree.control.user.contact.common.form.EditPostalAddressFormatDes
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditPostalAddressFormatDescriptionResult;
 import com.echothree.control.user.contact.common.spec.PostalAddressFormatDescriptionSpec;
-import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormatDescription;
 import com.echothree.model.data.contact.server.value.PostalAddressFormatDescriptionValue;

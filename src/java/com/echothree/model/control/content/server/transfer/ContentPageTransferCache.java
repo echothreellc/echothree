@@ -22,7 +22,7 @@ import com.echothree.model.control.content.common.transfer.ContentPageAreaTransf
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
 import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

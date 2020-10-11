@@ -19,7 +19,7 @@ package com.echothree.control.user.sales.server.command;
 import com.echothree.control.user.sales.common.form.CreateSalesOrderBatchForm;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;

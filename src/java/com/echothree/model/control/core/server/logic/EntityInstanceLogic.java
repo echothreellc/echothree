@@ -27,7 +27,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityRefExcepti
 import com.echothree.model.control.core.common.exception.UnknownGuidException;
 import com.echothree.model.control.core.common.exception.UnknownKeyException;
 import com.echothree.model.control.core.common.exception.UnknownUlidException;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.BaseCheckSpellingForm;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.PartySearchTypePreference;

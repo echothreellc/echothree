@@ -17,7 +17,7 @@
 package com.echothree.model.control.security.server.transfer;
 
 import com.echothree.model.control.security.common.transfer.PartySecurityRoleTemplateTransfer;
-import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

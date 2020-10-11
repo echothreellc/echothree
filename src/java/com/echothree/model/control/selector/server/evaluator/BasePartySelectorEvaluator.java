@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.selector.server.evaluator;
 
-import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.server.entity.PartyResponsibility;

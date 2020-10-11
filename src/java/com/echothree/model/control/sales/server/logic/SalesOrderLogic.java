@@ -22,9 +22,9 @@ import com.echothree.model.control.associate.server.logic.AssociateReferralLogic
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.common.exception.MissingDefaultCustomerTypeException;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
@@ -53,10 +53,10 @@ import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstan
 import com.echothree.model.control.sales.server.control.SalesOrderControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.logic.TermLogic;
-import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;

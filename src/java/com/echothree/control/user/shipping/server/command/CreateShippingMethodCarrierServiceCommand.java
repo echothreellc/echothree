@@ -17,11 +17,11 @@
 package com.echothree.control.user.shipping.server.command;
 
 import com.echothree.control.user.shipping.common.form.CreateShippingMethodCarrierServiceForm;
-import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.party.server.entity.Party;

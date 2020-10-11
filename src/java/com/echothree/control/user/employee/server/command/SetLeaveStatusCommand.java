@@ -19,7 +19,7 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.form.SetLeaveStatusForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.result.SetLeaveStatusResult;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

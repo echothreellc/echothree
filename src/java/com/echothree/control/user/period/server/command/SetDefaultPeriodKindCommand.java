@@ -18,7 +18,7 @@ package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.SetDefaultPeriodKindForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.period.server.PeriodControl;
+import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.period.server.value.PeriodKindDetailValue;

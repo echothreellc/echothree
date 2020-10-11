@@ -18,7 +18,7 @@ package com.echothree.control.user.party.server.command.util;
 
 import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.persistence.Session;

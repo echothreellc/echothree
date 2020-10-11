@@ -20,7 +20,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.common.transfer.EntityIntegerRangeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLongRangeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.search.common.transfer.UserVisitSearchFacetIntegerTransfer;
 import com.echothree.model.control.search.common.transfer.UserVisitSearchFacetListItemTransfer;
 import com.echothree.model.control.search.common.transfer.UserVisitSearchFacetLongTransfer;

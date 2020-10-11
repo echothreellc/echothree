@@ -19,7 +19,7 @@ package com.echothree.model.control.content.server.logic;
 import com.echothree.control.user.content.common.spec.ContentPageAreaTypeUniversalSpec;
 import com.echothree.model.control.content.common.exception.DuplicateContentPageAreaTypeNameException;
 import com.echothree.model.control.content.common.exception.UnknownContentPageAreaTypeNameException;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;

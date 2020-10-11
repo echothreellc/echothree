@@ -22,7 +22,7 @@ import com.echothree.control.user.uom.common.form.EditUnitOfMeasureEquivalentFor
 import com.echothree.control.user.uom.common.result.EditUnitOfMeasureEquivalentResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.control.user.uom.common.spec.UnitOfMeasureEquivalentSpec;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;

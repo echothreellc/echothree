@@ -20,7 +20,7 @@ import com.echothree.control.user.printer.common.form.GetPrinterGroupJobForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupJobResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.printer.server.entity.PrinterGroupJob;

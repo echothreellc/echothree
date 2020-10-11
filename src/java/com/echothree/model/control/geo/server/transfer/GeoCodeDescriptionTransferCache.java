@@ -18,7 +18,7 @@ package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeDescriptionTransfer;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.geo.server.entity.GeoCodeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

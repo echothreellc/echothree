@@ -16,8 +16,8 @@
 
 package com.echothree.util.server.string;
 
-import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;

@@ -20,7 +20,7 @@ import com.echothree.control.user.scale.common.form.GetScaleUseTypeForm;
 import com.echothree.control.user.scale.common.result.GetScaleUseTypeResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;

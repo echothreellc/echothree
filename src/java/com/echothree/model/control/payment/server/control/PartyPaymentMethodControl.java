@@ -25,7 +25,7 @@ import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTra
 import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodContactMechanismTransferCache;
 import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;

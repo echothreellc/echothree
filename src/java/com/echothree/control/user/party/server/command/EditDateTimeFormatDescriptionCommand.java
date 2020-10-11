@@ -22,7 +22,7 @@ import com.echothree.control.user.party.common.form.EditDateTimeFormatDescriptio
 import com.echothree.control.user.party.common.result.EditDateTimeFormatDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.DateTimeFormatDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.DateTimeFormatDescription;
 import com.echothree.model.data.party.server.entity.Language;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.CreateUserVisitCampaignForm;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;

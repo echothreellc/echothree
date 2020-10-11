@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.batch.server.search;
 
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;

@@ -18,7 +18,7 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.SetTelephoneStatusForm;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

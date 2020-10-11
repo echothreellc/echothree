@@ -17,7 +17,7 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.SetDefaultPersonalTitleForm;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.common.pk.PersonalTitlePK;
 import com.echothree.model.data.party.server.value.PersonalTitleDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

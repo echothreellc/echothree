@@ -17,12 +17,12 @@
 package com.echothree.model.control.subscription.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainTransfer;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeChainTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
-import com.echothree.model.control.subscription.server.SubscriptionControl;
+import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeChain;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;

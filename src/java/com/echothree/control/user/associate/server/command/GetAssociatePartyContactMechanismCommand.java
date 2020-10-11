@@ -19,7 +19,7 @@ package com.echothree.control.user.associate.server.command;
 import com.echothree.control.user.associate.common.form.GetAssociatePartyContactMechanismForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
 import com.echothree.control.user.associate.common.result.GetAssociatePartyContactMechanismResult;
-import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;

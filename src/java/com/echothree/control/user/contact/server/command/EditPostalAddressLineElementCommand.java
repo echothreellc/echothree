@@ -22,7 +22,7 @@ import com.echothree.control.user.contact.common.form.EditPostalAddressLineEleme
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditPostalAddressLineElementResult;
 import com.echothree.control.user.contact.common.spec.PostalAddressLineElementSpec;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressElementType;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.model.data.contact.server.entity.PostalAddressLine;

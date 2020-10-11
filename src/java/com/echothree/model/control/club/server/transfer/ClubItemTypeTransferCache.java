@@ -17,7 +17,7 @@
 package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.model.control.club.common.transfer.ClubItemTypeTransfer;
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.data.club.server.entity.ClubItemType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

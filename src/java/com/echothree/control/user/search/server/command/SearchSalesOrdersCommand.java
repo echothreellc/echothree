@@ -25,7 +25,7 @@ import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstan
 import com.echothree.model.control.sales.server.search.SalesOrderSearchEvaluator;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.search.server.entity.SearchKind;

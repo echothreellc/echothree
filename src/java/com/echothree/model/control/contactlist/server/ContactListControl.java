@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.contactlist.server;
 
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.ContactListContactMechanismPurposeChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.ContactListFrequencyChoicesBean;
@@ -49,9 +49,8 @@ import com.echothree.model.control.contactlist.server.transfer.PartyContactListT
 import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListGroupTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.letter.server.LetterControl;
+import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.chain.common.pk.ChainPK;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;

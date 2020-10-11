@@ -21,7 +21,7 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceLineTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineUseTypeTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;
-import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceLine;

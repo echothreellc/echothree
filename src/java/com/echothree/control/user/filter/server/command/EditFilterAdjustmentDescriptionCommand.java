@@ -22,8 +22,8 @@ import com.echothree.control.user.filter.common.form.EditFilterAdjustmentDescrip
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentDescriptionResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentDescriptionSpec;
-import com.echothree.model.control.filter.server.FilterControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentDescription;
 import com.echothree.model.data.filter.server.entity.FilterKind;

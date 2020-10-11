@@ -17,7 +17,7 @@
 package com.echothree.model.control.term.server.transfer;
 
 import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

@@ -19,7 +19,7 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.GetClubItemTypeChoicesForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
 import com.echothree.control.user.club.common.result.GetClubItemTypeChoicesResult;
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

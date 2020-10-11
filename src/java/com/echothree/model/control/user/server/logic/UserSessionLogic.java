@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.user.server.logic;
 
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

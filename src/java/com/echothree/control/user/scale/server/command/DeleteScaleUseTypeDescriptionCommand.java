@@ -17,8 +17,8 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.DeleteScaleUseTypeDescriptionForm;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.model.data.scale.server.entity.ScaleUseTypeDescription;

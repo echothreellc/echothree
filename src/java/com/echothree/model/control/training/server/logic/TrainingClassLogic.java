@@ -17,7 +17,7 @@
 package com.echothree.model.control.training.server.logic;
 
 import com.echothree.model.control.training.common.exception.UnknownTrainingClassNameException;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.training.server.entity.TrainingClassDetail;

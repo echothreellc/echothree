@@ -18,8 +18,8 @@ package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
-import com.echothree.model.control.batch.server.BatchControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchDetail;
 import com.echothree.model.data.batch.server.entity.BatchType;

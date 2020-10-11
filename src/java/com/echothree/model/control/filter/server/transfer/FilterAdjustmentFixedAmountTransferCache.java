@@ -17,13 +17,13 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentFixedAmountTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
 import com.echothree.model.data.user.server.entity.UserVisit;

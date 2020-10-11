@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
@@ -25,14 +25,14 @@ import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.ForumConstants;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.common.ItemConstants;
-import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.training.server.TrainingControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.core.server.entity.EntityInstance;

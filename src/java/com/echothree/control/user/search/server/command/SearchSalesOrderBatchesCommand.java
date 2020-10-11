@@ -27,7 +27,7 @@ import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.sales.server.search.SalesOrderBatchSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.batch.server.entity.BatchType;

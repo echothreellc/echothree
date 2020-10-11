@@ -17,7 +17,7 @@
 package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.customer.common.exception.UnknownCustomerTypeShippingMethodException;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.customer.server.entity.CustomerType;

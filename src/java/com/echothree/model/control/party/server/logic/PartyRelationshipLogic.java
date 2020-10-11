@@ -25,7 +25,7 @@ import com.echothree.model.control.party.common.exception.NotAnEmployeeOfDivisio
 import com.echothree.model.control.party.common.exception.UnknownPartyRelationshipException;
 import com.echothree.model.control.party.common.exception.UnknownPartyRelationshipTypeNameException;
 import com.echothree.model.control.party.common.exception.UnknownRoleTypeNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.party.server.entity.Party;

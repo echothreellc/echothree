@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.geo.server.logic;
 
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeNameException;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeNameException;
-import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.selector.server.SelectorControl;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;

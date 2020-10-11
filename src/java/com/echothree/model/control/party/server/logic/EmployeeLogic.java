@@ -16,19 +16,19 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.CannotSpecifyEmployeeNameAndPartyNameException;
 import com.echothree.model.control.party.common.exception.MustSpecifyEmployeeNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownEmployeeNameException;
 import com.echothree.model.control.party.common.exception.UnknownEmployeeStatusChoiceException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;

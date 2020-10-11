@@ -20,7 +20,7 @@ import com.echothree.control.user.forum.common.form.GetForumMessageAttachmentsFo
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.result.GetForumMessageAttachmentsResult;
 import com.echothree.model.control.forum.common.ForumConstants;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

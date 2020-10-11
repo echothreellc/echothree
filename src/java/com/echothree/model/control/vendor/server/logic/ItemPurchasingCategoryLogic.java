@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.vendor.server.logic;
 
-import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

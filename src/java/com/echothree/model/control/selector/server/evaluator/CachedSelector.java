@@ -17,7 +17,7 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorDetail;
 import com.echothree.model.data.selector.server.entity.SelectorNode;

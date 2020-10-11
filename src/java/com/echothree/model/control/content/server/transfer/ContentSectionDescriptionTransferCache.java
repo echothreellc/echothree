@@ -18,7 +18,7 @@ package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.transfer.ContentSectionDescriptionTransfer;
 import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.content.server.entity.ContentSectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

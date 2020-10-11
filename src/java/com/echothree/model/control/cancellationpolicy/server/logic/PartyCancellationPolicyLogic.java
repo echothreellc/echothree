@@ -17,11 +17,11 @@
 package com.echothree.model.control.cancellationpolicy.server.logic;
 
 import com.echothree.model.control.cancellationpolicy.common.choice.PartyCancellationPolicyStatusChoicesBean;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.cancellationpolicy.common.workflow.PartyCancellationPolicyStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
 import com.echothree.model.data.core.server.entity.EntityInstance;

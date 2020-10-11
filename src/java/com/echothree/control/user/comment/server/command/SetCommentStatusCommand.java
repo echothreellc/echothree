@@ -17,7 +17,7 @@
 package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.SetCommentStatusForm;
-import com.echothree.model.control.comment.server.CommentControl;
+import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

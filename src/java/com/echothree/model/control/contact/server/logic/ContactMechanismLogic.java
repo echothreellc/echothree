@@ -18,7 +18,7 @@ package com.echothree.model.control.contact.server.logic;
 
 import com.echothree.model.control.contact.common.exception.CannotDeleteContactMechanismInUseException;
 import com.echothree.model.control.contact.common.exception.UnknownContactMechanismNameException;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.party.common.pk.PartyPK;

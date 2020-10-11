@@ -19,7 +19,7 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.GetClubForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
 import com.echothree.control.user.club.common.result.GetClubResult;
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

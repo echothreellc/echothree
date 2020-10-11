@@ -16,14 +16,14 @@
 
 package com.echothree.model.control.offer.server.logic;
 
-import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.content.server.control.ContentControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.common.exception.CannotDeleteOfferUseInUseException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.sales.server.control.SalesOrderControl;
-import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.control.wishlist.server.WishlistControl;
+import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;

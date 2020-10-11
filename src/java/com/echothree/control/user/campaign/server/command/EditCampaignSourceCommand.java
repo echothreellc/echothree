@@ -22,7 +22,7 @@ import com.echothree.control.user.campaign.common.form.EditCampaignSourceForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.EditCampaignSourceResult;
 import com.echothree.control.user.campaign.common.spec.CampaignSourceSpec;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,7 +31,6 @@ import com.echothree.model.data.campaign.server.entity.CampaignSourceDescription
 import com.echothree.model.data.campaign.server.entity.CampaignSourceDetail;
 import com.echothree.model.data.campaign.server.value.CampaignSourceDescriptionValue;
 import com.echothree.model.data.campaign.server.value.CampaignSourceDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

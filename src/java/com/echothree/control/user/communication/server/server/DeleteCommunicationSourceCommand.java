@@ -17,7 +17,7 @@
 package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.DeleteCommunicationSourceForm;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

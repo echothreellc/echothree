@@ -19,7 +19,7 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.form.GetLocationCapacitiesForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationCapacitiesResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Location;

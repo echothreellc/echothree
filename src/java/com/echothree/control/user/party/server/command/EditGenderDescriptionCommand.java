@@ -22,7 +22,7 @@ import com.echothree.control.user.party.common.form.EditGenderDescriptionForm;
 import com.echothree.control.user.party.common.result.EditGenderDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.GenderDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.party.server.entity.GenderDescription;
 import com.echothree.model.data.party.server.entity.Language;

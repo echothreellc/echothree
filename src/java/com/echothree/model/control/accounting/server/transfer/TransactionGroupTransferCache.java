@@ -18,11 +18,11 @@ package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.accounting.server.entity.TransactionGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;

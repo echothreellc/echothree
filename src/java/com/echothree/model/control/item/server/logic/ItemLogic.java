@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.item.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.exception.DuplicateItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameOrAliasException;
@@ -24,11 +24,11 @@ import com.echothree.model.control.item.common.exception.UnknownItemStatusChoice
 import com.echothree.model.control.item.common.exception.UnknownItemTypeNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemUseTypeNameException;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;

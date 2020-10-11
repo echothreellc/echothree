@@ -24,7 +24,7 @@ import com.echothree.model.control.payment.common.transfer.BillingAccountTransfe
 import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTransferCache;
 import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTypeTransferCache;
 import com.echothree.model.control.payment.server.transfer.BillingAccountTransferCache;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;

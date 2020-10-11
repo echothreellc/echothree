@@ -22,9 +22,9 @@ import com.echothree.control.user.contact.common.form.EditContactMechanismAliasT
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditContactMechanismAliasTypeDescriptionResult;
 import com.echothree.control.user.contact.common.spec.ContactMechanismAliasTypeDescriptionSpec;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;

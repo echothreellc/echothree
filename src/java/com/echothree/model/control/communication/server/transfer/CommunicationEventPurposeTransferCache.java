@@ -17,7 +17,7 @@
 package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationEventPurposeTransfer;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

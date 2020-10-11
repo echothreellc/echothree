@@ -22,8 +22,8 @@ import com.echothree.control.user.employee.common.form.EditSkillTypeDescriptionF
 import com.echothree.control.user.employee.common.result.EditSkillTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.SkillTypeDescriptionSpec;
-import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.model.data.employee.server.entity.SkillTypeDescription;
 import com.echothree.model.data.employee.server.value.SkillTypeDescriptionValue;

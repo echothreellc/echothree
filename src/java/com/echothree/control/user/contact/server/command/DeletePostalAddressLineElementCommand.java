@@ -17,7 +17,7 @@
 package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.DeletePostalAddressLineElementForm;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.model.data.contact.server.entity.PostalAddressLine;
 import com.echothree.model.data.contact.server.entity.PostalAddressLineElement;

@@ -20,7 +20,7 @@ import com.echothree.control.user.warehouse.common.form.GetLocationTypeForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationTypeResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.LocationType;

@@ -22,8 +22,8 @@ import com.echothree.control.user.employee.common.form.EditResponsibilityTypeDes
 import com.echothree.control.user.employee.common.result.EditResponsibilityTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.ResponsibilityTypeDescriptionSpec;
-import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
 import com.echothree.model.data.employee.server.value.ResponsibilityTypeDescriptionValue;

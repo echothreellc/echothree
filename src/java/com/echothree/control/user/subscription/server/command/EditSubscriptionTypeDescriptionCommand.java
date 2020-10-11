@@ -22,8 +22,8 @@ import com.echothree.control.user.subscription.common.form.EditSubscriptionTypeD
 import com.echothree.control.user.subscription.common.result.EditSubscriptionTypeDescriptionResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.control.user.subscription.common.spec.SubscriptionTypeDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.subscription.server.SubscriptionControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;

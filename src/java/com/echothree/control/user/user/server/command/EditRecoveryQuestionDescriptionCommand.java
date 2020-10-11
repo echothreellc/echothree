@@ -22,8 +22,8 @@ import com.echothree.control.user.user.common.form.EditRecoveryQuestionDescripti
 import com.echothree.control.user.user.common.result.EditRecoveryQuestionDescriptionResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.control.user.user.common.spec.RecoveryQuestionDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;

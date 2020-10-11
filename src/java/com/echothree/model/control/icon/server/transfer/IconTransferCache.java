@@ -17,9 +17,9 @@
 package com.echothree.model.control.icon.server.transfer;
 
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.icon.server.entity.IconDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -18,7 +18,7 @@ package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.transfer.ForumMessageAttachmentDescriptionTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessageAttachmentTransfer;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

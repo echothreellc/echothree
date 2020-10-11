@@ -17,8 +17,7 @@
 package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.DeleteBatchTypeEntityTypeForm;
-import com.echothree.model.control.batch.server.BatchControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
 import com.echothree.model.data.core.server.entity.ComponentVendor;

@@ -19,7 +19,7 @@ package com.echothree.control.user.printer.server.command;
 import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypeDescriptionsForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeDescriptionsResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

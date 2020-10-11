@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.selector.server.evaluator;
 
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;

@@ -18,7 +18,7 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
 import com.echothree.model.control.party.server.logic.DateTimeFormatLogic;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;

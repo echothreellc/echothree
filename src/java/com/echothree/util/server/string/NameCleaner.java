@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.string;
 
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.util.common.string.BaseNameCleaner;
 import com.echothree.util.server.persistence.Session;
 

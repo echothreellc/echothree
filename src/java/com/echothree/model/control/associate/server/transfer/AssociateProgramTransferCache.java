@@ -17,9 +17,9 @@
 package com.echothree.model.control.associate.server.transfer;
 
 import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
-import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.associate.server.entity.AssociateProgramDetail;
 import com.echothree.model.data.sequence.server.entity.Sequence;

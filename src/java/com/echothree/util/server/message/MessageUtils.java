@@ -18,8 +18,8 @@
 package com.echothree.util.server.message;
 
 import com.echothree.model.control.core.common.exception.UnknownCommandMessageTypeNameException;
-import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.core.server.entity.CommandMessageType;

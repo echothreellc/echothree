@@ -18,7 +18,7 @@ package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.model.control.customer.common.transfer.CustomerTypePaymentMethodTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;

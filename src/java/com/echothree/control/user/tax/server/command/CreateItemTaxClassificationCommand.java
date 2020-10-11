@@ -17,12 +17,12 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.CreateItemTaxClassificationForm;
-import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassification;

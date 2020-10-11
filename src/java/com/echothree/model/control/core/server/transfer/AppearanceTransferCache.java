@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.model.control.core.common.transfer.ColorTransfer;
 import com.echothree.model.control.core.common.transfer.FontStyleTransfer;
 import com.echothree.model.control.core.common.transfer.FontWeightTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.AppearanceDetail;
 import com.echothree.model.data.core.server.entity.Color;

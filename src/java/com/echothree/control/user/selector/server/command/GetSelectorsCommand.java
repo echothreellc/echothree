@@ -19,7 +19,7 @@ package com.echothree.control.user.selector.server.command;
 import com.echothree.control.user.selector.common.form.GetSelectorsForm;
 import com.echothree.control.user.selector.common.result.GetSelectorsResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

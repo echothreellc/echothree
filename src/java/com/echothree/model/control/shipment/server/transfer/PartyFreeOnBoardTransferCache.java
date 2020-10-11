@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.shipment.common.transfer.PartyFreeOnBoardTransfer;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.sequence.server.logic;
 
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceTypeNameException;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

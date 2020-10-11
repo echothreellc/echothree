@@ -21,7 +21,7 @@ import com.echothree.model.control.sequence.common.SequenceEncoderTypes;
 import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceChecksumTypeException;
 import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceEncoderTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.checksum.Mod10SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.checksum.Mod36SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.checksum.NoneSequenceChecksum;

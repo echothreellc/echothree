@@ -18,8 +18,8 @@ package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.DeletePicklistTypeDescriptionForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.picklist.server.PicklistControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Language;

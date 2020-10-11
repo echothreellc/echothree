@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.TextTransformationTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.core.server.entity.TextTransformationDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

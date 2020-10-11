@@ -17,8 +17,8 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemDeliveryTypeDescriptionForm;
-import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.item.server.entity.ItemDeliveryTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

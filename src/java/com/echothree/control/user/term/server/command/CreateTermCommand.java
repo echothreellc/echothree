@@ -18,8 +18,7 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.CreateTermForm;
 import com.echothree.model.control.term.common.TermTypes;
-import com.echothree.model.control.term.server.TermControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

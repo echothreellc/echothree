@@ -17,7 +17,7 @@
 package com.echothree.model.control.queue.server.logic;
 
 import com.echothree.model.control.queue.common.exception.UnknownQueueTypeNameException;
-import com.echothree.model.control.queue.server.QueueControl;
+import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

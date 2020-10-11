@@ -17,7 +17,7 @@
 package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.SetDefaultAssociatePartyContactMechanismForm;
-import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.associate.server.value.AssociatePartyContactMechanismDetailValue;

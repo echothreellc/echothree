@@ -19,7 +19,7 @@ package com.echothree.control.user.workflow.server.command;
 import com.echothree.control.user.workflow.common.form.GetWorkflowStepTypeChoicesForm;
 import com.echothree.control.user.workflow.common.result.GetWorkflowStepTypeChoicesResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

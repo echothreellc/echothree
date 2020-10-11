@@ -18,7 +18,7 @@ package com.echothree.model.control.cancellationpolicy.server.transfer;
 
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationReasonDescriptionTransfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationReasonTransfer;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

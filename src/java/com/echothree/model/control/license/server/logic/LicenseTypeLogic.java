@@ -17,7 +17,7 @@
 package com.echothree.model.control.license.server.logic;
 
 import com.echothree.model.control.license.common.exception.UnknownLicenseTypeNameException;
-import com.echothree.model.control.license.server.LicenseControl;
+import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.data.license.server.entity.LicenseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

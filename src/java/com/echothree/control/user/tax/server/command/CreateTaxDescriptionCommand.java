@@ -17,8 +17,8 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.CreateTaxDescriptionForm;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.tax.server.entity.TaxDescription;

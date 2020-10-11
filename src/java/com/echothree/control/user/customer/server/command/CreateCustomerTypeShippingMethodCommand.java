@@ -17,8 +17,8 @@
 package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.CreateCustomerTypeShippingMethodForm;
-import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;

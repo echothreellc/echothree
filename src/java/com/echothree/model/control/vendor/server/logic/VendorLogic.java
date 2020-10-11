@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.vendor.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
@@ -31,8 +31,8 @@ import com.echothree.model.control.vendor.common.exception.MustSpecifyVendorName
 import com.echothree.model.control.vendor.common.exception.UnknownVendorNameException;
 import com.echothree.model.control.vendor.common.exception.UnknownVendorStatusChoiceException;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
-import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.accounting.server.entity.GlAccount;

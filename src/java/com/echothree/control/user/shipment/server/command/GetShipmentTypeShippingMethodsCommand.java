@@ -20,7 +20,7 @@ import com.echothree.control.user.shipment.common.form.GetShipmentTypeShippingMe
 import com.echothree.control.user.shipment.common.result.GetShipmentTypeShippingMethodsResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.geo.common.GeoConstants;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;

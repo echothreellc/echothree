@@ -17,7 +17,7 @@
 package com.echothree.model.control.party.server.logic;
 
 import com.echothree.model.control.party.common.exception.UnknownJavaTimeZoneNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

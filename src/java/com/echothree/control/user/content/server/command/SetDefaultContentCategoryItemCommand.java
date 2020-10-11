@@ -17,15 +17,15 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.SetDefaultContentCategoryItemForm;
-import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.exception.CannotDeleteNameSuffixInUseException;
 import com.echothree.model.control.party.common.exception.UnknownNameSuffixIdException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.NameSuffix;

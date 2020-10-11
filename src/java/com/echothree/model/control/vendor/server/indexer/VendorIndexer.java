@@ -19,7 +19,7 @@ package com.echothree.model.control.vendor.server.indexer;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
-import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

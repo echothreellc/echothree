@@ -19,7 +19,7 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.GetDepartmentChoicesForm;
 import com.echothree.control.user.party.common.result.GetDepartmentChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.party.server.logic.DivisionLogic;
 import com.echothree.model.data.party.server.entity.PartyCompany;

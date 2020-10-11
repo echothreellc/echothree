@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.employee.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.common.exception.InvalidLeaveStatusException;
 import com.echothree.model.control.employee.common.exception.UnknownLeaveReasonNameException;
 import com.echothree.model.control.employee.common.exception.UnknownLeaveTypeNameException;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.server.entity.Leave;

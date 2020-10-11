@@ -17,7 +17,7 @@
 package com.echothree.model.control.search.server.search;
 
 import com.echothree.model.control.index.common.exception.IndexUnavailableException;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.search.common.exception.SearchIOErrorException;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexStatus;

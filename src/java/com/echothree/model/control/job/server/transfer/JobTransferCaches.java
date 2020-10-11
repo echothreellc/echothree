@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.job.server.transfer;
 
-import com.echothree.model.control.job.server.JobControl;
+import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 

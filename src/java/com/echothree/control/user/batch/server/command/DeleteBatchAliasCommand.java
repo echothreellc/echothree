@@ -18,9 +18,8 @@ package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.DeleteBatchAliasForm;
 import com.echothree.control.user.batch.server.command.util.BatchAliasUtil;
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAlias;

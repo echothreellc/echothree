@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryT
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionGlAccountCategoryTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccount;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;

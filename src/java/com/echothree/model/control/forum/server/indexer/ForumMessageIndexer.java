@@ -17,7 +17,7 @@
 package com.echothree.model.control.forum.server.indexer;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;

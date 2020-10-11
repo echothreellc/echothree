@@ -19,7 +19,7 @@ package com.echothree.control.user.term.server.command;
 import com.echothree.control.user.term.common.form.GetTermTypeForm;
 import com.echothree.control.user.term.common.result.GetTermTypeResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

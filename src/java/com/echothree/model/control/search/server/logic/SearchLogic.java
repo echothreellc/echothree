@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.search.common.exception.DuplicateSearchResultActionException;
 import com.echothree.model.control.search.common.exception.UnknownCachedExecutedSearchResultException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchDefaultOperatorException;
@@ -33,7 +33,7 @@ import com.echothree.model.control.search.common.exception.UnknownSearchTypeName
 import com.echothree.model.control.search.common.exception.UnknownSearchUseTypeNameException;
 import com.echothree.model.control.search.common.exception.UnknownUserVisitSearchException;
 import com.echothree.model.control.search.common.transfer.SearchCheckSpellingActionTypeTransfer;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.database.CachedSearchToInvalidateQuery;
 import com.echothree.model.control.search.server.database.CachedSearchToInvalidateResult;
 import com.echothree.model.data.core.server.entity.EntityInstance;

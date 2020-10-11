@@ -23,10 +23,9 @@ import com.echothree.control.user.printer.common.result.EditPrinterGroupUseTypeR
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.control.user.printer.common.spec.PrinterGroupUseTypeSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDescription;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDetail;

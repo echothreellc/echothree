@@ -22,7 +22,7 @@ import com.echothree.control.user.document.common.form.EditDocumentTypeUsageType
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.control.user.document.common.result.EditDocumentTypeUsageTypeResult;
 import com.echothree.control.user.document.common.spec.DocumentTypeUsageTypeSpec;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,7 +31,6 @@ import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDesc
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDetail;
 import com.echothree.model.data.document.server.value.DocumentTypeUsageTypeDescriptionValue;
 import com.echothree.model.data.document.server.value.DocumentTypeUsageTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

@@ -18,7 +18,7 @@ package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.CreateWorkflowStepTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.util.common.message.ExecutionErrors;

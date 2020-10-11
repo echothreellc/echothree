@@ -21,7 +21,7 @@ import com.echothree.model.control.party.common.exception.CannotSpecifyCompanyNa
 import com.echothree.model.control.party.common.exception.MustSpecifyCompanyNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownCompanyNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.util.common.message.ExecutionErrors;
