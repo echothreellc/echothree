@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.club.server.transfer;
 
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 

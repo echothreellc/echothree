@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.club.server;
+package com.echothree.model.control.club.server.control;
 
 import com.echothree.model.control.club.common.choice.ClubItemTypeChoicesBean;
 import com.echothree.model.control.club.common.transfer.ClubDescriptionTransfer;

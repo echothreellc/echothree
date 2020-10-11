@@ -17,7 +17,7 @@
 package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.CreateClubItemTypeDescriptionForm;
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.club.server.entity.ClubItemType;
 import com.echothree.model.data.club.server.entity.ClubItemTypeDescription;

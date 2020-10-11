@@ -22,7 +22,7 @@ import com.echothree.control.user.club.common.form.EditClubDescriptionForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
 import com.echothree.control.user.club.common.result.EditClubDescriptionResult;
 import com.echothree.control.user.club.common.spec.ClubDescriptionSpec;
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.club.server.entity.ClubDescription;

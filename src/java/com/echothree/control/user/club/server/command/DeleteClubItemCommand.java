@@ -17,7 +17,7 @@
 package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.DeleteClubItemForm;
-import com.echothree.model.control.club.server.ClubControl;
+import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.club.server.entity.ClubItem;
