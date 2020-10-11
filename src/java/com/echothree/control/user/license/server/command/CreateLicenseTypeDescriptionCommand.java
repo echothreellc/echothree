@@ -17,7 +17,7 @@
 package com.echothree.control.user.license.server.command;
 
 import com.echothree.control.user.license.common.form.CreateLicenseTypeDescriptionForm;
-import com.echothree.model.control.license.server.LicenseControl;
+import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

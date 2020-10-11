@@ -22,7 +22,7 @@ import com.echothree.control.user.license.common.form.EditLicenseTypeDescription
 import com.echothree.control.user.license.common.result.EditLicenseTypeDescriptionResult;
 import com.echothree.control.user.license.common.result.LicenseResultFactory;
 import com.echothree.control.user.license.common.spec.LicenseTypeDescriptionSpec;
-import com.echothree.model.control.license.server.LicenseControl;
+import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

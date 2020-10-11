@@ -23,7 +23,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.license.server.LicenseControl;
+import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
