@@ -27,7 +27,7 @@ import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.subscription.common.SubscriptionConstants;
-import com.echothree.model.control.subscription.server.SubscriptionControl;
+import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.club.server.entity.ClubDescription;

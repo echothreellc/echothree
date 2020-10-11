@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.subscription.server.logic;
 
-import com.echothree.model.control.subscription.server.SubscriptionControl;
+import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;

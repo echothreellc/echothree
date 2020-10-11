@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.subscription.server;
+package com.echothree.model.control.subscription.server.control;
 
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.core.common.EventTypes;
