@@ -17,7 +17,7 @@
 package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.payment.common.BillingAccountRoleTypes;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.data.accounting.server.entity.Currency;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.search.server;
 
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.CoreControl;

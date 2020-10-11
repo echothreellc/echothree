@@ -17,7 +17,7 @@
 package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismPurposeTransfer;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;

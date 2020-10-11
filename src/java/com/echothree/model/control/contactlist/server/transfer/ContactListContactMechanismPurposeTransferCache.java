@@ -17,7 +17,7 @@
 package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactMechanismPurposeTransfer;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.common.transfer.ContactListContactMechanismPurposeTransfer;
 import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;

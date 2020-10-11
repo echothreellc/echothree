@@ -17,7 +17,7 @@
 package com.echothree.model.control.contact.server.logic;
 
 import com.echothree.model.control.contact.common.exception.UnknownPartyContactMechanismException;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.server.entity.Party;

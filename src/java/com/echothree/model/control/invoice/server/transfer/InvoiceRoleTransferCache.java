@@ -17,7 +17,7 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTypeTransfer;
 import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;

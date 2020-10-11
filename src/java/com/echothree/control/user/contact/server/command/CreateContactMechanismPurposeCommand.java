@@ -17,7 +17,7 @@
 package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreateContactMechanismPurposeForm;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

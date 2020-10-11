@@ -17,7 +17,7 @@
 package com.echothree.model.control.contact.server.logic;
 
 import com.echothree.model.control.contact.common.exception.UnknownContactMechanismPurposeNameException;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.contact.server.indexer;
 
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;

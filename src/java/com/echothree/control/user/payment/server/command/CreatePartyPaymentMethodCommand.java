@@ -20,7 +20,7 @@ import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodFo
 import com.echothree.control.user.payment.common.result.CreatePartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;

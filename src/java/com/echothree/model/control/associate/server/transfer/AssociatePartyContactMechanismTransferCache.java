@@ -20,7 +20,7 @@ import com.echothree.model.control.associate.common.transfer.AssociatePartyConta
 import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanismDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

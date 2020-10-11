@@ -19,7 +19,7 @@ package com.echothree.control.user.tax.server.command;
 import com.echothree.control.user.tax.common.form.CreateTaxForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;

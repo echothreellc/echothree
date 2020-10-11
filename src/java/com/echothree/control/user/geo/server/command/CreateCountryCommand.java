@@ -18,7 +18,7 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.CreateCountryForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.geo.server.logic.GeoCodeLogic;

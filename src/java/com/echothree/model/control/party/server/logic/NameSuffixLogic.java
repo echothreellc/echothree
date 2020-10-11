@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.exception.CannotDeleteNameSuffixInUseException;
 import com.echothree.model.control.party.common.exception.UnknownNameSuffixIdException;
 import com.echothree.model.control.party.server.PartyControl;

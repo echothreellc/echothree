@@ -17,7 +17,7 @@
 package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.control.user.payment.common.edit.PartyPaymentMethodEdit;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.geo.common.transfer.CityTransfer;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;

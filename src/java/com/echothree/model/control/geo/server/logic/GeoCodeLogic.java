@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.geo.server.logic;
 
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeNameException;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeNameException;
 import com.echothree.model.control.geo.server.GeoControl;

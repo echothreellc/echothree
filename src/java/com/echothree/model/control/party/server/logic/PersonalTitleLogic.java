@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.exception.CannotDeletePersonalTitleInUseException;
 import com.echothree.model.control.party.common.exception.UnknownPersonalTitleIdException;
 import com.echothree.model.control.party.server.PartyControl;

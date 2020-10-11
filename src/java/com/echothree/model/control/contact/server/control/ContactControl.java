@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.contact.server;
+package com.echothree.model.control.contact.server.control;
 
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.communication.server.control.CommunicationControl;

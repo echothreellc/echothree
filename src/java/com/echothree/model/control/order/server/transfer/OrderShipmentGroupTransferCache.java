@@ -17,7 +17,7 @@
 package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.item.common.transfer.ItemDeliveryTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;

@@ -19,7 +19,7 @@ package com.echothree.control.user.purchase.server.command;
 import com.echothree.control.user.purchase.common.form.CreatePurchaseInvoiceForm;
 import com.echothree.control.user.purchase.common.result.PurchaseResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.invoice.server.logic.PurchaseInvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
