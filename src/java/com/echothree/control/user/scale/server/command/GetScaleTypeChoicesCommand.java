@@ -19,7 +19,7 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.GetScaleTypeChoicesForm;
 import com.echothree.control.user.scale.common.result.GetScaleTypeChoicesResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
-import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

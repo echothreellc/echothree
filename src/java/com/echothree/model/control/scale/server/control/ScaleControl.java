@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.scale.server;
+package com.echothree.model.control.scale.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.scale.common.choice.ScaleChoicesBean;

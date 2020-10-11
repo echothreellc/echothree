@@ -91,7 +91,7 @@ import com.echothree.model.control.party.server.transfer.TimeZoneTransferCache;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
-import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;

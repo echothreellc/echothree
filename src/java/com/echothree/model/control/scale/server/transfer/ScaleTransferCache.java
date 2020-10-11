@@ -20,7 +20,7 @@ import com.echothree.model.control.core.common.transfer.ServerServiceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.scale.common.transfer.ScaleTransfer;
 import com.echothree.model.control.scale.common.transfer.ScaleTypeTransfer;
-import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.scale.server.entity.ScaleDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
