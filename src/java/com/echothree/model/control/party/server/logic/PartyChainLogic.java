@@ -17,7 +17,7 @@
 package com.echothree.model.control.party.server.logic;
 
 import com.echothree.model.control.chain.common.ChainConstants;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.BaseChainLogic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;

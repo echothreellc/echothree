@@ -17,7 +17,7 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.CreateLetterForm;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -28,7 +28,6 @@ import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.letter.server.entity.LetterSource;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

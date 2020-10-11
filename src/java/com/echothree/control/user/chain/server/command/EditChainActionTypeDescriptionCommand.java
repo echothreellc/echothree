@@ -22,7 +22,7 @@ import com.echothree.control.user.chain.common.form.EditChainActionTypeDescripti
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.control.user.chain.common.result.EditChainActionTypeDescriptionResult;
 import com.echothree.control.user.chain.common.spec.ChainActionTypeDescriptionSpec;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

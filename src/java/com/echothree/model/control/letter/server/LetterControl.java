@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.letter.server;
 
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.common.choice.LetterChoicesBean;
 import com.echothree.model.control.letter.common.choice.LetterSourceChoicesBean;

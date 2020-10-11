@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.chain.server;
+package com.echothree.model.control.chain.server.control;
 
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.common.choice.ChainActionSetChoicesBean;

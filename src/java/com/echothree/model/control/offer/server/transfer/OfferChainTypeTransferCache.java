@@ -18,7 +18,7 @@ package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;

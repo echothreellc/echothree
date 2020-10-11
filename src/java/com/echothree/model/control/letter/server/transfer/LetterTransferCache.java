@@ -17,7 +17,7 @@
 package com.echothree.model.control.letter.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;

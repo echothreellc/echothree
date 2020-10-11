@@ -19,7 +19,7 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.GetChainActionDescriptionForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.control.user.chain.common.result.GetChainActionDescriptionResult;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

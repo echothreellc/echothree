@@ -18,7 +18,7 @@ package com.echothree.control.user.chain.server.command;
 
 
 import com.echothree.control.user.chain.common.form.CreateChainActionTypeUseForm;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeUse;

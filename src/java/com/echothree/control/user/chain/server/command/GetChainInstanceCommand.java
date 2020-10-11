@@ -19,7 +19,7 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.GetChainInstanceForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.control.user.chain.common.result.GetChainInstanceResult;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

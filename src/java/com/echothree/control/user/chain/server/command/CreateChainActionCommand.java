@@ -18,7 +18,7 @@ package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainActionForm;
 import com.echothree.model.control.chain.common.ChainConstants;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

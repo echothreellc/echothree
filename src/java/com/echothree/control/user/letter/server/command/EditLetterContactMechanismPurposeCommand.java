@@ -22,7 +22,7 @@ import com.echothree.control.user.letter.common.form.EditLetterContactMechanismP
 import com.echothree.control.user.letter.common.result.EditLetterContactMechanismPurposeResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.control.user.letter.common.spec.LetterContactMechanismPurposeSpec;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.letter.server.LetterControl;

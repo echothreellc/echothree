@@ -18,7 +18,7 @@ package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.DeleteSubscriptionTypeChainForm;
 import com.echothree.model.control.chain.common.ChainConstants;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainKind;

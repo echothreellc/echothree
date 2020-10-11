@@ -18,7 +18,7 @@ package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainActionSurveyTransfer;
 import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.survey.common.transfer.SurveyTransfer;
 import com.echothree.model.control.survey.server.SurveyControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSurvey;

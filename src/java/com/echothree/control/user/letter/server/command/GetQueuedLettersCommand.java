@@ -19,7 +19,7 @@ package com.echothree.control.user.letter.server.command;
 import com.echothree.control.user.letter.common.form.GetQueuedLettersForm;
 import com.echothree.control.user.letter.common.result.GetQueuedLettersResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
-import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
