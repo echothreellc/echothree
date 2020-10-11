@@ -32,7 +32,7 @@ import com.echothree.model.control.index.server.transfer.IndexTransferCache;
 import com.echothree.model.control.index.server.transfer.IndexTransferCaches;
 import com.echothree.model.control.index.server.transfer.IndexTypeDescriptionTransferCache;
 import com.echothree.model.control.index.server.transfer.IndexTypeTransferCache;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;

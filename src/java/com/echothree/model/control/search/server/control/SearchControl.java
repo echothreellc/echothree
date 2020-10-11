@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.server;
+package com.echothree.model.control.search.server.control;
 
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.contact.server.control.ContactControl;

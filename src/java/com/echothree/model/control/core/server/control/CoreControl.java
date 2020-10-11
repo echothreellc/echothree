@@ -205,7 +205,7 @@ import com.echothree.model.control.queue.common.exception.UnknownQueueTypeNameEx
 import com.echothree.model.control.queue.server.logic.QueuedEntityLogic;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;

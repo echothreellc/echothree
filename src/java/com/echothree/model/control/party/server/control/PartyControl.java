@@ -92,7 +92,7 @@ import com.echothree.model.control.payment.server.control.PartyPaymentMethodCont
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;

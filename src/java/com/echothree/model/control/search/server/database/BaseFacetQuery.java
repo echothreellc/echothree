@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.database;
 
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
 import com.echothree.model.data.search.server.entity.CachedSearch;
 import com.echothree.model.data.search.server.entity.Search;

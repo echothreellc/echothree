@@ -24,7 +24,7 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.forum.server.search.ForumMessageSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.forum.server.entity.Forum;

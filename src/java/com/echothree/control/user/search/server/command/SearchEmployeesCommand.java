@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.employee.server.search.EmployeeSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;

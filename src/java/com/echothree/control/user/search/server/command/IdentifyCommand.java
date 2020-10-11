@@ -27,7 +27,7 @@ import com.echothree.model.control.customer.server.search.CustomerSearchEvaluato
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

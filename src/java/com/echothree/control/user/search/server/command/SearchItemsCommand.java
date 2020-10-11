@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;

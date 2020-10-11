@@ -24,7 +24,7 @@ import com.echothree.model.control.index.server.logic.IndexLogic;
 import com.echothree.model.control.index.server.logic.IndexTypeLogic;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.exception.SearchIOErrorException;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.index.server.entity.Index;

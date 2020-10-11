@@ -19,7 +19,7 @@ package com.echothree.model.control.search.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorDescriptionTransfer;
 import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorTransfer;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

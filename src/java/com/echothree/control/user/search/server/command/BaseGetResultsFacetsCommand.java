@@ -23,7 +23,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.search.common.transfer.UserVisitSearchFacetTransfer;
-import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.search.server.logic.UserVisitSearchFacetLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
