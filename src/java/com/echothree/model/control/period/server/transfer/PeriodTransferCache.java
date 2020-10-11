@@ -21,7 +21,7 @@ import com.echothree.model.control.period.common.PeriodConstants;
 import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
-import com.echothree.model.control.period.server.PeriodControl;
+import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

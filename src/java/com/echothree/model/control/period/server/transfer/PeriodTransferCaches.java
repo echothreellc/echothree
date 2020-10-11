@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.period.server.transfer;
 
-import com.echothree.model.control.period.server.PeriodControl;
+import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 

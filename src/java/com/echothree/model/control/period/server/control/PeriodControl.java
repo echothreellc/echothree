@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.period.server;
+package com.echothree.model.control.period.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.period.common.choice.PeriodKindChoicesBean;
