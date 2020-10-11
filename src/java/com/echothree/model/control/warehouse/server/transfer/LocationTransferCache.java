@@ -27,7 +27,7 @@ import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Location;

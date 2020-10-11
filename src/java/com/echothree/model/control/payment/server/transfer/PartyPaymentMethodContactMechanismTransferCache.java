@@ -25,7 +25,7 @@ import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTra
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardContactMechanismConstants.Workflow_CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;

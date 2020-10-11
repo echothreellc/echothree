@@ -23,7 +23,7 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTypeTransfer;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;

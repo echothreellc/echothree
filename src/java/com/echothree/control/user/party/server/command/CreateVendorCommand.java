@@ -39,7 +39,7 @@ import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.logic.VendorLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;

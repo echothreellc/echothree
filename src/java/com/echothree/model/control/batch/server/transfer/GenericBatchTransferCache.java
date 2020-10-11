@@ -20,7 +20,7 @@ import com.echothree.model.control.batch.common.BatchOptions;
 import com.echothree.model.control.batch.common.transfer.GenericBatchTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;

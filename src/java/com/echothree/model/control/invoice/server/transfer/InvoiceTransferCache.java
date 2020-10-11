@@ -32,7 +32,7 @@ import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceDetail;

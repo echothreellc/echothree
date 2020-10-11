@@ -23,7 +23,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;

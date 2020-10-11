@@ -20,7 +20,7 @@ import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntrancePartyTypeTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
 import com.echothree.util.server.persistence.Session;

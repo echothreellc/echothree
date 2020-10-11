@@ -23,7 +23,7 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic.PreparedPartyTrainingClass;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
 import com.echothree.model.data.party.common.pk.PartyPK;

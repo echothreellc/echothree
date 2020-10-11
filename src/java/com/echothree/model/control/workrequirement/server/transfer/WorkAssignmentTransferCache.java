@@ -21,7 +21,7 @@ import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.transfer.WorkAssignmentTransfer;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;

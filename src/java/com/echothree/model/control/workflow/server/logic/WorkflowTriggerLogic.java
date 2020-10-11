@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.order.server.trigger.OrderTrigger;
 import com.echothree.model.control.printer.server.trigger.PrinterGroupJobTrigger;
 import com.echothree.model.control.training.server.trigger.PartyTrainingClassTrigger;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;

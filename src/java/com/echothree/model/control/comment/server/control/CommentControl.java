@@ -31,7 +31,6 @@ import com.echothree.model.control.comment.server.transfer.CommentUsageTransferC
 import com.echothree.model.control.comment.server.transfer.CommentUsageTypeDescriptionTransferCache;
 import com.echothree.model.control.comment.server.transfer.CommentUsageTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.comment.common.pk.CommentPK;
 import com.echothree.model.data.comment.common.pk.CommentTypePK;
 import com.echothree.model.data.comment.common.pk.CommentUsageTypePK;

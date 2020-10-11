@@ -32,7 +32,7 @@ import com.echothree.model.control.vendor.common.exception.UnknownVendorNameExce
 import com.echothree.model.control.vendor.common.exception.UnknownVendorStatusChoiceException;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.accounting.server.entity.GlAccount;

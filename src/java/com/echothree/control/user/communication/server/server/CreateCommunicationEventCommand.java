@@ -37,7 +37,7 @@ import com.echothree.model.control.communication.common.workflow.IncomingCustome
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;

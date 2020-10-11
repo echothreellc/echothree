@@ -25,7 +25,7 @@ import com.echothree.model.control.training.common.transfer.TrainingClassTransfe
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;

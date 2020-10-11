@@ -21,7 +21,7 @@ import com.echothree.control.user.printer.common.result.GetPrinterGroupJobsResul
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;

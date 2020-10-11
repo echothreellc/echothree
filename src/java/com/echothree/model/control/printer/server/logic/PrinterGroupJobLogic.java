@@ -21,7 +21,7 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.document.server.logic.DocumentLogic;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.document.server.entity.Document;

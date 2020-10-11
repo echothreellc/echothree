@@ -42,7 +42,7 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.logic.TermLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;

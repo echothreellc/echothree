@@ -60,7 +60,7 @@ import com.echothree.model.control.training.server.transfer.TrainingClassSection
 import com.echothree.model.control.training.server.transfer.TrainingClassTransferCache;
 import com.echothree.model.control.training.server.transfer.TrainingClassTranslationTransferCache;
 import com.echothree.model.control.training.server.transfer.TrainingTransferCaches;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;

@@ -20,7 +20,7 @@ import com.echothree.control.user.workflow.common.form.DeleteWorkflowEntityTypeF
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

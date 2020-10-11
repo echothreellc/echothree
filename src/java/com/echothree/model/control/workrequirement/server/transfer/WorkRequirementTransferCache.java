@@ -22,7 +22,7 @@ import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementScopeTransfer;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;

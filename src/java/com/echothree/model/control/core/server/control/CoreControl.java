@@ -212,7 +212,7 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.core.common.pk.AppearancePK;
 import com.echothree.model.data.core.common.pk.ApplicationEditorPK;

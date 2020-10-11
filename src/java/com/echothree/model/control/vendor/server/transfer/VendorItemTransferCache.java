@@ -32,7 +32,7 @@ import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;

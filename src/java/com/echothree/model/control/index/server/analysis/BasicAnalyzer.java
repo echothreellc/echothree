@@ -21,7 +21,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;

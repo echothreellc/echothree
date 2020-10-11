@@ -22,7 +22,7 @@ import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.entity.OrderTypeDetail;
 import com.echothree.model.data.sequence.server.entity.SequenceType;

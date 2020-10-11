@@ -23,7 +23,6 @@ import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.server.transfer.JobTransferCache;
 import com.echothree.model.control.job.server.transfer.JobTransferCaches;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.job.common.pk.JobPK;
 import com.echothree.model.data.job.server.entity.Job;

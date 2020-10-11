@@ -23,7 +23,7 @@ import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.batch.server.entity.BatchEntity;

@@ -23,7 +23,7 @@ import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workflow.common.WorkflowOptions;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;

@@ -32,7 +32,7 @@ import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoi
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;

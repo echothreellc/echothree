@@ -56,7 +56,7 @@ import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;

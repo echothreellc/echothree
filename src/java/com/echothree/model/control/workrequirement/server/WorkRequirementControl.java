@@ -20,7 +20,6 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.choice.WorkAssignmentStatusChoicesBean;
 import com.echothree.model.control.workrequirement.common.choice.WorkRequirementStatusChoicesBean;
 import com.echothree.model.control.workrequirement.common.choice.WorkTimeStatusChoicesBean;

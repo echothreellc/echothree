@@ -24,7 +24,7 @@ import com.echothree.model.control.invoice.common.choice.PurchaseInvoiceStatusCh
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;

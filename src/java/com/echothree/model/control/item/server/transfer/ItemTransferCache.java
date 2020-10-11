@@ -55,7 +55,7 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.core.server.entity.EntityInstance;

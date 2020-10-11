@@ -22,7 +22,7 @@ import com.echothree.model.control.track.common.exception.UnknownTrackStatusChoi
 import com.echothree.model.control.track.common.exception.UnknownTrackValueException;
 import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;

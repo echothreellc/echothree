@@ -28,7 +28,7 @@ import com.echothree.model.control.employee.common.workflow.EmployeeAvailability
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

@@ -30,7 +30,7 @@ import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.geo.server.entity.GeoCode;

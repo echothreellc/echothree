@@ -23,7 +23,7 @@ import com.echothree.model.control.workeffort.common.workeffort.TrainingConstant
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic.PreparedWorkEffort;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;

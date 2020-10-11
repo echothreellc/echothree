@@ -22,7 +22,7 @@ import com.echothree.model.control.campaign.common.exception.UnknownCampaignValu
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.campaign.server.entity.Campaign;

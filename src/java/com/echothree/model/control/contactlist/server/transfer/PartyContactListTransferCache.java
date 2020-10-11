@@ -25,7 +25,7 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;

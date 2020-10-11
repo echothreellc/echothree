@@ -19,7 +19,7 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypePartyTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

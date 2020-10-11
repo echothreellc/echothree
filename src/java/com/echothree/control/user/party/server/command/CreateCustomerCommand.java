@@ -43,7 +43,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;

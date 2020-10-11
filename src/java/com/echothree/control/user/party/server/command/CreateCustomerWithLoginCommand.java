@@ -42,7 +42,7 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;

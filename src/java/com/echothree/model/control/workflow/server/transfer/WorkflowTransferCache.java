@@ -23,7 +23,7 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.common.WorkflowProperties;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTypeTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.server.entity.UserVisit;

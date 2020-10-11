@@ -41,7 +41,7 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;

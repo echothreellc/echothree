@@ -22,7 +22,7 @@ import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.campaign.server.entity.CampaignTermDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
