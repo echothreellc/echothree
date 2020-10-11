@@ -19,7 +19,7 @@ package com.echothree.control.user.index.server.command;
 import com.echothree.control.user.index.common.form.DeleteIndexFieldDescriptionForm;
 import com.echothree.model.control.index.server.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.index.server.entity.IndexField;

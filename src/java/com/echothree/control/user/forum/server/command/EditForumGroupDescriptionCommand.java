@@ -23,7 +23,7 @@ import com.echothree.control.user.forum.common.result.EditForumGroupDescriptionR
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumGroupDescriptionSpec;
 import com.echothree.model.control.forum.server.ForumControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumGroupDescription;
 import com.echothree.model.data.forum.server.value.ForumGroupDescriptionValue;

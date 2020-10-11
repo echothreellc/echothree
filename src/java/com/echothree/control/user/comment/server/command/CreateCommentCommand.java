@@ -22,7 +22,7 @@ import com.echothree.control.user.comment.common.result.CreateCommentResult;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;

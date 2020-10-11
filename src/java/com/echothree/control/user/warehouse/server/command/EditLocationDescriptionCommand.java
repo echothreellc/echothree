@@ -22,7 +22,7 @@ import com.echothree.control.user.warehouse.common.form.EditLocationDescriptionF
 import com.echothree.control.user.warehouse.common.result.EditLocationDescriptionResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;

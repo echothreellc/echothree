@@ -27,7 +27,7 @@ import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.model.data.core.server.entity.MimeType;

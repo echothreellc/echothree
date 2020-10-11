@@ -17,7 +17,7 @@
 package com.echothree.util.server.validation;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.accounting.server.entity.Currency;

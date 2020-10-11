@@ -22,7 +22,7 @@ import com.echothree.control.user.rating.common.form.EditRatingTypeListItemDescr
 import com.echothree.control.user.rating.common.result.EditRatingTypeListItemDescriptionResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.control.user.rating.common.spec.RatingTypeListItemDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.rating.server.RatingControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;

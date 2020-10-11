@@ -25,7 +25,7 @@ import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTra
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.ForumBlobMessagePart;
 import com.echothree.model.data.forum.server.entity.ForumClobMessagePart;

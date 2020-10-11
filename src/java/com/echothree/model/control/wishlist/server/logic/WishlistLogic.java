@@ -22,7 +22,7 @@ import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.accounting.server.entity.Currency;

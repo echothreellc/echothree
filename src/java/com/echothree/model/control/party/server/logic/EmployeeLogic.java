@@ -25,7 +25,7 @@ import com.echothree.model.control.party.common.exception.MustSpecifyEmployeeNam
 import com.echothree.model.control.party.common.exception.UnknownEmployeeNameException;
 import com.echothree.model.control.party.common.exception.UnknownEmployeeStatusChoiceException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.subscription.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.SubscriptionControl;

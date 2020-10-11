@@ -30,7 +30,7 @@ import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;

@@ -18,7 +18,7 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateResponsibilityTypeDescriptionForm;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

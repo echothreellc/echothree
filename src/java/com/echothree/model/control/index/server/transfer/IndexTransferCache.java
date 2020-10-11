@@ -21,7 +21,7 @@ import com.echothree.model.control.index.common.transfer.IndexTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
 import com.echothree.model.control.index.server.IndexControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexDetail;
 import com.echothree.model.data.index.server.entity.IndexStatus;

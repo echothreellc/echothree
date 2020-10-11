@@ -19,7 +19,7 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.GenderDescriptionTransfer;
 import com.echothree.model.control.party.common.transfer.GenderTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.GenderDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

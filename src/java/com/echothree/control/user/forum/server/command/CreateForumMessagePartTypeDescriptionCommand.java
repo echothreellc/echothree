@@ -18,7 +18,7 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumMessagePartTypeDescriptionForm;
 import com.echothree.model.control.forum.server.ForumControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
 import com.echothree.model.data.forum.server.entity.ForumMessagePartTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

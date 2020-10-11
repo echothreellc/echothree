@@ -24,7 +24,7 @@ import com.echothree.control.user.core.common.result.EditApplicationEditorUseDes
 import com.echothree.control.user.core.common.spec.ApplicationEditorUseDescriptionSpec;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Application;

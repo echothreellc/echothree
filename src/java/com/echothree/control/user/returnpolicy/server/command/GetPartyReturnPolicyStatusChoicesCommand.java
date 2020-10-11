@@ -20,7 +20,7 @@ import com.echothree.control.user.returnpolicy.common.form.GetPartyReturnPolicyS
 import com.echothree.control.user.returnpolicy.common.result.GetPartyReturnPolicyStatusChoicesResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.returnpolicy.server.logic.PartyReturnPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

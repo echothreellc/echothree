@@ -23,7 +23,7 @@ import com.echothree.control.user.subscription.common.result.EditSubscriptionKin
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.control.user.subscription.common.spec.SubscriptionKindDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.SubscriptionControl;

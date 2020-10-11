@@ -22,7 +22,7 @@ import com.echothree.control.user.term.common.form.EditTermDescriptionForm;
 import com.echothree.control.user.term.common.result.EditTermDescriptionResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.control.user.term.common.spec.TermDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.term.server.entity.Term;

@@ -20,7 +20,7 @@ import com.echothree.control.user.selector.common.form.GetSelectorKindDescriptio
 import com.echothree.control.user.selector.common.result.GetSelectorKindDescriptionResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.SelectorControl;

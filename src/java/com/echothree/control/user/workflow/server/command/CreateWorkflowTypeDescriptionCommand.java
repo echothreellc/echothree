@@ -18,7 +18,7 @@ package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.CreateWorkflowTypeDescriptionForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

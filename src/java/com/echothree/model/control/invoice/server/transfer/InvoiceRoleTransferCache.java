@@ -23,7 +23,7 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTypeTransf
 import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

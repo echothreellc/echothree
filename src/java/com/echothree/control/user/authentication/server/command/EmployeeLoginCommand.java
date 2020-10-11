@@ -20,7 +20,7 @@ import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.model.control.party.common.PartyRelationshipTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.RoleTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.LockoutPolicyLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.server.UserControl;

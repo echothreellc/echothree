@@ -23,7 +23,7 @@ import com.echothree.control.user.employee.common.result.EditEmploymentResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.EmploymentSpec;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.Employment;
 import com.echothree.model.data.employee.server.entity.EmploymentDetail;
 import com.echothree.model.data.employee.server.entity.TerminationReason;

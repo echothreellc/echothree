@@ -24,7 +24,7 @@ import com.echothree.control.user.cancellationpolicy.common.result.EditCancellat
 import com.echothree.control.user.cancellationpolicy.common.spec.CancellationTypeDescriptionSpec;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;

@@ -18,7 +18,7 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemUseTypeDescriptionForm;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.item.server.entity.ItemUseTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

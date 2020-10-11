@@ -19,7 +19,7 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PersonTransfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Person;
 import com.echothree.model.data.party.server.entity.PersonalTitle;

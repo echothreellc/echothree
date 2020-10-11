@@ -18,7 +18,7 @@ package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

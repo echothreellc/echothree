@@ -18,7 +18,7 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumRoleTypeDescriptionForm;
 import com.echothree.model.control.forum.server.ForumControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumRoleType;
 import com.echothree.model.data.forum.server.entity.ForumRoleTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

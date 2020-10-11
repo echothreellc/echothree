@@ -17,7 +17,7 @@
 package com.echothree.model.control.security.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.transfer.SecurityRolePartyTypeTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.SecurityControl;

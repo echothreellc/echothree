@@ -18,7 +18,7 @@ package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.DeletePartyScaleUseForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

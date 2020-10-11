@@ -22,7 +22,7 @@ import com.echothree.model.control.party.common.exception.MustSpecifyDepartmentN
 import com.echothree.model.control.party.common.exception.UnknownDepartmentNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.common.exception.UseOfDepartmentNameRequiresDivisionNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.util.common.message.ExecutionErrors;

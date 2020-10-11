@@ -20,7 +20,7 @@ import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.comment.common.transfer.CommentTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.comment.server.entity.CommentBlob;

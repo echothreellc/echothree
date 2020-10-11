@@ -18,7 +18,7 @@ package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreatePartyContactMechanismAliasForm;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDetail;

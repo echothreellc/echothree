@@ -22,7 +22,7 @@ import com.echothree.model.control.party.common.exception.MustSpecifyDivisionNam
 import com.echothree.model.control.party.common.exception.UnknownDivisionNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.common.exception.UseOfDivisionNameRequiresCompanyNameException;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.util.common.message.ExecutionErrors;

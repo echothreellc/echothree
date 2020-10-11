@@ -17,7 +17,7 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.CreateSubscriptionTypeDescriptionForm;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;

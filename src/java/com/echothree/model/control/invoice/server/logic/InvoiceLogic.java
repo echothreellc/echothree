@@ -25,7 +25,7 @@ import com.echothree.model.control.invoice.common.exception.UnknownInvoiceSequen
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceSequenceTypeException;
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceTypeNameException;
 import com.echothree.model.control.invoice.server.InvoiceControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.common.BillingAccountRoleTypes;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.logic.BillingAccountLogic;

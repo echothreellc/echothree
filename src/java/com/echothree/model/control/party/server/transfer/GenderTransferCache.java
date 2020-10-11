@@ -17,7 +17,7 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.GenderTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.party.server.entity.GenderDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

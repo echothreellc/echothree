@@ -17,7 +17,7 @@
 package com.echothree.model.control.term.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.common.transfer.PartyTermTransfer;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.TermControl;

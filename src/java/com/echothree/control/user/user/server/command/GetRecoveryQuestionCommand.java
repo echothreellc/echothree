@@ -25,7 +25,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.user.server.logic.RecoveryQuestionLogic;
 import com.echothree.model.control.vendor.server.VendorControl;

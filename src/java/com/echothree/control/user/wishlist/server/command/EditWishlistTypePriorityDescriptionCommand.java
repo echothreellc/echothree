@@ -22,7 +22,7 @@ import com.echothree.control.user.wishlist.common.form.EditWishlistTypePriorityD
 import com.echothree.control.user.wishlist.common.result.EditWishlistTypePriorityDescriptionResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.control.user.wishlist.common.spec.WishlistTypePriorityDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

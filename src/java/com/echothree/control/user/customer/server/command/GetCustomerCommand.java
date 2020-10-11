@@ -22,7 +22,7 @@ import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.server.entity.Party;

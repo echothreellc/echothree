@@ -17,7 +17,7 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.DeletePartyTypeAuditPolicyForm;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

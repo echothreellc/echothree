@@ -19,7 +19,7 @@ package com.echothree.control.user.job.server.command;
 import com.echothree.control.user.job.common.form.CreateJobDescriptionForm;
 import com.echothree.model.control.job.server.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.job.server.entity.Job;

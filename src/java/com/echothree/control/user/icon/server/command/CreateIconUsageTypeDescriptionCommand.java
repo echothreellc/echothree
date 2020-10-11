@@ -18,7 +18,7 @@ package com.echothree.control.user.icon.server.command;
 
 import com.echothree.control.user.icon.common.form.CreateIconUsageTypeDescriptionForm;
 import com.echothree.model.control.icon.server.IconControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
 import com.echothree.model.data.icon.server.entity.IconUsageTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

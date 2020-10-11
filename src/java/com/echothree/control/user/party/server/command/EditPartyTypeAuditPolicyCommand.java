@@ -22,7 +22,7 @@ import com.echothree.control.user.party.common.form.EditPartyTypeAuditPolicyForm
 import com.echothree.control.user.party.common.result.EditPartyTypeAuditPolicyResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.PartyTypeSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;

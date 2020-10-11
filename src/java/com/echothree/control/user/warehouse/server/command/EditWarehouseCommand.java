@@ -23,7 +23,7 @@ import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.common.PrinterConstants;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;

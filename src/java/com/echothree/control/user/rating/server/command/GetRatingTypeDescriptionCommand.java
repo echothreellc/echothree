@@ -19,7 +19,7 @@ package com.echothree.control.user.rating.server.command;
 import com.echothree.control.user.rating.common.form.GetRatingTypeDescriptionForm;
 import com.echothree.control.user.rating.common.result.GetRatingTypeDescriptionResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.rating.server.RatingControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;

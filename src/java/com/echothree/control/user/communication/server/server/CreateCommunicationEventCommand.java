@@ -27,7 +27,7 @@ import com.echothree.model.control.document.common.DocumentConstants;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic.PreparedWorkEffort;

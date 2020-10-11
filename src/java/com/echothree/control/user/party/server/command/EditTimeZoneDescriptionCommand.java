@@ -22,7 +22,7 @@ import com.echothree.control.user.party.common.form.EditTimeZoneDescriptionForm;
 import com.echothree.control.user.party.common.result.EditTimeZoneDescriptionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.TimeZoneDescriptionSpec;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.party.server.entity.TimeZoneDescription;

@@ -20,7 +20,7 @@ import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTyp
 import com.echothree.model.control.document.common.transfer.PartyTypeDocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

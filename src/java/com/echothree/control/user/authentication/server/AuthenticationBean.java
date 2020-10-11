@@ -21,7 +21,7 @@ import com.echothree.control.user.authentication.common.form.*;
 import com.echothree.control.user.authentication.server.command.*;
 import com.echothree.model.control.party.common.PartyNames;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;

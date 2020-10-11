@@ -18,7 +18,7 @@ package com.echothree.model.control.user.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.PartyRelationshipTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.UserControl;

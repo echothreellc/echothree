@@ -18,7 +18,7 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderRoleTypeDescriptionForm;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
 import com.echothree.model.data.order.server.entity.OrderRoleTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

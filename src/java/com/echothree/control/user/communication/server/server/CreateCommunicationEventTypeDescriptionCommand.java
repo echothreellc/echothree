@@ -18,7 +18,7 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationEventTypeDescriptionForm;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventType;
 import com.echothree.model.data.communication.server.entity.CommunicationEventTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;

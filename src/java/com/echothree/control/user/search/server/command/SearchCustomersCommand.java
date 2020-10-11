@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;

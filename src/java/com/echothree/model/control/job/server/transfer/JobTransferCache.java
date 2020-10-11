@@ -20,7 +20,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.server.JobControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

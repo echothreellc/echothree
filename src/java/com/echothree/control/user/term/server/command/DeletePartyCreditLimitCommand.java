@@ -18,7 +18,7 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.DeletePartyCreditLimitForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.Party;

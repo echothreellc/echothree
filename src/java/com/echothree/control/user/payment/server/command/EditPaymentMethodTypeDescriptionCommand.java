@@ -24,7 +24,7 @@ import com.echothree.control.user.payment.common.result.EditPaymentMethodTypeDes
 import com.echothree.control.user.payment.common.spec.PaymentMethodTypeDescriptionSpec;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;

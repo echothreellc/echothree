@@ -25,7 +25,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import static com.echothree.model.control.party.common.PartyTypes.CUSTOMER;
 import static com.echothree.model.control.party.common.PartyTypes.EMPLOYEE;
 import static com.echothree.model.control.party.common.PartyTypes.VENDOR;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Customer;
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Employee;

@@ -42,7 +42,7 @@ import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.rating.common.RatingConstants;
 import com.echothree.model.control.rating.server.RatingControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;

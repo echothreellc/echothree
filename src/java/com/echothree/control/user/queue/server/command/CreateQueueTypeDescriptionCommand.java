@@ -18,7 +18,7 @@ package com.echothree.control.user.queue.server.command;
 
 import com.echothree.control.user.queue.common.form.CreateQueueTypeDescriptionForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.queue.server.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

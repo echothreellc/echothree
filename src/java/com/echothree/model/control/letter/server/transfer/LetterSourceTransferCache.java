@@ -21,7 +21,7 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.letter.server.entity.LetterSourceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

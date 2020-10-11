@@ -24,7 +24,7 @@ import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
 import com.echothree.model.control.party.common.transfer.GenderTransfer;
 import com.echothree.model.control.party.common.transfer.MoodTransfer;
 import com.echothree.model.control.party.common.transfer.ProfileTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.party.server.entity.Gender;

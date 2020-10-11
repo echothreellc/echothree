@@ -18,7 +18,7 @@ package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.DeletePartyPrinterGroupUseForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

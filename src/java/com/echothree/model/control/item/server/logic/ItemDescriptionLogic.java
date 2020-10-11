@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.common.exception.InvalidItemDescriptionTypeException;
 import com.echothree.model.control.item.common.exception.UnknownItemDescriptionTypeNameException;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.Item;

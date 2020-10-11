@@ -26,7 +26,7 @@ import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
 import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;

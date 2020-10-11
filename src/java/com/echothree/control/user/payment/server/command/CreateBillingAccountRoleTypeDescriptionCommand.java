@@ -18,7 +18,7 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreateBillingAccountRoleTypeDescriptionForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
