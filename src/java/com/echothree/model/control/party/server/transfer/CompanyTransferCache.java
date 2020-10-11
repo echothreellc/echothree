@@ -18,7 +18,7 @@ package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.document.server.DocumentControl;

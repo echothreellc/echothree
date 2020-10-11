@@ -18,7 +18,7 @@ package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.model.control.carrier.common.transfer.CarrierServiceTransfer;
 import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
-import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.CarrierService;

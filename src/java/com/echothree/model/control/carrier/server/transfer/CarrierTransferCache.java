@@ -21,7 +21,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.common.CarrierOptions;
 import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.carrier.common.transfer.CarrierTypeTransfer;
-import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.party.common.PartyOptions;

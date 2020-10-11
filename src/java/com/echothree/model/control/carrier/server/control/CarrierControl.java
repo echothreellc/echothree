@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.carrier.server;
+package com.echothree.model.control.carrier.server.control;
 
 import com.echothree.model.control.carrier.common.choice.CarrierChoicesBean;
 import com.echothree.model.control.carrier.common.choice.CarrierOptionChoicesBean;

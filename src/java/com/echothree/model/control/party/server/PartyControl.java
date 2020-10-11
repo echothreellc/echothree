@@ -18,7 +18,7 @@ package com.echothree.model.control.party.server;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.DocumentControl;

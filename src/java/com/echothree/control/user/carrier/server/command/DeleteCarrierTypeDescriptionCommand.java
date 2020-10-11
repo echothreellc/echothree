@@ -17,7 +17,7 @@
 package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.DeleteCarrierTypeDescriptionForm;
-import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

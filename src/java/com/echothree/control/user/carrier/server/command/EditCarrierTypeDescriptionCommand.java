@@ -22,7 +22,7 @@ import com.echothree.control.user.carrier.common.form.EditCarrierTypeDescription
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.control.user.carrier.common.result.EditCarrierTypeDescriptionResult;
 import com.echothree.control.user.carrier.common.spec.CarrierTypeDescriptionSpec;
-import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
