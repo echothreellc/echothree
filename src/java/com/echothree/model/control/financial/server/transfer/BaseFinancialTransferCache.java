@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
-import com.echothree.model.control.financial.server.FinancialControl;
+import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;

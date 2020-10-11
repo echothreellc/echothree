@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.financial.server;
+package com.echothree.model.control.financial.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.financial.common.choice.FinancialAccountAliasTypeChoicesBean;

@@ -19,7 +19,7 @@ package com.echothree.model.control.financial.server.transfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
-import com.echothree.model.control.financial.server.FinancialControl;
+import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
