@@ -23,7 +23,7 @@ import com.echothree.control.user.workeffort.common.result.EditWorkEffortScopeDe
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.control.user.workeffort.common.spec.WorkEffortScopeDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;

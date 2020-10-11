@@ -29,7 +29,7 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;

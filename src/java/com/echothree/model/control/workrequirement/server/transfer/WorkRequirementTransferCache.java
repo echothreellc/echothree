@@ -19,7 +19,7 @@ package com.echothree.model.control.workrequirement.server.transfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

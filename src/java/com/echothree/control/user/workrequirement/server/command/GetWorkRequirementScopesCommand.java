@@ -19,7 +19,7 @@ package com.echothree.control.user.workrequirement.server.command;
 import com.echothree.control.user.workrequirement.common.form.GetWorkRequirementScopesForm;
 import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementScopesResult;
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;

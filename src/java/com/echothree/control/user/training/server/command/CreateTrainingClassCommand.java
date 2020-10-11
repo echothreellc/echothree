@@ -26,7 +26,7 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workeffort.common.workeffort.TrainingConstants;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.training.server.entity.TrainingClass;

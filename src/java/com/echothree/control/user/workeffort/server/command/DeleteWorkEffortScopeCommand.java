@@ -17,7 +17,7 @@
 package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.form.DeleteWorkEffortScopeForm;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;

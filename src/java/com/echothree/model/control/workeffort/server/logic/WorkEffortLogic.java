@@ -19,7 +19,7 @@ package com.echothree.model.control.workeffort.server.logic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;

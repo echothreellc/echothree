@@ -23,7 +23,7 @@ import com.echothree.control.user.workrequirement.common.result.EditWorkRequirem
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.control.user.workrequirement.common.spec.WorkRequirementTypeDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

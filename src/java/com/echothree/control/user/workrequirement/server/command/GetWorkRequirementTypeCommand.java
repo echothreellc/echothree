@@ -20,7 +20,7 @@ import com.echothree.control.user.workrequirement.common.form.GetWorkRequirement
 import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementTypeResult;
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.workeffort.server.WorkEffortControl;
+import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
