@@ -28,7 +28,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;

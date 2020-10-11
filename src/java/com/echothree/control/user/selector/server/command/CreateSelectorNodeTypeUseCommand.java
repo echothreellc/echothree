@@ -18,7 +18,7 @@ package com.echothree.control.user.selector.server.command;
 
 
 import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeUseForm;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.model.data.selector.server.entity.SelectorNodeTypeUse;

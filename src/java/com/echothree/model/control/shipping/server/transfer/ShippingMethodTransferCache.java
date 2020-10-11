@@ -18,7 +18,7 @@ package com.echothree.model.control.shipping.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.shipping.common.ShippingOptions;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.ShippingControl;

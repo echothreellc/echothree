@@ -20,7 +20,7 @@ import com.echothree.control.user.selector.common.form.SetDefaultSelectorKindFor
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.value.SelectorKindDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

@@ -24,7 +24,7 @@ import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;

@@ -25,7 +25,7 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.selector.server.logic.SelectorNodeTypeLogic;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.control.vendor.server.VendorControl;

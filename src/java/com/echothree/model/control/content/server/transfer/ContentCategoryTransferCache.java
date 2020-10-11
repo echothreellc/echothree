@@ -24,7 +24,7 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.offer.server.entity.OfferUse;

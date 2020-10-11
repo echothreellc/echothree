@@ -20,7 +20,7 @@ import com.echothree.model.control.carrier.common.transfer.CarrierOptionTransfer
 import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.carrier.server.entity.CarrierOptionDetail;
 import com.echothree.model.data.selector.server.entity.Selector;

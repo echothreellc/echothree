@@ -20,7 +20,7 @@ import com.echothree.control.user.communication.common.form.CreateCommunicationS
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workeffort.common.workeffort.ReceiveCustomerEmailConstants;
 import com.echothree.model.control.workeffort.common.workeffort.SendCustomerEmailConstants;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;

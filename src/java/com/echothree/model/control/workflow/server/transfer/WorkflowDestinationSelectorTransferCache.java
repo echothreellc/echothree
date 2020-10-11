@@ -17,7 +17,7 @@
 package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationSelectorTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

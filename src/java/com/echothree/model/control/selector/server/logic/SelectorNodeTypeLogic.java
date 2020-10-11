@@ -20,7 +20,7 @@ import com.echothree.model.control.core.server.logic.*;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.selector.common.exception.UnknownSelectorNodeTypeNameException;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.util.common.message.ExecutionErrors;

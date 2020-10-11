@@ -26,7 +26,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierType;

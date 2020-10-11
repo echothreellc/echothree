@@ -21,7 +21,7 @@ import com.echothree.control.user.selector.common.form.GetSelectorForm;
 import com.echothree.control.user.selector.common.result.GetSelectorResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;

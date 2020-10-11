@@ -21,7 +21,7 @@ import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeN
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeNameException;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;

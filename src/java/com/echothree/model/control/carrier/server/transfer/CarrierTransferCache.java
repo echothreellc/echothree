@@ -35,7 +35,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;

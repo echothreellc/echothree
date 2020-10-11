@@ -17,7 +17,7 @@
 package com.echothree.model.control.selector.server.logic;
 
 import com.echothree.model.control.selector.common.exception.UnknownSelectorKindNameException;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

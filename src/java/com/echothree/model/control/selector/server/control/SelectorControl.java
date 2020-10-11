@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.selector.server;
+package com.echothree.model.control.selector.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.security.server.control.SecurityControl;
