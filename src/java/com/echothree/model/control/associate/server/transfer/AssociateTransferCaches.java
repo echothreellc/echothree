@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
-import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 

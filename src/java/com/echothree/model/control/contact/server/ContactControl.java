@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.contact.server;
 
-import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.communication.server.CommunicationControl;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismAliasTypeChoicesBean;

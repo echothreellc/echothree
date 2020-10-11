@@ -17,7 +17,7 @@
 package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.DeleteAssociateProgramDescriptionForm;
-import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.associate.server.entity.AssociateProgramDescription;

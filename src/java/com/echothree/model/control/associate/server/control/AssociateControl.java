@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.associate.server;
+package com.echothree.model.control.associate.server.control;
 
 import com.echothree.model.control.associate.common.choice.AssociateChoicesBean;
 import com.echothree.model.control.associate.common.choice.AssociatePartyContactMechanismChoicesBean;

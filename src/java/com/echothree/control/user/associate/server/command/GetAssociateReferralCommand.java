@@ -19,7 +19,7 @@ package com.echothree.control.user.associate.server.command;
 import com.echothree.control.user.associate.common.form.GetAssociateReferralForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
 import com.echothree.control.user.associate.common.result.GetAssociateReferralResult;
-import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
