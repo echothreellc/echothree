@@ -22,7 +22,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.common.choice.PurchaseInvoiceStatusChoicesBean;
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
-import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;

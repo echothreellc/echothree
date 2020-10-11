@@ -21,7 +21,7 @@ import com.echothree.control.user.purchase.common.result.CreatePurchaseInvoiceLi
 import com.echothree.control.user.purchase.common.result.PurchaseResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.invoice.common.InvoiceTypes;
-import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
 import com.echothree.model.control.invoice.server.logic.PurchaseInvoiceLogic;
 import com.echothree.model.control.party.common.PartyTypes;

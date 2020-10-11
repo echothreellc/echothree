@@ -22,7 +22,7 @@ import com.echothree.control.user.invoice.common.form.EditInvoiceTypeDescription
 import com.echothree.control.user.invoice.common.result.EditInvoiceTypeDescriptionResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.control.user.invoice.common.spec.InvoiceTypeDescriptionSpec;
-import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

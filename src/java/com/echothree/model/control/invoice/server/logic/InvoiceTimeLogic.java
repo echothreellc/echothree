@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.invoice.server.logic;
 
-import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceTime;

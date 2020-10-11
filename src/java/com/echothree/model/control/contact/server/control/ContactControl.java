@@ -71,7 +71,7 @@ import com.echothree.model.control.contact.server.transfer.PostalAddressLineElem
 import com.echothree.model.control.contact.server.transfer.PostalAddressLineTransferCache;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.order.server.control.OrderShipmentGroupControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
