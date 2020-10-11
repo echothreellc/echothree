@@ -22,7 +22,7 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.letter.server.LetterControl;
+import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;

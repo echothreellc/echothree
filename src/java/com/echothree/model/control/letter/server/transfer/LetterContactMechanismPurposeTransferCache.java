@@ -20,7 +20,7 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismPurpo
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.letter.common.transfer.LetterContactMechanismPurposeTransfer;
 import com.echothree.model.control.letter.common.transfer.LetterTransfer;
-import com.echothree.model.control.letter.server.LetterControl;
+import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurpose;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurposeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

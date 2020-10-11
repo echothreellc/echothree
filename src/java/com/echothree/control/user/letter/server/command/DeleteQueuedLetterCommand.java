@@ -20,7 +20,7 @@ import com.echothree.control.user.letter.common.form.DeleteQueuedLetterForm;
 import com.echothree.control.user.letter.common.result.GetQueuedLetterResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.letter.server.LetterControl;
+import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
