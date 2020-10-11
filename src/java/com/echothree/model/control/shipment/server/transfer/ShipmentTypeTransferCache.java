@@ -17,7 +17,7 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;

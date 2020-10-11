@@ -19,7 +19,7 @@ package com.echothree.control.user.comment.server.command;
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.core.server.entity.ComponentVendor;

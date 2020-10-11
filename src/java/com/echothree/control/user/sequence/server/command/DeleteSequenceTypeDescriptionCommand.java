@@ -21,7 +21,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDescription;

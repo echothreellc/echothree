@@ -20,7 +20,7 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationTypeTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationTypeDetail;
 import com.echothree.model.data.sequence.server.entity.Sequence;

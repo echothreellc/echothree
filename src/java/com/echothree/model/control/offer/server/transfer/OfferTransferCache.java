@@ -28,7 +28,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferDetail;

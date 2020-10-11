@@ -208,7 +208,7 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;

@@ -84,7 +84,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.GlAccountCategoryPK;

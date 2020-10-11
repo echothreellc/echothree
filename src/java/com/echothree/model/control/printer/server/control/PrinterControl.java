@@ -47,7 +47,7 @@ import com.echothree.model.control.printer.server.transfer.PrinterGroupUseTypeTr
 import com.echothree.model.control.printer.server.transfer.PrinterTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterTransferCaches;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.document.common.pk.DocumentPK;

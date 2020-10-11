@@ -39,7 +39,7 @@ import com.echothree.model.control.document.server.transfer.DocumentTypeUsageTyp
 import com.echothree.model.control.document.server.transfer.PartyDocumentTransferCache;
 import com.echothree.model.control.document.server.transfer.PartyTypeDocumentTypeUsageTypeTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.common.pk.MimeTypeUsageTypePK;

@@ -24,7 +24,7 @@ import com.echothree.control.user.associate.common.result.EditAssociateProgramRe
 import com.echothree.control.user.associate.common.spec.AssociateProgramSpec;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.associate.server.entity.AssociateProgramDescription;
 import com.echothree.model.data.associate.server.entity.AssociateProgramDetail;

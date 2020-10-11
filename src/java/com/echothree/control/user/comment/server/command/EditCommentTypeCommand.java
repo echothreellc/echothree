@@ -24,7 +24,7 @@ import com.echothree.control.user.comment.common.result.EditCommentTypeResult;
 import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.comment.server.entity.CommentTypeDescription;
 import com.echothree.model.data.comment.server.entity.CommentTypeDetail;

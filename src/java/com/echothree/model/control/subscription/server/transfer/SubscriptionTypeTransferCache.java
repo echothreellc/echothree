@@ -17,7 +17,7 @@
 package com.echothree.model.control.subscription.server.transfer;
 
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionKindTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.SubscriptionControl;

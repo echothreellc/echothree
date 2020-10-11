@@ -70,7 +70,7 @@ import com.echothree.model.control.employee.server.transfer.TerminationReasonTra
 import com.echothree.model.control.employee.server.transfer.TerminationTypeDescriptionTransferCache;
 import com.echothree.model.control.employee.server.transfer.TerminationTypeTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.common.pk.EmployeeTypePK;

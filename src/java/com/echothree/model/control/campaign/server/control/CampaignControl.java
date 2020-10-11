@@ -56,7 +56,7 @@ import com.echothree.model.control.campaign.server.transfer.CampaignTransferCach
 import com.echothree.model.control.campaign.server.transfer.UserVisitCampaignTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.campaign.common.pk.CampaignContentPK;

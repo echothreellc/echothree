@@ -35,7 +35,7 @@ import com.echothree.model.control.communication.server.transfer.CommunicationSo
 import com.echothree.model.control.communication.server.transfer.CommunicationTransferCaches;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPurposePK;

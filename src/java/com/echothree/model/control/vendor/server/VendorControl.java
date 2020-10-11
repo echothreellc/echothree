@@ -17,9 +17,6 @@
 package com.echothree.model.control.vendor.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.vendor.common.choice.ItemPurchasingCategoryChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorItemStatusChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorStatusChoicesBean;
@@ -60,7 +57,6 @@ import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;

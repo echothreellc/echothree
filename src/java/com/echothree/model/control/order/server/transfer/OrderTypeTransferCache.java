@@ -19,7 +19,7 @@ package com.echothree.model.control.order.server.transfer;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

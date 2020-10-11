@@ -19,7 +19,7 @@ package com.echothree.model.control.subscription.server;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.subscription.common.SubscriptionConstants;
 import com.echothree.model.control.subscription.common.choice.SubscriptionKindChoicesBean;

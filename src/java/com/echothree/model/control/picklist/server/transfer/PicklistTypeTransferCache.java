@@ -19,7 +19,7 @@ package com.echothree.model.control.picklist.server.transfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistTypeTransfer;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

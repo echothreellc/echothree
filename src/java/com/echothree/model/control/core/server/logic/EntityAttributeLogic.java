@@ -65,7 +65,7 @@ import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;

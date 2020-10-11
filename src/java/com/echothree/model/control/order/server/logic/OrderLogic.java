@@ -42,7 +42,7 @@ import com.echothree.model.control.order.server.control.OrderShipmentGroupContro
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;

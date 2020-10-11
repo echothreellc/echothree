@@ -18,7 +18,7 @@ package com.echothree.model.control.track.server;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.track.common.choice.TrackChoicesBean;
 import com.echothree.model.control.track.common.choice.TrackStatusChoicesBean;

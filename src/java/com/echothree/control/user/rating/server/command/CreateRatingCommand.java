@@ -21,7 +21,7 @@ import com.echothree.control.user.rating.common.result.CreateRatingResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;

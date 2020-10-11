@@ -22,7 +22,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.training.common.choice.PartyTrainingClassStatusChoicesBean;
 import com.echothree.model.control.training.common.choice.TrainingClassChoicesBean;

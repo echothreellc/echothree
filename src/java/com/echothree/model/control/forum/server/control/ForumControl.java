@@ -64,7 +64,7 @@ import com.echothree.model.control.forum.server.transfer.ForumThreadTransferCach
 import com.echothree.model.control.forum.server.transfer.ForumTransferCache;
 import com.echothree.model.control.forum.server.transfer.ForumTransferCaches;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;

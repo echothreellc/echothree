@@ -21,7 +21,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.rating.server.entity.RatingTypeDetail;
 import com.echothree.model.data.sequence.server.entity.Sequence;

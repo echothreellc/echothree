@@ -20,7 +20,7 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.DuplicateSequenceNameException;
 import com.echothree.model.control.sequence.common.exception.InvalidValueLengthException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;

@@ -29,7 +29,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.common.BillingAccountRoleTypes;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.logic.BillingAccountLogic;
-import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.term.common.TermTypes;
