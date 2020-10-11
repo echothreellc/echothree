@@ -19,7 +19,7 @@ package com.echothree.model.control.rating.server.transfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
-import com.echothree.model.control.rating.server.RatingControl;
+import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.rating.server.entity.RatingType;

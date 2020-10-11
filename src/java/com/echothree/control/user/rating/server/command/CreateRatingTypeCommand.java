@@ -17,7 +17,7 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
-import com.echothree.model.control.rating.server.RatingControl;
+import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;

@@ -21,7 +21,7 @@ import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
-import com.echothree.model.control.rating.server.RatingControl;
+import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.control.uom.server.UomControl;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.rating.server.logic;
 
 import com.echothree.model.control.rating.common.exception.UnknownRatingNameException;
-import com.echothree.model.control.rating.server.RatingControl;
+import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

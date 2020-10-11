@@ -203,7 +203,7 @@ import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.queue.common.QueueConstants;
 import com.echothree.model.control.queue.common.exception.UnknownQueueTypeNameException;
 import com.echothree.model.control.queue.server.logic.QueuedEntityLogic;
-import com.echothree.model.control.rating.server.RatingControl;
+import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.server.SecurityControl;
