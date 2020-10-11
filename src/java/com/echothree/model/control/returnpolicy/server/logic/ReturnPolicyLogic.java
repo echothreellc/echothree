@@ -22,7 +22,7 @@ import com.echothree.model.control.order.server.control.OrderLineControl;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.common.exception.UnknownReturnKindNameException;
 import com.echothree.model.control.returnpolicy.common.exception.UnknownReturnPolicyNameException;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;

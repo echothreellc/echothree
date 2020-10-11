@@ -17,7 +17,7 @@
 package com.echothree.model.control.shipping.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesBean;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;

@@ -25,7 +25,7 @@ import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;

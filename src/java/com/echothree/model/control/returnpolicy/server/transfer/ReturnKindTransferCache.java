@@ -17,7 +17,7 @@
 package com.echothree.model.control.returnpolicy.server.transfer;
 
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;

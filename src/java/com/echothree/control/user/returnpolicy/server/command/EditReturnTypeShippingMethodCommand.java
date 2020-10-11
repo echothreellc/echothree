@@ -23,7 +23,7 @@ import com.echothree.control.user.returnpolicy.common.result.EditReturnTypeShipp
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.control.user.returnpolicy.common.spec.ReturnTypeShippingMethodSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipping.server.ShippingControl;

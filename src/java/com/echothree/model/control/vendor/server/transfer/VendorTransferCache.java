@@ -42,7 +42,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;

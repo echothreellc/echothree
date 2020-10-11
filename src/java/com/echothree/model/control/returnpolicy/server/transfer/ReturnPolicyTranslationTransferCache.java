@@ -21,7 +21,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTranslationTransfer;
-import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicyTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
