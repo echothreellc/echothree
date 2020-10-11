@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;

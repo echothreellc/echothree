@@ -99,7 +99,7 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;

@@ -47,7 +47,7 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;

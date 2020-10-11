@@ -22,7 +22,7 @@ import com.echothree.control.user.authentication.common.form.VendorLoginForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.control.user.authentication.common.result.GetVendorLoginDefaultsResult;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;

@@ -30,7 +30,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
 import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.offer.server.entity.OfferUse;

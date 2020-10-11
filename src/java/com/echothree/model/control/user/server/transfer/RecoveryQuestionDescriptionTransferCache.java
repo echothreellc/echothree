@@ -19,7 +19,7 @@ package com.echothree.model.control.user.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.user.common.transfer.RecoveryQuestionDescriptionTransfer;
 import com.echothree.model.control.user.common.transfer.RecoveryQuestionTransfer;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

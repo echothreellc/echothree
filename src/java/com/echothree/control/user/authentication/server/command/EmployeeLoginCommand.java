@@ -23,7 +23,7 @@ import com.echothree.model.control.party.common.RoleTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.LockoutPolicyLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;

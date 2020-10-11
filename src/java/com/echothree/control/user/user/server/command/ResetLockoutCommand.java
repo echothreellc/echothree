@@ -23,7 +23,7 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;

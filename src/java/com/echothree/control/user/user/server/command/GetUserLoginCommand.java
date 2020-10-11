@@ -32,7 +32,7 @@ import static com.echothree.model.control.security.common.SecurityRoleGroups.Emp
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Vendor;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;

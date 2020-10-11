@@ -27,7 +27,7 @@ import com.echothree.model.control.search.common.exception.UnknownSubfieldExcept
 import com.echothree.model.control.search.common.exception.UnknownValueUnitOfMeasureTypeNameException;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;

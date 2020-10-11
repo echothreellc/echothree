@@ -22,7 +22,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.Command;

@@ -21,7 +21,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
 import com.echothree.model.control.user.common.transfer.UserLoginPasswordTransfer;
 import com.echothree.model.control.user.common.transfer.UserLoginTransfer;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;

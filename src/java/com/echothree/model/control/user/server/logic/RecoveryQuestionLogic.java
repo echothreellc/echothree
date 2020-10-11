@@ -17,7 +17,7 @@
 package com.echothree.model.control.user.server.logic;
 
 import com.echothree.model.control.user.common.exception.UnknownRecoveryQuestionNameException;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

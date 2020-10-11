@@ -20,7 +20,7 @@ import com.echothree.control.user.authentication.common.form.VendorLoginForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LockoutPolicyLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;

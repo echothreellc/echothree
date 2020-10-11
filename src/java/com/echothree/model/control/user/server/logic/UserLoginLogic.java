@@ -17,7 +17,7 @@
 package com.echothree.model.control.user.server.logic;
 
 import com.echothree.model.control.user.common.exception.UnknownUsernameException;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

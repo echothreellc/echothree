@@ -29,7 +29,7 @@ import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
 import com.echothree.model.control.track.server.transfer.TrackDescriptionTransferCache;
 import com.echothree.model.control.track.server.transfer.TrackTransferCache;
 import com.echothree.model.control.track.server.transfer.TrackTransferCaches;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;

@@ -20,7 +20,7 @@ import com.echothree.control.user.user.common.form.GetUserSessionForm;
 import com.echothree.control.user.user.common.result.GetUserSessionResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
