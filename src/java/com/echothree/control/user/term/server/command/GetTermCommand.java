@@ -20,7 +20,7 @@ import com.echothree.control.user.term.common.form.GetTermForm;
 import com.echothree.control.user.term.common.result.GetTermResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

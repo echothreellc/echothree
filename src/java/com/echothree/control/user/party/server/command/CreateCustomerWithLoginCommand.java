@@ -39,7 +39,7 @@ import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;

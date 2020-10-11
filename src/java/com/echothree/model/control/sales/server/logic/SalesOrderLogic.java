@@ -53,7 +53,7 @@ import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstan
 import com.echothree.model.control.sales.server.control.SalesOrderControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;

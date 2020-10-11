@@ -28,7 +28,7 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic.PreparedWorkEffort;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
