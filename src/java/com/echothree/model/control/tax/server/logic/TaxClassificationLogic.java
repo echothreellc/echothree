@@ -17,7 +17,7 @@
 package com.echothree.model.control.tax.server.logic;
 
 import com.echothree.model.control.tax.common.exception.UnknownTaxClassificationNameException;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
 import com.echothree.util.common.message.ExecutionErrors;

@@ -20,7 +20,7 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.tax.common.transfer.GeoCodeTaxTransfer;
 import com.echothree.model.control.tax.common.transfer.TaxTransfer;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.GeoCodeTax;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

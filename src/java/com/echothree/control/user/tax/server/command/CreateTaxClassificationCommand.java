@@ -23,7 +23,7 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.tax.server.entity.TaxClassification;

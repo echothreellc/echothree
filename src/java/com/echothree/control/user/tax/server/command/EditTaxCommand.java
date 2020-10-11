@@ -25,7 +25,7 @@ import com.echothree.control.user.tax.common.spec.TaxSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;

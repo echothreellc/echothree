@@ -23,7 +23,7 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.tax.common.TaxOptions;
 import com.echothree.model.control.tax.common.transfer.ItemTaxClassificationTransfer;
 import com.echothree.model.control.tax.common.transfer.TaxClassificationTransfer;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassification;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassificationDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

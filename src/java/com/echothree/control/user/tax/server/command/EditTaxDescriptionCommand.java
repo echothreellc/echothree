@@ -23,7 +23,7 @@ import com.echothree.control.user.tax.common.result.EditTaxDescriptionResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.control.user.tax.common.spec.TaxDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.tax.server.TaxControl;
+import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.tax.server.entity.TaxDescription;
