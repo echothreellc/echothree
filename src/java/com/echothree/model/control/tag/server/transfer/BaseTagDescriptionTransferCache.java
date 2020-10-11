@@ -17,7 +17,7 @@
 package com.echothree.model.control.tag.server.transfer;
 
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.tag.server.TagControl;
+import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;

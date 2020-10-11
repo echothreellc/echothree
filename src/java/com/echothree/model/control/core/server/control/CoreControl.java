@@ -210,7 +210,7 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.control.tag.server.TagControl;
+import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
