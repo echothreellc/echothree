@@ -24,7 +24,7 @@ import com.echothree.control.user.workrequirement.common.result.WorkRequirementR
 import com.echothree.control.user.workrequirement.common.spec.WorkRequirementTypeDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;

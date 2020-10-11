@@ -21,7 +21,7 @@ import com.echothree.control.user.workrequirement.common.result.GetWorkAssignmen
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

@@ -26,7 +26,7 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementScopeTransfer;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;

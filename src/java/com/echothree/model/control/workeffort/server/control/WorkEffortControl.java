@@ -29,7 +29,7 @@ import com.echothree.model.control.workeffort.server.transfer.WorkEffortTransfer
 import com.echothree.model.control.workeffort.server.transfer.WorkEffortTransferCaches;
 import com.echothree.model.control.workeffort.server.transfer.WorkEffortTypeDescriptionTransferCache;
 import com.echothree.model.control.workeffort.server.transfer.WorkEffortTypeTransferCache;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;

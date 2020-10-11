@@ -23,7 +23,7 @@ import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;

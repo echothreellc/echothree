@@ -25,7 +25,7 @@ import com.echothree.model.control.workeffort.common.WorkEffortOptions;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;

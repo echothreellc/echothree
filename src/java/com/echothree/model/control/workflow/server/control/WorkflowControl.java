@@ -67,7 +67,7 @@ import com.echothree.model.control.workflow.server.transfer.WorkflowStepTypeTran
 import com.echothree.model.control.workflow.server.transfer.WorkflowTransferCache;
 import com.echothree.model.control.workflow.server.transfer.WorkflowTransferCaches;
 import com.echothree.model.control.workflow.server.transfer.WorkflowTypeTransferCache;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;

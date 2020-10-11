@@ -17,7 +17,7 @@
 package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;

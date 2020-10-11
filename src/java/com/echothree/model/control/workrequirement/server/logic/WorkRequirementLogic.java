@@ -25,7 +25,7 @@ import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogi
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
-import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
