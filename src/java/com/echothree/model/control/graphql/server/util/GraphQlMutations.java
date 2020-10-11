@@ -145,7 +145,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editOffer(final DataFetchingEnvironment env,
             @GraphQLName("originalOfferName") final String originalOfferName,
-            @GraphQLName("id") final String id,
+            //@GraphQLName("id") final String id,
             @GraphQLName("offerName") final String offerName,
             @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName,
             @GraphQLName("offerItemSelectorName") final String offerItemSelectorName,
@@ -159,7 +159,7 @@ public class GraphQlMutations
             var spec = OfferUtil.getHome().getOfferUniversalSpec();
 
             spec.setOfferName(originalOfferName);
-            spec.setUlid(id);
+            //spec.setUlid(id);
 
             var commandForm = OfferUtil.getHome().getEditOfferForm();
 
@@ -283,7 +283,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editUse(final DataFetchingEnvironment env,
             @GraphQLName("originalUseName") final String originalUseName,
-            @GraphQLName("id") final String id,
+            //@GraphQLName("id") final String id,
             @GraphQLName("useName") final String useName,
             @GraphQLName("useTypeName") final String useTypeName,
             @GraphQLName("isDefault") final String isDefault,
@@ -295,7 +295,7 @@ public class GraphQlMutations
             var spec = OfferUtil.getHome().getUseUniversalSpec();
 
             spec.setUseName(originalUseName);
-            spec.setUlid(id);
+            //spec.setUlid(id);
 
             var commandForm = OfferUtil.getHome().getEditUseForm();
 
