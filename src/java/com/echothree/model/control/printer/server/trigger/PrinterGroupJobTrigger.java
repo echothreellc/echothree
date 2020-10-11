@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.printer.server.trigger;
 
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;

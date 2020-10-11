@@ -19,7 +19,7 @@ package com.echothree.control.user.printer.server.command;
 import com.echothree.control.user.printer.common.form.GetPrinterGroupJobsForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupJobsResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;

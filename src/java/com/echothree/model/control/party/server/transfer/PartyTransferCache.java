@@ -34,7 +34,7 @@ import com.echothree.model.control.party.common.transfer.PersonTransfer;
 import com.echothree.model.control.party.common.transfer.ProfileTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.control.user.server.UserControl;

@@ -25,7 +25,7 @@ import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.common.PrinterConstants;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.common.pk.PartyPK;

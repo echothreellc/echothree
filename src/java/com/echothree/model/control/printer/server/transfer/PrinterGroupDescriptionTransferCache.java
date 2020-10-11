@@ -19,7 +19,7 @@ package com.echothree.model.control.printer.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupDescriptionTransfer;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

@@ -21,7 +21,7 @@ import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupJobTransfer;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
-import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
