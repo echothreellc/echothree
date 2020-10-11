@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.communication.server;
+package com.echothree.model.control.communication.server.control;
 
 import com.echothree.model.control.communication.common.choice.CommunicationEventPurposeChoicesBean;
 import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;

@@ -20,7 +20,7 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.communication.common.transfer.CommunicationEventTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationEventTypeTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;

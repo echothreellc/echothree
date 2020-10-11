@@ -22,13 +22,12 @@ import com.echothree.control.user.communication.common.form.EditCommunicationEve
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.control.user.communication.common.result.EditCommunicationEventPurposeResult;
 import com.echothree.control.user.communication.common.spec.CommunicationEventPurposeSpec;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDescription;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDetail;
 import com.echothree.model.data.communication.server.value.CommunicationEventPurposeDescriptionValue;
 import com.echothree.model.data.communication.server.value.CommunicationEventPurposeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

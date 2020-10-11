@@ -22,7 +22,7 @@ import com.echothree.control.user.communication.common.form.EditCommunicationSou
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.control.user.communication.common.result.EditCommunicationSourceDescriptionResult;
 import com.echothree.control.user.communication.common.spec.CommunicationSourceDescriptionSpec;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;

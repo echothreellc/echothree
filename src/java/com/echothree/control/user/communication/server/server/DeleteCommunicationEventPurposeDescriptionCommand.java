@@ -17,7 +17,7 @@
 package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.DeleteCommunicationEventPurposeDescriptionForm;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDescription;

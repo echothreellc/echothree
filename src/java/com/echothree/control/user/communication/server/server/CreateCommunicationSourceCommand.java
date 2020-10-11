@@ -18,8 +18,7 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationSourceForm;
 import com.echothree.model.control.communication.common.CommunicationConstants;
-import com.echothree.model.control.communication.server.CommunicationControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.workeffort.common.workeffort.ReceiveCustomerEmailConstants;

@@ -20,7 +20,7 @@ import com.echothree.control.user.communication.common.form.CreateCommunicationE
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.communication.common.CommunicationConstants;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.document.common.DocumentConstants;

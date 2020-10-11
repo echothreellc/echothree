@@ -17,7 +17,7 @@
 package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;
-import com.echothree.model.control.communication.server.CommunicationControl;
+import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
