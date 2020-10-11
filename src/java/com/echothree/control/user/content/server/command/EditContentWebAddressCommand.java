@@ -22,7 +22,7 @@ import com.echothree.control.user.content.common.form.EditContentWebAddressForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentWebAddressResult;
 import com.echothree.control.user.content.common.spec.ContentWebAddressSpec;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -32,7 +32,6 @@ import com.echothree.model.data.content.server.entity.ContentWebAddressDescripti
 import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;
 import com.echothree.model.data.content.server.value.ContentWebAddressDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentWebAddressDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

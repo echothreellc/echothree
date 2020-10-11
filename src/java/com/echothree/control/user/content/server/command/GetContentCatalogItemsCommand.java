@@ -20,7 +20,7 @@ import com.echothree.control.user.content.common.form.GetContentCatalogItemsForm
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.GetContentCatalogItemsResult;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,7 +29,6 @@ import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.content.server.factory.ContentCatalogItemFactory;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;

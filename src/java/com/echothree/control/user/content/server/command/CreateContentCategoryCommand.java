@@ -18,7 +18,7 @@ package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentCategoryForm;
 import com.echothree.model.control.content.common.ContentCategories;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.control.SourceControl;

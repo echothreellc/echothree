@@ -18,7 +18,7 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;

@@ -22,7 +22,7 @@ import com.echothree.control.user.content.common.form.EditContentPageLayoutForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.content.common.spec.ContentPageLayoutUniversalSpec;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentPageLayoutLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,7 +32,6 @@ import com.echothree.model.data.content.server.entity.ContentPageLayoutDescripti
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.content.server.value.ContentPageLayoutDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentPageLayoutDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

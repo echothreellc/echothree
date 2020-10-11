@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.content.server.indexer;
 
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.ContentCategoryAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;

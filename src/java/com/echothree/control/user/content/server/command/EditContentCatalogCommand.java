@@ -22,7 +22,7 @@ import com.echothree.control.user.content.common.form.EditContentCatalogForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentCatalogResult;
 import com.echothree.control.user.content.common.spec.ContentCatalogSpec;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.control.SourceControl;

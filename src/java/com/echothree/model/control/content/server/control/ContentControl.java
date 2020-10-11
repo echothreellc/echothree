@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.content.server;
+package com.echothree.model.control.content.server.control;
 
 import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.common.ContentSections;

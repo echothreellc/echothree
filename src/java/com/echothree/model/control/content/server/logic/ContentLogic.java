@@ -19,7 +19,7 @@ package com.echothree.model.control.content.server.logic;
 import com.echothree.model.control.content.common.exception.DuplicateContentCategoryItemException;
 import com.echothree.model.control.content.common.exception.MalformedUrlException;
 import com.echothree.model.control.content.common.exception.UnknownContentWebAddressNameException;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;

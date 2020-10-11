@@ -21,7 +21,7 @@ import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutAreaTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;

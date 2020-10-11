@@ -19,7 +19,7 @@ package com.echothree.control.user.content.server.command;
 import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.GetContentCollectionsResult;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

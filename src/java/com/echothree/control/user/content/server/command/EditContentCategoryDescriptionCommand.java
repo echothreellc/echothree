@@ -22,7 +22,7 @@ import com.echothree.control.user.content.common.form.EditContentCategoryDescrip
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentCategoryDescriptionResult;
 import com.echothree.control.user.content.common.spec.ContentCategoryDescriptionSpec;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
