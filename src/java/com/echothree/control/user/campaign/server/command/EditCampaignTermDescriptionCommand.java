@@ -22,7 +22,7 @@ import com.echothree.control.user.campaign.common.form.EditCampaignTermDescripti
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.EditCampaignTermDescriptionResult;
 import com.echothree.control.user.campaign.common.spec.CampaignTermDescriptionSpec;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

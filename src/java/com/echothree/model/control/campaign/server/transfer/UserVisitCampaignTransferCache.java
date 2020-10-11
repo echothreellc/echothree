@@ -22,7 +22,7 @@ import com.echothree.model.control.campaign.common.transfer.CampaignSourceTransf
 import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
 import com.echothree.model.control.campaign.common.transfer.CampaignTransfer;
 import com.echothree.model.control.campaign.common.transfer.UserVisitCampaignTransfer;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.campaign.server.entity.Campaign;

@@ -19,7 +19,7 @@ package com.echothree.model.control.campaign.server.logic;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignMediumNameException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignMediumStatusChoiceException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignMediumValueException;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignMediumStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;

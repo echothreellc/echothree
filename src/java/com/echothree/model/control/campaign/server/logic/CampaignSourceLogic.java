@@ -19,7 +19,7 @@ package com.echothree.model.control.campaign.server.logic;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignSourceNameException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignSourceStatusChoiceException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignSourceValueException;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignSourceStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;

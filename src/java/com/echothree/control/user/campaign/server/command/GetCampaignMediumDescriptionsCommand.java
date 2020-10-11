@@ -19,7 +19,7 @@ package com.echothree.control.user.campaign.server.command;
 import com.echothree.control.user.campaign.common.form.GetCampaignMediumDescriptionsForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.GetCampaignMediumDescriptionsResult;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

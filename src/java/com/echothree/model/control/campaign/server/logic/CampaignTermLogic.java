@@ -19,7 +19,7 @@ package com.echothree.model.control.campaign.server.logic;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignTermNameException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignTermStatusChoiceException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignTermValueException;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;

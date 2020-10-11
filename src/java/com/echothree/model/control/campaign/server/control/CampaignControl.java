@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.campaign.server;
+package com.echothree.model.control.campaign.server.control;
 
 import com.echothree.model.control.campaign.common.choice.CampaignChoicesBean;
 import com.echothree.model.control.campaign.common.choice.CampaignContentChoicesBean;

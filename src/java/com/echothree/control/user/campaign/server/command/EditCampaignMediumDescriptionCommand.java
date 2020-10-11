@@ -22,7 +22,7 @@ import com.echothree.control.user.campaign.common.form.EditCampaignMediumDescrip
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.EditCampaignMediumDescriptionResult;
 import com.echothree.control.user.campaign.common.spec.CampaignMediumDescriptionSpec;
-import com.echothree.model.control.campaign.server.CampaignControl;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
