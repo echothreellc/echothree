@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.period.server.choice;
+package com.echothree.model.control.period.common.choice;
 
 import com.echothree.model.control.workflow.common.choice.BaseWorkflowChoicesBean;
 

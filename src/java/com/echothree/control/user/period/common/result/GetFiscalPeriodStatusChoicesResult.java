@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.period.common.result;
 
-import com.echothree.model.control.period.server.choice.FiscalPeriodStatusChoicesBean;
+import com.echothree.model.control.period.common.choice.FiscalPeriodStatusChoicesBean;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetFiscalPeriodStatusChoicesResult
