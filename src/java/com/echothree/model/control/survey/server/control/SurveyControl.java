@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.survey.server;
+package com.echothree.model.control.survey.server.control;
 
 import com.echothree.util.server.control.BaseModelControl;
 
