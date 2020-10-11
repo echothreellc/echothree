@@ -20,7 +20,7 @@ import com.echothree.control.user.item.common.form.GetItemCountryOfOriginsForm;
 import com.echothree.control.user.item.common.result.GetItemCountryOfOriginsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;

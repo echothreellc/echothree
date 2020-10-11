@@ -19,7 +19,7 @@ package com.echothree.model.control.uom.server.logic;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindUseException;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindUseTypeNameException;
 import com.echothree.model.control.uom.server.UomControl;

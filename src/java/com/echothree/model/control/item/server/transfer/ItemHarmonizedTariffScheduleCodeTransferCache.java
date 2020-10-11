@@ -23,7 +23,7 @@ import com.echothree.model.control.item.common.transfer.HarmonizedTariffSchedule
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemHarmonizedTariffScheduleCodeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCode;
 import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCodeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

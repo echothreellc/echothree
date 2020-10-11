@@ -21,7 +21,7 @@ import com.echothree.control.user.item.common.result.GetItemDescriptionsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

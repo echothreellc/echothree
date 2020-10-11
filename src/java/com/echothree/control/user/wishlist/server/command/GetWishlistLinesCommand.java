@@ -19,7 +19,7 @@ package com.echothree.control.user.wishlist.server.command;
 import com.echothree.control.user.wishlist.common.form.GetWishlistLinesForm;
 import com.echothree.control.user.wishlist.common.result.GetWishlistLinesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;

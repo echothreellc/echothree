@@ -25,7 +25,7 @@ import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;

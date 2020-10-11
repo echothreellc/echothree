@@ -24,7 +24,7 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemDescriptionSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic.ImageDimensions;
 import com.echothree.model.control.party.common.PartyTypes;

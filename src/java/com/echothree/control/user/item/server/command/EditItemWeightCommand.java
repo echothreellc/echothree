@@ -22,7 +22,7 @@ import com.echothree.control.user.item.common.form.EditItemWeightForm;
 import com.echothree.control.user.item.common.result.EditItemWeightResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemWeightSpec;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;

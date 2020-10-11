@@ -33,7 +33,7 @@ import com.echothree.model.control.customer.server.transfer.CustomerTypeDescript
 import com.echothree.model.control.customer.server.transfer.CustomerTypePaymentMethodTransferCache;
 import com.echothree.model.control.customer.server.transfer.CustomerTypeShippingMethodTransferCache;
 import com.echothree.model.control.customer.server.transfer.CustomerTypeTransferCache;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;

@@ -20,7 +20,7 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeNameException;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeNameException;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;

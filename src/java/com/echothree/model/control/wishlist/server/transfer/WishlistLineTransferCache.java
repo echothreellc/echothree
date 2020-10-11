@@ -20,7 +20,7 @@ import com.echothree.model.control.associate.common.transfer.AssociateReferralTr
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;

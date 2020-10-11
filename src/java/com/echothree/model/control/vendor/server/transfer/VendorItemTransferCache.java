@@ -22,7 +22,7 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;

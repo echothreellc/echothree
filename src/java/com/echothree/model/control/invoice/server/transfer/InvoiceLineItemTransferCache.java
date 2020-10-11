@@ -22,7 +22,7 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceLineItemTransf
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineItem;

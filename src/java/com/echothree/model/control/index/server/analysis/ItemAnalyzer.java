@@ -18,7 +18,7 @@ package com.echothree.model.control.index.server.analysis;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.index.common.IndexConstants;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;

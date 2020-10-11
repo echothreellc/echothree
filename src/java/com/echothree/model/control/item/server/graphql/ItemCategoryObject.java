@@ -18,11 +18,10 @@ package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemCategoryDetail;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;

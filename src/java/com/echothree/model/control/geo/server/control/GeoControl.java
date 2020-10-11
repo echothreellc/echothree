@@ -51,7 +51,7 @@ import com.echothree.model.control.geo.server.transfer.GeoCodeTimeZoneTransferCa
 import com.echothree.model.control.geo.server.transfer.GeoCodeTransferCache;
 import com.echothree.model.control.geo.server.transfer.GeoCodeTypeTransferCache;
 import com.echothree.model.control.geo.server.transfer.GeoTransferCaches;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.common.pk.PostalAddressFormatPK;

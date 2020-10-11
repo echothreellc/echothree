@@ -17,7 +17,7 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemPriceTypeDescriptionForm;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemPriceTypeDescription;

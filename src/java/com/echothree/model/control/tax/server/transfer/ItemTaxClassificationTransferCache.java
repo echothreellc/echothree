@@ -19,7 +19,7 @@ package com.echothree.model.control.tax.server.transfer;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.tax.common.TaxOptions;
 import com.echothree.model.control.tax.common.transfer.ItemTaxClassificationTransfer;
 import com.echothree.model.control.tax.common.transfer.TaxClassificationTransfer;

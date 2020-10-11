@@ -20,7 +20,7 @@ import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.common.transfer.ItemCountryOfOriginTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

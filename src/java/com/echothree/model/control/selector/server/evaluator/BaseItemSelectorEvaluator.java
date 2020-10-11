@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.selector.server.evaluator;
 
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;

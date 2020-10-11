@@ -23,7 +23,7 @@ import com.echothree.control.user.item.common.result.EditItemCountryOfOriginResu
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemCountryOfOriginSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;

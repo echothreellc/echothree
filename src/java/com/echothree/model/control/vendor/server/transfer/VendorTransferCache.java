@@ -30,7 +30,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.item.common.transfer.ItemAliasTypeTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;

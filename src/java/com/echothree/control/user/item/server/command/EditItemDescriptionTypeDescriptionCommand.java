@@ -22,7 +22,7 @@ import com.echothree.control.user.item.common.form.EditItemDescriptionTypeDescri
 import com.echothree.control.user.item.common.result.EditItemDescriptionTypeDescriptionResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeDescriptionSpec;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

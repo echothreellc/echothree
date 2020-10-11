@@ -19,7 +19,7 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.CreateItemDescriptionForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic.ImageDimensions;
 import com.echothree.model.control.party.common.PartyTypes;

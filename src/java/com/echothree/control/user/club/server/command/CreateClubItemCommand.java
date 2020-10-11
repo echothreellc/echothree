@@ -19,7 +19,7 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.CreateClubItemForm;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.item.common.ItemConstants;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;

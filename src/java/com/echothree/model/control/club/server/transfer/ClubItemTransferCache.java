@@ -21,7 +21,7 @@ import com.echothree.model.control.club.common.transfer.ClubItemTypeTransfer;
 import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.club.server.entity.ClubItem;

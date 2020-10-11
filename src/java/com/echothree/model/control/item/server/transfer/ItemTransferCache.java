@@ -38,7 +38,7 @@ import com.echothree.model.control.item.common.transfer.ItemTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;

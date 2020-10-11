@@ -17,7 +17,7 @@
 package com.echothree.model.control.uom.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindUseTypeChoicesBean;

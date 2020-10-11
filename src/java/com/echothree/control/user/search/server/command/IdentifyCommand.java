@@ -24,7 +24,7 @@ import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.SearchControl;

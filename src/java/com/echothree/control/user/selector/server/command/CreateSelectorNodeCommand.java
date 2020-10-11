@@ -21,7 +21,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.selector.common.SelectorConstants;

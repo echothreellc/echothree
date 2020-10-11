@@ -18,7 +18,7 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemCountryOfOriginForm;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;

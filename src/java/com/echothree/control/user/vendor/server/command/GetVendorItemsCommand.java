@@ -19,7 +19,7 @@ package com.echothree.control.user.vendor.server.command;
 import com.echothree.control.user.vendor.common.form.GetVendorItemsForm;
 import com.echothree.control.user.vendor.common.result.GetVendorItemsResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

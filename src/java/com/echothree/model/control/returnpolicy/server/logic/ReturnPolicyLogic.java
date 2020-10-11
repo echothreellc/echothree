@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.returnpolicy.server.logic;
 
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderLineControl;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;

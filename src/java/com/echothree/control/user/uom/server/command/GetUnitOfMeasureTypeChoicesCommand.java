@@ -19,7 +19,7 @@ package com.echothree.control.user.uom.server.command;
 import com.echothree.control.user.uom.common.form.GetUnitOfMeasureTypeChoicesForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.item.server.entity.Item;

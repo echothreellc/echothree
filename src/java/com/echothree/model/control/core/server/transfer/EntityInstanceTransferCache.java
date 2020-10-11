@@ -29,7 +29,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.common.ItemConstants;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.control.vendor.server.VendorControl;

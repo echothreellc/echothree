@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetOfferItemPricesForm;
 import com.echothree.control.user.offer.common.result.GetOfferItemPricesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.PartyTypes;

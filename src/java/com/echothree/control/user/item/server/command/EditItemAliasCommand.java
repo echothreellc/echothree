@@ -22,7 +22,7 @@ import com.echothree.control.user.item.common.form.EditItemAliasForm;
 import com.echothree.control.user.item.common.result.EditItemAliasResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemAliasSpec;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemAliasChecksumTypeLogic;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.vendor.server.VendorControl;

@@ -19,7 +19,7 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemCategoryDescriptionForm;
 import com.echothree.control.user.item.common.result.GetItemCategoryDescriptionResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

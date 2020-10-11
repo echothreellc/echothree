@@ -20,7 +20,7 @@ import com.echothree.control.user.item.common.form.GetItemDescriptionForm;
 import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.content.server.logic.ContentLogic;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.item.server.entity.Item;

@@ -21,7 +21,7 @@ import com.echothree.control.user.inventory.common.result.GetPartyInventoryLevel
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;

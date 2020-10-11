@@ -21,7 +21,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

@@ -24,7 +24,7 @@ import com.echothree.model.control.item.common.exception.UnknownItemStatusChoice
 import com.echothree.model.control.item.common.exception.UnknownItemTypeNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemUseTypeNameException;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;

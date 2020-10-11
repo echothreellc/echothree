@@ -19,7 +19,7 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetRelatedItemsForm;
 import com.echothree.control.user.item.common.result.GetRelatedItemsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.item.server.factory.RelatedItemFactory;

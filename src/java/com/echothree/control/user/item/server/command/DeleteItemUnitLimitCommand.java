@@ -18,7 +18,7 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteItemUnitLimitForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;

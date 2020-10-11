@@ -25,7 +25,7 @@ import com.echothree.model.control.inventory.server.logic.InventoryConditionLogi
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemUnitOfMeasureTypeException;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceException;
 import com.echothree.model.control.offer.server.control.OfferItemControl;

@@ -23,7 +23,7 @@ import com.echothree.control.user.inventory.common.result.EditPartyInventoryLeve
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.server.UomControl;

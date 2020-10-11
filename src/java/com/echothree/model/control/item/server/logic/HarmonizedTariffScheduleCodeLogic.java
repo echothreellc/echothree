@@ -18,7 +18,7 @@ package com.echothree.model.control.item.server.logic;
 
 import com.echothree.model.control.item.common.exception.UnknownHarmonizedTariffScheduleCodeUnitNameException;
 import com.echothree.model.control.item.common.exception.UnknownHarmonizedTariffScheduleCodeUseTypeNameException;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
 import com.echothree.util.common.message.ExecutionErrors;
