@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.index.server.transfer;
 
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;

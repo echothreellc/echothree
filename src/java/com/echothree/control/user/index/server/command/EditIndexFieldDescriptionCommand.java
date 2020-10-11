@@ -22,7 +22,7 @@ import com.echothree.control.user.index.common.form.EditIndexFieldDescriptionFor
 import com.echothree.control.user.index.common.result.EditIndexFieldDescriptionResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.control.user.index.common.spec.IndexFieldDescriptionSpec;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

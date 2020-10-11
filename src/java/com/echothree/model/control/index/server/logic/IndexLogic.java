@@ -22,7 +22,7 @@ import com.echothree.model.control.core.server.database.EntityInstanceResult;
 import com.echothree.model.control.core.server.database.EntityInstancesByEntityTypeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByPartyTypeQuery;
 import com.echothree.model.control.index.common.exception.UnknownIndexNameException;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.queue.common.QueueConstants;
 import com.echothree.model.control.queue.server.QueueControl;

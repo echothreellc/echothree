@@ -20,7 +20,7 @@ import com.echothree.control.user.index.common.form.GetIndexFieldForm;
 import com.echothree.control.user.index.common.result.GetIndexFieldResult;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

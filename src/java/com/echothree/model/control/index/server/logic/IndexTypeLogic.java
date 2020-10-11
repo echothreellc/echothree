@@ -17,7 +17,7 @@
 package com.echothree.model.control.index.server.logic;
 
 import com.echothree.model.control.index.common.exception.UnknownIndexTypeNameException;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

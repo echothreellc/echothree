@@ -26,7 +26,7 @@ import com.echothree.model.control.customer.server.indexer.CustomerIndexer;
 import com.echothree.model.control.employee.server.indexer.EmployeeIndexer;
 import com.echothree.model.control.forum.server.indexer.ForumMessageIndexer;
 import com.echothree.model.control.index.common.IndexConstants;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.item.server.indexer.HarmonizedTariffScheduleCodeIndexer;
 import com.echothree.model.control.item.server.indexer.ItemIndexer;

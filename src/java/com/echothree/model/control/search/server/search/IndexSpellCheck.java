@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.search;
 
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.search.common.transfer.CheckSpellingSuggestionTransfer;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

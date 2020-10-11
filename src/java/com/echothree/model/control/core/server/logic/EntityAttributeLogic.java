@@ -59,7 +59,7 @@ import com.echothree.model.control.core.server.database.EntityInstancesByMultipl
 import com.echothree.model.control.core.server.database.EntityInstancesByNameEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByTimeEntityAttributeQuery;
-import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueConstants;
 import com.echothree.model.control.queue.server.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
