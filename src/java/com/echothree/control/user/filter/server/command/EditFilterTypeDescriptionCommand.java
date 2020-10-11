@@ -22,7 +22,7 @@ import com.echothree.control.user.filter.common.form.EditFilterTypeDescriptionFo
 import com.echothree.control.user.filter.common.result.EditFilterTypeDescriptionResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterTypeDescriptionSpec;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;

@@ -19,7 +19,7 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentAmountForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterConstants;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;

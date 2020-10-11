@@ -17,7 +17,7 @@
 package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;

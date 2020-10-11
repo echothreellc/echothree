@@ -20,7 +20,7 @@ import com.echothree.control.user.filter.common.form.GetFilterAdjustmentFixedAmo
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.result.GetFilterAdjustmentFixedAmountsResult;
 import com.echothree.model.control.filter.common.FilterConstants;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.filter.common.transfer.FilterStepDestinationTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterStepTransfer;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterStepDestination;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

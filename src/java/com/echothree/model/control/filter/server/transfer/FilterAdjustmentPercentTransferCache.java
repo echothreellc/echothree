@@ -21,7 +21,7 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.transfer.CurrencyTransferCache;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentPercentTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeTransferCache;

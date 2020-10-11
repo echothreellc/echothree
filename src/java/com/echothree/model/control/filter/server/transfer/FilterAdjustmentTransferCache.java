@@ -21,7 +21,7 @@ import com.echothree.model.control.filter.common.transfer.FilterAdjustmentSource
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTypeTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentDetail;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;

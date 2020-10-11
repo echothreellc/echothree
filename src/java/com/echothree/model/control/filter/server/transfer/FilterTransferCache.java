@@ -20,7 +20,7 @@ import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.filter.server.entity.Filter;

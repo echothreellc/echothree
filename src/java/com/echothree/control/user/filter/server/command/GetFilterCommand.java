@@ -21,7 +21,7 @@ import com.echothree.control.user.filter.common.form.GetFilterForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.result.GetFilterResult;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
