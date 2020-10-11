@@ -21,7 +21,7 @@ import com.echothree.model.control.training.common.exception.UnknownPartyTrainin
 import com.echothree.model.control.training.common.exception.UnknownPartyTrainingClassSessionQuestionException;
 import com.echothree.model.control.training.common.exception.UnknownPartyTrainingClassSessionSequenceException;
 import com.echothree.model.control.training.common.exception.UnknownPartyTrainingClassSessionStatusException;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;

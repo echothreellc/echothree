@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 

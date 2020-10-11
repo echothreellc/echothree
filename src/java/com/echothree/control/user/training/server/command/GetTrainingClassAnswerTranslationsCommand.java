@@ -22,7 +22,7 @@ import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestion;

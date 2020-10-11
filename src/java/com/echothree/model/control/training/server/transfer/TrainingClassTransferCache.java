@@ -18,7 +18,7 @@ package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;

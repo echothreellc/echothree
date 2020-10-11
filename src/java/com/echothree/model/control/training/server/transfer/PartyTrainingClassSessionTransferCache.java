@@ -22,7 +22,7 @@ import com.echothree.model.control.training.common.transfer.PartyTrainingClassSe
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionSectionTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionDetail;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;

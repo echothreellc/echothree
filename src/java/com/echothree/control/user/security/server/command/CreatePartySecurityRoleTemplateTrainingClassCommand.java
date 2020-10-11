@@ -23,7 +23,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic.PreparedPartySecurityRoleTemplateTrainingClass;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClass;

@@ -36,7 +36,7 @@ import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;

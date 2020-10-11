@@ -21,7 +21,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTranslationTransfer;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.security.server.logic;
 
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic.PreparedPartyTrainingClass;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;

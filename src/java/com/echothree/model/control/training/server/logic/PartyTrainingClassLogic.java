@@ -18,7 +18,7 @@ package com.echothree.model.control.training.server.logic;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.training.common.exception.UnknownPartyTrainingClassNameException;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.workeffort.common.workeffort.TrainingConstants;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic.PreparedWorkEffort;

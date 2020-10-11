@@ -25,11 +25,10 @@ import com.echothree.control.user.training.common.spec.PartyTrainingClassSession
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
 import com.echothree.model.control.training.server.logic.TrainingClassLogic;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;

@@ -22,7 +22,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
-import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
