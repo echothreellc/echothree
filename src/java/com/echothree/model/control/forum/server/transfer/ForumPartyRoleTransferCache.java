@@ -19,7 +19,7 @@ package com.echothree.model.control.forum.server.transfer;
 import com.echothree.model.control.forum.common.transfer.ForumPartyRoleTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumRoleTypeTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumPartyRole;

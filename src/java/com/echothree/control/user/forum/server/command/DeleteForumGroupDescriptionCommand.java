@@ -17,7 +17,7 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.DeleteForumGroupDescriptionForm;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumGroupDescription;

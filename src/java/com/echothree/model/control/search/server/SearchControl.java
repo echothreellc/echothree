@@ -23,7 +23,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.UseControl;

@@ -19,7 +19,7 @@ package com.echothree.model.control.forum.server.transfer;
 import com.echothree.model.control.forum.common.transfer.ForumForumThreadTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumForumThread;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

@@ -17,7 +17,7 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumForm;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.IconControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
@@ -27,7 +27,6 @@ import com.echothree.model.data.forum.server.entity.ForumType;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.icon.server.entity.IconUsage;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

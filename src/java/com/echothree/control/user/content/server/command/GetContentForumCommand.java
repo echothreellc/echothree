@@ -21,7 +21,7 @@ import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.GetContentForumResult;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentForum;
 import com.echothree.model.data.forum.server.entity.Forum;

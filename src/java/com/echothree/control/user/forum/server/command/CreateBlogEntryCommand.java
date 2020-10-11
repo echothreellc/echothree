@@ -20,7 +20,7 @@ import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
 import com.echothree.control.user.forum.common.result.CreateBlogEntryResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.IconControl;

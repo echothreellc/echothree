@@ -19,7 +19,7 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.GetForumGroupsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.result.GetForumGroupsResult;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.factory.ForumGroupFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;

@@ -23,7 +23,7 @@ import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;

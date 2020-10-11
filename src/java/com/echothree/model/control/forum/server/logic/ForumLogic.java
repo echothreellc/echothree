@@ -19,7 +19,7 @@ package com.echothree.model.control.forum.server.logic;
 import com.echothree.model.control.forum.common.exception.UnknownForumPartyRoleException;
 import com.echothree.model.control.forum.common.exception.UnknownForumPartyTypeRoleException;
 import com.echothree.model.control.forum.common.exception.UnknownForumRoleTypeNameException;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.common.exception.PartyRequiredException;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumForumThread;

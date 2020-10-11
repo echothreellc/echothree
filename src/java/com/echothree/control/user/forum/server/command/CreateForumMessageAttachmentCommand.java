@@ -18,7 +18,7 @@ package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumMessageAttachmentForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;

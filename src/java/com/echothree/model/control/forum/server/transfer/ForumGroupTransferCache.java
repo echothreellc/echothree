@@ -18,7 +18,7 @@ package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumGroupTransfer;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.IconControl;
 import com.echothree.model.data.forum.server.entity.Forum;

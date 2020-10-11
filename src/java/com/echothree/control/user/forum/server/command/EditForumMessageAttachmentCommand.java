@@ -23,7 +23,7 @@ import com.echothree.control.user.forum.common.result.EditForumMessageAttachment
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMessageAttachmentSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;

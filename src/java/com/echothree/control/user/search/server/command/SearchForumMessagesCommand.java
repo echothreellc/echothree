@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.SearchForumMessagesForm;
 import com.echothree.control.user.search.common.result.SearchForumMessagesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.forum.common.ForumConstants;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.search.common.SearchConstants;

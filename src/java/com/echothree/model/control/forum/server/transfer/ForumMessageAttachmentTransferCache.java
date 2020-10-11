@@ -22,7 +22,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessageAttachmentTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDetail;
 import com.echothree.model.data.forum.server.entity.ForumMessageBlobAttachment;

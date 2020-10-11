@@ -20,7 +20,7 @@ import com.echothree.model.control.content.common.transfer.ContentCollectionTran
 import com.echothree.model.control.content.common.transfer.ContentForumTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.content.server.entity.ContentForum;
 import com.echothree.model.data.content.server.entity.ContentForumDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

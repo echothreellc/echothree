@@ -24,7 +24,7 @@ import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.forum.common.ForumConstants;
-import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.IconControl;
 import com.echothree.model.data.core.server.entity.MimeType;
