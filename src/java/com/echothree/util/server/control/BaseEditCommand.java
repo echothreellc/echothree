@@ -17,7 +17,7 @@
 package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
-import com.echothree.model.control.core.server.EntityLockControl;
+import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.validation.FieldDefinition;

@@ -14,9 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server;
+package com.echothree.model.control.core.server.control;
 
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
+import com.echothree.model.control.core.server.CoreDebugFlags;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.EntityLockException;

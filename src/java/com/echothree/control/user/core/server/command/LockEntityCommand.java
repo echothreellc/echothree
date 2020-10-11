@@ -17,10 +17,9 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.LockEntityForm;
-import com.echothree.model.control.core.server.EntityLockControl;
+import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
