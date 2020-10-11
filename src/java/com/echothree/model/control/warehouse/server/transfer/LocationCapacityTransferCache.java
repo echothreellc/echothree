@@ -21,7 +21,7 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeTransferCache;
 import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationCapacity;

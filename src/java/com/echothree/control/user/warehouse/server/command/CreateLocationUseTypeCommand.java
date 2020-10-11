@@ -17,7 +17,7 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.CreateLocationUseTypeForm;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.util.common.message.ExecutionErrors;

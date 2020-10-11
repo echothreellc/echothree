@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 

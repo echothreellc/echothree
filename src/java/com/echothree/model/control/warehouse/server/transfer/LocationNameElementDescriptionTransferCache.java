@@ -19,7 +19,7 @@ package com.echothree.model.control.warehouse.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationNameElementDescriptionTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationNameElementTransfer;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElementDescription;
 

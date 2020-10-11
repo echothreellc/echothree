@@ -18,7 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupVolumeForm;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupVolume;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

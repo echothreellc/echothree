@@ -21,7 +21,7 @@ import com.echothree.control.user.inventory.common.result.GetInventoryLocationGr
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

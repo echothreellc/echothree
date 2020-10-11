@@ -19,7 +19,7 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.form.GetLocationUseTypeChoicesForm;
 import com.echothree.control.user.warehouse.common.result.GetLocationUseTypeChoicesResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
-import com.echothree.model.control.warehouse.server.WarehouseControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
