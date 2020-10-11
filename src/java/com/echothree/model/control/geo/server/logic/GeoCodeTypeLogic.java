@@ -17,7 +17,7 @@
 package com.echothree.model.control.geo.server.logic;
 
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeTypeNameException;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

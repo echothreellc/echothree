@@ -24,7 +24,7 @@ import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.common.transfer.CountyTransfer;
 import com.echothree.model.control.geo.common.transfer.PostalCodeTransfer;
 import com.echothree.model.control.geo.common.transfer.StateTransfer;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;

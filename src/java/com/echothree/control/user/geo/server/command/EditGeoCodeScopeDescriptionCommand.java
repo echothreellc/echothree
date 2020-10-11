@@ -22,7 +22,7 @@ import com.echothree.control.user.geo.common.form.EditGeoCodeScopeDescriptionFor
 import com.echothree.control.user.geo.common.result.EditGeoCodeScopeDescriptionResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeScopeDescriptionSpec;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

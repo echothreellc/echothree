@@ -17,7 +17,7 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.CreateGeoCodeTaxForm;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.tax.server.entity.GeoCodeTax;

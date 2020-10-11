@@ -24,7 +24,7 @@ import com.echothree.control.user.contact.common.result.EditContactTelephoneResu
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

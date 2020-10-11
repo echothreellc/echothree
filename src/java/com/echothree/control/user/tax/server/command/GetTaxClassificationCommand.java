@@ -20,7 +20,7 @@ import com.echothree.control.user.tax.common.form.GetTaxClassificationForm;
 import com.echothree.control.user.tax.common.result.GetTaxClassificationResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

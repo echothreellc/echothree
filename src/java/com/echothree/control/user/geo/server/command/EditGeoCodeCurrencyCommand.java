@@ -23,7 +23,7 @@ import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeCurrencySpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

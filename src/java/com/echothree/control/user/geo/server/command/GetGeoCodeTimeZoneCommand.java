@@ -19,7 +19,7 @@ package com.echothree.control.user.geo.server.command;
 import com.echothree.control.user.geo.common.form.GetGeoCodeTimeZoneForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.result.GetGeoCodeTimeZoneResult;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

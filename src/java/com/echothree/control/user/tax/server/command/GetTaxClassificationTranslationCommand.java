@@ -19,7 +19,7 @@ package com.echothree.control.user.tax.server.command;
 import com.echothree.control.user.tax.common.form.GetTaxClassificationTranslationForm;
 import com.echothree.control.user.tax.common.result.GetTaxClassificationTranslationResult;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

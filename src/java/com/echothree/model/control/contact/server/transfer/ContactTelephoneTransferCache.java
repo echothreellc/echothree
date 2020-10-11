@@ -21,7 +21,7 @@ import com.echothree.model.control.contact.common.transfer.ContactTelephoneTrans
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactTelephone;

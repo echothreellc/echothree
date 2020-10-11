@@ -24,7 +24,7 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.HarmonizedTariffScheduleCodeTranslationSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

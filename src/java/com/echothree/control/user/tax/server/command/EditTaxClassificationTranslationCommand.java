@@ -24,7 +24,7 @@ import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.control.user.tax.common.spec.TaxClassificationTranslationSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

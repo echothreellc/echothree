@@ -17,7 +17,7 @@
 package com.echothree.model.control.tax.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.tax.common.transfer.GeoCodeTaxTransfer;
 import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.model.control.tax.server.TaxControl;

@@ -20,7 +20,7 @@ import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCo
 import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

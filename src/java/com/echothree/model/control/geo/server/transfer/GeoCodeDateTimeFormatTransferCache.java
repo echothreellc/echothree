@@ -18,7 +18,7 @@ package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.transfer.GeoCodeDateTimeFormatTransfer;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
-import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
