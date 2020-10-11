@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.returnpolicy.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.returnpolicy.common.choice.PartyReturnPolicyStatusChoicesBean;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.returnpolicy.common.workflow.PartyReturnPolicyStatusConstants;

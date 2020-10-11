@@ -18,7 +18,7 @@ package com.echothree.model.control.invoice.server.logic;
 
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.common.choice.PurchaseInvoiceStatusChoicesBean;
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;

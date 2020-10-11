@@ -20,7 +20,6 @@ import com.echothree.control.user.document.common.form.CreatePartyDocumentForm;
 import com.echothree.control.user.document.common.result.CreatePartyDocumentResult;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.document.server.logic.DocumentLogic;
 import com.echothree.model.control.party.common.PartyTypes;

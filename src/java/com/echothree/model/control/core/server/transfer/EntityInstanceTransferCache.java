@@ -25,7 +25,7 @@ import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.item.common.ItemConstants;

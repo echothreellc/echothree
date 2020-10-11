@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;

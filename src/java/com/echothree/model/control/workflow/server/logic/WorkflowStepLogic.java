@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.workflow.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;

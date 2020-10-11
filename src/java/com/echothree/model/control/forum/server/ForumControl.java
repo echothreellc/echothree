@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.choice.ForumChoicesBean;
 import com.echothree.model.control.forum.common.choice.ForumGroupChoicesBean;
 import com.echothree.model.control.forum.common.choice.ForumMessageTypeChoicesBean;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;

@@ -21,7 +21,6 @@ import com.echothree.control.user.search.common.result.BaseGetResultsFacetsResul
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.search.common.transfer.UserVisitSearchFacetTransfer;
 import com.echothree.model.control.search.server.SearchControl;

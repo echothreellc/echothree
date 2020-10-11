@@ -17,13 +17,11 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.rating.server.RatingControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;

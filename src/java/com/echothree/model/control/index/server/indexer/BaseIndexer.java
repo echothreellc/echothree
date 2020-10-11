@@ -17,7 +17,7 @@
 package com.echothree.model.control.index.server.indexer;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
 import com.echothree.model.control.index.server.IndexControl;

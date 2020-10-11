@@ -22,7 +22,7 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.item.common.ItemConstants;

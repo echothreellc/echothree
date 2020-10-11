@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionsCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsagesCommand;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;

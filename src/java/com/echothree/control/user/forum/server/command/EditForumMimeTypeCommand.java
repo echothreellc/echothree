@@ -22,7 +22,6 @@ import com.echothree.control.user.forum.common.form.EditForumMimeTypeForm;
 import com.echothree.control.user.forum.common.result.EditForumMimeTypeResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumMimeTypeSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.forum.server.entity.Forum;

@@ -19,7 +19,7 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardPaymentMethodConstants.Workflow_CUSTOMER_CREDIT_CARD_PAYMENT_METHOD;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;

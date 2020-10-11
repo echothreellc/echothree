@@ -17,7 +17,6 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.DeleteRatingTypeListItemForm;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.rating.server.RatingControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;

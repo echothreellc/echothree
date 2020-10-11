@@ -20,7 +20,7 @@ import com.echothree.model.control.contactlist.common.exception.UnknownContactLi
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListNameException;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;

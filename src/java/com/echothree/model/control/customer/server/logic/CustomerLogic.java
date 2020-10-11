@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.customer.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.common.exception.CannotSpecifyCustomerNameAndPartyNameException;
 import com.echothree.model.control.customer.common.exception.MustSpecifyCustomerNameOrPartyNameException;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerNameException;

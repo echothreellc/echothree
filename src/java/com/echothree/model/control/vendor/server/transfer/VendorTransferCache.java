@@ -26,7 +26,7 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.item.common.transfer.ItemAliasTypeTransfer;

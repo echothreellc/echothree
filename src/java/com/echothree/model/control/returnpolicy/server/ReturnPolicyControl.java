@@ -17,7 +17,7 @@
 package com.echothree.model.control.returnpolicy.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnKindChoicesBean;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnReasonChoicesBean;

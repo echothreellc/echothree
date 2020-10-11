@@ -23,7 +23,6 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityClobAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityClobAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;

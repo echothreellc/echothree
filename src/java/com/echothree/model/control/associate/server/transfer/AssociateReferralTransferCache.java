@@ -21,7 +21,7 @@ import com.echothree.model.control.associate.common.transfer.AssociateReferralTr
 import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.associate.server.entity.AssociateReferralDetail;

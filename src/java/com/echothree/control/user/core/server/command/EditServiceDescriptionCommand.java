@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditServiceDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditServiceDescriptionResult;
 import com.echothree.control.user.core.common.spec.ServiceDescriptionSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

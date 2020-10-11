@@ -22,7 +22,7 @@ import com.echothree.model.control.associate.server.logic.AssociateReferralLogic
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.common.exception.MissingDefaultCustomerTypeException;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;

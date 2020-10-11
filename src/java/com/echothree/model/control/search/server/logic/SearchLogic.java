@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.search.common.exception.DuplicateSearchResultActionException;
 import com.echothree.model.control.search.common.exception.UnknownCachedExecutedSearchResultException;
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchDefaultOperatorException;

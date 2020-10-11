@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditEntityAttributeEntityAttr
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

@@ -17,7 +17,6 @@
 package com.echothree.control.user.job.server.command;
 
 import com.echothree.control.user.job.common.form.CreateJobForm;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.job.server.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;

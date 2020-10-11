@@ -19,7 +19,7 @@ package com.echothree.model.control.sales.server.logic;
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.sales.common.exception.CannotDeleteSalesOrderBatchInUseException;

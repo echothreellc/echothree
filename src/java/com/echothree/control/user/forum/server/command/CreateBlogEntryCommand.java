@@ -19,7 +19,6 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
 import com.echothree.control.user.forum.common.result.CreateBlogEntryResult;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;

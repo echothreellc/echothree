@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.control;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.Message;

@@ -19,7 +19,7 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;

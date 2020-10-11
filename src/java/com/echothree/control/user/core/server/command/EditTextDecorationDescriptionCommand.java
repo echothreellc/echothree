@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditTextDecorationDescription
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditTextDecorationDescriptionResult;
 import com.echothree.control.user.core.common.spec.TextDecorationDescriptionSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.workeffort.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;

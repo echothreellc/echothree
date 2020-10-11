@@ -19,7 +19,7 @@ package com.echothree.model.control.vendor.server.transfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;

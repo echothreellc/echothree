@@ -17,7 +17,7 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
 import com.echothree.model.control.training.common.transfer.TrainingClassSectionTranslationTransfer;

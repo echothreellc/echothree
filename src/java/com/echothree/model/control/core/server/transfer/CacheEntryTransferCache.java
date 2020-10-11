@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.transfer.CacheEntryTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.CacheBlobEntry;
 import com.echothree.model.data.core.server.entity.CacheClobEntry;
 import com.echothree.model.data.core.server.entity.CacheEntry;

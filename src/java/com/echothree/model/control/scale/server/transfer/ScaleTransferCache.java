@@ -17,7 +17,7 @@
 package com.echothree.model.control.scale.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.ServerServiceTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.scale.common.transfer.ScaleTransfer;
 import com.echothree.model.control.scale.common.transfer.ScaleTypeTransfer;
 import com.echothree.model.control.scale.server.ScaleControl;

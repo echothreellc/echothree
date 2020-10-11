@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants;

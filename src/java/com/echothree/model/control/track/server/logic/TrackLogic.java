@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.track.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.track.common.exception.UnknownTrackNameException;
 import com.echothree.model.control.track.common.exception.UnknownTrackStatusChoiceException;
 import com.echothree.model.control.track.common.exception.UnknownTrackValueException;

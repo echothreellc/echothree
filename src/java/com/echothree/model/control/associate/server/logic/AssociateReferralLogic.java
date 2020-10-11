@@ -18,7 +18,7 @@ package com.echothree.model.control.associate.server.logic;
 
 import com.echothree.control.user.associate.common.spec.AssociatePartyContactMechanismSpec;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;

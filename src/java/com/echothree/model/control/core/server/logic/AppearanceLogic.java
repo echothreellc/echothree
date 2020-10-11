@@ -26,7 +26,7 @@ import com.echothree.model.control.core.common.exception.UnknownFontStyleNameExc
 import com.echothree.model.control.core.common.exception.UnknownFontWeightNameException;
 import com.echothree.model.control.core.common.exception.UnknownTextDecorationNameException;
 import com.echothree.model.control.core.common.exception.UnknownTextTransformationNameException;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.EntityInstance;

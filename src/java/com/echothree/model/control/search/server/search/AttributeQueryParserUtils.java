@@ -18,7 +18,7 @@ package com.echothree.model.control.search.server.search;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.search.common.exception.MissingRequiredSubfieldException;
 import com.echothree.model.control.search.common.exception.MissingValueException;

@@ -20,7 +20,7 @@ import com.echothree.model.control.core.common.exception.UnknownApplicationEdito
 import com.echothree.model.control.core.common.exception.UnknownApplicationEditorUseNameException;
 import com.echothree.model.control.core.common.exception.UnknownApplicationNameException;
 import com.echothree.model.control.core.common.exception.UnknownEditorNameException;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;

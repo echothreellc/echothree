@@ -20,7 +20,6 @@ import com.echothree.control.user.message.common.form.GetMessageTypeForm;
 import com.echothree.control.user.message.common.result.GetMessageTypeResult;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.message.server.MessageControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;

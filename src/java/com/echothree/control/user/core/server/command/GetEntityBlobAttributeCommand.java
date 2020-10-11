@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.GetEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.GetEntityBlobAttributeResult;
 import com.echothree.model.control.content.server.logic.ContentLogic;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;

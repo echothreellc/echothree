@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

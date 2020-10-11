@@ -19,7 +19,6 @@ package com.echothree.control.user.message.server.command;
 import com.echothree.control.user.message.common.form.GetMessageTypesForm;
 import com.echothree.control.user.message.common.result.GetMessageTypesResult;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.message.server.MessageControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;

@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.core.server;
+package com.echothree.model.control.core.server.control;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.associate.server.control.AssociateControl;
@@ -133,6 +133,7 @@ import static com.echothree.model.control.core.common.workflow.BaseEncryptionKey
 import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS;
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.WorkflowStep_EVENT_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS;
+import com.echothree.model.control.core.server.CoreDebugFlags;
 import com.echothree.model.control.core.server.transfer.AppearanceDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.AppearanceTextDecorationTransferCache;
 import com.echothree.model.control.core.server.transfer.AppearanceTextTransformationTransferCache;

@@ -20,7 +20,7 @@ import com.echothree.model.control.batch.common.exception.UnknownBatchAliasTypeN
 import com.echothree.model.control.batch.common.exception.UnknownBatchTypeEntityTypeException;
 import com.echothree.model.control.batch.common.exception.UnknownBatchTypeNameException;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;

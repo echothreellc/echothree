@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.employee.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.common.exception.InvalidLeaveStatusException;
 import com.echothree.model.control.employee.common.exception.UnknownLeaveReasonNameException;
 import com.echothree.model.control.employee.common.exception.UnknownLeaveTypeNameException;

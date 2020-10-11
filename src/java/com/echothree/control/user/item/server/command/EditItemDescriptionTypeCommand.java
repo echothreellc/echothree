@@ -23,7 +23,6 @@ import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResu
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -39,7 +38,6 @@ import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.model.data.item.server.value.ItemDescriptionTypeDescriptionValue;
 import com.echothree.model.data.item.server.value.ItemDescriptionTypeDetailValue;
 import com.echothree.model.data.item.server.value.ItemImageDescriptionTypeValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

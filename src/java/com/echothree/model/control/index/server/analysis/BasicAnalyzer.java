@@ -17,7 +17,7 @@
 package com.echothree.model.control.index.server.analysis;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.control.tag.server.TagControl;

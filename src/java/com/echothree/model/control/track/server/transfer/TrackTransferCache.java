@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.track.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.track.common.TrackOptions;
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.server.TrackControl;

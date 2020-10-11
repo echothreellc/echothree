@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.job.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.server.JobControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;

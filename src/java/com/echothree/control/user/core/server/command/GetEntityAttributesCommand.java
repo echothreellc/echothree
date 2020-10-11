@@ -20,7 +20,6 @@ import com.echothree.control.user.core.common.form.GetEntityAttributesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.GetEntityAttributesResult;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

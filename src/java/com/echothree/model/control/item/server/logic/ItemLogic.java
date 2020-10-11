@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.item.server.logic;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.item.common.exception.DuplicateItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameOrAliasException;

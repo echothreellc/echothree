@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.transfer.ApplicationEditorTransfer;
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
 import com.echothree.model.control.core.common.transfer.PartyApplicationEditorUseTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;

@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;

@@ -42,7 +42,7 @@
 
 package com.echothree.util.server.ulid;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.util.server.persistence.EncryptionUtils;

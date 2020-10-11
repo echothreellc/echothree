@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;

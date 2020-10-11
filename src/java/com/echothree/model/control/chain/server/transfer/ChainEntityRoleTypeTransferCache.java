@@ -20,7 +20,7 @@ import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypeTran
 import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

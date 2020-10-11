@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditEntityLongRangeDescriptio
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityLongRangeDescriptionResult;
 import com.echothree.control.user.core.common.spec.EntityLongRangeDescriptionSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;

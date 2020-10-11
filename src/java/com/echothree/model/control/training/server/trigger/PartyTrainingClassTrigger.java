@@ -17,7 +17,7 @@
 package com.echothree.model.control.training.server.trigger;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;

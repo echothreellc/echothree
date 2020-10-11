@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityGeoPointAttributeForm;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;

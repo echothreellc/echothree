@@ -17,7 +17,6 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateProfileForm;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.IconControl;
 import com.echothree.model.control.party.common.PartyTypes;

@@ -43,7 +43,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityAttributeN
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstanceResult;
 import com.echothree.model.control.core.server.database.EntityInstancesByBlobEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByBooleanEntityAttributeQuery;

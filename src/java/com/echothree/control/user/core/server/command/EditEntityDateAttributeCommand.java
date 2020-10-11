@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.form.EditEntityDateAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityDateAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityDateAttributeSpec;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;

@@ -17,7 +17,6 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.CreateScaleForm;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.core.server.entity.ServerService;

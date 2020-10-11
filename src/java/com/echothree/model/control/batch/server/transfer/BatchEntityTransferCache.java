@@ -19,7 +19,7 @@ package com.echothree.model.control.batch.server.transfer;
 import com.echothree.model.control.batch.common.transfer.BatchEntityTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.batch.server.entity.BatchEntity;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

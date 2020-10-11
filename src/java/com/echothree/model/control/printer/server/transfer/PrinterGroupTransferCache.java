@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.printer.common.PrinterOptions;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
 import com.echothree.model.control.printer.server.PrinterControl;

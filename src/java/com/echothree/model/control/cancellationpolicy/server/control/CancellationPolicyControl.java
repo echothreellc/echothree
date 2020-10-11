@@ -41,7 +41,7 @@ import com.echothree.model.control.cancellationpolicy.server.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.transfer.CancellationTypeTransferCache;
 import com.echothree.model.control.cancellationpolicy.server.transfer.PartyCancellationPolicyTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationKindPK;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationReasonPK;

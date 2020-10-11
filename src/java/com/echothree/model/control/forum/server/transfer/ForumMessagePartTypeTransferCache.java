@@ -17,7 +17,7 @@
 package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
