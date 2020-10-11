@@ -22,7 +22,7 @@ import com.echothree.control.user.job.common.form.EditJobDescriptionForm;
 import com.echothree.control.user.job.common.result.EditJobDescriptionResult;
 import com.echothree.control.user.job.common.result.JobResultFactory;
 import com.echothree.control.user.job.common.spec.JobDescriptionSpec;
-import com.echothree.model.control.job.server.JobControl;
+import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
