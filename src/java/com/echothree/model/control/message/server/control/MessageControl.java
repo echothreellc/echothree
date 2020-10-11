@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.message.server;
+package com.echothree.model.control.message.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.message.common.choice.MessageChoicesBean;

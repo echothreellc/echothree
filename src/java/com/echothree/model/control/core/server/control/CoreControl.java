@@ -199,7 +199,7 @@ import com.echothree.model.control.core.server.transfer.TextDecorationTransferCa
 import com.echothree.model.control.core.server.transfer.TextTransformationDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.TextTransformationTransferCache;
 import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.control.message.server.MessageControl;
+import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.queue.common.QueueConstants;
 import com.echothree.model.control.queue.common.exception.UnknownQueueTypeNameException;
 import com.echothree.model.control.queue.server.logic.QueuedEntityLogic;

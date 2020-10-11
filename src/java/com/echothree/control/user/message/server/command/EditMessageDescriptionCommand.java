@@ -22,7 +22,7 @@ import com.echothree.control.user.message.common.form.EditMessageDescriptionForm
 import com.echothree.control.user.message.common.result.EditMessageDescriptionResult;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.control.user.message.common.spec.MessageDescriptionSpec;
-import com.echothree.model.control.message.server.MessageControl;
+import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;

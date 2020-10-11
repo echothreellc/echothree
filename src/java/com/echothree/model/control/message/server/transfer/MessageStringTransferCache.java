@@ -18,7 +18,7 @@ package com.echothree.model.control.message.server.transfer;
 
 import com.echothree.model.control.message.common.transfer.MessageStringTransfer;
 import com.echothree.model.control.message.common.transfer.MessageTransfer;
-import com.echothree.model.control.message.server.MessageControl;
+import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageString;

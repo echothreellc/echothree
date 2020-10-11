@@ -17,7 +17,7 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.CreateEntityMessageForm;
-import com.echothree.model.control.message.server.MessageControl;
+import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
