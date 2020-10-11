@@ -20,7 +20,7 @@ import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;

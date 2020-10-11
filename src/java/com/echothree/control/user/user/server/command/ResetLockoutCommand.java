@@ -18,7 +18,7 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.authentication.server.command.BaseLoginCommand;
 import com.echothree.control.user.user.common.form.ResetLockoutForm;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;

@@ -22,7 +22,7 @@ import com.echothree.control.user.item.common.form.EditItemShippingTimeForm;
 import com.echothree.control.user.item.common.result.EditItemShippingTimeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemShippingTimeSpec;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.item.server.entity.Item;

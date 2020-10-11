@@ -19,7 +19,7 @@ package com.echothree.control.user.customer.server.command;
 import com.echothree.control.user.customer.common.form.GetCustomerCreditStatusChoicesForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.GetCustomerCreditStatusChoicesResult;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

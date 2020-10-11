@@ -22,7 +22,7 @@ import com.echothree.model.control.customer.common.exception.MustSpecifyCustomer
 import com.echothree.model.control.customer.common.exception.UnknownCustomerNameException;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerStatusChoiceException;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.server.PartyControl;

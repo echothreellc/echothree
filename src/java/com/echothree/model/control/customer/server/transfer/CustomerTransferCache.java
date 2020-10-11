@@ -32,7 +32,7 @@ import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;

@@ -19,7 +19,7 @@ package com.echothree.control.user.term.server.command;
 import com.echothree.control.user.term.common.form.GetCustomerTypeCreditLimitsForm;
 import com.echothree.control.user.term.common.result.GetCustomerTypeCreditLimitsResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

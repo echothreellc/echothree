@@ -17,7 +17,7 @@
 package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.customer.common.exception.UnknownCustomerTypePaymentMethodException;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.sales.common.exception.BillToPartyMustMatchPartyPaymentMethodsPartyException;
 import com.echothree.model.control.sales.common.exception.BillToRequiredWhenUsingPartyPaymentMethodException;

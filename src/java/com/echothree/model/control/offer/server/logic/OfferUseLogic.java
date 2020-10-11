@@ -17,7 +17,7 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.content.server.control.ContentControl;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.common.exception.CannotDeleteOfferUseInUseException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferUseException;
 import com.echothree.model.control.offer.server.control.OfferUseControl;

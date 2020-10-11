@@ -17,7 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;

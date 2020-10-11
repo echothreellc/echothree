@@ -20,7 +20,7 @@ import com.echothree.model.control.chain.common.exception.UnknownChainEntityRole
 import com.echothree.model.control.chain.common.exception.UnknownChainKindNameException;
 import com.echothree.model.control.chain.common.exception.UnknownChainTypeNameException;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;

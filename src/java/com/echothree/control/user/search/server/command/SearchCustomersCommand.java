@@ -19,7 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.SearchCustomersForm;
 import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;

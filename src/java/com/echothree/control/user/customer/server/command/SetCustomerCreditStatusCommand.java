@@ -17,7 +17,7 @@
 package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.SetCustomerCreditStatusForm;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.common.pk.PartyPK;

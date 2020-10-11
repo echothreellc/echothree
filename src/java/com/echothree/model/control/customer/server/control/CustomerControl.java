@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.customer.server;
+package com.echothree.model.control.customer.server.control;
 
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;

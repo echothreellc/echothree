@@ -18,7 +18,7 @@ package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.model.control.customer.common.transfer.CustomerTypeShippingMethodTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;

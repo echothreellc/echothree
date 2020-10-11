@@ -26,7 +26,7 @@ import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;

@@ -23,7 +23,7 @@ import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;

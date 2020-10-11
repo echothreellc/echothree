@@ -28,7 +28,7 @@ import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
-import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
