@@ -23,10 +23,9 @@ import com.echothree.control.user.picklist.common.result.EditPicklistAliasTypeRe
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.control.user.picklist.common.spec.PicklistAliasTypeSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.picklist.server.PicklistControl;
+import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDescription;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDetail;

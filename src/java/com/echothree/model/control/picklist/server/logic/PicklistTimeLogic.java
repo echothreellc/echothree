@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.picklist.server.logic;
 
-import com.echothree.model.control.picklist.server.PicklistControl;
+import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.Picklist;
 import com.echothree.model.data.picklist.server.entity.PicklistDetail;
 import com.echothree.model.data.picklist.server.entity.PicklistTime;

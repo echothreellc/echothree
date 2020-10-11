@@ -19,7 +19,7 @@ package com.echothree.model.control.picklist.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeDescriptionTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeTransfer;
-import com.echothree.model.control.picklist.server.PicklistControl;
+import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
