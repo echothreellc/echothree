@@ -23,7 +23,7 @@ import com.echothree.control.user.item.common.result.EditItemUnitOfMeasureTypeRe
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.value.ItemUnitOfMeasureTypeValue;

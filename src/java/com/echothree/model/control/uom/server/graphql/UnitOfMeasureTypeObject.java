@@ -21,7 +21,7 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDescription;

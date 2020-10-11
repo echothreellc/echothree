@@ -17,7 +17,7 @@
 package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.DeleteUnitOfMeasureTypeWeightForm;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeWeight;

@@ -20,7 +20,7 @@ import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirem
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;

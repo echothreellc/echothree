@@ -20,7 +20,7 @@ import com.echothree.control.user.uom.common.form.GetUnitOfMeasureTypeForm;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

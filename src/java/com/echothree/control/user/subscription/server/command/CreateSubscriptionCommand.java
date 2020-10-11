@@ -21,7 +21,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.subscription.server.logic.SubscriptionLogic;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;

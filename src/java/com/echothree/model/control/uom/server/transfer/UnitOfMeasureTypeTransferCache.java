@@ -22,7 +22,7 @@ import com.echothree.model.control.uom.common.UomOptions;
 import com.echothree.model.control.uom.common.UomProperties;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeVolume;

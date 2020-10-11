@@ -20,7 +20,7 @@ import com.echothree.model.control.party.common.transfer.PartyTypeLockoutPolicyT
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
 import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicyDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;

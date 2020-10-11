@@ -22,7 +22,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindUseException;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindUseTypeNameException;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;

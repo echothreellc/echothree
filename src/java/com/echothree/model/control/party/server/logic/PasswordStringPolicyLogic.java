@@ -18,7 +18,7 @@ package com.echothree.model.control.party.server.logic;
 
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;

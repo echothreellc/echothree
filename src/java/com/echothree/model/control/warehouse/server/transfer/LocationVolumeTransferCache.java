@@ -17,7 +17,7 @@
 package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationVolumeTransfer;
 import com.echothree.model.control.warehouse.server.WarehouseControl;

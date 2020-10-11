@@ -21,7 +21,7 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;

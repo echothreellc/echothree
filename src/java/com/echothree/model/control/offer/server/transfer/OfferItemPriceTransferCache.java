@@ -27,7 +27,7 @@ import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.offer.server.entity.OfferItem;

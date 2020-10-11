@@ -24,7 +24,7 @@ import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;

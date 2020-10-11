@@ -20,7 +20,7 @@ import com.echothree.model.control.party.common.transfer.PartyTypeAuditPolicyTra
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
 import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicyDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;

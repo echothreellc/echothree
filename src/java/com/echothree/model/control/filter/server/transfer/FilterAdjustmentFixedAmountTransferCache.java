@@ -23,7 +23,7 @@ import com.echothree.model.control.filter.common.transfer.FilterAdjustmentFixedA
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
 import com.echothree.model.data.user.server.entity.UserVisit;

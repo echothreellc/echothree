@@ -18,9 +18,8 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureTypeForm;
 import com.echothree.model.control.accounting.server.logic.SymbolPositionLogic;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;

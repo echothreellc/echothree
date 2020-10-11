@@ -23,7 +23,7 @@ import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindDescrip
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.control.user.uom.common.spec.UnitOfMeasureKindDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDescription;

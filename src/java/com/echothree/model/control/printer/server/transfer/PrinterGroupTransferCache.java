@@ -21,7 +21,7 @@ import com.echothree.model.control.printer.common.PrinterOptions;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;

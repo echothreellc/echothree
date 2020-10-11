@@ -24,7 +24,7 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;

@@ -18,7 +18,7 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureKindUseTypeDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseTypeDescription;

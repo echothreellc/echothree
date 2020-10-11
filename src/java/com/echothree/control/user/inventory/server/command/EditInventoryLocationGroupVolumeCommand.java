@@ -24,7 +24,7 @@ import com.echothree.control.user.inventory.common.result.InventoryResultFactory
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
