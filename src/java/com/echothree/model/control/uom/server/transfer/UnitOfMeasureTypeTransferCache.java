@@ -17,7 +17,7 @@
 package com.echothree.model.control.uom.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.uom.common.UomOptions;
 import com.echothree.model.control.uom.common.UomProperties;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;

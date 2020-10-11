@@ -18,7 +18,7 @@ package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.financial.common.FinancialOptions;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTransfer;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTransfer;

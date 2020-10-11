@@ -22,7 +22,7 @@ import com.echothree.control.user.term.common.form.EditCustomerTypeCreditLimitFo
 import com.echothree.control.user.term.common.result.EditCustomerTypeCreditLimitResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.control.user.term.common.spec.CustomerTypeCreditLimitSpec;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;

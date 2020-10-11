@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.accounting.server.graphql;
 
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;

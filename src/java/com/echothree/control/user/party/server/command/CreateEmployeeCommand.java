@@ -19,7 +19,7 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.CreateEmployeeForm;
 import com.echothree.control.user.party.common.result.CreateEmployeeResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;

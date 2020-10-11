@@ -17,7 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

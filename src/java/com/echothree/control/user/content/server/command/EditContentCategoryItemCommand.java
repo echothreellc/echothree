@@ -22,7 +22,7 @@ import com.echothree.control.user.content.common.form.EditContentCategoryItemFor
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentCategoryItemResult;
 import com.echothree.control.user.content.common.spec.ContentCategoryItemSpec;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.inventory.server.control.InventoryControl;

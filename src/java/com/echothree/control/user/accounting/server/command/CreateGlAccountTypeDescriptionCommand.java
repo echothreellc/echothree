@@ -17,7 +17,7 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.CreateGlAccountTypeDescriptionForm;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.accounting.server.entity.GlAccountTypeDescription;

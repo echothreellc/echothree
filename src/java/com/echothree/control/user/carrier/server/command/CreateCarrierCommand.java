@@ -19,7 +19,7 @@ package com.echothree.control.user.carrier.server.command;
 import com.echothree.control.user.carrier.common.form.CreateCarrierForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.control.user.carrier.common.result.CreateCarrierResult;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.server.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;

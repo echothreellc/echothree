@@ -16,16 +16,13 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
-import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
-import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.util.server.persistence.Session;

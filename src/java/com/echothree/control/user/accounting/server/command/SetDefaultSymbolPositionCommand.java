@@ -17,7 +17,7 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.SetDefaultSymbolPositionForm;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

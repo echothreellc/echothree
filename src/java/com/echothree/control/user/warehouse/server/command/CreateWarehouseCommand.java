@@ -19,7 +19,7 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
 import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.printer.common.PrinterConstants;

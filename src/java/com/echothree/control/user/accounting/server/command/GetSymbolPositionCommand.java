@@ -19,7 +19,7 @@ package com.echothree.control.user.accounting.server.command;
 import com.echothree.control.user.accounting.common.form.GetSymbolPositionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.control.user.accounting.common.result.GetSymbolPositionResult;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.SymbolPositionLogic;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;

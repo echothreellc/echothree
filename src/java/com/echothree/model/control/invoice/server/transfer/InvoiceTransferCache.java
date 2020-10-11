@@ -17,7 +17,7 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.invoice.common.InvoiceOptions;
 import com.echothree.model.control.invoice.common.InvoiceTypes;

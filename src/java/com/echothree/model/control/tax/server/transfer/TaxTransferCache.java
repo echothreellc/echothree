@@ -17,7 +17,7 @@
 package com.echothree.model.control.tax.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.common.transfer.ContactMechanismPurposeTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.tax.common.transfer.TaxTransfer;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentAmountForm;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.uom.server.UomControl;

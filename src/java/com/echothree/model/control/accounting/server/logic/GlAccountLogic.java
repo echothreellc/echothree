@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.util.common.message.ExecutionErrors;

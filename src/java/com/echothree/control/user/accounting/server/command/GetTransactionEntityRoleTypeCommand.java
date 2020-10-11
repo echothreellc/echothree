@@ -19,7 +19,7 @@ package com.echothree.control.user.accounting.server.command;
 import com.echothree.control.user.accounting.common.form.GetTransactionEntityRoleTypeForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeResult;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.accounting.server.entity.TransactionType;

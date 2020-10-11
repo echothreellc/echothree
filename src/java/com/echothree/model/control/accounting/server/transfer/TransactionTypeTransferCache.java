@@ -17,7 +17,7 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.accounting.server.entity.TransactionTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

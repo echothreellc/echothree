@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionGlAccountTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;

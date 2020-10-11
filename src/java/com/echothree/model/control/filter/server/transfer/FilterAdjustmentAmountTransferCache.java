@@ -17,7 +17,7 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmountTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;

@@ -18,14 +18,13 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationEventForm;
 import com.echothree.model.control.accounting.common.AccountingConstants;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.server.CommunicationControl;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.document.common.DocumentConstants;
 import com.echothree.model.control.document.server.DocumentControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;

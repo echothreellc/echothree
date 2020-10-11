@@ -22,7 +22,7 @@ import com.echothree.control.user.item.common.form.EditItemUnitPriceLimitForm;
 import com.echothree.control.user.item.common.result.EditItemUnitPriceLimitResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemUnitPriceLimitSpec;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;

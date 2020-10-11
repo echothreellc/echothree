@@ -22,7 +22,7 @@ import com.echothree.control.user.customer.common.form.EditCustomerTypeForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.spec.CustomerTypeSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;

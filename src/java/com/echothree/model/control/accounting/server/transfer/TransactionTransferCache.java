@@ -19,7 +19,7 @@ import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Transaction;

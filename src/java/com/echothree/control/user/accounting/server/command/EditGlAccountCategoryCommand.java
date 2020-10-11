@@ -22,7 +22,7 @@ import com.echothree.control.user.accounting.common.form.EditGlAccountCategoryFo
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.control.user.accounting.common.result.EditGlAccountCategoryResult;
 import com.echothree.control.user.accounting.common.spec.GlAccountCategorySpec;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,7 +32,6 @@ import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescri
 import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDetail;
 import com.echothree.model.data.accounting.server.value.GlAccountCategoryDescriptionValue;
 import com.echothree.model.data.accounting.server.value.GlAccountCategoryDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

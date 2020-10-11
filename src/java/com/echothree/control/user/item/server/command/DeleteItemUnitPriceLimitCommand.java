@@ -17,7 +17,7 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteItemUnitPriceLimitForm;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;

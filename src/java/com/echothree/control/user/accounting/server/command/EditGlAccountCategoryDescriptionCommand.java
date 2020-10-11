@@ -22,7 +22,7 @@ import com.echothree.control.user.accounting.common.form.EditGlAccountCategoryDe
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.control.user.accounting.common.result.EditGlAccountCategoryDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.GlAccountCategoryDescriptionSpec;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

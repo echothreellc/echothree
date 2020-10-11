@@ -22,7 +22,7 @@ import com.echothree.control.user.accounting.common.form.EditItemAccountingCateg
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryDescriptionSpec;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

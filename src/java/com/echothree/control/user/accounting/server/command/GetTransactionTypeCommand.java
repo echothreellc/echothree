@@ -19,7 +19,7 @@ package com.echothree.control.user.accounting.server.command;
 import com.echothree.control.user.accounting.common.form.GetTransactionTypeForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.control.user.accounting.common.result.GetTransactionTypeResult;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

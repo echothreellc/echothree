@@ -18,7 +18,7 @@ package com.echothree.model.control.accounting.server.logic;
 
 import com.echothree.model.control.accounting.common.exception.MissingDefaultCurrencyException;
 import com.echothree.model.control.accounting.common.exception.UnknownCurrencyIsoNameException;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;

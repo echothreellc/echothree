@@ -19,7 +19,7 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemPriceForm;
 import com.echothree.control.user.item.common.result.GetItemPriceResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

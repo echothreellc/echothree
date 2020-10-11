@@ -22,7 +22,7 @@ import com.echothree.control.user.party.common.form.EditEmployeeForm;
 import com.echothree.control.user.party.common.result.EditEmployeeResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.EmployeeSpec;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;

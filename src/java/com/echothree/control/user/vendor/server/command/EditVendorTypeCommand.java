@@ -22,7 +22,7 @@ import com.echothree.control.user.vendor.common.form.EditVendorTypeForm;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.control.user.vendor.common.spec.VendorTypeSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;

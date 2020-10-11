@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.accounting.server;
+package com.echothree.model.control.accounting.server.control;
 
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlAccountCategoryChoicesBean;

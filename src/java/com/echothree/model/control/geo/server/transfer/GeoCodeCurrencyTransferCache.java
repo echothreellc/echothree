@@ -17,7 +17,7 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.geo.common.transfer.GeoCodeCurrencyTransfer;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.GeoControl;

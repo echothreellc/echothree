@@ -18,7 +18,7 @@ package com.echothree.model.control.vendor.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.carrier.server.CarrierControl;

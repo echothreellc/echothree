@@ -17,7 +17,7 @@
 package com.echothree.model.control.term.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.term.common.transfer.PartyCreditLimitTransfer;

@@ -17,14 +17,13 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.CreateTaxForm;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

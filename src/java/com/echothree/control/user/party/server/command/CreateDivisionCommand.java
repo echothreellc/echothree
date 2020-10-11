@@ -19,7 +19,7 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.CreateDivisionForm;
 import com.echothree.control.user.party.common.result.CreateDivisionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
