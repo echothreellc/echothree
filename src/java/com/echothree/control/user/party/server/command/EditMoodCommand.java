@@ -23,7 +23,7 @@ import com.echothree.control.user.party.common.result.EditMoodResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.MoodSpec;
 import com.echothree.model.control.icon.common.IconConstants;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.icon.server.entity.IconUsage;

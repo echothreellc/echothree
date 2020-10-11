@@ -20,7 +20,7 @@ import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumGroupTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumGroupDetail;

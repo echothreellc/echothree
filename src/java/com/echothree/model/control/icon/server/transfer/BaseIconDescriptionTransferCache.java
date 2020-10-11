@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.icon.server.transfer;
 
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;

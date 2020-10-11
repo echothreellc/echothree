@@ -19,7 +19,7 @@ package com.echothree.control.user.forum.server.command;
 import com.echothree.control.user.forum.common.form.CreateForumGroupForm;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.icon.server.entity.IconUsage;

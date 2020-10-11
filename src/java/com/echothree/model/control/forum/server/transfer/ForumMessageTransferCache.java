@@ -23,7 +23,7 @@ import com.echothree.model.control.forum.common.transfer.ForumMessageTypeTransfe
 import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumMessageDetail;
 import com.echothree.model.data.icon.server.entity.Icon;

@@ -19,7 +19,7 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
 import com.echothree.model.control.party.common.transfer.GenderTransfer;
 import com.echothree.model.control.party.common.transfer.MoodTransfer;

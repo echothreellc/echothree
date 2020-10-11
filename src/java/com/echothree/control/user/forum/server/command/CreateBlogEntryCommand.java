@@ -23,7 +23,7 @@ import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.icon.common.IconConstants;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.core.server.entity.MimeType;

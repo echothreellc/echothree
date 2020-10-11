@@ -21,7 +21,7 @@ import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.forum.server.entity.Forum;

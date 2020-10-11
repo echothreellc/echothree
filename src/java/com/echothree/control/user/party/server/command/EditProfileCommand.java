@@ -25,7 +25,7 @@ import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.icon.common.IconConstants;
-import com.echothree.model.control.icon.server.IconControl;
+import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
