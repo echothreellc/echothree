@@ -17,7 +17,7 @@
 package com.echothree.util.server.transfer;
 
 import com.echothree.model.control.comment.common.transfer.CommentListWrapper;
-import com.echothree.model.control.comment.server.CommentControl;
+import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;

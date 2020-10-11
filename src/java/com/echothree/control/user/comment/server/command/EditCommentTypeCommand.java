@@ -22,8 +22,7 @@ import com.echothree.control.user.comment.common.form.EditCommentTypeForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.control.user.comment.common.result.EditCommentTypeResult;
 import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
-import com.echothree.model.control.comment.server.CommentControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
@@ -33,7 +32,6 @@ import com.echothree.model.data.comment.server.value.CommentTypeDescriptionValue
 import com.echothree.model.data.comment.server.value.CommentTypeDetailValue;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;

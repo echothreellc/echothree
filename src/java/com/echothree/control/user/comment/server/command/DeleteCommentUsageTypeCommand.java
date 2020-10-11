@@ -17,8 +17,7 @@
 package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.DeleteCommentUsageTypeForm;
-import com.echothree.model.control.comment.server.CommentControl;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.comment.server.entity.CommentUsageType;
 import com.echothree.model.data.core.server.entity.ComponentVendor;

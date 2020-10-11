@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.comment.server.transfer;
 
-import com.echothree.model.control.comment.server.CommentControl;
+import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;

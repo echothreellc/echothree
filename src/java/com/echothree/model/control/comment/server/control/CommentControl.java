@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.comment.server;
+package com.echothree.model.control.comment.server.control;
 
 import com.echothree.model.control.comment.common.choice.CommentStatusChoicesBean;
 import com.echothree.model.control.comment.common.transfer.CommentTransfer;
