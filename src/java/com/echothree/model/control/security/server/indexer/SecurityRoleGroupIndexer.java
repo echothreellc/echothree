@@ -20,7 +20,7 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.SecurityRoleGroupAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
-import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;

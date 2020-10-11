@@ -31,7 +31,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.common.UserConstants;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.selector.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.common.choice.SelectorBooleanTypeChoicesBean;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;

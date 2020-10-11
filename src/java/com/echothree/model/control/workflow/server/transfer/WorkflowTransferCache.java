@@ -17,7 +17,7 @@
 package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
-import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.workflow.common.WorkflowProperties;

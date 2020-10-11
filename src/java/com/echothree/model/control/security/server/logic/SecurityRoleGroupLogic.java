@@ -17,7 +17,7 @@
 package com.echothree.model.control.security.server.logic;
 
 import com.echothree.model.control.security.common.exception.UnknownSecurityRoleGroupNameException;
-import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
