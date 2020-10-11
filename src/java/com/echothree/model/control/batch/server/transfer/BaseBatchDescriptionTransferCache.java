@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.batch.server.transfer;
 
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;

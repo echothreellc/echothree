@@ -17,7 +17,7 @@
 package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.batch.common.BatchConstants;
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.server.control.OrderBatchControl;

@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.batch.server;
+package com.echothree.model.control.batch.server.control;
 
 import com.echothree.model.control.batch.common.choice.BatchAliasTypeChoicesBean;
 import com.echothree.model.control.batch.common.choice.BatchTypeChoicesBean;

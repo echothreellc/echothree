@@ -18,7 +18,7 @@ package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchAliasTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchAliasTypeTransfer;
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

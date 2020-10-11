@@ -19,7 +19,7 @@ package com.echothree.control.user.batch.server.command;
 import com.echothree.control.user.batch.common.form.GetBatchAliasTypesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.control.user.batch.common.result.GetBatchAliasTypesResult;
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

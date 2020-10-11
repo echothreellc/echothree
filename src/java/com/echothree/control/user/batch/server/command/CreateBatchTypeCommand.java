@@ -17,14 +17,13 @@
 package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.CreateBatchTypeForm;
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;

@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.batch.server.BatchControl;
+import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.comment.server.CommentControl;
 import com.echothree.model.control.core.common.ComponentVendors;
