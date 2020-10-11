@@ -19,7 +19,7 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationReasonForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationReasonResult;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

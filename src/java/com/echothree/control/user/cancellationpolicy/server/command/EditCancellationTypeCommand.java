@@ -22,7 +22,7 @@ import com.echothree.control.user.cancellationpolicy.common.form.EditCancellatio
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.control.user.cancellationpolicy.common.result.EditCancellationTypeResult;
 import com.echothree.control.user.cancellationpolicy.common.spec.CancellationTypeSpec;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -33,7 +33,6 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationTyp
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationTypeDetail;
 import com.echothree.model.data.cancellationpolicy.server.value.CancellationTypeDescriptionValue;
 import com.echothree.model.data.cancellationpolicy.server.value.CancellationTypeDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

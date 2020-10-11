@@ -18,7 +18,7 @@ package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;

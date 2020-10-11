@@ -17,7 +17,7 @@
 package com.echothree.model.control.vendor.server.transfer;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.term.server.TermControl;

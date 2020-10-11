@@ -17,7 +17,7 @@
 package com.echothree.model.control.cancellationpolicy.server.logic;
 
 import com.echothree.model.control.cancellationpolicy.common.choice.PartyCancellationPolicyStatusChoicesBean;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.cancellationpolicy.common.workflow.PartyCancellationPolicyStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;

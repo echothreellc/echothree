@@ -17,7 +17,7 @@
 package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.customer.common.CustomerProperties;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;

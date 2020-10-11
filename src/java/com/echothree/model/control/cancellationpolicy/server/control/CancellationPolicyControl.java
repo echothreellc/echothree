@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.cancellationpolicy.server;
+package com.echothree.model.control.cancellationpolicy.server.control;
 
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationKindChoicesBean;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;

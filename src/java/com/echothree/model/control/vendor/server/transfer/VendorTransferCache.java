@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
-import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.carrier.server.CarrierControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.CommunicationControl;
