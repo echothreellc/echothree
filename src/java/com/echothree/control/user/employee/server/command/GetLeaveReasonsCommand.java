@@ -19,7 +19,7 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.form.GetLeaveReasonsForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.result.GetLeaveReasonsResult;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;

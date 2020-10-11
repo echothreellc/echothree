@@ -24,7 +24,7 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.common.EmployeeOptions;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.control.employee.common.transfer.EmployeeTypeTransfer;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;

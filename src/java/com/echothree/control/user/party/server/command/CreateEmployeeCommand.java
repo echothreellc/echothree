@@ -25,7 +25,7 @@ import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;

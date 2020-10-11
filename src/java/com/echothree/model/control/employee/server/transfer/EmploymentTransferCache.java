@@ -19,7 +19,7 @@ package com.echothree.model.control.employee.server.transfer;
 import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.model.control.employee.common.transfer.TerminationReasonTransfer;
 import com.echothree.model.control.employee.common.transfer.TerminationTypeTransfer;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;

@@ -20,7 +20,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;

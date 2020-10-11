@@ -22,13 +22,12 @@ import com.echothree.control.user.employee.common.form.EditTerminationReasonForm
 import com.echothree.control.user.employee.common.result.EditTerminationReasonResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationReasonSpec;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationReason;
 import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;
 import com.echothree.model.data.employee.server.entity.TerminationReasonDetail;
 import com.echothree.model.data.employee.server.value.TerminationReasonDescriptionValue;
 import com.echothree.model.data.employee.server.value.TerminationReasonDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

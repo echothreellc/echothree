@@ -22,7 +22,7 @@ import com.echothree.control.user.employee.common.form.EditLeaveForm;
 import com.echothree.control.user.employee.common.result.EditLeaveResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.LeaveSpec;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.logic.LeaveLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

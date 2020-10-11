@@ -20,7 +20,7 @@ import com.echothree.control.user.employee.common.form.GetTerminationTypeForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.result.GetTerminationTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;

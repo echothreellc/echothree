@@ -18,7 +18,7 @@ package com.echothree.model.control.party.server.logic;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.CannotSpecifyEmployeeNameAndPartyNameException;
 import com.echothree.model.control.party.common.exception.MustSpecifyEmployeeNameOrPartyNameException;

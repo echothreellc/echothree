@@ -18,7 +18,7 @@ package com.echothree.util.server.persistence.translator;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;

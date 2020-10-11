@@ -22,7 +22,7 @@ import com.echothree.control.user.user.common.result.GetRecoveryAnswerResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.vendor.server.VendorControl;

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.selector.server.evaluator;
 
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.training.server.TrainingControl;

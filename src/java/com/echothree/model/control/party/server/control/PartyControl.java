@@ -22,7 +22,7 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.control.DocumentControl;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.choice.BirthdayFormatChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;

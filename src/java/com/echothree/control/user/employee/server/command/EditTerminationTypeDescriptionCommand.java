@@ -22,7 +22,7 @@ import com.echothree.control.user.employee.common.form.EditTerminationTypeDescri
 import com.echothree.control.user.employee.common.result.EditTerminationTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationTypeDescriptionSpec;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;

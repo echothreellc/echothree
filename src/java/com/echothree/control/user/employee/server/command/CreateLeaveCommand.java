@@ -17,7 +17,7 @@
 package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateLeaveForm;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.logic.LeaveLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

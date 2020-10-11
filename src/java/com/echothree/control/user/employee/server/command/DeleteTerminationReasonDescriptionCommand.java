@@ -17,7 +17,7 @@
 package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.DeleteTerminationReasonDescriptionForm;
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.TerminationReason;
 import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;

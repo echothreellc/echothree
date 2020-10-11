@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.employee.server.indexer;
 
-import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
