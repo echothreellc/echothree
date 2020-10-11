@@ -23,7 +23,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.common.ShipmentTypes;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeShippingMethod;

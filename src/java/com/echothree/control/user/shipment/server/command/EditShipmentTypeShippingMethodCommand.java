@@ -23,7 +23,7 @@ import com.echothree.control.user.shipment.common.result.EditShipmentTypeShippin
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentTypeShippingMethodSpec;
 import com.echothree.model.control.shipment.server.ShipmentControl;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
 import com.echothree.model.data.shipment.server.value.ShipmentTypeShippingMethodValue;

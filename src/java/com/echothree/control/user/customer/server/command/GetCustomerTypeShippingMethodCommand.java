@@ -20,7 +20,7 @@ import com.echothree.control.user.customer.common.form.GetCustomerTypeShippingMe
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeShippingMethodResult;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;

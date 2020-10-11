@@ -23,7 +23,7 @@ import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactor
 import com.echothree.model.control.selector.server.evaluator.ShippingMethodItemSelectorEvaluator;
 import com.echothree.model.control.shipping.common.exception.ItemNotAcceptibleForShippingMethodException;
 import com.echothree.model.control.shipping.common.exception.UnknownShippingMethodNameException;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;

@@ -21,7 +21,7 @@ import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.shipping.common.ShippingOptions;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDetail;

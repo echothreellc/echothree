@@ -41,7 +41,7 @@ import com.echothree.model.control.carrier.server.transfer.CarrierTypeTransferCa
 import com.echothree.model.control.carrier.server.transfer.PartyCarrierAccountTransferCache;
 import com.echothree.model.control.carrier.server.transfer.PartyCarrierTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.carrier.common.pk.CarrierOptionPK;
 import com.echothree.model.data.carrier.common.pk.CarrierServicePK;
 import com.echothree.model.data.carrier.common.pk.CarrierTypePK;

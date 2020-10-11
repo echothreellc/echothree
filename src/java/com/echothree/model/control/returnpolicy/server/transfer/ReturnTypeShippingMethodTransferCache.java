@@ -20,7 +20,7 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeShippi
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
-import com.echothree.model.control.shipping.server.ShippingControl;
+import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
