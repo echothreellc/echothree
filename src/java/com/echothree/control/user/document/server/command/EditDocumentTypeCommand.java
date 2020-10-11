@@ -22,7 +22,7 @@ import com.echothree.control.user.document.common.form.EditDocumentTypeForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.control.user.document.common.result.EditDocumentTypeResult;
 import com.echothree.control.user.document.common.spec.DocumentTypeSpec;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

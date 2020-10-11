@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.document.server;
+package com.echothree.model.control.document.server.control;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EventTypes;

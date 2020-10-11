@@ -23,7 +23,7 @@ import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.control.user.document.common.result.EditPartyDocumentResult;
 import com.echothree.control.user.document.common.spec.DocumentSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.document.server.logic.DocumentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

@@ -18,7 +18,7 @@ package com.echothree.model.control.document.server.logic;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentType;

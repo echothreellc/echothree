@@ -20,7 +20,7 @@ import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.comment.server.entity.Comment;

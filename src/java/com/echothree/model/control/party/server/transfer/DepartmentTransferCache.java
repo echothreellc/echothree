@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.common.transfer.DepartmentTransfer;

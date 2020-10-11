@@ -19,7 +19,7 @@ package com.echothree.control.user.document.server.command;
 import com.echothree.control.user.document.common.form.GetPartyTypeDocumentTypeUsageTypeForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.control.user.document.common.result.GetPartyTypeDocumentTypeUsageTypeResult;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

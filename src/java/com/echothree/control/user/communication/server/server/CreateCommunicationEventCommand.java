@@ -24,7 +24,7 @@ import com.echothree.model.control.communication.server.control.CommunicationCon
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.document.common.DocumentConstants;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;

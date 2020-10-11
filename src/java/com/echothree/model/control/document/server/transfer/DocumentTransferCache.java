@@ -22,7 +22,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.document.common.DocumentOptions;
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentBlob;
 import com.echothree.model.data.document.server.entity.DocumentClob;

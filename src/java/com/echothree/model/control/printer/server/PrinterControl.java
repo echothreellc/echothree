@@ -20,7 +20,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
 import com.echothree.model.control.printer.common.choice.PrinterGroupJobStatusChoicesBean;
 import com.echothree.model.control.printer.common.choice.PrinterGroupStatusChoicesBean;

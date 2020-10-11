@@ -20,7 +20,7 @@ import com.echothree.control.user.document.common.form.GetDocumentTypeForm;
 import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.control.user.document.common.result.GetDocumentTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

@@ -17,7 +17,7 @@
 package com.echothree.model.control.icon.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
 import com.echothree.model.control.icon.common.choice.IconUsageTypeChoicesBean;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;

@@ -24,7 +24,7 @@ import com.echothree.model.control.communication.server.control.CommunicationCon
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.communication.server.entity.CommunicationEventDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

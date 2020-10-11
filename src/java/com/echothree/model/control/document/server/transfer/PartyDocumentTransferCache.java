@@ -18,7 +18,7 @@ package com.echothree.model.control.document.server.transfer;
 
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
-import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyDocument;
