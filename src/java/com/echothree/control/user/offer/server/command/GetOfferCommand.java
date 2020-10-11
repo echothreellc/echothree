@@ -22,10 +22,13 @@ import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -56,7 +59,11 @@ public class GetOfferCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OfferName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -67,22 +74,18 @@ public class GetOfferCommand
     
     @Override
     protected Offer getEntity() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        String offerName = form.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
-        
+        Offer offer = OfferLogic.getInstance().getOfferByUniversalSpec(this, form, true);
+
         if(offer != null) {
             sendEventUsingNames(offer.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
         }
-        
+
         return offer;
     }
     
     @Override
     protected BaseResult getTransfer(Offer offer) {
-        GetOfferResult result = OfferResultFactory.getGetOfferResult();
+        var result = OfferResultFactory.getGetOfferResult();
         
         if(offer != null) {
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);

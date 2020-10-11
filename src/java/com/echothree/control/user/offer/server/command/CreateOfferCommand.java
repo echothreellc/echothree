@@ -73,9 +73,9 @@ public class CreateOfferCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
                 new FieldDefinition("SalesOrderSequenceName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyCompanyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyDivisionName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyDepartmentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DivisionName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DepartmentName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OfferItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OfferItemPriceFilterName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
