@@ -25,17 +25,14 @@ import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.GetBirthdayFormatChoicesForm;
 import com.echothree.control.user.party.common.form.GetGenderChoicesForm;
-import com.echothree.control.user.party.common.form.GetMoodChoicesForm;
 import com.echothree.control.user.party.common.result.GetBirthdayFormatChoicesResult;
 import com.echothree.control.user.party.common.result.GetGenderChoicesResult;
-import com.echothree.control.user.party.common.result.GetMoodChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
 import com.echothree.model.control.party.common.choice.BirthdayFormatChoicesBean;
 import com.echothree.model.control.party.common.choice.GenderChoicesBean;
-import com.echothree.model.control.party.common.choice.MoodChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
@@ -52,7 +49,6 @@ public class ProfileAddActionForm
     
     private IconChoicesBean iconChoices;
     private GenderChoicesBean genderChoices;
-    private MoodChoicesBean moodChoices;
     private BirthdayFormatChoicesBean birthdayFormatChoices;
     private MimeTypeChoicesBean bioMimeTypeChoices;
     private MimeTypeChoicesBean signatureMimeTypeChoices;
@@ -60,7 +56,6 @@ public class ProfileAddActionForm
     private String nickname;
     private String iconChoice;
     private String genderChoice;
-    private String moodChoice;
     private String birthday;
     private String birthdayFormatChoice;
     private String occupation;
@@ -110,25 +105,6 @@ public class ProfileAddActionForm
         }
     }
     
-    private void setupMoodChoices()
-            throws NamingException {
-        if(moodChoices == null) {
-            GetMoodChoicesForm commandForm = PartyUtil.getHome().getGetMoodChoicesForm();
-
-            commandForm.setDefaultMoodChoice(moodChoice);
-            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-
-            CommandResult commandResult = PartyUtil.getHome().getMoodChoices(userVisitPK, commandForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetMoodChoicesResult result = (GetMoodChoicesResult)executionResult.getResult();
-            moodChoices = result.getMoodChoices();
-
-            if(moodChoice == null) {
-                moodChoice = moodChoices.getDefaultValue();
-            }
-        }
-    }
-
     private void setupBirthdayFormatChoices()
             throws NamingException {
         if(birthdayFormatChoices == null) {
@@ -240,29 +216,6 @@ public class ProfileAddActionForm
         setupGenderChoices();
         
         return genderChoice;
-    }
-    
-    public List<LabelValueBean> getMoodChoices()
-            throws NamingException {
-        List<LabelValueBean> choices = null;
-        
-        setupMoodChoices();
-        if(moodChoices != null) {
-            choices = convertChoices(moodChoices);
-        }
-        
-        return choices;
-    }
-    
-    public void setMoodChoice(String moodChoice) {
-        this.moodChoice = moodChoice;
-    }
-    
-    public String getMoodChoice()
-            throws NamingException {
-        setupMoodChoices();
-        
-        return moodChoice;
     }
     
     public String getBirthday() {

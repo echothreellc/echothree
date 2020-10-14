@@ -26,7 +26,6 @@ public class ProfileTransfer
     private String nickname;
     private IconTransfer icon;
     private GenderTransfer gender;
-    private MoodTransfer mood;
     private String birthday;
     private Integer unformattedBirthday;
     private BirthdayFormatTransfer birthdayFormat;
@@ -39,13 +38,12 @@ public class ProfileTransfer
     private String signature;
     
     /** Creates a new instance of ProfileTransfer */
-    public ProfileTransfer(String nickname, IconTransfer icon, GenderTransfer gender, MoodTransfer mood, String birthday, Integer unformattedBirthday,
-            BirthdayFormatTransfer birthdayFormat, String occupation, String hobbies, String location, MimeTypeTransfer bioMimeType, String bio,
-            MimeTypeTransfer signatureMimeType, String signature) {
+    public ProfileTransfer(String nickname, IconTransfer icon, GenderTransfer gender, String birthday, Integer unformattedBirthday,
+            BirthdayFormatTransfer birthdayFormat, String occupation, String hobbies, String location, MimeTypeTransfer bioMimeType,
+            String bio, MimeTypeTransfer signatureMimeType, String signature) {
         this.nickname = nickname;
         this.icon = icon;
         this.gender = gender;
-        this.mood = mood;
         this.unformattedBirthday = unformattedBirthday;
         this.birthday = birthday;
         this.birthdayFormat = birthdayFormat;
@@ -104,22 +102,6 @@ public class ProfileTransfer
      */
     public void setGender(GenderTransfer gender) {
         this.gender = gender;
-    }
-
-    /**
-     * Returns the mood.
-     * @return the mood
-     */
-    public MoodTransfer getMood() {
-        return mood;
-    }
-
-    /**
-     * Sets the mood.
-     * @param mood the mood to set
-     */
-    public void setMood(MoodTransfer mood) {
-        this.mood = mood;
     }
 
     /**

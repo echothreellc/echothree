@@ -57,8 +57,6 @@ public class ProfileTransferCache
             IconTransfer iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             Gender gender = profile.getGender();
             GenderTransfer genderTransfer = gender == null? null: partyControl.getGenderTransfer(userVisit, gender);
-            Mood mood = profile.getMood();
-            MoodTransfer moodTransfer = mood == null? null: partyControl.getMoodTransfer(userVisit, mood);
             Integer unformattedBirthday = profile.getBirthday();
             BirthdayFormatTransfer birthdayFormat = partyControl.getBirthdayFormatTransfer(userVisit, profile.getBirthdayFormat());
             String birthday = DateUtils.getInstance().formatDate(userVisit, unformattedBirthday);
@@ -72,8 +70,9 @@ public class ProfileTransferCache
             MimeTypeTransfer signatureMimeTypeTransfer = signatureMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, signatureMimeType);
             String signature = profile.getSignature();
             
-            profileTransfer = new ProfileTransfer(nickname,  iconTransfer, genderTransfer, moodTransfer, birthday, unformattedBirthday, birthdayFormat,
-                    occupation, hobbies, location, bioMimeTypeTransfer, bio, signatureMimeTypeTransfer, signature);
+            profileTransfer = new ProfileTransfer(nickname, iconTransfer, genderTransfer, birthday, unformattedBirthday,
+                    birthdayFormat, occupation, hobbies, location, bioMimeTypeTransfer, bio, signatureMimeTypeTransfer,
+                    signature);
             put(profile, profileTransfer);
         }
         

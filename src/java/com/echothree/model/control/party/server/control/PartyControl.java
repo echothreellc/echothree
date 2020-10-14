@@ -6100,10 +6100,10 @@ public class PartyControl
     //   Profiles
     // --------------------------------------------------------------------------------
     
-    public Profile createProfile(Party party, String nickname, Icon icon, Gender gender, Mood mood, Integer birthday, BirthdayFormat birthdayFormat,
+    public Profile createProfile(Party party, String nickname, Icon icon, Gender gender, Integer birthday, BirthdayFormat birthdayFormat,
             String occupation, String hobbies, String location, MimeType bioMimeType, String bio, MimeType signatureMimeType,
             String signature, BasePK createdBy) {
-        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, gender, mood, birthday, birthdayFormat,
+        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, gender, birthday, birthdayFormat,
                 occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
@@ -6208,7 +6208,6 @@ public class PartyControl
             String nickname = profileValue.getNickname();
             IconPK iconPK = profileValue.getIconPK();
             GenderPK genderPK = profileValue.getGenderPK();
-            MoodPK moodPK = profileValue.getMoodPK();
             Integer birthday = profileValue.getBirthday();
             BirthdayFormatPK birthdayFormatPK = profileValue.getBirthdayFormatPK();
             String occupation = profileValue.getOccupation();
@@ -6219,7 +6218,7 @@ public class PartyControl
             MimeTypePK signatureMimeTypePK = profileValue.getSignatureMimeTypePK();
             String signature = profileValue.getSignature();
             
-            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, genderPK, moodPK, birthday, birthdayFormatPK,
+            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, genderPK, birthday, birthdayFormatPK,
                     occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK, signature, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             

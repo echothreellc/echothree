@@ -27,14 +27,13 @@ import com.echothree.model.data.icon.server.entity.IconUsage;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.party.server.entity.Gender;
-import com.echothree.model.data.party.server.entity.Mood;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.Profile;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -54,7 +53,6 @@ public class CreateProfileCommand
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("MoodName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Occupation", FieldType.STRING, false, 1L, 200L),
@@ -71,7 +69,6 @@ public class CreateProfileCommand
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("MoodName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Occupation", FieldType.STRING, false, 1L, 200L),
@@ -139,41 +136,34 @@ public class CreateProfileCommand
                             Gender gender = genderName == null? null: partyControl.getGenderByName(genderName);
                             
                             if(genderName == null || gender != null) {
-                                String moodName = form.getMoodName();
-                                Mood mood = moodName == null? null: partyControl.getMoodByName(moodName);
+                                String birthdayFormatName = form.getBirthdayFormatName();
+                                BirthdayFormat birthdayFormat = birthdayFormatName == null? null: partyControl.getBirthdayFormatByName(birthdayFormatName);
 
-                                if(moodName == null || mood != null) {
-                                    String birthdayFormatName = form.getBirthdayFormatName();
-                                    BirthdayFormat birthdayFormat = birthdayFormatName == null? null: partyControl.getBirthdayFormatByName(birthdayFormatName);
+                                if(birthdayFormat != null) {
+                                    var coreControl = getCoreControl();
+                                    MimeType bioMimeType = bioMimeTypeName == null? null: coreControl.getMimeTypeByName(bioMimeTypeName);
 
-                                    if(birthdayFormat != null) {
-                                        var coreControl = getCoreControl();
-                                        MimeType bioMimeType = bioMimeTypeName == null? null: coreControl.getMimeTypeByName(bioMimeTypeName);
+                                    if(bioMimeTypeName == null || bioMimeType != null) {
+                                        MimeType signatureMimeType = signatureMimeTypeName == null? null: coreControl.getMimeTypeByName(signatureMimeTypeName);
 
-                                        if(bioMimeTypeName == null || bioMimeType != null) {
-                                            MimeType signatureMimeType = signatureMimeTypeName == null? null: coreControl.getMimeTypeByName(signatureMimeTypeName);
+                                        if(signatureMimeTypeName == null || signatureMimeType != null) {
+                                            String occupation = form.getOccupation();
+                                            String hobbies = form.getHobbies();
+                                            String location = form.getLocation();
+                                            String rawBirthday = form.getBirthday();
+                                            Integer birthday = rawBirthday == null? null: Integer.valueOf(rawBirthday);
 
-                                            if(signatureMimeTypeName == null || signatureMimeType != null) {
-                                                String occupation = form.getOccupation();
-                                                String hobbies = form.getHobbies();
-                                                String location = form.getLocation();
-                                                String rawBirthday = form.getBirthday();
-                                                Integer birthday = rawBirthday == null? null: Integer.valueOf(rawBirthday);
-
-                                                partyControl.createProfile(party, nickname, icon, gender, mood, birthday, birthdayFormat,
-                                                        occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
-                                                        getPartyPK());
-                                            } else {
-                                                addExecutionError(ExecutionErrors.UnknownSignatureMimeTypeName.name(), signatureMimeTypeName);
-                                            }
+                                            partyControl.createProfile(party, nickname, icon, gender, birthday, birthdayFormat,
+                                                    occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
+                                                    getPartyPK());
                                         } else {
-                                            addExecutionError(ExecutionErrors.UnknownBioMimeTypeName.name(), bioMimeTypeName);
+                                            addExecutionError(ExecutionErrors.UnknownSignatureMimeTypeName.name(), signatureMimeTypeName);
                                         }
                                     } else {
-                                        addExecutionError(ExecutionErrors.UnknownBirthdayFormatName.name(), birthdayFormatName);
+                                        addExecutionError(ExecutionErrors.UnknownBioMimeTypeName.name(), bioMimeTypeName);
                                     }
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownMoodName.name(), moodName);
+                                    addExecutionError(ExecutionErrors.UnknownBirthdayFormatName.name(), birthdayFormatName);
                                 }
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownGenderName.name(), genderName);
