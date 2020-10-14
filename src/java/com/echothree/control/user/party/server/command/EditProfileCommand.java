@@ -34,15 +34,14 @@ import com.echothree.model.data.icon.server.entity.IconUsage;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.party.server.entity.Gender;
-import com.echothree.model.data.party.server.entity.Mood;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.Profile;
 import com.echothree.model.data.party.server.value.ProfileValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
@@ -66,7 +65,6 @@ public class EditProfileCommand
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("MoodName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Occupation", FieldType.STRING, false, 1L, 200L),
@@ -82,7 +80,6 @@ public class EditProfileCommand
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("MoodName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Occupation", FieldType.STRING, false, 1L, 200L),
@@ -164,7 +161,6 @@ public class EditProfileCommand
 
     Icon icon;
     Gender gender;
-    Mood mood;
     MimeType bioMimeType;
     MimeType signatureMimeType;
 
@@ -172,7 +168,6 @@ public class EditProfileCommand
     public void doLock(ProfileEdit edit, Profile profile) {
         icon = profile.getIcon();
         gender = profile.getGender();
-        mood = profile.getMood();
 
         bioMimeType = profile.getBioMimeType();
         signatureMimeType = profile.getSignatureMimeType();
@@ -180,7 +175,6 @@ public class EditProfileCommand
         edit.setNickname(profile.getNickname());
         edit.setIconName(icon == null? null: icon.getLastDetail().getIconName());
         edit.setGenderName(gender == null? null: gender.getLastDetail().getGenderName());
-        edit.setMoodName(mood == null? null: mood.getLastDetail().getMoodName());
         edit.setBirthday(DateUtils.getInstance().formatDate(getUserVisit(), profile.getBirthday()));
         edit.setBirthdayFormatName(profile.getBirthdayFormat().getLastDetail().getBirthdayFormatName());
         edit.setOccupation(profile.getOccupation());
@@ -236,20 +230,12 @@ public class EditProfileCommand
                     gender = genderName == null? null: partyControl.getGenderByName(genderName);
 
                     if(genderName == null || gender != null) {
-                        String moodName = edit.getMoodName();
+                        String birthdayFormatName = edit.getBirthdayFormatName();
 
-                        mood = moodName == null? null: partyControl.getMoodByName(moodName);
+                        birthdayFormat = birthdayFormatName == null ? null : partyControl.getBirthdayFormatByName(birthdayFormatName);
 
-                        if(moodName == null || mood != null) {
-                            String birthdayFormatName = edit.getBirthdayFormatName();
-
-                            birthdayFormat = birthdayFormatName == null ? null : partyControl.getBirthdayFormatByName(birthdayFormatName);
-
-                            if(birthdayFormat == null) {
-                                addExecutionError(ExecutionErrors.UnknownBirthdayFormatName.name(), birthdayFormatName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownMoodName.name(), moodName);
+                        if(birthdayFormat == null) {
+                            addExecutionError(ExecutionErrors.UnknownBirthdayFormatName.name(), birthdayFormatName);
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownGenderName.name(), genderName);
@@ -273,7 +259,6 @@ public class EditProfileCommand
         profileValue.setNickname(nickname);
         profileValue.setIconPK(icon == null ? null : icon.getPrimaryKey());
         profileValue.setGenderPK(gender == null ? null : gender.getPrimaryKey());
-        profileValue.setMoodPK(mood == null ? null : mood.getPrimaryKey());
         profileValue.setBirthday(birthday == null ? null : Integer.valueOf(birthday));
         profileValue.setBirthdayFormatPK(birthdayFormat.getPrimaryKey());
         profileValue.setOccupation(edit.getOccupation());

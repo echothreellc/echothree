@@ -1264,7 +1264,6 @@
                         <column name="Nickname" type="String" maxLength="40" nullAllowed="true" />
                         <column name="IconId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Icons" destinationColumn="IconId" />
                         <column name="GenderId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Genders" destinationColumn="GenderId" />
-                        <column name="MoodId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Moods" destinationColumn="MoodId" />
                         <column name="Birthday" type="Date" nullAllowed="true" />
                         <column name="BirthdayFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BirthdayFormats" destinationColumn="BirthdayFormatId" />
                         <column name="Occupation" type="String" maxLength="200" nullAllowed="true" />
@@ -1298,17 +1297,13 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="MoodId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index6">
                             <indexColumn name="BirthdayFormatId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index7">
+                        <index type="Multiple" name="Index6">
                             <indexColumn name="BioMimeTypeId" />
                         </index>
-                        <index type="Multiple" name="Index8">
+                        <index type="Multiple" name="Index7">
                             <indexColumn name="SignatureMimeTypeId" />
                         </index>
                     </indexes>

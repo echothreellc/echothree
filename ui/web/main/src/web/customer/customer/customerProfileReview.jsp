@@ -62,9 +62,6 @@
             <c:if test='${customer.profile.gender != null}'>
                 Gender: ${customer.profile.gender.description}<br />
             </c:if>
-            <c:if test='${customer.profile.mood != null}'>
-                Mood: ${customer.profile.mood.description}<br />
-            </c:if>
             <c:if test='${customer.profile.birthday != null}'>
                 Birthday: ${customer.profile.birthday}<br />
             </c:if>

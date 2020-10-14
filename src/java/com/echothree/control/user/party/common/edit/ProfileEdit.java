@@ -23,7 +23,7 @@ import com.echothree.control.user.party.common.spec.MoodSpec;
 import com.echothree.util.common.form.BaseEdit;
 
 public interface ProfileEdit
-        extends BaseEdit, IconSpec, GenderSpec, MoodSpec, BirthdayFormatSpec {
+        extends BaseEdit, IconSpec, GenderSpec, BirthdayFormatSpec {
     
     String getNickname();
     void setNickname(String nickname);

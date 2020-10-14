@@ -77,17 +77,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td align=right><fmt:message key="label.mood" />:</td>
-                                <td>
-                                    <html:select property="moodChoice">
-                                        <html:optionsCollection property="moodChoices" />
-                                    </html:select>
-                                    <et:validationErrors id="errorMessage" property="MoodName">
-                                        <p><c:out value="${errorMessage}" /></p>
-                                    </et:validationErrors>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td align=right><fmt:message key="label.birthday" />:</td>
                                 <td>
                                     <html:text property="birthday" size="10" maxlength="10" />

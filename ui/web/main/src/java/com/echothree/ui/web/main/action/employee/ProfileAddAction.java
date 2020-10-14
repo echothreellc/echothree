@@ -55,7 +55,6 @@ public class ProfileAddAction
             commandForm.setNickname(actionForm.getNickname());
             commandForm.setIconName(actionForm.getIconChoice());
             commandForm.setGenderName(actionForm.getGenderChoice());
-            commandForm.setMoodName(actionForm.getMoodChoice());
             commandForm.setBirthday(actionForm.getBirthday());
             commandForm.setBirthdayFormatName(actionForm.getBirthdayFormatChoice());
             commandForm.setOccupation(actionForm.getOccupation());
