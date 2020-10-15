@@ -66,8 +66,8 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="sources->sources" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.30" conf="sources->sources" />
-        <dependency org="org.infinispan" name="infinispan-commons" rev="10.1.8.Final" conf="sources->sources" />
-        <dependency org="org.infinispan" name="infinispan-core" rev="10.1.8.Final" conf="sources->sources" />
+        <dependency org="org.infinispan" name="infinispan-commons" rev="11.0.4.Final" conf="sources->sources" />
+        <dependency org="org.infinispan" name="infinispan-core" rev="11.0.4.Final" conf="sources->sources" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.6" conf="sources->sources" />
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.6" conf="sources->sources" />
         <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.6" conf="sources->sources" />
@@ -86,7 +86,7 @@
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-web" rev="5.2.9.RELEASE" conf="sources->sources" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="sources->sources" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.1.Final" conf="sources->sources" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="21.0.0.Final" conf="sources->sources" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
@@ -149,8 +149,8 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="javadoc->javadoc" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.30" conf="javadoc->javadoc" />
-        <dependency org="org.infinispan" name="infinispan-commons" rev="10.1.8.Final" conf="javadoc->javadoc" />
-        <dependency org="org.infinispan" name="infinispan-core" rev="10.1.8.Final" conf="javadoc->javadoc" />
+        <dependency org="org.infinispan" name="infinispan-commons" rev="11.0.4.Final" conf="javadoc->javadoc" />
+        <dependency org="org.infinispan" name="infinispan-core" rev="11.0.4.Final" conf="javadoc->javadoc" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.6" conf="javadoc->javadoc" />
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.6" conf="javadoc->javadoc" />
         <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.6" conf="javadoc->javadoc" />
@@ -169,7 +169,7 @@
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-web" rev="5.2.9.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="javadoc->javadoc" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.1.Final" conf="javadoc->javadoc" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="21.0.0.Final" conf="javadoc->javadoc" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="javadoc->javadoc" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
@@ -237,8 +237,8 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="binaries->default" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.30" conf="binaries->default" />
-        <dependency org="org.infinispan" name="infinispan-commons" rev="10.1.8.Final" conf="binaries->default" />
-        <dependency org="org.infinispan" name="infinispan-core" rev="10.1.8.Final" conf="binaries->default" />
+        <dependency org="org.infinispan" name="infinispan-commons" rev="11.0.4.Final" conf="binaries->default" />
+        <dependency org="org.infinispan" name="infinispan-core" rev="11.0.4.Final" conf="binaries->default" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.6" conf="binaries->default">
             <artifact name="org.jacoco.agent" e:classifier="runtime" ext="jar"/>
         </dependency>
@@ -261,7 +261,7 @@
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-web" rev="5.2.9.RELEASE" conf="binaries->default" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="binaries->default" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="20.0.1.Final" conf="binaries->default" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="21.0.0.Final" conf="binaries->default" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="binaries->default" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="binaries->default" />
