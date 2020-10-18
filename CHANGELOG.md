@@ -1,5 +1,14 @@
 # Changelog
 
+## 2020-10-18-01
+
+* GraphQL Objects and Mutations for Offers [127](https://gitlab.echothree.com/echothree/echothree/-/issues/127)
+* GraphQL Objects and Mutations for Uses [131](https://gitlab.echothree.com/echothree/echothree/-/issues/131)
+* Move All Control Classes into control Packages [165](https://gitlab.echothree.com/echothree/echothree/-/issues/165)
+* Remove “Mood” from Profiles [166](https://gitlab.echothree.com/echothree/echothree/-/issues/166)
+* WildFly 21.0.0 Upgrade [168](https://gitlab.echothree.com/echothree/echothree/-/issues/168)
+* Separate Search Results from SearchControl [170](https://gitlab.echothree.com/echothree/echothree/-/issues/170)
+
 ## 2020-10-04-01
 
 * Disallow Deleting the OfferUse If It's In Use [102](https://gitlab.echothree.com/echothree/echothree/-/issues/102)
