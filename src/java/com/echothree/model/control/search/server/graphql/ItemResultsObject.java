@@ -83,7 +83,7 @@ public class ItemResultsObject {
             objects = itemControl.getItemResultObjects(userVisitSearch);
         }
         
-        return objects == null ? Collections.EMPTY_LIST : objects;
+        return objects == null ? Collections.emptyList() : objects;
     }
     
 }

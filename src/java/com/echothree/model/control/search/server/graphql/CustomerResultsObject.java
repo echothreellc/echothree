@@ -84,7 +84,7 @@ public class CustomerResultsObject {
             objects = customerControl.getCustomerResultObjects(userVisitSearch);
         }
         
-        return objects == null ? Collections.EMPTY_LIST : objects;
+        return objects == null ? Collections.emptyList() : objects;
     }
     
 }

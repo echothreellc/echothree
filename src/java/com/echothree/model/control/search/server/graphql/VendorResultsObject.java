@@ -83,7 +83,7 @@ public class VendorResultsObject {
             objects = vendorControl.getVendorResultObjects(userVisitSearch);
         }
         
-        return objects == null ? Collections.EMPTY_LIST : objects;
+        return objects == null ? Collections.emptyList() : objects;
     }
     
 }
