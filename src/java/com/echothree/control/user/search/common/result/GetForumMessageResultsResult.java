@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.search.common.result;
 
-import com.echothree.model.control.search.common.transfer.ForumMessageResultTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumMessageResultTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 

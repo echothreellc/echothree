@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common.transfer;
+package com.echothree.model.control.content.common.transfer;
 
 import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;

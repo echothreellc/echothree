@@ -19,7 +19,9 @@ package com.echothree.model.control.offer.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.choice.UseChoicesBean;
 import com.echothree.model.control.offer.common.transfer.UseDescriptionTransfer;
+import com.echothree.model.control.offer.common.transfer.UseResultTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTransfer;
+import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.UsePK;
 import com.echothree.model.data.offer.common.pk.UseTypePK;
@@ -33,6 +35,8 @@ import com.echothree.model.data.offer.server.factory.UseFactory;
 import com.echothree.model.data.offer.server.value.UseDescriptionValue;
 import com.echothree.model.data.offer.server.value.UseDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -561,6 +565,49 @@ public class UseControl
         useDescriptions.stream().forEach((useDescription) -> {
             deleteUseDescription(useDescription, deletedBy);
         });
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Use Searches
+    // --------------------------------------------------------------------------------
+
+    public List<UseResultTransfer> getUseResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        var useResultTransfers = new ArrayList<UseResultTransfer>();
+        var includeUse = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeUse = options.contains(SearchOptions.UseResultIncludeUse);
+        }
+
+        try {
+            var useControl = (UseControl)Session.getModelController(UseControl.class);
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, search.getPrimaryKey().getEntityId());
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    var use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UsePK(rs.getLong(1)));
+                    var useDetail = use.getLastDetail();
+
+                    useResultTransfers.add(new UseResultTransfer(useDetail.getUseName(),
+                            includeUse ? useControl.getUseTransfer(userVisit, use) : null));
+                }
+            } catch (SQLException se) {
+                throw new PersistenceDatabaseException(se);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return useResultTransfers;
     }
 
 }

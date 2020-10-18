@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common.transfer;
+package com.echothree.model.control.item.common.transfer;
 
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;

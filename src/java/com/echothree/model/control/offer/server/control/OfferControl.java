@@ -21,10 +21,12 @@ import com.echothree.model.control.offer.common.choice.OfferChoicesBean;
 import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferDescriptionTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferResultTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.transfer.OfferChainTypeTransferCache;
 import com.echothree.model.control.offer.server.transfer.OfferCustomerTypeTransferCache;
+import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.data.chain.common.pk.ChainPK;
 import com.echothree.model.data.chain.common.pk.ChainTypePK;
 import com.echothree.model.data.chain.server.entity.Chain;
@@ -54,6 +56,8 @@ import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.factory.SelectorFactory;
@@ -1170,6 +1174,49 @@ public class OfferControl
     
     public void deleteOfferChainTypesByChain(Chain chain, BasePK deletedBy) {
         deleteOfferChainTypes(getOfferChainTypesByChainForUpdate(chain), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Offer Searches
+    // --------------------------------------------------------------------------------
+
+    public List<OfferResultTransfer> getOfferResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        var offerResultTransfers = new ArrayList<OfferResultTransfer>();
+        var includeOffer = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeOffer = options.contains(SearchOptions.OfferResultIncludeOffer);
+        }
+
+        try {
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, search.getPrimaryKey().getEntityId());
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(rs.getLong(1)));
+                    var offerDetail = offer.getLastDetail();
+
+                    offerResultTransfers.add(new OfferResultTransfer(offerDetail.getOfferName(),
+                            includeOffer ? offerControl.getOfferTransfer(userVisit, offer) : null));
+                }
+            } catch (SQLException se) {
+                throw new PersistenceDatabaseException(se);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return offerResultTransfers;
     }
 
 }

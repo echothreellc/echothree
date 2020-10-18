@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.form.SearchVendorsForm;
 import com.echothree.control.user.search.common.result.GetVendorResultsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.common.transfer.VendorResultTransfer;
+import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

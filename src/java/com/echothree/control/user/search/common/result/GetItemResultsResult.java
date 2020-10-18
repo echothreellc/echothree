@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.search.common.result;
 
-import com.echothree.model.control.search.common.transfer.ItemResultTransfer;
+import com.echothree.model.control.item.common.transfer.ItemResultTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 

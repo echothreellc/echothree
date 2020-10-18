@@ -14,21 +14,21 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common.transfer;
+package com.echothree.model.control.employee.common.transfer;
 
-import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
+import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class VendorResultTransfer
+public class EmployeeResultTransfer
         extends BaseTransfer {
     
     private String partyName;
-    private VendorTransfer vendor;
+    private EmployeeTransfer employee;
     
-    /** Creates a new instance of VendorResultTransfer */
-    public VendorResultTransfer(String partyName, VendorTransfer vendor) {
+    /** Creates a new instance of EmployeeResultTransfer */
+    public EmployeeResultTransfer(String partyName, EmployeeTransfer employee) {
         this.partyName = partyName;
-        this.vendor = vendor;
+        this.employee = employee;
     }
 
     /**
@@ -46,21 +46,21 @@ public class VendorResultTransfer
     public void setPartyName(String partyName) {
         this.partyName = partyName;
     }
-
+    
     /**
-     * Returns the vendor.
-     * @return the vendor
+     * Returns the employee.
+     * @return the employee
      */
-    public VendorTransfer getVendor() {
-        return vendor;
+    public EmployeeTransfer getEmployee() {
+        return employee;
     }
 
     /**
-     * Sets the vendor.
-     * @param vendor the vendor to set
+     * Sets the employee.
+     * @param employee the employee to set
      */
-    public void setVendor(VendorTransfer vendor) {
-        this.vendor = vendor;
+    public void setEmployee(EmployeeTransfer employee) {
+        this.employee = employee;
     }
 
 }

@@ -21,8 +21,8 @@ import com.echothree.control.user.search.common.form.GetHarmonizedTariffSchedule
 import com.echothree.control.user.search.common.form.SearchHarmonizedTariffScheduleCodesForm;
 import com.echothree.control.user.search.common.result.GetHarmonizedTariffScheduleCodeResultsResult;
 import com.echothree.control.user.search.common.result.SearchHarmonizedTariffScheduleCodesResult;
+import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeResultTransfer;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.common.transfer.HarmonizedTariffScheduleCodeResultTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -19,18 +19,18 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
 import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,17 +67,18 @@ public class GetCustomerResultsCommand
     @Override
     protected BaseResult execute() {
         GetCustomerResultsResult result = SearchResultFactory.getGetCustomerResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchTypeName = form.getSearchTypeName();
         UserVisit userVisit = getUserVisit();
         UserVisitSearch userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchConstants.SearchKind_CUSTOMER, searchTypeName);
         
         if(!hasExecutionErrors()) {
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                 result.setCustomerResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
             }
 
-            result.setCustomerResults(searchControl.getCustomerResultTransfers(userVisit, userVisitSearch));
+            result.setCustomerResults(customerControl.getCustomerResultTransfers(userVisit, userVisitSearch));
         }
         
         return result;

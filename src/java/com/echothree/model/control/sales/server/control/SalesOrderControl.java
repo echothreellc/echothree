@@ -17,6 +17,8 @@
 package com.echothree.model.control.sales.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.sales.common.transfer.SalesOrderResultTransfer;
+import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.data.associate.common.pk.AssociateReferralPK;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.offer.common.pk.OfferUsePK;
@@ -25,18 +27,24 @@ import com.echothree.model.data.order.common.pk.OrderLinePK;
 import com.echothree.model.data.order.common.pk.OrderPK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
+import com.echothree.model.data.order.server.factory.OrderFactory;
 import com.echothree.model.data.sales.server.entity.SalesOrder;
 import com.echothree.model.data.sales.server.entity.SalesOrderLine;
 import com.echothree.model.data.sales.server.factory.SalesOrderFactory;
 import com.echothree.model.data.sales.server.factory.SalesOrderLineFactory;
 import com.echothree.model.data.sales.server.value.SalesOrderLineValue;
 import com.echothree.model.data.sales.server.value.SalesOrderValue;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.SearchResultFactory;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SalesOrderControl
         extends BaseSalesControl {
@@ -249,6 +257,47 @@ public class SalesOrderControl
 
     public void deleteSalesOrderLineByOrderLine(OrderLine orderLine, BasePK deletedBy) {
         deleteSalesOrderLine(getSalesOrderLineForUpdate(orderLine), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Sales Order Searches
+    // --------------------------------------------------------------------------------
+
+    public List<SalesOrderResultTransfer> getSalesOrderResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        var salesOrderResultTransfers = new ArrayList<SalesOrderResultTransfer>();
+
+        try {
+            var coreControl = getCoreControl();
+            var workflowControl = getWorkflowControl();
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, search.getPrimaryKey().getEntityId());
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    var orderPK = new OrderPK(rs.getLong(1));
+                    var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
+
+                    var entityInstance = coreControl.getEntityInstanceByBasePK(orderPK);
+                    var orderStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+                            SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
+
+                    salesOrderResultTransfers.add(new SalesOrderResultTransfer(order.getLastDetail().getOrderName(), orderStatusTransfer));
+                }
+            } catch (SQLException se) {
+                throw new PersistenceDatabaseException(se);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return salesOrderResultTransfers;
     }
 
 }

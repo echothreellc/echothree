@@ -20,8 +20,8 @@ import com.echothree.control.user.search.common.form.GetVendorResultsForm;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.exception.BaseSearchException;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -78,12 +78,12 @@ public class VendorResultsObject {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 
-            objects = searchControl.getVendorResultObjects(userVisitSearch);
+            objects = vendorControl.getVendorResultObjects(userVisitSearch);
         }
         
-        return objects == null ? Collections.EMPTY_LIST : objects;
+        return objects == null ? Collections.emptyList() : objects;
     }
     
 }
