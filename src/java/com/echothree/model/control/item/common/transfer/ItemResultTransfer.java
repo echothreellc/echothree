@@ -14,53 +14,53 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common.transfer;
+package com.echothree.model.control.item.common.transfer;
 
-import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class LeaveResultTransfer
+public class ItemResultTransfer
         extends BaseTransfer {
     
-    private String leaveName;
-    private LeaveTransfer leave;
+    private String itemName;
+    private ItemTransfer item;
     
-    /** Creates a new instance of LeaveResultTransfer */
-    public LeaveResultTransfer(String leaveName, LeaveTransfer leave) {
-        this.leaveName = leaveName;
-        this.leave = leave;
+    /** Creates a new instance of ItemResultTransfer */
+    public ItemResultTransfer(String itemName, ItemTransfer item) {
+        this.itemName = itemName;
+        this.item = item;
     }
 
     /**
-     * Returns the leaveName.
-     * @return the leaveName
+     * Returns the itemName.
+     * @return the itemName
      */
-    public String getLeaveName() {
-        return leaveName;
+    public String getItemName() {
+        return itemName;
     }
 
     /**
-     * Sets the leaveName.
-     * @param leaveName the leaveName to set
+     * Sets the itemName.
+     * @param itemName the itemName to set
      */
-    public void setLeaveName(String leaveName) {
-        this.leaveName = leaveName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+    
+    /**
+     * Returns the item.
+     * @return the item
+     */
+    public ItemTransfer getItem() {
+        return item;
     }
 
     /**
-     * Returns the leave.
-     * @return the leave
+     * Sets the item.
+     * @param item the item to set
      */
-    public LeaveTransfer getLeave() {
-        return leave;
-    }
-
-    /**
-     * Sets the leave.
-     * @param leave the leave to set
-     */
-    public void setLeave(LeaveTransfer leave) {
-        this.leave = leave;
+    public void setItem(ItemTransfer item) {
+        this.item = item;
     }
 
 }

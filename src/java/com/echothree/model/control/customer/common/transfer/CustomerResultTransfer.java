@@ -14,21 +14,21 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common.transfer;
+package com.echothree.model.control.customer.common.transfer;
 
-import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
+import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class EmployeeResultTransfer
+public class CustomerResultTransfer
         extends BaseTransfer {
     
     private String partyName;
-    private EmployeeTransfer employee;
+    private CustomerTransfer customer;
     
-    /** Creates a new instance of EmployeeResultTransfer */
-    public EmployeeResultTransfer(String partyName, EmployeeTransfer employee) {
+    /** Creates a new instance of CustomerResultTransfer */
+    public CustomerResultTransfer(String partyName, CustomerTransfer customer) {
         this.partyName = partyName;
-        this.employee = employee;
+        this.customer = customer;
     }
 
     /**
@@ -48,19 +48,19 @@ public class EmployeeResultTransfer
     }
     
     /**
-     * Returns the employee.
-     * @return the employee
+     * Returns the customer.
+     * @return the customer
      */
-    public EmployeeTransfer getEmployee() {
-        return employee;
+    public CustomerTransfer getCustomer() {
+        return customer;
     }
 
     /**
-     * Sets the employee.
-     * @param employee the employee to set
+     * Sets the customer.
+     * @param customer the customer to set
      */
-    public void setEmployee(EmployeeTransfer employee) {
-        this.employee = employee;
+    public void setCustomer(CustomerTransfer customer) {
+        this.customer = customer;
     }
 
 }

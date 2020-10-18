@@ -21,8 +21,8 @@ import com.echothree.control.user.search.common.form.GetSalesOrderBatchResultsFo
 import com.echothree.control.user.search.common.form.SearchSalesOrderBatchesForm;
 import com.echothree.control.user.search.common.result.GetSalesOrderBatchResultsResult;
 import com.echothree.control.user.search.common.result.SearchSalesOrderBatchesResult;
+import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.common.transfer.SalesOrderBatchResultTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
