@@ -17,17 +17,32 @@
 package com.echothree.model.control.search.server.control;
 
 import com.echothree.model.control.batch.server.control.BatchControl;
+import com.echothree.model.control.contact.common.transfer.ContactMechanismResultTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.content.common.transfer.ContentCategoryResultTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.common.transfer.EntityListItemResultTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeResultTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.employee.common.transfer.EmployeeResultTransfer;
+import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.forum.common.transfer.ForumMessageResultTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
+import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeResultTransfer;
+import com.echothree.model.control.item.common.transfer.ItemResultTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.offer.common.transfer.OfferResultTransfer;
+import com.echothree.model.control.offer.common.transfer.UseResultTransfer;
+import com.echothree.model.control.offer.common.transfer.UseTypeResultTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
+import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
+import com.echothree.model.control.sales.common.transfer.SalesOrderResultTransfer;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.control.search.common.SearchOptions;
@@ -39,19 +54,6 @@ import com.echothree.model.control.search.common.choice.SearchSortDirectionChoic
 import com.echothree.model.control.search.common.choice.SearchSortOrderChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchTypeChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchUseTypeChoicesBean;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismResultTransfer;
-import com.echothree.model.control.content.common.transfer.ContentCategoryResultTransfer;
-import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
-import com.echothree.model.control.employee.common.transfer.EmployeeResultTransfer;
-import com.echothree.model.control.core.common.transfer.EntityListItemResultTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeResultTransfer;
-import com.echothree.model.control.forum.common.transfer.ForumMessageResultTransfer;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeResultTransfer;
-import com.echothree.model.control.item.common.transfer.ItemResultTransfer;
-import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
-import com.echothree.model.control.offer.common.transfer.OfferResultTransfer;
-import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
-import com.echothree.model.control.sales.common.transfer.SalesOrderResultTransfer;
 import com.echothree.model.control.search.common.transfer.SearchCheckSpellingActionTypeDescriptionTransfer;
 import com.echothree.model.control.search.common.transfer.SearchCheckSpellingActionTypeTransfer;
 import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorDescriptionTransfer;
@@ -68,11 +70,6 @@ import com.echothree.model.control.search.common.transfer.SearchTypeDescriptionT
 import com.echothree.model.control.search.common.transfer.SearchTypeTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeDescriptionTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
-import com.echothree.model.control.security.common.transfer.SecurityRoleGroupResultTransfer;
-import com.echothree.model.control.security.common.transfer.SecurityRoleResultTransfer;
-import com.echothree.model.control.offer.common.transfer.UseResultTransfer;
-import com.echothree.model.control.offer.common.transfer.UseTypeResultTransfer;
-import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
 import com.echothree.model.control.search.server.graphql.CustomerResultObject;
 import com.echothree.model.control.search.server.graphql.ItemResultObject;
 import com.echothree.model.control.search.server.graphql.VendorResultObject;
@@ -90,59 +87,40 @@ import com.echothree.model.control.search.server.transfer.SearchTransferCaches;
 import com.echothree.model.control.search.server.transfer.SearchTypeTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchUseTypeDescriptionTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchUseTypeTransferCache;
+import com.echothree.model.control.security.common.transfer.SecurityRoleGroupResultTransfer;
+import com.echothree.model.control.security.common.transfer.SecurityRoleResultTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
+import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.data.batch.common.pk.BatchPK;
-import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismDetail;
 import com.echothree.model.data.contact.server.factory.ContactMechanismFactory;
 import com.echothree.model.data.content.common.pk.ContentCategoryPK;
-import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
-import com.echothree.model.data.content.server.entity.ContentCategory;
-import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.factory.ContentCategoryFactory;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemDetail;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.employee.common.pk.LeavePK;
 import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.employee.server.factory.LeaveFactory;
 import com.echothree.model.data.forum.common.pk.ForumMessagePK;
-import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexField;
 import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodePK;
 import com.echothree.model.data.item.common.pk.ItemPK;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
-import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeDetail;
 import com.echothree.model.data.item.server.factory.HarmonizedTariffScheduleCodeFactory;
 import com.echothree.model.data.item.server.factory.ItemFactory;
 import com.echothree.model.data.offer.common.pk.OfferPK;
 import com.echothree.model.data.offer.common.pk.UsePK;
 import com.echothree.model.data.offer.common.pk.UseTypePK;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferDetail;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseDetail;
-import com.echothree.model.data.offer.server.entity.UseType;
-import com.echothree.model.data.offer.server.entity.UseTypeDetail;
 import com.echothree.model.data.offer.server.factory.OfferFactory;
 import com.echothree.model.data.offer.server.factory.UseFactory;
 import com.echothree.model.data.offer.server.factory.UseTypeFactory;
 import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.factory.OrderFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -249,9 +227,6 @@ import com.echothree.model.data.search.server.value.SearchUseTypeDescriptionValu
 import com.echothree.model.data.search.server.value.SearchUseTypeDetailValue;
 import com.echothree.model.data.security.common.pk.SecurityRoleGroupPK;
 import com.echothree.model.data.security.common.pk.SecurityRolePK;
-import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleDetail;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.security.server.factory.SecurityRoleFactory;
 import com.echothree.model.data.security.server.factory.SecurityRoleGroupFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -260,7 +235,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -270,7 +244,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class SearchControl
         extends BaseModelControl {
@@ -4559,7 +4532,7 @@ public class SearchControl
     }
     
     public void removeUserVisitSearch(UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
+        var search = userVisitSearch.getSearch();
         
         // If it isn't a CachedSearch, then the results need to be removed.
         if(search.getCachedSearch() == null) {
@@ -4955,7 +4928,7 @@ public class SearchControl
 
                 session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
-                PreparedStatement ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
+                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityinstanceid, eni_entityuniqueid "
                                 + "FROM cachedexecutedsearchresults, entityinstances "
                                 + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid "
@@ -5027,7 +5000,7 @@ public class SearchControl
             includeCustomer = options.contains(SearchOptions.CustomerResultIncludeCustomer);
         }
         
-        try (ResultSet rs = getUserVisitSearchResultSet(userVisitSearch)) {
+        try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
@@ -5064,18 +5037,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public List<EmployeeResultTransfer> getEmployeeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<EmployeeResultTransfer> employeeResultTransfers = new ArrayList<>();
-        boolean includeEmployee = false;
+        var search = userVisitSearch.getSearch();
+        var employeeResultTransfers = new ArrayList<EmployeeResultTransfer>();
+        var includeEmployee = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeEmployee = options.contains(SearchOptions.EmployeeResultIncludeEmployee);
         }
 
         try {
             var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5084,7 +5057,7 @@ public class SearchControl
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
                     Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
 
@@ -5106,18 +5079,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<LeaveResultTransfer> getLeaveResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<LeaveResultTransfer> leaveResultTransfers = new ArrayList<>();
-        boolean includeLeave = false;
+        var search = userVisitSearch.getSearch();
+        var leaveResultTransfers = new ArrayList<LeaveResultTransfer>();
+        var includeLeave = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeLeave = options.contains(SearchOptions.LeaveResultIncludeLeave);
         }
         
         try {
             var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5126,7 +5099,7 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
                     Leave leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
 
@@ -5148,7 +5121,7 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<ItemResultTransfer> getItemResultTransfers(UserVisitSearch userVisitSearch) {
-        List<ItemResultTransfer> itemResultTransfers = new ArrayList<>(countSearchResults(userVisitSearch));;
+        var itemResultTransfers = new ArrayList<ItemResultTransfer>(countSearchResults(userVisitSearch));;
         var includeItem = false;
 
         // ItemTransfer objects are not included unless specifically requested;
@@ -5245,18 +5218,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public List<ForumMessageResultTransfer> getForumMessageResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<ForumMessageResultTransfer> forumMessageResultTransfers = new ArrayList<>();
-        boolean includeForumMessage = false;
+        var search = userVisitSearch.getSearch();
+        var forumMessageResultTransfers = new ArrayList<ForumMessageResultTransfer>();
+        var includeForumMessage = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeForumMessage = options.contains(SearchOptions.ForumMessageResultIncludeForumMessage);
         }
 
         try {
             var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5265,9 +5238,9 @@ public class SearchControl
 
             ps.setLong(1, search.getPrimaryKey().getEntityId());
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    ForumMessage forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(rs.getLong(1)));
+                    var forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ForumMessagePK(rs.getLong(1)));
 
                     forumMessageResultTransfers.add(new ForumMessageResultTransfer(forumMessage.getLastDetail().getForumMessageName(),
                             includeForumMessage ? forumControl.getForumMessageTransfer(userVisit, forumMessage) : null));
@@ -5287,11 +5260,11 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<SalesOrderBatchResultTransfer> getSalesOrderBatchResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<SalesOrderBatchResultTransfer> salesOrderBatchResultTransfers = new ArrayList<>();
-        boolean includeSalesOrderBatch = false;
+        var search = userVisitSearch.getSearch();
+        var salesOrderBatchResultTransfers = new ArrayList<SalesOrderBatchResultTransfer>();
+        var includeSalesOrderBatch = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeSalesOrderBatch = options.contains(SearchOptions.SalesOrderBatchResultIncludeSalesOrderBatch);
         }
@@ -5299,7 +5272,7 @@ public class SearchControl
         try {
             var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
             var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5308,9 +5281,9 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Batch batch = batchControl.getBatchByPK(new BatchPK(rs.getLong(1)));
+                    var batch = batchControl.getBatchByPK(new BatchPK(rs.getLong(1)));
 
                     salesOrderBatchResultTransfers.add(new SalesOrderBatchResultTransfer(batch.getLastDetail().getBatchName(),
                             includeSalesOrderBatch ? salesOrderBatchControl.getSalesOrderBatchTransfer(userVisit, batch) : null));
@@ -5330,13 +5303,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<SalesOrderResultTransfer> getSalesOrderResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<SalesOrderResultTransfer> salesOrderResultTransfers = new ArrayList<>();
+        var search = userVisitSearch.getSearch();
+        var salesOrderResultTransfers = new ArrayList<SalesOrderResultTransfer>();
         
         try {
             var coreControl = getCoreControl();
             var workflowControl = getWorkflowControl();
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5345,13 +5318,13 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    OrderPK orderPK = new OrderPK(rs.getLong(1));
-                    Order order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
+                    var orderPK = new OrderPK(rs.getLong(1));
+                    var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
 
-                    EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(orderPK);
-                    WorkflowEntityStatusTransfer orderStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+                    var entityInstance = coreControl.getEntityInstanceByBasePK(orderPK);
+                    var orderStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                             SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
 
                     salesOrderResultTransfers.add(new SalesOrderResultTransfer(order.getLastDetail().getOrderName(), orderStatusTransfer));
@@ -5371,12 +5344,12 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<EntityListItemResultTransfer> getEntityListItemResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        CachedSearch cachedSearch = search.getCachedSearch();
+        var search = userVisitSearch.getSearch();
+        var cachedSearch = search.getCachedSearch();
         List<EntityListItemResultTransfer> entityListItemResultTransfers;
-        boolean includeEntityListItem = false;
+        var includeEntityListItem = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeEntityListItem = options.contains(SearchOptions.EntityListItemResultIncludeEntityListItem);
         }
@@ -5386,7 +5359,7 @@ public class SearchControl
 
             try {
                 var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+                var ps = SearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                         + "FROM searchresults, entityinstances "
                         + "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid "
@@ -5395,12 +5368,12 @@ public class SearchControl
 
                 ps.setLong(1, search.getPrimaryKey().getEntityId());
 
-                try (ResultSet rs = ps.executeQuery()) {
+                try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
-                        EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
-                        EntityAttributeDetail entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
-                        EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                        var entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
+                        var entityListItemDetail = entityListItem.getLastDetail();
+                        var entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
+                        var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
 
                         entityListItemResultTransfers.add(new EntityListItemResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                                 entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(), entityListItemDetail.getEntityListItemName(),
@@ -5413,7 +5386,7 @@ public class SearchControl
                 throw new PersistenceDatabaseException(se);
             }
         } else {
-            CachedExecutedSearch cachedExecutedSearch = getCachedExecutedSearch(cachedSearch);
+            var cachedExecutedSearch = getCachedExecutedSearch(cachedSearch);
             
             entityListItemResultTransfers = new ArrayList<>(countCachedExecutedSearchResults(cachedExecutedSearch));
             
@@ -5421,7 +5394,7 @@ public class SearchControl
             
             try {
                 var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                PreparedStatement ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
+                var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                         + "FROM cachedexecutedsearchresults, entityinstances "
                         + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid "
@@ -5430,12 +5403,12 @@ public class SearchControl
 
                 ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
 
-                try (ResultSet rs = ps.executeQuery()) {
+                try (var rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
-                        EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
-                        EntityAttributeDetail entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
-                        EntityTypeDetail entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                        var entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityListItemPK(rs.getLong(1)));
+                        var entityListItemDetail = entityListItem.getLastDetail();
+                        var entityAttributeDetail = entityListItemDetail.getEntityAttribute().getLastDetail();
+                        var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
 
                         entityListItemResultTransfers.add(new EntityListItemResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                                 entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(), entityListItemDetail.getEntityListItemName(),
@@ -5457,18 +5430,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<ContentCategoryResultTransfer> getContentCategoryResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<ContentCategoryResultTransfer> contentCategoryResultTransfers = new ArrayList<>();
-        boolean includeContentCategory = false;
+        var search = userVisitSearch.getSearch();
+        var contentCategoryResultTransfers = new ArrayList<ContentCategoryResultTransfer>();
+        var includeContentCategory = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeContentCategory = options.contains(SearchOptions.ContentCategoryResultIncludeContentCategory);
         }
         
         try {
             var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5477,11 +5450,11 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    ContentCategory contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContentCategoryPK(rs.getLong(1)));
-                    ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-                    ContentCatalogDetail contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
+                    var contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContentCategoryPK(rs.getLong(1)));
+                    var contentCategoryDetail = contentCategory.getLastDetail();
+                    var contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
 
                     contentCategoryResultTransfers.add(new ContentCategoryResultTransfer(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(),
                             contentCatalogDetail.getContentCatalogName(), contentCategoryDetail.getContentCategoryName(),
@@ -5502,18 +5475,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<SecurityRoleGroupResultTransfer> getSecurityRoleGroupResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<SecurityRoleGroupResultTransfer> SecurityRoleGroupResultTransfers = new ArrayList<>();
-        boolean includeSecurityRoleGroup = false;
+        var search = userVisitSearch.getSearch();
+        var securityRoleGroupResultTransfers = new ArrayList<SecurityRoleGroupResultTransfer>();
+        var includeSecurityRoleGroup = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeSecurityRoleGroup = options.contains(SearchOptions.SecurityRoleGroupResultIncludeSecurityRoleGroup);
         }
         
         try {
             var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5522,11 +5495,11 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    SecurityRoleGroup securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(rs.getLong(1)));
+                    var securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(rs.getLong(1)));
 
-                    SecurityRoleGroupResultTransfers.add(new SecurityRoleGroupResultTransfer(securityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
+                    securityRoleGroupResultTransfers.add(new SecurityRoleGroupResultTransfer(securityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
                             includeSecurityRoleGroup ? securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup) : null));
                 }
             } catch (SQLException se) {
@@ -5536,7 +5509,7 @@ public class SearchControl
             throw new PersistenceDatabaseException(se);
         }
         
-        return SecurityRoleGroupResultTransfers;
+        return securityRoleGroupResultTransfers;
     }
     
     // --------------------------------------------------------------------------------
@@ -5544,18 +5517,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<SecurityRoleResultTransfer> getSecurityRoleResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<SecurityRoleResultTransfer> securityRoleResultTransfers = new ArrayList<>();
-        boolean includeSecurityRole = false;
+        var search = userVisitSearch.getSearch();
+        var securityRoleResultTransfers = new ArrayList<SecurityRoleResultTransfer>();
+        var includeSecurityRole = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeSecurityRole = options.contains(SearchOptions.SecurityRoleResultIncludeSecurityRole);
         }
         
         try {
             var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5564,10 +5537,10 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    SecurityRole securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRolePK(rs.getLong(1)));
-                    SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
+                    var securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRolePK(rs.getLong(1)));
+                    var securityRoleDetail = securityRole.getLastDetail();
 
                     securityRoleResultTransfers.add(new SecurityRoleResultTransfer(securityRoleDetail.getSecurityRoleName(),
                             securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName(),
@@ -5588,18 +5561,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<HarmonizedTariffScheduleCodeResultTransfer> getHarmonizedTariffScheduleCodeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<HarmonizedTariffScheduleCodeResultTransfer> harmonizedTariffScheduleCodeResultTransfers = new ArrayList<>();
-        boolean includeHarmonizedTariffScheduleCode = false;
+        var search = userVisitSearch.getSearch();
+        var harmonizedTariffScheduleCodeResultTransfers = new ArrayList<HarmonizedTariffScheduleCodeResultTransfer>();
+        var includeHarmonizedTariffScheduleCode = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeHarmonizedTariffScheduleCode = options.contains(SearchOptions.HarmonizedTariffScheduleCodeResultIncludeHarmonizedTariffScheduleCode);
         }
         
         try {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5608,10 +5581,10 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new HarmonizedTariffScheduleCodePK(rs.getLong(1)));
-                    HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
+                    var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new HarmonizedTariffScheduleCodePK(rs.getLong(1)));
+                    var harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
 
                     harmonizedTariffScheduleCodeResultTransfers.add(new HarmonizedTariffScheduleCodeResultTransfer(
                             harmonizedTariffScheduleCodeDetail.getCountryGeoCode().getLastDetail().getGeoCodeName(),
@@ -5633,18 +5606,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<EntityTypeResultTransfer> getEntityTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<EntityTypeResultTransfer> entityTypeResultTransfers = new ArrayList<>();
-        boolean includeEntityType = false;
+        var search = userVisitSearch.getSearch();
+        var entityTypeResultTransfers = new ArrayList<EntityTypeResultTransfer>();
+        var includeEntityType = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeEntityType = options.contains(SearchOptions.EntityTypeResultIncludeEntityType);
         }
         
         try {
             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5653,10 +5626,10 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    EntityType entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(rs.getLong(1)));
-                    EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+                    var entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new EntityTypePK(rs.getLong(1)));
+                    var entityTypeDetail = entityType.getLastDetail();
 
                     entityTypeResultTransfers.add(new EntityTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                             entityTypeDetail.getEntityTypeName(), includeEntityType ? coreControl.getEntityTypeTransfer(userVisit, entityType) : null));
@@ -5676,18 +5649,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<ContactMechanismResultTransfer> getContactMechanismResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<ContactMechanismResultTransfer> contactMechanismResultTransfers = new ArrayList<>();
-        boolean includeContactMechanism = false;
+        var search = userVisitSearch.getSearch();
+        var contactMechanismResultTransfers = new ArrayList<ContactMechanismResultTransfer>();
+        var includeContactMechanism = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeContactMechanism = options.contains(SearchOptions.ContactMechanismResultIncludeContactMechanism);
         }
         
         try {
             var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5696,10 +5669,10 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContactMechanismPK(rs.getLong(1)));
-                    ContactMechanismDetail contactMechanismDetail = contactMechanism.getLastDetail();
+                    var contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ContactMechanismPK(rs.getLong(1)));
+                    var contactMechanismDetail = contactMechanism.getLastDetail();
 
                     contactMechanismResultTransfers.add(new ContactMechanismResultTransfer(contactMechanismDetail.getContactMechanismName(),
                             includeContactMechanism ? contactControl.getContactMechanismTransfer(userVisit, contactMechanism) : null));
@@ -5719,18 +5692,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<OfferResultTransfer> getOfferResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<OfferResultTransfer> offerResultTransfers = new ArrayList<>();
-        boolean includeOffer = false;
+        var search = userVisitSearch.getSearch();
+        var offerResultTransfers = new ArrayList<OfferResultTransfer>();
+        var includeOffer = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeOffer = options.contains(SearchOptions.OfferResultIncludeOffer);
         }
         
         try {
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5739,10 +5712,10 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Offer offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(rs.getLong(1)));
-                    OfferDetail offerDetail = offer.getLastDetail();
+                    var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(rs.getLong(1)));
+                    var offerDetail = offer.getLastDetail();
 
                     offerResultTransfers.add(new OfferResultTransfer(offerDetail.getOfferName(),
                             includeOffer ? offerControl.getOfferTransfer(userVisit, offer) : null));
@@ -5762,18 +5735,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<UseResultTransfer> getUseResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<UseResultTransfer> useResultTransfers = new ArrayList<>();
-        boolean includeUse = false;
+        var search = userVisitSearch.getSearch();
+        var useResultTransfers = new ArrayList<UseResultTransfer>();
+        var includeUse = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeUse = options.contains(SearchOptions.UseResultIncludeUse);
         }
         
         try {
             var useControl = (UseControl)Session.getModelController(UseControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5782,10 +5755,10 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    Use use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UsePK(rs.getLong(1)));
-                    UseDetail useDetail = use.getLastDetail();
+                    var use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UsePK(rs.getLong(1)));
+                    var useDetail = use.getLastDetail();
 
                     useResultTransfers.add(new UseResultTransfer(useDetail.getUseName(),
                             includeUse ? useControl.getUseTransfer(userVisit, use) : null));
@@ -5805,18 +5778,18 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<UseTypeResultTransfer> getUseTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<UseTypeResultTransfer> useTypeResultTransfers = new ArrayList<>();
-        boolean includeUseType = false;
-        
-        Set<String> options = session.getOptions();
+        var search = userVisitSearch.getSearch();
+        var useTypeResultTransfers = new ArrayList<UseTypeResultTransfer>();
+        var includeUseType = false;
+
+        var options = session.getOptions();
         if(options != null) {
             includeUseType = options.contains(SearchOptions.UseTypeResultIncludeUseType);
         }
         
         try {
             var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
@@ -5825,10 +5798,10 @@ public class SearchControl
             
             ps.setLong(1, search.getPrimaryKey().getEntityId());
             
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    UseType useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
-                    UseTypeDetail useTypeDetail = useType.getLastDetail();
+                    var useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
+                    var useTypeDetail = useType.getLastDetail();
 
                     useTypeResultTransfers.add(new UseTypeResultTransfer(useTypeDetail.getUseTypeName(),
                             includeUseType ? useTypeControl.getUseTypeTransfer(userVisit, useType) : null));
