@@ -17,10 +17,10 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.exception.BaseSearchException;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -28,10 +28,10 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.Collections;
 import java.util.List;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 
 @GraphQLDescription("customer results object")
 @GraphQLName("CustomerResults")
@@ -79,9 +79,9 @@ public class CustomerResultsObject {
 
         if(userVisitSearch != null) {
             GraphQlContext context = env.getContext();
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
-            objects = searchControl.getCustomerResultObjects(userVisitSearch);
+            objects = customerControl.getCustomerResultObjects(userVisitSearch);
         }
         
         return objects == null ? Collections.EMPTY_LIST : objects;

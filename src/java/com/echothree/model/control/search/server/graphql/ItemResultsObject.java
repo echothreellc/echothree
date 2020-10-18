@@ -18,9 +18,9 @@ package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.exception.BaseSearchException;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -78,9 +78,9 @@ public class ItemResultsObject {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
-            objects = searchControl.getItemResultObjects(userVisitSearch);
+            objects = itemControl.getItemResultObjects(userVisitSearch);
         }
         
         return objects == null ? Collections.EMPTY_LIST : objects;
