@@ -19,7 +19,9 @@ package com.echothree.model.control.offer.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.choice.UseTypeChoicesBean;
 import com.echothree.model.control.offer.common.transfer.UseTypeDescriptionTransfer;
+import com.echothree.model.control.offer.common.transfer.UseTypeResultTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
+import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.UseTypePK;
 import com.echothree.model.data.offer.server.entity.UseType;
@@ -31,6 +33,8 @@ import com.echothree.model.data.offer.server.factory.UseTypeFactory;
 import com.echothree.model.data.offer.server.value.UseTypeDescriptionValue;
 import com.echothree.model.data.offer.server.value.UseTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -506,4 +510,47 @@ public class UseTypeControl
         });
     }
 
+
+    // --------------------------------------------------------------------------------
+    //   Use Type Searches
+    // --------------------------------------------------------------------------------
+
+    public List<UseTypeResultTransfer> getUseTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        var useTypeResultTransfers = new ArrayList<UseTypeResultTransfer>();
+        var includeUseType = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeUseType = options.contains(SearchOptions.UseTypeResultIncludeUseType);
+        }
+
+        try {
+            var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, search.getPrimaryKey().getEntityId());
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    var useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
+                    var useTypeDetail = useType.getLastDetail();
+
+                    useTypeResultTransfers.add(new UseTypeResultTransfer(useTypeDetail.getUseTypeName(),
+                            includeUseType ? useTypeControl.getUseTypeTransfer(userVisit, useType) : null));
+                }
+            } catch (SQLException se) {
+                throw new PersistenceDatabaseException(se);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return useTypeResultTransfers;
+    }
 }

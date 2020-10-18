@@ -27,6 +27,7 @@ import com.echothree.model.control.employee.common.choice.ResponsibilityTypeChoi
 import com.echothree.model.control.employee.common.choice.SkillTypeChoicesBean;
 import com.echothree.model.control.employee.common.choice.TerminationReasonChoicesBean;
 import com.echothree.model.control.employee.common.choice.TerminationTypeChoicesBean;
+import com.echothree.model.control.employee.common.transfer.EmployeeResultTransfer;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.control.employee.common.transfer.EmployeeTypeDescriptionTransfer;
 import com.echothree.model.control.employee.common.transfer.EmployeeTypeTransfer;
@@ -69,6 +70,7 @@ import com.echothree.model.control.employee.server.transfer.TerminationReasonDes
 import com.echothree.model.control.employee.server.transfer.TerminationReasonTransferCache;
 import com.echothree.model.control.employee.server.transfer.TerminationTypeDescriptionTransferCache;
 import com.echothree.model.control.employee.server.transfer.TerminationTypeTransferCache;
+import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -160,6 +162,8 @@ import com.echothree.model.data.employee.server.value.TerminationTypeDetailValue
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
@@ -4455,5 +4459,47 @@ public class EmployeeControl
             deletePartySkill(partySkill, deletedBy);
         });
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Employee Searches
+    // --------------------------------------------------------------------------------
+
+    public List<EmployeeResultTransfer> getEmployeeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        var employeeResultTransfers = new ArrayList<EmployeeResultTransfer>();
+        var includeEmployee = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeEmployee = options.contains(SearchOptions.EmployeeResultIncludeEmployee);
+        }
+
+        try {
+            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, search.getPrimaryKey().getEntityId());
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
+
+                    employeeResultTransfers.add(new EmployeeResultTransfer(party.getLastDetail().getPartyName(),
+                            includeEmployee ? employeeControl.getEmployeeTransfer(userVisit, party) : null));
+                }
+            } catch (SQLException se) {
+                throw new PersistenceDatabaseException(se);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return employeeResultTransfers;
+    }
+
 }

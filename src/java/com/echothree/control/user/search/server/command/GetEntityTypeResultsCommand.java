@@ -19,6 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetEntityTypeResultsForm;
 import com.echothree.control.user.search.common.result.GetEntityTypeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -27,10 +28,10 @@ import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -68,11 +69,13 @@ public class GetEntityTypeResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
+                    var entityTypeControl = (EntityTypeControl)Session.getModelController(EntityTypeControl.class);
+
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setEntityTypeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
                     }
 
-                    result.setEntityTypeResults(searchControl.getEntityTypeResultTransfers(userVisit, userVisitSearch));
+                    result.setEntityTypeResults(entityTypeControl.getEntityTypeResultTransfers(userVisit, userVisitSearch));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }

@@ -19,18 +19,18 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetLeaveResultsForm;
 import com.echothree.control.user.search.common.result.GetLeaveResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.employee.server.control.LeaveControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,13 +71,13 @@ public class GetLeaveResultsCommand
         UserVisitSearch userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchConstants.SearchKind_LEAVE, form.getSearchTypeName());
         
         if(!hasExecutionErrors()) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var leaveControl = (LeaveControl)Session.getModelController(LeaveControl.class);
 
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                 result.setLeaveResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
             }
 
-            result.setLeaveResults(searchControl.getLeaveResultTransfers(userVisit, userVisitSearch));
+            result.setLeaveResults(leaveControl.getLeaveResultTransfers(userVisit, userVisitSearch));
         }
         
         return result;

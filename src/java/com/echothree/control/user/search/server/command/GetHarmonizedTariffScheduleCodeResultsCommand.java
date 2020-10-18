@@ -19,6 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetHarmonizedTariffScheduleCodeResultsForm;
 import com.echothree.control.user.search.common.result.GetHarmonizedTariffScheduleCodeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.item.server.control.HarmonizedTariffScheduleCodeControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -27,10 +28,10 @@ import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -68,11 +69,13 @@ public class GetHarmonizedTariffScheduleCodeResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
+                    var harmonizedTariffScheduleCodeControl = (HarmonizedTariffScheduleCodeControl)Session.getModelController(HarmonizedTariffScheduleCodeControl.class);
+
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setHarmonizedTariffScheduleCodeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
                     }
 
-                    result.setHarmonizedTariffScheduleCodeResults(searchControl.getHarmonizedTariffScheduleCodeResultTransfers(userVisit, userVisitSearch));
+                    result.setHarmonizedTariffScheduleCodeResults(harmonizedTariffScheduleCodeControl.getHarmonizedTariffScheduleCodeResultTransfers(userVisit, userVisitSearch));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }

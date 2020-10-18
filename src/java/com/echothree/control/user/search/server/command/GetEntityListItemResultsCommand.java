@@ -19,6 +19,8 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetEntityListItemResultsForm;
 import com.echothree.control.user.search.common.result.GetEntityListItemResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.core.server.control.EntityListItemControl;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -68,11 +70,13 @@ public class GetEntityListItemResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
+                    var entityListItemControl = (EntityListItemControl)Session.getModelController(EntityListItemControl.class);
+
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setEntityListItemResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
                     }
 
-                    result.setEntityListItemResults(searchControl.getEntityListItemResultTransfers(userVisit, userVisitSearch));
+                    result.setEntityListItemResults(entityListItemControl.getEntityListItemResultTransfers(userVisit, userVisitSearch));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }

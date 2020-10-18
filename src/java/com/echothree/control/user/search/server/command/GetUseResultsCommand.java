@@ -19,6 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetUseResultsForm;
 import com.echothree.control.user.search.common.result.GetUseResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -27,10 +28,10 @@ import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -68,11 +69,13 @@ public class GetUseResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
+                    var useControl = (UseControl)Session.getModelController(UseControl.class);
+
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setUseResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
                     }
 
-                    result.setUseResults(searchControl.getUseResultTransfers(userVisit, userVisitSearch));
+                    result.setUseResults(useControl.getUseResultTransfers(userVisit, userVisitSearch));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }

@@ -17,6 +17,10 @@
 package com.echothree.model.control.vendor.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.control.search.server.graphql.VendorResultObject;
 import com.echothree.model.control.vendor.common.choice.ItemPurchasingCategoryChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorItemStatusChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorStatusChoicesBean;
@@ -25,6 +29,7 @@ import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategory
 import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorItemCostTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
+import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeDescriptionTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
@@ -55,6 +60,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
@@ -102,6 +108,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1930,5 +1937,52 @@ public class VendorControl
             deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, deletedBy);
         });
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Vendor Searches
+    // --------------------------------------------------------------------------------
+
+    public List<VendorResultTransfer> getVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var vendorResultTransfers = new ArrayList<VendorResultTransfer>();
+        var includeVendor = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeVendor = options.contains(SearchOptions.VendorResultIncludeVendor);
+        }
+
+        try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                vendorResultTransfers.add(new VendorResultTransfer(party.getLastDetail().getPartyName(),
+                        includeVendor ? vendorControl.getVendorTransfer(userVisit, party) : null));
+            }
+        } catch(SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return vendorResultTransfers;
+    }
+
+    public List<VendorResultObject> getVendorResultObjects(UserVisitSearch userVisitSearch) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var vendorResultObjects = new ArrayList<VendorResultObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                vendorResultObjects.add(new VendorResultObject(party));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return vendorResultObjects;
+    }
+
 }

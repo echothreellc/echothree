@@ -65,6 +65,7 @@ import com.echothree.model.control.item.common.transfer.ItemKitMemberTransfer;
 import com.echothree.model.control.item.common.transfer.ItemPackCheckRequirementTransfer;
 import com.echothree.model.control.item.common.transfer.ItemPriceTransfer;
 import com.echothree.model.control.item.common.transfer.ItemPriceTypeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemResultTransfer;
 import com.echothree.model.control.item.common.transfer.ItemShippingTimeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTypeTransfer;
@@ -116,6 +117,10 @@ import com.echothree.model.control.item.server.transfer.RelatedItemTypeDescripti
 import com.echothree.model.control.item.server.transfer.RelatedItemTypeTransferCache;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
+import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.control.search.server.graphql.ItemResultObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
@@ -346,6 +351,9 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.style.common.pk.StylePathPK;
@@ -371,6 +379,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11268,6 +11277,60 @@ public class ItemControl
 
     public void deleteItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, BasePK deletedBy) {
         deleteItemHarmonizedTariffScheduleCodes(getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeForUpdate(harmonizedTariffScheduleCode), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Item Searches
+    // --------------------------------------------------------------------------------
+
+    public List<ItemResultTransfer> getItemResultTransfers(UserVisitSearch userVisitSearch) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var itemResultTransfers = new ArrayList<ItemResultTransfer>(searchControl.countSearchResults(userVisitSearch));;
+        var includeItem = false;
+
+        // ItemTransfer objects are not included unless specifically requested;
+        var options = session.getOptions();
+        if(options != null) {
+            includeItem = options.contains(SearchOptions.ItemResultIncludeItem);
+        }
+
+        if(userVisitSearch.getSearch().getCachedSearch() != null) {
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
+        }
+
+        try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+
+            while(rs.next()) {
+                var item = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                itemResultTransfers.add(new ItemResultTransfer(item.getLastDetail().getItemName(),
+                        includeItem ? itemControl.getItemTransfer(userVisitSearch.getUserVisit(), item) : null));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemResultTransfers;
+    }
+
+    public List<ItemResultObject> getItemResultObjects(UserVisitSearch userVisitSearch) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var itemResultObjects = new ArrayList<ItemResultObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+
+            while(rs.next()) {
+                var item = itemControl.getItemByPK(new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                itemResultObjects.add(new ItemResultObject(item));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemResultObjects;
     }
 
 }

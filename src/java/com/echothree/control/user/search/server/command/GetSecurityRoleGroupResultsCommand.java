@@ -22,6 +22,8 @@ import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
+import com.echothree.model.control.security.server.control.SecurityRoleControl;
+import com.echothree.model.control.security.server.control.SecurityRoleGroupControl;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
@@ -68,11 +70,13 @@ public class GetSecurityRoleGroupResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
+                    var securityRoleGroupControl = (SecurityRoleGroupControl)Session.getModelController(SecurityRoleGroupControl.class);
+
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setSecurityRoleGroupResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
                     }
 
-                    result.setSecurityRoleGroupResults(searchControl.getSecurityRoleGroupResultTransfers(userVisit, userVisitSearch));
+                    result.setSecurityRoleGroupResults(securityRoleGroupControl.getSecurityRoleGroupResultTransfers(userVisit, userVisitSearch));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }

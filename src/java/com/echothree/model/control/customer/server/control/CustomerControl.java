@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.common.choice.CustomerCreditStatusChoicesBean;
 import com.echothree.model.control.customer.common.choice.CustomerStatusChoicesBean;
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
+import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeDescriptionTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypePaymentMethodTransfer;
@@ -35,6 +36,10 @@ import com.echothree.model.control.customer.server.transfer.CustomerTypeShipping
 import com.echothree.model.control.customer.server.transfer.CustomerTypeTransferCache;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.control.search.server.graphql.CustomerResultObject;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
@@ -70,6 +75,7 @@ import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipping.common.pk.ShippingMethodPK;
@@ -1409,5 +1415,52 @@ public class CustomerControl
     public void deleteCustomerTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
         deleteCustomerTypeShippingMethods(getCustomerTypeShippingMethodsByShippingMethodForUpdate(shippingMethod), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Customer Searches
+    // --------------------------------------------------------------------------------
+
+    public List<CustomerResultTransfer> getCustomerResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var customerResultTransfers = new ArrayList<CustomerResultTransfer>();
+        var includeCustomer = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeCustomer = options.contains(SearchOptions.CustomerResultIncludeCustomer);
+        }
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                customerResultTransfers.add(new CustomerResultTransfer(party.getLastDetail().getPartyName(),
+                        includeCustomer ? customerControl.getCustomerTransfer(userVisit, party) : null));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return customerResultTransfers;
+    }
+
+    public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var customerResultObjects = new ArrayList<CustomerResultObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                customerResultObjects.add(new CustomerResultObject(party));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return customerResultObjects;
+    }
+
 }

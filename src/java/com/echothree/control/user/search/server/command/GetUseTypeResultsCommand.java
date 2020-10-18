@@ -19,9 +19,11 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetUseTypeResultsForm;
 import com.echothree.control.user.search.common.result.GetUseTypeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
@@ -68,11 +70,13 @@ public class GetUseTypeResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
+                    var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setUseTypeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
                     }
 
-                    result.setUseTypeResults(searchControl.getUseTypeResultTransfers(userVisit, userVisitSearch));
+                    result.setUseTypeResults(useTypeControl.getUseTypeResultTransfers(userVisit, userVisitSearch));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }

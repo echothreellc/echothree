@@ -19,8 +19,10 @@ package com.echothree.model.control.sales.server.control;
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.transfer.SalesOrderBatchTransferCache;
+import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
@@ -28,10 +30,14 @@ import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.sales.server.entity.SalesOrderBatch;
 import com.echothree.model.data.sales.server.factory.SalesOrderBatchFactory;
 import com.echothree.model.data.sales.server.value.SalesOrderBatchValue;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -138,6 +144,49 @@ public class SalesOrderBatchControl
 
     public void deleteSalesOrderBatch(Batch batch, BasePK deletedBy) {
         deleteSalesOrderBatch(getSalesOrderBatchForUpdate(batch), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Sales Order Batch Searches
+    // --------------------------------------------------------------------------------
+
+    public List<SalesOrderBatchResultTransfer> getSalesOrderBatchResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        var salesOrderBatchResultTransfers = new ArrayList<SalesOrderBatchResultTransfer>();
+        var includeSalesOrderBatch = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeSalesOrderBatch = options.contains(SearchOptions.SalesOrderBatchResultIncludeSalesOrderBatch);
+        }
+
+        try {
+            var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+            var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, search.getPrimaryKey().getEntityId());
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    var batch = batchControl.getBatchByPK(new BatchPK(rs.getLong(1)));
+
+                    salesOrderBatchResultTransfers.add(new SalesOrderBatchResultTransfer(batch.getLastDetail().getBatchName(),
+                            includeSalesOrderBatch ? salesOrderBatchControl.getSalesOrderBatchTransfer(userVisit, batch) : null));
+                }
+            } catch (SQLException se) {
+                throw new PersistenceDatabaseException(se);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return salesOrderBatchResultTransfers;
     }
 
 }
