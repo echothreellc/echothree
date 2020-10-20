@@ -32,9 +32,9 @@ import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.server.validation.ParameterUtils;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -74,13 +74,11 @@ public class GetOfferUsesCommand
 
     @Override
     protected Collection<OfferUse> getEntities() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Collection<OfferUse> offerUses = null;
         var offerName = form.getOfferName();
         var useName = form.getUseName();
-        int parameterCount = (offerName == null? 0: 1) + (useName == null? 0: 1);
 
-        if(parameterCount == 1) {
+        if(ParameterUtils.getInstance().isExactlyOneParameterPresent(this, offerName, useName)) {
             var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
             if(offerName != null) {
@@ -96,8 +94,6 @@ public class GetOfferUsesCommand
                     offerUses = offerUseControl.getOfferUsesByUse(use);
                 }
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
         return offerUses;
