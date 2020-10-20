@@ -18,15 +18,19 @@ package com.echothree.control.user.offer.common.result;
 
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
+import com.echothree.model.control.offer.common.transfer.UseTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetOfferUsesResult
         extends BaseResult {
-    
+
     OfferTransfer getOffer();
     void setOffer(OfferTransfer offer);
-    
+
+    UseTransfer getUse();
+    void setUse(UseTransfer use);
+
     List<OfferUseTransfer> getOfferUses();
     void setOfferUses(List<OfferUseTransfer> offerUses);
     

@@ -17,10 +17,11 @@
 package com.echothree.control.user.offer.common.form;
 
 import com.echothree.control.user.offer.common.spec.OfferSpec;
+import com.echothree.control.user.offer.common.spec.UseSpec;
 
 public interface GetOfferUsesForm
-        extends OfferSpec {
+        extends OfferSpec, UseSpec {
     
-    // Nothing additional beyond OfferSpec
+    // Nothing additional beyond OfferSpec, UseSpec
     
 }

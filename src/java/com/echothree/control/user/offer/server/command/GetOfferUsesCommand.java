@@ -17,15 +17,18 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.GetOfferUsesForm;
-import com.echothree.control.user.offer.common.result.GetOfferUsesResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.offer.server.control.UseControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.UseLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
+import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
@@ -37,10 +40,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import static java.util.List.of;
 
 public class GetOfferUsesCommand
         extends BaseMultipleEntitiesCommand<OfferUse, GetOfferUsesForm> {
@@ -49,39 +51,53 @@ public class GetOfferUsesCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferUse.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L)
-                ));
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = of(
+                new FieldDefinition("OfferName", FieldType.ENTITY_NAME, false, null, 20L),
+                new FieldDefinition("UseName", FieldType.ENTITY_NAME, false, null, 20L)
+        );
     }
     
     /** Creates a new instance of GetOfferUsesCommand */
     public GetOfferUsesCommand(UserVisitPK userVisitPK, GetOfferUsesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     private Offer offer;
-    
+    private Use use;
+
     @Override
     protected Collection<OfferUse> getEntities() {
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Collection<OfferUse> offerUses = null;
-        String offerName = form.getOfferName();
-        
-        offer = offerControl.getOfferByName(offerName);
-        
-        if(offer != null) {
+        var offerName = form.getOfferName();
+        var useName = form.getUseName();
+        int parameterCount = (offerName == null? 0: 1) + (useName == null? 0: 1);
+
+        if(parameterCount == 1) {
             var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
 
-            offerUses = offerUseControl.getOfferUsesByOffer(offer);
+            if(offerName != null) {
+                offer = OfferLogic.getInstance().getOfferByName(this, offerName);
+
+                if(!hasExecutionErrors()) {
+                    offerUses = offerUseControl.getOfferUsesByOffer(offer);
+                }
+            } else {
+                use = UseLogic.getInstance().getUseByName(this, useName);
+
+                if(!hasExecutionErrors()) {
+                    offerUses = offerUseControl.getOfferUsesByUse(use);
+                }
+            }
         } else {
-            addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
         return offerUses;
@@ -89,14 +105,24 @@ public class GetOfferUsesCommand
     
     @Override
     protected BaseResult getTransfers(Collection<OfferUse> entities) {
-        GetOfferUsesResult result = OfferResultFactory.getGetOfferUsesResult();
+        var result = OfferResultFactory.getGetOfferUsesResult();
         
         if(entities != null) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
             UserVisit userVisit = getUserVisit();
-            
-            result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
+
+            if(offer != null) {
+                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+
+                result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
+            }
+
+            if(use != null) {
+                var useControl = (UseControl)Session.getModelController(UseControl.class);
+
+                result.setUse(useControl.getUseTransfer(userVisit, use));
+            }
+
             result.setOfferUses(offerUseControl.getOfferUseTransfers(userVisit, entities));
         }
         
