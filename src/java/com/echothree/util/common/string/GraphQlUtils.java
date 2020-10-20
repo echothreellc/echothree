@@ -45,7 +45,7 @@ public class GraphQlUtils {
     }
     
     public Map<String, Object> toMap(String json) {
-        TypeToken<Map<String, Object>> typeToken = new TypeToken<Map<String, Object>>() {
+        var typeToken = new TypeToken<Map<String, Object>>() {
         };
         
         Map<String, Object> map = GSON.fromJson(json, typeToken.getType());

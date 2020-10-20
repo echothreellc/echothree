@@ -99,7 +99,7 @@ public class GetOfferUsesCommand
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
         return offerUses;
     }
     
