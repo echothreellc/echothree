@@ -51,6 +51,16 @@ public class ParameterUtils
         return areAnyTrue && !areTwoTrue;
     }
 
+    public boolean isExactlyOneBooleanTrue(final ExecutionErrorAccumulator eea, Boolean... booleans)
+    {
+        var result = isExactlyOneBooleanTrue(booleans);
+        if(!result) {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return result;
+    }
+
     public boolean isExactlyOneParameterPresent(String... parameters)
     {
         var nullTestedParameters = Arrays.stream(parameters)
