@@ -273,8 +273,8 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("offerUse")
     public static OfferUseObject offerUse(final DataFetchingEnvironment env,
-            @GraphQLName("offerName") final String offerName,
-            @GraphQLName("useName") final String useName) {
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("useName") @GraphQLNonNull final String useName) {
         OfferUse offerUse;
 
         try {
@@ -293,12 +293,17 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerUses")
-    public static Collection<OfferUseObject> offerUses(final DataFetchingEnvironment env) {
+    public static Collection<OfferUseObject> offerUses(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") final String offerName,
+            @GraphQLName("useName") final String useName) {
         Collection<OfferUse> offerUses;
         Collection<OfferUseObject> offerUseObjects;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOfferUsesForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setUseName(useName);
 
             offerUses = new GetOfferUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
