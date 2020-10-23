@@ -84,7 +84,7 @@ public class GraphQlMutations
     public static CommandResultWithIdObject createOfferUse(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("useName") @GraphQLNonNull final String useName,
-            @GraphQLName("salesOrderSequenceName") @GraphQLNonNull final String salesOrderSequenceName) {
+            @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName) {
         var commandResultObject = new CommandResultWithIdObject();
 
         try {
