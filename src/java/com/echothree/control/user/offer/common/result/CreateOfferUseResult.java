@@ -14,14 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.form;
+package com.echothree.control.user.offer.common.result;
 
 import com.echothree.control.user.offer.common.spec.OfferSpec;
-import com.echothree.control.user.offer.common.spec.UseSpec;
+import com.echothree.control.user.offer.common.spec.OfferUseSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface GetOfferUsesForm
-        extends OfferSpec, UseSpec {
+public interface CreateOfferUseResult
+        extends OfferUseSpec, BaseResult {
     
-    // Nothing additional beyond OfferSpec, UseSpec
+    String getEntityRef();
+    void setEntityRef(String entityRef);
     
 }

@@ -17,6 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferUseForm;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.control.SourceControl;
@@ -76,6 +77,8 @@ public class CreateOfferUseCommand
     @Override
     protected BaseResult execute() {
         var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var result = OfferResultFactory.getCreateOfferUseResult();
+        OfferUse offerUse = null;
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         
@@ -86,7 +89,8 @@ public class CreateOfferUseCommand
             
             if(use != null) {
                 var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-                OfferUse offerUse = offerUseControl.getOfferUse(offer, use);
+
+                offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse == null) {
                     String salesOrderSequenceName = form.getSalesOrderSequenceName();
@@ -128,8 +132,16 @@ public class CreateOfferUseCommand
         }  else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
         }
-        
-        return null;
+
+        if(offerUse != null) {
+            var offerUseDetail = offerUse.getLastDetail();
+
+            result.setOfferName(offerUseDetail.getOffer().getLastDetail().getOfferName());
+            result.setUseName(offerUseDetail.getUse().getLastDetail().getUseName());
+            result.setEntityRef(offerUseDetail.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
