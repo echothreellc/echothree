@@ -23,21 +23,24 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetFilterKindsCommand
-        extends BaseSimpleCommand<GetFilterKindsForm> {
-    
+        extends BaseMultipleEntitiesCommand<FilterKind, GetFilterKindsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -45,27 +48,38 @@ public class GetFilterKindsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.List.name())
-                    )))
-                )));
+                        new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.List.name())
+                )))
+        )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        ));
     }
 
     /** Creates a new instance of GetFilterKindsCommand */
     public GetFilterKindsCommand(UserVisitPK userVisitPK, GetFilterKindsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<FilterKind> getEntities() {
         var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+
+        return filterControl.getFilterKinds();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<FilterKind> entities) {
         GetFilterKindsResult result = FilterResultFactory.getGetFilterKindsResult();
-        
-        result.setFilterKinds(filterControl.getFilterKindTransfers(getUserVisit()));
-        
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+
+        if(session.hasLimit(FilterKindFactory.class)) {
+            result.setFilterKindCount(filterControl.countFilterKinds());
+        }
+
+        result.setFilterKinds(filterControl.getFilterKindTransfers(getUserVisit(), entities));
+
         return result;
     }
-    
+
 }

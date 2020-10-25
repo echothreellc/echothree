@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetFilterKindsResult
         extends BaseResult {
-    
+
+    Long getFilterKindCount();
+    void setFilterKindCount(Long filterKindCount);
+
     List<FilterKindTransfer> getFilterKinds();
     void setFilterKinds(List<FilterKindTransfer> filterKinds);
     
