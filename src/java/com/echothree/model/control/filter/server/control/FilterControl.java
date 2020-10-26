@@ -59,6 +59,7 @@ import com.echothree.model.control.filter.server.transfer.FilterTransferCaches;
 import com.echothree.model.control.filter.server.transfer.FilterTypeTransferCache;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.common.pk.FilterAdjustmentPK;
 import com.echothree.model.data.filter.common.pk.FilterAdjustmentSourcePK;
 import com.echothree.model.data.filter.common.pk.FilterAdjustmentTypePK;
@@ -136,6 +137,9 @@ import com.echothree.model.data.filter.server.value.FilterStepElementDescription
 import com.echothree.model.data.filter.server.value.FilterStepElementDetailValue;
 import com.echothree.model.data.filter.server.value.FilterTypeDescriptionValue;
 import com.echothree.model.data.filter.server.value.FilterTypeDetailValue;
+import com.echothree.model.data.offer.common.pk.UseTypePK;
+import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.offer.server.factory.UseTypeFactory;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -150,6 +154,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -210,7 +215,30 @@ public class FilterControl
 
         return filterKind;
     }
+    
+    public long countFilterKinds() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                    "FROM filterkinds, filterkinddetails " +
+                    "WHERE fltk_activedetailid = fltkdt_filterkinddetailid");
+    }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterKind */
+    public FilterKind getFilterKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterKindPK(entityInstance.getEntityUniqueId());
+        var filterKind = FilterKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return filterKind;
+    }
+
+    public FilterKind getFilterKindByEntityInstance(EntityInstance entityInstance) {
+        return getFilterKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public FilterKind getFilterKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
     private static final Map<EntityPermission, String> getFilterKindByNameQueries;
 
     static {
@@ -228,7 +256,7 @@ public class FilterControl
         getFilterKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private FilterKind getFilterKindByName(String filterKindName, EntityPermission entityPermission) {
+    public FilterKind getFilterKindByName(String filterKindName, EntityPermission entityPermission) {
         return FilterKindFactory.getInstance().getEntityFromQuery(entityPermission, getFilterKindByNameQueries,
                 filterKindName);
     }
@@ -266,7 +294,7 @@ public class FilterControl
         getDefaultFilterKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private FilterKind getDefaultFilterKind(EntityPermission entityPermission) {
+    public FilterKind getDefaultFilterKind(EntityPermission entityPermission) {
         return FilterKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFilterKindQueries);
     }
 
@@ -350,8 +378,7 @@ public class FilterControl
         return getFilterTransferCaches(userVisit).getFilterKindTransferCache().getFilterKindTransfer(filterKind);
     }
 
-    public List<FilterKindTransfer> getFilterKindTransfers(UserVisit userVisit) {
-        List<FilterKind> filterKinds = getFilterKinds();
+    public List<FilterKindTransfer> getFilterKindTransfers(UserVisit userVisit, Collection<FilterKind> filterKinds) {
         List<FilterKindTransfer> filterKindTransfers = new ArrayList<>(filterKinds.size());
         FilterKindTransferCache filterKindTransferCache = getFilterTransferCaches(userVisit).getFilterKindTransferCache();
 
@@ -360,6 +387,10 @@ public class FilterControl
         });
 
         return filterKindTransfers;
+    }
+
+    public List<FilterKindTransfer> getFilterKindTransfers(UserVisit userVisit) {
+        return getFilterKindTransfers(userVisit, getFilterKinds());
     }
 
     private void updateFilterKindFromValue(FilterKindDetailValue filterKindDetailValue, boolean checkDefault, BasePK updatedBy) {
