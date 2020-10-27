@@ -178,6 +178,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -237,6 +238,13 @@ public class SelectorControl
         sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
 
         return selectorKind;
+    }
+
+    public long countSelectorKinds() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM selectorkinds, selectorkinddetails " +
+                        "WHERE slk_activedetailid = slkdt_selectorkinddetailid");
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SelectorKind */
@@ -394,8 +402,7 @@ public class SelectorControl
         return getSelectorTransferCaches(userVisit).getSelectorKindTransferCache().getSelectorKindTransfer(selectorKind);
     }
 
-    public List<SelectorKindTransfer> getSelectorKindTransfers(UserVisit userVisit) {
-        List<SelectorKind> selectorKinds = getSelectorKinds();
+    public List<SelectorKindTransfer> getSelectorKindTransfers(UserVisit userVisit, Collection<SelectorKind> selectorKinds) {
         List<SelectorKindTransfer> selectorKindTransfers = new ArrayList<>(selectorKinds.size());
         SelectorKindTransferCache selectorKindTransferCache = getSelectorTransferCaches(userVisit).getSelectorKindTransferCache();
 
@@ -404,6 +411,10 @@ public class SelectorControl
         });
 
         return selectorKindTransfers;
+    }
+
+    public List<SelectorKindTransfer> getSelectorKindTransfers(UserVisit userVisit) {
+        return getSelectorKindTransfers(userVisit, getSelectorKinds());
     }
 
     private void updateSelectorKindFromValue(SelectorKindDetailValue selectorKindDetailValue, boolean checkDefault, BasePK updatedBy) {

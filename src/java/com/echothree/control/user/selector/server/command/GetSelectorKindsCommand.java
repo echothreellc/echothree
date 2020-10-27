@@ -17,27 +17,30 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorKindsForm;
-import com.echothree.control.user.selector.common.result.GetSelectorKindsResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
+import com.echothree.control.user.selector.common.result.GetSelectorKindsResult;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.data.selector.server.entity.SelectorKind;
+import com.echothree.model.data.selector.server.factory.SelectorKindFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetSelectorKindsCommand
-        extends BaseSimpleCommand<GetSelectorKindsForm> {
-    
+        extends BaseMultipleEntitiesCommand<SelectorKind, GetSelectorKindsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -45,27 +48,38 @@ public class GetSelectorKindsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SelectorKind.name(), SecurityRoles.List.name())
-                    )))
-                )));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SelectorKind.name(), SecurityRoles.List.name())
+                )))
+        )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        ));
     }
 
     /** Creates a new instance of GetSelectorKindsCommand */
     public GetSelectorKindsCommand(UserVisitPK userVisitPK, GetSelectorKindsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<SelectorKind> getEntities() {
         var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+
+        return selectorControl.getSelectorKinds();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<SelectorKind> entities) {
         GetSelectorKindsResult result = SelectorResultFactory.getGetSelectorKindsResult();
-        
-        result.setSelectorKinds(selectorControl.getSelectorKindTransfers(getUserVisit()));
-        
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+
+        if(session.hasLimit(SelectorKindFactory.class)) {
+            result.setSelectorKindCount(selectorControl.countSelectorKinds());
+        }
+
+        result.setSelectorKinds(selectorControl.getSelectorKindTransfers(getUserVisit(), entities));
+
         return result;
     }
-    
+
 }

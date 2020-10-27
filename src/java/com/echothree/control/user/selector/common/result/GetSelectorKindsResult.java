@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSelectorKindsResult
         extends BaseResult {
-    
+
+    Long getSelectorKindCount();
+    void setSelectorKindCount(Long selectorKindCount);
+
     List<SelectorKindTransfer> getSelectorKinds();
     void setSelectorKinds(List<SelectorKindTransfer> selectorKinds);
     

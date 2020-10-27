@@ -17,20 +17,19 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorKindForm;
-import com.echothree.control.user.selector.common.result.GetSelectorKindResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,45 +39,54 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetSelectorKindCommand
-        extends BaseSimpleCommand<GetSelectorKindForm> {
-    
+        extends BaseSingleEntityCommand<SelectorKind, GetSelectorKindForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SelectorKind.name(), SecurityRoles.Review.name())
-                    )))
-                )));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SelectorKind.name(), SecurityRoles.Review.name())
+                )))
+        )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        ));
     }
-    
+
     /** Creates a new instance of GetSelectorKindCommand */
     public GetSelectorKindCommand(UserVisitPK userVisitPK, GetSelectorKindForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected SelectorKind getEntity() {
+        var selectorKind = SelectorKindLogic.getInstance().getSelectorKindByUniversalSpec(this, form, true);
+
+        if(selectorKind != null) {
+            sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        }
+
+        return selectorKind;
+    }
+
+    @Override
+    protected BaseResult getTransfer(SelectorKind selectorKind) {
         var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-        GetSelectorKindResult result = SelectorResultFactory.getGetSelectorKindResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
+        var result = SelectorResultFactory.getGetSelectorKindResult();
+
         if(selectorKind != null) {
             result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));
-            
-            sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
         }
-        
+
         return result;
     }
-    
+
 }

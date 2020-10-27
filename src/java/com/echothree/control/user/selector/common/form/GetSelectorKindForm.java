@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.selector.common.form;
 
-import com.echothree.control.user.selector.common.spec.SelectorKindSpec;
+import com.echothree.control.user.selector.common.spec.SelectorKindUniversalSpec;
 
 public interface GetSelectorKindForm
-        extends SelectorKindSpec {
+        extends SelectorKindUniversalSpec {
     
-    // Nothing additional beyond SelectorKindSpec
+    // Nothing additional beyond SelectorKindUniversalSpec
     
 }
