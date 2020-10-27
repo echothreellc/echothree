@@ -281,7 +281,7 @@ public class PartyControl
     //   Party Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PartyTransferCaches partyTransferCaches = null;
+    private PartyTransferCaches partyTransferCaches;
     
     public PartyTransferCaches getPartyTransferCaches(UserVisit userVisit) {
         if(partyTransferCaches == null) {

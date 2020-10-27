@@ -65,7 +65,7 @@ public class JobControl
     //   Contact List Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private JobTransferCaches jobTransferCaches = null;
+    private JobTransferCaches jobTransferCaches;
     
     public JobTransferCaches getJobTransferCaches(UserVisit userVisit) {
         if(jobTransferCaches == null) {

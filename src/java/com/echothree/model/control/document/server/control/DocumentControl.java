@@ -123,7 +123,7 @@ public class DocumentControl
     //   Document Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private DocumentTransferCaches documentTransferCaches = null;
+    private DocumentTransferCaches documentTransferCaches;
     
     public DocumentTransferCaches getDocumentTransferCaches(UserVisit userVisit) {
         if(documentTransferCaches == null) {

@@ -77,7 +77,7 @@ public class TagControl
     //   Tag Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private TagTransferCaches tagTransferCaches = null;
+    private TagTransferCaches tagTransferCaches;
     
     public TagTransferCaches getTagTransferCaches(UserVisit userVisit) {
         if(tagTransferCaches == null) {

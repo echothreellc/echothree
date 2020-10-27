@@ -123,7 +123,7 @@ public class CancellationPolicyControl
     //   Cancellation Policy Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CancellationPolicyTransferCaches cancellationPolicyTransferCaches = null;
+    private CancellationPolicyTransferCaches cancellationPolicyTransferCaches;
     
     public CancellationPolicyTransferCaches getCancellationPolicyTransferCaches(UserVisit userVisit) {
         if(cancellationPolicyTransferCaches == null) {

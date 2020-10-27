@@ -93,7 +93,7 @@ public class PeriodControl
     //   Period Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PeriodTransferCaches periodTransferCaches = null;
+    private PeriodTransferCaches periodTransferCaches;
     
     public PeriodTransferCaches getPeriodTransferCaches(UserVisit userVisit) {
         if(periodTransferCaches == null) {

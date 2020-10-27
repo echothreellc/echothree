@@ -94,7 +94,7 @@ public class TaxControl
     //   Tax Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private TaxTransferCaches taxTransferCaches = null;
+    private TaxTransferCaches taxTransferCaches;
     
     public TaxTransferCaches getTaxTransferCaches(UserVisit userVisit) {
         if(taxTransferCaches == null) {

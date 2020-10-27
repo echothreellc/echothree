@@ -113,7 +113,7 @@ public class CustomerControl
     //   Customer Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CustomerTransferCaches customerTransferCaches = null;
+    private CustomerTransferCaches customerTransferCaches;
     
     public CustomerTransferCaches getCustomerTransferCaches(UserVisit userVisit) {
         if(customerTransferCaches == null) {

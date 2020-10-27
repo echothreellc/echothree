@@ -116,7 +116,7 @@ public class WarehouseControl
     //   Warehouse Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WarehouseTransferCaches warehouseTransferCaches = null;
+    private WarehouseTransferCaches warehouseTransferCaches;
     
     public WarehouseTransferCaches getWarehouseTransferCaches(UserVisit userVisit) {
         if(warehouseTransferCaches == null) {

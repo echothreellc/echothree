@@ -403,7 +403,7 @@ public class ItemControl
     //   Item Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ItemTransferCaches itemTransferCaches = null;
+    private ItemTransferCaches itemTransferCaches;
     
     public ItemTransferCaches getItemTransferCaches(UserVisit userVisit) {
         if(itemTransferCaches == null) {

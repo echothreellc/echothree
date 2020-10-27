@@ -181,7 +181,7 @@ public class TrainingControl
     //   Training Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private TrainingTransferCaches trainingTransferCaches = null;
+    private TrainingTransferCaches trainingTransferCaches;
     
     public TrainingTransferCaches getTrainingTransferCaches(UserVisit userVisit) {
         if(trainingTransferCaches == null) {

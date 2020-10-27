@@ -105,7 +105,7 @@ public class UomControl
     //   Unit of Measure Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private UomTransferCaches uomTransferCaches = null;
+    private UomTransferCaches uomTransferCaches;
     
     public UomTransferCaches getUomTransferCaches(UserVisit userVisit) {
         if(uomTransferCaches == null) {

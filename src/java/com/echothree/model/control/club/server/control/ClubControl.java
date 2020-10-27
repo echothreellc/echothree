@@ -77,7 +77,7 @@ public class ClubControl
     //   Club Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ClubTransferCaches clubTransferCaches = null;
+    private ClubTransferCaches clubTransferCaches;
     
     public ClubTransferCaches getClubTransferCaches(UserVisit userVisit) {
         if(clubTransferCaches == null) {

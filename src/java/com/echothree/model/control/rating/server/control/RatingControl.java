@@ -84,7 +84,7 @@ public class RatingControl
     //   Rating Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private RatingTransferCaches ratingTransferCaches = null;
+    private RatingTransferCaches ratingTransferCaches;
     
     public RatingTransferCaches getRatingTransferCaches(UserVisit userVisit) {
         if(ratingTransferCaches == null) {

@@ -100,7 +100,7 @@ public class WishlistControl
     //   Wishlist Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WishlistTransferCaches wishlistTransferCaches = null;
+    private WishlistTransferCaches wishlistTransferCaches;
     
     public WishlistTransferCaches getWishlistTransferCaches(UserVisit userVisit) {
         if(wishlistTransferCaches == null) {

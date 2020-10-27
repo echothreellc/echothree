@@ -130,7 +130,7 @@ public class ReturnPolicyControl
     //   Return Policy Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ReturnPolicyTransferCaches returnPolicyTransferCaches = null;
+    private ReturnPolicyTransferCaches returnPolicyTransferCaches;
     
     public ReturnPolicyTransferCaches getReturnPolicyTransferCaches(UserVisit userVisit) {
         if(returnPolicyTransferCaches == null) {

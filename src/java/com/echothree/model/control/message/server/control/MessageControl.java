@@ -98,7 +98,7 @@ public class MessageControl
     //   Message Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private MessageTransferCaches messageTransferCaches = null;
+    private MessageTransferCaches messageTransferCaches;
     
     public MessageTransferCaches getMessageTransferCaches(UserVisit userVisit) {
         if(messageTransferCaches == null) {

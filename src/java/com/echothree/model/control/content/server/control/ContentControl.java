@@ -225,7 +225,7 @@ public class ContentControl
     //   Content Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ContentTransferCaches contentTransferCaches = null;
+    private ContentTransferCaches contentTransferCaches;
     
     public ContentTransferCaches getContentTransferCaches(UserVisit userVisit) {
         if(contentTransferCaches == null) {

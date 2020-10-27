@@ -70,7 +70,7 @@ public class IconControl
     //   Icon Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private IconTransferCaches iconTransferCaches = null;
+    private IconTransferCaches iconTransferCaches;
     
     public IconTransferCaches getIconTransferCaches(UserVisit userVisit) {
         if(iconTransferCaches == null) {

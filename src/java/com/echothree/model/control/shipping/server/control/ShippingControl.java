@@ -68,7 +68,7 @@ public class ShippingControl
     //   Shipping Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ShippingTransferCaches shippingTransferCaches = null;
+    private ShippingTransferCaches shippingTransferCaches;
     
     public ShippingTransferCaches getShippingTransferCaches(UserVisit userVisit) {
         if(shippingTransferCaches == null) {

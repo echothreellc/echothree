@@ -185,7 +185,7 @@ public class WorkflowControl
     //   Work Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WorkflowTransferCaches workflowTransferCaches = null;
+    private WorkflowTransferCaches workflowTransferCaches;
     
     public WorkflowTransferCaches getWorkflowTransferCaches(UserVisit userVisit) {
         if(workflowTransferCaches == null) {

@@ -91,7 +91,7 @@ public class TermControl
     //   Term Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private TermTransferCaches termTransferCaches = null;
+    private TermTransferCaches termTransferCaches;
     
     public TermTransferCaches getTermTransferCaches(UserVisit userVisit) {
         if(termTransferCaches == null) {

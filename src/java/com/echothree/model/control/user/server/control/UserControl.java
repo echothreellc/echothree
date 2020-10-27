@@ -157,7 +157,7 @@ public class UserControl
     //   User Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private UserTransferCaches userTransferCaches = null;
+    private UserTransferCaches userTransferCaches;
     
     public UserTransferCaches getUserTransferCaches(UserVisit userVisit) {
         if(userTransferCaches == null) {

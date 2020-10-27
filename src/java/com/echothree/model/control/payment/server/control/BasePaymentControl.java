@@ -33,7 +33,7 @@ public abstract class BasePaymentControl
     //   Payment Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PaymentTransferCaches paymentTransferCaches = null;
+    private PaymentTransferCaches paymentTransferCaches;
     
     public PaymentTransferCaches getPaymentTransferCaches(UserVisit userVisit) {
         if(paymentTransferCaches == null) {

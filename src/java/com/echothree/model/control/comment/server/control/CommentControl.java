@@ -110,7 +110,7 @@ public class CommentControl
     //   Comment Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CommentTransferCaches commentTransferCaches = null;
+    private CommentTransferCaches commentTransferCaches;
     
     public CommentTransferCaches getCommentTransferCaches(UserVisit userVisit) {
         if(commentTransferCaches == null) {

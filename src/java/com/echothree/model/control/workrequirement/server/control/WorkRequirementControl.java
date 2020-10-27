@@ -120,7 +120,7 @@ public class WorkRequirementControl
     //   Work Requirement Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WorkRequirementTransferCaches workRequirementTransferCaches = null;
+    private WorkRequirementTransferCaches workRequirementTransferCaches;
     
     public WorkRequirementTransferCaches getWorkRequirementTransferCaches(UserVisit userVisit) {
         if(workRequirementTransferCaches == null) {

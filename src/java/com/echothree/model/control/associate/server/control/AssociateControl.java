@@ -96,7 +96,7 @@ public class AssociateControl
     //   Associate Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private AssociateTransferCaches associateTransferCaches = null;
+    private AssociateTransferCaches associateTransferCaches;
     
     public AssociateTransferCaches getAssociateTransferCaches(UserVisit userVisit) {
         if(associateTransferCaches == null) {

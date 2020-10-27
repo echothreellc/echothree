@@ -629,7 +629,7 @@ public class CoreControl
     //   Core Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CoreTransferCaches coreTransferCaches = null;
+    private CoreTransferCaches coreTransferCaches;
     
     public CoreTransferCaches getCoreTransferCaches(UserVisit userVisit) {
         if(coreTransferCaches == null) {

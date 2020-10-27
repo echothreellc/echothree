@@ -206,7 +206,7 @@ public class ForumControl
     //   Forum Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ForumTransferCaches forumTransferCaches = null;
+    private ForumTransferCaches forumTransferCaches;
     
     public ForumTransferCaches getForumTransferCaches(UserVisit userVisit) {
         if(forumTransferCaches == null) {

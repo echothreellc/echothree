@@ -150,7 +150,7 @@ public class GeoControl
     //   Geo Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private GeoTransferCaches geoTransferCaches = null;
+    private GeoTransferCaches geoTransferCaches;
     
     public GeoTransferCaches getGeoTransferCaches(UserVisit userVisit) {
         if(geoTransferCaches == null) {

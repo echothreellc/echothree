@@ -131,7 +131,7 @@ public class VendorControl
     //   Vendor Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private VendorTransferCaches vendorTransferCaches = null;
+    private VendorTransferCaches vendorTransferCaches;
     
     public VendorTransferCaches getVendorTransferCaches(UserVisit userVisit) {
         if(vendorTransferCaches == null) {

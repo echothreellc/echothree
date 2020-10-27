@@ -102,7 +102,7 @@ public class BatchControl
     //   Batch Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private BatchTransferCaches batchTransferCaches = null;
+    private BatchTransferCaches batchTransferCaches;
     
     public BatchTransferCaches getBatchTransferCaches(UserVisit userVisit) {
         if(batchTransferCaches == null) {

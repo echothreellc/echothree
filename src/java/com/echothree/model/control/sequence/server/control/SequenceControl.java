@@ -89,7 +89,7 @@ public class SequenceControl
     //   Sequence Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private SequenceTransferCaches sequenceTransferCaches = null;
+    private SequenceTransferCaches sequenceTransferCaches;
     
     public SequenceTransferCaches getSequenceTransferCaches(UserVisit userVisit) {
         if(sequenceTransferCaches == null) {

@@ -116,7 +116,7 @@ public class CarrierControl
     //   Carrier Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CarrierTransferCaches carrierTransferCaches = null;
+    private CarrierTransferCaches carrierTransferCaches;
     
     public CarrierTransferCaches getCarrierTransferCaches(UserVisit userVisit) {
         if(carrierTransferCaches == null) {

@@ -173,7 +173,7 @@ public class FilterControl
     //   Filter Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private FilterTransferCaches filterTransferCaches = null;
+    private FilterTransferCaches filterTransferCaches;
     
     public FilterTransferCaches getFilterTransferCaches(UserVisit userVisit) {
         if(filterTransferCaches == null) {

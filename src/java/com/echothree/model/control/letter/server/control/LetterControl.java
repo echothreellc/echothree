@@ -99,7 +99,7 @@ public class LetterControl
     //   Letter Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private LetterTransferCaches letterTransferCaches = null;
+    private LetterTransferCaches letterTransferCaches;
     
     public LetterTransferCaches getLetterTransferCaches(UserVisit userVisit) {
         if(letterTransferCaches == null) {

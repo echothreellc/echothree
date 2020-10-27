@@ -240,7 +240,7 @@ public class AccountingControl
     //   Accounting Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private AccountingTransferCaches accountingTransferCaches = null;
+    private AccountingTransferCaches accountingTransferCaches;
     
     public AccountingTransferCaches getAccountingTransferCaches(UserVisit userVisit) {
         if(accountingTransferCaches == null) {
