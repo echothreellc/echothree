@@ -53,7 +53,7 @@ public class FilterKindObject
     }
     
     @GraphQLField
-    @GraphQLDescription("use type name")
+    @GraphQLDescription("filter kind name")
     @GraphQLNonNull
     public String getFilterKindName() {
         return getFilterKindDetail().getFilterKindName();
