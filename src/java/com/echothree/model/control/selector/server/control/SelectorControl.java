@@ -51,6 +51,9 @@ import com.echothree.model.data.employee.common.pk.ResponsibilityTypePK;
 import com.echothree.model.data.employee.common.pk.SkillTypePK;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.SkillType;
+import com.echothree.model.data.filter.common.pk.FilterKindPK;
+import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.geo.common.pk.GeoCodePK;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.common.pk.ItemCategoryPK;
@@ -236,6 +239,22 @@ public class SelectorControl
         return selectorKind;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SelectorKind */
+    public SelectorKind getSelectorKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SelectorKindPK(entityInstance.getEntityUniqueId());
+        var selectorKind = SelectorKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return selectorKind;
+    }
+
+    public SelectorKind getSelectorKindByEntityInstance(EntityInstance entityInstance) {
+        return getSelectorKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SelectorKind getSelectorKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSelectorKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getSelectorKindByNameQueries;
 
     static {
@@ -253,7 +272,7 @@ public class SelectorControl
         getSelectorKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SelectorKind getSelectorKindByName(String selectorKindName, EntityPermission entityPermission) {
+    public SelectorKind getSelectorKindByName(String selectorKindName, EntityPermission entityPermission) {
         return SelectorKindFactory.getInstance().getEntityFromQuery(entityPermission, getSelectorKindByNameQueries,
                 selectorKindName);
     }
@@ -291,7 +310,7 @@ public class SelectorControl
         getDefaultSelectorKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SelectorKind getDefaultSelectorKind(EntityPermission entityPermission) {
+    public SelectorKind getDefaultSelectorKind(EntityPermission entityPermission) {
         return SelectorKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSelectorKindQueries);
     }
 
