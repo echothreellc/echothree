@@ -743,7 +743,7 @@ public class GeoControl
     }
     
     private GeoCodeTypeDescription getGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language, EntityPermission entityPermission) {
-        GeoCodeTypeDescription geoCodeTypeDescription = null;
+        GeoCodeTypeDescription geoCodeTypeDescription;
         
         try {
             String query = null;
@@ -928,7 +928,7 @@ public class GeoControl
     }
     
     private GeoCodeScope getGeoCodeScopeByName(String geoCodeScopeName, EntityPermission entityPermission) {
-        GeoCodeScope geoCodeScope = null;
+        GeoCodeScope geoCodeScope;
         
         try {
             String query = null;
@@ -1171,7 +1171,7 @@ public class GeoControl
     }
     
     private GeoCodeScopeDescription getGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language, EntityPermission entityPermission) {
-        GeoCodeScopeDescription geoCodeScopeDescription = null;
+        GeoCodeScopeDescription geoCodeScopeDescription;
         
         try {
             String query = null;
@@ -1356,7 +1356,7 @@ public class GeoControl
     }
     
     private GeoCodeAliasType getGeoCodeAliasTypeByName(GeoCodeType geoCodeType, String geoCodeAliasTypeName, EntityPermission entityPermission) {
-        GeoCodeAliasType geoCodeAliasType = null;
+        GeoCodeAliasType geoCodeAliasType;
         
         try {
             String query = null;
@@ -1405,7 +1405,7 @@ public class GeoControl
     }
     
     private GeoCodeAliasType getDefaultGeoCodeAliasType(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        GeoCodeAliasType geoCodeAliasType = null;
+        GeoCodeAliasType geoCodeAliasType;
         
         try {
             String query = null;
@@ -1669,7 +1669,7 @@ public class GeoControl
     }
     
     private GeoCodeAliasTypeDescription getGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language, EntityPermission entityPermission) {
-        GeoCodeAliasTypeDescription geoCodeAliasTypeDescription = null;
+        GeoCodeAliasTypeDescription geoCodeAliasTypeDescription;
         
         try {
             String query = null;
@@ -1856,7 +1856,7 @@ public class GeoControl
     }
     
     private GeoCode getDefaultGeoCode(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        GeoCode geoCode = null;
+        GeoCode geoCode;
         
         try {
             String query = null;
@@ -1897,7 +1897,7 @@ public class GeoControl
     }
     
     private GeoCode getGeoCodeByName(String geoCodeName, EntityPermission entityPermission) {
-        GeoCode geoCode = null;
+        GeoCode geoCode;
         
         try {
             String query = null;
@@ -2100,7 +2100,7 @@ public class GeoControl
     }
     
     private GeoCodeDescription getGeoCodeDescription(GeoCode geoCode, Language language, EntityPermission entityPermission) {
-        GeoCodeDescription geoCodeDescription = null;
+        GeoCodeDescription geoCodeDescription;
         
         try {
             String query = null;
@@ -2520,7 +2520,7 @@ public class GeoControl
     }
 
     public GeoCodeRelationship getGeoCodeRelationship(GeoCode fromGeoCode, GeoCode toGeoCode) {
-        GeoCodeRelationship geoCodeRelationship = null;
+        GeoCodeRelationship geoCodeRelationship;
         
         try {
             PreparedStatement ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
@@ -2678,7 +2678,7 @@ public class GeoControl
     }
     
     private GeoCodeLanguage getGeoCodeLanguage(GeoCode geoCode, Language language, EntityPermission entityPermission) {
-        GeoCodeLanguage geoCodeLanguage = null;
+        GeoCodeLanguage geoCodeLanguage;
         
         try {
             String query = null;
@@ -2725,7 +2725,7 @@ public class GeoControl
     }
     
     private GeoCodeLanguage getDefaultGeoCodeLanguage(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeLanguage geoCodeLanguage = null;
+        GeoCodeLanguage geoCodeLanguage;
         
         try {
             String query = null;
@@ -2978,7 +2978,7 @@ public class GeoControl
     }
     
     private GeoCodeCurrency getGeoCodeCurrency(GeoCode geoCode, Currency currency, EntityPermission entityPermission) {
-        GeoCodeCurrency geoCodeCurrency = null;
+        GeoCodeCurrency geoCodeCurrency;
         
         try {
             String query = null;
@@ -3025,7 +3025,7 @@ public class GeoControl
     }
     
     private GeoCodeCurrency getDefaultGeoCodeCurrency(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeCurrency geoCodeCurrency = null;
+        GeoCodeCurrency geoCodeCurrency;
         
         try {
             String query = null;
@@ -3278,7 +3278,7 @@ public class GeoControl
     }
     
     private GeoCodeTimeZone getGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, EntityPermission entityPermission) {
-        GeoCodeTimeZone geoCodeTimeZone = null;
+        GeoCodeTimeZone geoCodeTimeZone;
         
         try {
             String query = null;
@@ -3325,7 +3325,7 @@ public class GeoControl
     }
     
     private GeoCodeTimeZone getDefaultGeoCodeTimeZone(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeTimeZone geoCodeTimeZone = null;
+        GeoCodeTimeZone geoCodeTimeZone;
         
         try {
             String query = null;
@@ -3578,7 +3578,7 @@ public class GeoControl
     }
     
     private GeoCodeDateTimeFormat getGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
-        GeoCodeDateTimeFormat geoCodeDateTimeFormat = null;
+        GeoCodeDateTimeFormat geoCodeDateTimeFormat;
         
         try {
             String query = null;
@@ -3625,7 +3625,7 @@ public class GeoControl
     }
     
     private GeoCodeDateTimeFormat getDefaultGeoCodeDateTimeFormat(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeDateTimeFormat geoCodeDateTimeFormat = null;
+        GeoCodeDateTimeFormat geoCodeDateTimeFormat;
         
         try {
             String query = null;
@@ -3876,7 +3876,7 @@ public class GeoControl
     }
     
     private GeoCodeCountry getGeoCodeCountry(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeCountry geoCodeCountry = null;
+        GeoCodeCountry geoCodeCountry;
         
         try {
             String query = null;

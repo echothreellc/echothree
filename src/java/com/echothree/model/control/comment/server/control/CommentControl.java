@@ -182,7 +182,7 @@ public class CommentControl
     }
     
     private CommentType getCommentTypeByName(EntityType entityType, String commentTypeName, EntityPermission entityPermission) {
-        CommentType commentType = null;
+        CommentType commentType;
         
         try {
             String query = null;
@@ -311,7 +311,7 @@ public class CommentControl
     }
     
     private CommentTypeDescription getCommentTypeDescription(CommentType commentType, Language language, EntityPermission entityPermission) {
-        CommentTypeDescription commentTypeDescription = null;
+        CommentTypeDescription commentTypeDescription;
         
         try {
             String query = null;
@@ -526,7 +526,7 @@ public class CommentControl
     
     private CommentUsageType getCommentUsageTypeByName(CommentType commentType, String commentUsageTypeName,
             EntityPermission entityPermission) {
-        CommentUsageType commentUsageType = null;
+        CommentUsageType commentUsageType;
         
         try {
             String query = null;
@@ -652,7 +652,7 @@ public class CommentControl
     
     private CommentUsageTypeDescription getCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language,
             EntityPermission entityPermission) {
-        CommentUsageTypeDescription commentUsageTypeDescription = null;
+        CommentUsageTypeDescription commentUsageTypeDescription;
         
         try {
             String query = null;
@@ -830,7 +830,7 @@ public class CommentControl
     }
     
     private Comment getCommentByName(String commentName, EntityPermission entityPermission) {
-        Comment comment = null;
+        Comment comment;
         
         try {
             String query = null;
@@ -1208,7 +1208,7 @@ public class CommentControl
     }
     
     private CommentString getCommentString(Comment comment, EntityPermission entityPermission) {
-        CommentString commentString = null;
+        CommentString commentString;
         
         try {
             String query = null;
@@ -1293,7 +1293,7 @@ public class CommentControl
     }
     
     private CommentBlob getCommentBlob(Comment comment, EntityPermission entityPermission) {
-        CommentBlob commentBlob = null;
+        CommentBlob commentBlob;
         
         try {
             String query = null;
@@ -1379,7 +1379,7 @@ public class CommentControl
     }
     
     private CommentClob getCommentClob(Comment comment, EntityPermission entityPermission) {
-        CommentClob commentClob = null;
+        CommentClob commentClob;
         
         try {
             String query = null;
@@ -1465,7 +1465,7 @@ public class CommentControl
     }
     
     private CommentUsage getCommentUsage(Comment comment, CommentUsageType commentUsageType, EntityPermission entityPermission) {
-        CommentUsage commentUsage = null;
+        CommentUsage commentUsage;
         
         try {
             String query = null;

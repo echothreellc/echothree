@@ -110,7 +110,7 @@ public class TermControl
     }
     
     public TermType getTermTypeByName(String termTypeName) {
-        TermType termType = null;
+        TermType termType;
         
         try {
             PreparedStatement ps = TermTypeFactory.getInstance().prepareStatement(
@@ -194,7 +194,7 @@ public class TermControl
     }
     
     public TermTypeDescription getTermTypeDescription(TermType termType, Language language) {
-        TermTypeDescription termTypeDescription = null;
+        TermTypeDescription termTypeDescription;
         
         try {
             PreparedStatement ps = TermTypeDescriptionFactory.getInstance().prepareStatement(
@@ -264,7 +264,7 @@ public class TermControl
     }
     
     private Term getTermByName(String termName, EntityPermission entityPermission) {
-        Term term = null;
+        Term term;
         
         try {
             String query = null;
@@ -507,7 +507,7 @@ public class TermControl
     }
     
     private TermDescription getTermDescription(Term term, Language language, EntityPermission entityPermission) {
-        TermDescription termDescription = null;
+        TermDescription termDescription;
         
         try {
             String query = null;
@@ -672,7 +672,7 @@ public class TermControl
     }
     
     private StandardTerm getStandardTerm(Term term, EntityPermission entityPermission) {
-        StandardTerm standardTerm = null;
+        StandardTerm standardTerm;
         
         try {
             String query = null;
@@ -766,7 +766,7 @@ public class TermControl
     }
     
     private DateDrivenTerm getDateDrivenTerm(Term term, EntityPermission entityPermission) {
-        DateDrivenTerm dateDrivenTerm = null;
+        DateDrivenTerm dateDrivenTerm;
         
         try {
             String query = null;
@@ -861,7 +861,7 @@ public class TermControl
     }
     
     private CustomerTypeCreditLimit getCustomerTypeCreditLimit(CustomerType customerType, Currency currency, EntityPermission entityPermission) {
-        CustomerTypeCreditLimit customerTypeCreditLimit = null;
+        CustomerTypeCreditLimit customerTypeCreditLimit;
         
         try {
             String query = null;
@@ -1013,7 +1013,7 @@ public class TermControl
     }
     
     private PartyCreditLimit getPartyCreditLimit(Party party, Currency currency, EntityPermission entityPermission) {
-        PartyCreditLimit partyCreditLimit = null;
+        PartyCreditLimit partyCreditLimit;
         
         try {
             String query = null;
@@ -1163,7 +1163,7 @@ public class TermControl
     }
     
     private PartyTerm getPartyTerm(Party party, EntityPermission entityPermission) {
-        PartyTerm partyTerm = null;
+        PartyTerm partyTerm;
         
         try {
             String query = null;

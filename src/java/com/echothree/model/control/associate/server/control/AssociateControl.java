@@ -143,7 +143,7 @@ public class AssociateControl
     }
     
     private AssociateProgram getAssociateProgramByName(String associateProgramName, EntityPermission entityPermission) {
-        AssociateProgram associateProgram = null;
+        AssociateProgram associateProgram;
         
         try {
             String query = null;
@@ -390,7 +390,7 @@ public class AssociateControl
     }
     
     private AssociateProgramDescription getAssociateProgramDescription(AssociateProgram associateProgram, Language language, EntityPermission entityPermission) {
-        AssociateProgramDescription associateProgramDescription = null;
+        AssociateProgramDescription associateProgramDescription;
         
         try {
             String query = null;
@@ -565,7 +565,7 @@ public class AssociateControl
     }
     
     private Associate getAssociateByName(AssociateProgram associateProgram, String associateName, EntityPermission entityPermission) {
-        Associate associate = null;
+        Associate associate;
         
         try {
             String query = null;
@@ -786,7 +786,7 @@ public class AssociateControl
     }
     
     private AssociatePartyContactMechanism getAssociatePartyContactMechanismByName(Associate associate, String associatePartyContactMechanismName, EntityPermission entityPermission) {
-        AssociatePartyContactMechanism associatePartyContactMechanism = null;
+        AssociatePartyContactMechanism associatePartyContactMechanism;
         
         try {
             String query = null;
@@ -834,7 +834,7 @@ public class AssociateControl
     }
     
     private AssociatePartyContactMechanism getDefaultAssociatePartyContactMechanism(Associate associate, EntityPermission entityPermission) {
-        AssociatePartyContactMechanism associatePartyContactMechanism = null;
+        AssociatePartyContactMechanism associatePartyContactMechanism;
         
         try {
             String query = null;
@@ -1140,7 +1140,7 @@ public class AssociateControl
     }
     
     private AssociateReferral getAssociateReferralByName(String associateReferralName, EntityPermission entityPermission) {
-        AssociateReferral associateReferral = null;
+        AssociateReferral associateReferral;
         
         try {
             String query = null;

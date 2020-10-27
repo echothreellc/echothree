@@ -203,7 +203,7 @@ public class WishlistControl
     }
     
     private WishlistType getWishlistTypeByName(String wishlistTypeName, EntityPermission entityPermission) {
-        WishlistType wishlistType = null;
+        WishlistType wishlistType;
         
         try {
             String query = null;
@@ -391,7 +391,7 @@ public class WishlistControl
     }
     
     private WishlistTypeDescription getWishlistTypeDescription(WishlistType wishlistType, Language language, EntityPermission entityPermission) {
-        WishlistTypeDescription wishlistTypeDescription = null;
+        WishlistTypeDescription wishlistTypeDescription;
         
         try {
             String query = null;
@@ -617,7 +617,7 @@ public class WishlistControl
     }
     
     private WishlistTypePriority getDefaultWishlistTypePriority(WishlistType wishlistType, EntityPermission entityPermission) {
-        WishlistTypePriority wishlistTypePriority = null;
+        WishlistTypePriority wishlistTypePriority;
         
         try {
             String query = null;
@@ -660,7 +660,7 @@ public class WishlistControl
     }
     
     private WishlistTypePriority getWishlistTypePriorityByName(WishlistType wishlistType, String wishlistTypePriorityName, EntityPermission entityPermission) {
-        WishlistTypePriority wishlistTypePriority = null;
+        WishlistTypePriority wishlistTypePriority;
         
         try {
             String query = null;
@@ -857,7 +857,7 @@ public class WishlistControl
     }
     
     private WishlistTypePriorityDescription getWishlistTypePriorityDescription(WishlistTypePriority wishlistTypePriority, Language language, EntityPermission entityPermission) {
-        WishlistTypePriorityDescription wishlistTypePriorityDescription = null;
+        WishlistTypePriorityDescription wishlistTypePriorityDescription;
         
         try {
             String query = null;
@@ -1039,7 +1039,7 @@ public class WishlistControl
     }
 
     private Wishlist getWishlist(Order order, EntityPermission entityPermission) {
-        Wishlist wishlist = null;
+        Wishlist wishlist;
         
         try {
             String query = null;
@@ -1234,7 +1234,7 @@ public class WishlistControl
     }
     
     private WishlistLine getWishlistLine(OrderLine orderLine, EntityPermission entityPermission) {
-        WishlistLine wishlistLine = null;
+        WishlistLine wishlistLine;
         
         try {
             String query = null;
@@ -1316,7 +1316,7 @@ public class WishlistControl
     
     private Order getWishlist(Party companyParty, Party party, WishlistType wishlistType, Currency currency,
             EntityPermission entityPermission) {
-        Order order = null;
+        Order order;
         
         try {
             String query = null;
@@ -1508,7 +1508,7 @@ public class WishlistControl
     // --------------------------------------------------------------------------------
     
     private OrderLine getWishlistLine(Order order, Integer orderLineSequence, EntityPermission entityPermission) {
-        OrderLine orderLine = null;
+        OrderLine orderLine;
         
         try {
             String query = null;
@@ -1549,7 +1549,7 @@ public class WishlistControl
     
     private OrderLine getWishlistLineByItem(Order order, Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        OrderLine orderLine = null;
+        OrderLine orderLine;
         
         try {
             String query = null;

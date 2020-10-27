@@ -84,7 +84,7 @@ public class BillingControl
     }
     
     public BillingAccountRoleType getBillingAccountRoleTypeByName(String billingAccountRoleTypeName) {
-        BillingAccountRoleType billingAccountRoleType = null;
+        BillingAccountRoleType billingAccountRoleType;
         
         try {
             PreparedStatement ps = BillingAccountRoleTypeFactory.getInstance().prepareStatement(
@@ -132,7 +132,7 @@ public class BillingControl
     }
     
     public BillingAccountRoleTypeDescription getBillingAccountRoleTypeDescription(BillingAccountRoleType billingAccountRoleType, Language language) {
-        BillingAccountRoleTypeDescription billingAccountRoleTypeDescription = null;
+        BillingAccountRoleTypeDescription billingAccountRoleTypeDescription;
         
         try {
             PreparedStatement ps = BillingAccountRoleTypeDescriptionFactory.getInstance().prepareStatement(
@@ -200,7 +200,7 @@ public class BillingControl
     }
     
     private BillingAccount getBillingAccount(Party billFrom, Party billTo, Currency currency, EntityPermission entityPermission) {
-        BillingAccount billingAccount = null;
+        BillingAccount billingAccount;
         
         try {
             String query = null;
@@ -355,7 +355,7 @@ public class BillingControl
     }
     
     private BillingAccount getBillingAccountByName(String billingAccountName, EntityPermission entityPermission) {
-        BillingAccount billingAccount = null;
+        BillingAccount billingAccount;
         
         try {
             String query = null;
@@ -424,7 +424,7 @@ public class BillingControl
     }
     
     private BillingAccountStatus getBillingAccountStatus(BillingAccount billingAccount, EntityPermission entityPermission) {
-        BillingAccountStatus billingAccountStatus = null;
+        BillingAccountStatus billingAccountStatus;
         
         try {
             String query = null;
@@ -482,7 +482,7 @@ public class BillingControl
     }
     
     private BillingAccountRole getBillingAccountRole(BillingAccount billingAccount, BillingAccountRoleType billingAccountRoleType, EntityPermission entityPermission) {
-        BillingAccountRole billingAccountRole = null;
+        BillingAccountRole billingAccountRole;
         
         try {
             String query = null;

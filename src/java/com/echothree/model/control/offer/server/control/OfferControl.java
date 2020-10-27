@@ -173,7 +173,7 @@ public class OfferControl
     }
     
     public Offer getOfferByName(String offerName, EntityPermission entityPermission) {
-        Offer offer = null;
+        Offer offer;
         
         try {
             String query = null;
@@ -436,7 +436,7 @@ public class OfferControl
     }
     
     private OfferDescription getOfferDescription(Offer offer, Language language, EntityPermission entityPermission) {
-        OfferDescription offerDescription = null;
+        OfferDescription offerDescription;
         
         try {
             String query = null;
@@ -941,7 +941,7 @@ public class OfferControl
     }
     
     private OfferChainType getOfferChainType(Offer offer, ChainType chainType, EntityPermission entityPermission) {
-        OfferChainType offerChainType = null;
+        OfferChainType offerChainType;
         
         try {
             String query = null;

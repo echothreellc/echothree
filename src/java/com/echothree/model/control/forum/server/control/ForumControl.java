@@ -263,7 +263,7 @@ public class ForumControl
     }
     
     private ForumGroup getForumGroupByName(String forumGroupName, EntityPermission entityPermission) {
-        ForumGroup forumGroup = null;
+        ForumGroup forumGroup;
         
         try {
             String query = null;
@@ -410,7 +410,7 @@ public class ForumControl
     
     private ForumGroupDescription getForumGroupDescription(ForumGroup forumGroup, Language language,
             EntityPermission entityPermission) {
-        ForumGroupDescription forumGroupDescription = null;
+        ForumGroupDescription forumGroupDescription;
         
         try {
             String query = null;
@@ -618,7 +618,7 @@ public class ForumControl
     }
     
     private Forum getForumByName(String forumName, EntityPermission entityPermission) {
-        Forum forum = null;
+        Forum forum;
         
         try {
             String query = null;
@@ -782,7 +782,7 @@ public class ForumControl
     }
     
     private ForumDescription getForumDescription(Forum forum, Language language, EntityPermission entityPermission) {
-        ForumDescription forumDescription = null;
+        ForumDescription forumDescription;
         
         try {
             String query = null;
@@ -973,7 +973,7 @@ public class ForumControl
     }
 
     private ForumGroupForum getForumGroupForum(ForumGroup forumGroup, Forum forum, EntityPermission entityPermission) {
-        ForumGroupForum forumGroupForum = null;
+        ForumGroupForum forumGroupForum;
         
         try {
             String query = null;
@@ -1020,7 +1020,7 @@ public class ForumControl
     }
     
     private ForumGroupForum getDefaultForumGroupForum(Forum forum, EntityPermission entityPermission) {
-        ForumGroupForum forumGroupForum = null;
+        ForumGroupForum forumGroupForum;
         
         try {
             String query = null;
@@ -1254,7 +1254,7 @@ public class ForumControl
     }
     
     public ForumRoleType getForumRoleTypeByName(String forumRoleTypeName) {
-        ForumRoleType forumRoleType = null;
+        ForumRoleType forumRoleType;
         
         try {
             PreparedStatement ps = ForumRoleTypeFactory.getInstance().prepareStatement(
@@ -1327,7 +1327,7 @@ public class ForumControl
     }
     
     public ForumRoleTypeDescription getForumRoleTypeDescription(ForumRoleType forumRoleType, Language language) {
-        ForumRoleTypeDescription forumRoleTypeDescription = null;
+        ForumRoleTypeDescription forumRoleTypeDescription;
         
         try {
             PreparedStatement ps = ForumRoleTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1373,7 +1373,7 @@ public class ForumControl
     }
     
     public ForumType getForumTypeByName(String forumTypeName) {
-        ForumType forumType = null;
+        ForumType forumType;
         
         try {
             PreparedStatement ps = ForumTypeFactory.getInstance().prepareStatement(
@@ -1444,7 +1444,7 @@ public class ForumControl
     }
     
     public ForumTypeDescription getForumTypeDescription(ForumType forumType, Language language) {
-        ForumTypeDescription forumTypeDescription = null;
+        ForumTypeDescription forumTypeDescription;
         
         try {
             PreparedStatement ps = ForumTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1508,7 +1508,7 @@ public class ForumControl
     }
     
     private ForumMimeType getForumMimeType(Forum forum, MimeType mimeType, EntityPermission entityPermission) {
-        ForumMimeType forumMimeType = null;
+        ForumMimeType forumMimeType;
         
         try {
             String query = null;
@@ -1555,7 +1555,7 @@ public class ForumControl
     }
     
     private ForumMimeType getDefaultForumMimeType(Forum forum, EntityPermission entityPermission) {
-        ForumMimeType forumMimeType = null;
+        ForumMimeType forumMimeType;
         
         try {
             String query = null;
@@ -1928,7 +1928,7 @@ public class ForumControl
     }
     
     private ForumPartyRole getForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType, EntityPermission entityPermission) {
-        ForumPartyRole forumPartyRole = null;
+        ForumPartyRole forumPartyRole;
         
         try {
             String query = null;
@@ -2076,7 +2076,7 @@ public class ForumControl
     }
     
     private ForumPartyTypeRole getForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType, EntityPermission entityPermission) {
-        ForumPartyTypeRole forumPartyTypeRole = null;
+        ForumPartyTypeRole forumPartyTypeRole;
         
         try {
             String query = null;
@@ -2302,7 +2302,7 @@ public class ForumControl
     }
     
     private ForumForumThread getForumForumThread(Forum forum, ForumThread forumThread, EntityPermission entityPermission) {
-        ForumForumThread forumForumThread = null;
+        ForumForumThread forumForumThread;
         
         try {
             String query = null;
@@ -2349,7 +2349,7 @@ public class ForumControl
     }
     
     private ForumForumThread getDefaultForumForumThread(ForumThread forumThread, EntityPermission entityPermission) {
-        ForumForumThread forumForumThread = null;
+        ForumForumThread forumForumThread;
         
         try {
             String query = null;
@@ -2627,7 +2627,7 @@ public class ForumControl
     }
 
     private ForumThread getForumThreadByName(String forumThreadName, EntityPermission entityPermission) {
-        ForumThread forumThread = null;
+        ForumThread forumThread;
         
         try {
             String query = null;
@@ -2869,7 +2869,7 @@ public class ForumControl
     }
 
     private ForumMessage getForumMessageByName(String forumMessageName, EntityPermission entityPermission) {
-        ForumMessage forumMessage = null;
+        ForumMessage forumMessage;
         
         try {
             String query = null;
@@ -3638,7 +3638,7 @@ public class ForumControl
     }
     
     private ForumMessageRole getForumMessageRole(ForumMessage forumMessage, ForumRoleType forumRoleType, Party party, EntityPermission entityPermission) {
-        ForumMessageRole forumMessageRole = null;
+        ForumMessageRole forumMessageRole;
         
         try {
             String query = null;
@@ -3779,7 +3779,7 @@ public class ForumControl
     
     private ForumMessagePart getForumMessagePart(ForumMessage forumMessage, ForumMessagePartType forumMessagePartType,
             Language language, EntityPermission entityPermission) {
-        ForumMessagePart forumMessagePart = null;
+        ForumMessagePart forumMessagePart;
         
         try {
             String query = null;
@@ -3961,7 +3961,7 @@ public class ForumControl
     }
     
     private ForumStringMessagePart getForumStringMessagePart(ForumMessagePart forumMessagePart, EntityPermission entityPermission) {
-        ForumStringMessagePart forumStringMessagePart = null;
+        ForumStringMessagePart forumStringMessagePart;
         
         try {
             String query = null;
@@ -4054,7 +4054,7 @@ public class ForumControl
     }
     
     private ForumClobMessagePart getForumClobMessagePart(ForumMessagePart forumMessagePart, EntityPermission entityPermission) {
-        ForumClobMessagePart forumClobMessagePart = null;
+        ForumClobMessagePart forumClobMessagePart;
         
         try {
             String query = null;
@@ -4145,7 +4145,7 @@ public class ForumControl
     }
     
     private ForumBlobMessagePart getForumBlobMessagePart(ForumMessagePart forumMessagePart, EntityPermission entityPermission) {
-        ForumBlobMessagePart forumBlobMessagePart = null;
+        ForumBlobMessagePart forumBlobMessagePart;
         
         try {
             String query = null;
@@ -4232,7 +4232,7 @@ public class ForumControl
     }
     
     public ForumMessagePartType getForumMessagePartTypeByName(String forumMessagePartTypeName) {
-        ForumMessagePartType forumMessagePartType = null;
+        ForumMessagePartType forumMessagePartType;
         
         try {
             PreparedStatement ps = ForumMessagePartTypeFactory.getInstance().prepareStatement(
@@ -4275,7 +4275,7 @@ public class ForumControl
     
     public ForumMessagePartTypeDescription getForumMessagePartTypeDescription(ForumMessagePartType forumMessagePartType,
             Language language) {
-        ForumMessagePartTypeDescription forumMessagePartTypeDescription = null;
+        ForumMessagePartTypeDescription forumMessagePartTypeDescription;
         
         try {
             PreparedStatement ps = ForumMessagePartTypeDescriptionFactory.getInstance().prepareStatement(
@@ -4323,7 +4323,7 @@ public class ForumControl
     }
     
     public ForumMessageType getForumMessageTypeByName(String forumMessageTypeName) {
-        ForumMessageType forumMessageType = null;
+        ForumMessageType forumMessageType;
         
         try {
             PreparedStatement ps = ForumMessageTypeFactory.getInstance().prepareStatement(
@@ -4396,7 +4396,7 @@ public class ForumControl
     }
     
     public ForumMessageTypeDescription getForumMessageTypeDescription(ForumMessageType forumMessageType, Language language) {
-        ForumMessageTypeDescription forumMessageTypeDescription = null;
+        ForumMessageTypeDescription forumMessageTypeDescription;
         
         try {
             PreparedStatement ps = ForumMessageTypeDescriptionFactory.getInstance().prepareStatement(
@@ -4443,7 +4443,7 @@ public class ForumControl
     }
     
     public ForumMessageTypePartType getForumMessageTypePartType(ForumMessageType forumMessageType, Integer sortOrder) {
-        ForumMessageTypePartType forumMessageTypePartType = null;
+        ForumMessageTypePartType forumMessageTypePartType;
         
         try {
             PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
@@ -4464,7 +4464,7 @@ public class ForumControl
     }
     
     public ForumMessageTypePartType getIndexDefaultForumMessageTypePartType(ForumMessageType forumMessageType) {
-        ForumMessageTypePartType forumMessageTypePartType = null;
+        ForumMessageTypePartType forumMessageTypePartType;
         
         try {
             PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(

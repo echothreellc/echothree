@@ -1056,7 +1056,7 @@ public class FilterControl
     }
     
     public FilterAdjustmentSource getFilterAdjustmentSourceByName(String filterAdjustmentSourceName) {
-        FilterAdjustmentSource filterAdjustmentSource = null;
+        FilterAdjustmentSource filterAdjustmentSource;
         
         try {
             PreparedStatement ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
@@ -1110,7 +1110,7 @@ public class FilterControl
     
     public FilterAdjustmentSourceDescription getFilterAdjustmentSourceDescription(FilterAdjustmentSource filterAdjustmentSource,
             Language language) {
-        FilterAdjustmentSourceDescription filterAdjustmentSourceDescription = null;
+        FilterAdjustmentSourceDescription filterAdjustmentSourceDescription;
         
         try {
             PreparedStatement ps = FilterAdjustmentSourceDescriptionFactory.getInstance().prepareStatement(
@@ -1167,7 +1167,7 @@ public class FilterControl
     }
     
     public FilterAdjustmentType getFilterAdjustmentTypeByName(String filterAdjustmentTypeName) {
-        FilterAdjustmentType filterAdjustmentType = null;
+        FilterAdjustmentType filterAdjustmentType;
         
         try {
             PreparedStatement ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
@@ -1223,7 +1223,7 @@ public class FilterControl
     
     public FilterAdjustmentTypeDescription getFilterAdjustmentTypeDescription(FilterAdjustmentType filterAdjustmentType,
             Language language) {
-        FilterAdjustmentTypeDescription filterAdjustmentTypeDescription = null;
+        FilterAdjustmentTypeDescription filterAdjustmentTypeDescription;
         
         try {
             PreparedStatement ps = FilterAdjustmentTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1347,7 +1347,7 @@ public class FilterControl
     }
     
     private FilterAdjustment getDefaultFilterAdjustment(FilterKind filterKind, EntityPermission entityPermission) {
-        FilterAdjustment filterAdjustment = null;
+        FilterAdjustment filterAdjustment;
         
         try {
             String query = null;
@@ -1391,7 +1391,7 @@ public class FilterControl
     
     private FilterAdjustment getFilterAdjustmentByName(FilterKind filterKind, String filterAdjustmentName,
             EntityPermission entityPermission) {
-        FilterAdjustment filterAdjustment = null;
+        FilterAdjustment filterAdjustment;
         
         try {
             String query = null;
@@ -1632,7 +1632,7 @@ public class FilterControl
     
     private FilterAdjustmentAmount getFilterAdjustmentAmount(FilterAdjustment filterAdjustment, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        FilterAdjustmentAmount filterAdjustmentAmount = null;
+        FilterAdjustmentAmount filterAdjustmentAmount;
         
         try {
             String query = null;
@@ -1804,7 +1804,7 @@ public class FilterControl
     
     private FilterAdjustmentFixedAmount getFilterAdjustmentFixedAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, EntityPermission entityPermission) {
-        FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = null;
+        FilterAdjustmentFixedAmount filterAdjustmentFixedAmount;
         
         try {
             String query = null;
@@ -1979,7 +1979,7 @@ public class FilterControl
     
     private FilterAdjustmentPercent getFilterAdjustmentPercent(FilterAdjustment filterAdjustment, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        FilterAdjustmentPercent filterAdjustmentPercent = null;
+        FilterAdjustmentPercent filterAdjustmentPercent;
         
         try {
             String query = null;
@@ -2105,7 +2105,7 @@ public class FilterControl
     
     private FilterAdjustmentDescription getFilterAdjustmentDescription(FilterAdjustment filterAdjustment, Language language,
             EntityPermission entityPermission) {
-        FilterAdjustmentDescription filterAdjustmentDescription = null;
+        FilterAdjustmentDescription filterAdjustmentDescription;
         
         try {
             String query = null;
@@ -2329,7 +2329,7 @@ public class FilterControl
     }
     
     private Filter getDefaultFilter(FilterType filterType, EntityPermission entityPermission) {
-        Filter filter = null;
+        Filter filter;
         
         try {
             String query = null;
@@ -2370,7 +2370,7 @@ public class FilterControl
     }
     
     private Filter getFilterByName(FilterType filterType, String filterName, EntityPermission entityPermission) {
-        Filter filter = null;
+        Filter filter;
         
         try {
             String query = null;
@@ -2576,7 +2576,7 @@ public class FilterControl
     }
     
     private FilterDescription getFilterDescription(Filter filter, Language language, EntityPermission entityPermission) {
-        FilterDescription filterDescription = null;
+        FilterDescription filterDescription;
         
         try {
             String query = null;
@@ -2749,7 +2749,7 @@ public class FilterControl
     }
     
     private FilterStep getFilterStepByName(Filter filter, String filterStepName, EntityPermission entityPermission) {
-        FilterStep filterStep = null;
+        FilterStep filterStep;
         
         try {
             String query = null;
@@ -2951,7 +2951,7 @@ public class FilterControl
     }
     
     private FilterStepDescription getFilterStepDescription(FilterStep filterStep, Language language, EntityPermission entityPermission) {
-        FilterStepDescription filterStepDescription = null;
+        FilterStepDescription filterStepDescription;
         
         try {
             String query = null;
@@ -3121,7 +3121,7 @@ public class FilterControl
     }
     
     private FilterEntranceStep getFilterEntranceStep(Filter filter, FilterStep filterStep, EntityPermission entityPermission) {
-        FilterEntranceStep filterEntranceStep = null;
+        FilterEntranceStep filterEntranceStep;
         
         try {
             String query = null;
@@ -3295,7 +3295,7 @@ public class FilterControl
     
     private FilterStepDestination getFilterStepDestination(FilterStep fromFilterStep, FilterStep toFilterStep,
             EntityPermission entityPermission) {
-        FilterStepDestination filterStepDestination = null;
+        FilterStepDestination filterStepDestination;
         
         try {
             String query = null;
@@ -3513,7 +3513,7 @@ public class FilterControl
     
     private FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName,
             EntityPermission entityPermission) {
-        FilterStepElement filterStepElement = null;
+        FilterStepElement filterStepElement;
         
         try {
             String query = null;
@@ -3698,7 +3698,7 @@ public class FilterControl
     
     private FilterStepElementDescription getFilterStepElementDescription(FilterStepElement filterStepElement, Language language,
             EntityPermission entityPermission) {
-        FilterStepElementDescription filterStepElementDescription = null;
+        FilterStepElementDescription filterStepElementDescription;
         
         try {
             String query = null;

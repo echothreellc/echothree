@@ -437,7 +437,7 @@ public class PartyControl
     }
     
     public LanguageDescription getLanguageDescription(Language language, Language descriptionLanguage) {
-        LanguageDescription languageDescription = null;
+        LanguageDescription languageDescription;
         
         try {
             PreparedStatement ps = LanguageDescriptionFactory.getInstance().prepareStatement(
@@ -494,7 +494,7 @@ public class PartyControl
     }
     
     public PartyType getPartyTypeByName(String partyTypeName) {
-        PartyType partyType = null;
+        PartyType partyType;
         
         try {
             PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
@@ -568,7 +568,7 @@ public class PartyControl
     }
     
     public PartyTypeDescription getPartyTypeDescription(PartyType partyType, Language language) {
-        PartyTypeDescription partyTypeDescription = null;
+        PartyTypeDescription partyTypeDescription;
         
         try {
             PreparedStatement ps = PartyTypeDescriptionFactory.getInstance().prepareStatement(
@@ -613,7 +613,7 @@ public class PartyControl
     }
     
     public PartyTypeUseType getPartyTypeUseTypeByName(String partyTypeUseTypeName) {
-        PartyTypeUseType partyTypeUseType = null;
+        PartyTypeUseType partyTypeUseType;
         
         try {
             PreparedStatement ps = PartyTypeUseTypeFactory.getInstance().prepareStatement(
@@ -641,7 +641,7 @@ public class PartyControl
     }
     
     public PartyTypeUseTypeDescription getPartyTypeUseTypeDescription(PartyTypeUseType partyTypeUseType, Language language) {
-        PartyTypeUseTypeDescription partyTypeUseTypeDescription = null;
+        PartyTypeUseTypeDescription partyTypeUseTypeDescription;
         
         try {
             PreparedStatement ps = PartyTypeUseTypeDescriptionFactory.getInstance().prepareStatement(
@@ -687,7 +687,7 @@ public class PartyControl
     }
     
     public PartyTypeUse getPartyTypeUse(PartyTypeUseType partyTypeUseType, PartyType partyType) {
-        PartyTypeUse partyTypeUse = null;
+        PartyTypeUse partyTypeUse;
         
         try {
             PreparedStatement ps = PartyTypeUseFactory.getInstance().prepareStatement(
@@ -1247,7 +1247,7 @@ public class PartyControl
     }
     
     public TimeZone getDefaultTimeZone() {
-        TimeZone timeZone = null;
+        TimeZone timeZone;
         
         try {
             PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
@@ -1266,7 +1266,7 @@ public class PartyControl
     }
     
     public TimeZone getTimeZoneByJavaName(String javaTimeZoneName) {
-        TimeZone timeZone = null;
+        TimeZone timeZone;
         
         try {
             PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
@@ -1405,7 +1405,7 @@ public class PartyControl
     }
     
     private TimeZoneDescription getTimeZoneDescription(TimeZone timeZone, Language language, EntityPermission entityPermission) {
-        TimeZoneDescription timeZoneDescription = null;
+        TimeZoneDescription timeZoneDescription;
         
         try {
             String query = null;
@@ -1568,7 +1568,7 @@ public class PartyControl
     }
     
     public DateTimeFormat getDefaultDateTimeFormat() {
-        DateTimeFormat dateTimeFormat = null;
+        DateTimeFormat dateTimeFormat;
         
         try {
             PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
@@ -1587,7 +1587,7 @@ public class PartyControl
     }
     
     public DateTimeFormat getDateTimeFormatByName(String dateTimeFormatName) {
-        DateTimeFormat dateTimeFormat = null;
+        DateTimeFormat dateTimeFormat;
         
         try {
             PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
@@ -1727,7 +1727,7 @@ public class PartyControl
     }
     
     private DateTimeFormatDescription getDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language, EntityPermission entityPermission) {
-        DateTimeFormatDescription dateTimeFormatDescription = null;
+        DateTimeFormatDescription dateTimeFormatDescription;
         
         try {
             String query = null;
@@ -2515,7 +2515,7 @@ public class PartyControl
     }
     
     public PartyRelationshipType getPartyRelationshipTypeByName(String partyRelationshipTypeName) {
-        PartyRelationshipType partyRelationshipType = null;
+        PartyRelationshipType partyRelationshipType;
         
         try {
             PreparedStatement ps = PartyRelationshipTypeFactory.getInstance().prepareStatement(
@@ -2544,7 +2544,7 @@ public class PartyControl
     
     public PartyRelationshipTypeDescription getPartyRelationshipTypeDescription(PartyRelationshipType partyRelationshipType,
             Language language) {
-        PartyRelationshipTypeDescription partyRelationshipTypeDescription = null;
+        PartyRelationshipTypeDescription partyRelationshipTypeDescription;
         
         try {
             PreparedStatement ps = PartyRelationshipTypeDescriptionFactory.getInstance().prepareStatement(
@@ -3000,7 +3000,7 @@ public class PartyControl
     }
     
     public RoleType getRoleTypeByName(String roleTypeName) {
-        RoleType roleType = null;
+        RoleType roleType;
         
         try {
             PreparedStatement ps = RoleTypeFactory.getInstance().prepareStatement(
@@ -3031,7 +3031,7 @@ public class PartyControl
     }
     
     public RoleTypeDescription getRoleTypeDescription(RoleType roleType, Language language) {
-        RoleTypeDescription roleTypeDescription = null;
+        RoleTypeDescription roleTypeDescription;
         
         try {
             PreparedStatement ps = RoleTypeDescriptionFactory.getInstance().prepareStatement(
@@ -3080,7 +3080,7 @@ public class PartyControl
     }
     
     private PartyGroup getPartyGroup(Party party, EntityPermission entityPermission) {
-        PartyGroup partyGroup = null;
+        PartyGroup partyGroup;
         
         try {
             String query = null;
@@ -3192,7 +3192,7 @@ public class PartyControl
     }
     
     private PartyCompany getPartyCompany(Party party, EntityPermission entityPermission) {
-        PartyCompany partyCompany = null;
+        PartyCompany partyCompany;
         
         try {
             String query = null;
@@ -3234,7 +3234,7 @@ public class PartyControl
     }
     
     private PartyCompany getDefaultPartyCompany(EntityPermission entityPermission) {
-        PartyCompany partyCompany = null;
+        PartyCompany partyCompany;
         
         try {
             String query = null;
@@ -3278,7 +3278,7 @@ public class PartyControl
     }
     
     private PartyCompany getPartyCompanyByName(String partyCompanyName, EntityPermission entityPermission) {
-        PartyCompany partyCompany = null;
+        PartyCompany partyCompany;
         
         try {
             String query = null;
@@ -3489,7 +3489,7 @@ public class PartyControl
     }
     
     private PartyDivision getPartyDivision(Party party, EntityPermission entityPermission) {
-        PartyDivision partyDivision = null;
+        PartyDivision partyDivision;
         
         try {
             String query = null;
@@ -3531,7 +3531,7 @@ public class PartyControl
     }
     
     private PartyDivision getDefaultPartyDivision(Party companyParty, EntityPermission entityPermission) {
-        PartyDivision partyDivision = null;
+        PartyDivision partyDivision;
         
         try {
             String query = null;
@@ -3576,7 +3576,7 @@ public class PartyControl
     }
     
     private PartyDivision getPartyDivisionByName(Party companyParty, String partyDivisionName, EntityPermission entityPermission) {
-        PartyDivision partyDivision = null;
+        PartyDivision partyDivision;
         
         try {
             String query = null;
@@ -3792,7 +3792,7 @@ public class PartyControl
     }
     
     private PartyDepartment getPartyDepartment(Party party, EntityPermission entityPermission) {
-        PartyDepartment partyDepartment = null;
+        PartyDepartment partyDepartment;
         
         try {
             String query = null;
@@ -3834,7 +3834,7 @@ public class PartyControl
     }
     
     private PartyDepartment getDefaultPartyDepartment(Party divisionParty, EntityPermission entityPermission) {
-        PartyDepartment partyDepartment = null;
+        PartyDepartment partyDepartment;
         
         try {
             String query = null;
@@ -3880,7 +3880,7 @@ public class PartyControl
     
     private PartyDepartment getPartyDepartmentByName(Party divisionParty, String partyDepartmentName,
             EntityPermission entityPermission) {
-        PartyDepartment partyDepartment = null;
+        PartyDepartment partyDepartment;
         
         try {
             String query = null;
@@ -4095,7 +4095,7 @@ public class PartyControl
     }
 
     public Person getPerson(Party party, EntityPermission entityPermission) {
-        Person person = null;
+        Person person;
         
         try {
             String query = null;
@@ -4448,7 +4448,7 @@ public class PartyControl
     }
     
     private PartyTypeAuditPolicy getPartyTypeAuditPolicy(PartyType partyType, EntityPermission entityPermission) {
-        PartyTypeAuditPolicy partyTypeAuditPolicy = null;
+        PartyTypeAuditPolicy partyTypeAuditPolicy;
         
         try {
             String query = null;
@@ -4557,7 +4557,7 @@ public class PartyControl
     }
     
     private PartyTypeLockoutPolicy getPartyTypeLockoutPolicy(PartyType partyType, EntityPermission entityPermission) {
-        PartyTypeLockoutPolicy partyTypeLockoutPolicy = null;
+        PartyTypeLockoutPolicy partyTypeLockoutPolicy;
         
         try {
             String query = null;
@@ -4674,7 +4674,7 @@ public class PartyControl
     }
     
     private PartyTypePasswordStringPolicy getPartyTypePasswordStringPolicy(PartyType partyType, EntityPermission entityPermission) {
-        PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = null;
+        PartyTypePasswordStringPolicy partyTypePasswordStringPolicy;
         
         try {
             String query = null;
@@ -4809,7 +4809,7 @@ public class PartyControl
     }
     
     private Gender getGenderByName(String genderName, EntityPermission entityPermission) {
-        Gender gender = null;
+        Gender gender;
         
         try {
             String query = null;
@@ -5047,7 +5047,7 @@ public class PartyControl
     }
     
     private GenderDescription getGenderDescription(Gender gender, Language language, EntityPermission entityPermission) {
-        GenderDescription genderDescription = null;
+        GenderDescription genderDescription;
         
         try {
             String query = null;
@@ -5231,7 +5231,7 @@ public class PartyControl
     }
     
     private Mood getMoodByName(String moodName, EntityPermission entityPermission) {
-        Mood mood = null;
+        Mood mood;
         
         try {
             String query = null;
@@ -5470,7 +5470,7 @@ public class PartyControl
     }
     
     private MoodDescription getMoodDescription(Mood mood, Language language, EntityPermission entityPermission) {
-        MoodDescription moodDescription = null;
+        MoodDescription moodDescription;
         
         try {
             String query = null;
@@ -6113,7 +6113,7 @@ public class PartyControl
     }
     
     private Profile getProfile(Party party, EntityPermission entityPermission) {
-        Profile profile = null;
+        Profile profile;
         
         try {
             String query = null;
@@ -6159,7 +6159,7 @@ public class PartyControl
     }
     
     private Profile getProfileByNickname(String nickname, EntityPermission entityPermission) {
-        Profile profile = null;
+        Profile profile;
         
         try {
             String query = null;

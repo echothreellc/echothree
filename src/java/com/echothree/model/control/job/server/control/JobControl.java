@@ -98,7 +98,7 @@ public class JobControl
     }
     
     private Job getJobByName(String jobName, EntityPermission entityPermission) {
-        Job job = null;
+        Job job;
         
         try {
             String query = null;
@@ -271,7 +271,7 @@ public class JobControl
     }
     
     private JobDescription getJobDescription(Job job, Language language, EntityPermission entityPermission) {
-        JobDescription jobDescription = null;
+        JobDescription jobDescription;
         
         try {
             String query = null;
@@ -431,7 +431,7 @@ public class JobControl
     }
     
     private JobStatus getJobStatus(Job job, EntityPermission entityPermission) {
-        JobStatus jobStatus = null;
+        JobStatus jobStatus;
         
         try {
             String query = null;

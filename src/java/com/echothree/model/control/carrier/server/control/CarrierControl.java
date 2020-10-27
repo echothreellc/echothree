@@ -607,7 +607,7 @@ public class CarrierControl
     }
     
     private Carrier getCarrier(Party party, EntityPermission entityPermission) {
-        Carrier carrier = null;
+        Carrier carrier;
         
         try {
             String query = null;
@@ -649,7 +649,7 @@ public class CarrierControl
     }
     
     private Carrier getCarrierByName(String carrierName, EntityPermission entityPermission) {
-        Carrier carrier = null;
+        Carrier carrier;
         
         try {
             String query = null;
@@ -691,7 +691,7 @@ public class CarrierControl
     }
     
     private Carrier getDefaultCarrier(EntityPermission entityPermission) {
-        Carrier carrier = null;
+        Carrier carrier;
         
         try {
             String query = null;
@@ -974,7 +974,7 @@ public class CarrierControl
     }
     
     private CarrierService getDefaultCarrierService(Party carrierParty, EntityPermission entityPermission) {
-        CarrierService carrierService = null;
+        CarrierService carrierService;
         
         try {
             String query = null;
@@ -1017,7 +1017,7 @@ public class CarrierControl
     }
     
     private CarrierService getCarrierServiceByName(Party carrierParty, String carrierServiceName, EntityPermission entityPermission) {
-        CarrierService carrierService = null;
+        CarrierService carrierService;
         
         try {
             String query = null;
@@ -1229,7 +1229,7 @@ public class CarrierControl
     }
     
     private CarrierServiceDescription getCarrierServiceDescription(CarrierService carrierService, Language language, EntityPermission entityPermission) {
-        CarrierServiceDescription carrierServiceDescription = null;
+        CarrierServiceDescription carrierServiceDescription;
         
         try {
             String query = null;
@@ -1458,7 +1458,7 @@ public class CarrierControl
     }
     
     private CarrierOption getDefaultCarrierOption(Party carrierParty, EntityPermission entityPermission) {
-        CarrierOption carrierOption = null;
+        CarrierOption carrierOption;
         
         try {
             String query = null;
@@ -1501,7 +1501,7 @@ public class CarrierControl
     }
     
     private CarrierOption getCarrierOptionByName(Party carrierParty, String carrierOptionName, EntityPermission entityPermission) {
-        CarrierOption carrierOption = null;
+        CarrierOption carrierOption;
         
         try {
             String query = null;
@@ -1720,7 +1720,7 @@ public class CarrierControl
     }
     
     private CarrierOptionDescription getCarrierOptionDescription(CarrierOption carrierOption, Language language, EntityPermission entityPermission) {
-        CarrierOptionDescription carrierOptionDescription = null;
+        CarrierOptionDescription carrierOptionDescription;
         
         try {
             String query = null;
@@ -1894,7 +1894,7 @@ public class CarrierControl
     
     private CarrierServiceOption getCarrierServiceOption(CarrierService carrierService, CarrierOption carrierOption,
             EntityPermission entityPermission) {
-        CarrierServiceOption carrierServiceOption = null;
+        CarrierServiceOption carrierServiceOption;
         
         try {
             String query = null;
@@ -2116,7 +2116,7 @@ public class CarrierControl
     }
 
     private PartyCarrier getPartyCarrier(Party party, Party carrierParty, EntityPermission entityPermission) {
-        PartyCarrier partyCarrier = null;
+        PartyCarrier partyCarrier;
         
         try {
             String query = null;

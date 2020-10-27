@@ -1374,7 +1374,7 @@ public class DocumentControl
     }
 
     private Document getDocumentByName(String documentName, EntityPermission entityPermission) {
-        Document document = null;
+        Document document;
         
         try {
             String query = null;
@@ -1541,7 +1541,7 @@ public class DocumentControl
     }
     
     private DocumentBlob getDocumentBlob(Document document, EntityPermission entityPermission) {
-        DocumentBlob documentBlob = null;
+        DocumentBlob documentBlob;
         
         try {
             String query = null;
@@ -1634,7 +1634,7 @@ public class DocumentControl
     }
     
     private DocumentClob getDocumentClob(Document document, EntityPermission entityPermission) {
-        DocumentClob documentClob = null;
+        DocumentClob documentClob;
         
         try {
             String query = null;
@@ -1725,7 +1725,7 @@ public class DocumentControl
     }
     
     private DocumentDescription getDocumentDescription(Document document, Language language, EntityPermission entityPermission) {
-        DocumentDescription documentDescription = null;
+        DocumentDescription documentDescription;
         
         try {
             String query = null;

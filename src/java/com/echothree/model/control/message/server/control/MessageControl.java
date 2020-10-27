@@ -169,7 +169,7 @@ public class MessageControl
     }
     
     private MessageType getMessageTypeByName(EntityType entityType, String messageTypeName, EntityPermission entityPermission) {
-        MessageType messageType = null;
+        MessageType messageType;
         
         try {
             String query = null;
@@ -293,7 +293,7 @@ public class MessageControl
     }
     
     private MessageTypeDescription getMessageTypeDescription(MessageType messageType, Language language, EntityPermission entityPermission) {
-        MessageTypeDescription messageTypeDescription = null;
+        MessageTypeDescription messageTypeDescription;
         
         try {
             String query = null;
@@ -518,7 +518,7 @@ public class MessageControl
     }
     
     private Message getDefaultMessage(MessageType messageType, EntityPermission entityPermission) {
-        Message message = null;
+        Message message;
         
         try {
             String query = null;
@@ -561,7 +561,7 @@ public class MessageControl
     }
     
     private Message getMessageByName(MessageType messageType, String messageName, EntityPermission entityPermission) {
-        Message message = null;
+        Message message;
         
         try {
             String query = null;
@@ -763,7 +763,7 @@ public class MessageControl
     }
     
     private MessageDescription getMessageDescription(Message message, Language language, EntityPermission entityPermission) {
-        MessageDescription messageDescription = null;
+        MessageDescription messageDescription;
         
         try {
             String query = null;
@@ -967,7 +967,7 @@ public class MessageControl
     }
     
     private MessageString getMessageString(Message message, Language language, EntityPermission entityPermission) {
-        MessageString messageString = null;
+        MessageString messageString;
         
         try {
             String query = null;
@@ -1119,7 +1119,7 @@ public class MessageControl
     }
     
     private MessageBlob getMessageBlob(Message message, Language language, EntityPermission entityPermission) {
-        MessageBlob messageBlob = null;
+        MessageBlob messageBlob;
         
         try {
             String query = null;
@@ -1272,7 +1272,7 @@ public class MessageControl
     }
     
     private MessageClob getMessageClob(Message message, Language language, EntityPermission entityPermission) {
-        MessageClob messageClob = null;
+        MessageClob messageClob;
         
         try {
             String query = null;
@@ -1385,7 +1385,7 @@ public class MessageControl
     }
     
     private EntityMessage getEntityMessage(EntityInstance entityInstance, Message message, EntityPermission entityPermission) {
-        EntityMessage entityMessage = null;
+        EntityMessage entityMessage;
         
         try {
             String query = null;

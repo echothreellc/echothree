@@ -330,7 +330,7 @@ public class AccountingControl
     }
     
     private Currency getCurrencyByIsoName(String currencyIsoName, EntityPermission entityPermission) {
-        Currency currency = null;
+        Currency currency;
         
         try {
             String query = null;
@@ -432,7 +432,7 @@ public class AccountingControl
     }
     
     public CurrencyDescription getCurrencyDescription(Currency currency, Language language) {
-        CurrencyDescription currencyDescription = null;
+        CurrencyDescription currencyDescription;
         
         try {
             PreparedStatement ps = CurrencyDescriptionFactory.getInstance().prepareStatement(
@@ -890,7 +890,7 @@ public class AccountingControl
     
     private ItemAccountingCategoryDescription getItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
             Language language, EntityPermission entityPermission) {
-        ItemAccountingCategoryDescription itemAccountingCategoryDescription = null;
+        ItemAccountingCategoryDescription itemAccountingCategoryDescription;
         
         try {
             String query = null;
@@ -1058,7 +1058,7 @@ public class AccountingControl
     }
     
     public GlAccountType getGlAccountTypeByName(String glAccountTypeName) {
-        GlAccountType glAccountType = null;
+        GlAccountType glAccountType;
         
         try {
             PreparedStatement ps = GlAccountTypeFactory.getInstance().prepareStatement(
@@ -1141,7 +1141,7 @@ public class AccountingControl
     }
     
     public GlAccountTypeDescription getGlAccountTypeDescription(GlAccountType glAccountType, Language language) {
-        GlAccountTypeDescription glAccountTypeDescription = null;
+        GlAccountTypeDescription glAccountTypeDescription;
         
         try {
             PreparedStatement ps = GlAccountTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1533,7 +1533,7 @@ public class AccountingControl
     }
     
     private GlAccountClassDescription getGlAccountClassDescription(GlAccountClass glAccountClass, Language language, EntityPermission entityPermission) {
-        GlAccountClassDescription glAccountClassDescription = null;
+        GlAccountClassDescription glAccountClassDescription;
         
         try {
             String query = null;
@@ -2042,7 +2042,7 @@ public class AccountingControl
     }
     
     private GlAccountCategoryDescription getGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language, EntityPermission entityPermission) {
-        GlAccountCategoryDescription glAccountCategoryDescription = null;
+        GlAccountCategoryDescription glAccountCategoryDescription;
         
         try {
             String query = null;
@@ -2226,7 +2226,7 @@ public class AccountingControl
     }
     
     private GlResourceType getGlResourceTypeByName(String glResourceTypeName, EntityPermission entityPermission) {
-        GlResourceType glResourceType = null;
+        GlResourceType glResourceType;
         
         try {
             String query = null;
@@ -2272,7 +2272,7 @@ public class AccountingControl
     }
     
     private GlResourceType getDefaultGlResourceType(EntityPermission entityPermission) {
-        GlResourceType glResourceType = null;
+        GlResourceType glResourceType;
         
         try {
             String query = null;
@@ -2489,7 +2489,7 @@ public class AccountingControl
     }
     
     private GlResourceTypeDescription getGlResourceTypeDescription(GlResourceType glResourceType, Language language, EntityPermission entityPermission) {
-        GlResourceTypeDescription glResourceTypeDescription = null;
+        GlResourceTypeDescription glResourceTypeDescription;
         
         try {
             String query = null;
@@ -2681,7 +2681,7 @@ public class AccountingControl
     }
     
     private GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {
-        GlAccount glAccount = null;
+        GlAccount glAccount;
         
         try {
             String query = null;
@@ -2722,7 +2722,7 @@ public class AccountingControl
     }
     
     private GlAccount getDefaultGlAccount(GlAccountCategoryPK glAccountCategoryPK, EntityPermission entityPermission) {
-        GlAccount glAccount = null;
+        GlAccount glAccount;
         
         try {
             String query = null;
@@ -3239,7 +3239,7 @@ public class AccountingControl
     }
     
     private GlAccountDescription getGlAccountDescription(GlAccount glAccount, Language language, EntityPermission entityPermission) {
-        GlAccountDescription glAccountDescription = null;
+        GlAccountDescription glAccountDescription;
         
         try {
             String query = null;
@@ -3398,7 +3398,7 @@ public class AccountingControl
     }
     
     private GlAccountSummary getGlAccountSummary(GlAccount glAccount, Party groupParty, Period period, EntityPermission entityPermission) {
-        GlAccountSummary glAccountSummary = null;
+        GlAccountSummary glAccountSummary;
         
         try {
             String query = null;
@@ -3457,7 +3457,7 @@ public class AccountingControl
     }
     
     private TransactionType getTransactionTypeByName(String transactionTypeName, EntityPermission entityPermission) {
-        TransactionType transactionType = null;
+        TransactionType transactionType;
         
         try {
             String query = null;
@@ -3601,7 +3601,7 @@ public class AccountingControl
     }
     
     private TransactionTypeDescription getTransactionTypeDescription(TransactionType transactionType, Language language, EntityPermission entityPermission) {
-        TransactionTypeDescription transactionTypeDescription = null;
+        TransactionTypeDescription transactionTypeDescription;
         
         try {
             String query = null;
@@ -3774,7 +3774,7 @@ public class AccountingControl
     }
     
     private TransactionGlAccountCategory getTransactionGlAccountCategoryByName(TransactionType transactionType, String transactionGlAccountCategoryName, EntityPermission entityPermission) {
-        TransactionGlAccountCategory transactionGlAccountCategory = null;
+        TransactionGlAccountCategory transactionGlAccountCategory;
         
         try {
             String query = null;
@@ -3968,7 +3968,7 @@ public class AccountingControl
     }
     
     private TransactionGlAccountCategoryDescription getTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, EntityPermission entityPermission) {
-        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = null;
+        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription;
         
         try {
             String query = null;
@@ -4141,7 +4141,7 @@ public class AccountingControl
     }
     
     private TransactionEntityRoleType getTransactionEntityRoleTypeByName(TransactionType transactionType, String transactionEntityRoleTypeName, EntityPermission entityPermission) {
-        TransactionEntityRoleType transactionEntityRoleType = null;
+        TransactionEntityRoleType transactionEntityRoleType;
         
         try {
             String query = null;
@@ -4380,7 +4380,7 @@ public class AccountingControl
     }
     
     private TransactionEntityRoleTypeDescription getTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, EntityPermission entityPermission) {
-        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = null;
+        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription;
         
         try {
             String query = null;
@@ -4585,7 +4585,7 @@ public class AccountingControl
     }
     
     private TransactionGlAccount getTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory, EntityPermission entityPermission) {
-        TransactionGlAccount transactionGlAccount = null;
+        TransactionGlAccount transactionGlAccount;
         
         try {
             String query = null;
@@ -4756,7 +4756,7 @@ public class AccountingControl
     }
     
     private TransactionGroup getTransactionGroupByName(String transactionGroupName, EntityPermission entityPermission) {
-        TransactionGroup transactionGroup = null;
+        TransactionGroup transactionGroup;
         
         try {
             String query = null;
@@ -4915,7 +4915,7 @@ public class AccountingControl
     }
     
     public Transaction getTransactionByName(String transactionName) {
-        Transaction transaction = null;
+        Transaction transaction;
         
         try {
             PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
@@ -5001,7 +5001,7 @@ public class AccountingControl
     }
     
     private TransactionStatus getTransactionStatus(Transaction transaction, EntityPermission entityPermission) {
-        TransactionStatus transactionStatus = null;
+        TransactionStatus transactionStatus;
         
         try {
             String query = null;
@@ -5137,7 +5137,7 @@ public class AccountingControl
     }
     
     public TransactionEntityRole getTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType) {
-        TransactionEntityRole transactionEntityRole = null;
+        TransactionEntityRole transactionEntityRole;
         
         try {
             PreparedStatement ps = TransactionEntityRoleFactory.getInstance().prepareStatement(
@@ -5326,7 +5326,7 @@ public class AccountingControl
     }
     
     private SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
-        SymbolPosition symbolPosition = null;
+        SymbolPosition symbolPosition;
         
         try {
             String query = null;
@@ -5372,7 +5372,7 @@ public class AccountingControl
     }
     
     private SymbolPosition getDefaultSymbolPosition(EntityPermission entityPermission) {
-        SymbolPosition symbolPosition = null;
+        SymbolPosition symbolPosition;
         
         try {
             String query = null;
@@ -5591,7 +5591,7 @@ public class AccountingControl
     }
     
     private SymbolPositionDescription getSymbolPositionDescription(SymbolPosition symbolPosition, Language language, EntityPermission entityPermission) {
-        SymbolPositionDescription symbolPositionDescription = null;
+        SymbolPositionDescription symbolPositionDescription;
         
         try {
             String query = null;

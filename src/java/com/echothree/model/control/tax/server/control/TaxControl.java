@@ -857,7 +857,7 @@ public class TaxControl
     }
     
     private Tax getTaxByName(String taxName, EntityPermission entityPermission) {
-        Tax tax = null;
+        Tax tax;
         
         try {
             String query = null;
@@ -1043,7 +1043,7 @@ public class TaxControl
     }
     
     private TaxDescription getTaxDescription(Tax tax, Language language, EntityPermission entityPermission) {
-        TaxDescription taxDescription = null;
+        TaxDescription taxDescription;
         
         try {
             String query = null;
@@ -1221,7 +1221,7 @@ public class TaxControl
     }
 
     private GeoCodeTax getGeoCodeTax(GeoCode geoCode, Tax tax, EntityPermission entityPermission) {
-        GeoCodeTax geoCodeTax = null;
+        GeoCodeTax geoCodeTax;
         
         try {
             String query = null;

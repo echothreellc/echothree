@@ -321,7 +321,7 @@ public class WorkflowControl
     }
     
     public WorkflowTypeDescription getWorkflowTypeDescription(WorkflowType workflowType, Language language) {
-        WorkflowTypeDescription workflowTypeDescription = null;
+        WorkflowTypeDescription workflowTypeDescription;
         
         try {
             PreparedStatement ps = WorkflowTypeDescriptionFactory.getInstance().prepareStatement(
@@ -483,7 +483,7 @@ public class WorkflowControl
     }
     
     public WorkflowStepTypeDescription getWorkflowStepTypeDescription(WorkflowStepType workflowStepType, Language language) {
-        WorkflowStepTypeDescription workflowStepTypeDescription = null;
+        WorkflowStepTypeDescription workflowStepTypeDescription;
         
         try {
             PreparedStatement ps = WorkflowStepTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1135,7 +1135,7 @@ public class WorkflowControl
     }
     
     private WorkflowStepDescription getWorkflowStepDescription(WorkflowStep workflowStep, Language language, EntityPermission entityPermission) {
-        WorkflowStepDescription workflowStepDescription = null;
+        WorkflowStepDescription workflowStepDescription;
         
         try {
             String query = null;
@@ -1781,7 +1781,7 @@ public class WorkflowControl
     }
     
     private WorkflowEntranceDescription getWorkflowEntranceDescription(WorkflowEntrance workflowEntrance, Language language, EntityPermission entityPermission) {
-        WorkflowEntranceDescription workflowEntranceDescription = null;
+        WorkflowEntranceDescription workflowEntranceDescription;
         
         try {
             String query = null;
@@ -2075,7 +2075,7 @@ public class WorkflowControl
     
     public WorkflowEntranceSelector getWorkflowEntranceSelector(WorkflowEntrance workflowEntrance, Selector selector,
             EntityPermission entityPermission) {
-        WorkflowEntranceSelector workflowEntranceSelector = null;
+        WorkflowEntranceSelector workflowEntranceSelector;
         
         try {
             String query = null;
@@ -2210,7 +2210,7 @@ public class WorkflowControl
     
     public WorkflowEntrancePartyType getWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
             EntityPermission entityPermission) {
-        WorkflowEntrancePartyType workflowEntrancePartyType = null;
+        WorkflowEntrancePartyType workflowEntrancePartyType;
         
         try {
             String query = null;
@@ -2352,7 +2352,7 @@ public class WorkflowControl
     
     public WorkflowEntranceSecurityRole getWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
             EntityPermission entityPermission) {
-        WorkflowEntranceSecurityRole workflowEntranceSecurityRole = null;
+        WorkflowEntranceSecurityRole workflowEntranceSecurityRole;
         
         try {
             String query = null;
@@ -2504,7 +2504,7 @@ public class WorkflowControl
     }
     
     private WorkflowEntranceStep getWorkflowEntranceStep(WorkflowEntrance workflowEntrance, WorkflowStep workflowStep, EntityPermission entityPermission) {
-        WorkflowEntranceStep workflowEntranceStep = null;
+        WorkflowEntranceStep workflowEntranceStep;
         
         try {
             String query = null;
@@ -2903,7 +2903,7 @@ public class WorkflowControl
     }
     
     private WorkflowDestinationDescription getWorkflowDestinationDescription(WorkflowDestination workflowDestination, Language language, EntityPermission entityPermission) {
-        WorkflowDestinationDescription workflowDestinationDescription = null;
+        WorkflowDestinationDescription workflowDestinationDescription;
         
         try {
             String query = null;
@@ -3152,7 +3152,7 @@ public class WorkflowControl
     }
     
     public WorkflowDestinationSelector getWorkflowDestinationSelector(WorkflowDestination workflowDestination, Selector selector, EntityPermission entityPermission) {
-        WorkflowDestinationSelector workflowDestinationSelector = null;
+        WorkflowDestinationSelector workflowDestinationSelector;
         
         try {
             String query = null;
@@ -3291,7 +3291,7 @@ public class WorkflowControl
     
     public WorkflowDestinationPartyType getWorkflowDestinationPartyType(WorkflowDestination workflowDestination, PartyType partyType,
             EntityPermission entityPermission) {
-        WorkflowDestinationPartyType workflowDestinationPartyType = null;
+        WorkflowDestinationPartyType workflowDestinationPartyType;
         
         try {
             String query = null;
@@ -3433,7 +3433,7 @@ public class WorkflowControl
     
     public WorkflowDestinationSecurityRole getWorkflowDestinationSecurityRole(WorkflowDestinationPartyType workflowDestinationPartyType, SecurityRole securityRole,
             EntityPermission entityPermission) {
-        WorkflowDestinationSecurityRole workflowDestinationSecurityRole = null;
+        WorkflowDestinationSecurityRole workflowDestinationSecurityRole;
         
         try {
             String query = null;
@@ -3585,7 +3585,7 @@ public class WorkflowControl
     }
     
     private WorkflowDestinationStep getWorkflowDestinationStep(WorkflowDestination workflowDestination, WorkflowStep workflowStep, EntityPermission entityPermission) {
-        WorkflowDestinationStep workflowDestinationStep = null;
+        WorkflowDestinationStep workflowDestinationStep;
         
         try {
            String query = null;
@@ -3760,7 +3760,7 @@ public class WorkflowControl
     }
     
     private WorkflowSelectorKind getWorkflowSelectorKind(Workflow workflow, SelectorKind selectorKind, EntityPermission entityPermission) {
-        WorkflowSelectorKind workflowSelectorKind = null;
+        WorkflowSelectorKind workflowSelectorKind;
         
         try {
             String query = null;

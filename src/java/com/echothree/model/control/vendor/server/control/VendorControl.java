@@ -242,7 +242,7 @@ public class VendorControl
     }
     
     private VendorType getVendorTypeByName(String vendorTypeName, EntityPermission entityPermission) {
-        VendorType vendorType = null;
+        VendorType vendorType;
         
         try {
             String query = null;
@@ -446,7 +446,7 @@ public class VendorControl
     }
     
     private VendorTypeDescription getVendorTypeDescription(VendorType vendorType, Language language, EntityPermission entityPermission) {
-        VendorTypeDescription vendorTypeDescription = null;
+        VendorTypeDescription vendorTypeDescription;
         
         try {
             String query = null;
@@ -628,7 +628,7 @@ public class VendorControl
     }
     
     private Vendor getVendor(Party party, EntityPermission entityPermission) {
-        Vendor vendor = null;
+        Vendor vendor;
         
         try {
             String query = null;
@@ -666,7 +666,7 @@ public class VendorControl
     }
     
     private Vendor getVendorByName(String vendorName, EntityPermission entityPermission) {
-        Vendor vendor = null;
+        Vendor vendor;
         
         try {
             String query = null;
@@ -899,7 +899,7 @@ public class VendorControl
     }
 
     private VendorItem getVendorItemByVendorPartyAndVendorItemName(Party vendorParty, String vendorItemName, EntityPermission entityPermission) {
-        VendorItem vendorItem = null;
+        VendorItem vendorItem;
         
         try {
             String query = null;
@@ -1200,7 +1200,7 @@ public class VendorControl
     
     private VendorItemCost getVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        VendorItemCost vendorItemCost = null;
+        VendorItemCost vendorItemCost;
         
         try {
             String query = null;
@@ -1786,7 +1786,7 @@ public class VendorControl
     }
     
     private ItemPurchasingCategoryDescription getItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, EntityPermission entityPermission) {
-        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = null;
+        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription;
         
         try {
             String query = null;

@@ -1060,7 +1060,7 @@ public class ShipmentControl
     }
     
     private ShipmentTypeShippingMethod getShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        ShipmentTypeShippingMethod shipmentTypeShippingMethod = null;
+        ShipmentTypeShippingMethod shipmentTypeShippingMethod;
         
         try {
             String query = null;
@@ -1105,7 +1105,7 @@ public class ShipmentControl
     }
     
     private ShipmentTypeShippingMethod getDefaultShipmentTypeShippingMethod(ShipmentType shipmentType, EntityPermission entityPermission) {
-        ShipmentTypeShippingMethod shipmentTypeShippingMethod = null;
+        ShipmentTypeShippingMethod shipmentTypeShippingMethod;
         
         try {
             String query = null;

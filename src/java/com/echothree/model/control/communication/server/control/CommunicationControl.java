@@ -159,7 +159,7 @@ public class CommunicationControl
     }
     
     private CommunicationEventPurpose getCommunicationEventPurposeByName(String communicationEventPurposeName, EntityPermission entityPermission) {
-        CommunicationEventPurpose communicationEventPurpose = null;
+        CommunicationEventPurpose communicationEventPurpose;
         
         try {
             String query = null;
@@ -402,7 +402,7 @@ public class CommunicationControl
     
     private CommunicationEventPurposeDescription getCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
             Language language, EntityPermission entityPermission) {
-        CommunicationEventPurposeDescription communicationEventPurposeDescription = null;
+        CommunicationEventPurposeDescription communicationEventPurposeDescription;
         
         try {
             String query = null;
@@ -562,7 +562,7 @@ public class CommunicationControl
     }
     
     public CommunicationEventRoleType getCommunicationEventRoleTypeByName(String communicationEventRoleTypeName) {
-        CommunicationEventRoleType communicationEventRoleType = null;
+        CommunicationEventRoleType communicationEventRoleType;
         
         try {
             PreparedStatement ps = CommunicationEventRoleTypeFactory.getInstance().prepareStatement(
@@ -606,7 +606,7 @@ public class CommunicationControl
     
     public CommunicationEventRoleTypeDescription getCommunicationEventRoleTypeDescription(CommunicationEventRoleType communicationEventRoleType,
             Language language) {
-        CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription = null;
+        CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription;
         
         try {
             PreparedStatement ps = CommunicationEventRoleTypeDescriptionFactory.getInstance().prepareStatement(
@@ -653,7 +653,7 @@ public class CommunicationControl
     }
     
     public CommunicationEventType getCommunicationEventTypeByName(String communicationEventTypeName) {
-        CommunicationEventType communicationEventType = null;
+        CommunicationEventType communicationEventType;
         
         try {
             PreparedStatement ps = CommunicationEventTypeFactory.getInstance().prepareStatement(
@@ -697,7 +697,7 @@ public class CommunicationControl
     
     public CommunicationEventTypeDescription getCommunicationEventTypeDescription(CommunicationEventType communicationEventType,
             Language language) {
-        CommunicationEventTypeDescription communicationEventTypeDescription = null;
+        CommunicationEventTypeDescription communicationEventTypeDescription;
         
         try {
             PreparedStatement ps = CommunicationEventTypeDescriptionFactory.getInstance().prepareStatement(
@@ -832,7 +832,7 @@ public class CommunicationControl
     }
 
     private CommunicationEvent getCommunicationEventByName(String communicationEventName, EntityPermission entityPermission) {
-        CommunicationEvent communicationEvent = null;
+        CommunicationEvent communicationEvent;
         
         try {
             String query = null;
@@ -916,7 +916,7 @@ public class CommunicationControl
     
     private CommunicationEventRole getCommunicationEventRole(CommunicationEvent communicationEvent, Party party,
             CommunicationEventRoleType communicationEventRoleType, EntityPermission entityPermission) {
-        CommunicationEventRole communicationEventRole = null;
+        CommunicationEventRole communicationEventRole;
         
         try {
             String query = null;
@@ -1073,7 +1073,7 @@ public class CommunicationControl
     }
     
     public CommunicationSourceType getCommunicationSourceTypeByName(String communicationSourceTypeName) {
-        CommunicationSourceType communicationSourceType = null;
+        CommunicationSourceType communicationSourceType;
         
         try {
             PreparedStatement ps = CommunicationSourceTypeFactory.getInstance().prepareStatement(
@@ -1117,7 +1117,7 @@ public class CommunicationControl
     
     public CommunicationSourceTypeDescription getCommunicationSourceTypeDescription(CommunicationSourceType communicationSourceType,
             Language language) {
-        CommunicationSourceTypeDescription communicationSourceTypeDescription = null;
+        CommunicationSourceTypeDescription communicationSourceTypeDescription;
         
         try {
             PreparedStatement ps = CommunicationSourceTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1177,7 +1177,7 @@ public class CommunicationControl
     }
     
     private CommunicationSource getCommunicationSourceByName(String communicationSourceName, EntityPermission entityPermission) {
-        CommunicationSource communicationSource = null;
+        CommunicationSource communicationSource;
         
         try {
             String query = null;
@@ -1364,7 +1364,7 @@ public class CommunicationControl
     
     private CommunicationSourceDescription getCommunicationSourceDescription(CommunicationSource communicationSource,
             Language language, EntityPermission entityPermission) {
-        CommunicationSourceDescription communicationSourceDescription = null;
+        CommunicationSourceDescription communicationSourceDescription;
         
         try {
             String query = null;
@@ -1532,7 +1532,7 @@ public class CommunicationControl
     }
     
     private CommunicationEmailSource getCommunicationEmailSource(CommunicationSource communicationSource, EntityPermission entityPermission) {
-        CommunicationEmailSource communicationEmailSource = null;
+        CommunicationEmailSource communicationEmailSource;
         
         try {
             String query = null;

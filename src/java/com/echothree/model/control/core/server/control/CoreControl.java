@@ -677,7 +677,7 @@ public class CoreControl
     }
 
     public ComponentVendor getComponentVendorByName(String componentVendorName, EntityPermission entityPermission) {
-        ComponentVendor componentVendor = null;
+        ComponentVendor componentVendor;
         
         try {
             String query = null;
@@ -853,7 +853,7 @@ public class CoreControl
     }
 
     public EntityType getEntityTypeByName(ComponentVendor componentVendor, String entityTypeName, EntityPermission entityPermission) {
-        EntityType entityType = null;
+        EntityType entityType;
         
         try {
             String query = null;
@@ -1078,7 +1078,7 @@ public class CoreControl
     
     private EntityTypeDescription getEntityTypeDescription(EntityType entityType, Language language,
             EntityPermission entityPermission) {
-        EntityTypeDescription entityTypeDescription = null;
+        EntityTypeDescription entityTypeDescription;
         
         try {
             String query = null;
@@ -1252,7 +1252,7 @@ public class CoreControl
     }
     
     private Command getCommandByName(ComponentVendor componentVendor, String commandName, EntityPermission entityPermission) {
-        Command command = null;
+        Command command;
         
         try {
             String query = null;
@@ -1454,7 +1454,7 @@ public class CoreControl
     
     private CommandDescription getCommandDescription(Command command, Language language,
             EntityPermission entityPermission) {
-        CommandDescription commandDescription = null;
+        CommandDescription commandDescription;
         
         try {
             String query = null;
@@ -1700,7 +1700,7 @@ public class CoreControl
     }
     
     private CommandMessageType getCommandMessageTypeByName(String commandMessageTypeName, EntityPermission entityPermission) {
-        CommandMessageType commandMessageType = null;
+        CommandMessageType commandMessageType;
         
         try {
             String query = null;
@@ -1886,7 +1886,7 @@ public class CoreControl
     
     private CommandMessageTypeDescription getCommandMessageTypeDescription(CommandMessageType commandMessageType, Language language,
             EntityPermission entityPermission) {
-        CommandMessageTypeDescription commandMessageTypeDescription = null;
+        CommandMessageTypeDescription commandMessageTypeDescription;
         
         try {
             String query = null;
@@ -2062,7 +2062,7 @@ public class CoreControl
     }
     
     private CommandMessage getCommandMessageByKey(CommandMessageType commandMessageType, String commandMessageKey, EntityPermission entityPermission) {
-        CommandMessage commandMessage = null;
+        CommandMessage commandMessage;
         
         try {
             String query = null;
@@ -2276,7 +2276,7 @@ public class CoreControl
     }
     
     private CommandMessageTranslation getCommandMessageTranslation(CommandMessage commandMessage, Language language, EntityPermission entityPermission) {
-        CommandMessageTranslation commandMessageTranslation = null;
+        CommandMessageTranslation commandMessageTranslation;
         
         try {
             String query = null;
@@ -2436,7 +2436,7 @@ public class CoreControl
     }
     
     private EntityInstance getEntityInstance(EntityType entityType, Long entityUniqueId, EntityPermission entityPermission) {
-        EntityInstance entityInstance = null;
+        EntityInstance entityInstance;
         
         try {
             String query = null;
@@ -2475,7 +2475,7 @@ public class CoreControl
     
 
     private EntityInstance getEntityInstanceByKey(String key, EntityPermission entityPermission) {
-        EntityInstance entityInstance = null;
+        EntityInstance entityInstance;
         
         try {
             String query = null;
@@ -2536,7 +2536,7 @@ public class CoreControl
     }
     
     private EntityInstance getEntityInstanceByGuid(String guid, EntityPermission entityPermission) {
-        EntityInstance entityInstance = null;
+        EntityInstance entityInstance;
         
         try {
             String query = null;
@@ -2597,7 +2597,7 @@ public class CoreControl
     }
     
     private EntityInstance getEntityInstanceByUlid(String ulid, EntityPermission entityPermission) {
-        EntityInstance entityInstance = null;
+        EntityInstance entityInstance;
         
         try {
             String query = null;
@@ -2872,7 +2872,7 @@ public class CoreControl
     }
     
     public EventType getEventTypeByName(String eventTypeName) {
-        EventType eventType = null;
+        EventType eventType;
         
         try {
             PreparedStatement ps = EventTypeFactory.getInstance().prepareStatement(
@@ -2914,7 +2914,7 @@ public class CoreControl
     }
     
     public EventTypeDescription getEventTypeDescription(EventType eventType, Language language) {
-        EventTypeDescription eventTypeDescription = null;
+        EventTypeDescription eventTypeDescription;
         
         try {
             PreparedStatement ps = EventTypeDescriptionFactory.getInstance().prepareStatement(
@@ -2961,7 +2961,7 @@ public class CoreControl
     }
     
     public ComponentStage getComponentStageByName(String componentStageName) {
-        ComponentStage componentStage = null;
+        ComponentStage componentStage;
         
         try {
             PreparedStatement ps = ComponentStageFactory.getInstance().prepareStatement(
@@ -3006,7 +3006,7 @@ public class CoreControl
     }
     
     public EntityAttributeType getEntityAttributeTypeByName(String entityAttributeTypeName) {
-        EntityAttributeType entityAttributeType = null;
+        EntityAttributeType entityAttributeType;
         
         try {
             PreparedStatement ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
@@ -3089,7 +3089,7 @@ public class CoreControl
     }
     
     public EntityAttributeTypeDescription getEntityAttributeTypeDescription(EntityAttributeType entityAttributeType, Language language) {
-        EntityAttributeTypeDescription entityAttributeTypeDescription = null;
+        EntityAttributeTypeDescription entityAttributeTypeDescription;
         
         try {
             PreparedStatement ps = EntityAttributeTypeDescriptionFactory.getInstance().prepareStatement(
@@ -3135,7 +3135,7 @@ public class CoreControl
     }
     
     public EntityTime getEntityTime(EntityInstance entityInstance) {
-        EntityTime entityTime = null;
+        EntityTime entityTime;
         
         try {
             PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
@@ -3154,7 +3154,7 @@ public class CoreControl
     }
     
     public EntityTime getEntityTimeForUpdate(EntityInstance entityInstance) {
-        EntityTime entityTime = null;
+        EntityTime entityTime;
         
         try {
             PreparedStatement ps = EntityTimeFactory.getInstance().prepareStatement(
@@ -3428,7 +3428,7 @@ public class CoreControl
     }
     
     private EventGroup getEventGroupByName(String eventGroupName, EntityPermission entityPermission) {
-        EventGroup eventGroup = null;
+        EventGroup eventGroup;
         
         try {
             String query = null;
@@ -3750,7 +3750,7 @@ public class CoreControl
     }
     
     public EntityVisit getEntityVisit(EntityInstance entityInstance, EntityInstance visitedEntityInstance) {
-        EntityVisit entityVisit = null;
+        EntityVisit entityVisit;
         
         try {
             PreparedStatement ps = EntityVisitFactory.getInstance().prepareStatement(
@@ -3770,7 +3770,7 @@ public class CoreControl
     }
     
     public EntityVisit getEntityVisitForUpdate(EntityInstance entityInstance, EntityInstance visitedEntityInstance) {
-        EntityVisit entityVisit = null;
+        EntityVisit entityVisit;
         
         try {
             PreparedStatement ps = EntityVisitFactory.getInstance().prepareStatement(
@@ -4284,7 +4284,7 @@ public class CoreControl
     }
     
     private EntityAttributeGroup getEntityAttributeGroupByName(String entityAttributeGroupName, EntityPermission entityPermission) {
-        EntityAttributeGroup entityAttributeGroup = null;
+        EntityAttributeGroup entityAttributeGroup;
         
         try {
             String query = null;
@@ -4475,7 +4475,7 @@ public class CoreControl
     }
     
     private EntityAttributeGroupDescription getEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language, EntityPermission entityPermission) {
-        EntityAttributeGroupDescription entityAttributeGroupDescription = null;
+        EntityAttributeGroupDescription entityAttributeGroupDescription;
         
         try {
             String query = null;
@@ -4670,7 +4670,7 @@ public class CoreControl
     }
     
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName, EntityPermission entityPermission) {
-        EntityAttribute entityAttribute = null;
+        EntityAttribute entityAttribute;
         
         try {
             String query = null;
@@ -5053,7 +5053,7 @@ public class CoreControl
     
     private EntityAttributeDescription getEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             EntityPermission entityPermission) {
-        EntityAttributeDescription entityAttributeDescription = null;
+        EntityAttributeDescription entityAttributeDescription;
         
         try {
             String query = null;
@@ -5751,7 +5751,7 @@ public class CoreControl
     
     private EntityAttributeEntityAttributeGroup getEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, EntityPermission entityPermission) {
-        EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = null;
+        EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup;
         
         try {
             String query = null;
@@ -6007,7 +6007,7 @@ public class CoreControl
     }
 
     private EntityListItem getDefaultEntityListItem(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityListItem entityListItem = null;
+        EntityListItem entityListItem;
         
         try {
             String query = null;
@@ -6050,7 +6050,7 @@ public class CoreControl
     }
     
     public EntityListItem getEntityListItemByName(EntityAttribute entityAttribute, String entityListItemName, EntityPermission entityPermission) {
-        EntityListItem entityListItem = null;
+        EntityListItem entityListItem;
         
         try {
             String query = null;
@@ -6309,7 +6309,7 @@ public class CoreControl
     }
     
     private EntityListItemDescription getEntityListItemDescription(EntityListItem entityListItem, Language language, EntityPermission entityPermission) {
-        EntityListItemDescription entityListItemDescription = null;
+        EntityListItemDescription entityListItemDescription;
         
         try {
             String query = null;
@@ -6501,7 +6501,7 @@ public class CoreControl
     }
     
     private EntityIntegerRange getDefaultEntityIntegerRange(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityIntegerRange entityIntegerRange = null;
+        EntityIntegerRange entityIntegerRange;
         
         try {
             String query = null;
@@ -6544,7 +6544,7 @@ public class CoreControl
     }
     
     private EntityIntegerRange getEntityIntegerRangeByName(EntityAttribute entityAttribute, String entityIntegerRangeName, EntityPermission entityPermission) {
-        EntityIntegerRange entityIntegerRange = null;
+        EntityIntegerRange entityIntegerRange;
         
         try {
             String query = null;
@@ -6797,7 +6797,7 @@ public class CoreControl
     }
     
     private EntityIntegerRangeDescription getEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language, EntityPermission entityPermission) {
-        EntityIntegerRangeDescription entityIntegerRangeDescription = null;
+        EntityIntegerRangeDescription entityIntegerRangeDescription;
         
         try {
             String query = null;
@@ -6989,7 +6989,7 @@ public class CoreControl
     }
     
     private EntityLongRange getDefaultEntityLongRange(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        EntityLongRange entityLongRange = null;
+        EntityLongRange entityLongRange;
         
         try {
             String query = null;
@@ -7032,7 +7032,7 @@ public class CoreControl
     }
     
     private EntityLongRange getEntityLongRangeByName(EntityAttribute entityAttribute, String entityLongRangeName, EntityPermission entityPermission) {
-        EntityLongRange entityLongRange = null;
+        EntityLongRange entityLongRange;
         
         try {
             String query = null;
@@ -7285,7 +7285,7 @@ public class CoreControl
     }
     
     private EntityLongRangeDescription getEntityLongRangeDescription(EntityLongRange entityLongRange, Language language, EntityPermission entityPermission) {
-        EntityLongRangeDescription entityLongRangeDescription = null;
+        EntityLongRangeDescription entityLongRangeDescription;
         
         try {
             String query = null;
@@ -7454,7 +7454,7 @@ public class CoreControl
     }
     
     public Component getComponentByName(ComponentVendor componentVendor, String componentName) {
-        Component component = null;
+        Component component;
         
         try {
             PreparedStatement ps = ComponentFactory.getInstance().prepareStatement(
@@ -7488,7 +7488,7 @@ public class CoreControl
     }
     
     public ComponentVersion getComponentVersion(Component component) {
-        ComponentVersion componentVersion = null;
+        ComponentVersion componentVersion;
         
         try {
             PreparedStatement ps = ComponentVersionFactory.getInstance().prepareStatement(
@@ -7525,7 +7525,7 @@ public class CoreControl
     }
     
     public MimeTypeUsageType getMimeTypeUsageTypeByName(String mimeTypeUsageTypeName) {
-        MimeTypeUsageType mimeTypeUsageType = null;
+        MimeTypeUsageType mimeTypeUsageType;
         
         try {
             PreparedStatement ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
@@ -7604,7 +7604,7 @@ public class CoreControl
     }
     
     public MimeTypeUsageTypeDescription getMimeTypeUsageTypeDescription(MimeTypeUsageType mimeTypeUsageType, Language language) {
-        MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription = null;
+        MimeTypeUsageTypeDescription mimeTypeUsageTypeDescription;
         
         try {
             PreparedStatement ps = MimeTypeUsageTypeDescriptionFactory.getInstance().prepareStatement(
@@ -8188,7 +8188,7 @@ public class CoreControl
     }
     
     public MimeTypeUsage getMimeTypeUsage(MimeType mimeType, MimeTypeUsageType mimeTypeUsageType) {
-        MimeTypeUsage mimeTypeUsage = null;
+        MimeTypeUsage mimeTypeUsage;
         
         try {
             PreparedStatement ps = MimeTypeUsageFactory.getInstance().prepareStatement(
@@ -8256,7 +8256,7 @@ public class CoreControl
     }
     
     public MimeTypeFileExtension getDefaultMimeTypeFileExtension(MimeType mimeType) {
-        MimeTypeFileExtension mimeTypeFileExtension = null;
+        MimeTypeFileExtension mimeTypeFileExtension;
         
         try {
             PreparedStatement ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
@@ -8275,7 +8275,7 @@ public class CoreControl
     }
     
     public MimeTypeFileExtension getMimeTypeFileExtension(String fileExtension) {
-        MimeTypeFileExtension mimeTypeFileExtension = null;
+        MimeTypeFileExtension mimeTypeFileExtension;
         
         try {
             PreparedStatement ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
@@ -9830,7 +9830,7 @@ public class CoreControl
     
     private EntityBooleanAttribute getEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityBooleanAttribute entityBooleanAttribute = null;
+        EntityBooleanAttribute entityBooleanAttribute;
         
         try {
             String query = null;
@@ -9983,7 +9983,7 @@ public class CoreControl
     }
     
     private EntityDateAttribute getEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityDateAttribute entityDateAttribute = null;
+        EntityDateAttribute entityDateAttribute;
         
         try {
             String query = null;
@@ -10138,7 +10138,7 @@ public class CoreControl
     
     private EntityIntegerAttribute getEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityIntegerAttribute entityIntegerAttribute = null;
+        EntityIntegerAttribute entityIntegerAttribute;
         
         try {
             String query = null;
@@ -10292,7 +10292,7 @@ public class CoreControl
     
     private EntityListItemAttribute getEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityListItemAttribute entityListItemAttribute = null;
+        EntityListItemAttribute entityListItemAttribute;
         
         try {
             String query = null;
@@ -10466,7 +10466,7 @@ public class CoreControl
     
     private EntityLongAttribute getEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityLongAttribute entityLongAttribute = null;
+        EntityLongAttribute entityLongAttribute;
         
         try {
             String query = null;
@@ -10645,7 +10645,7 @@ public class CoreControl
     
     private EntityMultipleListItemAttribute getEntityMultipleListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, EntityPermission entityPermission) {
-        EntityMultipleListItemAttribute entityMultipleListItemAttribute = null;
+        EntityMultipleListItemAttribute entityMultipleListItemAttribute;
         
         try {
             String query = null;
@@ -10814,7 +10814,7 @@ public class CoreControl
     
     private EntityNameAttribute getEntityNameAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityNameAttribute entityNameAttribute = null;
+        EntityNameAttribute entityNameAttribute;
         
         try {
             String query = null;
@@ -10990,7 +10990,7 @@ public class CoreControl
     
     private EntityStringAttribute getEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
-        EntityStringAttribute entityStringAttribute = null;
+        EntityStringAttribute entityStringAttribute;
         
         try {
             String query = null;
@@ -11157,7 +11157,7 @@ public class CoreControl
     
     private EntityGeoPointAttribute getEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        EntityGeoPointAttribute entityGeoPointAttribute = null;
+        EntityGeoPointAttribute entityGeoPointAttribute;
         
         try {
             String query = null;
@@ -11311,7 +11311,7 @@ public class CoreControl
     }
     
     private EntityTimeAttribute getEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityTimeAttribute entityTimeAttribute = null;
+        EntityTimeAttribute entityTimeAttribute;
         
         try {
             String query = null;
@@ -11466,7 +11466,7 @@ public class CoreControl
     
     private EntityBlobAttribute getEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
-        EntityBlobAttribute entityBlobAttribute = null;
+        EntityBlobAttribute entityBlobAttribute;
         
         try {
             String query = null;
@@ -11635,7 +11635,7 @@ public class CoreControl
     
     private EntityClobAttribute getEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
-        EntityClobAttribute entityClobAttribute = null;
+        EntityClobAttribute entityClobAttribute;
         
         try {
             String query = null;
@@ -11978,7 +11978,7 @@ public class CoreControl
     }
     
     private EntityEntityAttribute getEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityEntityAttribute entityEntityAttribute = null;
+        EntityEntityAttribute entityEntityAttribute;
         
         try {
             String query = null;
@@ -12183,7 +12183,7 @@ public class CoreControl
     
     private EntityCollectionAttribute getEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, EntityPermission entityPermission) {
-        EntityCollectionAttribute entityCollectionAttribute = null;
+        EntityCollectionAttribute entityCollectionAttribute;
         
         try {
             String query = null;
@@ -12454,7 +12454,7 @@ public class CoreControl
     }
     
     private BaseEncryptionKey getBaseEncryptionKeyByName(String baseEncryptionKeyName, EntityPermission entityPermission) {
-        BaseEncryptionKey baseEncryptionKey = null;
+        BaseEncryptionKey baseEncryptionKey;
         
         try {
             String query = null;
@@ -12491,7 +12491,7 @@ public class CoreControl
     }
     
     private BaseEncryptionKey getBaseEncryptionKeyBySha1Hash(String sha1Hash, EntityPermission entityPermission) {
-        BaseEncryptionKey baseEncryptionKey = null;
+        BaseEncryptionKey baseEncryptionKey;
         
         try {
             String query = null;
@@ -12591,7 +12591,7 @@ public class CoreControl
     }
     
     private EntityEncryptionKey getEntityEncryptionKeyByName(String entityEncryptionKeyName, EntityPermission entityPermission) {
-        EntityEncryptionKey entityEncryptionKey = null;
+        EntityEncryptionKey entityEncryptionKey;
         
         try {
             String query = null;
@@ -12676,7 +12676,7 @@ public class CoreControl
     }
     
     private EventSubscriber getEventSubscriberByName(String eventSubscriberName, EntityPermission entityPermission) {
-        EventSubscriber eventSubscriber = null;
+        EventSubscriber eventSubscriber;
         
         try {
             String query = null;
@@ -13173,7 +13173,7 @@ public class CoreControl
     }
 
     private PartyEntityType getPartyEntityType(Party party, EntityType entityType, EntityPermission entityPermission) {
-        PartyEntityType partyEntityType = null;
+        PartyEntityType partyEntityType;
         
         try {
             String query = null;

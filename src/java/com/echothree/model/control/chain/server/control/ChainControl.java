@@ -2667,7 +2667,7 @@ public class ChainControl
     }
     
     public ChainActionTypeUse getChainActionTypeUse(ChainKind chainKind, ChainActionType chainActionType) {
-        ChainActionTypeUse chainActionTypeUse = null;
+        ChainActionTypeUse chainActionTypeUse;
         
         try {
             PreparedStatement ps = ChainActionTypeUseFactory.getInstance().prepareStatement(
@@ -3292,7 +3292,7 @@ public class ChainControl
     }
 
     private ChainInstance getChainInstanceByName(String chainInstanceName, EntityPermission entityPermission) {
-        ChainInstance chainInstance = null;
+        ChainInstance chainInstance;
         
         try {
             String query = null;
@@ -3608,7 +3608,7 @@ public class ChainControl
     
     public ChainInstanceEntityRole getChainInstanceEntityRole(ChainInstance chainInstance,
             ChainEntityRoleType chainEntityRoleType) {
-        ChainInstanceEntityRole chainInstanceEntityRole = null;
+        ChainInstanceEntityRole chainInstanceEntityRole;
         
         try {
             PreparedStatement ps = ChainInstanceEntityRoleFactory.getInstance().prepareStatement(

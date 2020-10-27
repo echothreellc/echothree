@@ -166,7 +166,7 @@ public class InventoryControl
     }
     
     private InventoryLocationGroup getInventoryLocationGroupByName(Party warehouseParty, String inventoryLocationGroupName, EntityPermission entityPermission) {
-        InventoryLocationGroup inventoryLocationGroup = null;
+        InventoryLocationGroup inventoryLocationGroup;
         
         try {
             String query = null;
@@ -217,7 +217,7 @@ public class InventoryControl
     }
     
     private InventoryLocationGroup getDefaultInventoryLocationGroup(Party warehouseParty, EntityPermission entityPermission) {
-        InventoryLocationGroup inventoryLocationGroup = null;
+        InventoryLocationGroup inventoryLocationGroup;
         
         try {
             String query = null;
@@ -494,7 +494,7 @@ public class InventoryControl
     }
     
     private InventoryLocationGroupDescription getInventoryLocationGroupDescription(InventoryLocationGroup inventoryLocationGroup, Language language, EntityPermission entityPermission) {
-        InventoryLocationGroupDescription inventoryLocationGroupDescription = null;
+        InventoryLocationGroupDescription inventoryLocationGroupDescription;
         
         try {
             String query = null;
@@ -663,7 +663,7 @@ public class InventoryControl
     }
     
     private InventoryLocationGroupVolume getInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
-        InventoryLocationGroupVolume inventoryLocationGroupVolume = null;
+        InventoryLocationGroupVolume inventoryLocationGroupVolume;
         
         try {
             String query = null;
@@ -810,7 +810,7 @@ public class InventoryControl
     }
     
     private InventoryLocationGroupCapacity getInventoryLocationGroupCapacity(InventoryLocationGroup inventoryInventoryLocationGroupGroup, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        InventoryLocationGroupCapacity inventoryInventoryLocationGroupGroupCapacity = null;
+        InventoryLocationGroupCapacity inventoryInventoryLocationGroupGroupCapacity;
         
         try {
             String query = null;
@@ -1379,7 +1379,7 @@ public class InventoryControl
     }
     
     public InventoryConditionUseType getInventoryConditionUseTypeByName(String inventoryConditionUseTypeName) {
-        InventoryConditionUseType inventoryConditionUseType = null;
+        InventoryConditionUseType inventoryConditionUseType;
         
         try {
             PreparedStatement ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
@@ -1457,7 +1457,7 @@ public class InventoryControl
     }
     
     public InventoryConditionUseTypeDescription getInventoryConditionUseTypeDescription(InventoryConditionUseType inventoryConditionUseType, Language language) {
-        InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription = null;
+        InventoryConditionUseTypeDescription inventoryConditionUseTypeDescription;
         
         try {
             PreparedStatement ps = InventoryConditionUseTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1522,7 +1522,7 @@ public class InventoryControl
     
     private InventoryConditionUse getInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        InventoryConditionUse inventoryConditionUse = null;
+        InventoryConditionUse inventoryConditionUse;
         
         try {
             String query = null;
@@ -1570,7 +1570,7 @@ public class InventoryControl
     
     private InventoryConditionUse getDefaultInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             EntityPermission entityPermission) {
-        InventoryConditionUse inventoryConditionUse = null;
+        InventoryConditionUse inventoryConditionUse;
         
         try {
             String query = null;
@@ -1830,7 +1830,7 @@ public class InventoryControl
     
     private InventoryConditionGlAccount getInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
-        InventoryConditionGlAccount inventoryConditionGlAccount = null;
+        InventoryConditionGlAccount inventoryConditionGlAccount;
         
         try {
             String query = null;
@@ -2043,7 +2043,7 @@ public class InventoryControl
     
     private PartyInventoryLevel getPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition,
             EntityPermission entityPermission) {
-        PartyInventoryLevel partyInventoryLevel = null;
+        PartyInventoryLevel partyInventoryLevel;
         
         try {
             String query = null;

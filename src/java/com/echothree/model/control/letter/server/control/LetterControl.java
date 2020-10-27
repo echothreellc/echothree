@@ -145,7 +145,7 @@ public class LetterControl
     }
     
     private LetterSource getLetterSourceByName(String letterSourceName, EntityPermission entityPermission) {
-        LetterSource letterSource = null;
+        LetterSource letterSource;
         
         try {
             String query = null;
@@ -530,7 +530,7 @@ public class LetterControl
     }
     
     private LetterSourceDescription getLetterSourceDescription(LetterSource letterSource, Language language, EntityPermission entityPermission) {
-        LetterSourceDescription letterSourceDescription = null;
+        LetterSourceDescription letterSourceDescription;
         
         try {
             String query = null;
@@ -722,7 +722,7 @@ public class LetterControl
     }
     
     private Letter getLetterByName(ChainType chainType, String letterName, EntityPermission entityPermission) {
-        Letter letter = null;
+        Letter letter;
         
         try {
             String query = null;
@@ -768,7 +768,7 @@ public class LetterControl
     }
     
     private Letter getDefaultLetter(ChainType chainType, EntityPermission entityPermission) {
-        Letter letter = null;
+        Letter letter;
         
         try {
             String query = null;
@@ -1084,7 +1084,7 @@ public class LetterControl
     }
     
     private LetterDescription getLetterDescription(Letter letter, Language language, EntityPermission entityPermission) {
-        LetterDescription letterDescription = null;
+        LetterDescription letterDescription;
         
         try {
             String query = null;
@@ -1267,7 +1267,7 @@ public class LetterControl
     
     private LetterContactMechanismPurpose getLetterContactMechanismPurpose(Letter letter, Integer priority,
             EntityPermission entityPermission) {
-        LetterContactMechanismPurpose letterContactMechanismPurpose = null;
+        LetterContactMechanismPurpose letterContactMechanismPurpose;
         
         try {
             String query = null;

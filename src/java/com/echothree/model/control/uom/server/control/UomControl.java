@@ -247,7 +247,7 @@ public class UomControl
     }
     
     private UnitOfMeasureKind getUnitOfMeasureKindByName(String unitOfMeasureKindName, EntityPermission entityPermission) {
-        UnitOfMeasureKind unitOfMeasureKind = null;
+        UnitOfMeasureKind unitOfMeasureKind;
         
         try {
             String query = null;
@@ -494,7 +494,7 @@ public class UomControl
     }
     
     private UnitOfMeasureKindDescription getUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, EntityPermission entityPermission) {
-        UnitOfMeasureKindDescription unitOfMeasureKindDescription = null;
+        UnitOfMeasureKindDescription unitOfMeasureKindDescription;
         
         try {
             String query = null;
@@ -747,7 +747,7 @@ public class UomControl
     }
     
     private UnitOfMeasureType getDefaultUnitOfMeasureType(UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        UnitOfMeasureType unitOfMeasureType = null;
+        UnitOfMeasureType unitOfMeasureType;
         
         try {
             String query = null;
@@ -791,7 +791,7 @@ public class UomControl
     
     private UnitOfMeasureType getUnitOfMeasureTypeByName(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName,
             EntityPermission entityPermission) {
-        UnitOfMeasureType unitOfMeasureType = null;
+        UnitOfMeasureType unitOfMeasureType;
         
         try {
             String query = null;
@@ -1005,7 +1005,7 @@ public class UomControl
     }
     
     private UnitOfMeasureTypeDescription getUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language, EntityPermission entityPermission) {
-        UnitOfMeasureTypeDescription unitOfMeasureTypeDescription = null;
+        UnitOfMeasureTypeDescription unitOfMeasureTypeDescription;
         
         try {
             String query = null;
@@ -1214,7 +1214,7 @@ public class UomControl
     }
     
     private UnitOfMeasureTypeVolume getUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        UnitOfMeasureTypeVolume unitOfMeasureTypeVolume = null;
+        UnitOfMeasureTypeVolume unitOfMeasureTypeVolume;
         
         try {
             String query = null;
@@ -1312,7 +1312,7 @@ public class UomControl
     }
     
     private UnitOfMeasureTypeWeight getUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        UnitOfMeasureTypeWeight unitOfMeasureTypeWeight = null;
+        UnitOfMeasureTypeWeight unitOfMeasureTypeWeight;
         
         try {
             String query = null;
@@ -1410,7 +1410,7 @@ public class UomControl
     
     private UnitOfMeasureEquivalent getUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, EntityPermission entityPermission) {
-        UnitOfMeasureEquivalent unitOfMeasureEquivalent = null;
+        UnitOfMeasureEquivalent unitOfMeasureEquivalent;
         
         try {
             String query = null;
@@ -1708,7 +1708,7 @@ public class UomControl
     }
     
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByName(String unitOfMeasureKindUseTypeName) {
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = null;
+        UnitOfMeasureKindUseType unitOfMeasureKindUseType;
         
         try {
             PreparedStatement ps = UnitOfMeasureKindUseTypeFactory.getInstance().prepareStatement(
@@ -1787,7 +1787,7 @@ public class UomControl
     }
     
     public UnitOfMeasureKindUseTypeDescription getUnitOfMeasureKindUseTypeDescription(UnitOfMeasureKindUseType unitOfMeasureKindUseType, Language language) {
-        UnitOfMeasureKindUseTypeDescription unitOfMeasureKindUseTypeDescription = null;
+        UnitOfMeasureKindUseTypeDescription unitOfMeasureKindUseTypeDescription;
         
         try {
             PreparedStatement ps = UnitOfMeasureKindUseTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1883,7 +1883,7 @@ public class UomControl
     
     private UnitOfMeasureKindUse getUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse = null;
+        UnitOfMeasureKindUse unitOfMeasureKindUse;
         
         try {
             String query = null;
@@ -1931,7 +1931,7 @@ public class UomControl
     
     private UnitOfMeasureKindUse getDefaultUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             EntityPermission entityPermission) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse = null;
+        UnitOfMeasureKindUse unitOfMeasureKindUse;
         
         try {
             String query = null;

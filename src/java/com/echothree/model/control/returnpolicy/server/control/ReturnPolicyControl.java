@@ -802,7 +802,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnPolicy getDefaultReturnPolicy(ReturnKind returnKind, EntityPermission entityPermission) {
-        ReturnPolicy returnPolicy = null;
+        ReturnPolicy returnPolicy;
         
         try {
             String query = null;
@@ -845,7 +845,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnPolicy getReturnPolicyByName(ReturnKind returnKind, String returnPolicyName, EntityPermission entityPermission) {
-        ReturnPolicy returnPolicy = null;
+        ReturnPolicy returnPolicy;
         
         try {
             String query = null;
@@ -1204,7 +1204,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnPolicyReason getReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason, EntityPermission entityPermission) {
-        ReturnPolicyReason returnPolicyReason = null;
+        ReturnPolicyReason returnPolicyReason;
         
         try {
             String query = null;
@@ -1249,7 +1249,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnPolicyReason getDefaultReturnPolicyReason(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        ReturnPolicyReason returnPolicyReason = null;
+        ReturnPolicyReason returnPolicyReason;
         
         try {
             String query = null;
@@ -1549,7 +1549,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnReason getDefaultReturnReason(ReturnKind returnKind, EntityPermission entityPermission) {
-        ReturnReason returnReason = null;
+        ReturnReason returnReason;
         
         try {
             String query = null;
@@ -1592,7 +1592,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnReason getReturnReasonByName(ReturnKind returnKind, String returnReasonName, EntityPermission entityPermission) {
-        ReturnReason returnReason = null;
+        ReturnReason returnReason;
         
         try {
             String query = null;
@@ -1790,7 +1790,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnReasonDescription getReturnReasonDescription(ReturnReason returnReason, Language language, EntityPermission entityPermission) {
-        ReturnReasonDescription returnReasonDescription = null;
+        ReturnReasonDescription returnReasonDescription;
         
         try {
             String query = null;
@@ -1968,7 +1968,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnReasonType getReturnReasonType(ReturnReason returnReason, ReturnType returnType, EntityPermission entityPermission) {
-        ReturnReasonType returnReasonType = null;
+        ReturnReasonType returnReasonType;
         
         try {
             String query = null;
@@ -2013,7 +2013,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnReasonType getDefaultReturnReasonType(ReturnReason returnReason, EntityPermission entityPermission) {
-        ReturnReasonType returnReasonType = null;
+        ReturnReasonType returnReasonType;
         
         try {
             String query = null;
@@ -2695,7 +2695,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnTypeShippingMethod getReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        ReturnTypeShippingMethod returnTypeShippingMethod = null;
+        ReturnTypeShippingMethod returnTypeShippingMethod;
         
         try {
             String query = null;
@@ -2740,7 +2740,7 @@ public class ReturnPolicyControl
     }
     
     private ReturnTypeShippingMethod getDefaultReturnTypeShippingMethod(ReturnType returnType, EntityPermission entityPermission) {
-        ReturnTypeShippingMethod returnTypeShippingMethod = null;
+        ReturnTypeShippingMethod returnTypeShippingMethod;
         
         try {
             String query = null;
