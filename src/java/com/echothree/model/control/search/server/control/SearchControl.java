@@ -257,7 +257,7 @@ public class SearchControl
     //   Search Transfer Caches
     // --------------------------------------------------------------------------------
 
-    private SearchTransferCaches searchTransferCaches = null;
+    private SearchTransferCaches searchTransferCaches;
 
     public SearchTransferCaches getSearchTransferCaches(UserVisit userVisit) {
         if(searchTransferCaches == null) {

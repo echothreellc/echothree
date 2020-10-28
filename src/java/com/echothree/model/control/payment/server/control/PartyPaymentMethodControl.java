@@ -469,7 +469,7 @@ public class PartyPaymentMethodControl
 
     private PartyPaymentMethodCreditCard getPartyPaymentMethodCreditCard(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
-        PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = null;
+        PartyPaymentMethodCreditCard partyPaymentMethodCreditCard;
         
         try {
             String query = null;
@@ -698,7 +698,7 @@ public class PartyPaymentMethodControl
     
     private PartyPaymentMethodCreditCardSecurityCode getPartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
-        PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = null;
+        PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode;
         
         try {
             String query = null;
@@ -808,7 +808,7 @@ public class PartyPaymentMethodControl
     
     private PartyPaymentMethodContactMechanism getPartyPaymentMethodContactMechanism(PartyPaymentMethod partyPaymentMethod,
             PartyContactMechanismPurpose partyContactMechanismPurpose, EntityPermission entityPermission) {
-        PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism = null;
+        PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism;
         
         try {
             String query = null;

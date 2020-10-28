@@ -116,7 +116,7 @@ public class WarehouseControl
     //   Warehouse Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WarehouseTransferCaches warehouseTransferCaches = null;
+    private WarehouseTransferCaches warehouseTransferCaches;
     
     public WarehouseTransferCaches getWarehouseTransferCaches(UserVisit userVisit) {
         if(warehouseTransferCaches == null) {
@@ -152,7 +152,7 @@ public class WarehouseControl
     }
     
     private Warehouse getWarehouse(Party party, EntityPermission entityPermission) {
-        Warehouse warehouse = null;
+        Warehouse warehouse;
         
         try {
             String query = null;
@@ -194,7 +194,7 @@ public class WarehouseControl
     }
     
     private Warehouse getWarehouseByName(String warehouseName, EntityPermission entityPermission) {
-        Warehouse warehouse = null;
+        Warehouse warehouse;
         
         try {
             String query = null;
@@ -232,7 +232,7 @@ public class WarehouseControl
     }
     
     private Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
-        Warehouse warehouse = null;
+        Warehouse warehouse;
         
         try {
             String query = null;
@@ -464,7 +464,7 @@ public class WarehouseControl
     }
     
     public LocationUseType getLocationUseTypeByName(String locationUseTypeName) {
-        LocationUseType locationUseType = null;
+        LocationUseType locationUseType;
         
         try {
             PreparedStatement ps = LocationUseTypeFactory.getInstance().prepareStatement(
@@ -527,7 +527,7 @@ public class WarehouseControl
     }
     
     public LocationUseTypeDescription getLocationUseTypeDescription(LocationUseType locationUseType, Language language) {
-        LocationUseTypeDescription locationUseTypeDescription = null;
+        LocationUseTypeDescription locationUseTypeDescription;
         
         try {
             PreparedStatement ps = LocationUseTypeDescriptionFactory.getInstance().prepareStatement(
@@ -585,7 +585,7 @@ public class WarehouseControl
     }
     
     private LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
-        LocationType locationType = null;
+        LocationType locationType;
         
         try {
             String query = null;
@@ -634,7 +634,7 @@ public class WarehouseControl
     }
     
     private LocationType getDefaultLocationType(Party warehouseParty, EntityPermission entityPermission) {
-        LocationType locationType = null;
+        LocationType locationType;
         
         try {
             String query = null;
@@ -880,7 +880,7 @@ public class WarehouseControl
     }
     
     private LocationTypeDescription getLocationTypeDescription(LocationType locationType, Language language, EntityPermission entityPermission) {
-        LocationTypeDescription locationTypeDescription = null;
+        LocationTypeDescription locationTypeDescription;
         
         try {
             String query = null;
@@ -1058,7 +1058,7 @@ public class WarehouseControl
     }
     
     private LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName, EntityPermission entityPermission) {
-        LocationNameElement locationNameElement = null;
+        LocationNameElement locationNameElement;
         
         try {
             String query = null;
@@ -1236,7 +1236,7 @@ public class WarehouseControl
     
     private LocationNameElementDescription getLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             EntityPermission entityPermission) {
-        LocationNameElementDescription locationNameElementDescription = null;
+        LocationNameElementDescription locationNameElementDescription;
         
         try {
             String query = null;
@@ -1412,7 +1412,7 @@ public class WarehouseControl
     }
     
     private Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
-        Location location = null;
+        Location location;
         
         try {
             String query = null;
@@ -1739,7 +1739,7 @@ public class WarehouseControl
     }
     
     private LocationDescription getLocationDescription(Location location, Language language, EntityPermission entityPermission) {
-        LocationDescription locationDescription = null;
+        LocationDescription locationDescription;
         
         try {
             String query = null;
@@ -1907,7 +1907,7 @@ public class WarehouseControl
     }
     
     private LocationVolume getLocationVolume(Location location, EntityPermission entityPermission) {
-        LocationVolume locationVolume = null;
+        LocationVolume locationVolume;
         
         try {
             String query = null;
@@ -2054,7 +2054,7 @@ public class WarehouseControl
     }
     
     private LocationCapacity getLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        LocationCapacity locationCapacity = null;
+        LocationCapacity locationCapacity;
         
         try {
             String query = null;

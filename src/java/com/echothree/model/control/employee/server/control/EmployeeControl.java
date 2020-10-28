@@ -196,7 +196,7 @@ public class EmployeeControl
     //   Employee Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private EmployeeTransferCaches employeeTransferCaches = null;
+    private EmployeeTransferCaches employeeTransferCaches;
     
     public EmployeeTransferCaches getEmployeeTransferCaches(UserVisit userVisit) {
         if(employeeTransferCaches == null) {
@@ -239,7 +239,7 @@ public class EmployeeControl
     }
     
     private ResponsibilityType getResponsibilityTypeByName(String responsibilityTypeName, EntityPermission entityPermission) {
-        ResponsibilityType responsibilityType = null;
+        ResponsibilityType responsibilityType;
         
         try {
             String query = null;
@@ -483,7 +483,7 @@ public class EmployeeControl
     
     private ResponsibilityTypeDescription getResponsibilityTypeDescription(ResponsibilityType responsibilityType,
             Language language, EntityPermission entityPermission) {
-        ResponsibilityTypeDescription responsibilityTypeDescription = null;
+        ResponsibilityTypeDescription responsibilityTypeDescription;
         
         try {
             String query = null;
@@ -667,7 +667,7 @@ public class EmployeeControl
     }
     
     private SkillType getSkillTypeByName(String skillTypeName, EntityPermission entityPermission) {
-        SkillType skillType = null;
+        SkillType skillType;
         
         try {
             String query = null;
@@ -910,7 +910,7 @@ public class EmployeeControl
     
     private SkillTypeDescription getSkillTypeDescription(SkillType skillType,
             Language language, EntityPermission entityPermission) {
-        SkillTypeDescription skillTypeDescription = null;
+        SkillTypeDescription skillTypeDescription;
         
         try {
             String query = null;
@@ -2274,7 +2274,7 @@ public class EmployeeControl
     }
     
     private TerminationReason getTerminationReasonByName(String terminationReasonName, EntityPermission entityPermission) {
-        TerminationReason terminationReason = null;
+        TerminationReason terminationReason;
         
         try {
             String query = null;
@@ -2518,7 +2518,7 @@ public class EmployeeControl
     
     private TerminationReasonDescription getTerminationReasonDescription(TerminationReason terminationReason,
             Language language, EntityPermission entityPermission) {
-        TerminationReasonDescription terminationReasonDescription = null;
+        TerminationReasonDescription terminationReasonDescription;
         
         try {
             String query = null;
@@ -2702,7 +2702,7 @@ public class EmployeeControl
     }
     
     private TerminationType getTerminationTypeByName(String terminationTypeName, EntityPermission entityPermission) {
-        TerminationType terminationType = null;
+        TerminationType terminationType;
         
         try {
             String query = null;
@@ -2946,7 +2946,7 @@ public class EmployeeControl
     
     private TerminationTypeDescription getTerminationTypeDescription(TerminationType terminationType,
             Language language, EntityPermission entityPermission) {
-        TerminationTypeDescription terminationTypeDescription = null;
+        TerminationTypeDescription terminationTypeDescription;
         
         try {
             String query = null;
@@ -3500,7 +3500,7 @@ public class EmployeeControl
     }
     
     private EmployeeType getEmployeeTypeByName(String employeeTypeName, EntityPermission entityPermission) {
-        EmployeeType employeeType = null;
+        EmployeeType employeeType;
         
         try {
             String query = null;
@@ -3689,7 +3689,7 @@ public class EmployeeControl
     }
     
     private EmployeeTypeDescription getEmployeeTypeDescription(EmployeeType employeeType, Language language, EntityPermission entityPermission) {
-        EmployeeTypeDescription employeeTypeDescription = null;
+        EmployeeTypeDescription employeeTypeDescription;
         
         try {
             String query = null;
@@ -3881,7 +3881,7 @@ public class EmployeeControl
     }
     
     private PartyEmployee getPartyEmployee(Party party, EntityPermission entityPermission) {
-        PartyEmployee partyEmployee = null;
+        PartyEmployee partyEmployee;
         
         try {
             String query = null;
@@ -3919,7 +3919,7 @@ public class EmployeeControl
     }
     
     public PartyEmployee getPartyEmployeeByName(String partyEmployeeName, EntityPermission entityPermission) {
-        PartyEmployee partyEmployee = null;
+        PartyEmployee partyEmployee;
         
         try {
             PreparedStatement ps = PartyEmployeeFactory.getInstance().prepareStatement(
@@ -4092,7 +4092,7 @@ public class EmployeeControl
     }
     
     private PartyResponsibility getPartyResponsibility(Party party, ResponsibilityType responsibilityType, EntityPermission entityPermission) {
-        PartyResponsibility partyResponsibility = null;
+        PartyResponsibility partyResponsibility;
         
         try {
             String query = null;
@@ -4283,7 +4283,7 @@ public class EmployeeControl
     }
     
     private PartySkill getPartySkill(Party party, SkillType skillType, EntityPermission entityPermission) {
-        PartySkill partySkill = null;
+        PartySkill partySkill;
         
         try {
             String query = null;

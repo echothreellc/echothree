@@ -70,7 +70,7 @@ public class IconControl
     //   Icon Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private IconTransferCaches iconTransferCaches = null;
+    private IconTransferCaches iconTransferCaches;
     
     public IconTransferCaches getIconTransferCaches(UserVisit userVisit) {
         if(iconTransferCaches == null) {
@@ -129,7 +129,7 @@ public class IconControl
     }
     
     private Icon getIconByName(String iconName, EntityPermission entityPermission) {
-        Icon icon = null;
+        Icon icon;
         
         try {
             String query = null;
@@ -257,7 +257,7 @@ public class IconControl
     }
     
     private IconUsageType getIconUsageTypeByName(String iconUsageTypeName, EntityPermission entityPermission) {
-        IconUsageType iconUsageType = null;
+        IconUsageType iconUsageType;
         
         try {
             String query = null;
@@ -496,7 +496,7 @@ public class IconControl
     }
     
     private IconUsageTypeDescription getIconUsageTypeDescription(IconUsageType iconUsageType, Language language, EntityPermission entityPermission) {
-        IconUsageTypeDescription iconUsageTypeDescription = null;
+        IconUsageTypeDescription iconUsageTypeDescription;
         
         try {
             String query = null;
@@ -674,7 +674,7 @@ public class IconControl
     }
     
     private IconUsage getIconUsage(IconUsageType iconUsageType, Icon icon, EntityPermission entityPermission) {
-        IconUsage iconUsage = null;
+        IconUsage iconUsage;
         
         try {
             String query = null;
@@ -719,7 +719,7 @@ public class IconControl
     }
     
     private IconUsage getDefaultIconUsage(IconUsageType iconUsageType, EntityPermission entityPermission) {
-        IconUsage iconUsage = null;
+        IconUsage iconUsage;
         
         try {
             String query = null;

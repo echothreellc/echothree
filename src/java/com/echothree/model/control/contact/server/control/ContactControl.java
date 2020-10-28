@@ -207,7 +207,7 @@ public class ContactControl
     //   Contact Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ContactTransferCaches contactTransferCaches = null;
+    private ContactTransferCaches contactTransferCaches;
     
     public ContactTransferCaches getContactTransferCaches(UserVisit userVisit) {
         if(contactTransferCaches == null) {
@@ -228,7 +228,7 @@ public class ContactControl
     }
     
     public ContactMechanismType getContactMechanismTypeByName(String contactMechanismTypeName) {
-        ContactMechanismType contactMechanismType = null;
+        ContactMechanismType contactMechanismType;
         
         try {
             PreparedStatement ps = ContactMechanismTypeFactory.getInstance().prepareStatement(
@@ -310,7 +310,7 @@ public class ContactControl
     
     public ContactMechanismTypeDescription getContactMechanismTypeDescription(ContactMechanismType contactMechanismType,
             Language language) {
-        ContactMechanismTypeDescription contactMechanismTypeDescription = null;
+        ContactMechanismTypeDescription contactMechanismTypeDescription;
         
         try {
             PreparedStatement ps = ContactMechanismTypeDescriptionFactory.getInstance().prepareStatement(
@@ -821,7 +821,7 @@ public class ContactControl
     }
     
     public ContactMechanismPurpose getContactMechanismPurposeByName(String contactMechanismPurposeName) {
-        ContactMechanismPurpose contactMechanismPurpose = null;
+        ContactMechanismPurpose contactMechanismPurpose;
         
         try {
             PreparedStatement ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
@@ -1001,7 +1001,7 @@ public class ContactControl
     
     public ContactMechanismPurposeDescription getContactMechanismPurposeDescription(ContactMechanismPurpose contactMechanismPurpose,
             Language language) {
-        ContactMechanismPurposeDescription contactMechanismPurposeDescription = null;
+        ContactMechanismPurposeDescription contactMechanismPurposeDescription;
         
         try {
             PreparedStatement ps = ContactMechanismPurposeDescriptionFactory.getInstance().prepareStatement(
@@ -1075,7 +1075,7 @@ public class ContactControl
     }
 
     public ContactMechanism getContactMechanismByName(String contactMechanismName, EntityPermission entityPermission) {
-        ContactMechanism contactMechanism = null;
+        ContactMechanism contactMechanism;
         
         try {
             String query = null;
@@ -1426,7 +1426,7 @@ public class ContactControl
 
     private ContactMechanismAlias getContactMechanismAliasByAlias(ContactMechanismAliasType contactMechanismAliasType,
             String alias, EntityPermission entityPermission) {
-        ContactMechanismAlias contactMechanismAlias = null;
+        ContactMechanismAlias contactMechanismAlias;
         
         try {
             String query = null;
@@ -1516,7 +1516,7 @@ public class ContactControl
     }
     
     private ContactEmailAddress getContactEmailAddress(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactEmailAddress contactEmailAddress = null;
+        ContactEmailAddress contactEmailAddress;
         
         try {
             String query = null;
@@ -1602,7 +1602,7 @@ public class ContactControl
     }
     
     private ContactInet4Address getContactInet4Address(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactInet4Address contactInet4Address = null;
+        ContactInet4Address contactInet4Address;
         
         try {
             String query = null;
@@ -1689,7 +1689,7 @@ public class ContactControl
     }
     
     private ContactInet6Address getContactInet6Address(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactInet6Address contactInet6Address = null;
+        ContactInet6Address contactInet6Address;
         
         try {
             String query = null;
@@ -1834,7 +1834,7 @@ public class ContactControl
     }
 
     private ContactPostalAddress getContactPostalAddress(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactPostalAddress contactPostalAddress = null;
+        ContactPostalAddress contactPostalAddress;
         
         try {
             String query = null;
@@ -1986,7 +1986,7 @@ public class ContactControl
     }
 
     private ContactPostalAddressCorrection getContactPostalAddressCorrection(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactPostalAddressCorrection contactPostalAddressCorrection = null;
+        ContactPostalAddressCorrection contactPostalAddressCorrection;
         
         try {
             String query = null;
@@ -2092,7 +2092,7 @@ public class ContactControl
     }
 
     private ContactTelephone getContactTelephone(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactTelephone contactTelephone = null;
+        ContactTelephone contactTelephone;
         
         try {
             String query = null;
@@ -2181,7 +2181,7 @@ public class ContactControl
     }
     
     private ContactWebAddress getContactWebAddress(ContactMechanism contactMechanism, EntityPermission entityPermission) {
-        ContactWebAddress contactWebAddress = null;
+        ContactWebAddress contactWebAddress;
         
         try {
             String query = null;
@@ -2288,7 +2288,7 @@ public class ContactControl
     }
     
     private PartyContactMechanism getDefaultPartyContactMechanism(Party party, EntityPermission entityPermission) {
-        PartyContactMechanism partyContactMechanism = null;
+        PartyContactMechanism partyContactMechanism;
         
         try {
             String query = null;
@@ -2330,7 +2330,7 @@ public class ContactControl
     
     public PartyContactMechanism getPartyContactMechanism(Party party, ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        PartyContactMechanism partyContactMechanism = null;
+        PartyContactMechanism partyContactMechanism;
         
         try {
             String query = null;
@@ -2712,7 +2712,7 @@ public class ContactControl
     // --------------------------------------------------------------------------------
     
     public PartyContactMechanism getPartyContactMechanismByInet4Address(Party party, Integer inet4Address) {
-        PartyContactMechanism partyContactMechanism = null;
+        PartyContactMechanism partyContactMechanism;
         
         try {
             PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(
@@ -2736,7 +2736,7 @@ public class ContactControl
     }
     
     public PartyContactMechanism getPartyContactMechanismByEmailAddress(Party party, String emailAddress) {
-        PartyContactMechanism partyContactMechanism = null;
+        PartyContactMechanism partyContactMechanism;
         
         try {
             PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(
@@ -2882,7 +2882,7 @@ public class ContactControl
     
     private PartyContactMechanismAlias getPartyContactMechanismAliasByAlias(Party party,
             ContactMechanismAliasType contactMechanismAliasType, String alias, EntityPermission entityPermission) {
-        PartyContactMechanismAlias partyContactMechanismAlias = null;
+        PartyContactMechanismAlias partyContactMechanismAlias;
         
         try {
             String query = null;
@@ -2988,7 +2988,7 @@ public class ContactControl
     }
     
     private PartyContactMechanismPurpose getDefaultPartyContactMechanismPurpose(PartyPK partyPK, ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        PartyContactMechanismPurpose partyContactMechanismPurpose = null;
+        PartyContactMechanismPurpose partyContactMechanismPurpose;
         
         try {
             String query = null;
@@ -3054,7 +3054,7 @@ public class ContactControl
     
     private PartyContactMechanismPurpose getPartyContactMechanismPurpose(PartyContactMechanism partyContactMechanism,
             ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        PartyContactMechanismPurpose partyContactMechanismPurpose = null;
+        PartyContactMechanismPurpose partyContactMechanismPurpose;
         
         try {
             String query = null;
@@ -3477,7 +3477,7 @@ public class ContactControl
     }
     
     public PostalAddressElementType getPostalAddressElementTypeByName(String postalAddressElementTypeName) {
-        PostalAddressElementType postalAddressElementType = null;
+        PostalAddressElementType postalAddressElementType;
         
         try {
             PreparedStatement ps = PostalAddressElementTypeFactory.getInstance().prepareStatement(
@@ -3678,7 +3678,7 @@ public class ContactControl
     }
     
     private PostalAddressFormat getPostalAddressFormatByName(String postalAddressFormatName, EntityPermission entityPermission) {
-        PostalAddressFormat postalAddressFormat = null;
+        PostalAddressFormat postalAddressFormat;
         
         try {
             String query = null;
@@ -3861,7 +3861,7 @@ public class ContactControl
     }
     
     private PostalAddressFormatDescription getPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat, Language language, EntityPermission entityPermission) {
-        PostalAddressFormatDescription postalAddressFormatDescription = null;
+        PostalAddressFormatDescription postalAddressFormatDescription;
         
         try {
             String query = null;
@@ -4038,7 +4038,7 @@ public class ContactControl
     
     private PostalAddressLine getPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
             EntityPermission entityPermission) {
-        PostalAddressLine postalAddressLine = null;
+        PostalAddressLine postalAddressLine;
         
         try {
             String query = null;
@@ -4209,7 +4209,7 @@ public class ContactControl
     
     private PostalAddressLineElement getPostalAddressLineElement(PostalAddressLine postalAddressLine,
             Integer postalAddressLineElementSortOrder, EntityPermission entityPermission) {
-        PostalAddressLineElement postalAddressLineElement = null;
+        PostalAddressLineElement postalAddressLineElement;
         
         try {
             PreparedStatement ps = PostalAddressLineElementFactory.getInstance().prepareStatement(

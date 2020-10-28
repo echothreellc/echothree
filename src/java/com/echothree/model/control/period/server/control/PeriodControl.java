@@ -93,7 +93,7 @@ public class PeriodControl
     //   Period Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PeriodTransferCaches periodTransferCaches = null;
+    private PeriodTransferCaches periodTransferCaches;
     
     public PeriodTransferCaches getPeriodTransferCaches(UserVisit userVisit) {
         if(periodTransferCaches == null) {
@@ -137,7 +137,7 @@ public class PeriodControl
     }
     
     private PeriodKind getPeriodKindByName(String periodKindName, EntityPermission entityPermission) {
-        PeriodKind periodKind = null;
+        PeriodKind periodKind;
         
         try {
             String query = null;
@@ -377,7 +377,7 @@ public class PeriodControl
     }
     
     private PeriodKindDescription getPeriodKindDescription(PeriodKind periodKind, Language language, EntityPermission entityPermission) {
-        PeriodKindDescription periodKindDescription = null;
+        PeriodKindDescription periodKindDescription;
         
         try {
             String query = null;
@@ -601,7 +601,7 @@ public class PeriodControl
     }
     
     private PeriodType getDefaultPeriodType(PeriodKind periodKind, EntityPermission entityPermission) {
-        PeriodType periodType = null;
+        PeriodType periodType;
         
         try {
             String query = null;
@@ -644,7 +644,7 @@ public class PeriodControl
     }
     
     private PeriodType getPeriodTypeByName(PeriodKind periodKind, String periodTypeName, EntityPermission entityPermission) {
-        PeriodType periodType = null;
+        PeriodType periodType;
         
         try {
             String query = null;
@@ -863,7 +863,7 @@ public class PeriodControl
     }
     
     private PeriodTypeDescription getPeriodTypeDescription(PeriodType periodType, Language language, EntityPermission entityPermission) {
-        PeriodTypeDescription periodTypeDescription = null;
+        PeriodTypeDescription periodTypeDescription;
         
         try {
             String query = null;
@@ -1166,7 +1166,7 @@ public class PeriodControl
     }
     
     public Period getPeriodByName(PeriodKind periodKind, String periodName, EntityPermission entityPermission) {
-        Period period = null;
+        Period period;
         
         try {
             String query = null;
@@ -1321,7 +1321,7 @@ public class PeriodControl
     }
     
     private PeriodDescription getPeriodDescription(Period period, Language language, EntityPermission entityPermission) {
-        PeriodDescription periodDescription = null;
+        PeriodDescription periodDescription;
         
         try {
             String query = null;

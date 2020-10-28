@@ -157,7 +157,7 @@ public class UserControl
     //   User Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private UserTransferCaches userTransferCaches = null;
+    private UserTransferCaches userTransferCaches;
     
     public UserTransferCaches getUserTransferCaches(UserVisit userVisit) {
         if(userTransferCaches == null) {
@@ -268,7 +268,7 @@ public class UserControl
     }
 
     private UserKeyDetail getUserKeyDetailByName(String userKeyName, EntityPermission entityPermission) {
-        UserKeyDetail userKeyDetail = null;
+        UserKeyDetail userKeyDetail;
         
         try {
             String query = null;
@@ -381,7 +381,7 @@ public class UserControl
     }
     
     public UserKeyStatus getUserKeyStatusForUpdate(UserKey userKey) {
-        UserKeyStatus userKeyStatus = null;
+        UserKeyStatus userKeyStatus;
         
         try {
             PreparedStatement ps = UserKeyStatusFactory.getInstance().prepareStatement(
@@ -491,7 +491,7 @@ public class UserControl
     }
     
     private UserVisitGroup getUserVisitGroupByName(String userVisitGroupName, EntityPermission entityPermission) {
-        UserVisitGroup userVisitGroup = null;
+        UserVisitGroup userVisitGroup;
         
         try {
             String query = null;
@@ -1168,7 +1168,7 @@ public class UserControl
     }
 
     public UserSession getUserSessionByUserVisit(UserVisit userVisit) {
-        UserSession userSession = null;
+        UserSession userSession;
         
         try {
             PreparedStatement ps = UserSessionFactory.getInstance().prepareStatement(
@@ -1188,7 +1188,7 @@ public class UserControl
     }
     
     public UserSession getUserSessionByUserVisitForUpdate(UserVisit userVisit) {
-        UserSession userSession = null;
+        UserSession userSession;
         
         try {
             PreparedStatement ps = UserSessionFactory.getInstance().prepareStatement(
@@ -1318,7 +1318,7 @@ public class UserControl
     }
     
     private RecoveryQuestion getRecoveryQuestionByName(String recoveryQuestionName, EntityPermission entityPermission) {
-        RecoveryQuestion recoveryQuestion = null;
+        RecoveryQuestion recoveryQuestion;
         
         try {
             String query = null;
@@ -1521,7 +1521,7 @@ public class UserControl
     
     private RecoveryQuestionDescription getRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             EntityPermission entityPermission) {
-        RecoveryQuestionDescription recoveryQuestionDescription = null;
+        RecoveryQuestionDescription recoveryQuestionDescription;
         
         try {
             String query = null;
@@ -1857,7 +1857,7 @@ public class UserControl
     }
     
     public UserLoginPasswordEncoderType getUserLoginPasswordEncoderTypeByName(String sequenceEncoderTypeName) {
-        UserLoginPasswordEncoderType sequenceEncoderType = null;
+        UserLoginPasswordEncoderType sequenceEncoderType;
         
         try {
             PreparedStatement ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
@@ -1890,7 +1890,7 @@ public class UserControl
     
     public UserLoginPasswordEncoderTypeDescription getUserLoginPasswordEncoderTypeDescription(UserLoginPasswordEncoderType sequenceEncoderType,
             Language language) {
-        UserLoginPasswordEncoderTypeDescription sequenceEncoderTypeDescription = null;
+        UserLoginPasswordEncoderTypeDescription sequenceEncoderTypeDescription;
         
         try {
             PreparedStatement ps = UserLoginPasswordEncoderTypeDescriptionFactory.getInstance().prepareStatement(
@@ -1939,7 +1939,7 @@ public class UserControl
     }
     
     public UserLoginPasswordType getUserLoginPasswordTypeByName(String userLoginPasswordTypeName) {
-        UserLoginPasswordType userLoginPasswordType = null;
+        UserLoginPasswordType userLoginPasswordType;
         
         try {
             PreparedStatement ps = UserLoginPasswordTypeFactory.getInstance().prepareStatement(
@@ -1970,7 +1970,7 @@ public class UserControl
     }
     
     public UserLoginPasswordTypeDescription getUserLoginPasswordTypeDescription(UserLoginPasswordType userLoginPasswordType, Language language) {
-        UserLoginPasswordTypeDescription userLoginPasswordTypeDescription = null;
+        UserLoginPasswordTypeDescription userLoginPasswordTypeDescription;
         
         try {
             PreparedStatement ps = UserLoginPasswordTypeDescriptionFactory.getInstance().prepareStatement(
@@ -2165,7 +2165,7 @@ public class UserControl
     }
     
     private UserLoginPasswordString getUserLoginPasswordString(UserLoginPassword userLoginPassword, EntityPermission entityPermission) {
-        UserLoginPasswordString userLoginPasswordString = null;
+        UserLoginPasswordString userLoginPasswordString;
         
         try {
             PreparedStatement ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(
@@ -2290,7 +2290,7 @@ public class UserControl
     }
     
     private UserLogin getUserLogin(Party party, EntityPermission entityPermission) {
-        UserLogin userLogin = null;
+        UserLogin userLogin;
         
         try {
             String query = null;
@@ -2336,7 +2336,7 @@ public class UserControl
     }
     
     private UserLogin getUserLoginByUsername(String username, EntityPermission entityPermission) {
-        UserLogin userLogin = null;
+        UserLogin userLogin;
         
         try {
             String query = null;
@@ -2430,7 +2430,7 @@ public class UserControl
     }
     
     private UserLoginStatus getUserLoginStatus(Party party, EntityPermission entityPermission) {
-        UserLoginStatus userLoginStatus = null;
+        UserLoginStatus userLoginStatus;
         
         try {
             String query = null;

@@ -153,7 +153,7 @@ public class ContactListControl
     //   Contact List Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ContactListTransferCaches contactListTransferCaches = null;
+    private ContactListTransferCaches contactListTransferCaches;
     
     public ContactListTransferCaches getContactListTransferCaches(UserVisit userVisit) {
         if(contactListTransferCaches == null) {

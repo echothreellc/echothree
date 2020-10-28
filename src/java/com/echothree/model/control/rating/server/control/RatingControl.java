@@ -84,7 +84,7 @@ public class RatingControl
     //   Rating Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private RatingTransferCaches ratingTransferCaches = null;
+    private RatingTransferCaches ratingTransferCaches;
     
     public RatingTransferCaches getRatingTransferCaches(UserVisit userVisit) {
         if(ratingTransferCaches == null) {
@@ -155,7 +155,7 @@ public class RatingControl
     }
     
     private RatingType getRatingTypeByName(EntityType entityType, String ratingTypeName, EntityPermission entityPermission) {
-        RatingType ratingType = null;
+        RatingType ratingType;
         
         try {
             String query = null;
@@ -280,7 +280,7 @@ public class RatingControl
     }
     
     private RatingTypeDescription getRatingTypeDescription(RatingType ratingType, Language language, EntityPermission entityPermission) {
-        RatingTypeDescription ratingTypeDescription = null;
+        RatingTypeDescription ratingTypeDescription;
         
         try {
             String query = null;
@@ -467,7 +467,7 @@ public class RatingControl
     
     private RatingTypeListItem getRatingTypeListItemByName(RatingType ratingType, String ratingTypeListItemName,
             EntityPermission entityPermission) {
-        RatingTypeListItem ratingTypeListItem = null;
+        RatingTypeListItem ratingTypeListItem;
         
         try {
             String query = null;
@@ -515,7 +515,7 @@ public class RatingControl
     }
     
     private RatingTypeListItem getDefaultRatingTypeListItem(RatingType ratingType, EntityPermission entityPermission) {
-        RatingTypeListItem ratingTypeListItem = null;
+        RatingTypeListItem ratingTypeListItem;
         
         try {
             String query = null;
@@ -749,7 +749,7 @@ public class RatingControl
     }
     
     private RatingTypeListItemDescription getRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language, EntityPermission entityPermission) {
-        RatingTypeListItemDescription ratingTypeListItemDescription = null;
+        RatingTypeListItemDescription ratingTypeListItemDescription;
         
         try {
             String query = null;
@@ -922,7 +922,7 @@ public class RatingControl
     }
     
     private Rating getRatingByName(String ratingName, EntityPermission entityPermission) {
-        Rating rating = null;
+        Rating rating;
         
         try {
             String query = null;
@@ -970,7 +970,7 @@ public class RatingControl
     
     private Rating getRating(EntityInstance ratedEntityInstance, EntityInstance ratedByEntityInstance,
             EntityPermission entityPermission) {
-        Rating rating = null;
+        Rating rating;
         
         try {
             String query = null;

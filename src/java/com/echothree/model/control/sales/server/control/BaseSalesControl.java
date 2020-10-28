@@ -32,7 +32,7 @@ public abstract class BaseSalesControl
     //   Sales Transfer Caches
     // --------------------------------------------------------------------------------
 
-    private SalesTransferCaches saleTransferCaches = null;
+    private SalesTransferCaches saleTransferCaches;
 
     public SalesTransferCaches getSaleTransferCaches(UserVisit userVisit) {
         if(saleTransferCaches == null) {

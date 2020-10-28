@@ -318,7 +318,7 @@ public class OrderControl
     }
     
     private OrderStatus getOrderStatus(Order order, EntityPermission entityPermission) {
-        OrderStatus orderStatus = null;
+        OrderStatus orderStatus;
         
         try {
             String query = null;

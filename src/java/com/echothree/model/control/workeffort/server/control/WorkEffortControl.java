@@ -85,7 +85,7 @@ public class WorkEffortControl
     //   Work Effort Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WorkEffortTransferCaches workEffortTransferCaches = null;
+    private WorkEffortTransferCaches workEffortTransferCaches;
     
     public WorkEffortTransferCaches getWorkEffortTransferCaches(UserVisit userVisit) {
         if(workEffortTransferCaches == null) {
@@ -145,7 +145,7 @@ public class WorkEffortControl
     }
     
     private WorkEffortType getWorkEffortTypeByName(String workEffortTypeName, EntityPermission entityPermission) {
-        WorkEffortType workEffortType = null;
+        WorkEffortType workEffortType;
         
         try {
             String query = null;
@@ -267,7 +267,7 @@ public class WorkEffortControl
     
     private WorkEffortTypeDescription getWorkEffortTypeDescription(WorkEffortType workEffortType, Language language,
             EntityPermission entityPermission) {
-        WorkEffortTypeDescription workEffortTypeDescription = null;
+        WorkEffortTypeDescription workEffortTypeDescription;
         
         try {
             String query = null;
@@ -495,7 +495,7 @@ public class WorkEffortControl
     }
     
     private WorkEffortScope getDefaultWorkEffortScope(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        WorkEffortScope workEffortScope = null;
+        WorkEffortScope workEffortScope;
         
         try {
             String query = null;
@@ -538,7 +538,7 @@ public class WorkEffortControl
     }
     
     private WorkEffortScope getWorkEffortScopeByName(WorkEffortType workEffortType, String workEffortScopeName, EntityPermission entityPermission) {
-        WorkEffortScope workEffortScope = null;
+        WorkEffortScope workEffortScope;
         
         try {
             String query = null;
@@ -753,7 +753,7 @@ public class WorkEffortControl
     
     private WorkEffortScopeDescription getWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language,
             EntityPermission entityPermission) {
-        WorkEffortScopeDescription workEffortScopeDescription = null;
+        WorkEffortScopeDescription workEffortScopeDescription;
         
         try {
             String query = null;

@@ -76,7 +76,7 @@ public class TrackControl
     //   Track Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private TrackTransferCaches trackTransferCaches = null;
+    private TrackTransferCaches trackTransferCaches;
     
     public TrackTransferCaches getTrackTransferCaches(UserVisit userVisit) {
         if(trackTransferCaches == null) {

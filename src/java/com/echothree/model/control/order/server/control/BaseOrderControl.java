@@ -32,7 +32,7 @@ public class BaseOrderControl
     //   Order Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private OrderTransferCaches orderTransferCaches = null;
+    private OrderTransferCaches orderTransferCaches;
     
     public OrderTransferCaches getOrderTransferCaches(UserVisit userVisit) {
         if(orderTransferCaches == null) {

@@ -121,7 +121,7 @@ public class SecurityControl
     //   Security Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private SecurityTransferCaches securityTransferCaches = null;
+    private SecurityTransferCaches securityTransferCaches;
     
     public SecurityTransferCaches getSecurityTransferCaches(UserVisit userVisit) {
         if(securityTransferCaches == null) {
@@ -515,7 +515,7 @@ public class SecurityControl
     }
     
     private SecurityRoleGroupDescription getSecurityRoleGroupDescription(SecurityRoleGroup securityRoleGroup, Language language, EntityPermission entityPermission) {
-        SecurityRoleGroupDescription securityRoleGroupDescription = null;
+        SecurityRoleGroupDescription securityRoleGroupDescription;
         
         try {
             String query = null;
@@ -772,7 +772,7 @@ public class SecurityControl
     }
 
     private SecurityRole getDefaultSecurityRole(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
-        SecurityRole securityRole = null;
+        SecurityRole securityRole;
         
         try {
             String query = null;
@@ -815,7 +815,7 @@ public class SecurityControl
     }
     
     private SecurityRole getSecurityRoleByName(SecurityRoleGroup securityRoleGroup, String securityRoleName, EntityPermission entityPermission) {
-        SecurityRole securityRole = null;
+        SecurityRole securityRole;
         
         try {
             String query = null;
@@ -1014,7 +1014,7 @@ public class SecurityControl
     }
     
     private SecurityRoleDescription getSecurityRoleDescription(SecurityRole securityRole, Language language, EntityPermission entityPermission) {
-        SecurityRoleDescription securityRoleDescription = null;
+        SecurityRoleDescription securityRoleDescription;
         
         try {
             String query = null;
@@ -1436,7 +1436,7 @@ public class SecurityControl
     }
     
     private PartySecurityRoleTemplate getPartySecurityRoleTemplateByName(String partySecurityRoleTemplateName, EntityPermission entityPermission) {
-        PartySecurityRoleTemplate partySecurityRoleTemplate = null;
+        PartySecurityRoleTemplate partySecurityRoleTemplate;
         
         try {
             String query = null;
@@ -1627,7 +1627,7 @@ public class SecurityControl
     
     private PartySecurityRoleTemplateDescription getPartySecurityRoleTemplateDescription(PartySecurityRoleTemplate partySecurityRoleTemplate,
             Language language, EntityPermission entityPermission) {
-        PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = null;
+        PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription;
         
         try {
             String query = null;
@@ -1797,7 +1797,7 @@ public class SecurityControl
     
     private PartySecurityRoleTemplateRole getPartySecurityRoleTemplateRole(PartySecurityRoleTemplate partySecurityRoleTemplate,
             SecurityRole securityRole, EntityPermission entityPermission) {
-        PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = null;
+        PartySecurityRoleTemplateRole partySecurityRoleTemplateRole;
         
         try {
             String query = null;
@@ -1962,7 +1962,7 @@ public class SecurityControl
     
     private PartySecurityRoleTemplateTrainingClass getPartySecurityRoleTemplateTrainingClass(PartySecurityRoleTemplate partySecurityRoleTemplate,
             TrainingClass trainingClass, EntityPermission entityPermission) {
-        PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass = null;
+        PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass;
         
         try {
             String query = null;
@@ -2132,7 +2132,7 @@ public class SecurityControl
     }
     
     private PartySecurityRoleTemplateUse getPartySecurityRoleTemplateUse(Party party, EntityPermission entityPermission) {
-        PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = null;
+        PartySecurityRoleTemplateUse partySecurityRoleTemplateUse;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2287,7 +2287,7 @@ public class SecurityControl
     }
     
     private PartySecurityRole getPartySecurityRole(Party party, SecurityRole securityRole, EntityPermission entityPermission) {
-        PartySecurityRole partySecurityRole = null;
+        PartySecurityRole partySecurityRole;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2432,7 +2432,7 @@ public class SecurityControl
     
     private PartyEntitySecurityRole getPartyEntitySecurityRole(Party party, EntityInstance entityInstance, SecurityRole securityRole,
             EntityPermission entityPermission) {
-        PartyEntitySecurityRole partyEntitySecurityRole = null;
+        PartyEntitySecurityRole partyEntitySecurityRole;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +

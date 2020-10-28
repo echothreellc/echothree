@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.selector.common.form;
+package com.echothree.control.user.selector.common.spec;
 
-import com.echothree.control.user.selector.common.spec.SelectorKindUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetSelectorKindForm
-        extends SelectorKindUniversalSpec {
+public interface SelectorKindUniversalSpec
+        extends SelectorKindSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond SelectorKindUniversalSpec
+    // Nothing additional beyond SelectorKindSpec, UniversalEntitySpec
     
 }

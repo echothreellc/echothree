@@ -403,7 +403,7 @@ public class ItemControl
     //   Item Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ItemTransferCaches itemTransferCaches = null;
+    private ItemTransferCaches itemTransferCaches;
     
     public ItemTransferCaches getItemTransferCaches(UserVisit userVisit) {
         if(itemTransferCaches == null) {
@@ -422,7 +422,7 @@ public class ItemControl
     }
     
     public ItemType getItemTypeByName(String itemTypeName) {
-        ItemType itemType = null;
+        ItemType itemType;
         
         try {
             PreparedStatement ps = ItemTypeFactory.getInstance().prepareStatement(
@@ -506,7 +506,7 @@ public class ItemControl
     }
     
     public ItemTypeDescription getItemTypeDescription(ItemType itemType, Language language) {
-        ItemTypeDescription itemTypeDescription = null;
+        ItemTypeDescription itemTypeDescription;
         
         try {
             PreparedStatement ps = ItemTypeDescriptionFactory.getInstance().prepareStatement(
@@ -551,7 +551,7 @@ public class ItemControl
     }
     
     public ItemDeliveryType getItemDeliveryTypeByName(String itemDeliveryTypeName) {
-        ItemDeliveryType itemDeliveryType = null;
+        ItemDeliveryType itemDeliveryType;
         
         try {
             PreparedStatement ps = ItemDeliveryTypeFactory.getInstance().prepareStatement(
@@ -635,7 +635,7 @@ public class ItemControl
     }
     
     public ItemDeliveryTypeDescription getItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language) {
-        ItemDeliveryTypeDescription itemDeliveryTypeDescription = null;
+        ItemDeliveryTypeDescription itemDeliveryTypeDescription;
         
         try {
             PreparedStatement ps = ItemDeliveryTypeDescriptionFactory.getInstance().prepareStatement(
@@ -680,7 +680,7 @@ public class ItemControl
     }
     
     public ItemInventoryType getItemInventoryTypeByName(String itemInventoryTypeName) {
-        ItemInventoryType itemInventoryType = null;
+        ItemInventoryType itemInventoryType;
         
         try {
             PreparedStatement ps = ItemInventoryTypeFactory.getInstance().prepareStatement(
@@ -764,7 +764,7 @@ public class ItemControl
     }
     
     public ItemInventoryTypeDescription getItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language) {
-        ItemInventoryTypeDescription itemInventoryTypeDescription = null;
+        ItemInventoryTypeDescription itemInventoryTypeDescription;
         
         try {
             PreparedStatement ps = ItemInventoryTypeDescriptionFactory.getInstance().prepareStatement(
@@ -809,7 +809,7 @@ public class ItemControl
     }
     
     public ItemUseType getItemUseTypeByName(String itemUseTypeName) {
-        ItemUseType itemUseType = null;
+        ItemUseType itemUseType;
         
         try {
             PreparedStatement ps = ItemUseTypeFactory.getInstance().prepareStatement(
@@ -893,7 +893,7 @@ public class ItemControl
     }
     
     public ItemUseTypeDescription getItemUseTypeDescription(ItemUseType itemUseType, Language language) {
-        ItemUseTypeDescription itemUseTypeDescription = null;
+        ItemUseTypeDescription itemUseTypeDescription;
         
         try {
             PreparedStatement ps = ItemUseTypeDescriptionFactory.getInstance().prepareStatement(
@@ -965,7 +965,7 @@ public class ItemControl
     }
     
     public ItemCategory getItemCategoryByName(String itemCategoryName, EntityPermission entityPermission) {
-        ItemCategory itemCategory = null;
+        ItemCategory itemCategory;
         
         try {
             String query = null;
@@ -1315,7 +1315,7 @@ public class ItemControl
     }
     
     private ItemCategoryDescription getItemCategoryDescription(ItemCategory itemCategory, Language language, EntityPermission entityPermission) {
-        ItemCategoryDescription itemCategoryDescription = null;
+        ItemCategoryDescription itemCategoryDescription;
         
         try {
             String query = null;
@@ -1596,7 +1596,7 @@ public class ItemControl
     }
     
     private Item getItemByName(String itemName, EntityPermission entityPermission) {
-        Item item = null;
+        Item item;
         
         try {
             String query = null;
@@ -1798,7 +1798,7 @@ public class ItemControl
     }
     
     private ItemUnitOfMeasureType getItemUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemUnitOfMeasureType itemUnitOfMeasureType = null;
+        ItemUnitOfMeasureType itemUnitOfMeasureType;
         
         try {
             String query = null;
@@ -1847,7 +1847,7 @@ public class ItemControl
     }
     
     private ItemUnitOfMeasureType getDefaultItemUnitOfMeasureType(Item item, EntityPermission entityPermission) {
-        ItemUnitOfMeasureType itemUnitOfMeasureType = null;
+        ItemUnitOfMeasureType itemUnitOfMeasureType;
         
         try {
             String query = null;
@@ -2104,7 +2104,7 @@ public class ItemControl
     }
     
     private ItemShippingTime getItemShippingTime(Item item, CustomerType customerType, EntityPermission entityPermission) {
-        ItemShippingTime itemShippingTime = null;
+        ItemShippingTime itemShippingTime;
         
         try {
             String query = null;
@@ -2445,7 +2445,7 @@ public class ItemControl
     }
     
     private ItemAliasType getItemAliasTypeByName(String itemAliasTypeName, EntityPermission entityPermission) {
-        ItemAliasType itemAliasType = null;
+        ItemAliasType itemAliasType;
         
         try {
             String query = null;
@@ -2701,7 +2701,7 @@ public class ItemControl
     }
     
     private ItemAliasTypeDescription getItemAliasTypeDescription(ItemAliasType itemAliasType, Language language, EntityPermission entityPermission) {
-        ItemAliasTypeDescription itemAliasTypeDescription = null;
+        ItemAliasTypeDescription itemAliasTypeDescription;
         
         try {
             String query = null;
@@ -2877,7 +2877,7 @@ public class ItemControl
     }
     
     private ItemAlias getItemAliasByAlias(String alias, EntityPermission entityPermission) {
-        ItemAlias itemAlias = null;
+        ItemAlias itemAlias;
         
         try {
             String query = null;
@@ -3183,7 +3183,7 @@ public class ItemControl
     }
     
     private ItemKitOption getItemKitOption(Item item, EntityPermission entityPermission) {
-        ItemKitOption itemKitOption = null;
+        ItemKitOption itemKitOption;
         
         try {
             String query = null;
@@ -3270,7 +3270,7 @@ public class ItemControl
     }
 
     private ItemCountryOfOrigin getItemCountryOfOrigin(Item item, GeoCode countryGeoCode, EntityPermission entityPermission) {
-        ItemCountryOfOrigin itemCountryOfOrigin = null;
+        ItemCountryOfOrigin itemCountryOfOrigin;
         
         try {
             String query = null;
@@ -3474,7 +3474,7 @@ public class ItemControl
     private ItemKitMember getItemKitMember(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Item memberItem, InventoryCondition memberInventoryCondition, UnitOfMeasureType memberUnitOfMeasureType,
             EntityPermission entityPermission) {
-        ItemKitMember itemKitMember = null;
+        ItemKitMember itemKitMember;
         
         try {
             String query = null;
@@ -3995,7 +3995,7 @@ public class ItemControl
     }
     
     private ItemPackCheckRequirement getItemPackCheckRequirement(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemPackCheckRequirement itemPackCheckRequirement = null;
+        ItemPackCheckRequirement itemPackCheckRequirement;
         
         try {
             String query = null;
@@ -4230,7 +4230,7 @@ public class ItemControl
     
     private ItemUnitCustomerTypeLimit getItemUnitCustomerTypeLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, CustomerType customerType, EntityPermission entityPermission) {
-        ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit = null;
+        ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit;
         
         try {
             String query = null;
@@ -4567,7 +4567,7 @@ public class ItemControl
     
     private ItemUnitLimit getItemUnitLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemUnitLimit itemUnitLimit = null;
+        ItemUnitLimit itemUnitLimit;
         
         try {
             String query = null;
@@ -4850,7 +4850,7 @@ public class ItemControl
     
     private ItemUnitPriceLimit getItemUnitPriceLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, EntityPermission entityPermission) {
-        ItemUnitPriceLimit itemUnitPriceLimit = null;
+        ItemUnitPriceLimit itemUnitPriceLimit;
         
         try {
             String query = null;
@@ -5132,7 +5132,7 @@ public class ItemControl
     }
     
     public ItemPriceType getItemPriceTypeByName(String itemPriceTypeName) {
-        ItemPriceType itemPriceType = null;
+        ItemPriceType itemPriceType;
         
         try {
             PreparedStatement ps = ItemPriceTypeFactory.getInstance().prepareStatement(
@@ -5217,7 +5217,7 @@ public class ItemControl
     }
     
     public ItemPriceTypeDescription getItemPriceTypeDescription(ItemPriceType itemPriceType, Language language) {
-        ItemPriceTypeDescription itemPriceTypeDescription = null;
+        ItemPriceTypeDescription itemPriceTypeDescription;
         
         try {
             PreparedStatement ps = ItemPriceTypeDescriptionFactory.getInstance().prepareStatement(
@@ -5461,7 +5461,7 @@ public class ItemControl
     
     private ItemPrice getItemPrice(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        ItemPrice itemPrice = null;
+        ItemPrice itemPrice;
         
         try {
             String query = null;
@@ -5592,7 +5592,7 @@ public class ItemControl
     }
     
     private ItemFixedPrice getItemFixedPrice(ItemPrice itemPrice, EntityPermission entityPermission) {
-        ItemFixedPrice itemFixedPrice = null;
+        ItemFixedPrice itemFixedPrice;
         
         try {
             String query = null;
@@ -5697,7 +5697,7 @@ public class ItemControl
     }
     
     private ItemVariablePrice getItemVariablePrice(ItemPrice itemPrice, EntityPermission entityPermission) {
-        ItemVariablePrice itemVariablePrice = null;
+        ItemVariablePrice itemVariablePrice;
         
         try {
             String query = null;
@@ -7745,7 +7745,7 @@ public class ItemControl
 
     private ItemDescription getItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language,
             EntityPermission entityPermission) {
-        ItemDescription itemDescription = null;
+        ItemDescription itemDescription;
         
         try {
             String query = null;
@@ -7951,7 +7951,7 @@ public class ItemControl
     }
     
     private ItemBlobDescription getItemBlobDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        ItemBlobDescription itemBlobDescription = null;
+        ItemBlobDescription itemBlobDescription;
         
         try {
             String query = null;
@@ -8163,7 +8163,7 @@ public class ItemControl
     }
     
     private ItemClobDescription getItemClobDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        ItemClobDescription itemClobDescription = null;
+        ItemClobDescription itemClobDescription;
         
         try {
             String query = null;
@@ -8255,7 +8255,7 @@ public class ItemControl
     }
     
     private ItemStringDescription getItemStringDescription(ItemDescription itemDescription, EntityPermission entityPermission) {
-        ItemStringDescription itemStringDescription = null;
+        ItemStringDescription itemStringDescription;
         
         try {
             String query = null;
@@ -8347,7 +8347,7 @@ public class ItemControl
     }
     
     private ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemVolume itemVolume = null;
+        ItemVolume itemVolume;
         
         try {
             String query = null;
@@ -8511,7 +8511,7 @@ public class ItemControl
     }
     
     private ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        ItemWeight itemWeight = null;
+        ItemWeight itemWeight;
         
         try {
             String query = null;

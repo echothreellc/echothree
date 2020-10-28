@@ -2229,5 +2229,6 @@ public enum ExecutionErrors {
     UnknownDefaultUse,
     CannotDeleteOfferUseInUse,
     UnknownDefaultFilterKind,
+    UnknownDefaultSelectorKind,
 
 }

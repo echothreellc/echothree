@@ -14,14 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.filter.server.graphql;
+package com.echothree.model.control.selector.server.graphql;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterKindDetail;
+import com.echothree.model.data.selector.server.entity.SelectorKind;
+import com.echothree.model.data.selector.server.entity.SelectorKindDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -29,59 +29,59 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("filter kind object")
-@GraphQLName("FilterKind")
-public class FilterKindObject
+@GraphQLDescription("selector kind object")
+@GraphQLName("SelectorKind")
+public class SelectorKindObject
         extends BaseEntityInstanceObject {
     
-    private final FilterKind filterKind; // Always Present
+    private final SelectorKind selectorKind; // Always Present
     
-    public FilterKindObject(FilterKind filterKind) {
-        super(filterKind.getPrimaryKey());
+    public SelectorKindObject(SelectorKind selectorKind) {
+        super(selectorKind.getPrimaryKey());
         
-        this.filterKind = filterKind;
+        this.selectorKind = selectorKind;
     }
 
-    private FilterKindDetail filterKindDetail; // Optional, use getFilterKindDetail()
+    private SelectorKindDetail selectorKindDetail; // Optional, use getSelectorKindDetail()
     
-    private FilterKindDetail getFilterKindDetail() {
-        if(filterKindDetail == null) {
-            filterKindDetail = filterKind.getLastDetail();
+    private SelectorKindDetail getSelectorKindDetail() {
+        if(selectorKindDetail == null) {
+            selectorKindDetail = selectorKind.getLastDetail();
         }
         
-        return filterKindDetail;
+        return selectorKindDetail;
     }
     
     @GraphQLField
-    @GraphQLDescription("filter kind name")
+    @GraphQLDescription("selector kind name")
     @GraphQLNonNull
-    public String getFilterKindName() {
-        return getFilterKindDetail().getFilterKindName();
+    public String getSelectorKindName() {
+        return getSelectorKindDetail().getSelectorKindName();
     }
     
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getFilterKindDetail().getIsDefault();
+        return getSelectorKindDetail().getIsDefault();
     }
     
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getFilterKindDetail().getSortOrder();
+        return getSelectorKindDetail().getSortOrder();
     }
     
     @GraphQLField
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
-        return filterControl.getBestFilterKindDescription(filterKind, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+        return selectorControl.getBestSelectorKindDescription(selectorKind, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
     
 }

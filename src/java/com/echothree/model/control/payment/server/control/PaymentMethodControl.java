@@ -103,7 +103,7 @@ public class PaymentMethodControl
     }
     
     public PaymentMethod getPaymentMethodByName(String paymentMethodName, EntityPermission entityPermission) {
-        PaymentMethod paymentMethod = null;
+        PaymentMethod paymentMethod;
         
         try {
             String query = null;
@@ -447,7 +447,7 @@ public class PaymentMethodControl
     
     private PaymentMethodDescription getPaymentMethodDescription(PaymentMethod paymentMethod, Language language,
             EntityPermission entityPermission) {
-        PaymentMethodDescription paymentMethodDescription = null;
+        PaymentMethodDescription paymentMethodDescription;
         
         try {
             String query = null;
@@ -615,7 +615,7 @@ public class PaymentMethodControl
     }
     
     private PaymentMethodCheck getPaymentMethodCheck(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        PaymentMethodCheck paymentMethodCheck = null;
+        PaymentMethodCheck paymentMethodCheck;
         
         try {
             String query = null;
@@ -706,7 +706,7 @@ public class PaymentMethodControl
     }
     
     private PaymentMethodCreditCard getPaymentMethodCreditCard(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        PaymentMethodCreditCard paymentMethodCreditCard = null;
+        PaymentMethodCreditCard paymentMethodCreditCard;
         
         try {
             String query = null;

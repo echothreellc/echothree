@@ -120,7 +120,7 @@ public class WorkRequirementControl
     //   Work Requirement Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WorkRequirementTransferCaches workRequirementTransferCaches = null;
+    private WorkRequirementTransferCaches workRequirementTransferCaches;
     
     public WorkRequirementTransferCaches getWorkRequirementTransferCaches(UserVisit userVisit) {
         if(workRequirementTransferCaches == null) {
@@ -231,7 +231,7 @@ public class WorkRequirementControl
     
     private WorkRequirementType getWorkRequirementTypeByName(WorkEffortType workEffortType, String workRequirementTypeName,
             EntityPermission entityPermission) {
-        WorkRequirementType workRequirementType = null;
+        WorkRequirementType workRequirementType;
         
         try {
             String query = null;
@@ -368,7 +368,7 @@ public class WorkRequirementControl
     
     private WorkRequirementTypeDescription getWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
             EntityPermission entityPermission) {
-        WorkRequirementTypeDescription workRequirementTypeDescription = null;
+        WorkRequirementTypeDescription workRequirementTypeDescription;
         
         try {
             String query = null;
@@ -545,7 +545,7 @@ public class WorkRequirementControl
     
     private WorkRequirementScope getWorkRequirementScope(WorkEffortScope workEffortScope, WorkRequirementType workRequirementType,
             EntityPermission entityPermission) {
-        WorkRequirementScope workRequirementScope = null;
+        WorkRequirementScope workRequirementScope;
         
         try {
             String query = null;
@@ -894,7 +894,7 @@ public class WorkRequirementControl
     }
     
     private WorkRequirement getWorkRequirementByName(String workRequirementName, EntityPermission entityPermission) {
-        WorkRequirement workRequirement = null;
+        WorkRequirement workRequirement;
         
         try {
             String query = null;

@@ -174,7 +174,7 @@ public class InvoiceControl
     //   Invoice Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private InvoiceTransferCaches invoiceTransferCaches = null;
+    private InvoiceTransferCaches invoiceTransferCaches;
     
     public InvoiceTransferCaches getInvoiceTransferCaches(UserVisit userVisit) {
         if(invoiceTransferCaches == null) {
@@ -202,7 +202,7 @@ public class InvoiceControl
     }
     
     public InvoiceLineUseType getInvoiceLineUseTypeByName(String invoiceLineUseTypeName) {
-        InvoiceLineUseType invoiceLineUseType = null;
+        InvoiceLineUseType invoiceLineUseType;
         
         try {
             PreparedStatement ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
@@ -250,7 +250,7 @@ public class InvoiceControl
     }
     
     public InvoiceLineUseTypeDescription getInvoiceLineUseTypeDescription(InvoiceLineUseType invoiceLineUseType, Language language) {
-        InvoiceLineUseTypeDescription invoiceLineUseTypeDescription = null;
+        InvoiceLineUseTypeDescription invoiceLineUseTypeDescription;
         
         try {
             PreparedStatement ps = InvoiceLineUseTypeDescriptionFactory.getInstance().prepareStatement(
@@ -304,7 +304,7 @@ public class InvoiceControl
     }
     
     public InvoiceRoleType getInvoiceRoleTypeByName(String invoiceRoleTypeName) {
-        InvoiceRoleType invoiceRoleType = null;
+        InvoiceRoleType invoiceRoleType;
         
         try {
             PreparedStatement ps = InvoiceRoleTypeFactory.getInstance().prepareStatement(
@@ -352,7 +352,7 @@ public class InvoiceControl
     }
     
     public InvoiceRoleTypeDescription getInvoiceRoleTypeDescription(InvoiceRoleType invoiceRoleType, Language language) {
-        InvoiceRoleTypeDescription invoiceRoleTypeDescription = null;
+        InvoiceRoleTypeDescription invoiceRoleTypeDescription;
         
         try {
             PreparedStatement ps = InvoiceRoleTypeDescriptionFactory.getInstance().prepareStatement(
@@ -746,7 +746,7 @@ public class InvoiceControl
     }
     
     private InvoiceTypeDescription getInvoiceTypeDescription(InvoiceType invoiceType, Language language, EntityPermission entityPermission) {
-        InvoiceTypeDescription invoiceTypeDescription = null;
+        InvoiceTypeDescription invoiceTypeDescription;
         
         try {
             String query = null;
@@ -1780,7 +1780,7 @@ public class InvoiceControl
     
     private InvoiceLineType getInvoiceLineTypeByName(InvoiceType invoiceType, String invoiceLineTypeName,
             EntityPermission entityPermission) {
-        InvoiceLineType invoiceLineType = null;
+        InvoiceLineType invoiceLineType;
         
         try {
             String query = null;
@@ -1829,7 +1829,7 @@ public class InvoiceControl
     }
     
     private InvoiceLineType getDefaultInvoiceLineType(InvoiceType invoiceType, EntityPermission entityPermission) {
-        InvoiceLineType invoiceLineType = null;
+        InvoiceLineType invoiceLineType;
         
         try {
             String query = null;
@@ -2141,7 +2141,7 @@ public class InvoiceControl
     
     private InvoiceLineTypeDescription getInvoiceLineTypeDescription(InvoiceLineType invoiceLineType, Language language,
             EntityPermission entityPermission) {
-        InvoiceLineTypeDescription invoiceLineTypeDescription = null;
+        InvoiceLineTypeDescription invoiceLineTypeDescription;
         
         try {
             String query = null;
@@ -2314,7 +2314,7 @@ public class InvoiceControl
     }
     
     private InvoiceRole getInvoiceRole(Invoice invoice, InvoiceRoleType invoiceRoleType, EntityPermission entityPermission) {
-        InvoiceRole invoiceRole = null;
+        InvoiceRole invoiceRole;
         
         try {
             String query = null;
@@ -2703,7 +2703,7 @@ public class InvoiceControl
     }
     
     private InvoiceStatus getInvoiceStatus(Invoice invoice, EntityPermission entityPermission) {
-        InvoiceStatus invoiceStatus = null;
+        InvoiceStatus invoiceStatus;
         
         try {
             String query = null;

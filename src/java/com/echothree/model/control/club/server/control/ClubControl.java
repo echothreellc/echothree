@@ -77,7 +77,7 @@ public class ClubControl
     //   Club Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ClubTransferCaches clubTransferCaches = null;
+    private ClubTransferCaches clubTransferCaches;
     
     public ClubTransferCaches getClubTransferCaches(UserVisit userVisit) {
         if(clubTransferCaches == null) {
@@ -181,7 +181,7 @@ public class ClubControl
     }
     
     private Club getClubByName(String clubName, EntityPermission entityPermission) {
-        Club club = null;
+        Club club;
         
         try {
             String query = null;
@@ -226,7 +226,7 @@ public class ClubControl
     }
     
     private Club getClubBySubscriptionType(SubscriptionType subscriptionType, EntityPermission entityPermission) {
-        Club club = null;
+        Club club;
         
         try {
             String query = null;
@@ -378,7 +378,7 @@ public class ClubControl
     
     private ClubDescription getClubDescription(Club club, Language language,
             EntityPermission entityPermission) {
-        ClubDescription clubDescription = null;
+        ClubDescription clubDescription;
         
         try {
             String query = null;
@@ -622,7 +622,7 @@ public class ClubControl
     }
     
     public ClubItemTypeDescription getClubItemTypeDescription(ClubItemType clubItemType, Language language) {
-        ClubItemTypeDescription clubItemTypeDescription = null;
+        ClubItemTypeDescription clubItemTypeDescription;
         
         try {
             PreparedStatement ps = ClubItemTypeDescriptionFactory.getInstance().prepareStatement(
@@ -672,7 +672,7 @@ public class ClubControl
     }
     
     private ClubItem getClubItem(Club club, ClubItemType clubItemType, Item item, EntityPermission entityPermission) {
-        ClubItem clubItem = null;
+        ClubItem clubItem;
         
         try {
             String query = null;

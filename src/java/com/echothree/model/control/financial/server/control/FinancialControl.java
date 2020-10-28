@@ -135,7 +135,7 @@ public class FinancialControl
     //   Financial Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private FinancialTransferCaches financialTransferCaches = null;
+    private FinancialTransferCaches financialTransferCaches;
     
     public FinancialTransferCaches getFinancialTransferCaches(UserVisit userVisit) {
         if(financialTransferCaches == null) {

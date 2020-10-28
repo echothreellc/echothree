@@ -98,7 +98,7 @@ public class OfferNameElementControl
     }
     
     public OfferNameElement getOfferNameElementByName(String offerNameElementName, EntityPermission entityPermission) {
-        OfferNameElement offerNameElement = null;
+        OfferNameElement offerNameElement;
         
         try {
             String query = null;
@@ -242,7 +242,7 @@ public class OfferNameElementControl
     
     private OfferNameElementDescription getOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             EntityPermission entityPermission) {
-        OfferNameElementDescription offerNameElementDescription = null;
+        OfferNameElementDescription offerNameElementDescription;
         
         try {
             String query = null;

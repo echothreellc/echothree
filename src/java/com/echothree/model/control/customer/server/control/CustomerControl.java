@@ -113,7 +113,7 @@ public class CustomerControl
     //   Customer Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CustomerTransferCaches customerTransferCaches = null;
+    private CustomerTransferCaches customerTransferCaches;
     
     public CustomerTransferCaches getCustomerTransferCaches(UserVisit userVisit) {
         if(customerTransferCaches == null) {
@@ -234,7 +234,7 @@ public class CustomerControl
     }
     
     private CustomerType getCustomerTypeByName(String customerTypeName, EntityPermission entityPermission) {
-        CustomerType customerType = null;
+        CustomerType customerType;
         
         try {
             String query = null;
@@ -451,7 +451,7 @@ public class CustomerControl
     }
     
     private CustomerTypeDescription getCustomerTypeDescription(CustomerType customerType, Language language, EntityPermission entityPermission) {
-        CustomerTypeDescription customerTypeDescription = null;
+        CustomerTypeDescription customerTypeDescription;
         
         try {
             String query = null;
@@ -675,7 +675,7 @@ public class CustomerControl
 
 
     private Customer getCustomerByName(String customerName, EntityPermission entityPermission) {
-        Customer customer = null;
+        Customer customer;
         
         try {
             String query = null;

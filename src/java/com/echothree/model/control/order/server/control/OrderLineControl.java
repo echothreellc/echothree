@@ -141,7 +141,7 @@ public class OrderLineControl
     }
 
     public OrderLine getOrderLineBySequence(Order order, Integer orderLineSequence, EntityPermission entityPermission) {
-        OrderLine orderLine = null;
+        OrderLine orderLine;
         
         try {
             String query = null;
@@ -343,7 +343,7 @@ public class OrderLineControl
     }
     
     private OrderLineStatus getOrderLineStatus(OrderLine orderLine, EntityPermission entityPermission) {
-        OrderLineStatus orderLineStatus = null;
+        OrderLineStatus orderLineStatus;
         
         try {
             String query = null;

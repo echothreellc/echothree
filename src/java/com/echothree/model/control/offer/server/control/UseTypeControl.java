@@ -140,7 +140,7 @@ public class UseTypeControl
     }
 
     public UseType getUseTypeByName(String useTypeName, EntityPermission entityPermission) {
-        UseType useType = null;
+        UseType useType;
         
         try {
             String query = null;
@@ -358,7 +358,7 @@ public class UseTypeControl
     }
     
     private UseTypeDescription getUseTypeDescription(UseType useType, Language language, EntityPermission entityPermission) {
-        UseTypeDescription useTypeDescription = null;
+        UseTypeDescription useTypeDescription;
         
         try {
             String query = null;

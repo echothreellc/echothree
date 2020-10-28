@@ -33,7 +33,7 @@ public abstract class BaseInventoryControl
     //   Inventory Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private InventoryTransferCaches inventoryTransferCaches = null;
+    private InventoryTransferCaches inventoryTransferCaches;
     
     public InventoryTransferCaches getInventoryTransferCaches(UserVisit userVisit) {
         if(inventoryTransferCaches == null) {

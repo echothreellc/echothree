@@ -125,6 +125,9 @@ import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
+import com.echothree.control.user.selector.common.SelectorUtil;
+import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
+import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
@@ -193,6 +196,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
+import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
@@ -253,6 +257,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
+import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -274,6 +279,54 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("selectorKind")
+    public static SelectorKindObject selectorKind(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") final String selectorKindName,
+            @GraphQLName("id") final String id) {
+        SelectorKind selectorKind;
+
+        try {
+            var commandForm = SelectorUtil.getHome().getGetSelectorKindForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setUlid(id);
+
+            selectorKind = new GetSelectorKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return selectorKind == null ? null : new SelectorKindObject(selectorKind);
+    }
+
+    @GraphQLField
+    @GraphQLName("selectorKinds")
+    public static Collection<SelectorKindObject> selectorKinds(final DataFetchingEnvironment env) {
+        Collection<SelectorKind> selectorKinds;
+        Collection<SelectorKindObject> selectorKindObjects;
+
+        try {
+            var commandForm = SelectorUtil.getHome().getGetSelectorKindsForm();
+
+            selectorKinds = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(selectorKinds == null) {
+            selectorKindObjects = emptyList();
+        } else {
+            selectorKindObjects = new ArrayList<>(selectorKinds.size());
+
+            selectorKinds.stream()
+                    .map(SelectorKindObject::new)
+                    .forEachOrdered(selectorKindObjects::add);
+        }
+
+        return selectorKindObjects;
+    }
 
     @GraphQLField
     @GraphQLName("filterKind")

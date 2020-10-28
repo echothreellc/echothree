@@ -111,7 +111,7 @@ public class PaymentProcessorControl
     }
 
     public PaymentProcessor getPaymentProcessorByName(String paymentProcessorName, EntityPermission entityPermission) {
-        PaymentProcessor paymentProcessor = null;
+        PaymentProcessor paymentProcessor;
         
         try {
             String query = null;
@@ -357,7 +357,7 @@ public class PaymentProcessorControl
     
     private PaymentProcessorDescription getPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language,
             EntityPermission entityPermission) {
-        PaymentProcessorDescription paymentProcessorDescription = null;
+        PaymentProcessorDescription paymentProcessorDescription;
         
         try {
             String query = null;

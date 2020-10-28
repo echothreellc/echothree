@@ -98,7 +98,7 @@ public class SubscriptionControl
     //   Subscription Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private SubscriptionTransferCaches subscriptionTransferCaches = null;
+    private SubscriptionTransferCaches subscriptionTransferCaches;
     
     public SubscriptionTransferCaches getSubscriptionTransferCaches(UserVisit userVisit) {
         if(subscriptionTransferCaches == null) {
@@ -589,7 +589,7 @@ public class SubscriptionControl
     }
     
     private SubscriptionType getDefaultSubscriptionType(SubscriptionKind subscriptionKind, EntityPermission entityPermission) {
-        SubscriptionType subscriptionType = null;
+        SubscriptionType subscriptionType;
         
         try {
             String query = null;
@@ -633,7 +633,7 @@ public class SubscriptionControl
     
     private SubscriptionType getSubscriptionTypeByName(SubscriptionKind subscriptionKind, String subscriptionTypeName,
             EntityPermission entityPermission) {
-        SubscriptionType subscriptionType = null;
+        SubscriptionType subscriptionType;
         
         try {
             String query = null;
@@ -830,7 +830,7 @@ public class SubscriptionControl
     
     private SubscriptionTypeDescription getSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
             EntityPermission entityPermission) {
-        SubscriptionTypeDescription subscriptionTypeDescription = null;
+        SubscriptionTypeDescription subscriptionTypeDescription;
         
         try {
             String query = null;
@@ -1014,7 +1014,7 @@ public class SubscriptionControl
     
     private SubscriptionTypeChain getSubscriptionTypeChain(SubscriptionType subscriptionType, Chain chain,
             EntityPermission entityPermission) {
-        SubscriptionTypeChain subscriptionTypeChain = null;
+        SubscriptionTypeChain subscriptionTypeChain;
         
         try {
             String query = null;
@@ -1230,7 +1230,7 @@ public class SubscriptionControl
     }
     
     private Subscription getSubscription(SubscriptionType subscriptionType, Party party, EntityPermission entityPermission) {
-        Subscription subscription = null;
+        Subscription subscription;
         
         try {
             String query = null;
@@ -1270,7 +1270,7 @@ public class SubscriptionControl
     }
     
     private Subscription getSubscriptionByName(String subscriptionName, EntityPermission entityPermission) {
-        Subscription subscription = null;
+        Subscription subscription;
         
         try {
             String query = null;

@@ -141,7 +141,7 @@ public class CampaignControl
     //   Campaign Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CampaignTransferCaches campaignTransferCaches = null;
+    private CampaignTransferCaches campaignTransferCaches;
     
     public CampaignTransferCaches getCampaignTransferCaches(UserVisit userVisit) {
         if(campaignTransferCaches == null) {

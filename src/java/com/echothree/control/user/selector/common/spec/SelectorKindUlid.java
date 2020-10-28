@@ -14,13 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.selector.common.form;
+package com.echothree.control.user.selector.common.spec;
 
-import com.echothree.control.user.selector.common.spec.SelectorKindUniversalSpec;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface GetSelectorKindForm
-        extends SelectorKindUniversalSpec {
+public interface SelectorKindUlid
+        extends BaseSpec {
     
-    // Nothing additional beyond SelectorKindUniversalSpec
+    String getSelectorKindUlid();
+    void setSelectorKindUlid(String selectorKindUlid);
     
 }

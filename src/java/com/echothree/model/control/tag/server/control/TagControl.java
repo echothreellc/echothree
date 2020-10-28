@@ -77,7 +77,7 @@ public class TagControl
     //   Tag Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private TagTransferCaches tagTransferCaches = null;
+    private TagTransferCaches tagTransferCaches;
     
     public TagTransferCaches getTagTransferCaches(UserVisit userVisit) {
         if(tagTransferCaches == null) {
@@ -221,7 +221,7 @@ public class TagControl
     }
     
     private TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
-        TagScope tagScope = null;
+        TagScope tagScope;
         
         try {
             String query = null;
@@ -411,7 +411,7 @@ public class TagControl
     }
     
     private TagScopeDescription getTagScopeDescription(TagScope tagScope, Language language, EntityPermission entityPermission) {
-        TagScopeDescription tagScopeDescription = null;
+        TagScopeDescription tagScopeDescription;
         
         try {
             String query = null;
@@ -577,7 +577,7 @@ public class TagControl
     }
     
     private TagScopeEntityType getTagScopeEntityType(TagScope tagScope, EntityType entityType, EntityPermission entityPermission) {
-        TagScopeEntityType tagScopeEntityType = null;
+        TagScopeEntityType tagScopeEntityType;
         
         try {
             String query = null;
@@ -841,7 +841,7 @@ public class TagControl
     }
     
     private Tag getTagByName(TagScope tagScope, String tagName, EntityPermission entityPermission) {
-        Tag tag = null;
+        Tag tag;
         
         try {
             String query = null;
@@ -1004,7 +1004,7 @@ public class TagControl
     }
 
     private EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag, EntityPermission entityPermission) {
-        EntityTag entityTag = null;
+        EntityTag entityTag;
         
         try {
             String query = null;

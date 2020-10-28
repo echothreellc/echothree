@@ -89,7 +89,7 @@ public class SequenceControl
     //   Sequence Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private SequenceTransferCaches sequenceTransferCaches = null;
+    private SequenceTransferCaches sequenceTransferCaches;
     
     public SequenceTransferCaches getSequenceTransferCaches(UserVisit userVisit) {
         if(sequenceTransferCaches == null) {
@@ -193,7 +193,7 @@ public class SequenceControl
     }
     
     private SequenceType getSequenceTypeByName(String sequenceTypeName, EntityPermission entityPermission) {
-        SequenceType sequenceType = null;
+        SequenceType sequenceType;
         
         try {
             String query = null;
@@ -230,7 +230,7 @@ public class SequenceControl
     }
     
     private SequenceType getSequenceTypeByPrefix(String sequenceTypePrefix, EntityPermission entityPermission) {
-        SequenceType sequenceType = null;
+        SequenceType sequenceType;
         
         try {
             String query = null;
@@ -267,7 +267,7 @@ public class SequenceControl
     }
     
     private SequenceType getSequenceTypeBySuffix(String sequenceTypeSuffix, EntityPermission entityPermission) {
-        SequenceType sequenceType = null;
+        SequenceType sequenceType;
         
         try {
             String query = null;
@@ -491,7 +491,7 @@ public class SequenceControl
     }
     
     private SequenceTypeDescription getSequenceTypeDescription(SequenceType sequenceType, Language language, EntityPermission entityPermission) {
-        SequenceTypeDescription sequenceTypeDescription = null;
+        SequenceTypeDescription sequenceTypeDescription;
         
         try {
             String query = null;
@@ -619,7 +619,7 @@ public class SequenceControl
     }
     
     public SequenceChecksumType getSequenceChecksumTypeByName(String sequenceChecksumTypeName) {
-        SequenceChecksumType sequenceChecksumType = null;
+        SequenceChecksumType sequenceChecksumType;
         
         try {
             PreparedStatement ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
@@ -678,7 +678,7 @@ public class SequenceControl
     }
     
     public SequenceChecksumTypeDescription getSequenceChecksumTypeDescription(SequenceChecksumType sequenceChecksumType, Language language) {
-        SequenceChecksumTypeDescription sequenceChecksumTypeDescription = null;
+        SequenceChecksumTypeDescription sequenceChecksumTypeDescription;
         
         try {
             PreparedStatement ps = SequenceChecksumTypeDescriptionFactory.getInstance().prepareStatement(
@@ -731,7 +731,7 @@ public class SequenceControl
     }
     
     public SequenceEncoderType getSequenceEncoderTypeByName(String sequenceEncoderTypeName) {
-        SequenceEncoderType sequenceEncoderType = null;
+        SequenceEncoderType sequenceEncoderType;
         
         try {
             PreparedStatement ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
@@ -789,7 +789,7 @@ public class SequenceControl
     }
     
     public SequenceEncoderTypeDescription getSequenceEncoderTypeDescription(SequenceEncoderType sequenceEncoderType, Language language) {
-        SequenceEncoderTypeDescription sequenceEncoderTypeDescription = null;
+        SequenceEncoderTypeDescription sequenceEncoderTypeDescription;
         
         try {
             PreparedStatement ps = SequenceEncoderTypeDescriptionFactory.getInstance().prepareStatement(
@@ -896,7 +896,7 @@ public class SequenceControl
     }
     
     private Sequence getDefaultSequence(SequenceType sequenceType, EntityPermission entityPermission) {
-        Sequence sequence = null;
+        Sequence sequence;
         
         try {
             String query = null;
@@ -948,7 +948,7 @@ public class SequenceControl
     }
     
     private Sequence getSequenceByName(SequenceType sequenceType, String sequenceName, EntityPermission entityPermission) {
-        Sequence sequence = null;
+        Sequence sequence;
         
         try {
             String query = null;
@@ -1190,7 +1190,7 @@ public class SequenceControl
     }
     
     private SequenceDescription getSequenceDescription(Sequence sequence, Language language, EntityPermission entityPermission) {
-        SequenceDescription sequenceDescription = null;
+        SequenceDescription sequenceDescription;
         
         try {
             String query = null;
@@ -1308,7 +1308,7 @@ public class SequenceControl
     }
     
     public SequenceValue getSequenceValue(Sequence sequence) {
-        SequenceValue sequenceValue = null;
+        SequenceValue sequenceValue;
         
         try {
             PreparedStatement ps = SequenceValueFactory.getInstance().prepareStatement(
@@ -1327,7 +1327,7 @@ public class SequenceControl
     }
     
     public SequenceValue getSequenceValueForUpdateInSession(Session sequenceSession, Sequence sequence) {
-        SequenceValue sequenceValue = null;
+        SequenceValue sequenceValue;
         
         try {
             PreparedStatement ps = sequenceSession.prepareStatement(SequenceValueFactory.class,

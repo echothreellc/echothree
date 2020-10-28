@@ -123,7 +123,7 @@ public class CancellationPolicyControl
     //   Cancellation Policy Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private CancellationPolicyTransferCaches cancellationPolicyTransferCaches = null;
+    private CancellationPolicyTransferCaches cancellationPolicyTransferCaches;
     
     public CancellationPolicyTransferCaches getCancellationPolicyTransferCaches(UserVisit userVisit) {
         if(cancellationPolicyTransferCaches == null) {
@@ -351,7 +351,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationKind getCancellationKindByName(String cancellationKindName, EntityPermission entityPermission) {
-        CancellationKind cancellationKind = null;
+        CancellationKind cancellationKind;
         
         try {
             String query = null;
@@ -591,7 +591,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationKindDescription getCancellationKindDescription(CancellationKind cancellationKind, Language language, EntityPermission entityPermission) {
-        CancellationKindDescription cancellationKindDescription = null;
+        CancellationKindDescription cancellationKindDescription;
         
         try {
             String query = null;
@@ -816,7 +816,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationPolicy getDefaultCancellationPolicy(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        CancellationPolicy cancellationPolicy = null;
+        CancellationPolicy cancellationPolicy;
         
         try {
             String query = null;
@@ -859,7 +859,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationPolicy getCancellationPolicyByName(CancellationKind cancellationKind, String cancellationPolicyName, EntityPermission entityPermission) {
-        CancellationPolicy cancellationPolicy = null;
+        CancellationPolicy cancellationPolicy;
         
         try {
             String query = null;
@@ -1218,7 +1218,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationPolicyReason getCancellationPolicyReason(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason, EntityPermission entityPermission) {
-        CancellationPolicyReason cancellationPolicyReason = null;
+        CancellationPolicyReason cancellationPolicyReason;
         
         try {
             String query = null;
@@ -1263,7 +1263,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationPolicyReason getDefaultCancellationPolicyReason(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        CancellationPolicyReason cancellationPolicyReason = null;
+        CancellationPolicyReason cancellationPolicyReason;
         
         try {
             String query = null;
@@ -1563,7 +1563,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationReason getDefaultCancellationReason(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        CancellationReason cancellationReason = null;
+        CancellationReason cancellationReason;
         
         try {
             String query = null;
@@ -1606,7 +1606,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationReason getCancellationReasonByName(CancellationKind cancellationKind, String cancellationReasonName, EntityPermission entityPermission) {
-        CancellationReason cancellationReason = null;
+        CancellationReason cancellationReason;
         
         try {
             String query = null;
@@ -1804,7 +1804,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationReasonDescription getCancellationReasonDescription(CancellationReason cancellationReason, Language language, EntityPermission entityPermission) {
-        CancellationReasonDescription cancellationReasonDescription = null;
+        CancellationReasonDescription cancellationReasonDescription;
         
         try {
             String query = null;
@@ -1982,7 +1982,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationReasonType getCancellationReasonType(CancellationReason cancellationReason, CancellationType cancellationType, EntityPermission entityPermission) {
-        CancellationReasonType cancellationReasonType = null;
+        CancellationReasonType cancellationReasonType;
         
         try {
             String query = null;
@@ -2027,7 +2027,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationReasonType getDefaultCancellationReasonType(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        CancellationReasonType cancellationReasonType = null;
+        CancellationReasonType cancellationReasonType;
         
         try {
             String query = null;
@@ -2328,7 +2328,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationType getDefaultCancellationType(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        CancellationType cancellationType = null;
+        CancellationType cancellationType;
         
         try {
             String query = null;
@@ -2371,7 +2371,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationType getCancellationTypeByName(CancellationKind cancellationKind, String cancellationTypeName, EntityPermission entityPermission) {
-        CancellationType cancellationType = null;
+        CancellationType cancellationType;
         
         try {
             String query = null;
@@ -2569,7 +2569,7 @@ public class CancellationPolicyControl
     }
     
     private CancellationTypeDescription getCancellationTypeDescription(CancellationType cancellationType, Language language, EntityPermission entityPermission) {
-        CancellationTypeDescription cancellationTypeDescription = null;
+        CancellationTypeDescription cancellationTypeDescription;
         
         try {
             String query = null;

@@ -225,7 +225,7 @@ public class ContentControl
     //   Content Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ContentTransferCaches contentTransferCaches = null;
+    private ContentTransferCaches contentTransferCaches;
     
     public ContentTransferCaches getContentTransferCaches(UserVisit userVisit) {
         if(contentTransferCaches == null) {
@@ -388,7 +388,7 @@ public class ContentControl
     }
     
     public ContentPageAreaTypeDescription getContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language) {
-        ContentPageAreaTypeDescription contentPageAreaTypeDescription = null;
+        ContentPageAreaTypeDescription contentPageAreaTypeDescription;
         
         try {
             PreparedStatement ps = ContentPageAreaTypeDescriptionFactory.getInstance().prepareStatement(
@@ -717,7 +717,7 @@ public class ContentControl
     }
     
     private ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, EntityPermission entityPermission) {
-        ContentPageLayoutDescription contentPageLayoutDescription = null;
+        ContentPageLayoutDescription contentPageLayoutDescription;
         
         try {
             String query = null;
@@ -885,7 +885,7 @@ public class ContentControl
     }
 
     public ContentPageLayoutArea getContentPageLayoutArea(ContentPageLayout contentPageLayout, Integer sortOrder) {
-        ContentPageLayoutArea contentPageLayoutArea = null;
+        ContentPageLayoutArea contentPageLayoutArea;
         
         try {
             PreparedStatement ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
@@ -952,7 +952,7 @@ public class ContentControl
     }
     
     public ContentPageLayoutAreaDescription getContentPageLayoutAreaDescription(ContentPageLayoutArea contentPageLayoutArea, Language language) {
-        ContentPageLayoutAreaDescription contentPageLayoutAreaDescription = null;
+        ContentPageLayoutAreaDescription contentPageLayoutAreaDescription;
         
         try {
             PreparedStatement ps = ContentPageLayoutAreaDescriptionFactory.getInstance().prepareStatement(
@@ -1037,7 +1037,7 @@ public class ContentControl
     }
     
     private ContentCollection getContentCollectionByName(String contentCollectionName, EntityPermission entityPermission) {
-        ContentCollection contentCollection = null;
+        ContentCollection contentCollection;
         
         try {
             String query = null;
@@ -1174,7 +1174,7 @@ public class ContentControl
     }
     
     private ContentCollectionDescription getContentCollectionDescription(ContentCollection contentCollection, Language language, EntityPermission entityPermission) {
-        ContentCollectionDescription contentCollectionDescription = null;
+        ContentCollectionDescription contentCollectionDescription;
         
         try {
             String query = null;
@@ -1455,7 +1455,7 @@ public class ContentControl
     }
     
     private ContentSection getContentSectionByName(ContentCollection contentCollection, String contentSectionName, EntityPermission entityPermission) {
-        ContentSection contentSection = null;
+        ContentSection contentSection;
         
         try {
             String query = null;
@@ -1502,7 +1502,7 @@ public class ContentControl
     }
     
     private ContentSection getDefaultContentSection(ContentCollection contentCollection, EntityPermission entityPermission) {
-        ContentSection contentSection = null;
+        ContentSection contentSection;
         
         try {
             String query = null;
@@ -1740,7 +1740,7 @@ public class ContentControl
     }
     
     private ContentSectionDescription getContentSectionDescription(ContentSection contentSection, Language language, EntityPermission entityPermission) {
-        ContentSectionDescription contentSectionDescription = null;
+        ContentSectionDescription contentSectionDescription;
         
         try {
             String query = null;
@@ -2012,7 +2012,7 @@ public class ContentControl
     }
     
     private ContentPage getContentPageByName(ContentSection contentSection, String contentPageName, EntityPermission entityPermission) {
-        ContentPage contentPage = null;
+        ContentPage contentPage;
         
         try {
             String query = null;
@@ -2059,7 +2059,7 @@ public class ContentControl
     }
     
     private ContentPage getDefaultContentPage(ContentSection contentSection, EntityPermission entityPermission) {
-        ContentPage contentPage = null;
+        ContentPage contentPage;
         
         try {
             String query = null;
@@ -2220,7 +2220,7 @@ public class ContentControl
     }
     
     private ContentPageDescription getContentPageDescription(ContentPage contentPage, Language language, EntityPermission entityPermission) {
-        ContentPageDescription contentPageDescription = null;
+        ContentPageDescription contentPageDescription;
         
         try {
             String query = null;
@@ -2462,7 +2462,7 @@ public class ContentControl
     }
     
     private ContentPageArea getContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language, EntityPermission entityPermission) {
-        ContentPageArea contentPageArea = null;
+        ContentPageArea contentPageArea;
         
         try {
             String query = null;
@@ -2594,7 +2594,7 @@ public class ContentControl
     }
     
     public ContentPageAreaBlob getContentPageAreaBlob(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaBlob contentPageAreaBlob = null;
+        ContentPageAreaBlob contentPageAreaBlob;
         
         try {
             PreparedStatement ps = ContentPageAreaBlobFactory.getInstance().prepareStatement(
@@ -2621,7 +2621,7 @@ public class ContentControl
     }
     
     public ContentPageAreaClob getContentPageAreaClob(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaClob contentPageAreaClob = null;
+        ContentPageAreaClob contentPageAreaClob;
         
         try {
             PreparedStatement ps = ContentPageAreaClobFactory.getInstance().prepareStatement(
@@ -2648,7 +2648,7 @@ public class ContentControl
     }
     
     public ContentPageAreaString getContentPageAreaString(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaString contentPageAreaString = null;
+        ContentPageAreaString contentPageAreaString;
         
         try {
             PreparedStatement ps = ContentPageAreaStringFactory.getInstance().prepareStatement(
@@ -2675,7 +2675,7 @@ public class ContentControl
     }
     
     public ContentPageAreaUrl getContentPageAreaUrl(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaUrl contentPageAreaUrl = null;
+        ContentPageAreaUrl contentPageAreaUrl;
         
         try {
             PreparedStatement ps = ContentPageAreaUrlFactory.getInstance().prepareStatement(
@@ -2784,7 +2784,7 @@ public class ContentControl
     }
     
     private ContentCatalog getContentCatalogByName(ContentCollection contentCollection, String contentCatalogName, EntityPermission entityPermission) {
-        ContentCatalog contentCatalog = null;
+        ContentCatalog contentCatalog;
         
         try {
             String query = null;
@@ -2833,7 +2833,7 @@ public class ContentControl
     }
     
     private ContentCatalog getDefaultContentCatalog(ContentCollection contentCollection, EntityPermission entityPermission) {
-        ContentCatalog contentCatalog = null;
+        ContentCatalog contentCatalog;
         
         try {
             String query = null;
@@ -3013,7 +3013,7 @@ public class ContentControl
     }
     
     private ContentCatalogDescription getContentCatalogDescription(ContentCatalog contentCatalog, Language language, EntityPermission entityPermission) {
-        ContentCatalogDescription contentCatalogDescription = null;
+        ContentCatalogDescription contentCatalogDescription;
         
         try {
             String query = null;
@@ -3416,7 +3416,7 @@ public class ContentControl
     
     private ContentCatalogItem getContentCatalogItem(ContentCatalog contentCatalog, Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        ContentCatalogItem contentCatalogItem = null;
+        ContentCatalogItem contentCatalogItem;
         
         try {
             String query = null;
@@ -3940,7 +3940,7 @@ public class ContentControl
     }
 
     private ContentCategory getContentCategoryByName(ContentCatalog contentCatalog, String contentCategoryName, EntityPermission entityPermission) {
-        ContentCategory contentCategory = null;
+        ContentCategory contentCategory;
         
         try {
             String query = null;
@@ -3986,7 +3986,7 @@ public class ContentControl
     }
     
     private ContentCategory getDefaultContentCategory(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        ContentCategory contentCategory = null;
+        ContentCategory contentCategory;
         
         try {
             String query = null;
@@ -4228,7 +4228,7 @@ public class ContentControl
     
     private ContentCategoryDescription getContentCategoryDescription(ContentCategory contentCategory, Language language,
             EntityPermission entityPermission) {
-        ContentCategoryDescription contentCategoryDescription = null;
+        ContentCategoryDescription contentCategoryDescription;
         
         try {
             String query = null;
@@ -4415,7 +4415,7 @@ public class ContentControl
 
     private ContentCategoryItem getContentCategoryItem(ContentCategory contentCategory, ContentCatalogItem contentCatalogItem,
             EntityPermission entityPermission) {
-        ContentCategoryItem contentCategoryItem = null;
+        ContentCategoryItem contentCategoryItem;
         
         try {
             String query = null;
@@ -4462,7 +4462,7 @@ public class ContentControl
     }
     
     private ContentCategoryItem getDefaultContentCategoryItem(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCategoryItem contentCategoryItem = null;
+        ContentCategoryItem contentCategoryItem;
         
         try {
             String query = null;
@@ -4780,7 +4780,7 @@ public class ContentControl
     }
     
     private ContentForum getContentForum(ContentCollection contentCollection, Forum forum, EntityPermission entityPermission) {
-        ContentForum contentForum = null;
+        ContentForum contentForum;
         
         try {
             String query = null;
@@ -4827,7 +4827,7 @@ public class ContentControl
     }
     
     private ContentForum getDefaultContentForum(ContentCollection contentCollection, EntityPermission entityPermission) {
-        ContentForum contentForum = null;
+        ContentForum contentForum;
         
         try {
             String query = null;
@@ -5032,7 +5032,7 @@ public class ContentControl
     }
     
     private ContentWebAddress getContentWebAddressByName(String contentWebAddressName, EntityPermission entityPermission) {
-        ContentWebAddress contentWebAddress = null;
+        ContentWebAddress contentWebAddress;
         
         try {
             String query = null;
@@ -5210,7 +5210,7 @@ public class ContentControl
     }
     
     private ContentWebAddressDescription getContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language, EntityPermission entityPermission) {
-        ContentWebAddressDescription contentWebAddressDescription = null;
+        ContentWebAddressDescription contentWebAddressDescription;
         
         try {
             String query = null;
@@ -5374,7 +5374,7 @@ public class ContentControl
     }
     
     private ContentWebAddressServer getContentWebAddressServer(ContentWebAddress contentWebAddress, Server server, EntityPermission entityPermission) {
-        ContentWebAddressServer contentWebAddressServer = null;
+        ContentWebAddressServer contentWebAddressServer;
         
         try {
             String query = null;

@@ -68,7 +68,7 @@ public class ShippingControl
     //   Shipping Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ShippingTransferCaches shippingTransferCaches = null;
+    private ShippingTransferCaches shippingTransferCaches;
     
     public ShippingTransferCaches getShippingTransferCaches(UserVisit userVisit) {
         if(shippingTransferCaches == null) {
@@ -130,7 +130,7 @@ public class ShippingControl
     }
     
     public ShippingMethod getShippingMethodByName(String shippingMethodName, EntityPermission entityPermission) {
-        ShippingMethod shippingMethod = null;
+        ShippingMethod shippingMethod;
         
         try {
             String query = null;
@@ -320,7 +320,7 @@ public class ShippingControl
     }
     
     private ShippingMethodDescription getShippingMethodDescription(ShippingMethod shippingMethod, Language language, EntityPermission entityPermission) {
-        ShippingMethodDescription shippingMethodDescription = null;
+        ShippingMethodDescription shippingMethodDescription;
         
         try {
             String query = null;
@@ -490,7 +490,7 @@ public class ShippingControl
     
     private ShippingMethodCarrierService getShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             EntityPermission entityPermission) {
-        ShippingMethodCarrierService shippingMethodCarrierService = null;
+        ShippingMethodCarrierService shippingMethodCarrierService;
         
         try {
             String query = null;

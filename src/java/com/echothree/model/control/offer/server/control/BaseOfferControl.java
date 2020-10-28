@@ -32,7 +32,7 @@ public class BaseOfferControl
     //   Offer Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private OfferTransferCaches offerTransferCaches = null;
+    private OfferTransferCaches offerTransferCaches;
     
     public OfferTransferCaches getOfferTransferCaches(UserVisit userVisit) {
         if(offerTransferCaches == null) {
