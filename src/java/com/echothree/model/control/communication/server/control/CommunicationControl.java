@@ -271,9 +271,9 @@ public class CommunicationControl
         List<CommunicationEventPurposeTransfer> communicationEventPurposeTransfers = new ArrayList<>(communicationEventPurposes.size());
         CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeTransferCache();
         
-        communicationEventPurposes.stream().forEach((communicationEventPurpose) -> {
-            communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(communicationEventPurpose));
-        });
+        communicationEventPurposes.forEach((communicationEventPurpose) ->
+                communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(communicationEventPurpose))
+        );
         
         return communicationEventPurposeTransfers;
     }
@@ -513,9 +513,9 @@ public class CommunicationControl
         List<CommunicationEventPurposeDescriptionTransfer> communicationEventPurposeDescriptionTransfers = new ArrayList<>(communicationEventPurposeDescriptions.size());
         CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeDescriptionTransferCache();
         
-        communicationEventPurposeDescriptions.stream().forEach((communicationEventPurposeDescription) -> {
-            communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription));
-        });
+        communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) ->
+                communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription))
+        );
         
         return communicationEventPurposeDescriptionTransfers;
     }
@@ -884,9 +884,9 @@ public class CommunicationControl
         List<CommunicationEventTransfer> communicationEventTransfers = new ArrayList<>(communicationEvents.size());
         CommunicationEventTransferCache communicationEventTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache();
         
-        communicationEvents.stream().forEach((communicationEvent) -> {
-            communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(communicationEvent));
-        });
+        communicationEvents.forEach((communicationEvent) ->
+                communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(communicationEvent))
+        );
         
         return communicationEventTransfers;
     }
@@ -1296,9 +1296,9 @@ public class CommunicationControl
         List<CommunicationSourceTransfer> communicationSourceTransfers = new ArrayList<>(communicationSources.size());
         CommunicationSourceTransferCache communicationSourceTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache();
         
-        communicationSources.stream().forEach((communicationSource) -> {
-            communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(communicationSource));
-        });
+        communicationSources.forEach((communicationSource) ->
+                communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(communicationSource))
+        );
         
         return communicationSourceTransfers;
     }
@@ -1475,9 +1475,9 @@ public class CommunicationControl
         List<CommunicationSourceDescriptionTransfer> communicationSourceDescriptionTransfers = new ArrayList<>(communicationSourceDescriptions.size());
         CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceDescriptionTransferCache();
         
-        communicationSourceDescriptions.stream().forEach((communicationSourceDescription) -> {
-            communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(communicationSourceDescription));
-        });
+        communicationSourceDescriptions.forEach((communicationSourceDescription) ->
+                communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(communicationSourceDescription))
+        );
         
         return communicationSourceDescriptionTransfers;
     }

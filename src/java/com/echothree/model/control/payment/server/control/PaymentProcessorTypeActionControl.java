@@ -230,9 +230,9 @@ public class PaymentProcessorTypeActionControl
         var paymentProcessorTypeActionTransfers = new ArrayList<PaymentProcessorTypeActionTransfer>(paymentProcessorTypeActions.size());
         var paymentProcessorTypeActionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeActionTransferCache();
 
-        paymentProcessorTypeActions.stream().forEach((paymentProcessorTypeAction) -> {
-            paymentProcessorTypeActionTransfers.add(paymentProcessorTypeActionTransferCache.getTransfer(paymentProcessorTypeAction));
-        });
+        paymentProcessorTypeActions.forEach((paymentProcessorTypeAction) ->
+                paymentProcessorTypeActionTransfers.add(paymentProcessorTypeActionTransferCache.getTransfer(paymentProcessorTypeAction))
+        );
 
         return paymentProcessorTypeActionTransfers;
     }

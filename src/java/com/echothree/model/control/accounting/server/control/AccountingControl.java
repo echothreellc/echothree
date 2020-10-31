@@ -512,9 +512,9 @@ public class AccountingControl
         List<CurrencyDescriptionTransfer> currencyDescriptionTransfers = new ArrayList<>(currencyDescriptions.size());
         CurrencyDescriptionTransferCache currencyDescriptionTransferCache = getAccountingTransferCaches(userVisit).getCurrencyDescriptionTransferCache();
         
-        currencyDescriptions.stream().forEach((currencyDescription) -> {
-            currencyDescriptionTransfers.add(currencyDescriptionTransferCache.getTransfer(currencyDescription));
-        });
+        currencyDescriptions.forEach((currencyDescription) ->
+                currencyDescriptionTransfers.add(currencyDescriptionTransferCache.getTransfer(currencyDescription))
+        );
         
         return currencyDescriptionTransfers;
     }
@@ -704,9 +704,9 @@ public class AccountingControl
         List<ItemAccountingCategoryTransfer> itemAccountingCategoryTransfers = new ArrayList<>(itemAccountingCategories.size());
         ItemAccountingCategoryTransferCache itemAccountingCategoryTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
         
-        itemAccountingCategories.stream().forEach((itemAccountingCategory) -> {
-            itemAccountingCategoryTransfers.add(itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategory));
-        });
+        itemAccountingCategories.forEach((itemAccountingCategory) ->
+                itemAccountingCategoryTransfers.add(itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategory))
+        );
         
         return itemAccountingCategoryTransfers;
     }
@@ -1006,9 +1006,9 @@ public class AccountingControl
         List<ItemAccountingCategoryDescriptionTransfer> itemAccountingCategoryDescriptionTransfers = new ArrayList<>(itemAccountingCategoryDescriptions.size());
         ItemAccountingCategoryDescriptionTransferCache itemAccountingCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryDescriptionTransferCache();
         
-        itemAccountingCategoryDescriptions.stream().forEach((itemAccountingCategoryDescription) -> {
-            itemAccountingCategoryDescriptionTransfers.add(itemAccountingCategoryDescriptionTransferCache.getTransfer(itemAccountingCategoryDescription));
-        });
+        itemAccountingCategoryDescriptions.forEach((itemAccountingCategoryDescription) ->
+                itemAccountingCategoryDescriptionTransfers.add(itemAccountingCategoryDescriptionTransferCache.getTransfer(itemAccountingCategoryDescription))
+        );
         
         return itemAccountingCategoryDescriptionTransfers;
     }
@@ -1125,9 +1125,9 @@ public class AccountingControl
         List<GlAccountTypeTransfer> glAccountTypeTransfers = new ArrayList<>(glAccountTypes.size());
         GlAccountTypeTransferCache glAccountTypeTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache();
         
-        glAccountTypes.stream().forEach((glAccountType) -> {
-            glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType));
-        });
+        glAccountTypes.forEach((glAccountType) ->
+                glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType))
+        );
         
         return glAccountTypeTransfers;
     }
@@ -1358,9 +1358,9 @@ public class AccountingControl
         List<GlAccountClassTransfer> glAccountClassTransfers = new ArrayList<>(glAccountClasses.size());
         GlAccountClassTransferCache glAccountClassTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
         
-        glAccountClasses.stream().forEach((glAccountClass) -> {
-            glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass));
-        });
+        glAccountClasses.forEach((glAccountClass) ->
+                glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass))
+        );
         
         return glAccountClassTransfers;
     }
@@ -1644,9 +1644,9 @@ public class AccountingControl
         List<GlAccountClassDescriptionTransfer> glAccountClassDescriptionTransfers = new ArrayList<>(glAccountClassDescriptions.size());
         GlAccountClassDescriptionTransferCache glAccountClassDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassDescriptionTransferCache();
         
-        glAccountClassDescriptions.stream().forEach((glAccountClassDescription) -> {
-            glAccountClassDescriptionTransfers.add(glAccountClassDescriptionTransferCache.getTransfer(glAccountClassDescription));
-        });
+        glAccountClassDescriptions.forEach((glAccountClassDescription) ->
+                glAccountClassDescriptionTransfers.add(glAccountClassDescriptionTransferCache.getTransfer(glAccountClassDescription))
+        );
         
         return glAccountClassDescriptionTransfers;
     }
@@ -1866,9 +1866,9 @@ public class AccountingControl
         List<GlAccountCategoryTransfer> glAccountCategoryTransfers = new ArrayList<>(glAccountCategories.size());
         GlAccountCategoryTransferCache glAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
         
-        glAccountCategories.stream().forEach((glAccountCategory) -> {
-            glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory));
-        });
+        glAccountCategories.forEach((glAccountCategory) ->
+                glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory))
+        );
         
         return glAccountCategoryTransfers;
     }
@@ -2153,9 +2153,9 @@ public class AccountingControl
         List<GlAccountCategoryDescriptionTransfer> glAccountCategoryDescriptionTransfers = new ArrayList<>(glAccountCategoryDescriptions.size());
         GlAccountCategoryDescriptionTransferCache glAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryDescriptionTransferCache();
         
-        glAccountCategoryDescriptions.stream().forEach((glAccountCategoryDescription) -> {
-            glAccountCategoryDescriptionTransfers.add(glAccountCategoryDescriptionTransferCache.getTransfer(glAccountCategoryDescription));
-        });
+        glAccountCategoryDescriptions.forEach((glAccountCategoryDescription) ->
+                glAccountCategoryDescriptionTransfers.add(glAccountCategoryDescriptionTransferCache.getTransfer(glAccountCategoryDescription))
+        );
         
         return glAccountCategoryDescriptionTransfers;
     }
@@ -2359,9 +2359,9 @@ public class AccountingControl
         List<GlResourceTypeTransfer> glResourceTypeTransfers = new ArrayList<>(glResourceTypes.size());
         GlResourceTypeTransferCache glResourceTypeTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
         
-        glResourceTypes.stream().forEach((glResourceType) -> {
-            glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType));
-        });
+        glResourceTypes.forEach((glResourceType) ->
+                glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType))
+        );
         
         return glResourceTypeTransfers;
     }
@@ -2600,9 +2600,9 @@ public class AccountingControl
         List<GlResourceTypeDescriptionTransfer> glResourceTypeDescriptionTransfers = new ArrayList<>(glResourceTypeDescriptions.size());
         GlResourceTypeDescriptionTransferCache glResourceTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeDescriptionTransferCache();
         
-        glResourceTypeDescriptions.stream().forEach((glResourceTypeDescription) -> {
-            glResourceTypeDescriptionTransfers.add(glResourceTypeDescriptionTransferCache.getTransfer(glResourceTypeDescription));
-        });
+        glResourceTypeDescriptions.forEach((glResourceTypeDescription) ->
+                glResourceTypeDescriptionTransfers.add(glResourceTypeDescriptionTransferCache.getTransfer(glResourceTypeDescription))
+        );
         
         return glResourceTypeDescriptionTransfers;
     }
@@ -2977,9 +2977,9 @@ public class AccountingControl
         List<GlAccountTransfer> glAccountTransfers = new ArrayList<>(glAccounts.size());
         GlAccountTransferCache glAccountTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
         
-        glAccounts.stream().forEach((glAccount) -> {
-            glAccountTransfers.add(glAccountTransferCache.getTransfer(glAccount));
-        });
+        glAccounts.forEach((glAccount) ->
+                glAccountTransfers.add(glAccountTransferCache.getTransfer(glAccount))
+        );
         
         return glAccountTransfers;
     }
@@ -3350,9 +3350,9 @@ public class AccountingControl
         List<GlAccountDescriptionTransfer> glAccountDescriptionTransfers = new ArrayList<>(glAccountDescriptions.size());
         GlAccountDescriptionTransferCache glAccountDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountDescriptionTransferCache();
         
-        glAccountDescriptions.stream().forEach((glAccountDescription) -> {
-            glAccountDescriptionTransfers.add(glAccountDescriptionTransferCache.getTransfer(glAccountDescription));
-        });
+        glAccountDescriptions.forEach((glAccountDescription) ->
+                glAccountDescriptionTransfers.add(glAccountDescriptionTransferCache.getTransfer(glAccountDescription))
+        );
         
         return glAccountDescriptionTransfers;
     }
@@ -3537,9 +3537,9 @@ public class AccountingControl
         List<TransactionTypeTransfer> transactionTypeTransfers = new ArrayList<>(transactionTypes.size());
         TransactionTypeTransferCache transactionTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
         
-        transactionTypes.stream().forEach((transactionType) -> {
-            transactionTypeTransfers.add(transactionTypeTransferCache.getTransfer(transactionType));
-        });
+        transactionTypes.forEach((transactionType) ->
+                transactionTypeTransfers.add(transactionTypeTransferCache.getTransfer(transactionType))
+        );
         
         return transactionTypeTransfers;
     }
@@ -3712,9 +3712,9 @@ public class AccountingControl
         List<TransactionTypeDescriptionTransfer> transactionTypeDescriptionTransfers = new ArrayList<>(transactionTypeDescriptions.size());
         TransactionTypeDescriptionTransferCache transactionTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeDescriptionTransferCache();
         
-        transactionTypeDescriptions.stream().forEach((transactionTypeDescription) -> {
-            transactionTypeDescriptionTransfers.add(transactionTypeDescriptionTransferCache.getTransfer(transactionTypeDescription));
-        });
+        transactionTypeDescriptions.forEach((transactionTypeDescription) ->
+                transactionTypeDescriptionTransfers.add(transactionTypeDescriptionTransferCache.getTransfer(transactionTypeDescription))
+        );
         
         return transactionTypeDescriptionTransfers;
     }
@@ -3893,9 +3893,9 @@ public class AccountingControl
         List<TransactionGlAccountCategoryTransfer> transactionGlAccountCategoryTransfers = new ArrayList<>(transactionGlAccountCategories.size());
         TransactionGlAccountCategoryTransferCache transactionGlAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
         
-        transactionGlAccountCategories.stream().forEach((transactionGlAccountCategory) -> {
-            transactionGlAccountCategoryTransfers.add(transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategory));
-        });
+        transactionGlAccountCategories.forEach((transactionGlAccountCategory) ->
+                transactionGlAccountCategoryTransfers.add(transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategory))
+        );
         
         return transactionGlAccountCategoryTransfers;
     }
@@ -4079,9 +4079,9 @@ public class AccountingControl
         List<TransactionGlAccountCategoryDescriptionTransfer> transactionGlAccountCategoryDescriptionTransfers = new ArrayList<>(transactionGlAccountCategoryDescriptions.size());
         TransactionGlAccountCategoryDescriptionTransferCache transactionGlAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryDescriptionTransferCache();
         
-        transactionGlAccountCategoryDescriptions.stream().forEach((transactionGlAccountCategoryDescription) -> {
-            transactionGlAccountCategoryDescriptionTransfers.add(transactionGlAccountCategoryDescriptionTransferCache.getTransfer(transactionGlAccountCategoryDescription));
-        });
+        transactionGlAccountCategoryDescriptions.forEach((transactionGlAccountCategoryDescription) ->
+                transactionGlAccountCategoryDescriptionTransfers.add(transactionGlAccountCategoryDescriptionTransferCache.getTransfer(transactionGlAccountCategoryDescription))
+        );
         
         return transactionGlAccountCategoryDescriptionTransfers;
     }
@@ -4299,9 +4299,9 @@ public class AccountingControl
         List<TransactionEntityRoleTypeTransfer> transactionEntityRoleTypeTransfers = new ArrayList<>(transactionEntityRoleTypes.size());
         TransactionEntityRoleTypeTransferCache transactionEntityRoleTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
         
-        transactionEntityRoleTypes.stream().forEach((transactionEntityRoleType) -> {
-            transactionEntityRoleTypeTransfers.add(transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleType));
-        });
+        transactionEntityRoleTypes.forEach((transactionEntityRoleType) ->
+                transactionEntityRoleTypeTransfers.add(transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleType))
+        );
         
         return transactionEntityRoleTypeTransfers;
     }
@@ -4491,9 +4491,9 @@ public class AccountingControl
         List<TransactionEntityRoleTypeDescriptionTransfer> transactionEntityRoleTypeDescriptionTransfers = new ArrayList<>(transactionEntityRoleTypeDescriptions.size());
         TransactionEntityRoleTypeDescriptionTransferCache transactionEntityRoleTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeDescriptionTransferCache();
         
-        transactionEntityRoleTypeDescriptions.stream().forEach((transactionEntityRoleTypeDescription) -> {
-            transactionEntityRoleTypeDescriptionTransfers.add(transactionEntityRoleTypeDescriptionTransferCache.getTransfer(transactionEntityRoleTypeDescription));
-        });
+        transactionEntityRoleTypeDescriptions.forEach((transactionEntityRoleTypeDescription) ->
+                transactionEntityRoleTypeDescriptionTransfers.add(transactionEntityRoleTypeDescriptionTransferCache.getTransfer(transactionEntityRoleTypeDescription))
+        );
         
         return transactionEntityRoleTypeDescriptionTransfers;
     }
@@ -4832,9 +4832,9 @@ public class AccountingControl
         List<TransactionGroupTransfer> transactionGroupTransfers = new ArrayList<>(transactionGroups.size());
         TransactionGroupTransferCache transactionGroupTransferCache = getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache();
         
-        transactionGroups.stream().forEach((transactionGroup) -> {
-            transactionGroupTransfers.add(transactionGroupTransferCache.getTransfer(transactionGroup));
-        });
+        transactionGroups.forEach((transactionGroup) ->
+                transactionGroupTransfers.add(transactionGroupTransferCache.getTransfer(transactionGroup))
+        );
         
         return transactionGroupTransfers;
     }
@@ -4981,9 +4981,9 @@ public class AccountingControl
         List<TransactionTransfer> transactionTransfers = new ArrayList<>(transactions.size());
         TransactionTransferCache transactionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTransferCache();
         
-        transactions.stream().forEach((transaction) -> {
-            transactionTransfers.add(transactionTransferCache.getTransfer(transaction));
-        });
+        transactions.forEach((transaction) ->
+                transactionTransfers.add(transactionTransferCache.getTransfer(transaction))
+        );
         
         return transactionTransfers;
     }
@@ -5112,9 +5112,9 @@ public class AccountingControl
         List<TransactionGlEntryTransfer> transactionGlEntryTransfers = new ArrayList<>(transactionGlEntries.size());
         TransactionGlEntryTransferCache transactionGlEntryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache();
         
-        transactionGlEntries.stream().forEach((transactionGlEntry) -> {
-            transactionGlEntryTransfers.add(transactionGlEntryTransferCache.getTransfer(transactionGlEntry));
-        });
+        transactionGlEntries.forEach((transactionGlEntry) ->
+                transactionGlEntryTransfers.add(transactionGlEntryTransferCache.getTransfer(transactionGlEntry))
+        );
         
         return transactionGlEntryTransfers;
     }
@@ -5246,9 +5246,9 @@ public class AccountingControl
         List<TransactionEntityRoleTransfer> transactionEntityRoleTransfers = new ArrayList<>(transactionEntityRoles.size());
         TransactionEntityRoleTransferCache transactionEntityRoleTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache();
         
-        transactionEntityRoles.stream().forEach((transactionEntityRole) -> {
-            transactionEntityRoleTransfers.add(transactionEntityRoleTransferCache.getTransfer(transactionEntityRole));
-        });
+        transactionEntityRoles.forEach((transactionEntityRole) ->
+                transactionEntityRoleTransfers.add(transactionEntityRoleTransferCache.getTransfer(transactionEntityRole))
+        );
         
         return transactionEntityRoleTransfers;
     }
@@ -5458,9 +5458,9 @@ public class AccountingControl
         List<SymbolPositionTransfer> symbolPositionTransfers = new ArrayList<>(symbolPositions.size());
         SymbolPositionTransferCache symbolPositionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
         
-        symbolPositions.stream().forEach((symbolPosition) -> {
-            symbolPositionTransfers.add(symbolPositionTransferCache.getTransfer(symbolPosition));
-        });
+        symbolPositions.forEach((symbolPosition) ->
+                symbolPositionTransfers.add(symbolPositionTransferCache.getTransfer(symbolPosition))
+        );
         
         return symbolPositionTransfers;
     }
@@ -5702,9 +5702,9 @@ public class AccountingControl
         List<SymbolPositionDescriptionTransfer> symbolPositionDescriptionTransfers = new ArrayList<>(symbolPositionDescriptions.size());
         SymbolPositionDescriptionTransferCache symbolPositionDescriptionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionDescriptionTransferCache();
         
-        symbolPositionDescriptions.stream().forEach((symbolPositionDescription) -> {
-            symbolPositionDescriptionTransfers.add(symbolPositionDescriptionTransferCache.getTransfer(symbolPositionDescription));
-        });
+        symbolPositionDescriptions.forEach((symbolPositionDescription) ->
+                symbolPositionDescriptionTransfers.add(symbolPositionDescriptionTransferCache.getTransfer(symbolPositionDescription))
+        );
         
         return symbolPositionDescriptionTransfers;
     }

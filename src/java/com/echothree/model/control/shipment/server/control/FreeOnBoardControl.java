@@ -189,9 +189,9 @@ public class FreeOnBoardControl
         var freeOnBoardTransfers = new ArrayList<FreeOnBoardTransfer>(freeOnBoards.size());
         var freeOnBoardTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardTransferCache();
 
-        freeOnBoards.stream().forEach((freeOnBoard) -> {
-            freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(freeOnBoard));
-        });
+        freeOnBoards.forEach((freeOnBoard) ->
+                freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(freeOnBoard))
+        );
 
         return freeOnBoardTransfers;
     }
@@ -417,9 +417,9 @@ public class FreeOnBoardControl
         var freeOnBoardDescriptionTransfers = new ArrayList<FreeOnBoardDescriptionTransfer>(freeOnBoardDescriptions.size());
         var freeOnBoardDescriptionTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardDescriptionTransferCache();
 
-        freeOnBoardDescriptions.stream().forEach((freeOnBoardDescription) -> {
-            freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(freeOnBoardDescription));
-        });
+        freeOnBoardDescriptions.forEach((freeOnBoardDescription) ->
+                freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(freeOnBoardDescription))
+        );
 
         return freeOnBoardDescriptionTransfers;
     }

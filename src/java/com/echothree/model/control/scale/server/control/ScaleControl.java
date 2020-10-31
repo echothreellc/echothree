@@ -250,9 +250,9 @@ public class ScaleControl
         List<ScaleTypeTransfer> scaleTypeTransfers = new ArrayList<>(scaleTypes.size());
         ScaleTypeTransferCache scaleTypeTransferCache = getScaleTransferCaches(userVisit).getScaleTypeTransferCache();
 
-        scaleTypes.stream().forEach((scaleType) -> {
-            scaleTypeTransfers.add(scaleTypeTransferCache.getScaleTypeTransfer(scaleType));
-        });
+        scaleTypes.forEach((scaleType) ->
+                scaleTypeTransfers.add(scaleTypeTransferCache.getScaleTypeTransfer(scaleType))
+        );
 
         return scaleTypeTransfers;
     }
@@ -481,9 +481,9 @@ public class ScaleControl
         List<ScaleTypeDescriptionTransfer> scaleTypeDescriptionTransfers = new ArrayList<>(scaleTypeDescriptions.size());
         ScaleTypeDescriptionTransferCache scaleTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleTypeDescriptionTransferCache();
 
-        scaleTypeDescriptions.stream().forEach((scaleTypeDescription) -> {
-            scaleTypeDescriptionTransfers.add(scaleTypeDescriptionTransferCache.getScaleTypeDescriptionTransfer(scaleTypeDescription));
-        });
+        scaleTypeDescriptions.forEach((scaleTypeDescription) ->
+                scaleTypeDescriptionTransfers.add(scaleTypeDescriptionTransferCache.getScaleTypeDescriptionTransfer(scaleTypeDescription))
+        );
 
         return scaleTypeDescriptionTransfers;
     }
@@ -736,9 +736,9 @@ public class ScaleControl
         List<ScaleTransfer> scaleTransfers = new ArrayList<>(scales.size());
         ScaleTransferCache scaleTransferCache = getScaleTransferCaches(userVisit).getScaleTransferCache();
 
-        scales.stream().forEach((scale) -> {
-            scaleTransfers.add(scaleTransferCache.getScaleTransfer(scale));
-        });
+        scales.forEach((scale) ->
+                scaleTransfers.add(scaleTransferCache.getScaleTransfer(scale))
+        );
 
         return scaleTransfers;
     }
@@ -995,9 +995,9 @@ public class ScaleControl
         List<ScaleDescriptionTransfer> scaleDescriptionTransfers = new ArrayList<>(scaleDescriptions.size());
         ScaleDescriptionTransferCache scaleDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleDescriptionTransferCache();
 
-        scaleDescriptions.stream().forEach((scaleDescription) -> {
-            scaleDescriptionTransfers.add(scaleDescriptionTransferCache.getScaleDescriptionTransfer(scaleDescription));
-        });
+        scaleDescriptions.forEach((scaleDescription) ->
+                scaleDescriptionTransfers.add(scaleDescriptionTransferCache.getScaleDescriptionTransfer(scaleDescription))
+        );
 
         return scaleDescriptionTransfers;
     }
@@ -1182,9 +1182,9 @@ public class ScaleControl
         List<ScaleUseTypeTransfer> scaleUseTypeTransfers = new ArrayList<>(scaleUseTypes.size());
         ScaleUseTypeTransferCache scaleUseTypeTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache();
 
-        scaleUseTypes.stream().forEach((scaleUseType) -> {
-            scaleUseTypeTransfers.add(scaleUseTypeTransferCache.getScaleUseTypeTransfer(scaleUseType));
-        });
+        scaleUseTypes.forEach((scaleUseType) ->
+                scaleUseTypeTransfers.add(scaleUseTypeTransferCache.getScaleUseTypeTransfer(scaleUseType))
+        );
 
         return scaleUseTypeTransfers;
     }
@@ -1413,9 +1413,9 @@ public class ScaleControl
         List<ScaleUseTypeDescriptionTransfer> scaleUseTypeDescriptionTransfers = new ArrayList<>(scaleUseTypeDescriptions.size());
         ScaleUseTypeDescriptionTransferCache scaleUseTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeDescriptionTransferCache();
 
-        scaleUseTypeDescriptions.stream().forEach((scaleUseTypeDescription) -> {
-            scaleUseTypeDescriptionTransfers.add(scaleUseTypeDescriptionTransferCache.getScaleUseTypeDescriptionTransfer(scaleUseTypeDescription));
-        });
+        scaleUseTypeDescriptions.forEach((scaleUseTypeDescription) ->
+                scaleUseTypeDescriptionTransfers.add(scaleUseTypeDescriptionTransferCache.getScaleUseTypeDescriptionTransfer(scaleUseTypeDescription))
+        );
 
         return scaleUseTypeDescriptionTransfers;
     }
@@ -1626,9 +1626,9 @@ public class ScaleControl
         List<PartyScaleUseTransfer> partyScaleUseTransfers = new ArrayList<>(partyScaleUses.size());
         PartyScaleUseTransferCache partyScaleUseTransferCache = getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache();
 
-        partyScaleUses.stream().forEach((partyScaleUse) -> {
-            partyScaleUseTransfers.add(partyScaleUseTransferCache.getPartyScaleUseTransfer(partyScaleUse));
-        });
+        partyScaleUses.forEach((partyScaleUse) ->
+                partyScaleUseTransfers.add(partyScaleUseTransferCache.getPartyScaleUseTransfer(partyScaleUse))
+        );
 
         return partyScaleUseTransfers;
     }

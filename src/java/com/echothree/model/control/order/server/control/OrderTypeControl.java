@@ -241,9 +241,9 @@ public class OrderTypeControl
         List<OrderTypeTransfer> orderTypeTransfers = new ArrayList<>(orderTypes.size());
         OrderTypeTransferCache orderTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTypeTransferCache();
 
-        orderTypes.stream().forEach((orderType) -> {
-            orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(orderType));
-        });
+        orderTypes.forEach((orderType) ->
+                orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(orderType))
+        );
 
         return orderTypeTransfers;
     }
@@ -515,9 +515,9 @@ public class OrderTypeControl
         List<OrderTypeDescriptionTransfer> orderTypeDescriptionTransfers = new ArrayList<>(orderTypeDescriptions.size());
         OrderTypeDescriptionTransferCache orderTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTypeDescriptionTransferCache();
 
-        orderTypeDescriptions.stream().forEach((orderTypeDescription) -> {
-            orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(orderTypeDescription));
-        });
+        orderTypeDescriptions.forEach((orderTypeDescription) ->
+                orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(orderTypeDescription))
+        );
 
         return orderTypeDescriptionTransfers;
     }

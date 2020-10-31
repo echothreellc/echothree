@@ -205,9 +205,9 @@ public class OrderPriorityControl
         List<OrderPriorityTransfer> orderPriorityTransfers = new ArrayList<>(orderPriorities.size());
         OrderPriorityTransferCache orderPriorityTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityTransferCache();
 
-        orderPriorities.stream().forEach((orderPriority) -> {
-            orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(orderPriority));
-        });
+        orderPriorities.forEach((orderPriority) ->
+                orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(orderPriority))
+        );
 
         return orderPriorityTransfers;
     }
@@ -432,9 +432,9 @@ public class OrderPriorityControl
         List<OrderPriorityDescriptionTransfer> orderPriorityDescriptionTransfers = new ArrayList<>(orderPriorityDescriptions.size());
         OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache();
 
-        orderPriorityDescriptions.stream().forEach((orderPriorityDescription) -> {
-            orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(orderPriorityDescription));
-        });
+        orderPriorityDescriptions.forEach((orderPriorityDescription) ->
+                orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(orderPriorityDescription))
+        );
 
         return orderPriorityDescriptionTransfers;
     }

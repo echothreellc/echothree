@@ -298,9 +298,9 @@ public class IndexControl
         List<IndexTypeTransfer> indexTypeTransfers = new ArrayList<>(indexTypes.size());
         IndexTypeTransferCache indexTypeTransferCache = getIndexTransferCaches(userVisit).getIndexTypeTransferCache();
 
-        indexTypes.stream().forEach((indexType) -> {
-            indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(indexType));
-        });
+        indexTypes.forEach((indexType) ->
+                indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(indexType))
+        );
 
         return indexTypeTransfers;
     }
@@ -552,9 +552,9 @@ public class IndexControl
         List<IndexTypeDescriptionTransfer> indexTypeDescriptionTransfers = new ArrayList<>(indexTypeDescriptions.size());
         IndexTypeDescriptionTransferCache indexTypeDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexTypeDescriptionTransferCache();
 
-        indexTypeDescriptions.stream().forEach((indexTypeDescription) -> {
-            indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(indexTypeDescription));
-        });
+        indexTypeDescriptions.forEach((indexTypeDescription) ->
+                indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(indexTypeDescription))
+        );
 
         return indexTypeDescriptionTransfers;
     }
@@ -775,9 +775,9 @@ public class IndexControl
         List<IndexFieldTransfer> indexFieldTransfers = new ArrayList<>(indexFields.size());
         IndexFieldTransferCache indexFieldTransferCache = getIndexTransferCaches(userVisit).getIndexFieldTransferCache();
 
-        indexFields.stream().forEach((indexField) -> {
-            indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(indexField));
-        });
+        indexFields.forEach((indexField) ->
+                indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(indexField))
+        );
 
         return indexFieldTransfers;
     }
@@ -1294,9 +1294,9 @@ public class IndexControl
         List<IndexTransfer> indexTransfers = new ArrayList<>(indexes.size());
         IndexTransferCache indexTransferCache = getIndexTransferCaches(userVisit).getIndexTransferCache();
 
-        indexes.stream().forEach((index) -> {
-            indexTransfers.add(indexTransferCache.getIndexTransfer(index));
-        });
+        indexes.forEach((index) ->
+                indexTransfers.add(indexTransferCache.getIndexTransfer(index))
+        );
 
         return indexTransfers;
     }
@@ -1543,9 +1543,9 @@ public class IndexControl
         List<IndexDescriptionTransfer> indexDescriptionTransfers = new ArrayList<>(indexDescriptions.size());
         IndexDescriptionTransferCache indexDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexDescriptionTransferCache();
 
-        indexDescriptions.stream().forEach((indexDescription) -> {
-            indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(indexDescription));
-        });
+        indexDescriptions.forEach((indexDescription) ->
+                indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(indexDescription))
+        );
 
         return indexDescriptionTransfers;
     }

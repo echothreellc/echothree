@@ -205,9 +205,9 @@ public class LotAliasControl
         List<LotAliasTypeTransfer> lotAliasTypeTransfers = new ArrayList<>(lotAliasTypes.size());
         LotAliasTypeTransferCache lotAliasTypeTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache();
 
-        lotAliasTypes.stream().forEach((lotAliasType) -> {
-            lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getTransfer(lotAliasType));
-        });
+        lotAliasTypes.forEach((lotAliasType) ->
+                lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getTransfer(lotAliasType))
+        );
 
         return lotAliasTypeTransfers;
     }
@@ -436,9 +436,9 @@ public class LotAliasControl
         List<LotAliasTypeDescriptionTransfer> lotAliasTypeDescriptionTransfers = new ArrayList<>(lotAliasTypeDescriptions.size());
         LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache();
 
-        lotAliasTypeDescriptions.stream().forEach((lotAliasTypeDescription) -> {
-            lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getTransfer(lotAliasTypeDescription));
-        });
+        lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) ->
+                lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getTransfer(lotAliasTypeDescription))
+        );
 
         return lotAliasTypeDescriptionTransfers;
     }
@@ -629,9 +629,9 @@ public class LotAliasControl
         List<LotAliasTransfer> lotAliasTransfers = new ArrayList<>(lotaliases.size());
         LotAliasTransferCache lotAliasTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTransferCache();
 
-        lotaliases.stream().forEach((lotAlias) -> {
-            lotAliasTransfers.add(lotAliasTransferCache.getTransfer(lotAlias));
-        });
+        lotaliases.forEach((lotAlias) ->
+                lotAliasTransfers.add(lotAliasTransferCache.getTransfer(lotAlias))
+        );
 
         return lotAliasTransfers;
     }

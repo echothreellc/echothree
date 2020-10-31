@@ -406,9 +406,9 @@ public class SelectorControl
         List<SelectorKindTransfer> selectorKindTransfers = new ArrayList<>(selectorKinds.size());
         SelectorKindTransferCache selectorKindTransferCache = getSelectorTransferCaches(userVisit).getSelectorKindTransferCache();
 
-        selectorKinds.stream().forEach((selectorKind) -> {
-            selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(selectorKind));
-        });
+        selectorKinds.forEach((selectorKind) ->
+                selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(selectorKind))
+        );
 
         return selectorKindTransfers;
     }
@@ -820,9 +820,9 @@ public class SelectorControl
         List<SelectorTypeTransfer> selectorTypeTransfers = new ArrayList<>(selectorTypes.size());
         SelectorTypeTransferCache selectorTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
 
-        selectorTypes.stream().forEach((selectorType) -> {
-            selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(selectorType));
-        });
+        selectorTypes.forEach((selectorType) ->
+                selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(selectorType))
+        );
 
         return selectorTypeTransfers;
     }
@@ -1386,9 +1386,9 @@ public class SelectorControl
         List<SelectorNodeTypeTransfer> selectorNodeTypeTransfers = new ArrayList<>(selectorNodeTypes.size());
         SelectorNodeTypeTransferCache selectorNodeTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
         
-        selectorNodeTypes.stream().forEach((selectorNodeType) -> {
-            selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeType));
-        });
+        selectorNodeTypes.forEach((selectorNodeType) ->
+                selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeType))
+        );
         
         return selectorNodeTypeTransfers;
     }
@@ -1844,9 +1844,9 @@ public class SelectorControl
         List<SelectorTransfer> selectorTransfers = new ArrayList<>(selectors.size());
         SelectorTransferCache selectorTransferCache = getSelectorTransferCaches(userVisit).getSelectorTransferCache();
         
-        selectors.stream().forEach((selector) -> {
-            selectorTransfers.add(selectorTransferCache.getSelectorTransfer(selector));
-        });
+        selectors.forEach((selector) ->
+                selectorTransfers.add(selectorTransferCache.getSelectorTransfer(selector))
+        );
         
         return selectorTransfers;
     }
@@ -4314,9 +4314,9 @@ public class SelectorControl
         List<SelectorPartyTransfer> selectorPartyTransfers = new ArrayList<>(selectorParties.size());
         SelectorPartyTransferCache selectorPartyTransferCache = getSelectorTransferCaches(userVisit).getSelectorPartyTransferCache();
         
-        selectorParties.stream().forEach((selectorParty) -> {
-            selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(selectorParty));
-        });
+        selectorParties.forEach((selectorParty) ->
+                selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(selectorParty))
+        );
         
         return selectorPartyTransfers;
     }

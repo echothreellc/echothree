@@ -351,9 +351,9 @@ public class EmployeeControl
         List<ResponsibilityTypeTransfer> responsibilityTypeTransfers = new ArrayList<>(responsibilityTypes.size());
         ResponsibilityTypeTransferCache responsibilityTypeTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeTransferCache();
         
-        responsibilityTypes.stream().forEach((responsibilityType) -> {
-            responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(responsibilityType));
-        });
+        responsibilityTypes.forEach((responsibilityType) ->
+                responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(responsibilityType))
+        );
         
         return responsibilityTypeTransfers;
     }
@@ -594,9 +594,9 @@ public class EmployeeControl
         List<ResponsibilityTypeDescriptionTransfer> responsibilityTypeDescriptionTransfers = new ArrayList<>(responsibilityTypeDescriptions.size());
         ResponsibilityTypeDescriptionTransferCache responsibilityTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeDescriptionTransferCache();
         
-        responsibilityTypeDescriptions.stream().forEach((responsibilityTypeDescription) -> {
-            responsibilityTypeDescriptionTransfers.add(responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(responsibilityTypeDescription));
-        });
+        responsibilityTypeDescriptions.forEach((responsibilityTypeDescription) ->
+                responsibilityTypeDescriptionTransfers.add(responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(responsibilityTypeDescription))
+        );
         
         return responsibilityTypeDescriptionTransfers;
     }
@@ -779,9 +779,9 @@ public class EmployeeControl
         List<SkillTypeTransfer> skillTypeTransfers = new ArrayList<>(skillTypes.size());
         SkillTypeTransferCache skillTypeTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeTransferCache();
         
-        skillTypes.stream().forEach((skillType) -> {
-            skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(skillType));
-        });
+        skillTypes.forEach((skillType) ->
+                skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(skillType))
+        );
         
         return skillTypeTransfers;
     }
@@ -1021,9 +1021,9 @@ public class EmployeeControl
         List<SkillTypeDescriptionTransfer> skillTypeDescriptionTransfers = new ArrayList<>(skillTypeDescriptions.size());
         SkillTypeDescriptionTransferCache skillTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeDescriptionTransferCache();
         
-        skillTypeDescriptions.stream().forEach((skillTypeDescription) -> {
-            skillTypeDescriptionTransfers.add(skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(skillTypeDescription));
-        });
+        skillTypeDescriptions.forEach((skillTypeDescription) ->
+                skillTypeDescriptionTransfers.add(skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(skillTypeDescription))
+        );
         
         return skillTypeDescriptionTransfers;
     }
@@ -1207,9 +1207,9 @@ public class EmployeeControl
         List<LeaveTypeTransfer> leaveTypeTransfers = new ArrayList<>(leaveTypes.size());
         LeaveTypeTransferCache leaveTypeTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeTransferCache();
 
-        leaveTypes.stream().forEach((leaveType) -> {
-            leaveTypeTransfers.add(leaveTypeTransferCache.getLeaveTypeTransfer(leaveType));
-        });
+        leaveTypes.forEach((leaveType) ->
+                leaveTypeTransfers.add(leaveTypeTransferCache.getLeaveTypeTransfer(leaveType))
+        );
 
         return leaveTypeTransfers;
     }
@@ -1437,9 +1437,9 @@ public class EmployeeControl
         List<LeaveTypeDescriptionTransfer> leaveTypeDescriptionTransfers = new ArrayList<>(leaveTypeDescriptions.size());
         LeaveTypeDescriptionTransferCache leaveTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeDescriptionTransferCache();
 
-        leaveTypeDescriptions.stream().forEach((leaveTypeDescription) -> {
-            leaveTypeDescriptionTransfers.add(leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(leaveTypeDescription));
-        });
+        leaveTypeDescriptions.forEach((leaveTypeDescription) ->
+                leaveTypeDescriptionTransfers.add(leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(leaveTypeDescription))
+        );
 
         return leaveTypeDescriptionTransfers;
     }
@@ -1624,9 +1624,9 @@ public class EmployeeControl
         List<LeaveReasonTransfer> leaveReasonTransfers = new ArrayList<>(leaveReasons.size());
         LeaveReasonTransferCache leaveReasonTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonTransferCache();
 
-        leaveReasons.stream().forEach((leaveReason) -> {
-            leaveReasonTransfers.add(leaveReasonTransferCache.getLeaveReasonTransfer(leaveReason));
-        });
+        leaveReasons.forEach((leaveReason) ->
+                leaveReasonTransfers.add(leaveReasonTransferCache.getLeaveReasonTransfer(leaveReason))
+        );
 
         return leaveReasonTransfers;
     }
@@ -1854,9 +1854,9 @@ public class EmployeeControl
         List<LeaveReasonDescriptionTransfer> leaveReasonDescriptionTransfers = new ArrayList<>(leaveReasonDescriptions.size());
         LeaveReasonDescriptionTransferCache leaveReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonDescriptionTransferCache();
 
-        leaveReasonDescriptions.stream().forEach((leaveReasonDescription) -> {
-            leaveReasonDescriptionTransfers.add(leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(leaveReasonDescription));
-        });
+        leaveReasonDescriptions.forEach((leaveReasonDescription) ->
+                leaveReasonDescriptionTransfers.add(leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(leaveReasonDescription))
+        );
 
         return leaveReasonDescriptionTransfers;
     }
@@ -2171,9 +2171,9 @@ public class EmployeeControl
         List<LeaveTransfer> leaveTransfers = new ArrayList<>(leaves.size());
         LeaveTransferCache leaveTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTransferCache();
 
-        leaves.stream().forEach((leave) -> {
-            leaveTransfers.add(leaveTransferCache.getLeaveTransfer(leave));
-        });
+        leaves.forEach((leave) ->
+                leaveTransfers.add(leaveTransferCache.getLeaveTransfer(leave))
+        );
 
         return leaveTransfers;
     }
@@ -2386,9 +2386,9 @@ public class EmployeeControl
         List<TerminationReasonTransfer> terminationReasonTransfers = new ArrayList<>(terminationReasons.size());
         TerminationReasonTransferCache terminationReasonTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonTransferCache();
         
-        terminationReasons.stream().forEach((terminationReason) -> {
-            terminationReasonTransfers.add(terminationReasonTransferCache.getTerminationReasonTransfer(terminationReason));
-        });
+        terminationReasons.forEach((terminationReason) ->
+                terminationReasonTransfers.add(terminationReasonTransferCache.getTerminationReasonTransfer(terminationReason))
+        );
         
         return terminationReasonTransfers;
     }
@@ -2629,9 +2629,9 @@ public class EmployeeControl
         List<TerminationReasonDescriptionTransfer> terminationReasonDescriptionTransfers = new ArrayList<>(terminationReasonDescriptions.size());
         TerminationReasonDescriptionTransferCache terminationReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonDescriptionTransferCache();
         
-        terminationReasonDescriptions.stream().forEach((terminationReasonDescription) -> {
-            terminationReasonDescriptionTransfers.add(terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(terminationReasonDescription));
-        });
+        terminationReasonDescriptions.forEach((terminationReasonDescription) ->
+                terminationReasonDescriptionTransfers.add(terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(terminationReasonDescription))
+        );
         
         return terminationReasonDescriptionTransfers;
     }
@@ -2814,9 +2814,9 @@ public class EmployeeControl
         List<TerminationTypeTransfer> terminationTypeTransfers = new ArrayList<>(terminationTypes.size());
         TerminationTypeTransferCache terminationTypeTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeTransferCache();
         
-        terminationTypes.stream().forEach((terminationType) -> {
-            terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(terminationType));
-        });
+        terminationTypes.forEach((terminationType) ->
+                terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(terminationType))
+        );
         
         return terminationTypeTransfers;
     }
@@ -3057,9 +3057,9 @@ public class EmployeeControl
         List<TerminationTypeDescriptionTransfer> terminationTypeDescriptionTransfers = new ArrayList<>(terminationTypeDescriptions.size());
         TerminationTypeDescriptionTransferCache terminationTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeDescriptionTransferCache();
         
-        terminationTypeDescriptions.stream().forEach((terminationTypeDescription) -> {
-            terminationTypeDescriptionTransfers.add(terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(terminationTypeDescription));
-        });
+        terminationTypeDescriptions.forEach((terminationTypeDescription) ->
+                terminationTypeDescriptionTransfers.add(terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(terminationTypeDescription))
+        );
         
         return terminationTypeDescriptionTransfers;
     }
@@ -3338,9 +3338,9 @@ public class EmployeeControl
         List<EmploymentTransfer> employmentTransfers = new ArrayList<>(employments.size());
         EmploymentTransferCache employmentTransferCache = getEmployeeTransferCaches(userVisit).getEmploymentTransferCache();
 
-        employments.stream().forEach((employment) -> {
-            employmentTransfers.add(employmentTransferCache.getEmploymentTransfer(employment));
-        });
+        employments.forEach((employment) ->
+                employmentTransfers.add(employmentTransferCache.getEmploymentTransfer(employment))
+        );
 
         return employmentTransfers;
     }
@@ -4232,9 +4232,9 @@ public class EmployeeControl
         List<PartyResponsibilityTransfer> partyResponsibilityTransfers = new ArrayList<>(partyResponsibilities.size());
         PartyResponsibilityTransferCache partyResponsibilityTransferCache = getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache();
         
-        partyResponsibilities.stream().forEach((partyResponsibility) -> {
-            partyResponsibilityTransfers.add(partyResponsibilityTransferCache.getPartyResponsibilityTransfer(partyResponsibility));
-        });
+        partyResponsibilities.forEach((partyResponsibility) ->
+                partyResponsibilityTransfers.add(partyResponsibilityTransferCache.getPartyResponsibilityTransfer(partyResponsibility))
+        );
         
         return partyResponsibilityTransfers;
     }
@@ -4423,9 +4423,9 @@ public class EmployeeControl
         List<PartySkillTransfer> partySkillTransfers = new ArrayList<>(partySkills.size());
         PartySkillTransferCache partySkillTransferCache = getEmployeeTransferCaches(userVisit).getPartySkillTransferCache();
         
-        partySkills.stream().forEach((partySkill) -> {
-            partySkillTransfers.add(partySkillTransferCache.getPartySkillTransfer(partySkill));
-        });
+        partySkills.forEach((partySkill) ->
+                partySkillTransfers.add(partySkillTransferCache.getPartySkillTransfer(partySkill))
+        );
         
         return partySkillTransfers;
     }

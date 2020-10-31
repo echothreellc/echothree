@@ -212,9 +212,9 @@ public class OrderAdjustmentControl
         List<OrderAdjustmentTypeTransfer> orderAdjustmentTypeTransfers = new ArrayList<>(orderAdjustmentTypes.size());
         OrderAdjustmentTypeTransferCache orderAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeTransferCache();
 
-        orderAdjustmentTypes.stream().forEach((orderAdjustmentType) -> {
-            orderAdjustmentTypeTransfers.add(orderAdjustmentTypeTransferCache.getOrderAdjustmentTypeTransfer(orderAdjustmentType));
-        });
+        orderAdjustmentTypes.forEach((orderAdjustmentType) ->
+                orderAdjustmentTypeTransfers.add(orderAdjustmentTypeTransferCache.getOrderAdjustmentTypeTransfer(orderAdjustmentType))
+        );
 
         return orderAdjustmentTypeTransfers;
     }
@@ -439,9 +439,9 @@ public class OrderAdjustmentControl
         List<OrderAdjustmentTypeDescriptionTransfer> orderAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderAdjustmentTypeDescriptions.size());
         OrderAdjustmentTypeDescriptionTransferCache orderAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeDescriptionTransferCache();
 
-        orderAdjustmentTypeDescriptions.stream().forEach((orderAdjustmentTypeDescription) -> {
-            orderAdjustmentTypeDescriptionTransfers.add(orderAdjustmentTypeDescriptionTransferCache.getOrderAdjustmentTypeDescriptionTransfer(orderAdjustmentTypeDescription));
-        });
+        orderAdjustmentTypeDescriptions.forEach((orderAdjustmentTypeDescription) ->
+                orderAdjustmentTypeDescriptionTransfers.add(orderAdjustmentTypeDescriptionTransferCache.getOrderAdjustmentTypeDescriptionTransfer(orderAdjustmentTypeDescription))
+        );
 
         return orderAdjustmentTypeDescriptionTransfers;
     }

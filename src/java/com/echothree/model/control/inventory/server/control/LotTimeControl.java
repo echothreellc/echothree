@@ -205,9 +205,9 @@ public class LotTimeControl
         List<LotTimeTypeTransfer> lotTimeTypeTransfers = new ArrayList<>(lotTimeTypes.size());
         LotTimeTypeTransferCache lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
 
-        lotTimeTypes.stream().forEach((lotTimeType) -> {
-            lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType));
-        });
+        lotTimeTypes.forEach((lotTimeType) ->
+                lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType))
+        );
 
         return lotTimeTypeTransfers;
     }
@@ -428,9 +428,9 @@ public class LotTimeControl
         List<LotTimeTypeDescriptionTransfer> lotTimeTypeDescriptionTransfers = new ArrayList<>(lotTimeTypeDescriptions.size());
         LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache();
 
-        lotTimeTypeDescriptions.stream().forEach((lotTimeTypeDescription) -> {
-            lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription));
-        });
+        lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) ->
+                lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription))
+        );
 
         return lotTimeTypeDescriptionTransfers;
     }
@@ -604,9 +604,9 @@ public class LotTimeControl
         List<LotTimeTransfer> lotTimeTransfers = new ArrayList<>(lotTimes.size());
         LotTimeTransferCache lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
 
-        lotTimes.stream().forEach((lotTime) -> {
-            lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime));
-        });
+        lotTimes.forEach((lotTime) ->
+                lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime))
+        );
 
         return lotTimeTransfers;
     }

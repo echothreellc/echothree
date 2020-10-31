@@ -353,9 +353,9 @@ public class SequenceControl
         List<SequenceTypeTransfer> sequenceTypeTransfers = new ArrayList<>(sequenceTypes.size());
         SequenceTypeTransferCache sequenceTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
         
-        sequenceTypes.stream().forEach((sequenceType) -> {
-            sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType));
-        });
+        sequenceTypes.forEach((sequenceType) ->
+                sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType))
+        );
         
         return sequenceTypeTransfers;
     }
@@ -563,9 +563,9 @@ public class SequenceControl
         List<SequenceTypeDescriptionTransfer> sequenceTypeDescriptionTransfers = new ArrayList<>(sequenceTypeDescriptions.size());
         SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache();
         
-        sequenceTypeDescriptions.stream().forEach((sequenceTypeDescription) -> {
-            sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(sequenceTypeDescription));
-        });
+        sequenceTypeDescriptions.forEach((sequenceTypeDescription) ->
+                sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(sequenceTypeDescription))
+        );
         
         return sequenceTypeDescriptionTransfers;
     }
@@ -1038,9 +1038,9 @@ public class SequenceControl
         List<SequenceTransfer> sequenceTransfers = new ArrayList<>(sequences.size());
         SequenceTransferCache sequenceTransferCache = getSequenceTransferCaches(userVisit).getSequenceTransferCache();
         
-        sequences.stream().forEach((sequence) -> {
-            sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence));
-        });
+        sequences.forEach((sequence) ->
+                sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence))
+        );
         
         return sequenceTransfers;
     }
@@ -1262,9 +1262,9 @@ public class SequenceControl
         List<SequenceDescriptionTransfer> sequenceDescriptionTransfers = new ArrayList<>(sequenceDescriptions.size());
         SequenceDescriptionTransferCache sequenceDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache();
         
-        sequenceDescriptions.stream().forEach((sequenceDescription) -> {
-            sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(sequenceDescription));
-        });
+        sequenceDescriptions.forEach((sequenceDescription) ->
+                sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(sequenceDescription))
+        );
         
         return sequenceDescriptionTransfers;
     }

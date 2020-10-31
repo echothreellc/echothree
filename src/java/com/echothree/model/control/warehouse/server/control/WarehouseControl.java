@@ -1167,9 +1167,9 @@ public class WarehouseControl
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
         LocationNameElementTransferCache locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
         
-        locationNameElements.stream().forEach((locationNameElement) -> {
-            locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement));
-        });
+        locationNameElements.forEach((locationNameElement) ->
+                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement))
+        );
         
         return locationNameElementTransfers;
     }
@@ -2126,9 +2126,9 @@ public class WarehouseControl
         List<LocationCapacityTransfer> locationCapacityTransfers = new ArrayList<>(locationCapacities.size());
         LocationCapacityTransferCache locationCapacityTransferCache = getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache();
         
-        locationCapacities.stream().forEach((locationCapacity) -> {
-            locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity));
-        });
+        locationCapacities.forEach((locationCapacity) ->
+                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity))
+        );
         
         return locationCapacityTransfers;
     }

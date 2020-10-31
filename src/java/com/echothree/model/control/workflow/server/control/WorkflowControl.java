@@ -268,9 +268,9 @@ public class WorkflowControl
         List<WorkflowTypeTransfer> workflowTypeTransfers = new ArrayList<>(workflowTypes.size());
         WorkflowTypeTransferCache workflowTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowTypeTransferCache();
         
-        workflowTypes.stream().forEach((workflowType) -> {
-            workflowTypeTransfers.add(workflowTypeTransferCache.getWorkflowTypeTransfer(workflowType));
-        });
+        workflowTypes.forEach((workflowType) ->
+                workflowTypeTransfers.add(workflowTypeTransferCache.getWorkflowTypeTransfer(workflowType))
+        );
         
         return workflowTypeTransfers;
     }
@@ -430,9 +430,9 @@ public class WorkflowControl
         List<WorkflowStepTypeTransfer> workflowStepTypeTransfers = new ArrayList<>(workflowStepTypes.size());
         WorkflowStepTypeTransferCache workflowStepTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTypeTransferCache();
         
-        workflowStepTypes.stream().forEach((workflowStepType) -> {
-            workflowStepTypeTransfers.add(workflowStepTypeTransferCache.getWorkflowStepTypeTransfer(workflowStepType));
-        });
+        workflowStepTypes.forEach((workflowStepType) ->
+                workflowStepTypeTransfers.add(workflowStepTypeTransferCache.getWorkflowStepTypeTransfer(workflowStepType))
+        );
         
         return workflowStepTypeTransfers;
     }
@@ -620,9 +620,9 @@ public class WorkflowControl
         List<WorkflowTransfer> workflowTransfers = new ArrayList<>(workflows.size());
         WorkflowTransferCache workflowTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowTransferCache();
         
-        workflows.stream().forEach((workflow) -> {
-            workflowTransfers.add(workflowTransferCache.getWorkflowTransfer(workflow));
-        });
+        workflows.forEach((workflow) ->
+                workflowTransfers.add(workflowTransferCache.getWorkflowTransfer(workflow))
+        );
         
         return workflowTransfers;
     }
@@ -783,9 +783,9 @@ public class WorkflowControl
         List<WorkflowDescriptionTransfer> workflowDescriptionTransfers = new ArrayList<>(workflowDescriptions.size());
         WorkflowDescriptionTransferCache workflowDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDescriptionTransferCache();
         
-        workflowDescriptions.stream().forEach((workflowDescription) -> {
-            workflowDescriptionTransfers.add(workflowDescriptionTransferCache.getWorkflowDescriptionTransfer(workflowDescription));
-        });
+        workflowDescriptions.forEach((workflowDescription) ->
+                workflowDescriptionTransfers.add(workflowDescriptionTransferCache.getWorkflowDescriptionTransfer(workflowDescription))
+        );
         
         return workflowDescriptionTransfers;
     }
@@ -1011,9 +1011,9 @@ public class WorkflowControl
         List<WorkflowStepTransfer> workflowStepTransfers = new ArrayList<>(workflowSteps.size());
         WorkflowStepTransferCache workflowStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTransferCache();
         
-        workflowSteps.stream().forEach((workflowStep) -> {
-            workflowStepTransfers.add(workflowStepTransferCache.getWorkflowStepTransfer(workflowStep));
-        });
+        workflowSteps.forEach((workflowStep) ->
+                workflowStepTransfers.add(workflowStepTransferCache.getWorkflowStepTransfer(workflowStep))
+        );
         
         return workflowStepTransfers;
     }
@@ -1246,9 +1246,9 @@ public class WorkflowControl
         List<WorkflowStepDescriptionTransfer> workflowStepDescriptionTransfers = new ArrayList<>(workflowStepDescriptions.size());
         WorkflowStepDescriptionTransferCache workflowStepDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepDescriptionTransferCache();
         
-        workflowStepDescriptions.stream().forEach((workflowStepDescription) -> {
-            workflowStepDescriptionTransfers.add(workflowStepDescriptionTransferCache.getWorkflowStepDescriptionTransfer(workflowStepDescription));
-        });
+        workflowStepDescriptions.forEach((workflowStepDescription) ->
+                workflowStepDescriptionTransfers.add(workflowStepDescriptionTransferCache.getWorkflowStepDescriptionTransfer(workflowStepDescription))
+        );
         
         return workflowStepDescriptionTransfers;
     }
@@ -1401,9 +1401,9 @@ public class WorkflowControl
         List<WorkflowEntityTypeTransfer> workflowEntityTypeTransfers = new ArrayList<>(workflowEntityTypes.size());
         WorkflowEntityTypeTransferCache workflowEntityTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntityTypeTransferCache();
 
-        workflowEntityTypes.stream().forEach((workflowEntityType) -> {
-            workflowEntityTypeTransfers.add(workflowEntityTypeTransferCache.getWorkflowEntityTypeTransfer(workflowEntityType));
-        });
+        workflowEntityTypes.forEach((workflowEntityType) ->
+                workflowEntityTypeTransfers.add(workflowEntityTypeTransferCache.getWorkflowEntityTypeTransfer(workflowEntityType))
+        );
 
         return workflowEntityTypeTransfers;
     }
@@ -1660,9 +1660,9 @@ public class WorkflowControl
         List<WorkflowEntranceTransfer> workflowEntranceTransfers = new ArrayList<>(workflowEntrances.size());
         WorkflowEntranceTransferCache workflowEntranceTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceTransferCache();
         
-        workflowEntrances.stream().forEach((workflowEntrance) -> {
-            workflowEntranceTransfers.add(workflowEntranceTransferCache.getWorkflowEntranceTransfer(workflowEntrance));
-        });
+        workflowEntrances.forEach((workflowEntrance) ->
+                workflowEntranceTransfers.add(workflowEntranceTransferCache.getWorkflowEntranceTransfer(workflowEntrance))
+        );
         
         return workflowEntranceTransfers;
     }
@@ -1892,9 +1892,9 @@ public class WorkflowControl
         List<WorkflowEntranceDescriptionTransfer> workflowEntranceDescriptionTransfers = new ArrayList<>(workflowEntranceDescriptions.size());
         WorkflowEntranceDescriptionTransferCache workflowEntranceDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceDescriptionTransferCache();
         
-        workflowEntranceDescriptions.stream().forEach((workflowEntranceDescription) -> {
-            workflowEntranceDescriptionTransfers.add(workflowEntranceDescriptionTransferCache.getWorkflowEntranceDescriptionTransfer(workflowEntranceDescription));
-        });
+        workflowEntranceDescriptions.forEach((workflowEntranceDescription) ->
+                workflowEntranceDescriptionTransfers.add(workflowEntranceDescriptionTransferCache.getWorkflowEntranceDescriptionTransfer(workflowEntranceDescription))
+        );
         
         return workflowEntranceDescriptionTransfers;
     }
@@ -2121,9 +2121,9 @@ public class WorkflowControl
         List<WorkflowEntranceSelectorTransfer> workflowEntranceSelectorTransfers = new ArrayList<>(workflowEntranceSelectors.size());
         WorkflowEntranceSelectorTransferCache workflowEntranceSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSelectorTransferCache();
         
-        workflowEntranceSelectors.stream().forEach((workflowEntranceSelector) -> {
-            workflowEntranceSelectorTransfers.add(workflowEntranceSelectorTransferCache.getWorkflowEntranceSelectorTransfer(workflowEntranceSelector));
-        });
+        workflowEntranceSelectors.forEach((workflowEntranceSelector) ->
+                workflowEntranceSelectorTransfers.add(workflowEntranceSelectorTransferCache.getWorkflowEntranceSelectorTransfer(workflowEntranceSelector))
+        );
         
         return workflowEntranceSelectorTransfers;
     }
@@ -2264,9 +2264,9 @@ public class WorkflowControl
         List<WorkflowEntrancePartyTypeTransfer> workflowEntrancePartyTypeTransfers = new ArrayList<>(workflowEntrancePartyTypes.size());
         WorkflowEntrancePartyTypeTransferCache workflowEntrancePartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntrancePartyTypeTransferCache();
         
-        workflowEntrancePartyTypes.stream().forEach((workflowEntrancePartyType) -> {
-            workflowEntrancePartyTypeTransfers.add(workflowEntrancePartyTypeTransferCache.getWorkflowEntrancePartyTypeTransfer(workflowEntrancePartyType));
-        });
+        workflowEntrancePartyTypes.forEach((workflowEntrancePartyType) ->
+                workflowEntrancePartyTypeTransfers.add(workflowEntrancePartyTypeTransferCache.getWorkflowEntrancePartyTypeTransfer(workflowEntrancePartyType))
+        );
         
         return workflowEntrancePartyTypeTransfers;
     }
@@ -2398,9 +2398,9 @@ public class WorkflowControl
         List<WorkflowEntranceSecurityRoleTransfer> workflowEntranceSecurityRoleTransfers = new ArrayList<>(workflowEntranceSecurityRoles.size());
         WorkflowEntranceSecurityRoleTransferCache workflowEntranceSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSecurityRoleTransferCache();
         
-        workflowEntranceSecurityRoles.stream().forEach((workflowEntranceSecurityRole) -> {
-            workflowEntranceSecurityRoleTransfers.add(workflowEntranceSecurityRoleTransferCache.getWorkflowEntranceSecurityRoleTransfer(workflowEntranceSecurityRole));
-        });
+        workflowEntranceSecurityRoles.forEach((workflowEntranceSecurityRole) ->
+                workflowEntranceSecurityRoleTransfers.add(workflowEntranceSecurityRoleTransferCache.getWorkflowEntranceSecurityRoleTransfer(workflowEntranceSecurityRole))
+        );
         
         return workflowEntranceSecurityRoleTransfers;
     }
@@ -2558,9 +2558,9 @@ public class WorkflowControl
         List<WorkflowEntranceStepTransfer> workflowEntranceStepTransfers = new ArrayList<>(workflowEntranceSteps.size());
         WorkflowEntranceStepTransferCache workflowEntranceStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceStepTransferCache();
         
-        workflowEntranceSteps.stream().forEach((workflowEntranceStep) -> {
-            workflowEntranceStepTransfers.add(workflowEntranceStepTransferCache.getWorkflowEntranceStepTransfer(workflowEntranceStep));
-        });
+        workflowEntranceSteps.forEach((workflowEntranceStep) ->
+                workflowEntranceStepTransfers.add(workflowEntranceStepTransferCache.getWorkflowEntranceStepTransfer(workflowEntranceStep))
+        );
         
         return workflowEntranceStepTransfers;
     }
@@ -2775,9 +2775,9 @@ public class WorkflowControl
         List<WorkflowDestinationTransfer> workflowDestinationTransfers = new ArrayList<>(workflowDestinations.size());
         WorkflowDestinationTransferCache workflowDestinationTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationTransferCache();
         
-        workflowDestinations.stream().forEach((workflowDestination) -> {
-            workflowDestinationTransfers.add(workflowDestinationTransferCache.getWorkflowDestinationTransfer(workflowDestination));
-        });
+        workflowDestinations.forEach((workflowDestination) ->
+                workflowDestinationTransfers.add(workflowDestinationTransferCache.getWorkflowDestinationTransfer(workflowDestination))
+        );
         
         return workflowDestinationTransfers;
     }
@@ -3014,9 +3014,9 @@ public class WorkflowControl
         List<WorkflowDestinationDescriptionTransfer> workflowDestinationDescriptionTransfers = new ArrayList<>(workflowDestinationDescriptions.size());
         WorkflowDestinationDescriptionTransferCache workflowDestinationDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationDescriptionTransferCache();
         
-        workflowDestinationDescriptions.stream().forEach((workflowDestinationDescription) -> {
-            workflowDestinationDescriptionTransfers.add(workflowDestinationDescriptionTransferCache.getWorkflowDestinationDescriptionTransfer(workflowDestinationDescription));
-        });
+        workflowDestinationDescriptions.forEach((workflowDestinationDescription) ->
+                workflowDestinationDescriptionTransfers.add(workflowDestinationDescriptionTransferCache.getWorkflowDestinationDescriptionTransfer(workflowDestinationDescription))
+        );
         
         return workflowDestinationDescriptionTransfers;
     }
@@ -3198,9 +3198,9 @@ public class WorkflowControl
         List<WorkflowDestinationSelectorTransfer> workflowDestinationSelectorTransfers = new ArrayList<>(workflowDestinationSelectors.size());
         WorkflowDestinationSelectorTransferCache workflowDestinationSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSelectorTransferCache();
         
-        workflowDestinationSelectors.stream().forEach((workflowDestinationSelector) -> {
-            workflowDestinationSelectorTransfers.add(workflowDestinationSelectorTransferCache.getWorkflowDestinationSelectorTransfer(workflowDestinationSelector));
-        });
+        workflowDestinationSelectors.forEach((workflowDestinationSelector) ->
+                workflowDestinationSelectorTransfers.add(workflowDestinationSelectorTransferCache.getWorkflowDestinationSelectorTransfer(workflowDestinationSelector))
+        );
         
         return workflowDestinationSelectorTransfers;
     }
@@ -3345,9 +3345,9 @@ public class WorkflowControl
         List<WorkflowDestinationPartyTypeTransfer> workflowDestinationPartyTypeTransfers = new ArrayList<>(workflowDestinationPartyTypes.size());
         WorkflowDestinationPartyTypeTransferCache workflowDestinationPartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationPartyTypeTransferCache();
         
-        workflowDestinationPartyTypes.stream().forEach((workflowDestinationPartyType) -> {
-            workflowDestinationPartyTypeTransfers.add(workflowDestinationPartyTypeTransferCache.getWorkflowDestinationPartyTypeTransfer(workflowDestinationPartyType));
-        });
+        workflowDestinationPartyTypes.forEach((workflowDestinationPartyType) ->
+                workflowDestinationPartyTypeTransfers.add(workflowDestinationPartyTypeTransferCache.getWorkflowDestinationPartyTypeTransfer(workflowDestinationPartyType))
+        );
         
         return workflowDestinationPartyTypeTransfers;
     }
@@ -3479,9 +3479,9 @@ public class WorkflowControl
         List<WorkflowDestinationSecurityRoleTransfer> workflowDestinationSecurityRoleTransfers = new ArrayList<>(workflowDestinationSecurityRoles.size());
         WorkflowDestinationSecurityRoleTransferCache workflowDestinationSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSecurityRoleTransferCache();
         
-        workflowDestinationSecurityRoles.stream().forEach((workflowDestinationSecurityRole) -> {
-            workflowDestinationSecurityRoleTransfers.add(workflowDestinationSecurityRoleTransferCache.getWorkflowDestinationSecurityRoleTransfer(workflowDestinationSecurityRole));
-        });
+        workflowDestinationSecurityRoles.forEach((workflowDestinationSecurityRole) ->
+                workflowDestinationSecurityRoleTransfers.add(workflowDestinationSecurityRoleTransferCache.getWorkflowDestinationSecurityRoleTransfer(workflowDestinationSecurityRole))
+        );
         
         return workflowDestinationSecurityRoleTransfers;
     }
@@ -3631,9 +3631,9 @@ public class WorkflowControl
         List<WorkflowDestinationStepTransfer> workflowDestinationStepTransfers = new ArrayList<>(workflowDestinationSteps.size());
         WorkflowDestinationStepTransferCache workflowDestinationStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationStepTransferCache();
         
-        workflowDestinationSteps.stream().forEach((workflowDestinationStep) -> {
-            workflowDestinationStepTransfers.add(workflowDestinationStepTransferCache.getWorkflowDestinationStepTransfer(workflowDestinationStep));
-        });
+        workflowDestinationSteps.forEach((workflowDestinationStep) ->
+                workflowDestinationStepTransfers.add(workflowDestinationStepTransferCache.getWorkflowDestinationStepTransfer(workflowDestinationStep))
+        );
         
         return workflowDestinationStepTransfers;
     }
@@ -3806,9 +3806,9 @@ public class WorkflowControl
         List<WorkflowSelectorKindTransfer> workflowSelectorKindTransfers = new ArrayList<>(workflowSelectorKinds.size());
         WorkflowSelectorKindTransferCache workflowSelectorKindTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowSelectorKindTransferCache();
         
-        workflowSelectorKinds.stream().forEach((workflowSelectorKind) -> {
-            workflowSelectorKindTransfers.add(workflowSelectorKindTransferCache.getWorkflowSelectorKindTransfer(workflowSelectorKind));
-        });
+        workflowSelectorKinds.forEach((workflowSelectorKind) ->
+                workflowSelectorKindTransfers.add(workflowSelectorKindTransferCache.getWorkflowSelectorKindTransfer(workflowSelectorKind))
+        );
         
         return workflowSelectorKindTransfers;
     }

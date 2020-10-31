@@ -208,9 +208,9 @@ public class OrderAliasControl
         List<OrderAliasTypeTransfer> orderAliasTypeTransfers = new ArrayList<>(orderAliasTypes.size());
         OrderAliasTypeTransferCache orderAliasTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeTransferCache();
 
-        orderAliasTypes.stream().forEach((orderAliasType) -> {
-            orderAliasTypeTransfers.add(orderAliasTypeTransferCache.getOrderAliasTypeTransfer(orderAliasType));
-        });
+        orderAliasTypes.forEach((orderAliasType) ->
+                orderAliasTypeTransfers.add(orderAliasTypeTransferCache.getOrderAliasTypeTransfer(orderAliasType))
+        );
 
         return orderAliasTypeTransfers;
     }
@@ -446,9 +446,9 @@ public class OrderAliasControl
         List<OrderAliasTypeDescriptionTransfer> orderAliasTypeDescriptionTransfers = new ArrayList<>(orderAliasTypeDescriptions.size());
         OrderAliasTypeDescriptionTransferCache orderAliasTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeDescriptionTransferCache();
 
-        orderAliasTypeDescriptions.stream().forEach((orderAliasTypeDescription) -> {
-            orderAliasTypeDescriptionTransfers.add(orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription));
-        });
+        orderAliasTypeDescriptions.forEach((orderAliasTypeDescription) ->
+                orderAliasTypeDescriptionTransfers.add(orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription))
+        );
 
         return orderAliasTypeDescriptionTransfers;
     }
@@ -639,9 +639,9 @@ public class OrderAliasControl
         List<OrderAliasTransfer> orderAliasTransfers = new ArrayList<>(orderaliases.size());
         OrderAliasTransferCache orderAliasTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTransferCache();
 
-        orderaliases.stream().forEach((orderAlias) -> {
-            orderAliasTransfers.add(orderAliasTransferCache.getOrderAliasTransfer(orderAlias));
-        });
+        orderaliases.forEach((orderAlias) ->
+                orderAliasTransfers.add(orderAliasTransferCache.getOrderAliasTransfer(orderAlias))
+        );
 
         return orderAliasTransfers;
     }

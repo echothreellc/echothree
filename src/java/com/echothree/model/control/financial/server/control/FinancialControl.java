@@ -220,9 +220,9 @@ public class FinancialControl
         List<FinancialAccountRoleTypeTransfer> financialAccountRoleTypeTransfers = new ArrayList<>(financialAccountRoleTypes.size());
         FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTypeTransferCache();
         
-        financialAccountRoleTypes.stream().forEach((financialAccountRoleType) -> {
-            financialAccountRoleTypeTransfers.add(financialAccountRoleTypeTransferCache.getFinancialAccountRoleTypeTransfer(financialAccountRoleType));
-        });
+        financialAccountRoleTypes.forEach((financialAccountRoleType) ->
+                financialAccountRoleTypeTransfers.add(financialAccountRoleTypeTransferCache.getFinancialAccountRoleTypeTransfer(financialAccountRoleType))
+        );
 
             return financialAccountRoleTypeTransfers;
     }
@@ -469,9 +469,9 @@ public class FinancialControl
         List<FinancialAccountTypeTransfer> financialAccountTypeTransfers = new ArrayList<>(financialAccountTypes.size());
         FinancialAccountTypeTransferCache financialAccountTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeTransferCache();
         
-        financialAccountTypes.stream().forEach((financialAccountType) -> {
-            financialAccountTypeTransfers.add(financialAccountTypeTransferCache.getFinancialAccountTypeTransfer(financialAccountType));
-        });
+        financialAccountTypes.forEach((financialAccountType) ->
+                financialAccountTypeTransfers.add(financialAccountTypeTransferCache.getFinancialAccountTypeTransfer(financialAccountType))
+        );
         
         return financialAccountTypeTransfers;
     }
@@ -746,9 +746,9 @@ public class FinancialControl
         List<FinancialAccountTypeDescriptionTransfer> financialAccountTypeDescriptionTransfers = new ArrayList<>(financialAccountTypeDescriptions.size());
         FinancialAccountTypeDescriptionTransferCache financialAccountTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeDescriptionTransferCache();
         
-        financialAccountTypeDescriptions.stream().forEach((financialAccountTypeDescription) -> {
-            financialAccountTypeDescriptionTransfers.add(financialAccountTypeDescriptionTransferCache.getFinancialAccountTypeDescriptionTransfer(financialAccountTypeDescription));
-        });
+        financialAccountTypeDescriptions.forEach((financialAccountTypeDescription) ->
+                financialAccountTypeDescriptionTransfers.add(financialAccountTypeDescriptionTransferCache.getFinancialAccountTypeDescriptionTransfer(financialAccountTypeDescription))
+        );
         
         return financialAccountTypeDescriptionTransfers;
     }
@@ -983,9 +983,9 @@ public class FinancialControl
         List<FinancialAccountTransactionTypeTransfer> financialAccountTransactionTypeTransfers = new ArrayList<>(financialAccountTransactionTypes.size());
         FinancialAccountTransactionTypeTransferCache financialAccountTransactionTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeTransferCache();
         
-        financialAccountTransactionTypes.stream().forEach((financialAccountTransactionType) -> {
-            financialAccountTransactionTypeTransfers.add(financialAccountTransactionTypeTransferCache.getFinancialAccountTransactionTypeTransfer(financialAccountTransactionType));
-        });
+        financialAccountTransactionTypes.forEach((financialAccountTransactionType) ->
+                financialAccountTransactionTypeTransfers.add(financialAccountTransactionTypeTransferCache.getFinancialAccountTransactionTypeTransfer(financialAccountTransactionType))
+        );
         
         return financialAccountTransactionTypeTransfers;
     }
@@ -1267,9 +1267,9 @@ public class FinancialControl
         List<FinancialAccountTransactionTypeDescriptionTransfer> financialAccountTransactionTypeDescriptionTransfers = new ArrayList<>(financialAccountTransactionTypeDescriptions.size());
         FinancialAccountTransactionTypeDescriptionTransferCache financialAccountTransactionTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeDescriptionTransferCache();
         
-        financialAccountTransactionTypeDescriptions.stream().forEach((financialAccountTransactionTypeDescription) -> {
-            financialAccountTransactionTypeDescriptionTransfers.add(financialAccountTransactionTypeDescriptionTransferCache.getFinancialAccountTransactionTypeDescriptionTransfer(financialAccountTransactionTypeDescription));
-        });
+        financialAccountTransactionTypeDescriptions.forEach((financialAccountTransactionTypeDescription) ->
+                financialAccountTransactionTypeDescriptionTransfers.add(financialAccountTransactionTypeDescriptionTransferCache.getFinancialAccountTransactionTypeDescriptionTransfer(financialAccountTransactionTypeDescription))
+        );
         
         return financialAccountTransactionTypeDescriptionTransfers;
     }
@@ -1458,9 +1458,9 @@ public class FinancialControl
         List<FinancialAccountAliasTypeTransfer> financialAccountAliasTypeTransfers = new ArrayList<>(financialAccountAliasTypes.size());
         FinancialAccountAliasTypeTransferCache financialAccountAliasTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeTransferCache();
         
-        financialAccountAliasTypes.stream().forEach((financialAccountAliasType) -> {
-            financialAccountAliasTypeTransfers.add(financialAccountAliasTypeTransferCache.getFinancialAccountAliasTypeTransfer(financialAccountAliasType));
-        });
+        financialAccountAliasTypes.forEach((financialAccountAliasType) ->
+                financialAccountAliasTypeTransfers.add(financialAccountAliasTypeTransferCache.getFinancialAccountAliasTypeTransfer(financialAccountAliasType))
+        );
         
         return financialAccountAliasTypeTransfers;
     }
@@ -1704,9 +1704,9 @@ public class FinancialControl
         List<FinancialAccountAliasTypeDescriptionTransfer> financialAccountAliasTypeDescriptionTransfers = new ArrayList<>(financialAccountAliasTypeDescriptions.size());
         FinancialAccountAliasTypeDescriptionTransferCache financialAccountAliasTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeDescriptionTransferCache();
         
-        financialAccountAliasTypeDescriptions.stream().forEach((financialAccountAliasTypeDescription) -> {
-            financialAccountAliasTypeDescriptionTransfers.add(financialAccountAliasTypeDescriptionTransferCache.getFinancialAccountAliasTypeDescriptionTransfer(financialAccountAliasTypeDescription));
-        });
+        financialAccountAliasTypeDescriptions.forEach((financialAccountAliasTypeDescription) ->
+                financialAccountAliasTypeDescriptionTransfers.add(financialAccountAliasTypeDescriptionTransferCache.getFinancialAccountAliasTypeDescriptionTransfer(financialAccountAliasTypeDescription))
+        );
         
         return financialAccountAliasTypeDescriptionTransfers;
     }
@@ -1850,9 +1850,9 @@ public class FinancialControl
         List<FinancialAccountRoleTransfer> financialAccountRoleTransfers = new ArrayList<>(financialAccountRoles.size());
         FinancialAccountRoleTransferCache financialAccountRoleTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTransferCache();
         
-        financialAccountRoles.stream().forEach((financialAccountRole) -> {
-            financialAccountRoleTransfers.add(financialAccountRoleTransferCache.getFinancialAccountRoleTransfer(financialAccountRole));
-        });
+        financialAccountRoles.forEach((financialAccountRole) ->
+                financialAccountRoleTransfers.add(financialAccountRoleTransferCache.getFinancialAccountRoleTransfer(financialAccountRole))
+        );
         
         return financialAccountRoleTransfers;
     }
@@ -2029,9 +2029,9 @@ public class FinancialControl
         List<FinancialAccountTransfer> financialAccountTransfers = new ArrayList<>(financialAccounts.size());
         FinancialAccountTransferCache financialAccountTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransferCache();
         
-        financialAccounts.stream().forEach((financialAccount) -> {
-            financialAccountTransfers.add(financialAccountTransferCache.getFinancialAccountTransfer(financialAccount));
-        });
+        financialAccounts.forEach((financialAccount) ->
+                financialAccountTransfers.add(financialAccountTransferCache.getFinancialAccountTransfer(financialAccount))
+        );
         
         return financialAccountTransfers;
     }
@@ -2266,9 +2266,9 @@ public class FinancialControl
         List<FinancialAccountAliasTransfer> financialAccountAliasTransfers = new ArrayList<>(financialaccountaliases.size());
         FinancialAccountAliasTransferCache financialAccountAliasTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTransferCache();
         
-        financialaccountaliases.stream().forEach((financialAccountAlias) -> {
-            financialAccountAliasTransfers.add(financialAccountAliasTransferCache.getFinancialAccountAliasTransfer(financialAccountAlias));
-        });
+        financialaccountaliases.forEach((financialAccountAlias) ->
+                financialAccountAliasTransfers.add(financialAccountAliasTransferCache.getFinancialAccountAliasTransfer(financialAccountAlias))
+        );
         
         return financialAccountAliasTransfers;
     }
@@ -2446,9 +2446,9 @@ public class FinancialControl
         List<FinancialAccountTransactionTransfer> financialAccountTransactionTransfers = new ArrayList<>(financialAccountTransactions.size());
         FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTransferCache();
         
-        financialAccountTransactions.stream().forEach((financialAccountTransaction) -> {
-            financialAccountTransactionTransfers.add(financialAccountTransactionTransferCache.getFinancialAccountTransactionTransfer(financialAccountTransaction));
-        });
+        financialAccountTransactions.forEach((financialAccountTransaction) ->
+                financialAccountTransactionTransfers.add(financialAccountTransactionTransferCache.getFinancialAccountTransactionTransfer(financialAccountTransaction))
+        );
         
         return financialAccountTransactionTransfers;
     }

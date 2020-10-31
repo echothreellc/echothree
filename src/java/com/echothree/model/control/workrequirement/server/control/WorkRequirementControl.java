@@ -287,9 +287,9 @@ public class WorkRequirementControl
         List<WorkRequirementTypeTransfer> workRequirementTypeTransfers = new ArrayList<>(workRequirementTypes.size());
         WorkRequirementTypeTransferCache workRequirementTypeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeTransferCache();
         
-        workRequirementTypes.stream().forEach((workRequirementType) -> {
-            workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(workRequirementType));
-        });
+        workRequirementTypes.forEach((workRequirementType) ->
+                workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(workRequirementType))
+        );
         
         return workRequirementTypeTransfers;
     }
@@ -479,9 +479,9 @@ public class WorkRequirementControl
         List<WorkRequirementTypeDescriptionTransfer> workRequirementTypeDescriptionTransfers = new ArrayList<>(workRequirementTypeDescriptions.size());
         WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeDescriptionTransferCache();
         
-        workRequirementTypeDescriptions.stream().forEach((workRequirementTypeDescription) -> {
-            workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription));
-        });
+        workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) ->
+                workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription))
+        );
         
         return workRequirementTypeDescriptionTransfers;
     }
@@ -720,9 +720,9 @@ public class WorkRequirementControl
         List<WorkRequirementScopeTransfer> workRequirementScopeTransfers = new ArrayList<>(workRequirementScopes.size());
         WorkRequirementScopeTransferCache workRequirementScopeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache();
         
-        workRequirementScopes.stream().forEach((workRequirementScope) -> {
-            workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(workRequirementScope));
-        });
+        workRequirementScopes.forEach((workRequirementScope) ->
+                workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(workRequirementScope))
+        );
         
         return workRequirementScopeTransfers;
     }
@@ -983,9 +983,9 @@ public class WorkRequirementControl
         List<WorkRequirementTransfer> workRequirementTransfers = new ArrayList<>(workRequirements.size());
         WorkRequirementTransferCache workRequirementTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache();
         
-        workRequirements.stream().forEach((workRequirement) -> {
-            workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(workRequirement));
-        });
+        workRequirements.forEach((workRequirement) ->
+                workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(workRequirement))
+        );
         
         return workRequirementTransfers;
     }
@@ -1289,9 +1289,9 @@ public class WorkRequirementControl
         List<WorkAssignmentTransfer> workAssignmentTransfers = new ArrayList<>(workAssignments.size());
         WorkAssignmentTransferCache workAssignmentTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache();
 
-        workAssignments.stream().forEach((workAssignment) -> {
-            workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(workAssignment));
-        });
+        workAssignments.forEach((workAssignment) ->
+                workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(workAssignment))
+        );
 
         return workAssignmentTransfers;
     }
@@ -1540,9 +1540,9 @@ public class WorkRequirementControl
         List<WorkTimeTransfer> workTimeTransfers = new ArrayList<>(workTimes.size());
         WorkTimeTransferCache workTimeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache();
 
-        workTimes.stream().forEach((workTime) -> {
-            workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(workTime));
-        });
+        workTimes.forEach((workTime) ->
+                workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(workTime))
+        );
 
         return workTimeTransfers;
     }

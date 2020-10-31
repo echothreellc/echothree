@@ -1115,9 +1115,9 @@ public class VendorControl
         List<VendorItemTransfer> vendorItemTransfers = new ArrayList<>(vendorItems.size());
         VendorItemTransferCache vendorItemTransferCache = getVendorTransferCaches(userVisit).getVendorItemTransferCache();
         
-        vendorItems.stream().forEach((vendorItem) -> {
-            vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(vendorItem));
-        });
+        vendorItems.forEach((vendorItem) ->
+                vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(vendorItem))
+        );
         
         return vendorItemTransfers;
     }
@@ -1610,9 +1610,9 @@ public class VendorControl
         List<ItemPurchasingCategoryTransfer> itemPurchasingCategoryTransfers = new ArrayList<>(itemPurchasingCategories.size());
         ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
         
-        itemPurchasingCategories.stream().forEach((itemPurchasingCategory) -> {
-            itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategory));
-        });
+        itemPurchasingCategories.forEach((itemPurchasingCategory) ->
+                itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategory))
+        );
         
         return itemPurchasingCategoryTransfers;
     }
@@ -1898,9 +1898,9 @@ public class VendorControl
         List<ItemPurchasingCategoryDescriptionTransfer> itemPurchasingCategoryDescriptionTransfers = new ArrayList<>(itemPurchasingCategoryDescriptions.size());
         ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache();
         
-        itemPurchasingCategoryDescriptions.stream().forEach((itemPurchasingCategoryDescription) -> {
-            itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription));
-        });
+        itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) ->
+                itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription))
+        );
         
         return itemPurchasingCategoryDescriptionTransfers;
     }

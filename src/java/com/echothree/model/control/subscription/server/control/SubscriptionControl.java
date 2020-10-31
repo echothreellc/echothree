@@ -285,9 +285,9 @@ public class SubscriptionControl
         List<SubscriptionKindTransfer> subscriptionKindTransfers = new ArrayList<>(subscriptionKinds.size());
         SubscriptionKindTransferCache subscriptionKindTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionKindTransferCache();
 
-        subscriptionKinds.stream().forEach((subscriptionKind) -> {
-            subscriptionKindTransfers.add(subscriptionKindTransferCache.getSubscriptionKindTransfer(subscriptionKind));
-        });
+        subscriptionKinds.forEach((subscriptionKind) ->
+                subscriptionKindTransfers.add(subscriptionKindTransferCache.getSubscriptionKindTransfer(subscriptionKind))
+        );
 
         return subscriptionKindTransfers;
     }
@@ -720,9 +720,9 @@ public class SubscriptionControl
         List<SubscriptionTypeTransfer> subscriptionTypeTransfers = new ArrayList<>(subscriptionTypes.size());
         SubscriptionTypeTransferCache subscriptionTypeTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTypeTransferCache();
         
-        subscriptionTypes.stream().forEach((subscriptionType) -> {
-            subscriptionTypeTransfers.add(subscriptionTypeTransferCache.getSubscriptionTypeTransfer(subscriptionType));
-        });
+        subscriptionTypes.forEach((subscriptionType) ->
+                subscriptionTypeTransfers.add(subscriptionTypeTransferCache.getSubscriptionTypeTransfer(subscriptionType))
+        );
         
         return subscriptionTypeTransfers;
     }
@@ -1149,9 +1149,9 @@ public class SubscriptionControl
         List<SubscriptionTypeChainTransfer> subscriptionTypeChainTransfers = new ArrayList<>(subscriptionTypeChains.size());
         SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTypeChainTransferCache();
         
-        subscriptionTypeChains.stream().forEach((subscriptionTypeChain) -> {
-            subscriptionTypeChainTransfers.add(subscriptionTypeChainTransferCache.getSubscriptionTypeChainTransfer(subscriptionTypeChain));
-        });
+        subscriptionTypeChains.forEach((subscriptionTypeChain) ->
+                subscriptionTypeChainTransfers.add(subscriptionTypeChainTransferCache.getSubscriptionTypeChainTransfer(subscriptionTypeChain))
+        );
         
         return subscriptionTypeChainTransfers;
     }
@@ -1397,9 +1397,9 @@ public class SubscriptionControl
         List<SubscriptionTransfer> subscriptionTransfers = new ArrayList<>(subscriptions.size());
         SubscriptionTransferCache subscriptionTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTransferCache();
         
-        subscriptions.stream().forEach((subscription) -> {
-            subscriptionTransfers.add(subscriptionTransferCache.getSubscriptionTransfer(subscription));
-        });
+        subscriptions.forEach((subscription) ->
+                subscriptionTransfers.add(subscriptionTransferCache.getSubscriptionTransfer(subscription))
+        );
         
         return subscriptionTransfers;
     }

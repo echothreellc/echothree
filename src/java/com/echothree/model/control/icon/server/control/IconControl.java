@@ -403,9 +403,9 @@ public class IconControl
         List<IconUsageTypeTransfer> iconUsageTypeTransfers = new ArrayList<>(iconUsageTypes.size());
         IconUsageTypeTransferCache iconUsageTypeTransferCache = getIconTransferCaches(userVisit).getIconUsageTypeTransferCache();
         
-        iconUsageTypes.stream().forEach((iconUsageType) -> {
-            iconUsageTypeTransfers.add(iconUsageTypeTransferCache.getIconUsageTypeTransfer(iconUsageType));
-        });
+        iconUsageTypes.forEach((iconUsageType) ->
+                iconUsageTypeTransfers.add(iconUsageTypeTransferCache.getIconUsageTypeTransfer(iconUsageType))
+        );
         
         return iconUsageTypeTransfers;
     }
@@ -847,9 +847,9 @@ public class IconControl
         List<IconUsageTransfer> iconUsageTransfers = new ArrayList<>(iconUsages.size());
         IconUsageTransferCache iconUsageTransferCache = getIconTransferCaches(userVisit).getIconUsageTransferCache();
         
-        iconUsages.stream().forEach((iconUsage) -> {
-            iconUsageTransfers.add(iconUsageTransferCache.getIconUsageTransfer(iconUsage));
-        });
+        iconUsages.forEach((iconUsage) ->
+                iconUsageTransfers.add(iconUsageTransferCache.getIconUsageTransfer(iconUsage))
+        );
         
         return iconUsageTransfers;
     }

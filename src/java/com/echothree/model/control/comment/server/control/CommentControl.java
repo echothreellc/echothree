@@ -238,9 +238,9 @@ public class CommentControl
         List<CommentTypeTransfer> commentTypeTransfers = new ArrayList<>(commentTypes.size());
         CommentTypeTransferCache commentTypeTransferCache = getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
         
-        commentTypes.stream().forEach((commentType) -> {
-            commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(commentType));
-        });
+        commentTypes.forEach((commentType) ->
+                commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(commentType))
+        );
         
         return commentTypeTransfers;
     }
@@ -422,9 +422,9 @@ public class CommentControl
         List<CommentTypeDescriptionTransfer> commentTypeDescriptionTransfers = new ArrayList<>(commentTypeDescriptions.size());
         CommentTypeDescriptionTransferCache commentTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentTypeDescriptionTransferCache();
         
-        commentTypeDescriptions.stream().forEach((commentTypeDescription) -> {
-            commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(commentTypeDescription));
-        });
+        commentTypeDescriptions.forEach((commentTypeDescription) ->
+                commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(commentTypeDescription))
+        );
         
         return commentTypeDescriptionTransfers;
     }
@@ -582,9 +582,9 @@ public class CommentControl
         List<CommentUsageTypeTransfer> commentUsageTypeTransfers = new ArrayList<>(commentUsageTypes.size());
         CommentUsageTypeTransferCache commentUsageTypeTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
         
-        commentUsageTypes.stream().forEach((commentUsageType) -> {
-            commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageType));
-        });
+        commentUsageTypes.forEach((commentUsageType) ->
+                commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageType))
+        );
         
         return commentUsageTypeTransfers;
     }
@@ -765,9 +765,9 @@ public class CommentControl
         List<CommentUsageTypeDescriptionTransfer> commentUsageTypeDescriptionTransfers = new ArrayList<>(commentUsageTypeDescriptions.size());
         CommentUsageTypeDescriptionTransferCache commentUsageTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeDescriptionTransferCache();
         
-        commentUsageTypeDescriptions.stream().forEach((commentUsageTypeDescription) -> {
-            commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(commentUsageTypeDescription));
-        });
+        commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) ->
+                commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(commentUsageTypeDescription))
+        );
         
         return commentUsageTypeDescriptionTransfers;
     }
@@ -1040,9 +1040,9 @@ public class CommentControl
         List<CommentTransfer> commentTransfers = new ArrayList<>(comments.size());
         CommentTransferCache commentTransferCache = getCommentTransferCaches(userVisit).getCommentTransferCache();
         
-        comments.stream().forEach((comment) -> {
-            commentTransfers.add(commentTransferCache.getCommentTransfer(comment));
-        });
+        comments.forEach((comment) ->
+                commentTransfers.add(commentTransferCache.getCommentTransfer(comment))
+        );
         
         return commentTransfers;
     }
@@ -1594,9 +1594,9 @@ public class CommentControl
         List<CommentUsageTransfer> transfers = new ArrayList<>(entities.size());
         CommentUsageTransferCache cache = getCommentTransferCaches(userVisit).getCommentUsageTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(cache.getCommentUsageTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(cache.getCommentUsageTransfer(entity))
+        );
         
         return transfers;
     }

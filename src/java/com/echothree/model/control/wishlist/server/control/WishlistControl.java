@@ -290,9 +290,9 @@ public class WishlistControl
         List<WishlistTypeTransfer> wishlistTypeTransfers = new ArrayList<>(wishlistTypes.size());
         WishlistTypeTransferCache wishlistTypeTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeTransferCache();
         
-        wishlistTypes.stream().forEach((wishlistType) -> {
-            wishlistTypeTransfers.add(wishlistTypeTransferCache.getWishlistTypeTransfer(wishlistType));
-        });
+        wishlistTypes.forEach((wishlistType) ->
+                wishlistTypeTransfers.add(wishlistTypeTransferCache.getWishlistTypeTransfer(wishlistType))
+        );
         
         return wishlistTypeTransfers;
     }
@@ -503,9 +503,9 @@ public class WishlistControl
         List<WishlistTypeDescriptionTransfer> wishlistTypeDescriptionTransfers = new ArrayList<>(wishlistTypeDescriptions.size());
         WishlistTypeDescriptionTransferCache wishlistTypeDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeDescriptionTransferCache();
         
-        wishlistTypeDescriptions.stream().forEach((wishlistTypeDescription) -> {
-            wishlistTypeDescriptionTransfers.add(wishlistTypeDescriptionTransferCache.getWishlistTypeDescriptionTransfer(wishlistTypeDescription));
-        });
+        wishlistTypeDescriptions.forEach((wishlistTypeDescription) ->
+                wishlistTypeDescriptionTransfers.add(wishlistTypeDescriptionTransferCache.getWishlistTypeDescriptionTransfer(wishlistTypeDescription))
+        );
         
         return wishlistTypeDescriptionTransfers;
     }
@@ -750,9 +750,9 @@ public class WishlistControl
         List<WishlistTypePriorityTransfer> wishlistTypePriorityTransfers = new ArrayList<>(wishlistTypePriorities.size());
         WishlistTypePriorityTransferCache wishlistTypePriorityTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypePriorityTransferCache();
         
-        wishlistTypePriorities.stream().forEach((wishlistTypePriority) -> {
-            wishlistTypePriorityTransfers.add(wishlistTypePriorityTransferCache.getWishlistTypePriorityTransfer(wishlistTypePriority));
-        });
+        wishlistTypePriorities.forEach((wishlistTypePriority) ->
+                wishlistTypePriorityTransfers.add(wishlistTypePriorityTransferCache.getWishlistTypePriorityTransfer(wishlistTypePriority))
+        );
         
         return wishlistTypePriorityTransfers;
     }
@@ -969,9 +969,9 @@ public class WishlistControl
         List<WishlistTypePriorityDescriptionTransfer> wishlistTypePriorityDescriptionTransfers = new ArrayList<>(wishlistTypePriorityDescriptions.size());
         WishlistTypePriorityDescriptionTransferCache wishlistTypePriorityDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypePriorityDescriptionTransferCache();
         
-        wishlistTypePriorityDescriptions.stream().forEach((wishlistTypePriorityDescription) -> {
-            wishlistTypePriorityDescriptionTransfers.add(wishlistTypePriorityDescriptionTransferCache.getWishlistTypePriorityDescriptionTransfer(wishlistTypePriorityDescription));
-        });
+        wishlistTypePriorityDescriptions.forEach((wishlistTypePriorityDescription) ->
+                wishlistTypePriorityDescriptionTransfers.add(wishlistTypePriorityDescriptionTransferCache.getWishlistTypePriorityDescriptionTransfer(wishlistTypePriorityDescription))
+        );
         
         return wishlistTypePriorityDescriptionTransfers;
     }
@@ -1487,9 +1487,9 @@ public class WishlistControl
         List<WishlistTransfer> wishlistTransfers = new ArrayList<>(orders.size());
         WishlistTransferCache wishlistTransferCache = getWishlistTransferCaches(userVisit).getWishlistTransferCache();
         
-        orders.stream().forEach((order) -> {
-            wishlistTransfers.add(wishlistTransferCache.getWishlistTransfer(order));
-        });
+        orders.forEach((order) ->
+                wishlistTransfers.add(wishlistTransferCache.getWishlistTransfer(order))
+        );
         
         return wishlistTransfers;
     }
@@ -1717,9 +1717,9 @@ public class WishlistControl
         List<WishlistLineTransfer> wishlistLineTransfers = new ArrayList<>(orderLines.size());
         WishlistLineTransferCache wishlistLineTransferCache = getWishlistTransferCaches(userVisit).getWishlistLineTransferCache();
         
-        orderLines.stream().forEach((orderLine) -> {
-            wishlistLineTransfers.add(wishlistLineTransferCache.getWishlistLineTransfer(orderLine));
-        });
+        orderLines.forEach((orderLine) ->
+                wishlistLineTransfers.add(wishlistLineTransferCache.getWishlistLineTransfer(orderLine))
+        );
         
         return wishlistLineTransfers;
     }

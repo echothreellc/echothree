@@ -271,9 +271,9 @@ public class ClubControl
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
         ClubTransferCache clubTransferCache = getClubTransferCaches(userVisit).getClubTransferCache();
         
-        clubs.stream().forEach((club) -> {
-            clubTransfers.add(clubTransferCache.getClubTransfer(club));
-        });
+        clubs.forEach((club) ->
+                clubTransfers.add(clubTransferCache.getClubTransfer(club))
+        );
         
         return clubTransfers;
     }
@@ -492,9 +492,9 @@ public class ClubControl
         List<ClubDescriptionTransfer> clubDescriptionTransfers = new ArrayList<>(clubDescriptions.size());
         ClubDescriptionTransferCache clubDescriptionTransferCache = getClubTransferCaches(userVisit).getClubDescriptionTransferCache();
         
-        clubDescriptions.stream().forEach((clubDescription) -> {
-            clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(clubDescription));
-        });
+        clubDescriptions.forEach((clubDescription) ->
+                clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(clubDescription))
+        );
         
         return clubDescriptionTransfers;
     }
@@ -606,9 +606,9 @@ public class ClubControl
         List<ClubItemTypeTransfer> clubItemTypeTransfers = new ArrayList<>(clubItemTypes.size());
         ClubItemTypeTransferCache clubItemTypeTransferCache = getClubTransferCaches(userVisit).getClubItemTypeTransferCache();
         
-        clubItemTypes.stream().forEach((clubItemType) -> {
-            clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(clubItemType));
-        });
+        clubItemTypes.forEach((clubItemType) ->
+                clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(clubItemType))
+        );
         
         return clubItemTypeTransfers;
     }
@@ -803,9 +803,9 @@ public class ClubControl
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
         ClubItemTransferCache clubItemTransferCache = getClubTransferCaches(userVisit).getClubItemTransferCache();
         
-        clubItems.stream().forEach((clubItem) -> {
-            clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(clubItem));
-        });
+        clubItems.forEach((clubItem) ->
+                clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(clubItem))
+        );
         
         return clubItemTransfers;
     }

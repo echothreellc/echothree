@@ -355,9 +355,9 @@ public class OfferNameElementControl
         List<OfferNameElementDescriptionTransfer> offerNameElementDescriptionTransfers = new ArrayList<>(offerNameElementDescriptions.size());
         OfferNameElementDescriptionTransferCache offerNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache();
         
-        offerNameElementDescriptions.stream().forEach((offerNameElementDescription) -> {
-            offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(offerNameElementDescription));
-        });
+        offerNameElementDescriptions.forEach((offerNameElementDescription) ->
+                offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(offerNameElementDescription))
+        );
         
         return offerNameElementDescriptionTransfers;
     }

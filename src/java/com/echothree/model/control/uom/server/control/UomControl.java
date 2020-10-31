@@ -302,9 +302,9 @@ public class UomControl
         List<UnitOfMeasureKindTransfer> unitOfMeasureKindTransfers = new ArrayList<>(unitOfMeasureKinds.size());
         UnitOfMeasureKindTransferCache unitOfMeasureKindTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindTransferCache();
         
-        unitOfMeasureKinds.stream().forEach((unitOfMeasureKind) -> {
-            unitOfMeasureKindTransfers.add(unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(unitOfMeasureKind));
-        });
+        unitOfMeasureKinds.forEach((unitOfMeasureKind) ->
+                unitOfMeasureKindTransfers.add(unitOfMeasureKindTransferCache.getUnitOfMeasureKindTransfer(unitOfMeasureKind))
+        );
         
         return unitOfMeasureKindTransfers;
     }
@@ -606,9 +606,9 @@ public class UomControl
         List<UnitOfMeasureKindDescriptionTransfer> unitOfMeasureKindDescriptionTransfers = new ArrayList<>(unitOfMeasureKindDescriptions.size());
         UnitOfMeasureKindDescriptionTransferCache unitOfMeasureKindDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindDescriptionTransferCache();
         
-        unitOfMeasureKindDescriptions.stream().forEach((unitOfMeasureKindDescription) -> {
-            unitOfMeasureKindDescriptionTransfers.add(unitOfMeasureKindDescriptionTransferCache.getUnitOfMeasureKindDescriptionTransfer(unitOfMeasureKindDescription));
-        });
+        unitOfMeasureKindDescriptions.forEach((unitOfMeasureKindDescription) ->
+                unitOfMeasureKindDescriptionTransfers.add(unitOfMeasureKindDescriptionTransferCache.getUnitOfMeasureKindDescriptionTransfer(unitOfMeasureKindDescription))
+        );
         
         return unitOfMeasureKindDescriptionTransfers;
     }
@@ -848,9 +848,9 @@ public class UomControl
         List<UnitOfMeasureTypeTransfer> unitOfMeasureTypeTransfers = new ArrayList<>(unitOfMeasureTypes.size());
         UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
         
-        unitOfMeasureTypes.stream().forEach((unitOfMeasureType) -> {
-            unitOfMeasureTypeTransfers.add(unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType));
-        });
+        unitOfMeasureTypes.forEach((unitOfMeasureType) ->
+                unitOfMeasureTypeTransfers.add(unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType))
+        );
         
         return unitOfMeasureTypeTransfers;
     }
@@ -1157,9 +1157,9 @@ public class UomControl
         List<UnitOfMeasureTypeDescriptionTransfer> unitOfMeasureTypeDescriptionTransfers = new ArrayList<>(unitOfMeasureTypeDescriptions.size());
         UnitOfMeasureTypeDescriptionTransferCache unitOfMeasureTypeDescriptionTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureTypeDescriptionTransferCache();
         
-        unitOfMeasureTypeDescriptions.stream().forEach((unitOfMeasureTypeDescription) -> {
-            unitOfMeasureTypeDescriptionTransfers.add(unitOfMeasureTypeDescriptionTransferCache.getUnitOfMeasureTypeDescriptionTransfer(unitOfMeasureTypeDescription));
-        });
+        unitOfMeasureTypeDescriptions.forEach((unitOfMeasureTypeDescription) ->
+                unitOfMeasureTypeDescriptionTransfers.add(unitOfMeasureTypeDescriptionTransferCache.getUnitOfMeasureTypeDescriptionTransfer(unitOfMeasureTypeDescription))
+        );
         
         return unitOfMeasureTypeDescriptionTransfers;
     }
@@ -1604,9 +1604,9 @@ public class UomControl
         List<UnitOfMeasureEquivalentTransfer> unitOfMeasureEquivalentTransfers = new ArrayList<>(unitOfMeasureEquivalents.size());
         UnitOfMeasureEquivalentTransferCache unitOfMeasureEquivalentTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureEquivalentTransferCache();
         
-        unitOfMeasureEquivalents.stream().forEach((unitOfMeasureEquivalent) -> {
-            unitOfMeasureEquivalentTransfers.add(unitOfMeasureEquivalentTransferCache.getUnitOfMeasureEquivalentTransfer(unitOfMeasureEquivalent));
-        });
+        unitOfMeasureEquivalents.forEach((unitOfMeasureEquivalent) ->
+                unitOfMeasureEquivalentTransfers.add(unitOfMeasureEquivalentTransferCache.getUnitOfMeasureEquivalentTransfer(unitOfMeasureEquivalent))
+        );
         
         return unitOfMeasureEquivalentTransfers;
     }
@@ -1767,9 +1767,9 @@ public class UomControl
         List<UnitOfMeasureKindUseTypeTransfer> unitOfMeasureKindUseTypeTransfers = new ArrayList<>(unitOfMeasureKindUseTypes.size());
         UnitOfMeasureKindUseTypeTransferCache unitOfMeasureKindUseTypeTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTypeTransferCache();
         
-        unitOfMeasureKindUseTypes.stream().forEach((unitOfMeasureKindUseType) -> {
-            unitOfMeasureKindUseTypeTransfers.add(unitOfMeasureKindUseTypeTransferCache.getUnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseType));
-        });
+        unitOfMeasureKindUseTypes.forEach((unitOfMeasureKindUseType) ->
+                unitOfMeasureKindUseTypeTransfers.add(unitOfMeasureKindUseTypeTransferCache.getUnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseType))
+        );
         
         return unitOfMeasureKindUseTypeTransfers;
     }
@@ -2111,9 +2111,9 @@ public class UomControl
         List<UnitOfMeasureKindUseTransfer> unitOfMeasureKindUseTransfers = new ArrayList<>(unitOfMeasureKindUses.size());
         UnitOfMeasureKindUseTransferCache unitOfMeasureKindUseTransferCache = getUomTransferCaches(userVisit).getUnitOfMeasureKindUseTransferCache();
         
-        unitOfMeasureKindUses.stream().forEach((unitOfMeasureKindUse) -> {
-            unitOfMeasureKindUseTransfers.add(unitOfMeasureKindUseTransferCache.getUnitOfMeasureKindUseTransfer(unitOfMeasureKindUse));
-        });
+        unitOfMeasureKindUses.forEach((unitOfMeasureKindUse) ->
+                unitOfMeasureKindUseTransfers.add(unitOfMeasureKindUseTransferCache.getUnitOfMeasureKindUseTransfer(unitOfMeasureKindUse))
+        );
         
         return unitOfMeasureKindUseTransfers;
     }

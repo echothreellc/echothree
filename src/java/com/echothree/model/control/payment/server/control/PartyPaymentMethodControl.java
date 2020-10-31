@@ -264,9 +264,9 @@ public class PartyPaymentMethodControl
         List<PartyPaymentMethodTransfer> partyPaymentMethodTransfers = new ArrayList<>(partyPaymentMethods.size());
         PartyPaymentMethodTransferCache partyPaymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache();
 
-        partyPaymentMethods.stream().forEach((partyPaymentMethod) -> {
-            partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(partyPaymentMethod));
-        });
+        partyPaymentMethods.forEach((partyPaymentMethod) ->
+                partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(partyPaymentMethod))
+        );
 
         return partyPaymentMethodTransfers;
     }
@@ -941,9 +941,9 @@ public class PartyPaymentMethodControl
         List<PartyPaymentMethodContactMechanismTransfer> partyPaymentMethodContactMechanismTransfers = new ArrayList<>(partyPaymentMethodContactMechanisms.size());
         PartyPaymentMethodContactMechanismTransferCache partyPaymentMethodContactMechanismTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache();
         
-        partyPaymentMethodContactMechanisms.stream().forEach((partyPaymentMethodContactMechanism) -> {
-            partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(partyPaymentMethodContactMechanism));
-        });
+        partyPaymentMethodContactMechanisms.forEach((partyPaymentMethodContactMechanism) ->
+                partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(partyPaymentMethodContactMechanism))
+        );
         
         return partyPaymentMethodContactMechanismTransfers;
     }

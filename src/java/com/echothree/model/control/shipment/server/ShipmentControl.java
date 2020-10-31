@@ -297,9 +297,9 @@ public class ShipmentControl
         List<ShipmentTypeTransfer> shipmentTypeTransfers = new ArrayList<>(shipmentTypes.size());
         ShipmentTypeTransferCache shipmentTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeTransferCache();
 
-        shipmentTypes.stream().forEach((shipmentType) -> {
-            shipmentTypeTransfers.add(shipmentTypeTransferCache.getTransfer(shipmentType));
-        });
+        shipmentTypes.forEach((shipmentType) ->
+                shipmentTypeTransfers.add(shipmentTypeTransferCache.getTransfer(shipmentType))
+        );
 
         return shipmentTypeTransfers;
     }
@@ -573,9 +573,9 @@ public class ShipmentControl
         List<ShipmentTypeDescriptionTransfer> shipmentTypeDescriptionTransfers = new ArrayList<>(shipmentTypeDescriptions.size());
         ShipmentTypeDescriptionTransferCache shipmentTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeDescriptionTransferCache();
 
-        shipmentTypeDescriptions.stream().forEach((shipmentTypeDescription) -> {
-            shipmentTypeDescriptionTransfers.add(shipmentTypeDescriptionTransferCache.getTransfer(shipmentTypeDescription));
-        });
+        shipmentTypeDescriptions.forEach((shipmentTypeDescription) ->
+                shipmentTypeDescriptionTransfers.add(shipmentTypeDescriptionTransferCache.getTransfer(shipmentTypeDescription))
+        );
 
         return shipmentTypeDescriptionTransfers;
     }
@@ -765,9 +765,9 @@ public class ShipmentControl
         List<ShipmentTimeTypeTransfer> shipmentTimeTypeTransfers = new ArrayList<>(shipmentTimeTypes.size());
         ShipmentTimeTypeTransferCache shipmentTimeTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeTransferCache();
 
-        shipmentTimeTypes.stream().forEach((shipmentTimeType) -> {
-            shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(shipmentTimeType));
-        });
+        shipmentTimeTypes.forEach((shipmentTimeType) ->
+                shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(shipmentTimeType))
+        );
 
         return shipmentTimeTypeTransfers;
     }
@@ -992,9 +992,9 @@ public class ShipmentControl
         List<ShipmentTimeTypeDescriptionTransfer> shipmentTimeTypeDescriptionTransfers = new ArrayList<>(shipmentTimeTypeDescriptions.size());
         ShipmentTimeTypeDescriptionTransferCache shipmentTimeTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeDescriptionTransferCache();
 
-        shipmentTimeTypeDescriptions.stream().forEach((shipmentTimeTypeDescription) -> {
-            shipmentTimeTypeDescriptionTransfers.add(shipmentTimeTypeDescriptionTransferCache.getTransfer(shipmentTimeTypeDescription));
-        });
+        shipmentTimeTypeDescriptions.forEach((shipmentTimeTypeDescription) ->
+                shipmentTimeTypeDescriptionTransfers.add(shipmentTimeTypeDescriptionTransferCache.getTransfer(shipmentTimeTypeDescription))
+        );
 
         return shipmentTimeTypeDescriptionTransfers;
     }
@@ -1233,9 +1233,9 @@ public class ShipmentControl
         List<ShipmentTypeShippingMethodTransfer> shipmentTypeShippingMethodTransfers = new ArrayList<>(shipmentTypeShippingMethods.size());
         ShipmentTypeShippingMethodTransferCache shipmentTypeShippingMethodTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeShippingMethodTransferCache();
         
-        shipmentTypeShippingMethods.stream().forEach((shipmentTypeShippingMethod) -> {
-            shipmentTypeShippingMethodTransfers.add(shipmentTypeShippingMethodTransferCache.getTransfer(shipmentTypeShippingMethod));
-        });
+        shipmentTypeShippingMethods.forEach((shipmentTypeShippingMethod) ->
+                shipmentTypeShippingMethodTransfers.add(shipmentTypeShippingMethodTransferCache.getTransfer(shipmentTypeShippingMethod))
+        );
         
         return shipmentTypeShippingMethodTransfers;
     }
@@ -1467,9 +1467,9 @@ public class ShipmentControl
         List<ShipmentTimeTransfer> shipmentTimeTransfers = new ArrayList<>(shipmentTimes.size());
         ShipmentTimeTransferCache shipmentTimeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache();
 
-        shipmentTimes.stream().forEach((shipmentTime) -> {
-            shipmentTimeTransfers.add(shipmentTimeTransferCache.getTransfer(shipmentTime));
-        });
+        shipmentTimes.forEach((shipmentTime) ->
+                shipmentTimeTransfers.add(shipmentTimeTransferCache.getTransfer(shipmentTime))
+        );
 
         return shipmentTimeTransfers;
     }
@@ -1669,9 +1669,9 @@ public class ShipmentControl
         List<ShipmentAliasTypeTransfer> shipmentAliasTypeTransfers = new ArrayList<>(shipmentAliasTypes.size());
         ShipmentAliasTypeTransferCache shipmentAliasTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeTransferCache();
 
-        shipmentAliasTypes.stream().forEach((shipmentAliasType) -> {
-            shipmentAliasTypeTransfers.add(shipmentAliasTypeTransferCache.getTransfer(shipmentAliasType));
-        });
+        shipmentAliasTypes.forEach((shipmentAliasType) ->
+                shipmentAliasTypeTransfers.add(shipmentAliasTypeTransferCache.getTransfer(shipmentAliasType))
+        );
 
         return shipmentAliasTypeTransfers;
     }
@@ -1907,9 +1907,9 @@ public class ShipmentControl
         List<ShipmentAliasTypeDescriptionTransfer> shipmentAliasTypeDescriptionTransfers = new ArrayList<>(shipmentAliasTypeDescriptions.size());
         ShipmentAliasTypeDescriptionTransferCache shipmentAliasTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeDescriptionTransferCache();
 
-        shipmentAliasTypeDescriptions.stream().forEach((shipmentAliasTypeDescription) -> {
-            shipmentAliasTypeDescriptionTransfers.add(shipmentAliasTypeDescriptionTransferCache.getTransfer(shipmentAliasTypeDescription));
-        });
+        shipmentAliasTypeDescriptions.forEach((shipmentAliasTypeDescription) ->
+                shipmentAliasTypeDescriptionTransfers.add(shipmentAliasTypeDescriptionTransferCache.getTransfer(shipmentAliasTypeDescription))
+        );
 
         return shipmentAliasTypeDescriptionTransfers;
     }
@@ -2100,9 +2100,9 @@ public class ShipmentControl
         List<ShipmentAliasTransfer> shipmentAliasTransfers = new ArrayList<>(shipmentaliases.size());
         ShipmentAliasTransferCache shipmentAliasTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTransferCache();
 
-        shipmentaliases.stream().forEach((shipmentAlias) -> {
-            shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(shipmentAlias));
-        });
+        shipmentaliases.forEach((shipmentAlias) ->
+                shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(shipmentAlias))
+        );
 
         return shipmentAliasTransfers;
     }

@@ -181,9 +181,9 @@ public class UseNameElementControl
         List<UseNameElementTransfer> useNameElementTransfers = new ArrayList<>(useNameElements.size());
         UseNameElementTransferCache useNameElementTransferCache = getOfferTransferCaches(userVisit).getUseNameElementTransferCache();
 
-        useNameElements.stream().forEach((useNameElement) -> {
-            useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(useNameElement));
-        });
+        useNameElements.forEach((useNameElement) ->
+                useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(useNameElement))
+        );
 
         return useNameElementTransfers;
     }
@@ -358,9 +358,9 @@ public class UseNameElementControl
         List<UseNameElementDescriptionTransfer> useNameElementDescriptionTransfers = new ArrayList<>(useNameElementDescriptions.size());
         UseNameElementDescriptionTransferCache useNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache();
 
-        useNameElementDescriptions.stream().forEach((useNameElementDescription) -> {
-            useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(useNameElementDescription));
-        });
+        useNameElementDescriptions.forEach((useNameElementDescription) ->
+                useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(useNameElementDescription))
+        );
 
         return useNameElementDescriptionTransfers;
     }

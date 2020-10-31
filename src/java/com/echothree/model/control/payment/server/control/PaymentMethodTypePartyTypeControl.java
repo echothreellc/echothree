@@ -233,9 +233,9 @@ public class PaymentMethodTypePartyTypeControl
         var paymentMethodTypePartyTypeTransfers = new ArrayList<PaymentMethodTypePartyTypeTransfer>(paymentMethodTypePartyTypes.size());
         var paymentMethodTypePartyTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache();
 
-        paymentMethodTypePartyTypes.stream().forEach((paymentMethodTypePartyType) -> {
-            paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType));
-        });
+        paymentMethodTypePartyTypes.forEach((paymentMethodTypePartyType) ->
+                paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType))
+        );
 
         return paymentMethodTypePartyTypeTransfers;
     }

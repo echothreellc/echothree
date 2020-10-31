@@ -200,9 +200,9 @@ public class WorkEffortControl
         List<WorkEffortTypeTransfer> workEffortTypeTransfers = new ArrayList<>(workEffortTypes.size());
         WorkEffortTypeTransferCache workEffortTypeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeTransferCache();
         
-        workEffortTypes.stream().forEach((workEffortType) -> {
-            workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(workEffortType));
-        });
+        workEffortTypes.forEach((workEffortType) ->
+                workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(workEffortType))
+        );
         
         return workEffortTypeTransfers;
     }
@@ -378,9 +378,9 @@ public class WorkEffortControl
         List<WorkEffortTypeDescriptionTransfer> workEffortTypeDescriptionTransfers = new ArrayList<>(workEffortTypeDescriptions.size());
         WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeDescriptionTransferCache();
         
-        workEffortTypeDescriptions.stream().forEach((workEffortTypeDescription) -> {
-            workEffortTypeDescriptionTransfers.add(workEffortTypeDescriptionTransferCache.getWorkEffortTypeDescriptionTransfer(workEffortTypeDescription));
-        });
+        workEffortTypeDescriptions.forEach((workEffortTypeDescription) ->
+                workEffortTypeDescriptionTransfers.add(workEffortTypeDescriptionTransferCache.getWorkEffortTypeDescriptionTransfer(workEffortTypeDescription))
+        );
         
         return workEffortTypeDescriptionTransfers;
     }
@@ -628,9 +628,9 @@ public class WorkEffortControl
         List<WorkEffortScopeTransfer> workEffortScopeTransfers = new ArrayList<>(workEffortScopes.size());
         WorkEffortScopeTransferCache workEffortScopeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeTransferCache();
         
-        workEffortScopes.stream().forEach((workEffortScope) -> {
-            workEffortScopeTransfers.add(workEffortScopeTransferCache.getWorkEffortScopeTransfer(workEffortScope));
-        });
+        workEffortScopes.forEach((workEffortScope) ->
+                workEffortScopeTransfers.add(workEffortScopeTransferCache.getWorkEffortScopeTransfer(workEffortScope))
+        );
         
         return workEffortScopeTransfers;
     }
@@ -864,9 +864,9 @@ public class WorkEffortControl
         List<WorkEffortScopeDescriptionTransfer> workEffortScopeDescriptionTransfers = new ArrayList<>(workEffortScopeDescriptions.size());
         WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeDescriptionTransferCache();
         
-        workEffortScopeDescriptions.stream().forEach((workEffortScopeDescription) -> {
-            workEffortScopeDescriptionTransfers.add(workEffortScopeDescriptionTransferCache.getWorkEffortScopeDescriptionTransfer(workEffortScopeDescription));
-        });
+        workEffortScopeDescriptions.forEach((workEffortScopeDescription) ->
+                workEffortScopeDescriptionTransfers.add(workEffortScopeDescriptionTransferCache.getWorkEffortScopeDescriptionTransfer(workEffortScopeDescription))
+        );
         
         return workEffortScopeDescriptionTransfers;
     }
@@ -1103,9 +1103,9 @@ public class WorkEffortControl
         List<WorkEffortTransfer> workEffortTransfers = new ArrayList<>(workEfforts.size());
         WorkEffortTransferCache workEffortTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTransferCache();
 
-        workEfforts.stream().forEach((workEffort) -> {
-            workEffortTransfers.add(workEffortTransferCache.getWorkEffortTransfer(workEffort));
-        });
+        workEfforts.forEach((workEffort) ->
+                workEffortTransfers.add(workEffortTransferCache.getWorkEffortTransfer(workEffort))
+        );
 
         return workEffortTransfers;
     }

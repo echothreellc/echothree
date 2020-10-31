@@ -179,9 +179,9 @@ public class JobControl
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
         JobTransferCache jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
         
-        jobs.stream().forEach((job) -> {
-            jobTransfers.add(jobTransferCache.getJobTransfer(job));
-        });
+        jobs.forEach((job) ->
+                jobTransfers.add(jobTransferCache.getJobTransfer(job))
+        );
         
         return jobTransfers;
     }

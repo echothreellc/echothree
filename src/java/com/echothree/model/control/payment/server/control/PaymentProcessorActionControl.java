@@ -156,9 +156,9 @@ public class PaymentProcessorActionControl
         var paymentProcessorActionTransfers = new ArrayList<PaymentProcessorActionTransfer>(paymentProcessorActions.size());
         var paymentProcessorActionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTransferCache();
 
-        paymentProcessorActions.stream().forEach((paymentProcessorAction) -> {
-            paymentProcessorActionTransfers.add(paymentProcessorActionTransferCache.getTransfer(paymentProcessorAction));
-        });
+        paymentProcessorActions.forEach((paymentProcessorAction) ->
+                paymentProcessorActionTransfers.add(paymentProcessorActionTransferCache.getTransfer(paymentProcessorAction))
+        );
 
         return paymentProcessorActionTransfers;
     }

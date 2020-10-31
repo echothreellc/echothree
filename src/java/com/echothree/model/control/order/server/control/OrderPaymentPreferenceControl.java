@@ -264,9 +264,9 @@ public class OrderPaymentPreferenceControl
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
         OrderPaymentPreferenceTransferCache orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
 
-        orderPaymentPreferences.stream().forEach((orderPaymentPreference) -> {
-            orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference));
-        });
+        orderPaymentPreferences.forEach((orderPaymentPreference) ->
+                orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference))
+        );
 
         return orderPaymentPreferenceTransfers;
     }

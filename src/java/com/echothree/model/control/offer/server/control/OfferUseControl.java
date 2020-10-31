@@ -283,9 +283,9 @@ public class OfferUseControl
         List<OfferUseTransfer> offerUseTransfers = new ArrayList<>(offerUses.size());
         OfferUseTransferCache offerUseTransferCache = getOfferTransferCaches(userVisit).getOfferUseTransferCache();
 
-        offerUses.stream().forEach((offerUse) -> {
-            offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(offerUse));
-        });
+        offerUses.forEach((offerUse) ->
+                offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(offerUse))
+        );
 
         return offerUseTransfers;
     }

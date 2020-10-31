@@ -277,9 +277,9 @@ public class PrinterControl
         List<PrinterGroupTransfer> printerGroupTransfers = new ArrayList<>(printerGroups.size());
         PrinterGroupTransferCache printerGroupTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache();
 
-        printerGroups.stream().forEach((printerGroup) -> {
-            printerGroupTransfers.add(printerGroupTransferCache.getPrinterGroupTransfer(printerGroup));
-        });
+        printerGroups.forEach((printerGroup) ->
+                printerGroupTransfers.add(printerGroupTransferCache.getPrinterGroupTransfer(printerGroup))
+        );
 
         return printerGroupTransfers;
     }
@@ -540,9 +540,9 @@ public class PrinterControl
         List<PrinterGroupDescriptionTransfer> printerGroupDescriptionTransfers = new ArrayList<>(printerGroupDescriptions.size());
         PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupDescriptionTransferCache();
 
-        printerGroupDescriptions.stream().forEach((printerGroupDescription) -> {
-            printerGroupDescriptionTransfers.add(printerGroupDescriptionTransferCache.getPrinterGroupDescriptionTransfer(printerGroupDescription));
-        });
+        printerGroupDescriptions.forEach((printerGroupDescription) ->
+                printerGroupDescriptionTransfers.add(printerGroupDescriptionTransferCache.getPrinterGroupDescriptionTransfer(printerGroupDescription))
+        );
 
         return printerGroupDescriptionTransfers;
     }
@@ -757,9 +757,9 @@ public class PrinterControl
         List<PrinterTransfer> printerTransfers = new ArrayList<>(printers.size());
         PrinterTransferCache printerTransferCache = getPrinterTransferCaches(userVisit).getPrinterTransferCache();
 
-        printers.stream().forEach((printer) -> {
-            printerTransfers.add(printerTransferCache.getPrinterTransfer(printer));
-        });
+        printers.forEach((printer) ->
+                printerTransfers.add(printerTransferCache.getPrinterTransfer(printer))
+        );
 
         return printerTransfers;
     }
@@ -955,9 +955,9 @@ public class PrinterControl
         List<PrinterDescriptionTransfer> printerDescriptionTransfers = new ArrayList<>(printerDescriptions.size());
         PrinterDescriptionTransferCache printerDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterDescriptionTransferCache();
 
-        printerDescriptions.stream().forEach((printerDescription) -> {
-            printerDescriptionTransfers.add(printerDescriptionTransferCache.getPrinterDescriptionTransfer(printerDescription));
-        });
+        printerDescriptions.forEach((printerDescription) ->
+                printerDescriptionTransfers.add(printerDescriptionTransferCache.getPrinterDescriptionTransfer(printerDescription))
+        );
 
         return printerDescriptionTransfers;
     }
@@ -1251,9 +1251,9 @@ public class PrinterControl
         List<PrinterGroupJobTransfer> printerGroupJobTransfers = new ArrayList<>(printerGroupJobs.size());
         PrinterGroupJobTransferCache printerGroupJobTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache();
 
-        printerGroupJobs.stream().forEach((printerGroupJob) -> {
-            printerGroupJobTransfers.add(printerGroupJobTransferCache.getPrinterGroupJobTransfer(printerGroupJob));
-        });
+        printerGroupJobs.forEach((printerGroupJob) ->
+                printerGroupJobTransfers.add(printerGroupJobTransferCache.getPrinterGroupJobTransfer(printerGroupJob))
+        );
 
         return printerGroupJobTransfers;
     }
@@ -1528,9 +1528,9 @@ public class PrinterControl
         List<PrinterGroupUseTypeTransfer> printerGroupUseTypeTransfers = new ArrayList<>(printerGroupUseTypes.size());
         PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache();
 
-        printerGroupUseTypes.stream().forEach((printerGroupUseType) -> {
-            printerGroupUseTypeTransfers.add(printerGroupUseTypeTransferCache.getPrinterGroupUseTypeTransfer(printerGroupUseType));
-        });
+        printerGroupUseTypes.forEach((printerGroupUseType) ->
+                printerGroupUseTypeTransfers.add(printerGroupUseTypeTransferCache.getPrinterGroupUseTypeTransfer(printerGroupUseType))
+        );
 
         return printerGroupUseTypeTransfers;
     }
@@ -1759,9 +1759,9 @@ public class PrinterControl
         List<PrinterGroupUseTypeDescriptionTransfer> printerGroupUseTypeDescriptionTransfers = new ArrayList<>(printerGroupUseTypeDescriptions.size());
         PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeDescriptionTransferCache();
 
-        printerGroupUseTypeDescriptions.stream().forEach((printerGroupUseTypeDescription) -> {
-            printerGroupUseTypeDescriptionTransfers.add(printerGroupUseTypeDescriptionTransferCache.getPrinterGroupUseTypeDescriptionTransfer(printerGroupUseTypeDescription));
-        });
+        printerGroupUseTypeDescriptions.forEach((printerGroupUseTypeDescription) ->
+                printerGroupUseTypeDescriptionTransfers.add(printerGroupUseTypeDescriptionTransferCache.getPrinterGroupUseTypeDescriptionTransfer(printerGroupUseTypeDescription))
+        );
 
         return printerGroupUseTypeDescriptionTransfers;
     }
@@ -1972,9 +1972,9 @@ public class PrinterControl
         List<PartyPrinterGroupUseTransfer> partyPrinterGroupUseTransfers = new ArrayList<>(partyPrinterGroupUses.size());
         PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache = getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache();
 
-        partyPrinterGroupUses.stream().forEach((partyPrinterGroupUse) -> {
-            partyPrinterGroupUseTransfers.add(partyPrinterGroupUseTransferCache.getPartyPrinterGroupUseTransfer(partyPrinterGroupUse));
-        });
+        partyPrinterGroupUses.forEach((partyPrinterGroupUse) ->
+                partyPrinterGroupUseTransfers.add(partyPrinterGroupUseTransferCache.getPartyPrinterGroupUseTransfer(partyPrinterGroupUse))
+        );
 
         return partyPrinterGroupUseTransfers;
     }

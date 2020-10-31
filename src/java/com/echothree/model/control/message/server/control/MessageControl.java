@@ -225,9 +225,9 @@ public class MessageControl
         List<MessageTypeTransfer> messageTypeTransfers = new ArrayList<>(messageTypes.size());
         MessageTypeTransferCache messageTypeTransferCache = getMessageTransferCaches(userVisit).getMessageTypeTransferCache();
         
-        messageTypes.stream().forEach((messageType) -> {
-            messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(messageType));
-        });
+        messageTypes.forEach((messageType) ->
+                messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(messageType))
+        );
         
         return messageTypeTransfers;
     }
@@ -404,9 +404,9 @@ public class MessageControl
         List<MessageTypeDescriptionTransfer> messageTypeDescriptionTransfers = new ArrayList<>(messageTypeDescriptions.size());
         MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageTypeDescriptionTransferCache();
         
-        messageTypeDescriptions.stream().forEach((messageTypeDescription) -> {
-            messageTypeDescriptionTransfers.add(messageTypeDescriptionTransferCache.getMessageTypeDescriptionTransfer(messageTypeDescription));
-        });
+        messageTypeDescriptions.forEach((messageTypeDescription) ->
+                messageTypeDescriptionTransfers.add(messageTypeDescriptionTransferCache.getMessageTypeDescriptionTransfer(messageTypeDescription))
+        );
         
         return messageTypeDescriptionTransfers;
     }
@@ -651,9 +651,9 @@ public class MessageControl
         List<MessageTransfer> messageTransfers = new ArrayList<>(messages.size());
         MessageTransferCache messageTransferCache = getMessageTransferCaches(userVisit).getMessageTransferCache();
         
-        messages.stream().forEach((message) -> {
-            messageTransfers.add(messageTransferCache.getMessageTransfer(message));
-        });
+        messages.forEach((message) ->
+                messageTransfers.add(messageTransferCache.getMessageTransfer(message))
+        );
         
         return messageTransfers;
     }
@@ -874,9 +874,9 @@ public class MessageControl
         List<MessageDescriptionTransfer> messageDescriptionTransfers = new ArrayList<>(messageDescriptions.size());
         MessageDescriptionTransferCache messageDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageDescriptionTransferCache();
         
-        messageDescriptions.stream().forEach((messageDescription) -> {
-            messageDescriptionTransfers.add(messageDescriptionTransferCache.getMessageDescriptionTransfer(messageDescription));
-        });
+        messageDescriptions.forEach((messageDescription) ->
+                messageDescriptionTransfers.add(messageDescriptionTransferCache.getMessageDescriptionTransfer(messageDescription))
+        );
         
         return messageDescriptionTransfers;
     }
@@ -1019,9 +1019,9 @@ public class MessageControl
         List<MessageStringTransfer> messageStringTransfers = new ArrayList<>(messageStrings.size());
         MessageStringTransferCache messageStringTransferCache = getMessageTransferCaches(userVisit).getMessageStringTransferCache();
         
-        messageStrings.stream().forEach((messageString) -> {
-            messageStringTransfers.add(messageStringTransferCache.getMessageStringTransfer(messageString));
-        });
+        messageStrings.forEach((messageString) ->
+                messageStringTransfers.add(messageStringTransferCache.getMessageStringTransfer(messageString))
+        );
         
         return messageStringTransfers;
     }
@@ -1171,9 +1171,9 @@ public class MessageControl
         List<MessageBlobTransfer> messageBlobTransfers = new ArrayList<>(messageBlobs.size());
         MessageBlobTransferCache messageBlobTransferCache = getMessageTransferCaches(userVisit).getMessageBlobTransferCache();
         
-        messageBlobs.stream().forEach((messageBlob) -> {
-            messageBlobTransfers.add(messageBlobTransferCache.getMessageBlobTransfer(messageBlob));
-        });
+        messageBlobs.forEach((messageBlob) ->
+                messageBlobTransfers.add(messageBlobTransferCache.getMessageBlobTransfer(messageBlob))
+        );
         
         return messageBlobTransfers;
     }
@@ -1324,9 +1324,9 @@ public class MessageControl
         List<MessageClobTransfer> messageClobTransfers = new ArrayList<>(messageClobs.size());
         MessageClobTransferCache messageClobTransferCache = getMessageTransferCaches(userVisit).getMessageClobTransferCache();
         
-        messageClobs.stream().forEach((messageClob) -> {
-            messageClobTransfers.add(messageClobTransferCache.getMessageClobTransfer(messageClob));
-        });
+        messageClobs.forEach((messageClob) ->
+                messageClobTransfers.add(messageClobTransferCache.getMessageClobTransfer(messageClob))
+        );
         
         return messageClobTransfers;
     }
@@ -1510,9 +1510,9 @@ public class MessageControl
         List<EntityMessageTransfer> entityMessageTransfers = new ArrayList<>(entityMessages.size());
         EntityMessageTransferCache entityMessageTransferCache = getMessageTransferCaches(userVisit).getEntityMessageTransferCache();
         
-        entityMessages.stream().forEach((entityMessage) -> {
-            entityMessageTransfers.add(entityMessageTransferCache.getEntityMessageTransfer(entityMessage));
-        });
+        entityMessages.forEach((entityMessage) ->
+                entityMessageTransfers.add(entityMessageTransferCache.getEntityMessageTransfer(entityMessage))
+        );
         
         return entityMessageTransfers;
     }

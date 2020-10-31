@@ -382,9 +382,9 @@ public class FilterControl
         List<FilterKindTransfer> filterKindTransfers = new ArrayList<>(filterKinds.size());
         FilterKindTransferCache filterKindTransferCache = getFilterTransferCaches(userVisit).getFilterKindTransferCache();
 
-        filterKinds.stream().forEach((filterKind) -> {
-            filterKindTransfers.add(filterKindTransferCache.getFilterKindTransfer(filterKind));
-        });
+        filterKinds.forEach((filterKind) ->
+                filterKindTransfers.add(filterKindTransferCache.getFilterKindTransfer(filterKind))
+        );
 
         return filterKindTransfers;
     }
@@ -796,9 +796,9 @@ public class FilterControl
         List<FilterTypeTransfer> filterTypeTransfers = new ArrayList<>(filterTypes.size());
         FilterTypeTransferCache filterTypeTransferCache = getFilterTransferCaches(userVisit).getFilterTypeTransferCache();
 
-        filterTypes.stream().forEach((filterType) -> {
-            filterTypeTransfers.add(filterTypeTransferCache.getFilterTypeTransfer(filterType));
-        });
+        filterTypes.forEach((filterType) ->
+                filterTypeTransfers.add(filterTypeTransferCache.getFilterTypeTransfer(filterType))
+        );
 
         return filterTypeTransfers;
     }
@@ -1446,9 +1446,9 @@ public class FilterControl
         List<FilterAdjustmentTransfer> filterAdjustmentTransfers = new ArrayList<>(filterAdjustments.size());
         FilterAdjustmentTransferCache filterAdjustmentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
         
-        filterAdjustments.stream().forEach((filterAdjustment) -> {
-            filterAdjustmentTransfers.add(filterAdjustmentTransferCache.getFilterAdjustmentTransfer(filterAdjustment));
-        });
+        filterAdjustments.forEach((filterAdjustment) ->
+                filterAdjustmentTransfers.add(filterAdjustmentTransferCache.getFilterAdjustmentTransfer(filterAdjustment))
+        );
         
         return filterAdjustmentTransfers;
     }
@@ -1696,9 +1696,9 @@ public class FilterControl
         List<FilterAdjustmentAmountTransfer> filterAdjustmentAmountTransfers = new ArrayList<>(filterAdjustmentAmounts.size());
         FilterAdjustmentAmountTransferCache filterAdjustmentAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache();
         
-        filterAdjustmentAmounts.stream().forEach((filterAdjustmentAmount) -> {
-            filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getFilterAdjustmentAmountTransfer(filterAdjustmentAmount));
-        });
+        filterAdjustmentAmounts.forEach((filterAdjustmentAmount) ->
+                filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getFilterAdjustmentAmountTransfer(filterAdjustmentAmount))
+        );
         
         return filterAdjustmentAmountTransfers;
     }
@@ -1870,9 +1870,9 @@ public class FilterControl
         List<FilterAdjustmentFixedAmountTransfer> filterAdjustmentFixedAmountTransfers = new ArrayList<>(filterAdjustmentFixedAmounts.size());
         FilterAdjustmentFixedAmountTransferCache filterAdjustmentFixedAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentFixedAmountTransferCache();
         
-        filterAdjustmentFixedAmounts.stream().forEach((filterAdjustmentFixedAmount) -> {
-            filterAdjustmentFixedAmountTransfers.add(filterAdjustmentFixedAmountTransferCache.getFilterAdjustmentFixedAmountTransfer(filterAdjustmentFixedAmount));
-        });
+        filterAdjustmentFixedAmounts.forEach((filterAdjustmentFixedAmount) ->
+                filterAdjustmentFixedAmountTransfers.add(filterAdjustmentFixedAmountTransferCache.getFilterAdjustmentFixedAmountTransfer(filterAdjustmentFixedAmount))
+        );
         
         return filterAdjustmentFixedAmountTransfers;
     }
@@ -2044,9 +2044,9 @@ public class FilterControl
         List<FilterAdjustmentPercentTransfer> filterAdjustmentPercentTransfers = new ArrayList<>(filterAdjustmentPercents.size());
         FilterAdjustmentPercentTransferCache filterAdjustmentPercentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentPercentTransferCache();
         
-        filterAdjustmentPercents.stream().forEach((filterAdjustmentPercent) -> {
-            filterAdjustmentPercentTransfers.add(filterAdjustmentPercentTransferCache.getFilterAdjustmentPercentTransfer(filterAdjustmentPercent));
-        });
+        filterAdjustmentPercents.forEach((filterAdjustmentPercent) ->
+                filterAdjustmentPercentTransfers.add(filterAdjustmentPercentTransferCache.getFilterAdjustmentPercentTransfer(filterAdjustmentPercent))
+        );
         
         return filterAdjustmentPercentTransfers;
     }
@@ -2225,9 +2225,9 @@ public class FilterControl
         List<FilterAdjustmentDescriptionTransfer> filterAdjustmentDescriptionTransfers = new ArrayList<>(filterAdjustmentDescriptions.size());
         FilterAdjustmentDescriptionTransferCache filterAdjustmentDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentDescriptionTransferCache();
         
-        filterAdjustmentDescriptions.stream().forEach((filterAdjustmentDescription) -> {
-            filterAdjustmentDescriptionTransfers.add(filterAdjustmentDescriptionTransferCache.getFilterAdjustmentDescriptionTransfer(filterAdjustmentDescription));
-        });
+        filterAdjustmentDescriptions.forEach((filterAdjustmentDescription) ->
+                filterAdjustmentDescriptionTransfers.add(filterAdjustmentDescriptionTransferCache.getFilterAdjustmentDescriptionTransfer(filterAdjustmentDescription))
+        );
         
         return filterAdjustmentDescriptionTransfers;
     }
@@ -2457,9 +2457,9 @@ public class FilterControl
         List<FilterTransfer> filterTransfers = new ArrayList<>(filters.size());
         FilterTransferCache filterTransferCache = getFilterTransferCaches(userVisit).getFilterTransferCache();
         
-        filters.stream().forEach((filter) -> {
-            filterTransfers.add(filterTransferCache.getFilterTransfer(filter));
-        });
+        filters.forEach((filter) ->
+                filterTransfers.add(filterTransferCache.getFilterTransfer(filter))
+        );
         
         return filterTransfers;
     }
@@ -2689,9 +2689,9 @@ public class FilterControl
         List<FilterDescriptionTransfer> filterDescriptionTransfers = new ArrayList<>(filterDescriptions.size());
         FilterDescriptionTransferCache filterDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterDescriptionTransferCache();
         
-        filterDescriptions.stream().forEach((filterDescription) -> {
-            filterDescriptionTransfers.add(filterDescriptionTransferCache.getFilterDescriptionTransfer(filterDescription));
-        });
+        filterDescriptions.forEach((filterDescription) ->
+                filterDescriptionTransfers.add(filterDescriptionTransferCache.getFilterDescriptionTransfer(filterDescription))
+        );
         
         return filterDescriptionTransfers;
     }
@@ -2872,9 +2872,9 @@ public class FilterControl
         List<FilterStepTransfer> filterStepTransfers = new ArrayList<>(filterSteps.size());
         FilterStepTransferCache filterStepTransferCache = getFilterTransferCaches(userVisit).getFilterStepTransferCache();
         
-        filterSteps.stream().forEach((filterStep) -> {
-            filterStepTransfers.add(filterStepTransferCache.getFilterStepTransfer(filterStep));
-        });
+        filterSteps.forEach((filterStep) ->
+                filterStepTransfers.add(filterStepTransferCache.getFilterStepTransfer(filterStep))
+        );
         
         return filterStepTransfers;
     }
@@ -3064,9 +3064,9 @@ public class FilterControl
         List<FilterStepDescriptionTransfer> filterStepDescriptionTransfers = new ArrayList<>(filterStepDescriptions.size());
         FilterStepDescriptionTransferCache filterStepDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepDescriptionTransferCache();
         
-        filterStepDescriptions.stream().forEach((filterStepDescription) -> {
-            filterStepDescriptionTransfers.add(filterStepDescriptionTransferCache.getFilterStepDescriptionTransfer(filterStepDescription));
-        });
+        filterStepDescriptions.forEach((filterStepDescription) ->
+                filterStepDescriptionTransfers.add(filterStepDescriptionTransferCache.getFilterStepDescriptionTransfer(filterStepDescription))
+        );
         
         return filterStepDescriptionTransfers;
     }
@@ -3249,9 +3249,9 @@ public class FilterControl
         List<FilterEntranceStepTransfer> filterEntranceStepTransfers = new ArrayList<>(filterEntranceSteps.size());
         FilterEntranceStepTransferCache filterEntranceStepTransferCache = getFilterTransferCaches(userVisit).getFilterEntranceStepTransferCache();
         
-        filterEntranceSteps.stream().forEach((filterEntranceStep) -> {
-            filterEntranceStepTransfers.add(filterEntranceStepTransferCache.getFilterEntranceStepTransfer(filterEntranceStep));
-        });
+        filterEntranceSteps.forEach((filterEntranceStep) ->
+                filterEntranceStepTransfers.add(filterEntranceStepTransferCache.getFilterEntranceStepTransfer(filterEntranceStep))
+        );
         
         return filterEntranceStepTransfers;
     }
@@ -3439,9 +3439,9 @@ public class FilterControl
         List<FilterStepDestinationTransfer> filterStepDestinationTransfers = new ArrayList<>(filterStepDestinations.size());
         FilterStepDestinationTransferCache filterStepDestinationTransferCache = getFilterTransferCaches(userVisit).getFilterStepDestinationTransferCache();
         
-        filterStepDestinations.stream().forEach((filterStepDestination) -> {
-            filterStepDestinationTransfers.add(filterStepDestinationTransferCache.getFilterStepDestinationTransfer(filterStepDestination));
-        });
+        filterStepDestinations.forEach((filterStepDestination) ->
+                filterStepDestinationTransfers.add(filterStepDestinationTransferCache.getFilterStepDestinationTransfer(filterStepDestination))
+        );
         
         return filterStepDestinationTransfers;
     }
@@ -3601,9 +3601,9 @@ public class FilterControl
         List<FilterStepElementTransfer> filterStepElementTransfers = new ArrayList<>(filterStepElements.size());
         FilterStepElementTransferCache filterStepElementTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementTransferCache();
         
-        filterStepElements.stream().forEach((filterStepElement) -> {
-            filterStepElementTransfers.add(filterStepElementTransferCache.getFilterStepElementTransfer(filterStepElement));
-        });
+        filterStepElements.forEach((filterStepElement) ->
+                filterStepElementTransfers.add(filterStepElementTransferCache.getFilterStepElementTransfer(filterStepElement))
+        );
         
         return filterStepElementTransfers;
     }
@@ -3811,9 +3811,9 @@ public class FilterControl
         List<FilterStepElementDescriptionTransfer> filterStepElementDescriptionTransfers = new ArrayList<>(filterStepElementDescriptions.size());
         FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementDescriptionTransferCache();
         
-        filterStepElementDescriptions.stream().forEach((filterStepElementDescription) -> {
-            filterStepElementDescriptionTransfers.add(filterStepElementDescriptionTransferCache.getFilterStepElementDescriptionTransfer(filterStepElementDescription));
-        });
+        filterStepElementDescriptions.forEach((filterStepElementDescription) ->
+                filterStepElementDescriptionTransfers.add(filterStepElementDescriptionTransferCache.getFilterStepElementDescriptionTransfer(filterStepElementDescription))
+        );
         
         return filterStepElementDescriptionTransfers;
     }

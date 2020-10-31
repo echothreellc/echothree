@@ -230,9 +230,9 @@ public class InvoiceControl
         List<InvoiceLineUseTypeTransfer> invoiceLineUseTypeTransfers = new ArrayList<>(invoiceLineUseTypes.size());
         InvoiceLineUseTypeTransferCache invoiceLineUseTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineUseTypeTransferCache();
         
-        invoiceLineUseTypes.stream().forEach((invoiceLineUseType) -> {
-            invoiceLineUseTypeTransfers.add(invoiceLineUseTypeTransferCache.getInvoiceLineUseTypeTransfer(invoiceLineUseType));
-        });
+        invoiceLineUseTypes.forEach((invoiceLineUseType) ->
+                invoiceLineUseTypeTransfers.add(invoiceLineUseTypeTransferCache.getInvoiceLineUseTypeTransfer(invoiceLineUseType))
+        );
         
         return invoiceLineUseTypeTransfers;
     }
@@ -332,9 +332,9 @@ public class InvoiceControl
         List<InvoiceRoleTypeTransfer> invoiceRoleTypeTransfers = new ArrayList<>(invoiceRoleTypes.size());
         InvoiceRoleTypeTransferCache invoiceRoleTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceRoleTypeTransferCache();
         
-        invoiceRoleTypes.stream().forEach((invoiceRoleType) -> {
-            invoiceRoleTypeTransfers.add(invoiceRoleTypeTransferCache.getInvoiceRoleTypeTransfer(invoiceRoleType));
-        });
+        invoiceRoleTypes.forEach((invoiceRoleType) ->
+                invoiceRoleTypeTransfers.add(invoiceRoleTypeTransferCache.getInvoiceRoleTypeTransfer(invoiceRoleType))
+        );
 
             return invoiceRoleTypeTransfers;
     }
@@ -569,9 +569,9 @@ public class InvoiceControl
         List<InvoiceTypeTransfer> invoiceTypeTransfers = new ArrayList<>(invoiceTypes.size());
         InvoiceTypeTransferCache invoiceTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTypeTransferCache();
         
-        invoiceTypes.stream().forEach((invoiceType) -> {
-            invoiceTypeTransfers.add(invoiceTypeTransferCache.getInvoiceTypeTransfer(invoiceType));
-        });
+        invoiceTypes.forEach((invoiceType) ->
+                invoiceTypeTransfers.add(invoiceTypeTransferCache.getInvoiceTypeTransfer(invoiceType))
+        );
         
         return invoiceTypeTransfers;
     }
@@ -857,9 +857,9 @@ public class InvoiceControl
         List<InvoiceTypeDescriptionTransfer> invoiceTypeDescriptionTransfers = new ArrayList<>(invoiceTypeDescriptions.size());
         InvoiceTypeDescriptionTransferCache invoiceTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTypeDescriptionTransferCache();
         
-        invoiceTypeDescriptions.stream().forEach((invoiceTypeDescription) -> {
-            invoiceTypeDescriptionTransfers.add(invoiceTypeDescriptionTransferCache.getInvoiceTypeDescriptionTransfer(invoiceTypeDescription));
-        });
+        invoiceTypeDescriptions.forEach((invoiceTypeDescription) ->
+                invoiceTypeDescriptionTransfers.add(invoiceTypeDescriptionTransferCache.getInvoiceTypeDescriptionTransfer(invoiceTypeDescription))
+        );
         
         return invoiceTypeDescriptionTransfers;
     }
@@ -1045,9 +1045,9 @@ public class InvoiceControl
         List<InvoiceAliasTypeTransfer> invoiceAliasTypeTransfers = new ArrayList<>(invoiceAliasTypes.size());
         InvoiceAliasTypeTransferCache invoiceAliasTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTypeTransferCache();
         
-        invoiceAliasTypes.stream().forEach((invoiceAliasType) -> {
-            invoiceAliasTypeTransfers.add(invoiceAliasTypeTransferCache.getInvoiceAliasTypeTransfer(invoiceAliasType));
-        });
+        invoiceAliasTypes.forEach((invoiceAliasType) ->
+                invoiceAliasTypeTransfers.add(invoiceAliasTypeTransferCache.getInvoiceAliasTypeTransfer(invoiceAliasType))
+        );
         
         return invoiceAliasTypeTransfers;
     }
@@ -1326,9 +1326,9 @@ public class InvoiceControl
         List<InvoiceTimeTypeTransfer> invoiceTimeTypeTransfers = new ArrayList<>(invoiceTimeTypes.size());
         InvoiceTimeTypeTransferCache invoiceTimeTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTypeTransferCache();
 
-        invoiceTimeTypes.stream().forEach((invoiceTimeType) -> {
-            invoiceTimeTypeTransfers.add(invoiceTimeTypeTransferCache.getInvoiceTimeTypeTransfer(invoiceTimeType));
-        });
+        invoiceTimeTypes.forEach((invoiceTimeType) ->
+                invoiceTimeTypeTransfers.add(invoiceTimeTypeTransferCache.getInvoiceTimeTypeTransfer(invoiceTimeType))
+        );
 
         return invoiceTimeTypeTransfers;
     }
@@ -1553,9 +1553,9 @@ public class InvoiceControl
         List<InvoiceTimeTypeDescriptionTransfer> invoiceTimeTypeDescriptionTransfers = new ArrayList<>(invoiceTimeTypeDescriptions.size());
         InvoiceTimeTypeDescriptionTransferCache invoiceTimeTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTypeDescriptionTransferCache();
 
-        invoiceTimeTypeDescriptions.stream().forEach((invoiceTimeTypeDescription) -> {
-            invoiceTimeTypeDescriptionTransfers.add(invoiceTimeTypeDescriptionTransferCache.getInvoiceTimeTypeDescriptionTransfer(invoiceTimeTypeDescription));
-        });
+        invoiceTimeTypeDescriptions.forEach((invoiceTimeTypeDescription) ->
+                invoiceTimeTypeDescriptionTransfers.add(invoiceTimeTypeDescriptionTransferCache.getInvoiceTimeTypeDescriptionTransfer(invoiceTimeTypeDescription))
+        );
 
         return invoiceTimeTypeDescriptionTransfers;
     }
@@ -1702,9 +1702,9 @@ public class InvoiceControl
         List<InvoiceAliasTypeDescriptionTransfer> invoiceAliasTypeDescriptionTransfers = new ArrayList<>(invoiceAliasTypeDescriptions.size());
         InvoiceAliasTypeDescriptionTransferCache invoiceAliasTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTypeDescriptionTransferCache();
         
-        invoiceAliasTypeDescriptions.stream().forEach((invoiceAliasTypeDescription) -> {
-            invoiceAliasTypeDescriptionTransfers.add(invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(invoiceAliasTypeDescription));
-        });
+        invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) ->
+                invoiceAliasTypeDescriptionTransfers.add(invoiceAliasTypeDescriptionTransferCache.getInvoiceAliasTypeDescriptionTransfer(invoiceAliasTypeDescription))
+        );
         
         return invoiceAliasTypeDescriptionTransfers;
     }
@@ -1952,9 +1952,9 @@ public class InvoiceControl
         List<InvoiceLineTypeTransfer> invoiceLineTypeTransfers = new ArrayList<>(invoiceLineTypes.size());
         InvoiceLineTypeTransferCache invoiceLineTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTypeTransferCache();
         
-        invoiceLineTypes.stream().forEach((invoiceLineType) -> {
-            invoiceLineTypeTransfers.add(invoiceLineTypeTransferCache.getInvoiceLineTypeTransfer(invoiceLineType));
-        });
+        invoiceLineTypes.forEach((invoiceLineType) ->
+                invoiceLineTypeTransfers.add(invoiceLineTypeTransferCache.getInvoiceLineTypeTransfer(invoiceLineType))
+        );
         
         return invoiceLineTypeTransfers;
     }
@@ -2253,9 +2253,9 @@ public class InvoiceControl
         List<InvoiceLineTypeDescriptionTransfer> invoiceLineTypeDescriptionTransfers = new ArrayList<>(invoiceLineTypeDescriptions.size());
         InvoiceLineTypeDescriptionTransferCache invoiceLineTypeDescriptionTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTypeDescriptionTransferCache();
         
-        invoiceLineTypeDescriptions.stream().forEach((invoiceLineTypeDescription) -> {
-            invoiceLineTypeDescriptionTransfers.add(invoiceLineTypeDescriptionTransferCache.getInvoiceLineTypeDescriptionTransfer(invoiceLineTypeDescription));
-        });
+        invoiceLineTypeDescriptions.forEach((invoiceLineTypeDescription) ->
+                invoiceLineTypeDescriptionTransfers.add(invoiceLineTypeDescriptionTransferCache.getInvoiceLineTypeDescriptionTransfer(invoiceLineTypeDescription))
+        );
         
         return invoiceLineTypeDescriptionTransfers;
     }
@@ -2453,9 +2453,9 @@ public class InvoiceControl
         List<InvoiceTransfer> invoiceTransfers = new ArrayList<>(invoices.size());
         InvoiceTransferCache invoiceTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTransferCache();
         
-        invoices.stream().forEach((invoice) -> {
-            invoiceTransfers.add(invoiceTransferCache.getInvoiceTransfer(invoice));
-        });
+        invoices.forEach((invoice) ->
+                invoiceTransfers.add(invoiceTransferCache.getInvoiceTransfer(invoice))
+        );
         
         return invoiceTransfers;
     }
@@ -2679,9 +2679,9 @@ public class InvoiceControl
         List<InvoiceRoleTransfer> invoiceRoleTransfers = new ArrayList<>(invoiceRoles.size());
         InvoiceRoleTransferCache invoiceRoleTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceRoleTransferCache();
         
-        invoiceRoles.stream().forEach((invoiceRole) -> {
-            invoiceRoleTransfers.add(invoiceRoleTransferCache.getInvoiceRoleTransfer(invoiceRole));
-        });
+        invoiceRoles.forEach((invoiceRole) ->
+                invoiceRoleTransfers.add(invoiceRoleTransferCache.getInvoiceRoleTransfer(invoiceRole))
+        );
         
         return invoiceRoleTransfers;
     }
@@ -2882,9 +2882,9 @@ public class InvoiceControl
         List<InvoiceTimeTransfer> invoiceTimeTransfers = new ArrayList<>(invoiceTimes.size());
         InvoiceTimeTransferCache invoiceTimeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTransferCache();
 
-        invoiceTimes.stream().forEach((invoiceTime) -> {
-            invoiceTimeTransfers.add(invoiceTimeTransferCache.getInvoiceTimeTransfer(invoiceTime));
-        });
+        invoiceTimes.forEach((invoiceTime) ->
+                invoiceTimeTransfers.add(invoiceTimeTransferCache.getInvoiceTimeTransfer(invoiceTime))
+        );
 
         return invoiceTimeTransfers;
     }
@@ -3059,9 +3059,9 @@ public class InvoiceControl
         List<InvoiceAliasTransfer> invoiceAliasTransfers = new ArrayList<>(invoicealiases.size());
         InvoiceAliasTransferCache invoiceAliasTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceAliasTransferCache();
         
-        invoicealiases.stream().forEach((invoiceAlias) -> {
-            invoiceAliasTransfers.add(invoiceAliasTransferCache.getInvoiceAliasTransfer(invoiceAlias));
-        });
+        invoicealiases.forEach((invoiceAlias) ->
+                invoiceAliasTransfers.add(invoiceAliasTransferCache.getInvoiceAliasTransfer(invoiceAlias))
+        );
         
         return invoiceAliasTransfers;
     }
@@ -3213,9 +3213,9 @@ public class InvoiceControl
         List<InvoiceLineTransfer> invoiceLineTransfers = new ArrayList<>(invoiceLines.size());
         InvoiceLineTransferCache invoiceLineTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTransferCache();
         
-        invoiceLines.stream().forEach((invoiceLine) -> {
-            invoiceLineTransfers.add(invoiceLineTransferCache.getInvoiceLineTransfer(invoiceLine));
-        });
+        invoiceLines.forEach((invoiceLine) ->
+                invoiceLineTransfers.add(invoiceLineTransferCache.getInvoiceLineTransfer(invoiceLine))
+        );
         
         return invoiceLineTransfers;
     }

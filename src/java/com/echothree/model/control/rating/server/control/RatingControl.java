@@ -211,9 +211,9 @@ public class RatingControl
         List<RatingTypeTransfer> ratingTypeTransfers = new ArrayList<>(ratingTypes.size());
         RatingTypeTransferCache ratingTypeTransferCache = getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
         
-        ratingTypes.stream().forEach((ratingType) -> {
-            ratingTypeTransfers.add(ratingTypeTransferCache.getRatingTypeTransfer(ratingType));
-        });
+        ratingTypes.forEach((ratingType) ->
+                ratingTypeTransfers.add(ratingTypeTransferCache.getRatingTypeTransfer(ratingType))
+        );
         
         return ratingTypeTransfers;
     }
@@ -391,9 +391,9 @@ public class RatingControl
         List<RatingTypeDescriptionTransfer> ratingTypeDescriptionTransfers = new ArrayList<>(ratingTypeDescriptions.size());
         RatingTypeDescriptionTransferCache ratingTypeDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeDescriptionTransferCache();
         
-        ratingTypeDescriptions.stream().forEach((ratingTypeDescription) -> {
-            ratingTypeDescriptionTransfers.add(ratingTypeDescriptionTransferCache.getRatingTypeDescriptionTransfer(ratingTypeDescription));
-        });
+        ratingTypeDescriptions.forEach((ratingTypeDescription) ->
+                ratingTypeDescriptionTransfers.add(ratingTypeDescriptionTransferCache.getRatingTypeDescriptionTransfer(ratingTypeDescription))
+        );
         
         return ratingTypeDescriptionTransfers;
     }
@@ -606,9 +606,9 @@ public class RatingControl
         List<RatingTypeListItemTransfer> ratingTypeListItemTransfers = new ArrayList<>(ratingTypeListItems.size());
         RatingTypeListItemTransferCache ratingTypeListItemTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
         
-        ratingTypeListItems.stream().forEach((ratingTypeListItem) -> {
-            ratingTypeListItemTransfers.add(ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItem));
-        });
+        ratingTypeListItems.forEach((ratingTypeListItem) ->
+                ratingTypeListItemTransfers.add(ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItem))
+        );
         
         return ratingTypeListItemTransfers;
     }
@@ -860,9 +860,9 @@ public class RatingControl
         List<RatingTypeListItemDescriptionTransfer> ratingTypeListItemDescriptionTransfers = new ArrayList<>(ratingTypeListItemDescriptions.size());
         RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemDescriptionTransferCache();
         
-        ratingTypeListItemDescriptions.stream().forEach((ratingTypeListItemDescription) -> {
-            ratingTypeListItemDescriptionTransfers.add(ratingTypeListItemDescriptionTransferCache.getRatingTypeListItemDescriptionTransfer(ratingTypeListItemDescription));
-        });
+        ratingTypeListItemDescriptions.forEach((ratingTypeListItemDescription) ->
+                ratingTypeListItemDescriptionTransfers.add(ratingTypeListItemDescriptionTransferCache.getRatingTypeListItemDescriptionTransfer(ratingTypeListItemDescription))
+        );
         
         return ratingTypeListItemDescriptionTransfers;
     }
@@ -1178,9 +1178,9 @@ public class RatingControl
         List<RatingTransfer> ratingTransfers = new ArrayList<>(ratings.size());
         RatingTransferCache ratingTransferCache = getRatingTransferCaches(userVisit).getRatingTransferCache();
         
-        ratings.stream().forEach((rating) -> {
-            ratingTransfers.add(ratingTransferCache.getRatingTransfer(rating));
-        });
+        ratings.forEach((rating) ->
+                ratingTransfers.add(ratingTransferCache.getRatingTransfer(rating))
+        );
         
         return ratingTransfers;
     }

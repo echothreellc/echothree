@@ -231,9 +231,9 @@ public class QueueControl
         List<QueueTypeTransfer> queueTypeTransfers = new ArrayList<>(queueTypes.size());
         QueueTypeTransferCache queueTypeTransferCache = getQueueTransferCaches(userVisit).getQueueTypeTransferCache();
 
-        queueTypes.stream().forEach((queueType) -> {
-            queueTypeTransfers.add(queueTypeTransferCache.getQueueTypeTransfer(queueType));
-        });
+        queueTypes.forEach((queueType) ->
+                queueTypeTransfers.add(queueTypeTransferCache.getQueueTypeTransfer(queueType))
+        );
 
         return queueTypeTransfers;
     }
@@ -475,9 +475,9 @@ public class QueueControl
         List<QueueTypeDescriptionTransfer> queueTypeDescriptionTransfers = new ArrayList<>(queueTypeDescriptions.size());
         QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache = getQueueTransferCaches(userVisit).getQueueTypeDescriptionTransferCache();
 
-        queueTypeDescriptions.stream().forEach((queueTypeDescription) -> {
-            queueTypeDescriptionTransfers.add(queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(queueTypeDescription));
-        });
+        queueTypeDescriptions.forEach((queueTypeDescription) ->
+                queueTypeDescriptionTransfers.add(queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(queueTypeDescription))
+        );
 
         return queueTypeDescriptionTransfers;
     }
@@ -697,9 +697,9 @@ public class QueueControl
         List<QueuedEntityTransfer> queuedEntityTransfers = new ArrayList<>(queuedEntities.size());
         QueuedEntityTransferCache queuedEntityTransferCache = getQueueTransferCaches(userVisit).getQueuedEntityTransferCache();
 
-        queuedEntities.stream().forEach((queuedEntity) -> {
-            queuedEntityTransfers.add(queuedEntityTransferCache.getQueuedEntityTransfer(queuedEntity));
-        });
+        queuedEntities.forEach((queuedEntity) ->
+                queuedEntityTransfers.add(queuedEntityTransferCache.getQueuedEntityTransfer(queuedEntity))
+        );
 
         return queuedEntityTransfers;
     }

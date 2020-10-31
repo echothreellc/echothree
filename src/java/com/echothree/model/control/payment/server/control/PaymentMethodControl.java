@@ -323,9 +323,9 @@ public class PaymentMethodControl
         List<PaymentMethodTransfer> paymentMethodTransfers = new ArrayList<>(paymentMethods.size());
         PaymentMethodTransferCache paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
 
-        paymentMethods.stream().forEach((paymentMethod) -> {
-            paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod));
-        });
+        paymentMethods.forEach((paymentMethod) ->
+                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod))
+        );
 
         return paymentMethodTransfers;
     }
@@ -558,9 +558,9 @@ public class PaymentMethodControl
         List<PaymentMethodDescriptionTransfer> paymentMethodDescriptionTransfers = new ArrayList<>(paymentMethodDescriptions.size());
         PaymentMethodDescriptionTransferCache paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
         
-        paymentMethodDescriptions.stream().forEach((paymentMethodDescription) -> {
-            paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription));
-        });
+        paymentMethodDescriptions.forEach((paymentMethodDescription) ->
+                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription))
+        );
         
         return paymentMethodDescriptionTransfers;
     }

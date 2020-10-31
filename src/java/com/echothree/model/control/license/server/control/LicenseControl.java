@@ -222,9 +222,9 @@ public class LicenseControl
         List<LicenseTypeTransfer> licenseTypeTransfers = new ArrayList<>(licenseTypes.size());
         LicenseTypeTransferCache licenseTypeTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache();
 
-        licenseTypes.stream().forEach((licenseType) -> {
-            licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(licenseType));
-        });
+        licenseTypes.forEach((licenseType) ->
+                licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(licenseType))
+        );
 
         return licenseTypeTransfers;
     }
@@ -461,9 +461,9 @@ public class LicenseControl
         List<LicenseTypeDescriptionTransfer> licenseTypeDescriptionTransfers = new ArrayList<>(licenseTypeDescriptions.size());
         LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache();
 
-        licenseTypeDescriptions.stream().forEach((licenseTypeDescription) -> {
-            licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(licenseTypeDescription));
-        });
+        licenseTypeDescriptions.forEach((licenseTypeDescription) ->
+                licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(licenseTypeDescription))
+        );
 
         return licenseTypeDescriptionTransfers;
     }

@@ -374,9 +374,9 @@ public class LetterControl
         List<LetterSourceTransfer> letterSourceTransfers = new ArrayList<>(letterSources.size());
         LetterSourceTransferCache letterSourceTransferCache = getLetterTransferCaches(userVisit).getLetterSourceTransferCache();
         
-        letterSources.stream().forEach((letterSource) -> {
-            letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(letterSource));
-        });
+        letterSources.forEach((letterSource) ->
+                letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(letterSource))
+        );
         
         return letterSourceTransfers;
     }
@@ -930,9 +930,9 @@ public class LetterControl
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
         LetterTransferCache letterTransferCache = getLetterTransferCaches(userVisit).getLetterTransferCache();
         
-        letters.stream().forEach((letter) -> {
-            letterTransfers.add(letterTransferCache.getLetterTransfer(letter));
-        });
+        letters.forEach((letter) ->
+                letterTransfers.add(letterTransferCache.getLetterTransfer(letter))
+        );
         
         return letterTransfers;
     }
@@ -1364,9 +1364,9 @@ public class LetterControl
         List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposeTransfers = new ArrayList<>(letterContactMechanismPurposes.size());
         LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache = getLetterTransferCaches(userVisit).getLetterContactMechanismPurposeTransferCache();
         
-        letterContactMechanismPurposes.stream().forEach((letterContactMechanismPurpose) -> {
-            letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(letterContactMechanismPurpose));
-        });
+        letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) ->
+                letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(letterContactMechanismPurpose))
+        );
         
         return letterContactMechanismPurposeTransfers;
     }
@@ -1586,9 +1586,9 @@ public class LetterControl
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
         QueuedLetterTransferCache queuedLetterTransferCache = getLetterTransferCaches(userVisit).getQueuedLetterTransferCache();
 
-        queuedLetters.stream().forEach((queuedLetter) -> {
-            queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(queuedLetter));
-        });
+        queuedLetters.forEach((queuedLetter) ->
+                queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(queuedLetter))
+        );
 
         return queuedLetterTransfers;
     }

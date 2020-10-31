@@ -187,9 +187,9 @@ public class PaymentProcessorResultCodeControl
         var paymentProcessorResultCodeTransfers = new ArrayList<PaymentProcessorResultCodeTransfer>(paymentProcessorResultCodes.size());
         var paymentProcessorResultCodeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorResultCodeTransferCache();
 
-        paymentProcessorResultCodes.stream().forEach((paymentProcessorResultCode) -> {
-            paymentProcessorResultCodeTransfers.add(paymentProcessorResultCodeTransferCache.getTransfer(paymentProcessorResultCode));
-        });
+        paymentProcessorResultCodes.forEach((paymentProcessorResultCode) ->
+                paymentProcessorResultCodeTransfers.add(paymentProcessorResultCodeTransferCache.getTransfer(paymentProcessorResultCode))
+        );
 
         return paymentProcessorResultCodeTransfers;
     }
@@ -415,9 +415,9 @@ public class PaymentProcessorResultCodeControl
         var paymentProcessorResultCodeDescriptionTransfers = new ArrayList<PaymentProcessorResultCodeDescriptionTransfer>(paymentProcessorResultCodeDescriptions.size());
         var paymentProcessorResultCodeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorResultCodeDescriptionTransferCache();
 
-        paymentProcessorResultCodeDescriptions.stream().forEach((paymentProcessorResultCodeDescription) -> {
-            paymentProcessorResultCodeDescriptionTransfers.add(paymentProcessorResultCodeDescriptionTransferCache.getTransfer(paymentProcessorResultCodeDescription));
-        });
+        paymentProcessorResultCodeDescriptions.forEach((paymentProcessorResultCodeDescription) ->
+                paymentProcessorResultCodeDescriptionTransfers.add(paymentProcessorResultCodeDescriptionTransferCache.getTransfer(paymentProcessorResultCodeDescription))
+        );
 
         return paymentProcessorResultCodeDescriptionTransfers;
     }

@@ -178,9 +178,9 @@ public class TermControl
         List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
         TermTypeTransferCache termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
         
-        termTypes.stream().forEach((termType) -> {
-            termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType));
-        });
+        termTypes.forEach((termType) ->
+                termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType))
+        );
         
         return termTypeTransfers;
     }
@@ -406,9 +406,9 @@ public class TermControl
         List<TermTransfer> termTransfers = new ArrayList<>(terms.size());
         TermTransferCache termTransferCache = getTermTransferCaches(userVisit).getTermTransferCache();
         
-        terms.stream().forEach((term) -> {
-            termTransfers.add(termTransferCache.getTermTransfer(term));
-        });
+        terms.forEach((term) ->
+                termTransfers.add(termTransferCache.getTermTransfer(term))
+        );
         
         return termTransfers;
     }
@@ -957,9 +957,9 @@ public class TermControl
         List<CustomerTypeCreditLimitTransfer> customerTypeCreditLimitTransfers = new ArrayList<>(customerTypeCreditLimits.size());
         CustomerTypeCreditLimitTransferCache customerTypeCreditLimitTransferCache = getTermTransferCaches(userVisit).getCustomerTypeCreditLimitTransferCache();
         
-        customerTypeCreditLimits.stream().forEach((customerTypeCreditLimit) -> {
-            customerTypeCreditLimitTransfers.add(customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(customerTypeCreditLimit));
-        });
+        customerTypeCreditLimits.forEach((customerTypeCreditLimit) ->
+                customerTypeCreditLimitTransfers.add(customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(customerTypeCreditLimit))
+        );
         
         return customerTypeCreditLimitTransfers;
     }
@@ -1108,9 +1108,9 @@ public class TermControl
         List<PartyCreditLimitTransfer> partyCreditLimitTransfers = new ArrayList<>(partyCreditLimits.size());
         PartyCreditLimitTransferCache partyCreditLimitTransferCache = getTermTransferCaches(userVisit).getPartyCreditLimitTransferCache();
         
-        partyCreditLimits.stream().forEach((partyCreditLimit) -> {
-            partyCreditLimitTransfers.add(partyCreditLimitTransferCache.getPartyCreditLimitTransfer(partyCreditLimit));
-        });
+        partyCreditLimits.forEach((partyCreditLimit) ->
+                partyCreditLimitTransfers.add(partyCreditLimitTransferCache.getPartyCreditLimitTransfer(partyCreditLimit))
+        );
         
         return partyCreditLimitTransfers;
     }

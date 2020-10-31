@@ -289,9 +289,9 @@ public class AssociateControl
         List<AssociateProgramTransfer> associateProgramTransfers = new ArrayList<>(associatePrograms.size());
         AssociateProgramTransferCache associateProgramTransferCache = getAssociateTransferCaches(userVisit).getAssociateProgramTransferCache();
         
-        associatePrograms.stream().forEach((associateProgram) -> {
-            associateProgramTransfers.add(associateProgramTransferCache.getTransfer(associateProgram));
-        });
+        associatePrograms.forEach((associateProgram) ->
+                associateProgramTransfers.add(associateProgramTransferCache.getTransfer(associateProgram))
+        );
         
         return associateProgramTransfers;
     }
@@ -501,9 +501,9 @@ public class AssociateControl
         List<AssociateProgramDescriptionTransfer> associateProgramDescriptionTransfers = new ArrayList<>(associateProgramDescriptions.size());
         AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache = getAssociateTransferCaches(userVisit).getAssociateProgramDescriptionTransferCache();
         
-        associateProgramDescriptions.stream().forEach((associateProgramDescription) -> {
-            associateProgramDescriptionTransfers.add(associateProgramDescriptionTransferCache.getTransfer(associateProgramDescription));
-        });
+        associateProgramDescriptions.forEach((associateProgramDescription) ->
+                associateProgramDescriptionTransfers.add(associateProgramDescriptionTransferCache.getTransfer(associateProgramDescription))
+        );
         
         return associateProgramDescriptionTransfers;
     }
@@ -691,9 +691,9 @@ public class AssociateControl
         List<AssociateTransfer> associateTransfers = new ArrayList<>(associates.size());
         AssociateTransferCache associateTransferCache = getAssociateTransferCaches(userVisit).getAssociateTransferCache();
         
-        associates.stream().forEach((associate) -> {
-            associateTransfers.add(associateTransferCache.getTransfer(associate));
-        });
+        associates.forEach((associate) ->
+                associateTransfers.add(associateTransferCache.getTransfer(associate))
+        );
         
         return associateTransfers;
     }
@@ -999,9 +999,9 @@ public class AssociateControl
         List<AssociatePartyContactMechanismTransfer> associatePartyContactMechanismTransfers = new ArrayList<>(associatePartyContactMechanisms.size());
         AssociatePartyContactMechanismTransferCache associatePartyContactMechanismTransferCache = getAssociateTransferCaches(userVisit).getAssociatePartyContactMechanismTransferCache();
         
-        associatePartyContactMechanisms.stream().forEach((associatePartyContactMechanism) -> {
-            associatePartyContactMechanismTransfers.add(associatePartyContactMechanismTransferCache.getTransfer(associatePartyContactMechanism));
-        });
+        associatePartyContactMechanisms.forEach((associatePartyContactMechanism) ->
+                associatePartyContactMechanismTransfers.add(associatePartyContactMechanismTransferCache.getTransfer(associatePartyContactMechanism))
+        );
         
         return associatePartyContactMechanismTransfers;
     }
@@ -1316,9 +1316,9 @@ public class AssociateControl
         List<AssociateReferralTransfer> associateReferralTransfers = new ArrayList<>(associateReferrals.size());
         AssociateReferralTransferCache associateReferralTransferCache = getAssociateTransferCaches(userVisit).getAssociateReferralTransferCache();
         
-        associateReferrals.stream().forEach((associateReferral) -> {
-            associateReferralTransfers.add(associateReferralTransferCache.getTransfer(associateReferral));
-        });
+        associateReferrals.forEach((associateReferral) ->
+                associateReferralTransfers.add(associateReferralTransferCache.getTransfer(associateReferral))
+        );
         
         return associateReferralTransfers;
     }

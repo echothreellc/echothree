@@ -298,9 +298,9 @@ public class LotControl
         var lotTransfers = new ArrayList<LotTransfer>(lots.size());
         var lotTransferCache = getInventoryTransferCaches(userVisit).getLotTransferCache();
 
-        lots.stream().forEach((lot) -> {
-            lotTransfers.add(lotTransferCache.getTransfer(lot));
-        });
+        lots.forEach((lot) ->
+                lotTransfers.add(lotTransferCache.getTransfer(lot))
+        );
 
         return lotTransfers;
     }

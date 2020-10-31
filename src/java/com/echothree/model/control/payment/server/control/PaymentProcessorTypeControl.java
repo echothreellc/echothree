@@ -189,9 +189,9 @@ public class PaymentProcessorTypeControl
         var paymentProcessorTypeTransfers = new ArrayList<PaymentProcessorTypeTransfer>(paymentProcessorTypes.size());
         var paymentProcessorTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache();
 
-        paymentProcessorTypes.stream().forEach((paymentProcessorType) -> {
-            paymentProcessorTypeTransfers.add(paymentProcessorTypeTransferCache.getTransfer(paymentProcessorType));
-        });
+        paymentProcessorTypes.forEach((paymentProcessorType) ->
+                paymentProcessorTypeTransfers.add(paymentProcessorTypeTransferCache.getTransfer(paymentProcessorType))
+        );
 
         return paymentProcessorTypeTransfers;
     }
@@ -419,9 +419,9 @@ public class PaymentProcessorTypeControl
         var paymentProcessorTypeDescriptionTransfers = new ArrayList<PaymentProcessorTypeDescriptionTransfer>(paymentProcessorTypeDescriptions.size());
         var paymentProcessorTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeDescriptionTransferCache();
 
-        paymentProcessorTypeDescriptions.stream().forEach((paymentProcessorTypeDescription) -> {
-            paymentProcessorTypeDescriptionTransfers.add(paymentProcessorTypeDescriptionTransferCache.getTransfer(paymentProcessorTypeDescription));
-        });
+        paymentProcessorTypeDescriptions.forEach((paymentProcessorTypeDescription) ->
+                paymentProcessorTypeDescriptionTransfers.add(paymentProcessorTypeDescriptionTransferCache.getTransfer(paymentProcessorTypeDescription))
+        );
 
         return paymentProcessorTypeDescriptionTransfers;
     }

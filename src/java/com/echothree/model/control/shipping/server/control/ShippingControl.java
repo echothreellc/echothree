@@ -255,9 +255,9 @@ public class ShippingControl
         List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(carrierPartyPriorities.size());
         ShippingMethodTransferCache shippingMethodTransferCache = getShippingTransferCaches(userVisit).getShippingMethodTransferCache();
         
-        carrierPartyPriorities.stream().forEach((shippingMethod) -> {
-            shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod));
-        });
+        carrierPartyPriorities.forEach((shippingMethod) ->
+                shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod))
+        );
         
         return shippingMethodTransfers;
     }
@@ -431,9 +431,9 @@ public class ShippingControl
         List<ShippingMethodDescriptionTransfer> shippingMethodDescriptionTransfers = new ArrayList<>(shippingMethodDescriptions.size());
         ShippingMethodDescriptionTransferCache shippingMethodDescriptionTransferCache = getShippingTransferCaches(userVisit).getShippingMethodDescriptionTransferCache();
         
-        shippingMethodDescriptions.stream().forEach((shippingMethodDescription) -> {
-            shippingMethodDescriptionTransfers.add(shippingMethodDescriptionTransferCache.getShippingMethodDescriptionTransfer(shippingMethodDescription));
-        });
+        shippingMethodDescriptions.forEach((shippingMethodDescription) ->
+                shippingMethodDescriptionTransfers.add(shippingMethodDescriptionTransferCache.getShippingMethodDescriptionTransfer(shippingMethodDescription))
+        );
         
         return shippingMethodDescriptionTransfers;
     }
@@ -626,9 +626,9 @@ public class ShippingControl
         List<ShippingMethodCarrierServiceTransfer> shippingMethodCarrierServiceTransfers = new ArrayList<>(shippingMethodCarrierServices.size());
         ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache = getShippingTransferCaches(userVisit).getShippingMethodCarrierServiceTransferCache();
         
-        shippingMethodCarrierServices.stream().forEach((shippingMethodCarrierService) -> {
-            shippingMethodCarrierServiceTransfers.add(shippingMethodCarrierServiceTransferCache.getShippingMethodCarrierServiceTransfer(shippingMethodCarrierService));
-        });
+        shippingMethodCarrierServices.forEach((shippingMethodCarrierService) ->
+                shippingMethodCarrierServiceTransfers.add(shippingMethodCarrierServiceTransferCache.getShippingMethodCarrierServiceTransfer(shippingMethodCarrierService))
+        );
         
         return shippingMethodCarrierServiceTransfers;
     }

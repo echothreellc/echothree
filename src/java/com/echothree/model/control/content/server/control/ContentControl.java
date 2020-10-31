@@ -329,9 +329,9 @@ public class ContentControl
         List<ContentPageAreaTypeTransfer> contentPageAreaTypeTransfers = new ArrayList<>(contentPageAreaTypes.size());
         ContentPageAreaTypeTransferCache contentPageAreaTypeTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache();
         
-        contentPageAreaTypes.stream().forEach((contentPageAreaType) -> {
-            contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(contentPageAreaType));
-        });
+        contentPageAreaTypes.forEach((contentPageAreaType) ->
+                contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(contentPageAreaType))
+        );
         
         return contentPageAreaTypeTransfers;
     }
@@ -583,9 +583,9 @@ public class ContentControl
         List<ContentPageLayoutTransfer> contentPageLayoutTransfers = new ArrayList<>(contentPageLayouts.size());
         ContentPageLayoutTransferCache contentPageLayoutTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
         
-        contentPageLayouts.stream().forEach((contentPageLayout) -> {
-            contentPageLayoutTransfers.add(contentPageLayoutTransferCache.getTransfer(contentPageLayout));
-        });
+        contentPageLayouts.forEach((contentPageLayout) ->
+                contentPageLayoutTransfers.add(contentPageLayoutTransferCache.getTransfer(contentPageLayout))
+        );
         
         return contentPageLayoutTransfers;
     }
@@ -828,9 +828,9 @@ public class ContentControl
         List<ContentPageLayoutDescriptionTransfer> contentPageLayoutDescriptionTransfers = new ArrayList<>(contentPageLayoutDescriptions.size());
         ContentPageLayoutDescriptionTransferCache contentPageLayoutDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutDescriptionTransferCache();
         
-        contentPageLayoutDescriptions.stream().forEach((contentPageLayoutDescription) -> {
-            contentPageLayoutDescriptionTransfers.add(contentPageLayoutDescriptionTransferCache.getTransfer(contentPageLayoutDescription));
-        });
+        contentPageLayoutDescriptions.forEach((contentPageLayoutDescription) ->
+                contentPageLayoutDescriptionTransfers.add(contentPageLayoutDescriptionTransferCache.getTransfer(contentPageLayoutDescription))
+        );
         
         return contentPageLayoutDescriptionTransfers;
     }
@@ -928,9 +928,9 @@ public class ContentControl
         List<ContentPageLayoutAreaTransfer> contentPageLayoutAreaTransfers = new ArrayList<>(contentPageLayoutAreas.size());
         ContentPageLayoutAreaTransferCache contentPageLayoutAreaTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutAreaTransferCache();
         
-        contentPageLayoutAreas.stream().forEach((contentPageLayoutArea) -> {
-            contentPageLayoutAreaTransfers.add(contentPageLayoutAreaTransferCache.getContentPageLayoutAreaTransfer(contentPageLayoutArea));
-        });
+        contentPageLayoutAreas.forEach((contentPageLayoutArea) ->
+                contentPageLayoutAreaTransfers.add(contentPageLayoutAreaTransferCache.getContentPageLayoutAreaTransfer(contentPageLayoutArea))
+        );
         
         return contentPageLayoutAreaTransfers;
     }
@@ -1112,9 +1112,9 @@ public class ContentControl
         List<ContentCollectionTransfer> contentCollectionTransfers = new ArrayList<>(contentCollections.size());
         ContentCollectionTransferCache contentCollectionTransferCache = getContentTransferCaches(userVisit).getContentCollectionTransferCache();
         
-        contentCollections.stream().forEach((contentCollection) -> {
-            contentCollectionTransfers.add(contentCollectionTransferCache.getContentCollectionTransfer(contentCollection));
-        });
+        contentCollections.forEach((contentCollection) ->
+                contentCollectionTransfers.add(contentCollectionTransferCache.getContentCollectionTransfer(contentCollection))
+        );
         
         return contentCollectionTransfers;
     }
@@ -1583,9 +1583,9 @@ public class ContentControl
         List<ContentSectionTransfer> contentSectionTransfers = new ArrayList<>(contentSections.size());
         ContentSectionTransferCache contentSectionTransferCache = getContentTransferCaches(userVisit).getContentSectionTransferCache();
         
-        contentSections.stream().forEach((contentSection) -> {
-            contentSectionTransfers.add(contentSectionTransferCache.getContentSectionTransfer(contentSection));
-        });
+        contentSections.forEach((contentSection) ->
+                contentSectionTransfers.add(contentSectionTransferCache.getContentSectionTransfer(contentSection))
+        );
         
         return contentSectionTransfers;
     }
@@ -1852,9 +1852,9 @@ public class ContentControl
         List<ContentSectionDescriptionTransfer> contentSectionDescriptionTransfers = new ArrayList<>(contentSectionDescriptions.size());
         ContentSectionDescriptionTransferCache contentSectionDescriptionTransferCache = getContentTransferCaches(userVisit).getContentSectionDescriptionTransferCache();
             
-        contentSectionDescriptions.stream().forEach((contentSectionDescription) -> {
-            contentSectionDescriptionTransfers.add(contentSectionDescriptionTransferCache.getContentSectionDescriptionTransfer(contentSectionDescription));
-        });
+        contentSectionDescriptions.forEach((contentSectionDescription) ->
+                contentSectionDescriptionTransfers.add(contentSectionDescriptionTransferCache.getContentSectionDescriptionTransfer(contentSectionDescription))
+        );
         
         return contentSectionDescriptionTransfers;
     }
@@ -2104,9 +2104,9 @@ public class ContentControl
         List<ContentPageTransfer> contentPageTransfers = new ArrayList<>(contentPages.size());
         ContentPageTransferCache contentPageTransferCache = getContentTransferCaches(userVisit).getContentPageTransferCache();
             
-        contentPages.stream().forEach((contentPage) -> {
-            contentPageTransfers.add(contentPageTransferCache.getContentPageTransfer(contentPage));
-        });
+        contentPages.forEach((contentPage) ->
+                contentPageTransfers.add(contentPageTransferCache.getContentPageTransfer(contentPage))
+        );
         
         return contentPageTransfers;
     }
@@ -2332,9 +2332,9 @@ public class ContentControl
         List<ContentPageDescriptionTransfer> contentPageDescriptionTransfers = new ArrayList<>(contentPageDescriptions.size());
         ContentPageDescriptionTransferCache contentPageDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageDescriptionTransferCache();
         
-        contentPageDescriptions.stream().forEach((contentPageDescription) -> {
-            contentPageDescriptionTransfers.add(contentPageDescriptionTransferCache.getContentPageDescriptionTransfer(contentPageDescription));
-        });
+        contentPageDescriptions.forEach((contentPageDescription) ->
+                contentPageDescriptionTransfers.add(contentPageDescriptionTransferCache.getContentPageDescriptionTransfer(contentPageDescription))
+        );
         
         return contentPageDescriptionTransfers;
     }
@@ -2904,9 +2904,9 @@ public class ContentControl
         List<ContentCatalogTransfer> contentCatalogTransfers = new ArrayList<>(contentCatalogs.size());
         ContentCatalogTransferCache contentCatalogTransferCache = getContentTransferCaches(userVisit).getContentCatalogTransferCache();
 
-        contentCatalogs.stream().forEach((contentCatalog) -> {
-            contentCatalogTransfers.add(contentCatalogTransferCache.getContentCatalogTransfer(contentCatalog));
-        });
+        contentCatalogs.forEach((contentCatalog) ->
+                contentCatalogTransfers.add(contentCatalogTransferCache.getContentCatalogTransfer(contentCatalog))
+        );
         
         return contentCatalogTransfers;
     }
@@ -3125,9 +3125,9 @@ public class ContentControl
         List<ContentCatalogDescriptionTransfer> contentCatalogDescriptionTransfers = new ArrayList<>(contentCatalogDescriptions.size());
         ContentCatalogDescriptionTransferCache contentCatalogDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCatalogDescriptionTransferCache();
 
-        contentCatalogDescriptions.stream().forEach((contentCatalogDescription) -> {
-            contentCatalogDescriptionTransfers.add(contentCatalogDescriptionTransferCache.getContentCatalogDescriptionTransfer(contentCatalogDescription));
-        });
+        contentCatalogDescriptions.forEach((contentCatalogDescription) ->
+                contentCatalogDescriptionTransfers.add(contentCatalogDescriptionTransferCache.getContentCatalogDescriptionTransfer(contentCatalogDescription))
+        );
         
         return contentCatalogDescriptionTransfers;
     }
@@ -3465,9 +3465,9 @@ public class ContentControl
         List<ContentCatalogItemTransfer> contentCatalogItemTransfers = new ArrayList<>(contentCatalogItems.size());
         ContentCatalogItemTransferCache contentCatalogItemTransferCache = getContentTransferCaches(userVisit).getContentCatalogItemTransferCache();
 
-        contentCatalogItems.stream().forEach((contentCatalogItem) -> {
-            contentCatalogItemTransfers.add(contentCatalogItemTransferCache.getContentCatalogItemTransfer(contentCatalogItem));
-        });
+        contentCatalogItems.forEach((contentCatalogItem) ->
+                contentCatalogItemTransfers.add(contentCatalogItemTransferCache.getContentCatalogItemTransfer(contentCatalogItem))
+        );
 
         return contentCatalogItemTransfers;
     }
@@ -4062,9 +4062,9 @@ public class ContentControl
         List<ContentCategoryTransfer> contentCategoryTransfers = new ArrayList<>(contentCategories.size());
         ContentCategoryTransferCache contentCategoryTransferCache = getContentTransferCaches(userVisit).getContentCategoryTransferCache();
 
-        contentCategories.stream().forEach((contentCategory) -> {
-            contentCategoryTransfers.add(contentCategoryTransferCache.getContentCategoryTransfer(contentCategory));
-        });
+        contentCategories.forEach((contentCategory) ->
+                contentCategoryTransfers.add(contentCategoryTransferCache.getContentCategoryTransfer(contentCategory))
+        );
         
         return contentCategoryTransfers;
     }
@@ -4340,9 +4340,9 @@ public class ContentControl
         List<ContentCategoryDescriptionTransfer> contentCategoryDescriptionTransfers = new ArrayList<>(contentCategoryDescriptions.size());
         ContentCategoryDescriptionTransferCache contentCategoryDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCategoryDescriptionTransferCache();
 
-        contentCategoryDescriptions.stream().forEach((contentCategoryDescription) -> {
-            contentCategoryDescriptionTransfers.add(contentCategoryDescriptionTransferCache.getContentCategoryDescriptionTransfer(contentCategoryDescription));
-        });
+        contentCategoryDescriptions.forEach((contentCategoryDescription) ->
+                contentCategoryDescriptionTransfers.add(contentCategoryDescriptionTransferCache.getContentCategoryDescriptionTransfer(contentCategoryDescription))
+        );
         
         return contentCategoryDescriptionTransfers;
     }
@@ -4601,9 +4601,9 @@ public class ContentControl
         List<ContentCategoryItemTransfer> contentCategoryItemTransfers = new ArrayList<>(contentCategoryItems.size());
         ContentCategoryItemTransferCache contentCategoryItemTransferCache = getContentTransferCaches(userVisit).getContentCategoryItemTransferCache();
         
-        contentCategoryItems.stream().forEach((contentCategoryItem) -> {
-            contentCategoryItemTransfers.add(contentCategoryItemTransferCache.getContentCategoryItemTransfer(contentCategoryItem));
-        });
+        contentCategoryItems.forEach((contentCategoryItem) ->
+                contentCategoryItemTransfers.add(contentCategoryItemTransferCache.getContentCategoryItemTransfer(contentCategoryItem))
+        );
         
         return contentCategoryItemTransfers;
     }
@@ -4874,9 +4874,9 @@ public class ContentControl
         List<ContentForumTransfer> contentForumTransfers = new ArrayList<>(contentForums.size());
         ContentForumTransferCache contentForumTransferCache = getContentTransferCaches(userVisit).getContentForumTransferCache();
 
-        contentForums.stream().forEach((contentForum) -> {
-            contentForumTransfers.add(contentForumTransferCache.getContentForumTransfer(contentForum));
-        });
+        contentForums.forEach((contentForum) ->
+                contentForumTransfers.add(contentForumTransferCache.getContentForumTransfer(contentForum))
+        );
         
         return contentForumTransfers;
     }
@@ -5142,9 +5142,9 @@ public class ContentControl
         List<ContentWebAddressTransfer> contentWebAddressTransfers = new ArrayList<>(contentWebAddresses.size());
         ContentWebAddressTransferCache contentWebAddressTransferCache = getContentTransferCaches(userVisit).getContentWebAddressTransferCache();
 
-        contentWebAddresses.stream().forEach((contentWebAddress) -> {
-            contentWebAddressTransfers.add(contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddress));
-        });
+        contentWebAddresses.forEach((contentWebAddress) ->
+                contentWebAddressTransfers.add(contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddress))
+        );
         
         return contentWebAddressTransfers;
     }
@@ -5322,9 +5322,9 @@ public class ContentControl
         List<ContentWebAddressDescriptionTransfer> contentWebAddressDescriptionTransfers = new ArrayList<>(contentWebAddressDescriptions.size());
         ContentWebAddressDescriptionTransferCache contentWebAddressDescriptionTransferCache = getContentTransferCaches(userVisit).getContentWebAddressDescriptionTransferCache();
 
-        contentWebAddressDescriptions.stream().forEach((contentWebAddressDescription) -> {
-            contentWebAddressDescriptionTransfers.add(contentWebAddressDescriptionTransferCache.getContentWebAddressDescriptionTransfer(contentWebAddressDescription));
-        });
+        contentWebAddressDescriptions.forEach((contentWebAddressDescription) ->
+                contentWebAddressDescriptionTransfers.add(contentWebAddressDescriptionTransferCache.getContentWebAddressDescriptionTransfer(contentWebAddressDescription))
+        );
         
         return contentWebAddressDescriptionTransfers;
     }

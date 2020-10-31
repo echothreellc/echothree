@@ -827,9 +827,9 @@ public class OfferControl
         List<OfferCustomerTypeTransfer> offerCustomerTypeTransfers = new ArrayList<>(offerCustomerTypes.size());
         OfferCustomerTypeTransferCache offerCustomerTypeTransferCache = getOfferTransferCaches(userVisit).getOfferCustomerTypeTransferCache();
 
-        offerCustomerTypes.stream().forEach((offerCustomerType) -> {
-            offerCustomerTypeTransfers.add(offerCustomerTypeTransferCache.getOfferCustomerTypeTransfer(offerCustomerType));
-        });
+        offerCustomerTypes.forEach((offerCustomerType) ->
+                offerCustomerTypeTransfers.add(offerCustomerTypeTransferCache.getOfferCustomerTypeTransfer(offerCustomerType))
+        );
 
         return offerCustomerTypeTransfers;
     }
@@ -1116,9 +1116,9 @@ public class OfferControl
         List<OfferChainTypeTransfer> offerChainTypeTransfers = new ArrayList<>(offerChainTypes.size());
         OfferChainTypeTransferCache offerChainTypeTransferCache = getOfferTransferCaches(userVisit).getOfferChainTypeTransferCache();
         
-        offerChainTypes.stream().forEach((offerChainType) -> {
-            offerChainTypeTransfers.add(offerChainTypeTransferCache.getOfferChainTypeTransfer(offerChainType));
-        });
+        offerChainTypes.forEach((offerChainType) ->
+                offerChainTypeTransfers.add(offerChainTypeTransferCache.getOfferChainTypeTransfer(offerChainType))
+        );
         
         return offerChainTypeTransfers;
     }

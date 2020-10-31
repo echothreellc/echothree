@@ -213,9 +213,9 @@ public class OrderLineAdjustmentControl
         List<OrderLineAdjustmentTypeTransfer> orderLineAdjustmentTypeTransfers = new ArrayList<>(orderLineAdjustmentTypes.size());
         OrderLineAdjustmentTypeTransferCache orderLineAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeTransferCache();
 
-        orderLineAdjustmentTypes.stream().forEach((orderLineAdjustmentType) -> {
-            orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType));
-        });
+        orderLineAdjustmentTypes.forEach((orderLineAdjustmentType) ->
+                orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType))
+        );
 
         return orderLineAdjustmentTypeTransfers;
     }
@@ -440,9 +440,9 @@ public class OrderLineAdjustmentControl
         List<OrderLineAdjustmentTypeDescriptionTransfer> orderLineAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderLineAdjustmentTypeDescriptions.size());
         OrderLineAdjustmentTypeDescriptionTransferCache orderLineAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeDescriptionTransferCache();
 
-        orderLineAdjustmentTypeDescriptions.stream().forEach((orderLineAdjustmentTypeDescription) -> {
-            orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription));
-        });
+        orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) ->
+                orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription))
+        );
 
         return orderLineAdjustmentTypeDescriptionTransfers;
     }

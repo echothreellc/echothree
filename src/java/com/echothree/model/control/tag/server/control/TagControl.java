@@ -306,9 +306,9 @@ public class TagControl
         List<TagScopeTransfer> tagScopeTransfers = new ArrayList<>(tagScopes.size());
         TagScopeTransferCache tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
         
-        tagScopes.stream().forEach((tagScope) -> {
-            tagScopeTransfers.add(tagScopeTransferCache.getTagScopeTransfer(tagScope));
-        });
+        tagScopes.forEach((tagScope) ->
+                tagScopeTransfers.add(tagScopeTransferCache.getTagScopeTransfer(tagScope))
+        );
         
         return tagScopeTransfers;
     }
@@ -523,9 +523,9 @@ public class TagControl
         List<TagScopeDescriptionTransfer> tagScopeDescriptionTransfers = new ArrayList<>(tagScopeDescriptions.size());
         TagScopeDescriptionTransferCache tagScopeDescriptionTransferCache = getTagTransferCaches(userVisit).getTagScopeDescriptionTransferCache();
         
-        tagScopeDescriptions.stream().forEach((tagScopeDescription) -> {
-            tagScopeDescriptionTransfers.add(tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(tagScopeDescription));
-        });
+        tagScopeDescriptions.forEach((tagScopeDescription) ->
+                tagScopeDescriptionTransfers.add(tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(tagScopeDescription))
+        );
         
         return tagScopeDescriptionTransfers;
     }
@@ -703,9 +703,9 @@ public class TagControl
         List<TagScopeEntityTypeTransfer> tagScopeEntityTypeTransfers = new ArrayList<>(tagScopeEntityTypes.size());
         TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache = getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache();
         
-        tagScopeEntityTypes.stream().forEach((tagScopeEntityType) -> {
-            tagScopeEntityTypeTransfers.add(tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(tagScopeEntityType));
-        });
+        tagScopeEntityTypes.forEach((tagScopeEntityType) ->
+                tagScopeEntityTypeTransfers.add(tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(tagScopeEntityType))
+        );
         
         return tagScopeEntityTypeTransfers;
     }
@@ -923,9 +923,9 @@ public class TagControl
         List<TagTransfer> tagTransfers = new ArrayList<>(tags.size());
         TagTransferCache tagTransferCache = getTagTransferCaches(userVisit).getTagTransferCache();
         
-        tags.stream().forEach((tag) -> {
-            tagTransfers.add(tagTransferCache.getTagTransfer(tag));
-        });
+        tags.forEach((tag) ->
+                tagTransfers.add(tagTransferCache.getTagTransfer(tag))
+        );
         
         return tagTransfers;
     }
@@ -1140,9 +1140,9 @@ public class TagControl
         List<EntityTagTransfer> entityTagTransfers = new ArrayList<>(entityTags.size());
         EntityTagTransferCache entityTagTransferCache = getTagTransferCaches(userVisit).getEntityTagTransferCache();
         
-        entityTags.stream().forEach((entityTag) -> {
-            entityTagTransfers.add(entityTagTransferCache.getEntityTagTransfer(entityTag));
-        });
+        entityTags.forEach((entityTag) ->
+                entityTagTransfers.add(entityTagTransferCache.getEntityTagTransfer(entityTag))
+        );
         
         return entityTagTransfers;
     }

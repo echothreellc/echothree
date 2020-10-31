@@ -567,9 +567,9 @@ public class UserControl
         List<UserVisitGroupTransfer> userVisitGroupTransfers = new ArrayList<>(userVisitGroups.size());
         UserVisitGroupTransferCache userVisitGroupTransferCache = getUserTransferCaches(userVisit).getUserVisitGroupTransferCache();
         
-        userVisitGroups.stream().forEach((userVisitGroup) -> {
-            userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisitGroup));
-        });
+        userVisitGroups.forEach((userVisitGroup) ->
+                userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisitGroup))
+        );
         
         return userVisitGroupTransfers;
     }
@@ -1415,9 +1415,9 @@ public class UserControl
         List<RecoveryQuestionTransfer> recoveryQuestionTransfers = new ArrayList<>(recoveryQuestions.size());
         RecoveryQuestionTransferCache recoveryQuestionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionTransferCache();
         
-        recoveryQuestions.stream().forEach((recoveryQuestion) -> {
-            recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(recoveryQuestion));
-        });
+        recoveryQuestions.forEach((recoveryQuestion) ->
+                recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(recoveryQuestion))
+        );
         
         return recoveryQuestionTransfers;
     }
@@ -1633,9 +1633,9 @@ public class UserControl
         List<RecoveryQuestionDescriptionTransfer> recoveryQuestionDescriptionTransfers = new ArrayList<>(recoveryQuestionDescriptions.size());
         RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionDescriptionTransferCache();
         
-        recoveryQuestionDescriptions.stream().forEach((recoveryQuestionDescription) -> {
-            recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription));
-        });
+        recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) ->
+                recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription))
+        );
         
         return recoveryQuestionDescriptionTransfers;
     }
@@ -2099,9 +2099,9 @@ public class UserControl
         List<UserLoginPasswordTransfer> userLoginPasswordTransfers = new ArrayList<>(userLoginPasswords.size());
         UserLoginPasswordTransferCache userLoginPasswordTransferCache = getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache();
 
-        userLoginPasswords.stream().forEach((userLoginPassword) -> {
-            userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userLoginPassword));
-        });
+        userLoginPasswords.forEach((userLoginPassword) ->
+                userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userLoginPassword))
+        );
 
         return userLoginPasswordTransfers;
     }

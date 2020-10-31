@@ -386,9 +386,9 @@ public class CampaignControl
         List<CampaignTransfer> campaignTransfers = new ArrayList<>(campaigns.size());
         CampaignTransferCache campaignTransferCache = getCampaignTransferCaches(userVisit).getCampaignTransferCache();
 
-        campaigns.stream().forEach((campaign) -> {
-            campaignTransfers.add(campaignTransferCache.getCampaignTransfer(campaign));
-        });
+        campaigns.forEach((campaign) ->
+                campaignTransfers.add(campaignTransferCache.getCampaignTransfer(campaign))
+        );
 
         return campaignTransfers;
     }
@@ -628,9 +628,9 @@ public class CampaignControl
         List<CampaignDescriptionTransfer> campaignDescriptionTransfers = new ArrayList<>(campaignDescriptions.size());
         CampaignDescriptionTransferCache campaignDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignDescriptionTransferCache();
 
-        campaignDescriptions.stream().forEach((campaignDescription) -> {
-            campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(campaignDescription));
-        });
+        campaignDescriptions.forEach((campaignDescription) ->
+                campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(campaignDescription))
+        );
 
         return campaignDescriptionTransfers;
     }
@@ -904,9 +904,9 @@ public class CampaignControl
         List<CampaignSourceTransfer> campaignSourceTransfers = new ArrayList<>(campaignSources.size());
         CampaignSourceTransferCache campaignSourceTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceTransferCache();
 
-        campaignSources.stream().forEach((campaignSource) -> {
-            campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(campaignSource));
-        });
+        campaignSources.forEach((campaignSource) ->
+                campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(campaignSource))
+        );
 
         return campaignSourceTransfers;
     }
@@ -1146,9 +1146,9 @@ public class CampaignControl
         List<CampaignSourceDescriptionTransfer> campaignSourceDescriptionTransfers = new ArrayList<>(campaignSourceDescriptions.size());
         CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceDescriptionTransferCache();
 
-        campaignSourceDescriptions.stream().forEach((campaignSourceDescription) -> {
-            campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(campaignSourceDescription));
-        });
+        campaignSourceDescriptions.forEach((campaignSourceDescription) ->
+                campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(campaignSourceDescription))
+        );
 
         return campaignSourceDescriptionTransfers;
     }
@@ -1422,9 +1422,9 @@ public class CampaignControl
         List<CampaignMediumTransfer> campaignMediumTransfers = new ArrayList<>(campaignMediums.size());
         CampaignMediumTransferCache campaignMediumTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumTransferCache();
 
-        campaignMediums.stream().forEach((campaignMedium) -> {
-            campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(campaignMedium));
-        });
+        campaignMediums.forEach((campaignMedium) ->
+                campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(campaignMedium))
+        );
 
         return campaignMediumTransfers;
     }
@@ -1664,9 +1664,9 @@ public class CampaignControl
         List<CampaignMediumDescriptionTransfer> campaignMediumDescriptionTransfers = new ArrayList<>(campaignMediumDescriptions.size());
         CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumDescriptionTransferCache();
 
-        campaignMediumDescriptions.stream().forEach((campaignMediumDescription) -> {
-            campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(campaignMediumDescription));
-        });
+        campaignMediumDescriptions.forEach((campaignMediumDescription) ->
+                campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(campaignMediumDescription))
+        );
 
         return campaignMediumDescriptionTransfers;
     }
@@ -1940,9 +1940,9 @@ public class CampaignControl
         List<CampaignTermTransfer> campaignTermTransfers = new ArrayList<>(campaignTerms.size());
         CampaignTermTransferCache campaignTermTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermTransferCache();
 
-        campaignTerms.stream().forEach((campaignTerm) -> {
-            campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(campaignTerm));
-        });
+        campaignTerms.forEach((campaignTerm) ->
+                campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(campaignTerm))
+        );
 
         return campaignTermTransfers;
     }
@@ -2182,9 +2182,9 @@ public class CampaignControl
         List<CampaignTermDescriptionTransfer> campaignTermDescriptionTransfers = new ArrayList<>(campaignTermDescriptions.size());
         CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermDescriptionTransferCache();
 
-        campaignTermDescriptions.stream().forEach((campaignTermDescription) -> {
-            campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(campaignTermDescription));
-        });
+        campaignTermDescriptions.forEach((campaignTermDescription) ->
+                campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(campaignTermDescription))
+        );
 
         return campaignTermDescriptionTransfers;
     }
@@ -2458,9 +2458,9 @@ public class CampaignControl
         List<CampaignContentTransfer> campaignContentTransfers = new ArrayList<>(campaignContents.size());
         CampaignContentTransferCache campaignContentTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentTransferCache();
 
-        campaignContents.stream().forEach((campaignContent) -> {
-            campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(campaignContent));
-        });
+        campaignContents.forEach((campaignContent) ->
+                campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(campaignContent))
+        );
 
         return campaignContentTransfers;
     }
@@ -2700,9 +2700,9 @@ public class CampaignControl
         List<CampaignContentDescriptionTransfer> campaignContentDescriptionTransfers = new ArrayList<>(campaignContentDescriptions.size());
         CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentDescriptionTransferCache();
 
-        campaignContentDescriptions.stream().forEach((campaignContentDescription) -> {
-            campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(campaignContentDescription));
-        });
+        campaignContentDescriptions.forEach((campaignContentDescription) ->
+                campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(campaignContentDescription))
+        );
 
         return campaignContentDescriptionTransfers;
     }
@@ -2951,9 +2951,9 @@ public class CampaignControl
         List<UserVisitCampaignTransfer> userVisitCampaignTransfers = new ArrayList<>(userVisitCampaigns.size());
         UserVisitCampaignTransferCache userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
 
-        userVisitCampaigns.stream().forEach((userVisitCampaign) -> {
-            userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisitCampaign));
-        });
+        userVisitCampaigns.forEach((userVisitCampaign) ->
+                userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisitCampaign))
+        );
 
         return userVisitCampaignTransfers;
     }

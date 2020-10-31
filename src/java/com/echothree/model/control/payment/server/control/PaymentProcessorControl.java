@@ -247,9 +247,9 @@ public class PaymentProcessorControl
         List<PaymentProcessorTransfer> paymentProcessorTransfers = new ArrayList<>(paymentProcessors.size());
         PaymentProcessorTransferCache paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
 
-        paymentProcessors.stream().forEach((paymentProcessor) -> {
-            paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor));
-        });
+        paymentProcessors.forEach((paymentProcessor) ->
+                paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor))
+        );
 
         return paymentProcessorTransfers;
     }
@@ -468,9 +468,9 @@ public class PaymentProcessorControl
         List<PaymentProcessorDescriptionTransfer> paymentProcessorDescriptionTransfers = new ArrayList<>(paymentProcessorDescriptions.size());
         PaymentProcessorDescriptionTransferCache paymentProcessorDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache();
         
-        paymentProcessorDescriptions.stream().forEach((paymentProcessorDescription) -> {
-            paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription));
-        });
+        paymentProcessorDescriptions.forEach((paymentProcessorDescription) ->
+                paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription))
+        );
         
         return paymentProcessorDescriptionTransfers;
     }

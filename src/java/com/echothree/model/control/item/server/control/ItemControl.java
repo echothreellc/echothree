@@ -490,9 +490,9 @@ public class ItemControl
         List<ItemTypeTransfer> itemTypeTransfers = new ArrayList<>(itemTypes.size());
         ItemTypeTransferCache itemTypeTransferCache = getItemTransferCaches(userVisit).getItemTypeTransferCache();
         
-        itemTypes.stream().forEach((itemType) -> {
-            itemTypeTransfers.add(itemTypeTransferCache.getTransfer(itemType));
-        });
+        itemTypes.forEach((itemType) ->
+                itemTypeTransfers.add(itemTypeTransferCache.getTransfer(itemType))
+        );
         
         return itemTypeTransfers;
     }
@@ -619,9 +619,9 @@ public class ItemControl
         List<ItemDeliveryTypeTransfer> itemDeliveryTypeTransfers = new ArrayList<>(itemDeliveryTypes.size());
         ItemDeliveryTypeTransferCache itemDeliveryTypeTransferCache = getItemTransferCaches(userVisit).getItemDeliveryTypeTransferCache();
         
-        itemDeliveryTypes.stream().forEach((itemDeliveryType) -> {
-            itemDeliveryTypeTransfers.add(itemDeliveryTypeTransferCache.getTransfer(itemDeliveryType));
-        });
+        itemDeliveryTypes.forEach((itemDeliveryType) ->
+                itemDeliveryTypeTransfers.add(itemDeliveryTypeTransferCache.getTransfer(itemDeliveryType))
+        );
         
         return itemDeliveryTypeTransfers;
     }
@@ -748,9 +748,9 @@ public class ItemControl
         List<ItemInventoryTypeTransfer> itemInventoryTypeTransfers = new ArrayList<>(itemInventoryTypes.size());
         ItemInventoryTypeTransferCache itemInventoryTypeTransferCache = getItemTransferCaches(userVisit).getItemInventoryTypeTransferCache();
         
-        itemInventoryTypes.stream().forEach((itemInventoryType) -> {
-            itemInventoryTypeTransfers.add(itemInventoryTypeTransferCache.getTransfer(itemInventoryType));
-        });
+        itemInventoryTypes.forEach((itemInventoryType) ->
+                itemInventoryTypeTransfers.add(itemInventoryTypeTransferCache.getTransfer(itemInventoryType))
+        );
         
         return itemInventoryTypeTransfers;
     }
@@ -877,9 +877,9 @@ public class ItemControl
         List<ItemUseTypeTransfer> itemUseTypeTransfers = new ArrayList<>(itemUseTypes.size());
         ItemUseTypeTransferCache itemUseTypeTransferCache = getItemTransferCaches(userVisit).getItemUseTypeTransferCache();
         
-        itemUseTypes.stream().forEach((itemUseType) -> {
-            itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(itemUseType));
-        });
+        itemUseTypes.forEach((itemUseType) ->
+                itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(itemUseType))
+        );
         
         return itemUseTypeTransfers;
     }
@@ -1115,9 +1115,9 @@ public class ItemControl
         List<ItemCategoryTransfer> itemCategoryTransfers = new ArrayList<>(itemCategories.size());
         ItemCategoryTransferCache itemCategoryTransferCache = getItemTransferCaches(userVisit).getItemCategoryTransferCache();
 
-        itemCategories.stream().forEach((itemCategory) -> {
-            itemCategoryTransfers.add(itemCategoryTransferCache.getTransfer(itemCategory));
-        });
+        itemCategories.forEach((itemCategory) ->
+                itemCategoryTransfers.add(itemCategoryTransferCache.getTransfer(itemCategory))
+        );
 
         return itemCategoryTransfers;
     }
@@ -1426,9 +1426,9 @@ public class ItemControl
         List<ItemCategoryDescriptionTransfer> itemCategoryDescriptionTransfers = new ArrayList<>(itemCategoryDescriptions.size());
         ItemCategoryDescriptionTransferCache itemCategoryDescriptionTransferCache = getItemTransferCaches(userVisit).getItemCategoryDescriptionTransferCache();
         
-        itemCategoryDescriptions.stream().forEach((itemCategoryDescription) -> {
-            itemCategoryDescriptionTransfers.add(itemCategoryDescriptionTransferCache.getTransfer(itemCategoryDescription));
-        });
+        itemCategoryDescriptions.forEach((itemCategoryDescription) ->
+                itemCategoryDescriptionTransfers.add(itemCategoryDescriptionTransferCache.getTransfer(itemCategoryDescription))
+        );
         
         return itemCategoryDescriptionTransfers;
     }
@@ -1975,9 +1975,9 @@ public class ItemControl
         List<ItemUnitOfMeasureTypeTransfer> itemUnitOfMeasureTypeTransfers = new ArrayList<>(itemUnitOfMeasureTypes.size());
         ItemUnitOfMeasureTypeTransferCache itemUnitOfMeasureTypeTransferCache = getItemTransferCaches(userVisit).getItemUnitOfMeasureTypeTransferCache();
         
-        itemUnitOfMeasureTypes.stream().forEach((itemUnitOfMeasureType) -> {
-            itemUnitOfMeasureTypeTransfers.add(itemUnitOfMeasureTypeTransferCache.getTransfer(itemUnitOfMeasureType));
-        });
+        itemUnitOfMeasureTypes.forEach((itemUnitOfMeasureType) ->
+                itemUnitOfMeasureTypeTransfers.add(itemUnitOfMeasureTypeTransferCache.getTransfer(itemUnitOfMeasureType))
+        );
         
         return itemUnitOfMeasureTypeTransfers;
     }
@@ -2557,9 +2557,9 @@ public class ItemControl
         List<ItemAliasTypeTransfer> itemAliasTypeTransfers = new ArrayList<>(itemAliasTypes.size());
         ItemAliasTypeTransferCache itemAliasTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
         
-        itemAliasTypes.stream().forEach((itemAliasType) -> {
-            itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType));
-        });
+        itemAliasTypes.forEach((itemAliasType) ->
+                itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType))
+        );
         
         return itemAliasTypeTransfers;
     }
@@ -2813,9 +2813,9 @@ public class ItemControl
         List<ItemAliasTypeDescriptionTransfer> itemAliasTypeDescriptionTransfers = new ArrayList<>(itemAliasTypeDescriptions.size());
         ItemAliasTypeDescriptionTransferCache itemAliasTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeDescriptionTransferCache();
         
-        itemAliasTypeDescriptions.stream().forEach((itemAliasTypeDescription) -> {
-            itemAliasTypeDescriptionTransfers.add(itemAliasTypeDescriptionTransferCache.getTransfer(itemAliasTypeDescription));
-        });
+        itemAliasTypeDescriptions.forEach((itemAliasTypeDescription) ->
+                itemAliasTypeDescriptionTransfers.add(itemAliasTypeDescriptionTransferCache.getTransfer(itemAliasTypeDescription))
+        );
         
         return itemAliasTypeDescriptionTransfers;
     }
@@ -3428,9 +3428,9 @@ public class ItemControl
         List<ItemCountryOfOriginTransfer> itemCountryOfOriginTransfers = new ArrayList<>(itemCountryOfOrigins.size());
         ItemCountryOfOriginTransferCache itemCountryOfOriginTransferCache = getItemTransferCaches(userVisit).getItemCountryOfOriginTransferCache();
         
-        itemCountryOfOrigins.stream().forEach((itemCountryOfOrigin) -> {
-            itemCountryOfOriginTransfers.add(itemCountryOfOriginTransferCache.getTransfer(itemCountryOfOrigin));
-        });
+        itemCountryOfOrigins.forEach((itemCountryOfOrigin) ->
+                itemCountryOfOriginTransfers.add(itemCountryOfOriginTransferCache.getTransfer(itemCountryOfOrigin))
+        );
         
         return itemCountryOfOriginTransfers;
     }
@@ -3940,9 +3940,9 @@ public class ItemControl
         List<ItemKitMemberTransfer> itemKitMemberTransfers = new ArrayList<>(itemKitMembers.size());
         ItemKitMemberTransferCache itemKitMemberTransferCache = getItemTransferCaches(userVisit).getItemKitMemberTransferCache();
         
-        itemKitMembers.stream().forEach((itemKitMember) -> {
-            itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(itemKitMember));
-        });
+        itemKitMembers.forEach((itemKitMember) ->
+                itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(itemKitMember))
+        );
         
         return itemKitMemberTransfers;
     }
@@ -4181,9 +4181,9 @@ public class ItemControl
         List<ItemPackCheckRequirementTransfer> itemPackCheckRequirementTransfers = new ArrayList<>(itemPackCheckRequirements.size());
         ItemPackCheckRequirementTransferCache itemPackCheckRequirementTransferCache = getItemTransferCaches(userVisit).getItemPackCheckRequirementTransferCache();
         
-        itemPackCheckRequirements.stream().forEach((itemPackCheckRequirement) -> {
-            itemPackCheckRequirementTransfers.add(itemPackCheckRequirementTransferCache.getTransfer(itemPackCheckRequirement));
-        });
+        itemPackCheckRequirements.forEach((itemPackCheckRequirement) ->
+                itemPackCheckRequirementTransfers.add(itemPackCheckRequirementTransferCache.getTransfer(itemPackCheckRequirement))
+        );
         
         return itemPackCheckRequirementTransfers;
     }
@@ -4512,9 +4512,9 @@ public class ItemControl
         List<ItemUnitCustomerTypeLimitTransfer> itemUnitCustomerTypeLimitTransfers = new ArrayList<>(itemUnitCustomerTypeLimits.size());
         ItemUnitCustomerTypeLimitTransferCache itemUnitCustomerTypeLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitCustomerTypeLimitTransferCache();
         
-        itemUnitCustomerTypeLimits.stream().forEach((itemUnitCustomerTypeLimit) -> {
-            itemUnitCustomerTypeLimitTransfers.add(itemUnitCustomerTypeLimitTransferCache.getTransfer(itemUnitCustomerTypeLimit));
-        });
+        itemUnitCustomerTypeLimits.forEach((itemUnitCustomerTypeLimit) ->
+                itemUnitCustomerTypeLimitTransfers.add(itemUnitCustomerTypeLimitTransferCache.getTransfer(itemUnitCustomerTypeLimit))
+        );
         
         return itemUnitCustomerTypeLimitTransfers;
     }
@@ -4798,9 +4798,9 @@ public class ItemControl
         List<ItemUnitLimitTransfer> itemUnitLimitTransfers = new ArrayList<>(itemUnitLimits.size());
         ItemUnitLimitTransferCache itemUnitLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitLimitTransferCache();
         
-        itemUnitLimits.stream().forEach((itemUnitLimit) -> {
-            itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(itemUnitLimit));
-        });
+        itemUnitLimits.forEach((itemUnitLimit) ->
+                itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(itemUnitLimit))
+        );
         
         return itemUnitLimitTransfers;
     }
@@ -5088,9 +5088,9 @@ public class ItemControl
         List<ItemUnitPriceLimitTransfer> itemUnitPriceLimitTransfers = new ArrayList<>(itemUnitPriceLimits.size());
         ItemUnitPriceLimitTransferCache itemUnitPriceLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitPriceLimitTransferCache();
         
-        itemUnitPriceLimits.stream().forEach((itemUnitPriceLimit) -> {
-            itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(itemUnitPriceLimit));
-        });
+        itemUnitPriceLimits.forEach((itemUnitPriceLimit) ->
+                itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(itemUnitPriceLimit))
+        );
         
         return itemUnitPriceLimitTransfers;
     }
@@ -5201,9 +5201,9 @@ public class ItemControl
         List<ItemPriceTypeTransfer> itemPriceTypeTransfers = new ArrayList<>(itemPriceTypes.size());
         ItemPriceTypeTransferCache itemPriceTypeTransferCache = getItemTransferCaches(userVisit).getItemPriceTypeTransferCache();
         
-        itemPriceTypes.stream().forEach((itemPriceType) -> {
-            itemPriceTypeTransfers.add(itemPriceTypeTransferCache.getTransfer(itemPriceType));
-        });
+        itemPriceTypes.forEach((itemPriceType) ->
+                itemPriceTypeTransfers.add(itemPriceTypeTransferCache.getTransfer(itemPriceType))
+        );
         
         return itemPriceTypeTransfers;
     }
@@ -5513,9 +5513,9 @@ public class ItemControl
         List<ItemPriceTransfer> itemPriceTransfers = new ArrayList<>(itemPrices.size());
         ItemPriceTransferCache itemPriceTransferCache = getItemTransferCaches(userVisit).getItemPriceTransferCache();
         
-        itemPrices.stream().forEach((itemPrice) -> {
-            itemPriceTransfers.add(itemPriceTransferCache.getTransfer(itemPrice));
-        });
+        itemPrices.forEach((itemPrice) ->
+                itemPriceTransfers.add(itemPriceTransferCache.getTransfer(itemPrice))
+        );
         
         return itemPriceTransfers;
     }
@@ -6039,9 +6039,9 @@ public class ItemControl
         List<ItemDescriptionTypeTransfer> itemDescriptionTypeTransfers = new ArrayList<>(itemDescriptionTypes.size());
         ItemDescriptionTypeTransferCache itemDescriptionTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeTransferCache();
 
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            itemDescriptionTypeTransfers.add(itemDescriptionTypeTransferCache.getTransfer(itemDescriptionType));
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) ->
+                itemDescriptionTypeTransfers.add(itemDescriptionTypeTransferCache.getTransfer(itemDescriptionType))
+        );
 
         return itemDescriptionTypeTransfers;
     }
@@ -6334,9 +6334,9 @@ public class ItemControl
         List<ItemDescriptionTypeDescriptionTransfer> itemDescriptionTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeDescriptions.size());
         ItemDescriptionTypeDescriptionTransferCache itemDescriptionTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeDescriptionTransferCache();
 
-        itemDescriptionTypeDescriptions.stream().forEach((itemDescriptionTypeDescription) -> {
-            itemDescriptionTypeDescriptionTransfers.add(itemDescriptionTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeDescription));
-        });
+        itemDescriptionTypeDescriptions.forEach((itemDescriptionTypeDescription) ->
+                itemDescriptionTypeDescriptionTransfers.add(itemDescriptionTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeDescription))
+        );
 
         return itemDescriptionTypeDescriptionTransfers;
     }
@@ -6657,9 +6657,9 @@ public class ItemControl
         List<ItemDescriptionTypeUseTypeTransfer> itemDescriptionTypeUseTypeTransfers = new ArrayList<>(itemDescriptionTypeUseTypes.size());
         ItemDescriptionTypeUseTypeTransferCache itemDescriptionTypeUseTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeTransferCache();
 
-        itemDescriptionTypeUseTypes.stream().forEach((itemDescriptionTypeUseType) -> {
-            itemDescriptionTypeUseTypeTransfers.add(itemDescriptionTypeUseTypeTransferCache.getTransfer(itemDescriptionTypeUseType));
-        });
+        itemDescriptionTypeUseTypes.forEach((itemDescriptionTypeUseType) ->
+                itemDescriptionTypeUseTypeTransfers.add(itemDescriptionTypeUseTypeTransferCache.getTransfer(itemDescriptionTypeUseType))
+        );
 
         return itemDescriptionTypeUseTypeTransfers;
     }
@@ -6893,9 +6893,9 @@ public class ItemControl
         List<ItemDescriptionTypeUseTypeDescriptionTransfer> itemDescriptionTypeUseTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeUseTypeDescriptions.size());
         ItemDescriptionTypeUseTypeDescriptionTransferCache itemDescriptionTypeUseTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeDescriptionTransferCache();
 
-        itemDescriptionTypeUseTypeDescriptions.stream().forEach((itemDescriptionTypeUseTypeDescription) -> {
-            itemDescriptionTypeUseTypeDescriptionTransfers.add(itemDescriptionTypeUseTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeUseTypeDescription));
-        });
+        itemDescriptionTypeUseTypeDescriptions.forEach((itemDescriptionTypeUseTypeDescription) ->
+                itemDescriptionTypeUseTypeDescriptionTransfers.add(itemDescriptionTypeUseTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeUseTypeDescription))
+        );
 
         return itemDescriptionTypeUseTypeDescriptionTransfers;
     }
@@ -7059,9 +7059,9 @@ public class ItemControl
         List<ItemDescriptionTypeUseTransfer> itemDescriptionTypeUseTransfers = new ArrayList<>(itemDescriptionTypeUses.size());
         ItemDescriptionTypeUseTransferCache itemDescriptionTypeUseTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTransferCache();
 
-        itemDescriptionTypeUses.stream().forEach((itemDescriptionTypeUse) -> {
-            itemDescriptionTypeUseTransfers.add(itemDescriptionTypeUseTransferCache.getTransfer(itemDescriptionTypeUse));
-        });
+        itemDescriptionTypeUses.forEach((itemDescriptionTypeUse) ->
+                itemDescriptionTypeUseTransfers.add(itemDescriptionTypeUseTransferCache.getTransfer(itemDescriptionTypeUse))
+        );
 
         return itemDescriptionTypeUseTransfers;
     }
@@ -7281,9 +7281,9 @@ public class ItemControl
         List<ItemImageTypeTransfer> itemImageTypeTransfers = new ArrayList<>(itemImageTypes.size());
         ItemImageTypeTransferCache itemImageTypeTransferCache = getItemTransferCaches(userVisit).getItemImageTypeTransferCache();
 
-        itemImageTypes.stream().forEach((itemImageType) -> {
-            itemImageTypeTransfers.add(itemImageTypeTransferCache.getTransfer(itemImageType));
-        });
+        itemImageTypes.forEach((itemImageType) ->
+                itemImageTypeTransfers.add(itemImageTypeTransferCache.getTransfer(itemImageType))
+        );
 
         return itemImageTypeTransfers;
     }
@@ -7520,9 +7520,9 @@ public class ItemControl
         List<ItemImageTypeDescriptionTransfer> itemImageTypeDescriptionTransfers = new ArrayList<>(itemImageTypeDescriptions.size());
         ItemImageTypeDescriptionTransferCache itemImageTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemImageTypeDescriptionTransferCache();
 
-        itemImageTypeDescriptions.stream().forEach((itemImageTypeDescription) -> {
-            itemImageTypeDescriptionTransfers.add(itemImageTypeDescriptionTransferCache.getTransfer(itemImageTypeDescription));
-        });
+        itemImageTypeDescriptions.forEach((itemImageTypeDescription) ->
+                itemImageTypeDescriptionTransfers.add(itemImageTypeDescriptionTransferCache.getTransfer(itemImageTypeDescription))
+        );
 
         return itemImageTypeDescriptionTransfers;
     }
@@ -7850,9 +7850,9 @@ public class ItemControl
         List<ItemDescriptionTransfer> itemDescriptionTransfers = new ArrayList<>(itemDescriptions.size());
         ItemDescriptionTransferCache itemDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTransferCache();
         
-        itemDescriptions.stream().forEach((itemDescription) -> {
-            itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription));
-        });
+        itemDescriptions.forEach((itemDescription) ->
+                itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription))
+        );
         
         return itemDescriptionTransfers;
     }
@@ -8468,9 +8468,9 @@ public class ItemControl
         List<ItemVolumeTransfer> itemVolumeTransfers = new ArrayList<>(itemVolumes.size());
         ItemVolumeTransferCache itemVolumeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTransferCache();
         
-        itemVolumes.stream().forEach((itemVolume) -> {
-            itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(itemVolume));
-        });
+        itemVolumes.forEach((itemVolume) ->
+                itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(itemVolume))
+        );
         
         return itemVolumeTransfers;
     }
@@ -8630,9 +8630,9 @@ public class ItemControl
         List<ItemWeightTransfer> itemWeightTransfers = new ArrayList<>(itemWeights.size());
         ItemWeightTransferCache itemWeightTransferCache = getItemTransferCaches(userVisit).getItemWeightTransferCache();
         
-        itemWeights.stream().forEach((itemWeight) -> {
-            itemWeightTransfers.add(itemWeightTransferCache.getTransfer(itemWeight));
-        });
+        itemWeights.forEach((itemWeight) ->
+                itemWeightTransfers.add(itemWeightTransferCache.getTransfer(itemWeight))
+        );
         
         return itemWeightTransfers;
     }
@@ -8837,9 +8837,9 @@ public class ItemControl
         List<RelatedItemTypeTransfer> relatedItemTypeTransfers = new ArrayList<>(relatedItemTypes.size());
         RelatedItemTypeTransferCache relatedItemTypeTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeTransferCache();
 
-        relatedItemTypes.stream().forEach((relatedItemType) -> {
-            relatedItemTypeTransfers.add(relatedItemTypeTransferCache.getTransfer(relatedItemType));
-        });
+        relatedItemTypes.forEach((relatedItemType) ->
+                relatedItemTypeTransfers.add(relatedItemTypeTransferCache.getTransfer(relatedItemType))
+        );
 
         return relatedItemTypeTransfers;
     }
@@ -9073,9 +9073,9 @@ public class ItemControl
         List<RelatedItemTypeDescriptionTransfer> relatedItemTypeDescriptionTransfers = new ArrayList<>(relatedItemTypeDescriptions.size());
         RelatedItemTypeDescriptionTransferCache relatedItemTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeDescriptionTransferCache();
 
-        relatedItemTypeDescriptions.stream().forEach((relatedItemTypeDescription) -> {
-            relatedItemTypeDescriptionTransfers.add(relatedItemTypeDescriptionTransferCache.getTransfer(relatedItemTypeDescription));
-        });
+        relatedItemTypeDescriptions.forEach((relatedItemTypeDescription) ->
+                relatedItemTypeDescriptionTransfers.add(relatedItemTypeDescriptionTransferCache.getTransfer(relatedItemTypeDescription))
+        );
 
         return relatedItemTypeDescriptionTransfers;
     }
@@ -9399,9 +9399,9 @@ public class ItemControl
         List<RelatedItemTransfer> relatedItemTransfers = new ArrayList<>(relatedItems.size());
         RelatedItemTransferCache relatedItemTransferCache = getItemTransferCaches(userVisit).getRelatedItemTransferCache();
 
-        relatedItems.stream().forEach((relatedItem) -> {
-            relatedItemTransfers.add(relatedItemTransferCache.getTransfer(relatedItem));
-        });
+        relatedItems.forEach((relatedItem) ->
+                relatedItemTransfers.add(relatedItemTransferCache.getTransfer(relatedItem))
+        );
 
         return relatedItemTransfers;
     }
@@ -9754,9 +9754,9 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodeTransfers = new ArrayList<>(harmonizedTariffScheduleCodes.size());
         HarmonizedTariffScheduleCodeTransferCache harmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTransferCache();
 
-        harmonizedTariffScheduleCodes.stream().forEach((harmonizedTariffScheduleCode) -> {
-            harmonizedTariffScheduleCodeTransfers.add(harmonizedTariffScheduleCodeTransferCache.getTransfer(harmonizedTariffScheduleCode));
-        });
+        harmonizedTariffScheduleCodes.forEach((harmonizedTariffScheduleCode) ->
+                harmonizedTariffScheduleCodeTransfers.add(harmonizedTariffScheduleCodeTransferCache.getTransfer(harmonizedTariffScheduleCode))
+        );
 
         return harmonizedTariffScheduleCodeTransfers;
     }
@@ -10191,9 +10191,9 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeUseTypeTransfer> harmonizedTariffScheduleCodeUseTypeTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUseTypes.size());
         HarmonizedTariffScheduleCodeUseTypeTransferCache harmonizedTariffScheduleCodeUseTypeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUseTypeTransferCache();
 
-        harmonizedTariffScheduleCodeUseTypes.stream().forEach((harmonizedTariffScheduleCodeUseType) -> {
-            harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(harmonizedTariffScheduleCodeUseType));
-        });
+        harmonizedTariffScheduleCodeUseTypes.forEach((harmonizedTariffScheduleCodeUseType) ->
+                harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(harmonizedTariffScheduleCodeUseType))
+        );
 
         return harmonizedTariffScheduleCodeUseTypeTransfers;
     }
@@ -10597,9 +10597,9 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeUnitTransfer> harmonizedTariffScheduleCodeUnitTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUnits.size());
         HarmonizedTariffScheduleCodeUnitTransferCache harmonizedTariffScheduleCodeUnitTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUnitTransferCache();
 
-        harmonizedTariffScheduleCodeUnits.stream().forEach((harmonizedTariffScheduleCodeUnit) -> {
-            harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(harmonizedTariffScheduleCodeUnit));
-        });
+        harmonizedTariffScheduleCodeUnits.forEach((harmonizedTariffScheduleCodeUnit) ->
+                harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(harmonizedTariffScheduleCodeUnit))
+        );
 
         return harmonizedTariffScheduleCodeUnitTransfers;
     }
@@ -11199,9 +11199,9 @@ public class ItemControl
         List<ItemHarmonizedTariffScheduleCodeTransfer> itemHarmonizedTariffScheduleCodeTransfers = new ArrayList<>(itemHarmonizedTariffScheduleCodes.size());
         ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getItemHarmonizedTariffScheduleCodeTransferCache();
 
-        itemHarmonizedTariffScheduleCodes.stream().forEach((itemHarmonizedTariffScheduleCode) -> {
-            itemHarmonizedTariffScheduleCodeTransfers.add(itemHarmonizedTariffScheduleCodeTransferCache.getTransfer(itemHarmonizedTariffScheduleCode));
-        });
+        itemHarmonizedTariffScheduleCodes.forEach((itemHarmonizedTariffScheduleCode) ->
+                itemHarmonizedTariffScheduleCodeTransfers.add(itemHarmonizedTariffScheduleCodeTransferCache.getTransfer(itemHarmonizedTariffScheduleCode))
+        );
 
         return itemHarmonizedTariffScheduleCodeTransfers;
     }

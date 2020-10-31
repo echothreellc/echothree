@@ -172,9 +172,9 @@ public class GeoControl
         var countryTransfers = new ArrayList<CountryTransfer>(geoCodes.size());
         var countryTransferCache = getGeoTransferCaches(userVisit).getCountryTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            countryTransfers.add(countryTransferCache.getCountryTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                countryTransfers.add(countryTransferCache.getCountryTransfer(geoCode))
+        );
         
         return countryTransfers;
     }
@@ -193,9 +193,9 @@ public class GeoControl
         var stateTransfers = new ArrayList<StateTransfer>(geoCodes.size());
         var stateTransferCache = getGeoTransferCaches(userVisit).getStateTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            stateTransfers.add(stateTransferCache.getStateTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                stateTransfers.add(stateTransferCache.getStateTransfer(geoCode))
+        );
         
         return stateTransfers;
     }
@@ -225,9 +225,9 @@ public class GeoControl
         var countyTransfers = new ArrayList<CountyTransfer>(geoCodes.size());
         var countyTransferCache = getGeoTransferCaches(userVisit).getCountyTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            countyTransfers.add(countyTransferCache.getCountyTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                countyTransfers.add(countyTransferCache.getCountyTransfer(geoCode))
+        );
         
         return countyTransfers;
     }
@@ -274,9 +274,9 @@ public class GeoControl
         var cityTransfers = new ArrayList<CityTransfer>(geoCodes.size());
         var cityTransferCache = getGeoTransferCaches(userVisit).getCityTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            cityTransfers.add(cityTransferCache.getCityTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                cityTransfers.add(cityTransferCache.getCityTransfer(geoCode))
+        );
         
         return cityTransfers;
     }
@@ -323,9 +323,9 @@ public class GeoControl
         var postalCodeTransfers = new ArrayList<PostalCodeTransfer>(geoCodes.size());
         var postalCodeTransferCache = getGeoTransferCaches(userVisit).getPostalCodeTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            postalCodeTransfers.add(postalCodeTransferCache.getPostalCodeTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                postalCodeTransfers.add(postalCodeTransferCache.getPostalCodeTransfer(geoCode))
+        );
         
         return postalCodeTransfers;
     }
@@ -567,9 +567,9 @@ public class GeoControl
         List<GeoCodeTypeTransfer> geoCodeTypeTransfers = new ArrayList<>(geoCodeTypes.size());
         GeoCodeTypeTransferCache geoCodeTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTypeTransferCache();
         
-        geoCodeTypes.stream().forEach((geoCodeType) -> {
-            geoCodeTypeTransfers.add(geoCodeTypeTransferCache.getGeoCodeTypeTransfer(geoCodeType));
-        });
+        geoCodeTypes.forEach((geoCodeType) ->
+                geoCodeTypeTransfers.add(geoCodeTypeTransferCache.getGeoCodeTypeTransfer(geoCodeType))
+        );
         
         return geoCodeTypeTransfers;
     }
@@ -1040,9 +1040,9 @@ public class GeoControl
         List<GeoCodeScopeTransfer> geoCodeScopeTransfers = new ArrayList<>(geoCodeScopes.size());
         GeoCodeScopeTransferCache geoCodeScopeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeScopeTransferCache();
         
-        geoCodeScopes.stream().forEach((geoCodeScope) -> {
-            geoCodeScopeTransfers.add(geoCodeScopeTransferCache.getGeoCodeScopeTransfer(geoCodeScope));
-        });
+        geoCodeScopes.forEach((geoCodeScope) ->
+                geoCodeScopeTransfers.add(geoCodeScopeTransferCache.getGeoCodeScopeTransfer(geoCodeScope))
+        );
         
         return geoCodeScopeTransfers;
     }
@@ -1534,9 +1534,9 @@ public class GeoControl
         List<GeoCodeAliasTypeTransfer> geoCodeAliasTypeTransfers = new ArrayList<>(geoCodeAliasTypes.size());
         GeoCodeAliasTypeTransferCache geoCodeAliasTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTypeTransferCache();
         
-        geoCodeAliasTypes.stream().forEach((geoCodeAliasType) -> {
-            geoCodeAliasTypeTransfers.add(geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(geoCodeAliasType));
-        });
+        geoCodeAliasTypes.forEach((geoCodeAliasType) ->
+                geoCodeAliasTypeTransfers.add(geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(geoCodeAliasType))
+        );
         
         return geoCodeAliasTypeTransfers;
     }
@@ -1983,9 +1983,9 @@ public class GeoControl
         List<GeoCodeTransfer> geoCodeTransfers = new ArrayList<>(geoCodes.size());
         GeoCodeTransferCache geoCodeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            geoCodeTransfers.add(geoCodeTransferCache.getGeoCodeTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                geoCodeTransfers.add(geoCodeTransferCache.getGeoCodeTransfer(geoCode))
+        );
         
         return geoCodeTransfers;
     }
@@ -2435,9 +2435,9 @@ public class GeoControl
         List<GeoCodeAliasTransfer> geoCodeAliasTransfers = new ArrayList<>(geoCodeAliases.size());
         GeoCodeAliasTransferCache geoCodeAliasTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTransferCache();
         
-        geoCodeAliases.stream().forEach((geoCodeAlias) -> {
-            geoCodeAliasTransfers.add(geoCodeAliasTransferCache.getGeoCodeAliasTransfer(geoCodeAlias));
-        });
+        geoCodeAliases.forEach((geoCodeAlias) ->
+                geoCodeAliasTransfers.add(geoCodeAliasTransferCache.getGeoCodeAliasTransfer(geoCodeAlias))
+        );
         
         return geoCodeAliasTransfers;
     }
@@ -2852,9 +2852,9 @@ public class GeoControl
         List<GeoCodeLanguageTransfer> geoCodeLanguageTransfers = new ArrayList<>(geoCodeLanguages.size());
         GeoCodeLanguageTransferCache geoCodeLanguageTransferCache = getGeoTransferCaches(userVisit).getGeoCodeLanguageTransferCache();
         
-        geoCodeLanguages.stream().forEach((geoCodeLanguage) -> {
-            geoCodeLanguageTransfers.add(geoCodeLanguageTransferCache.getGeoCodeLanguageTransfer(geoCodeLanguage));
-        });
+        geoCodeLanguages.forEach((geoCodeLanguage) ->
+                geoCodeLanguageTransfers.add(geoCodeLanguageTransferCache.getGeoCodeLanguageTransfer(geoCodeLanguage))
+        );
         
         return geoCodeLanguageTransfers;
     }
@@ -3152,9 +3152,9 @@ public class GeoControl
         List<GeoCodeCurrencyTransfer> geoCodeCurrencyTransfers = new ArrayList<>(geoCodeCurrencies.size());
         GeoCodeCurrencyTransferCache geoCodeCurrencyTransferCache = getGeoTransferCaches(userVisit).getGeoCodeCurrencyTransferCache();
         
-        geoCodeCurrencies.stream().forEach((geoCodeCurrency) -> {
-            geoCodeCurrencyTransfers.add(geoCodeCurrencyTransferCache.getGeoCodeCurrencyTransfer(geoCodeCurrency));
-        });
+        geoCodeCurrencies.forEach((geoCodeCurrency) ->
+                geoCodeCurrencyTransfers.add(geoCodeCurrencyTransferCache.getGeoCodeCurrencyTransfer(geoCodeCurrency))
+        );
         
         return geoCodeCurrencyTransfers;
     }
@@ -3452,9 +3452,9 @@ public class GeoControl
         List<GeoCodeTimeZoneTransfer> geoCodeTimeZoneTransfers = new ArrayList<>(geoCodeTimeZones.size());
         GeoCodeTimeZoneTransferCache geoCodeTimeZoneTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTimeZoneTransferCache();
         
-        geoCodeTimeZones.stream().forEach((geoCodeTimeZone) -> {
-            geoCodeTimeZoneTransfers.add(geoCodeTimeZoneTransferCache.getGeoCodeTimeZoneTransfer(geoCodeTimeZone));
-        });
+        geoCodeTimeZones.forEach((geoCodeTimeZone) ->
+                geoCodeTimeZoneTransfers.add(geoCodeTimeZoneTransferCache.getGeoCodeTimeZoneTransfer(geoCodeTimeZone))
+        );
         
         return geoCodeTimeZoneTransfers;
     }
@@ -3752,9 +3752,9 @@ public class GeoControl
         List<GeoCodeDateTimeFormatTransfer> geoCodeDateTimeFormatTransfers = new ArrayList<>(geoCodeDateTimeFormats.size());
         GeoCodeDateTimeFormatTransferCache geoCodeDateTimeFormatTransferCache = getGeoTransferCaches(userVisit).getGeoCodeDateTimeFormatTransferCache();
         
-        geoCodeDateTimeFormats.stream().forEach((geoCodeDateTimeFormat) -> {
-            geoCodeDateTimeFormatTransfers.add(geoCodeDateTimeFormatTransferCache.getGeoCodeDateTimeFormatTransfer(geoCodeDateTimeFormat));
-        });
+        geoCodeDateTimeFormats.forEach((geoCodeDateTimeFormat) ->
+                geoCodeDateTimeFormatTransfers.add(geoCodeDateTimeFormatTransferCache.getGeoCodeDateTimeFormatTransfer(geoCodeDateTimeFormat))
+        );
         
         return geoCodeDateTimeFormatTransfers;
     }

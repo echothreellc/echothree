@@ -200,9 +200,9 @@ public class PaymentMethodTypeControl
         var paymentMethodTypeTransfers = new ArrayList<PaymentMethodTypeTransfer>(paymentMethodTypes.size());
         var paymentMethodTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache();
 
-        paymentMethodTypes.stream().forEach((paymentMethodType) -> {
-            paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(paymentMethodType));
-        });
+        paymentMethodTypes.forEach((paymentMethodType) ->
+                paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(paymentMethodType))
+        );
 
         return paymentMethodTypeTransfers;
     }
@@ -428,9 +428,9 @@ public class PaymentMethodTypeControl
         var paymentMethodTypeDescriptionTransfers = new ArrayList<PaymentMethodTypeDescriptionTransfer>(paymentMethodTypeDescriptions.size());
         var paymentMethodTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeDescriptionTransferCache();
 
-        paymentMethodTypeDescriptions.stream().forEach((paymentMethodTypeDescription) -> {
-            paymentMethodTypeDescriptionTransfers.add(paymentMethodTypeDescriptionTransferCache.getTransfer(paymentMethodTypeDescription));
-        });
+        paymentMethodTypeDescriptions.forEach((paymentMethodTypeDescription) ->
+                paymentMethodTypeDescriptionTransfers.add(paymentMethodTypeDescriptionTransferCache.getTransfer(paymentMethodTypeDescription))
+        );
 
         return paymentMethodTypeDescriptionTransfers;
     }

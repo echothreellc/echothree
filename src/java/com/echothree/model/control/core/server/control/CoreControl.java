@@ -755,9 +755,9 @@ public class CoreControl
         var componentVendorTransfers = new ArrayList<ComponentVendorTransfer>(componentVendors.size());
         var componentVendorTransferCache = getCoreTransferCaches(userVisit).getComponentVendorTransferCache();
 
-        componentVendors.stream().forEach((componentVendor) -> {
-            componentVendorTransfers.add(componentVendorTransferCache.getComponentVendorTransfer(componentVendor));
-        });
+        componentVendors.forEach((componentVendor) ->
+                componentVendorTransfers.add(componentVendorTransferCache.getComponentVendorTransfer(componentVendor))
+        );
 
         return componentVendorTransfers;
     }
@@ -983,9 +983,9 @@ public class CoreControl
         List<EntityTypeTransfer> entityTypeTransfers = new ArrayList<>(entityTypes.size());
         EntityTypeTransferCache entityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityTypeTransferCache();
         
-        entityTypes.stream().forEach((entityType) -> {
-            entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(entityType));
-        });
+        entityTypes.forEach((entityType) ->
+                entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(entityType))
+        );
         
         return entityTypeTransfers;
     }
@@ -1191,9 +1191,9 @@ public class CoreControl
         List<EntityTypeDescriptionTransfer> entityTypeDescriptionTransfers = new ArrayList<>(entityTypeDescriptions.size());
         EntityTypeDescriptionTransferCache entityTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache();
         
-        entityTypeDescriptions.stream().forEach((entityTypeDescription) -> {
-            entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(entityTypeDescription));
-        });
+        entityTypeDescriptions.forEach((entityTypeDescription) ->
+                entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(entityTypeDescription))
+        );
         
         return entityTypeDescriptionTransfers;
     }
@@ -1380,9 +1380,9 @@ public class CoreControl
         List<CommandTransfer> commandTransfers = new ArrayList<>(commands.size());
         CommandTransferCache commandTransferCache = getCoreTransferCaches(userVisit).getCommandTransferCache();
         
-        commands.stream().forEach((command) -> {
-            commandTransfers.add(commandTransferCache.getCommandTransfer(command));
-        });
+        commands.forEach((command) ->
+                commandTransfers.add(commandTransferCache.getCommandTransfer(command))
+        );
         
         return commandTransfers;
     }
@@ -1567,9 +1567,9 @@ public class CoreControl
         List<CommandDescriptionTransfer> commandDescriptionTransfers = new ArrayList<>(commandDescriptions.size());
         CommandDescriptionTransferCache commandDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandDescriptionTransferCache();
         
-        commandDescriptions.stream().forEach((commandDescription) -> {
-            commandDescriptionTransfers.add(commandDescriptionTransferCache.getCommandDescriptionTransfer(commandDescription));
-        });
+        commandDescriptions.forEach((commandDescription) ->
+                commandDescriptionTransfers.add(commandDescriptionTransferCache.getCommandDescriptionTransfer(commandDescription))
+        );
         
         return commandDescriptionTransfers;
     }
@@ -1787,9 +1787,9 @@ public class CoreControl
         List<CommandMessageTypeTransfer> commandMessageTypeTransfers = new ArrayList<>(commandMessageTypes.size());
         CommandMessageTypeTransferCache commandMessageTypeTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeTransferCache();
         
-        commandMessageTypes.stream().forEach((commandMessageType) -> {
-            commandMessageTypeTransfers.add(commandMessageTypeTransferCache.getCommandMessageTypeTransfer(commandMessageType));
-        });
+        commandMessageTypes.forEach((commandMessageType) ->
+                commandMessageTypeTransfers.add(commandMessageTypeTransferCache.getCommandMessageTypeTransfer(commandMessageType))
+        );
         
         return commandMessageTypeTransfers;
     }
@@ -2157,9 +2157,9 @@ public class CoreControl
         List<CommandMessageTransfer> commandMessageTransfers = new ArrayList<>(commandMessages.size());
         CommandMessageTransferCache commandMessageTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTransferCache();
         
-        commandMessages.stream().forEach((commandMessage) -> {
-            commandMessageTransfers.add(commandMessageTransferCache.getCommandMessageTransfer(commandMessage));
-        });
+        commandMessages.forEach((commandMessage) ->
+                commandMessageTransfers.add(commandMessageTransferCache.getCommandMessageTransfer(commandMessage))
+        );
         
         return commandMessageTransfers;
     }
@@ -2328,9 +2328,9 @@ public class CoreControl
         List<CommandMessageTranslationTransfer> commandMessageTranslationTransfers = new ArrayList<>(commandMessageTranslations.size());
         CommandMessageTranslationTransferCache commandMessageTranslationTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache();
         
-        commandMessageTranslations.stream().forEach((commandMessageTranslation) -> {
-            commandMessageTranslationTransfers.add(commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(commandMessageTranslation));
-        });
+        commandMessageTranslations.forEach((commandMessageTranslation) ->
+                commandMessageTranslationTransfers.add(commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(commandMessageTranslation))
+        );
         
         return commandMessageTranslationTransfers;
     }
@@ -3504,9 +3504,9 @@ public class CoreControl
         List<EventGroupTransfer> eventGroupTransfers = new ArrayList<>(eventGroups.size());
         EventGroupTransferCache eventGroupTransferCache = getCoreTransferCaches(userVisit).getEventGroupTransferCache();
         
-        eventGroups.stream().forEach((eventGroup) -> {
-            eventGroupTransfers.add(eventGroupTransferCache.getEventGroupTransfer(eventGroup));
-        });
+        eventGroups.forEach((eventGroup) ->
+                eventGroupTransfers.add(eventGroupTransferCache.getEventGroupTransfer(eventGroup))
+        );
         
         return eventGroupTransfers;
     }
@@ -3693,9 +3693,9 @@ public class CoreControl
         List<EventTransfer> eventTransfers = new ArrayList<>(events.size());
         EventTransferCache eventTransferCache = getCoreTransferCaches(userVisit).getEventTransferCache();
         
-        events.stream().forEach((event) -> {
-            eventTransfers.add(eventTransferCache.getEventTransfer(event));
-        });
+        events.forEach((event) ->
+                eventTransfers.add(eventTransferCache.getEventTransfer(event))
+        );
         
         return eventTransfers;
     }
@@ -3906,9 +3906,9 @@ public class CoreControl
         List<CacheEntryTransfer> cacheEntryTransfers = new ArrayList<>(cacheEntries.size());
         CacheEntryTransferCache cacheEntryTransferCache = getCoreTransferCaches(userVisit).getCacheEntryTransferCache();
 
-        cacheEntries.stream().forEach((cacheEntry) -> {
-            cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(cacheEntry));
-        });
+        cacheEntries.forEach((cacheEntry) ->
+                cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(cacheEntry))
+        );
 
         return cacheEntryTransfers;
     }
@@ -4119,9 +4119,9 @@ public class CoreControl
         List<CacheEntryDependencyTransfer> cacheEntryDependencyTransfers = new ArrayList<>(cacheEntries.size());
         CacheEntryDependencyTransferCache cacheEntryDependencyTransferCache = getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache();
 
-        cacheEntries.stream().forEach((cacheEntryDependency) -> {
-            cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(cacheEntryDependency));
-        });
+        cacheEntries.forEach((cacheEntryDependency) ->
+                cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(cacheEntryDependency))
+        );
 
         return cacheEntryDependencyTransfers;
     }
@@ -7584,9 +7584,9 @@ public class CoreControl
         List<MimeTypeUsageTypeTransfer> mimeTypeUsageTypeTransfers = new ArrayList<>(mimeTypeUsageTypes.size());
         MimeTypeUsageTypeTransferCache mimeTypeUsageTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTypeTransferCache();
 
-        mimeTypeUsageTypes.stream().forEach((mimeTypeUsageType) -> {
-            mimeTypeUsageTypeTransfers.add(mimeTypeUsageTypeTransferCache.getMimeTypeUsageTypeTransfer(mimeTypeUsageType));
-        });
+        mimeTypeUsageTypes.forEach((mimeTypeUsageType) ->
+                mimeTypeUsageTypeTransfers.add(mimeTypeUsageTypeTransferCache.getMimeTypeUsageTypeTransfer(mimeTypeUsageType))
+        );
 
         return mimeTypeUsageTypeTransfers;
     }
@@ -7862,9 +7862,9 @@ public class CoreControl
         List<MimeTypeTransfer> mimeTypeTransfers = new ArrayList<>(mimeTypes.size());
         MimeTypeTransferCache mimeTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeTransferCache();
 
-        mimeTypes.stream().forEach((mimeType) -> {
-            mimeTypeTransfers.add(mimeTypeTransferCache.getMimeTypeTransfer(mimeType));
-        });
+        mimeTypes.forEach((mimeType) ->
+                mimeTypeTransfers.add(mimeTypeTransferCache.getMimeTypeTransfer(mimeType))
+        );
 
         return mimeTypeTransfers;
     }
@@ -8138,9 +8138,9 @@ public class CoreControl
         List<MimeTypeDescriptionTransfer> mimeTypeDescriptionTransfers = new ArrayList<>(mimeTypeDescriptions.size());
         MimeTypeDescriptionTransferCache mimeTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeDescriptionTransferCache();
 
-        mimeTypeDescriptions.stream().forEach((mimeTypeDescription) -> {
-            mimeTypeDescriptionTransfers.add(mimeTypeDescriptionTransferCache.getMimeTypeDescriptionTransfer(mimeTypeDescription));
-        });
+        mimeTypeDescriptions.forEach((mimeTypeDescription) ->
+                mimeTypeDescriptionTransfers.add(mimeTypeDescriptionTransferCache.getMimeTypeDescriptionTransfer(mimeTypeDescription))
+        );
 
         return mimeTypeDescriptionTransfers;
     }
@@ -8236,9 +8236,9 @@ public class CoreControl
         List<MimeTypeUsageTransfer> mimeTypeUsageTransfers = new ArrayList<>(mimeTypeUsages.size());
         MimeTypeUsageTransferCache mimeTypeUsageTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTransferCache();
         
-        mimeTypeUsages.stream().forEach((mimeTypeUsage) -> {
-            mimeTypeUsageTransfers.add(mimeTypeUsageTransferCache.getMimeTypeUsageTransfer(mimeTypeUsage));
-        });
+        mimeTypeUsages.forEach((mimeTypeUsage) ->
+                mimeTypeUsageTransfers.add(mimeTypeUsageTransferCache.getMimeTypeUsageTransfer(mimeTypeUsage))
+        );
         
         return mimeTypeUsageTransfers;
     }
@@ -8321,9 +8321,9 @@ public class CoreControl
         List<MimeTypeFileExtensionTransfer> mimeTypeFileExtensionTransfers = new ArrayList<>(mimeTypeFileExtensions.size());
         MimeTypeFileExtensionTransferCache mimeTypeFileExtensionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeFileExtensionTransferCache();
         
-        mimeTypeFileExtensions.stream().forEach((mimeTypeFileExtension) -> {
-            mimeTypeFileExtensionTransfers.add(mimeTypeFileExtensionTransferCache.getMimeTypeFileExtensionTransfer(mimeTypeFileExtension));
-        });
+        mimeTypeFileExtensions.forEach((mimeTypeFileExtension) ->
+                mimeTypeFileExtensionTransfers.add(mimeTypeFileExtensionTransferCache.getMimeTypeFileExtensionTransfer(mimeTypeFileExtension))
+        );
         
         return mimeTypeFileExtensionTransfers;
     }
@@ -8483,9 +8483,9 @@ public class CoreControl
         List<ProtocolTransfer> protocolTransfers = new ArrayList<>(protocols.size());
         ProtocolTransferCache protocolTransferCache = getCoreTransferCaches(userVisit).getProtocolTransferCache();
 
-        protocols.stream().forEach((protocol) -> {
-            protocolTransfers.add(protocolTransferCache.getProtocolTransfer(protocol));
-        });
+        protocols.forEach((protocol) ->
+                protocolTransfers.add(protocolTransferCache.getProtocolTransfer(protocol))
+        );
 
         return protocolTransfers;
     }
@@ -8723,9 +8723,9 @@ public class CoreControl
         List<ProtocolDescriptionTransfer> protocolDescriptionTransfers = new ArrayList<>(protocolDescriptions.size());
         ProtocolDescriptionTransferCache protocolDescriptionTransferCache = getCoreTransferCaches(userVisit).getProtocolDescriptionTransferCache();
 
-        protocolDescriptions.stream().forEach((protocolDescription) -> {
-            protocolDescriptionTransfers.add(protocolDescriptionTransferCache.getProtocolDescriptionTransfer(protocolDescription));
-        });
+        protocolDescriptions.forEach((protocolDescription) ->
+                protocolDescriptionTransfers.add(protocolDescriptionTransferCache.getProtocolDescriptionTransfer(protocolDescription))
+        );
 
         return protocolDescriptionTransfers;
     }
@@ -8944,9 +8944,9 @@ public class CoreControl
         List<ServiceTransfer> serviceTransfers = new ArrayList<>(services.size());
         ServiceTransferCache serviceTransferCache = getCoreTransferCaches(userVisit).getServiceTransferCache();
 
-        services.stream().forEach((service) -> {
-            serviceTransfers.add(serviceTransferCache.getServiceTransfer(service));
-        });
+        services.forEach((service) ->
+                serviceTransfers.add(serviceTransferCache.getServiceTransfer(service))
+        );
 
         return serviceTransfers;
     }
@@ -9190,9 +9190,9 @@ public class CoreControl
         List<ServiceDescriptionTransfer> serviceDescriptionTransfers = new ArrayList<>(serviceDescriptions.size());
         ServiceDescriptionTransferCache serviceDescriptionTransferCache = getCoreTransferCaches(userVisit).getServiceDescriptionTransferCache();
 
-        serviceDescriptions.stream().forEach((serviceDescription) -> {
-            serviceDescriptionTransfers.add(serviceDescriptionTransferCache.getServiceDescriptionTransfer(serviceDescription));
-        });
+        serviceDescriptions.forEach((serviceDescription) ->
+                serviceDescriptionTransfers.add(serviceDescriptionTransferCache.getServiceDescriptionTransfer(serviceDescription))
+        );
 
         return serviceDescriptionTransfers;
     }
@@ -9377,9 +9377,9 @@ public class CoreControl
         List<ServerTransfer> serverTransfers = new ArrayList<>(servers.size());
         ServerTransferCache serverTransferCache = getCoreTransferCaches(userVisit).getServerTransferCache();
 
-        servers.stream().forEach((server) -> {
-            serverTransfers.add(serverTransferCache.getServerTransfer(server));
-        });
+        servers.forEach((server) ->
+                serverTransfers.add(serverTransferCache.getServerTransfer(server))
+        );
 
         return serverTransfers;
     }
@@ -9617,9 +9617,9 @@ public class CoreControl
         List<ServerDescriptionTransfer> serverDescriptionTransfers = new ArrayList<>(serverDescriptions.size());
         ServerDescriptionTransferCache serverDescriptionTransferCache = getCoreTransferCaches(userVisit).getServerDescriptionTransferCache();
 
-        serverDescriptions.stream().forEach((serverDescription) -> {
-            serverDescriptionTransfers.add(serverDescriptionTransferCache.getServerDescriptionTransfer(serverDescription));
-        });
+        serverDescriptions.forEach((serverDescription) ->
+                serverDescriptionTransfers.add(serverDescriptionTransferCache.getServerDescriptionTransfer(serverDescription))
+        );
 
         return serverDescriptionTransfers;
     }
@@ -9781,9 +9781,9 @@ public class CoreControl
         List<ServerServiceTransfer> serverServiceTransfers = new ArrayList<>(serverServices.size());
         ServerServiceTransferCache serverServiceTransferCache = getCoreTransferCaches(userVisit).getServerServiceTransferCache();
 
-        serverServices.stream().forEach((serverService) -> {
-            serverServiceTransfers.add(serverServiceTransferCache.getServerServiceTransfer(serverService));
-        });
+        serverServices.forEach((serverService) ->
+                serverServiceTransfers.add(serverServiceTransferCache.getServerServiceTransfer(serverService))
+        );
 
         return serverServiceTransfers;
     }
@@ -12540,9 +12540,9 @@ public class CoreControl
         List<BaseEncryptionKeyTransfer> baseEncryptionKeyTransfers = new ArrayList<>(baseEncryptionKeys.size());
         BaseEncryptionKeyTransferCache baseEncryptionKeyTransferCache = getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache();
         
-        baseEncryptionKeys.stream().forEach((baseEncryptionKey) -> {
-            baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(baseEncryptionKey));
-        });
+        baseEncryptionKeys.forEach((baseEncryptionKey) ->
+                baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(baseEncryptionKey))
+        );
         
         return baseEncryptionKeyTransfers;
     }
@@ -13269,9 +13269,9 @@ public class CoreControl
         List<PartyEntityTypeTransfer> partyEntityTypeTransfers = new ArrayList<>(partyEntityTypes.size());
         PartyEntityTypeTransferCache partyEntityTypeTransferCache = getCoreTransferCaches(userVisit).getPartyEntityTypeTransferCache();
 
-        partyEntityTypes.stream().forEach((partyEntityType) -> {
-            partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType));
-        });
+        partyEntityTypes.forEach((partyEntityType) ->
+                partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType))
+        );
 
         return partyEntityTypeTransfers;
     }
@@ -13459,9 +13459,9 @@ public class CoreControl
         List<ApplicationTransfer> applicationTransfers = new ArrayList<>(applications.size());
         ApplicationTransferCache applicationTransferCache = getCoreTransferCaches(userVisit).getApplicationTransferCache();
 
-        applications.stream().forEach((application) -> {
-            applicationTransfers.add(applicationTransferCache.getApplicationTransfer(application));
-        });
+        applications.forEach((application) ->
+                applicationTransfers.add(applicationTransferCache.getApplicationTransfer(application))
+        );
 
         return applicationTransfers;
     }
@@ -13700,9 +13700,9 @@ public class CoreControl
         List<ApplicationDescriptionTransfer> applicationDescriptionTransfers = new ArrayList<>(applicationDescriptions.size());
         ApplicationDescriptionTransferCache applicationDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationDescriptionTransferCache();
 
-        applicationDescriptions.stream().forEach((applicationDescription) -> {
-            applicationDescriptionTransfers.add(applicationDescriptionTransferCache.getApplicationDescriptionTransfer(applicationDescription));
-        });
+        applicationDescriptions.forEach((applicationDescription) ->
+                applicationDescriptionTransfers.add(applicationDescriptionTransferCache.getApplicationDescriptionTransfer(applicationDescription))
+        );
 
         return applicationDescriptionTransfers;
     }
@@ -13888,9 +13888,9 @@ public class CoreControl
         List<EditorTransfer> editorTransfers = new ArrayList<>(editors.size());
         EditorTransferCache editorTransferCache = getCoreTransferCaches(userVisit).getEditorTransferCache();
 
-        editors.stream().forEach((editor) -> {
-            editorTransfers.add(editorTransferCache.getEditorTransfer(editor));
-        });
+        editors.forEach((editor) ->
+                editorTransfers.add(editorTransferCache.getEditorTransfer(editor))
+        );
 
         return editorTransfers;
     }
@@ -14135,9 +14135,9 @@ public class CoreControl
         List<EditorDescriptionTransfer> editorDescriptionTransfers = new ArrayList<>(editorDescriptions.size());
         EditorDescriptionTransferCache editorDescriptionTransferCache = getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache();
 
-        editorDescriptions.stream().forEach((editorDescription) -> {
-            editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(editorDescription));
-        });
+        editorDescriptions.forEach((editorDescription) ->
+                editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(editorDescription))
+        );
 
         return editorDescriptionTransfers;
     }
@@ -14358,9 +14358,9 @@ public class CoreControl
         List<ApplicationEditorTransfer> applicationEditorTransfers = new ArrayList<>(applicationEditors.size());
         ApplicationEditorTransferCache applicationEditorTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorTransferCache();
 
-        applicationEditors.stream().forEach((applicationEditor) -> {
-            applicationEditorTransfers.add(applicationEditorTransferCache.getApplicationEditorTransfer(applicationEditor));
-        });
+        applicationEditors.forEach((applicationEditor) ->
+                applicationEditorTransfers.add(applicationEditorTransferCache.getApplicationEditorTransfer(applicationEditor))
+        );
 
         return applicationEditorTransfers;
     }
@@ -14695,9 +14695,9 @@ public class CoreControl
         List<ApplicationEditorUseTransfer> applicationEditorUseTransfers = new ArrayList<>(applicationEditorUses.size());
         ApplicationEditorUseTransferCache applicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseTransferCache();
 
-        applicationEditorUses.stream().forEach((applicationEditorUse) -> {
-            applicationEditorUseTransfers.add(applicationEditorUseTransferCache.getApplicationEditorUseTransfer(applicationEditorUse));
-        });
+        applicationEditorUses.forEach((applicationEditorUse) ->
+                applicationEditorUseTransfers.add(applicationEditorUseTransferCache.getApplicationEditorUseTransfer(applicationEditorUse))
+        );
 
         return applicationEditorUseTransfers;
     }
@@ -14959,9 +14959,9 @@ public class CoreControl
         List<ApplicationEditorUseDescriptionTransfer> applicationEditorUseDescriptionTransfers = new ArrayList<>(applicationEditorUseDescriptions.size());
         ApplicationEditorUseDescriptionTransferCache applicationEditorUseDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseDescriptionTransferCache();
 
-        applicationEditorUseDescriptions.stream().forEach((applicationEditorUseDescription) -> {
-            applicationEditorUseDescriptionTransfers.add(applicationEditorUseDescriptionTransferCache.getApplicationEditorUseDescriptionTransfer(applicationEditorUseDescription));
-        });
+        applicationEditorUseDescriptions.forEach((applicationEditorUseDescription) ->
+                applicationEditorUseDescriptionTransfers.add(applicationEditorUseDescriptionTransferCache.getApplicationEditorUseDescriptionTransfer(applicationEditorUseDescription))
+        );
 
         return applicationEditorUseDescriptionTransfers;
     }
@@ -15171,9 +15171,9 @@ public class CoreControl
         List<PartyApplicationEditorUseTransfer> partyApplicationEditorUseTransfers = new ArrayList<>(partyApplicationEditorUses.size());
         PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache();
 
-        partyApplicationEditorUses.stream().forEach((partyApplicationEditorUse) -> {
-            partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(partyApplicationEditorUse));
-        });
+        partyApplicationEditorUses.forEach((partyApplicationEditorUse) ->
+                partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(partyApplicationEditorUse))
+        );
 
         return partyApplicationEditorUseTransfers;
     }
@@ -15405,9 +15405,9 @@ public class CoreControl
         List<ColorTransfer> transfers = new ArrayList<>(entities.size());
         ColorTransferCache transferCache = getCoreTransferCaches(userVisit).getColorTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getColorTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getColorTransfer(entity))
+        );
         
         return transfers;
     }
@@ -15652,9 +15652,9 @@ public class CoreControl
         List<ColorDescriptionTransfer> colorDescriptionTransfers = new ArrayList<>(colorDescriptions.size());
         ColorDescriptionTransferCache colorDescriptionTransferCache = getCoreTransferCaches(userVisit).getColorDescriptionTransferCache();
 
-        colorDescriptions.stream().forEach((colorDescription) -> {
-            colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription));
-        });
+        colorDescriptions.forEach((colorDescription) ->
+                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription))
+        );
 
         return colorDescriptionTransfers;
     }
@@ -15854,9 +15854,9 @@ public class CoreControl
         List<FontStyleTransfer> transfers = new ArrayList<>(entities.size());
         FontStyleTransferCache transferCache = getCoreTransferCaches(userVisit).getFontStyleTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getFontStyleTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getFontStyleTransfer(entity))
+        );
         
         return transfers;
     }
@@ -16098,9 +16098,9 @@ public class CoreControl
         List<FontStyleDescriptionTransfer> fontStyleDescriptionTransfers = new ArrayList<>(fontStyleDescriptions.size());
         FontStyleDescriptionTransferCache fontStyleDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontStyleDescriptionTransferCache();
 
-        fontStyleDescriptions.stream().forEach((fontStyleDescription) -> {
-            fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(fontStyleDescription));
-        });
+        fontStyleDescriptions.forEach((fontStyleDescription) ->
+                fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(fontStyleDescription))
+        );
 
         return fontStyleDescriptionTransfers;
     }
@@ -16300,9 +16300,9 @@ public class CoreControl
         List<FontWeightTransfer> transfers = new ArrayList<>(entities.size());
         FontWeightTransferCache transferCache = getCoreTransferCaches(userVisit).getFontWeightTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getFontWeightTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getFontWeightTransfer(entity))
+        );
         
         return transfers;
     }
@@ -16544,9 +16544,9 @@ public class CoreControl
         List<FontWeightDescriptionTransfer> fontWeightDescriptionTransfers = new ArrayList<>(fontWeightDescriptions.size());
         FontWeightDescriptionTransferCache fontWeightDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontWeightDescriptionTransferCache();
 
-        fontWeightDescriptions.stream().forEach((fontWeightDescription) -> {
-            fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(fontWeightDescription));
-        });
+        fontWeightDescriptions.forEach((fontWeightDescription) ->
+                fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(fontWeightDescription))
+        );
 
         return fontWeightDescriptionTransfers;
     }
@@ -16746,9 +16746,9 @@ public class CoreControl
         List<TextDecorationTransfer> transfers = new ArrayList<>(entities.size());
         TextDecorationTransferCache transferCache = getCoreTransferCaches(userVisit).getTextDecorationTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getTextDecorationTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getTextDecorationTransfer(entity))
+        );
         
         return transfers;
     }
@@ -16990,9 +16990,9 @@ public class CoreControl
         List<TextDecorationDescriptionTransfer> textDecorationDescriptionTransfers = new ArrayList<>(textDecorationDescriptions.size());
         TextDecorationDescriptionTransferCache textDecorationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextDecorationDescriptionTransferCache();
 
-        textDecorationDescriptions.stream().forEach((textDecorationDescription) -> {
-            textDecorationDescriptionTransfers.add(textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(textDecorationDescription));
-        });
+        textDecorationDescriptions.forEach((textDecorationDescription) ->
+                textDecorationDescriptionTransfers.add(textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(textDecorationDescription))
+        );
 
         return textDecorationDescriptionTransfers;
     }
@@ -17192,9 +17192,9 @@ public class CoreControl
         List<TextTransformationTransfer> transfers = new ArrayList<>(entities.size());
         TextTransformationTransferCache transferCache = getCoreTransferCaches(userVisit).getTextTransformationTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getTextTransformationTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getTextTransformationTransfer(entity))
+        );
         
         return transfers;
     }
@@ -17436,9 +17436,9 @@ public class CoreControl
         List<TextTransformationDescriptionTransfer> textTransformationDescriptionTransfers = new ArrayList<>(textTransformationDescriptions.size());
         TextTransformationDescriptionTransferCache textTransformationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextTransformationDescriptionTransferCache();
 
-        textTransformationDescriptions.stream().forEach((textTransformationDescription) -> {
-            textTransformationDescriptionTransfers.add(textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(textTransformationDescription));
-        });
+        textTransformationDescriptions.forEach((textTransformationDescription) ->
+                textTransformationDescriptionTransfers.add(textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(textTransformationDescription))
+        );
 
         return textTransformationDescriptionTransfers;
     }
@@ -17767,9 +17767,9 @@ public class CoreControl
         List<AppearanceTransfer> appearanceTransfers = new ArrayList<>(appearances.size());
         AppearanceTransferCache appearanceTransferCache = getCoreTransferCaches(userVisit).getAppearanceTransferCache();
 
-        appearances.stream().forEach((appearance) -> {
-            appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(appearance));
-        });
+        appearances.forEach((appearance) ->
+                appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(appearance))
+        );
 
         return appearanceTransfers;
     }
@@ -18037,9 +18037,9 @@ public class CoreControl
         List<AppearanceDescriptionTransfer> appearanceDescriptionTransfers = new ArrayList<>(appearanceDescriptions.size());
         AppearanceDescriptionTransferCache appearanceDescriptionTransferCache = getCoreTransferCaches(userVisit).getAppearanceDescriptionTransferCache();
 
-        appearanceDescriptions.stream().forEach((appearanceDescription) -> {
-            appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(appearanceDescription));
-        });
+        appearanceDescriptions.forEach((appearanceDescription) ->
+                appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(appearanceDescription))
+        );
 
         return appearanceDescriptionTransfers;
     }
@@ -18201,9 +18201,9 @@ public class CoreControl
         List<AppearanceTextDecorationTransfer> appearanceTextDecorationTransfers = new ArrayList<>(appearanceTextDecorations.size());
         AppearanceTextDecorationTransferCache appearanceTextDecorationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache();
 
-        appearanceTextDecorations.stream().forEach((appearanceTextDecoration) -> {
-            appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(appearanceTextDecoration));
-        });
+        appearanceTextDecorations.forEach((appearanceTextDecoration) ->
+                appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(appearanceTextDecoration))
+        );
 
         return appearanceTextDecorationTransfers;
     }
@@ -18359,9 +18359,9 @@ public class CoreControl
         List<AppearanceTextTransformationTransfer> appearanceTextTransformationTransfers = new ArrayList<>(appearanceTextTransformations.size());
         AppearanceTextTransformationTransferCache appearanceTextTransformationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache();
 
-        appearanceTextTransformations.stream().forEach((appearanceTextTransformation) -> {
-            appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(appearanceTextTransformation));
-        });
+        appearanceTextTransformations.forEach((appearanceTextTransformation) ->
+                appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(appearanceTextTransformation))
+        );
 
         return appearanceTextTransformationTransfers;
     }
@@ -18488,9 +18488,9 @@ public class CoreControl
         List<EntityAppearanceTransfer> entityAppearanceTransfers = new ArrayList<>(entityAppearances.size());
         EntityAppearanceTransferCache entityAppearanceTransferCache = getCoreTransferCaches(userVisit).getEntityAppearanceTransferCache();
 
-        entityAppearances.stream().forEach((entityAppearance) -> {
-            entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(entityAppearance));
-        });
+        entityAppearances.forEach((entityAppearance) ->
+                entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(entityAppearance))
+        );
 
         return entityAppearanceTransfers;
     }
