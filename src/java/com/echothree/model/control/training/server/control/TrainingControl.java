@@ -380,7 +380,7 @@ public class TrainingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTrainingClassChoice == null? false: defaultTrainingClassChoice.equals(value);
+            boolean usingDefaultChoice = defaultTrainingClassChoice != null && defaultTrainingClassChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && trainingClassDetail.getIsDefault())) {
                 defaultValue = value;
             }

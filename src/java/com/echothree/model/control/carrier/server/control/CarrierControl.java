@@ -344,7 +344,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCarrierTypeChoice == null? false: defaultCarrierTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierTypeChoice != null && defaultCarrierTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -813,7 +813,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCarrierChoice == null? false: defaultCarrierChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierChoice != null && defaultCarrierChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrier.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1089,7 +1089,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCarrierServiceChoice == null? false: defaultCarrierServiceChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierServiceChoice != null && defaultCarrierServiceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierServiceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1573,7 +1573,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCarrierOptionChoice == null? false: defaultCarrierOptionChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierOptionChoice != null && defaultCarrierOptionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierOptionDetail.getIsDefault())) {
                 defaultValue = value;
             }

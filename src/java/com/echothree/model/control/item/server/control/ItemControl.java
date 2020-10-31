@@ -472,7 +472,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemTypeChoice == null? false: defaultItemTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemTypeChoice != null && defaultItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -601,7 +601,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemDeliveryTypeChoice == null? false: defaultItemDeliveryTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemDeliveryTypeChoice != null && defaultItemDeliveryTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDeliveryType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -730,7 +730,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemInventoryTypeChoice == null? false: defaultItemInventoryTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemInventoryTypeChoice != null && defaultItemInventoryTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemInventoryType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -859,7 +859,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemUseTypeChoice == null? false: defaultItemUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemUseTypeChoice != null && defaultItemUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemUseType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1173,7 +1173,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemCategoryChoice == null? false: defaultItemCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemCategoryChoice != null && defaultItemCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2353,7 +2353,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemAliasChecksumTypeChoice == null? false: defaultItemAliasChecksumTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemAliasChecksumTypeChoice != null && defaultItemAliasChecksumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAliasChecksumType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2590,7 +2590,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemAliasTypeChoice == null? false: defaultItemAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemAliasTypeChoice != null && defaultItemAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5183,7 +5183,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemPriceTypeChoice == null? false: defaultItemPriceTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemPriceTypeChoice != null && defaultItemPriceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemPriceType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6080,7 +6080,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemDescriptionTypeChoice == null? false: defaultItemDescriptionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemDescriptionTypeChoice != null && defaultItemDescriptionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDescriptionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6698,7 +6698,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemDescriptionTypeUseTypeChoice == null? false: defaultItemDescriptionTypeUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemDescriptionTypeUseTypeChoice != null && defaultItemDescriptionTypeUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDescriptionTypeUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7322,7 +7322,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemImageTypeChoice == null? false: defaultItemImageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemImageTypeChoice != null && defaultItemImageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemImageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8878,7 +8878,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultRelatedItemTypeChoice == null? false: defaultRelatedItemTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultRelatedItemTypeChoice != null && defaultRelatedItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && relatedItemTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -9737,7 +9737,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeChoice == null? false: defaultHarmonizedTariffScheduleCodeChoice.equals(value);
+            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeChoice != null && defaultHarmonizedTariffScheduleCodeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -10173,7 +10173,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUseTypeChoice == null? false: defaultHarmonizedTariffScheduleCodeUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUseTypeChoice != null && defaultHarmonizedTariffScheduleCodeUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -10579,7 +10579,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUnitChoice == null? false: defaultHarmonizedTariffScheduleCodeUnitChoice.equals(value);
+            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUnitChoice != null && defaultHarmonizedTariffScheduleCodeUnitChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeUnitDetail.getIsDefault())) {
                 defaultValue = value;
             }

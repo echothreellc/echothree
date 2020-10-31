@@ -338,7 +338,7 @@ public class IndexControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexTypeChoice == null? false: defaultIndexTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultIndexTypeChoice != null && defaultIndexTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -757,7 +757,7 @@ public class IndexControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexFieldChoice == null? false: defaultIndexFieldChoice.equals(value);
+            boolean usingDefaultChoice = defaultIndexFieldChoice != null && defaultIndexFieldChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexFieldDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1326,7 +1326,7 @@ public class IndexControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexChoice == null? false: defaultIndexChoice.equals(value);
+            boolean usingDefaultChoice = defaultIndexChoice != null && defaultIndexChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexDetail.getIsDefault())) {
                 defaultValue = value;
             }

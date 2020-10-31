@@ -301,7 +301,7 @@ public class PartyPaymentMethodControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPartyPaymentMethodChoice == null? false: defaultPartyPaymentMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartyPaymentMethodChoice != null && defaultPartyPaymentMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyPaymentMethodDetail.getIsDefault())) {
                 defaultValue = value;
             }

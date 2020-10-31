@@ -1769,7 +1769,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCommandMessageTypeChoice == null? false: defaultCommandMessageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCommandMessageTypeChoice != null && defaultCommandMessageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && commandMessageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3069,7 +3069,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityAttributeTypeChoice == null? false: defaultEntityAttributeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityAttributeTypeChoice != null && defaultEntityAttributeTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -4353,7 +4353,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityAttributeGroupChoice == null? false: defaultEntityAttributeGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityAttributeGroupChoice != null && defaultEntityAttributeGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityAttributeGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6235,7 +6235,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityListItemChoice == null? false: defaultEntityListItemChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityListItemChoice != null && defaultEntityListItemChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityListItemDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6730,7 +6730,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityIntegerRangeChoice == null? false: defaultEntityIntegerRangeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityIntegerRangeChoice != null && defaultEntityIntegerRangeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityIntegerRangeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7218,7 +7218,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityLongRangeChoice == null? false: defaultEntityLongRangeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityLongRangeChoice != null && defaultEntityLongRangeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityLongRangeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7567,7 +7567,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMimeTypeUsageTypeChoice == null? false: defaultMimeTypeUsageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultMimeTypeUsageTypeChoice != null && defaultMimeTypeUsageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeUsageType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7908,7 +7908,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultMimeTypeChoice == null? false: defaultMimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7943,7 +7943,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultMimeTypeChoice == null? false: defaultMimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8515,7 +8515,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultProtocolChoice == null? false: defaultProtocolChoice.equals(value);
+            boolean usingDefaultChoice = defaultProtocolChoice != null && defaultProtocolChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && protocolDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8976,7 +8976,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultServiceChoice == null? false: defaultServiceChoice.equals(value);
+            boolean usingDefaultChoice = defaultServiceChoice != null && defaultServiceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && serviceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -9409,7 +9409,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultServerChoice == null? false: defaultServerChoice.equals(value);
+            boolean usingDefaultChoice = defaultServerChoice != null && defaultServerChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && serverDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -13491,7 +13491,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationChoice == null? false: defaultApplicationChoice.equals(value);
+            boolean usingDefaultChoice = defaultApplicationChoice != null && defaultApplicationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -13920,7 +13920,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultEditorChoice == null? false: defaultEditorChoice.equals(value);
+            boolean usingDefaultChoice = defaultEditorChoice != null && defaultEditorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && editorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -14400,7 +14400,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationEditorChoice == null? false: defaultApplicationEditorChoice.equals(value);
+            boolean usingDefaultChoice = defaultApplicationEditorChoice != null && defaultApplicationEditorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationEditorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -14736,7 +14736,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationEditorUseChoice == null? false: defaultApplicationEditorUseChoice.equals(value);
+            boolean usingDefaultChoice = defaultApplicationEditorUseChoice != null && defaultApplicationEditorUseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationEditorUseDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -15441,7 +15441,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultColorChoice == null? false: defaultColorChoice.equals(value);
+            boolean usingDefaultChoice = defaultColorChoice != null && defaultColorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && colorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -15890,7 +15890,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFontStyleChoice == null? false: defaultFontStyleChoice.equals(value);
+            boolean usingDefaultChoice = defaultFontStyleChoice != null && defaultFontStyleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && fontStyleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -16336,7 +16336,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFontWeightChoice == null? false: defaultFontWeightChoice.equals(value);
+            boolean usingDefaultChoice = defaultFontWeightChoice != null && defaultFontWeightChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && fontWeightDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -16782,7 +16782,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTextDecorationChoice == null? false: defaultTextDecorationChoice.equals(value);
+            boolean usingDefaultChoice = defaultTextDecorationChoice != null && defaultTextDecorationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && textDecorationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -17228,7 +17228,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTextTransformationChoice == null? false: defaultTextTransformationChoice.equals(value);
+            boolean usingDefaultChoice = defaultTextTransformationChoice != null && defaultTextTransformationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && textTransformationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -17803,7 +17803,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultAppearanceChoice == null? false: defaultAppearanceChoice.equals(value);
+            boolean usingDefaultChoice = defaultAppearanceChoice != null && defaultAppearanceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && appearanceDetail.getIsDefault())) {
                 defaultValue = value;
             }

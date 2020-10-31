@@ -254,7 +254,7 @@ public class LicenseControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLicenseTypeChoice == null? false: defaultLicenseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLicenseTypeChoice != null && defaultLicenseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && licenseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

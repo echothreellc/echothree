@@ -352,7 +352,7 @@ public class UomControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUnitOfMeasureKindChoice == null? false: defaultUnitOfMeasureKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultUnitOfMeasureKindChoice != null && defaultUnitOfMeasureKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && unitOfMeasureKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -885,7 +885,7 @@ public class UomControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUnitOfMeasureTypeChoice == null? false: defaultUnitOfMeasureTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultUnitOfMeasureTypeChoice != null && defaultUnitOfMeasureTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && unitOfMeasureTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1750,7 +1750,7 @@ public class UomControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUnitOfMeasureKindUseTypeChoice == null? false: defaultUnitOfMeasureKindUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultUnitOfMeasureKindUseTypeChoice != null && defaultUnitOfMeasureKindUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && unitOfMeasureKindUseType.getIsDefault()))
                 defaultValue = value;
         }

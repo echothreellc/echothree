@@ -265,7 +265,7 @@ public class PeriodControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPeriodKindChoice == null? false: defaultPeriodKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultPeriodKindChoice != null && defaultPeriodKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && periodKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -716,7 +716,7 @@ public class PeriodControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPeriodTypeChoice == null? false: defaultPeriodTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPeriodTypeChoice != null && defaultPeriodTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && periodTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

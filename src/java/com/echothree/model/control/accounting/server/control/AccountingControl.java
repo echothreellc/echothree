@@ -389,7 +389,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCurrencyChoice == null? false: defaultCurrencyChoice.equals(value);
+            boolean usingDefaultChoice = defaultCurrencyChoice != null && defaultCurrencyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && currency.getIsDefault()))
                 defaultValue = value;
         }
@@ -737,7 +737,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemAccountingCategoryChoice == null? false: defaultItemAccountingCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemAccountingCategoryChoice != null && defaultItemAccountingCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAccountingCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1108,7 +1108,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountTypeChoice == null? false: defaultGlAccountTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountTypeChoice != null && defaultGlAccountTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1391,7 +1391,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountClassChoice == null? false: defaultGlAccountClassChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountClassChoice != null && defaultGlAccountClassChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountClassDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1899,7 +1899,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountCategoryChoice == null? false: defaultGlAccountCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountCategoryChoice != null && defaultGlAccountCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2392,7 +2392,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlResourceTypeChoice == null? false: defaultGlResourceTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlResourceTypeChoice != null && defaultGlResourceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glResourceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3025,7 +3025,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountChoice == null? false: defaultGlAccountChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -3060,7 +3060,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountChoice == null? false: defaultGlAccountChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5495,7 +5495,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSymbolPositionChoice == null? false: defaultSymbolPositionChoice.equals(value);
+            boolean usingDefaultChoice = defaultSymbolPositionChoice != null && defaultSymbolPositionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && symbolPositionDetail.getIsDefault())) {
                 defaultValue = value;
             }

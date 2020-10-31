@@ -406,7 +406,7 @@ public class LetterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLetterSourceChoice == null? false: defaultLetterSourceChoice.equals(value);
+            boolean usingDefaultChoice = defaultLetterSourceChoice != null && defaultLetterSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && letterSourceDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -970,7 +970,7 @@ public class LetterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLetterChoice == null? false: defaultLetterChoice.equals(value);
+            boolean usingDefaultChoice = defaultLetterChoice != null && defaultLetterChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && letterDetail.getIsDefault()))
                 defaultValue = value;
         }

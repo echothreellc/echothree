@@ -418,7 +418,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignChoice == null? false: defaultCampaignChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignChoice != null && defaultCampaignChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -936,7 +936,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignSourceChoice == null? false: defaultCampaignSourceChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignSourceChoice != null && defaultCampaignSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignSourceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1454,7 +1454,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignMediumChoice == null? false: defaultCampaignMediumChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignMediumChoice != null && defaultCampaignMediumChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignMediumDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1972,7 +1972,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignTermChoice == null? false: defaultCampaignTermChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignTermChoice != null && defaultCampaignTermChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignTermDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2490,7 +2490,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignContentChoice == null? false: defaultCampaignContentChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignContentChoice != null && defaultCampaignContentChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignContentDetail.getIsDefault())) {
                 defaultValue = value;
             }

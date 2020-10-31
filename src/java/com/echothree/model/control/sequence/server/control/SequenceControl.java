@@ -335,7 +335,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceTypeChoice == null? false: defaultSequenceTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceTypeChoice != null && defaultSequenceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -661,7 +661,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceChecksumTypeChoice == null? false: defaultSequenceChecksumTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceChecksumTypeChoice != null && defaultSequenceChecksumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceChecksumType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -773,7 +773,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceEncoderTypeChoice == null? false: defaultSequenceEncoderTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceEncoderTypeChoice != null && defaultSequenceEncoderTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceEncoderType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1020,7 +1020,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceChoice == null? false: defaultSequenceChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceChoice != null && defaultSequenceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceDetail.getIsDefault())) {
                 defaultValue = value;
             }

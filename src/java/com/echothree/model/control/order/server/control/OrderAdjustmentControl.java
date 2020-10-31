@@ -245,7 +245,7 @@ public class OrderAdjustmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderAdjustmentTypeChoice == null? false: defaultOrderAdjustmentTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderAdjustmentTypeChoice != null && defaultOrderAdjustmentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderAdjustmentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

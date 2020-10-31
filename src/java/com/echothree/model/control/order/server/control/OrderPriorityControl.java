@@ -238,7 +238,7 @@ public class OrderPriorityControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderPriorityChoice == null? false: defaultOrderPriorityChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderPriorityChoice != null && defaultOrderPriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderPriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }

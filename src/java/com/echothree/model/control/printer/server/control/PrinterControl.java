@@ -313,7 +313,7 @@ public class PrinterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPrinterGroupChoice == null? false: defaultPrinterGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultPrinterGroupChoice != null && defaultPrinterGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && printerGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1564,7 +1564,7 @@ public class PrinterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPrinterGroupUseTypeChoice == null? false: defaultPrinterGroupUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPrinterGroupUseTypeChoice != null && defaultPrinterGroupUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && printerGroupUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

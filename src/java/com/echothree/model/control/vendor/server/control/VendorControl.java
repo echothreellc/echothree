@@ -311,7 +311,7 @@ public class VendorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultVendorTypeChoice == null? false: defaultVendorTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultVendorTypeChoice != null && defaultVendorTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && vendorTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1643,7 +1643,7 @@ public class VendorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemPurchasingCategoryChoice == null? false: defaultItemPurchasingCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemPurchasingCategoryChoice != null && defaultItemPurchasingCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemPurchasingCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }

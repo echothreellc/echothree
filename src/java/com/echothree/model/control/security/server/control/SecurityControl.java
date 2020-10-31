@@ -887,7 +887,7 @@ public class SecurityControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSecurityRoleChoice == null? false: defaultSecurityRoleChoice.equals(value);
+            boolean usingDefaultChoice = defaultSecurityRoleChoice != null && defaultSecurityRoleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && securityRoleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1511,7 +1511,7 @@ public class SecurityControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPartySecurityRoleTemplateChoice == null? false: defaultPartySecurityRoleTemplateChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartySecurityRoleTemplateChoice != null && defaultPartySecurityRoleTemplateChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partySecurityRoleTemplateDetail.getIsDefault())) {
                 defaultValue = value;
             }

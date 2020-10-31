@@ -346,7 +346,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainKindChoice == null? false: defaultChainKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainKindChoice != null && defaultChainKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -789,7 +789,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainTypeChoice == null? false: defaultChainTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainTypeChoice != null && defaultChainTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1556,7 +1556,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainChoice == null? false: defaultChainChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainChoice != null && defaultChainChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1991,7 +1991,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainActionSetChoice == null? false: defaultChainActionSetChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainActionSetChoice != null && defaultChainActionSetChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainActionSetDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2411,7 +2411,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainActionTypeChoice == null? false: defaultChainActionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainActionTypeChoice != null && defaultChainActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

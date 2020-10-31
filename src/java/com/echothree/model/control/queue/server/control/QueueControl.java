@@ -267,7 +267,7 @@ public class QueueControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultQueueTypeChoice == null? false: defaultQueueTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultQueueTypeChoice != null && defaultQueueTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && queueTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

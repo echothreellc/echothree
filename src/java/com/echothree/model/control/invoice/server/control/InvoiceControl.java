@@ -602,7 +602,7 @@ public class InvoiceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInvoiceTypeChoice == null? false: defaultInvoiceTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultInvoiceTypeChoice != null && defaultInvoiceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1078,7 +1078,7 @@ public class InvoiceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInvoiceAliasTypeChoice == null? false: defaultInvoiceAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultInvoiceAliasTypeChoice != null && defaultInvoiceAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1359,7 +1359,7 @@ public class InvoiceControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultInvoiceTimeTypeChoice == null? false: defaultInvoiceTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultInvoiceTimeTypeChoice != null && defaultInvoiceTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1989,7 +1989,7 @@ public class InvoiceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInvoiceLineTypeChoice == null? false: defaultInvoiceLineTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultInvoiceLineTypeChoice != null && defaultInvoiceLineTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceLineTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

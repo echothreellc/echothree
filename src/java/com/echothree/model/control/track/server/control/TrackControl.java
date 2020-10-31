@@ -353,7 +353,7 @@ public class TrackControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTrackChoice == null? false: defaultTrackChoice.equals(value);
+            boolean usingDefaultChoice = defaultTrackChoice != null && defaultTrackChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && trackDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -274,7 +274,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContactMechanismTypeChoice == null? false: defaultContactMechanismTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactMechanismTypeChoice != null && defaultContactMechanismTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactMechanismType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -573,7 +573,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactMechanismAliasTypeChoice == null? false: defaultContactMechanismAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactMechanismAliasTypeChoice != null && defaultContactMechanismAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactMechanismAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -921,7 +921,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContactMechanismPurposeChoice == null? false: defaultContactMechanismPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactMechanismPurposeChoice != null && defaultContactMechanismPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactMechanismPurpose.getIsDefault())) {
                 defaultValue = value;
             }
@@ -958,7 +958,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice == null? false: defaultContactListContactMechanismPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice != null && defaultContactListContactMechanismPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListContactMechanismPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3524,7 +3524,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPostalAddressElementTypeChoice == null? false: defaultPostalAddressElementTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPostalAddressElementTypeChoice != null && defaultPostalAddressElementTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && postalAddressElementType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3747,7 +3747,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPostalAddressFormatChoice == null? false: defaultPostalAddressFormatChoice.equals(value);
+            boolean usingDefaultChoice = defaultPostalAddressFormatChoice != null && defaultPostalAddressFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && postalAddressFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }

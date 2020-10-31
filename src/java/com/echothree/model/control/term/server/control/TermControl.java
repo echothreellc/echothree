@@ -160,7 +160,7 @@ public class TermControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTermTypeChoice == null? false: defaultTermTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultTermTypeChoice != null && defaultTermTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && termType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -388,7 +388,7 @@ public class TermControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTermChoice == null? false: defaultTermChoice.equals(value);
+            boolean usingDefaultChoice = defaultTermChoice != null && defaultTermChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && termDetail.getIsDefault())) {
                 defaultValue = value;
             }

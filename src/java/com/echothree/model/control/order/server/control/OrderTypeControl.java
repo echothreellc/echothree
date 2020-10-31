@@ -274,7 +274,7 @@ public class OrderTypeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderTypeChoice == null? false: defaultOrderTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderTypeChoice != null && defaultOrderTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -286,7 +286,7 @@ public class ScaleControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleTypeChoice == null? false: defaultScaleTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultScaleTypeChoice != null && defaultScaleTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -772,7 +772,7 @@ public class ScaleControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleChoice == null? false: defaultScaleChoice.equals(value);
+            boolean usingDefaultChoice = defaultScaleChoice != null && defaultScaleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1218,7 +1218,7 @@ public class ScaleControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleUseTypeChoice == null? false: defaultScaleUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultScaleUseTypeChoice != null && defaultScaleUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

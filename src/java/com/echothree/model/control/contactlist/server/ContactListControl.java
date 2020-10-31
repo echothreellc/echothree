@@ -417,7 +417,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListTypeChoice == null? false: defaultContactListTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListTypeChoice != null && defaultContactListTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -850,7 +850,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListGroupChoice == null? false: defaultContactListGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListGroupChoice != null && defaultContactListGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1258,7 +1258,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListFrequencyChoice == null? false: defaultContactListFrequencyChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListFrequencyChoice != null && defaultContactListFrequencyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListFrequencyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1796,7 +1796,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListChoice == null? false: defaultContactListChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListChoice != null && defaultContactListChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3286,7 +3286,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice == null? false: defaultContactListContactMechanismPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice != null && defaultContactListContactMechanismPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListContactMechanismPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }

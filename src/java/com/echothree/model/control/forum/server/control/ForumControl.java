@@ -332,7 +332,7 @@ public class ForumControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumGroupChoice == null? false: defaultForumGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultForumGroupChoice != null && defaultForumGroupChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -691,7 +691,7 @@ public class ForumControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumChoice == null? false: defaultForumChoice.equals(value);
+            boolean usingDefaultChoice = defaultForumChoice != null && defaultForumChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -1305,7 +1305,7 @@ public class ForumControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumRoleTypeChoice == null? false: defaultForumRoleTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultForumRoleTypeChoice != null && defaultForumRoleTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumRoleType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1423,7 +1423,7 @@ public class ForumControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumTypeChoice == null? false: defaultForumTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultForumTypeChoice != null && defaultForumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1704,7 +1704,7 @@ public class ForumControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMimeTypeChoice == null? false: defaultMimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumMimeType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -4374,7 +4374,7 @@ public class ForumControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumMessageTypeChoice == null? false: defaultForumMessageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultForumMessageTypeChoice != null && defaultForumMessageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumMessageType.getIsDefault()))
                 defaultValue = value;
         }

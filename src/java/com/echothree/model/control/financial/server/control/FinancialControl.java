@@ -502,7 +502,7 @@ public class FinancialControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountTypeChoice == null? false: defaultFinancialAccountTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFinancialAccountTypeChoice != null && defaultFinancialAccountTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1016,7 +1016,7 @@ public class FinancialControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountTransactionTypeChoice == null? false: defaultFinancialAccountTransactionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFinancialAccountTransactionTypeChoice != null && defaultFinancialAccountTransactionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountTransactionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1491,7 +1491,7 @@ public class FinancialControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountAliasTypeChoice == null? false: defaultFinancialAccountAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFinancialAccountAliasTypeChoice != null && defaultFinancialAccountAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

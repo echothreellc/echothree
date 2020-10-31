@@ -610,7 +610,7 @@ public class WorkEffortControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkEffortScopeChoice == null? false: defaultWorkEffortScopeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkEffortScopeChoice != null && defaultWorkEffortScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workEffortScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }

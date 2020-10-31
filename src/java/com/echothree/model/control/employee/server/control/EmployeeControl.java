@@ -384,7 +384,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultResponsibilityTypeChoice == null? false: defaultResponsibilityTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultResponsibilityTypeChoice != null && defaultResponsibilityTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && responsibilityTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -811,7 +811,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSkillTypeChoice == null? false: defaultSkillTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSkillTypeChoice != null && defaultSkillTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && skillTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1243,7 +1243,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLeaveTypeChoice == null? false: defaultLeaveTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLeaveTypeChoice != null && defaultLeaveTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && leaveTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1660,7 +1660,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLeaveReasonChoice == null? false: defaultLeaveReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultLeaveReasonChoice != null && defaultLeaveReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && leaveReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2419,7 +2419,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTerminationReasonChoice == null? false: defaultTerminationReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultTerminationReasonChoice != null && defaultTerminationReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && terminationReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2847,7 +2847,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTerminationTypeChoice == null? false: defaultTerminationTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultTerminationTypeChoice != null && defaultTerminationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && terminationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3569,7 +3569,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEmployeeTypeChoice == null? false: defaultEmployeeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEmployeeTypeChoice != null && defaultEmployeeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && employeeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

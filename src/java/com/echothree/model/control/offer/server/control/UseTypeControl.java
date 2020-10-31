@@ -258,7 +258,7 @@ public class UseTypeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUseTypeChoice == null? false: defaultUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultUseTypeChoice != null && defaultUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && useTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

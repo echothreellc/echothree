@@ -265,7 +265,7 @@ public class SourceControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSourceChoice == null? false: defaultSourceChoice.equals(value);
+            boolean usingDefaultChoice = defaultSourceChoice != null && defaultSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sourceDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -189,7 +189,7 @@ public class IconControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultIconChoice == null? false: defaultIconChoice.equals(value);
+            boolean usingDefaultChoice = defaultIconChoice != null && defaultIconChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && iconUsage.getIsDefault()))
                 defaultValue = value;
         }
@@ -385,7 +385,7 @@ public class IconControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultIconUsageTypeChoice == null? false: defaultIconUsageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultIconUsageTypeChoice != null && defaultIconUsageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && iconUsageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

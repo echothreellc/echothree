@@ -231,7 +231,7 @@ public class PaymentProcessorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPaymentProcessorChoice == null? false: defaultPaymentProcessorChoice.equals(value);
+            boolean usingDefaultChoice = defaultPaymentProcessorChoice != null && defaultPaymentProcessorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && paymentProcessorDetail.getIsDefault()))
                 defaultValue = value;
         }

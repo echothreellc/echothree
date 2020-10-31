@@ -267,7 +267,7 @@ public class SubscriptionControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSubscriptionKindChoice == null? false: defaultSubscriptionKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultSubscriptionKindChoice != null && defaultSubscriptionKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && subscriptionKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -702,7 +702,7 @@ public class SubscriptionControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSubscriptionTypeChoice == null? false: defaultSubscriptionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSubscriptionTypeChoice != null && defaultSubscriptionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && subscriptionTypeDetail.getIsDefault()))
                 defaultValue = value;
         }

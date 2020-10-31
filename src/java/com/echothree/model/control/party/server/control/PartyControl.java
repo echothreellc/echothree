@@ -395,7 +395,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLanguageChoice == null? false: defaultLanguageChoice.equals(value);
+            boolean usingDefaultChoice = defaultLanguageChoice != null && defaultLanguageChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && language.getIsDefault())) {
                 defaultValue = value;
             }
@@ -531,7 +531,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPartyTypeChoice == null? false: defaultPartyTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartyTypeChoice != null && defaultPartyTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -833,7 +833,7 @@ public class PartyControl
             labels.add(label == null? "": label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPersonalTitleChoice == null? false: defaultPersonalTitleChoice.equals(value);
+            boolean usingDefaultChoice = defaultPersonalTitleChoice != null && defaultPersonalTitleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && personalTitleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1082,7 +1082,7 @@ public class PartyControl
             labels.add(label == null? "": label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultNameSuffixChoice == null? false: defaultNameSuffixChoice.equals(value);
+            boolean usingDefaultChoice = defaultNameSuffixChoice != null && defaultNameSuffixChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && nameSuffixDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1324,7 +1324,7 @@ public class PartyControl
             labels.add(getBestTimeZoneDescription(timeZone, language));
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTimeZoneChoice == null? false: defaultTimeZoneChoice.equals(value);
+            boolean usingDefaultChoice = defaultTimeZoneChoice != null && defaultTimeZoneChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && timeZoneDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1645,7 +1645,7 @@ public class PartyControl
             labels.add(getBestDateTimeFormatDescription(dateTimeFormat, language));
             values.add(value);
             
-            boolean usingDefaultChoice = defaultDateTimeFormatChoice == null? false: defaultDateTimeFormatChoice.equals(value);
+            boolean usingDefaultChoice = defaultDateTimeFormatChoice != null && defaultDateTimeFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && dateTimeFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2745,7 +2745,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPartyAliasTypeChoice == null? false: defaultPartyAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartyAliasTypeChoice != null && defaultPartyAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3386,7 +3386,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCompanyChoice == null? false: defaultCompanyChoice.equals(value);
+            boolean usingDefaultChoice = defaultCompanyChoice != null && defaultCompanyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyCompany.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3688,7 +3688,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultDivisionChoice == null? false: defaultDivisionChoice.equals(value);
+            boolean usingDefaultChoice = defaultDivisionChoice != null && defaultDivisionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyDivision.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3991,7 +3991,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultDepartmentChoice == null? false: defaultDepartmentChoice.equals(value);
+            boolean usingDefaultChoice = defaultDepartmentChoice != null && defaultDepartmentChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyDepartment.getIsDefault())) {
                 defaultValue = value;
             }
@@ -4937,7 +4937,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGenderChoice == null? false: defaultGenderChoice.equals(value);
+            boolean usingDefaultChoice = defaultGenderChoice != null && defaultGenderChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && genderDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5359,7 +5359,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMoodChoice == null? false: defaultMoodChoice.equals(value);
+            boolean usingDefaultChoice = defaultMoodChoice != null && defaultMoodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && moodDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5824,7 +5824,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultBirthdayFormatChoice == null? false: defaultBirthdayFormatChoice.equals(value);
+            boolean usingDefaultChoice = defaultBirthdayFormatChoice != null && defaultBirthdayFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && birthdayFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }

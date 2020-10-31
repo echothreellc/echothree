@@ -331,7 +331,7 @@ public class PicklistControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistTypeChoice == null? false: defaultPicklistTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPicklistTypeChoice != null && defaultPicklistTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -797,7 +797,7 @@ public class PicklistControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistTimeTypeChoice == null? false: defaultPicklistTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPicklistTimeTypeChoice != null && defaultPicklistTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1213,7 +1213,7 @@ public class PicklistControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistAliasTypeChoice == null? false: defaultPicklistAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPicklistAliasTypeChoice != null && defaultPicklistAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

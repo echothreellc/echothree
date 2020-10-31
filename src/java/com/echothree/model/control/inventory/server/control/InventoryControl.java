@@ -348,7 +348,7 @@ public class InventoryControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryLocationGroupChoice == null? false: defaultInventoryLocationGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultInventoryLocationGroupChoice != null && defaultInventoryLocationGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && inventoryLocationGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1415,7 +1415,7 @@ public class InventoryControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryConditionUseTypeChoice == null? false: defaultInventoryConditionUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultInventoryConditionUseTypeChoice != null && defaultInventoryConditionUseTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -2470,7 +2470,7 @@ public class InventoryControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultAllocationPriorityChoice == null? false: defaultAllocationPriorityChoice.equals(value);
+            boolean usingDefaultChoice = defaultAllocationPriorityChoice != null && defaultAllocationPriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && allocationPriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }

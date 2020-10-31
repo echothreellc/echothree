@@ -305,7 +305,7 @@ public class UseControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultUseChoice == null? false: defaultUseChoice.equals(value);
+            boolean usingDefaultChoice = defaultUseChoice != null && defaultUseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && useDetail.getIsDefault())) {
                 defaultValue = value;
             }

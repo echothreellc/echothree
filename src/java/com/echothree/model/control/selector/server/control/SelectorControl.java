@@ -389,7 +389,7 @@ public class SelectorControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSelectorKindChoice == null? false: defaultSelectorKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultSelectorKindChoice != null && defaultSelectorKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -802,7 +802,7 @@ public class SelectorControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSelectorTypeChoice == null? false: defaultSelectorTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSelectorTypeChoice != null && defaultSelectorTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1127,7 +1127,7 @@ public class SelectorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorBooleanTypeChoice == null? false: defaultSelectorBooleanTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSelectorBooleanTypeChoice != null && defaultSelectorBooleanTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorBooleanType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1249,7 +1249,7 @@ public class SelectorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorComparisonTypeChoice == null? false: defaultSelectorComparisonTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSelectorComparisonTypeChoice != null && defaultSelectorComparisonTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorComparisonType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1541,7 +1541,7 @@ public class SelectorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorTextSearchTypeChoice == null? false: defaultSelectorTextSearchTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSelectorTextSearchTypeChoice != null && defaultSelectorTextSearchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorTextSearchType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1827,7 +1827,7 @@ public class SelectorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorChoice == null? false: defaultSelectorChoice.equals(value);
+            boolean usingDefaultChoice = defaultSelectorChoice != null && defaultSelectorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2334,7 +2334,7 @@ public class SelectorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorNodeChoice == null? false: defaultSelectorNodeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSelectorNodeChoice != null && defaultSelectorNodeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }

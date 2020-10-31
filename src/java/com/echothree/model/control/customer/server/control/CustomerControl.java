@@ -303,7 +303,7 @@ public class CustomerControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCustomerTypeChoice == null? false: defaultCustomerTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCustomerTypeChoice != null && defaultCustomerTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && customerTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

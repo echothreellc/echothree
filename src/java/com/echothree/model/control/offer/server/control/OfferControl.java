@@ -325,7 +325,7 @@ public class OfferControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOfferChoice == null? false: defaultOfferChoice.equals(value);
+            boolean usingDefaultChoice = defaultOfferChoice != null && defaultOfferChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && offerDetail.getIsDefault())) {
                 defaultValue = value;
             }

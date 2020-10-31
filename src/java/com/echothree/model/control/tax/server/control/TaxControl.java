@@ -296,7 +296,7 @@ public class TaxControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTaxClassificationChoice == null? false: defaultTaxClassificationChoice.equals(value);
+            boolean usingDefaultChoice = defaultTaxClassificationChoice != null && defaultTaxClassificationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && taxClassificationDetail.getIsDefault())) {
                 defaultValue = value;
             }

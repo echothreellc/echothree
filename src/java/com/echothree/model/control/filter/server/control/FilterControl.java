@@ -365,7 +365,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFilterKindChoice == null? false: defaultFilterKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterKindChoice != null && defaultFilterKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -778,7 +778,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFilterTypeChoice == null? false: defaultFilterTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterTypeChoice != null && defaultFilterTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2440,7 +2440,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterChoice == null? false: defaultFilterChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterChoice != null && defaultFilterChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2859,7 +2859,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterStepChoice == null? false: defaultFilterStepChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterStepChoice != null && defaultFilterStepChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }

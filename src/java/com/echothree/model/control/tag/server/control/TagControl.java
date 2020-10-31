@@ -289,7 +289,7 @@ public class TagControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTagScopeChoice == null? false: defaultTagScopeChoice.equals(value);
+            boolean usingDefaultChoice = defaultTagScopeChoice != null && defaultTagScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && tagScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -906,7 +906,7 @@ public class TagControl
             
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTagChoice == null? false: defaultTagChoice.equals(value);
+            boolean usingDefaultChoice = defaultTagChoice != null && defaultTagChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }

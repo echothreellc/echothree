@@ -1096,7 +1096,7 @@ public class ContentControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentCollectionChoice == null? false: defaultContentCollectionChoice.equals(value);
+            boolean usingDefaultChoice = defaultContentCollectionChoice != null && defaultContentCollectionChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -2888,7 +2888,7 @@ public class ContentControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentCatalogChoice == null? false: defaultContentCatalogChoice.equals(value);
+            boolean usingDefaultChoice = defaultContentCatalogChoice != null && defaultContentCatalogChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contentCatalogDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -5130,7 +5130,7 @@ public class ContentControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentWebAddressChoice == null? false: defaultContentWebAddressChoice.equals(value);
+            boolean usingDefaultChoice = defaultContentWebAddressChoice != null && defaultContentWebAddressChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }

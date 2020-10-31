@@ -303,7 +303,7 @@ public class WorkflowControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowTypeChoice == null? false: defaultWorkflowTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkflowTypeChoice != null && defaultWorkflowTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -465,7 +465,7 @@ public class WorkflowControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowStepTypeChoice == null? false: defaultWorkflowStepTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkflowStepTypeChoice != null && defaultWorkflowStepTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowStepType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -982,7 +982,7 @@ public class WorkflowControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowStepChoice == null? false: defaultWorkflowStepChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkflowStepChoice != null && defaultWorkflowStepChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowStepDetail.getIsDefault()))
                 defaultValue = value;
         }

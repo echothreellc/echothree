@@ -246,7 +246,7 @@ public class OrderLineAdjustmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderLineAdjustmentTypeChoice == null? false: defaultOrderLineAdjustmentTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderLineAdjustmentTypeChoice != null && defaultOrderLineAdjustmentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderLineAdjustmentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

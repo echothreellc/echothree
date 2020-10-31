@@ -343,7 +343,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultWarehouseChoice == null? false: defaultWarehouseChoice.equals(value);
+            boolean usingDefaultChoice = defaultWarehouseChoice != null && defaultWarehouseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && warehouse.getIsDefault())) {
                 defaultValue = value;
             }
@@ -510,7 +510,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationUseTypeChoice == null? false: defaultLocationUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLocationUseTypeChoice != null && defaultLocationUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && locationUseType.getIsDefault()))
                 defaultValue = value;
         }
@@ -765,7 +765,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationTypeChoice == null? false: defaultLocationTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLocationTypeChoice != null && defaultLocationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && locationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1612,7 +1612,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationChoice == null? false: defaultLocationChoice.equals(value);
+            boolean usingDefaultChoice = defaultLocationChoice != null && defaultLocationChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }

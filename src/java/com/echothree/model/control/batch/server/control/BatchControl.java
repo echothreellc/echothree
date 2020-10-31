@@ -327,7 +327,7 @@ public class BatchControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultBatchTypeChoice == null? false: defaultBatchTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultBatchTypeChoice != null && defaultBatchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && batchTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -957,7 +957,7 @@ public class BatchControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultBatchAliasTypeChoice == null? false: defaultBatchAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultBatchAliasTypeChoice != null && defaultBatchAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && batchAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

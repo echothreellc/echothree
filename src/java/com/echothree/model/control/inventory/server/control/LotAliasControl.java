@@ -238,7 +238,7 @@ public class LotAliasControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLotAliasTypeChoice == null? false: defaultLotAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLotAliasTypeChoice != null && defaultLotAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && lotAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

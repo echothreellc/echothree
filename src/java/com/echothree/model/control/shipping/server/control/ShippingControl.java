@@ -201,7 +201,7 @@ public class ShippingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultShippingMethodChoice == null? false: defaultShippingMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -237,7 +237,7 @@ public class ShippingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultShippingMethodChoice == null? false: defaultShippingMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTypeShippingMethod.getIsDefault())) {
                 defaultValue = value;
             }

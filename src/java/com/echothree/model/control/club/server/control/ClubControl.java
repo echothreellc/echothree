@@ -589,7 +589,7 @@ public class ClubControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultClubItemTypeChoice == null? false: defaultClubItemTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultClubItemTypeChoice != null && defaultClubItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && clubItemType.getIsDefault()))
                 defaultValue = value;
         }

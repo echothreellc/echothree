@@ -272,7 +272,7 @@ public class WishlistControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWishlistTypeChoice == null? false: defaultWishlistTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWishlistTypeChoice != null && defaultWishlistTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && wishlistTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -732,7 +732,7 @@ public class WishlistControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWishlistTypePriorityChoice == null? false: defaultWishlistTypePriorityChoice.equals(value);
+            boolean usingDefaultChoice = defaultWishlistTypePriorityChoice != null && defaultWishlistTypePriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && wishlistTypePriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }

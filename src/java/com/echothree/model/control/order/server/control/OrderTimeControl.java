@@ -251,7 +251,7 @@ public class OrderTimeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderTimeTypeChoice == null? false: defaultOrderTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderTimeTypeChoice != null && defaultOrderTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

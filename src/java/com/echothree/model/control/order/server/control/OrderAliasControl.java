@@ -241,7 +241,7 @@ public class OrderAliasControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderAliasTypeChoice == null? false: defaultOrderAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderAliasTypeChoice != null && defaultOrderAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

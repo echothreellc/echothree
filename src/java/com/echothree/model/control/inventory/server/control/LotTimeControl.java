@@ -237,7 +237,7 @@ public class LotTimeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLotTimeTypeChoice == null? false: defaultLotTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLotTimeTypeChoice != null && defaultLotTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && lotTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

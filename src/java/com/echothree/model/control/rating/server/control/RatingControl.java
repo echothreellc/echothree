@@ -685,7 +685,7 @@ public class RatingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultRatingTypeListItemChoice == null? false: defaultRatingTypeListItemChoice.equals(value);
+            boolean usingDefaultChoice = defaultRatingTypeListItemChoice != null && defaultRatingTypeListItemChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && ratingTypeListItemDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -330,7 +330,7 @@ public class ShipmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentTypeChoice == null? false: defaultShipmentTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultShipmentTypeChoice != null && defaultShipmentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -798,7 +798,7 @@ public class ShipmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentTimeTypeChoice == null? false: defaultShipmentTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultShipmentTimeTypeChoice != null && defaultShipmentTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1702,7 +1702,7 @@ public class ShipmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentAliasTypeChoice == null? false: defaultShipmentAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultShipmentAliasTypeChoice != null && defaultShipmentAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -377,7 +377,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCountryChoice == null? false: defaultCountryChoice.equals(value);
+            boolean usingDefaultChoice = defaultCountryChoice != null && defaultCountryChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -600,7 +600,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeTypeChoice == null? false: defaultGeoCodeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGeoCodeTypeChoice != null && defaultGeoCodeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1073,7 +1073,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeScopeChoice == null? false: defaultGeoCodeScopeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGeoCodeScopeChoice != null && defaultGeoCodeScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1567,7 +1567,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeAliasTypeChoice == null? false: defaultGeoCodeAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGeoCodeAliasTypeChoice != null && defaultGeoCodeAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

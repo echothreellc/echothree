@@ -453,7 +453,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchUseTypeChoice == null? false: defaultSearchUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchUseTypeChoice != null && defaultSearchUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -888,7 +888,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchResultActionTypeChoice == null? false: defaultSearchResultActionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchResultActionTypeChoice != null && defaultSearchResultActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchResultActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1323,7 +1323,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchCheckSpellingActionTypeChoice == null? false: defaultSearchCheckSpellingActionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchCheckSpellingActionTypeChoice != null && defaultSearchCheckSpellingActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchCheckSpellingActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1757,7 +1757,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchDefaultOperatorChoice == null? false: defaultSearchDefaultOperatorChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchDefaultOperatorChoice != null && defaultSearchDefaultOperatorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchDefaultOperatorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2193,7 +2193,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchSortDirectionChoice == null? false: defaultSearchSortDirectionChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchSortDirectionChoice != null && defaultSearchSortDirectionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchSortDirectionDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2602,7 +2602,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchKindChoice == null? false: defaultSearchKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchKindChoice != null && defaultSearchKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3030,7 +3030,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchTypeChoice == null? false: defaultSearchTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchTypeChoice != null && defaultSearchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3457,7 +3457,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchSortOrderChoice == null? false: defaultSearchSortOrderChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchSortOrderChoice != null && defaultSearchSortOrderChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchSortOrderDetail.getIsDefault())) {
                 defaultValue = value;
             }

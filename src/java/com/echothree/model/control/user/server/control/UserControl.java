@@ -1399,7 +1399,7 @@ public class UserControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultRecoveryQuestionChoice == null? false: defaultRecoveryQuestionChoice.equals(value);
+            boolean usingDefaultChoice = defaultRecoveryQuestionChoice != null && defaultRecoveryQuestionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && recoveryQuestionDetail.getIsDefault()))
                 defaultValue = value;
         }

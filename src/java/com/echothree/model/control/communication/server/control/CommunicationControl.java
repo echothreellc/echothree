@@ -304,7 +304,7 @@ public class CommunicationControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCommunicationEventPurposeChoice == null? false: defaultCommunicationEventPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCommunicationEventPurposeChoice != null && defaultCommunicationEventPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && communicationEventPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }

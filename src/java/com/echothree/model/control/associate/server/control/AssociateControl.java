@@ -271,7 +271,7 @@ public class AssociateControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociateProgramChoice == null? false: defaultAssociateProgramChoice.equals(value);
+            boolean usingDefaultChoice = defaultAssociateProgramChoice != null && defaultAssociateProgramChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && associateProgramDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -674,7 +674,7 @@ public class AssociateControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociateChoice == null? false: defaultAssociateChoice.equals(value);
+            boolean usingDefaultChoice = defaultAssociateChoice != null && defaultAssociateChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -982,7 +982,7 @@ public class AssociateControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociatePartyContactMechanismChoice == null? false: defaultAssociatePartyContactMechanismChoice.equals(value);
+            boolean usingDefaultChoice = defaultAssociatePartyContactMechanismChoice != null && defaultAssociatePartyContactMechanismChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && associatePartyContactMechanismDetail.getIsDefault())) {
                 defaultValue = value;
             }

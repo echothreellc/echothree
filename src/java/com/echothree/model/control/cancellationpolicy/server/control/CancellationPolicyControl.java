@@ -479,7 +479,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationKindChoice == null? false: defaultCancellationKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationKindChoice != null && defaultCancellationKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -934,7 +934,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationPolicyChoice == null? false: defaultCancellationPolicyChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationPolicyChoice != null && defaultCancellationPolicyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationPolicyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1678,7 +1678,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationReasonChoice == null? false: defaultCancellationReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationReasonChoice != null && defaultCancellationReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2443,7 +2443,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationTypeChoice == null? false: defaultCancellationTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationTypeChoice != null && defaultCancellationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

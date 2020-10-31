@@ -482,7 +482,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnKindChoice == null? false: defaultReturnKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnKindChoice != null && defaultReturnKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -920,7 +920,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnPolicyChoice == null? false: defaultReturnPolicyChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnPolicyChoice != null && defaultReturnPolicyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnPolicyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1664,7 +1664,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnReasonChoice == null? false: defaultReturnReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnReasonChoice != null && defaultReturnReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2407,7 +2407,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnTypeChoice == null? false: defaultReturnTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnTypeChoice != null && defaultReturnTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

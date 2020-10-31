@@ -633,7 +633,7 @@ public class MessageControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMessageChoice == null? false: defaultMessageChoice.equals(value);
+            boolean usingDefaultChoice = defaultMessageChoice != null && defaultMessageChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && messageDetail.getIsDefault())) {
                 defaultValue = value;
             }

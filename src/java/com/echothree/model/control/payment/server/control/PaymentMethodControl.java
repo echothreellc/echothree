@@ -298,7 +298,7 @@ public class PaymentMethodControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPaymentMethodChoice == null? false: defaultPaymentMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultPaymentMethodChoice != null && defaultPaymentMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && paymentMethodDetail.getIsDefault()))
                 defaultValue = value;
         }
