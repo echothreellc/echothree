@@ -117,7 +117,7 @@ public class RatingControl
     }
     
     private List<RatingType> getRatingTypes(EntityType entityType, EntityPermission entityPermission) {
-        List<RatingType> ratingTypes = null;
+        List<RatingType> ratingTypes;
         
         try {
             String query = null;
@@ -558,7 +558,7 @@ public class RatingControl
     }
     
     private List<RatingTypeListItem> getRatingTypeListItems(RatingType ratingType, EntityPermission entityPermission) {
-        List<RatingTypeListItem> ratingTypeListItems = null;
+        List<RatingTypeListItem> ratingTypeListItems;
         
         try {
             String query = null;
@@ -1014,7 +1014,7 @@ public class RatingControl
     }
     
     private List<Rating> getRatingsByRatedEntityInstance(EntityInstance ratedEntityInstance, EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;
@@ -1052,7 +1052,7 @@ public class RatingControl
     }
     
     private List<Rating> getRatingsByRatedByEntityInstance(EntityInstance ratedByEntityInstance, EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;
@@ -1089,7 +1089,7 @@ public class RatingControl
     }
     
     private List<Rating> getRatingsByRatingTypeListItem(RatingTypeListItem ratingTypeListItem, EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;
@@ -1127,7 +1127,7 @@ public class RatingControl
     
     private List<Rating> getRatingsByRatedEntityInstanceAndRatingType(EntityInstance ratedEntityInstance, RatingType ratingType,
             EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;

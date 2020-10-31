@@ -273,7 +273,7 @@ public class WarehouseControl
     }
     
     private List<Warehouse> getWarehouses(EntityPermission entityPermission) {
-        List<Warehouse> warehouses = null;
+        List<Warehouse> warehouses;
         
         try {
             String query = null;
@@ -678,7 +678,7 @@ public class WarehouseControl
     }
     
     private List<LocationType> getLocationTypesByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
-        List<LocationType> locationTypes = null;
+        List<LocationType> locationTypes;
         
         try {
             String query = null;
@@ -1107,7 +1107,7 @@ public class WarehouseControl
     }
     
     private List<LocationNameElement> getLocationNameElementsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<LocationNameElement> locationNameElements = null;
+        List<LocationNameElement> locationNameElements;
         
         try {
             String query = null;
@@ -1461,7 +1461,7 @@ public class WarehouseControl
     }
     
     private List<Location> getLocationsByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
-        List<Location> locations = null;
+        List<Location> locations;
         
         try {
             String query = null;
@@ -1500,7 +1500,7 @@ public class WarehouseControl
     }
     
     private List<Location> getLocationsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<Location> locations = null;
+        List<Location> locations;
         
         try {
             String query = null;
@@ -1539,7 +1539,7 @@ public class WarehouseControl
     }
     
     private List<Location> getLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
-        List<Location> locations = null;
+        List<Location> locations;
         
         try {
             String query = null;
@@ -2008,7 +2008,7 @@ public class WarehouseControl
     }
     
     private List<LocationCapacity> getLocationCapacitiesByLocation(Location location, EntityPermission entityPermission) {
-        List<LocationCapacity> locationCapacities = null;
+        List<LocationCapacity> locationCapacities;
         
         try {
             String query = null;

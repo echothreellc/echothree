@@ -610,7 +610,7 @@ public class QueueControl
     }
 
     private List<QueuedEntity> getQueuedEntitiesByQueueType(QueueType queueType, EntityPermission entityPermission) {
-        List<QueuedEntity> queuedEntities = null;
+        List<QueuedEntity> queuedEntities;
         
         try {
             String query = null;
@@ -651,7 +651,7 @@ public class QueueControl
     }
     
     private List<QueuedEntity> getQueuedEntitiesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<QueuedEntity> queuedEntities = null;
+        List<QueuedEntity> queuedEntities;
         
         try {
             String query = null;

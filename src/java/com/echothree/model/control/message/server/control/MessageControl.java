@@ -131,7 +131,7 @@ public class MessageControl
     }
     
     private List<MessageType> getMessageTypes(EntityType entityType, EntityPermission entityPermission) {
-        List<MessageType> messageTypes = null;
+        List<MessageType> messageTypes;
         
         try {
             String query = null;
@@ -480,7 +480,7 @@ public class MessageControl
     }
     
     private List<Message> getMessagesByMessageType(MessageType messageType, EntityPermission entityPermission) {
-        List<Message> messages = null;
+        List<Message> messages;
         
         try {
             String query = null;
@@ -927,7 +927,7 @@ public class MessageControl
     }
     
     private List<MessageString> getMessageStringsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageString> messageStrings = null;
+        List<MessageString> messageStrings;
         
         try {
             String query = null;
@@ -1079,7 +1079,7 @@ public class MessageControl
     }
     
     private List<MessageBlob> getMessageBlobsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageBlob> messageBlobs = null;
+        List<MessageBlob> messageBlobs;
         
         try {
             String query = null;
@@ -1232,7 +1232,7 @@ public class MessageControl
     }
     
     private List<MessageClob> getMessageClobsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageClob> messageClobs = null;
+        List<MessageClob> messageClobs;
         
         try {
             String query = null;
@@ -1424,7 +1424,7 @@ public class MessageControl
     }
     
     private List<EntityMessage> getEntityMessagesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<EntityMessage> entityMessages = null;
+        List<EntityMessage> entityMessages;
         
         try {
             String query = null;
@@ -1464,7 +1464,7 @@ public class MessageControl
     }
     
     private List<EntityMessage> getEntityMessagesByMessage(Message message, EntityPermission entityPermission) {
-        List<EntityMessage> entityMessages = null;
+        List<EntityMessage> entityMessages;
         
         try {
             String query = null;

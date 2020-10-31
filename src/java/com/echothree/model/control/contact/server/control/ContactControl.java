@@ -849,7 +849,7 @@ public class ContactControl
     }
     
     public List<ContactMechanismPurpose> getContactMechanismPurposesByContactMechanismType(ContactMechanismType contactMechanismType) {
-        List<ContactMechanismPurpose> contactMechanismPurposes = null;
+        List<ContactMechanismPurpose> contactMechanismPurposes;
         
         try {
             PreparedStatement ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
@@ -2376,7 +2376,7 @@ public class ContactControl
     }
     
     private List<PartyContactMechanism> getPartyContactMechanismsByParty(Party party, EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism = null;
+        List<PartyContactMechanism> partyContactMechanism;
         
         try {
             String query = null;
@@ -2417,7 +2417,7 @@ public class ContactControl
     
     private List<PartyContactMechanism> getPartyContactMechanismsByPartyAndContactMechanismType(Party party,
             ContactMechanismType contactMechanismType, EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism = null;
+        List<PartyContactMechanism> partyContactMechanism;
         
         try {
             String query = null;
@@ -2461,7 +2461,7 @@ public class ContactControl
     
     private List<PartyContactMechanism> getPartyContactMechanismsByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism = null;
+        List<PartyContactMechanism> partyContactMechanism;
         
         try {
             String query = null;
@@ -2760,7 +2760,7 @@ public class ContactControl
     }
     
     public List<PartyContactMechanism> getPartyContactMechanismsByEmailAddress(String emailAddress) {
-        List<PartyContactMechanism> partyContactMechanisms = null;
+        List<PartyContactMechanism> partyContactMechanisms;
         
         try {
             PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(
@@ -2800,7 +2800,7 @@ public class ContactControl
     
     private List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByParty(Party party,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases = null;
+        List<PartyContactMechanismAlias> partyContactMechanismAliases;
         
         try {
             String query = null;
@@ -2840,7 +2840,7 @@ public class ContactControl
     
     private List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases = null;
+        List<PartyContactMechanismAlias> partyContactMechanismAliases;
         
         try {
             String query = null;
@@ -3101,7 +3101,7 @@ public class ContactControl
     
     private List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByContactMechanismPurposeAndParty(ContactMechanismPurpose contactMechanismPurpose,
             Party party, EntityPermission entityPermission) {
-        List<PartyContactMechanismPurpose> partyContactMechanismPurposes = null;
+        List<PartyContactMechanismPurpose> partyContactMechanismPurposes;
         
         try {
             PreparedStatement ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(
@@ -3140,7 +3140,7 @@ public class ContactControl
     
     private List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismPurpose> partyContactMechanismAliases = null;
+        List<PartyContactMechanismPurpose> partyContactMechanismAliases;
         
         try {
             String query = null;
@@ -4087,7 +4087,7 @@ public class ContactControl
     
     private List<PostalAddressLine> getPostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat,
             EntityPermission entityPermission) {
-        List<PostalAddressLine> postalAddressLines = null;
+        List<PostalAddressLine> postalAddressLines;
         
         try {
             String query = null;
@@ -4252,7 +4252,7 @@ public class ContactControl
     
     private List<PostalAddressLineElement> getPostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine,
             EntityPermission entityPermission) {
-        List<PostalAddressLineElement> postalAddressLineElements = null;
+        List<PostalAddressLineElement> postalAddressLineElements;
         
         try {
             PreparedStatement ps = PostalAddressLineElementFactory.getInstance().prepareStatement(

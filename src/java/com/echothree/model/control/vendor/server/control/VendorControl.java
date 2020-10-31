@@ -704,7 +704,7 @@ public class VendorControl
     }
     
     private List<Vendor> getVendorsByDefaultItemAliasType(ItemAliasType defaultItemAliasType, EntityPermission entityPermission) {
-        List<Vendor> vendors = null;
+        List<Vendor> vendors;
         
         try {
             String query = null;
@@ -947,7 +947,7 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByItem(Item item, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems = null;
+        List<VendorItem> vendorItems;
         
         try {
             String query = null;
@@ -988,7 +988,7 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByVendorParty(Party vendorParty, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems = null;
+        List<VendorItem> vendorItems;
         
         try {
             String query = null;
@@ -1028,7 +1028,7 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByVendorItemName(String vendorItemName, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems = null;
+        List<VendorItem> vendorItems;
         
         try {
             String query = null;
@@ -1253,7 +1253,7 @@ public class VendorControl
     }
     
     private List<VendorItemCost> getVendorItemCostsByVendorItem(VendorItem vendorItem, EntityPermission entityPermission) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             String query = null;
@@ -1297,7 +1297,7 @@ public class VendorControl
     }
     
     public List<VendorItemCost> getVendorItemCostsByInventoryConditionForUpdate(InventoryCondition inventoryCondition) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
@@ -1318,7 +1318,7 @@ public class VendorControl
     }
     
     public List<VendorItemCost> getVendorItemCostsByUnitOfMeasureTypeForUpdate(UnitOfMeasureType unitOfMeasureType) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
@@ -1339,7 +1339,7 @@ public class VendorControl
     }
     
     public List<VendorItemCost> getVendorItemCostsByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(

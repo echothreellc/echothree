@@ -1260,7 +1260,7 @@ public class TaxControl
     }
     
     private List<GeoCodeTax> getGeoCodeTaxesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeTax> geoCodeTaxes = null;
+        List<GeoCodeTax> geoCodeTaxes;
         
         try {
             String query = null;
@@ -1301,7 +1301,7 @@ public class TaxControl
     }
     
     private List<GeoCodeTax> getGeoCodeTaxesByTax(Tax tax, EntityPermission entityPermission) {
-        List<GeoCodeTax> geoCodeTaxes = null;
+        List<GeoCodeTax> geoCodeTaxes;
         
         try {
             String query = null;

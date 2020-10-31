@@ -218,7 +218,7 @@ public class OfferControl
     }
     
     public List<Offer> getOffersByOfferItemSelector(Selector offerItemSelector) {
-        List<Offer> offers = null;
+        List<Offer> offers;
         
         try {
             PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
@@ -988,7 +988,7 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes = null;
+        List<OfferChainType> offerChainTypes;
         
         try {
             String query = null;
@@ -1029,7 +1029,7 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByChainType(ChainType chainType, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes = null;
+        List<OfferChainType> offerChainTypes;
         
         try {
             String query = null;
@@ -1069,7 +1069,7 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByChain(Chain chain, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes = null;
+        List<OfferChainType> offerChainTypes;
         
         try {
             String query = null;

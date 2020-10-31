@@ -778,7 +778,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicy> getCancellationPolicies(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationPolicy> cancellationPolicies = null;
+        List<CancellationPolicy> cancellationPolicies;
         
         try {
             String query = null;
@@ -1307,7 +1307,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationPolicy(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        List<CancellationPolicyReason> cancellationPolicyReasons = null;
+        List<CancellationPolicyReason> cancellationPolicyReasons;
         
         try {
             String query = null;
@@ -1347,7 +1347,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationPolicyReason> cancellationPolicyReasons = null;
+        List<CancellationPolicyReason> cancellationPolicyReasons;
         
         try {
             String query = null;
@@ -1525,7 +1525,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReason> getCancellationReasons(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationReason> cancellationReasons = null;
+        List<CancellationReason> cancellationReasons;
         
         try {
             String query = null;
@@ -2071,7 +2071,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonType> getCancellationReasonTypesByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationReasonType> cancellationReasonTypes = null;
+        List<CancellationReasonType> cancellationReasonTypes;
         
         try {
             String query = null;
@@ -2112,7 +2112,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonType> getCancellationReasonTypesByCancellationType(CancellationType cancellationType, EntityPermission entityPermission) {
-        List<CancellationReasonType> cancellationReasonTypes = null;
+        List<CancellationReasonType> cancellationReasonTypes;
         
         try {
             String query = null;
@@ -2290,7 +2290,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationType> getCancellationTypes(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationType> cancellationTypes = null;
+        List<CancellationType> cancellationTypes;
         
         try {
             String query = null;

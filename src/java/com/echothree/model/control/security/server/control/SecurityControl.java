@@ -717,7 +717,7 @@ public class SecurityControl
     }
     
     private List<SecurityRole> getSecurityRoles(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
-        List<SecurityRole> securityRoles = null;
+        List<SecurityRole> securityRoles;
         
         try {
             String query = null;
@@ -1841,7 +1841,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateRole> getPartySecurityRoleTemplateRoles(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles = null;
+        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles;
         
         try {
             String query = null;
@@ -1883,7 +1883,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateRole> getPartySecurityRoleTemplateRolesBySecurityRole(SecurityRole securityRole,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles = null;
+        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles;
         
         try {
             String query = null;
@@ -2006,7 +2006,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateTrainingClass> getPartySecurityRoleTemplateTrainingClasses(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses = null;
+        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses;
         
         try {
             String query = null;
@@ -2047,7 +2047,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateTrainingClass> getPartySecurityRoleTemplateTrainingClassesByTrainingClass(TrainingClass trainingClass,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses = null;
+        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses;
         
         try {
             String query = null;
@@ -2192,7 +2192,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateUse> getPartySecurityRoleTemplateUsesByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses = null;
+        List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2328,7 +2328,7 @@ public class SecurityControl
     }
     
     private List<PartySecurityRole> getPartySecurityRoles(Party party, EntityPermission entityPermission) {
-        List<PartySecurityRole> partySecurityRoles = null;
+        List<PartySecurityRole> partySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2364,7 +2364,7 @@ public class SecurityControl
     }
     
     private List<PartySecurityRole> getPartySecurityRolesBySecurityRole(SecurityRole securityRole, EntityPermission entityPermission) {
-        List<PartySecurityRole> partySecurityRoles = null;
+        List<PartySecurityRole> partySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2474,7 +2474,7 @@ public class SecurityControl
     }
     
     private List<PartyEntitySecurityRole> getPartyEntitySecurityRolesByParty(Party party, EntityPermission entityPermission) {
-        List<PartyEntitySecurityRole> partyEntitySecurityRoles = null;
+        List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2518,7 +2518,7 @@ public class SecurityControl
     }
     
     private List<PartyEntitySecurityRole> getPartyEntitySecurityRolesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<PartyEntitySecurityRole> partyEntitySecurityRoles = null;
+        List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2558,7 +2558,7 @@ public class SecurityControl
     }
     
     private List<PartyEntitySecurityRole> getPartyEntitySecurityRolesBySecurityRole(SecurityRole securityRole, EntityPermission entityPermission) {
-        List<PartyEntitySecurityRole> partyEntitySecurityRoles = null;
+        List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +

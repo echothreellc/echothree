@@ -457,7 +457,7 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortScope> getWorkEffortScopes(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkEffortScope> workEffortScopes = null;
+        List<WorkEffortScope> workEffortScopes;
         
         try {
             String query = null;

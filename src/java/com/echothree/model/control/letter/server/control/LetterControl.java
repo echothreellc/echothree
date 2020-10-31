@@ -250,7 +250,7 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByEmailAddressPartyContactMechanism(PartyContactMechanism emailAddressPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources = null;
+        List<LetterSource> letterSources;
         
         try {
             String query = null;
@@ -289,7 +289,7 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByPostalAddressPartyContactMechanism(PartyContactMechanism postalAddressPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources = null;
+        List<LetterSource> letterSources;
         
         try {
             String query = null;
@@ -328,7 +328,7 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByLetterSourcePartyContactMechanism(PartyContactMechanism letterSourcePartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources = null;
+        List<LetterSource> letterSources;
         
         try {
             String query = null;
@@ -809,7 +809,7 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByChainType(ChainType chainType, EntityPermission entityPermission) {
-        List<Letter> letters = null;
+        List<Letter> letters;
         
         try {
             String query = null;
@@ -847,7 +847,7 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByLetterSource(LetterSource letterSource, EntityPermission entityPermission) {
-        List<Letter> letters = null;
+        List<Letter> letters;
         
         try {
             String query = null;
@@ -885,7 +885,7 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByContactList(ContactList contactList, EntityPermission entityPermission) {
-        List<Letter> letters = null;
+        List<Letter> letters;
         
         try {
             String query = null;
@@ -1316,7 +1316,7 @@ public class LetterControl
     
     private List<LetterContactMechanismPurpose> getLetterContactMechanismPurposesByLetter(Letter letter,
             EntityPermission entityPermission) {
-        List<LetterContactMechanismPurpose> letterContactMechanismPurposes = null;
+        List<LetterContactMechanismPurpose> letterContactMechanismPurposes;
         
         try {
             String query = null;
@@ -1503,7 +1503,7 @@ public class LetterControl
     }
     
     private List<QueuedLetter> getQueuedLettersByChainInstance(ChainInstance chainInstance, EntityPermission entityPermission) {
-        List<QueuedLetter> queuedLetters = null;
+        List<QueuedLetter> queuedLetters;
         
         try {
             String query = null;
@@ -1541,7 +1541,7 @@ public class LetterControl
     }
     
     private List<QueuedLetter> getQueuedLettersByLetter(Letter letter, EntityPermission entityPermission) {
-        List<QueuedLetter> queuedLetters = null;
+        List<QueuedLetter> queuedLetters;
         
         try {
             String query = null;

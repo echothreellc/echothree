@@ -763,7 +763,7 @@ public class IconControl
     }
     
     private List<IconUsage> getIconUsagesByIconUsageType(IconUsageType iconUsageType, EntityPermission entityPermission) {
-        List<IconUsage> iconUsages = null;
+        List<IconUsage> iconUsages;
         
         try {
             String query = null;
@@ -803,7 +803,7 @@ public class IconControl
     }
     
     private List<IconUsage> getIconUsagesByIcon(Icon icon, EntityPermission entityPermission) {
-        List<IconUsage> iconUsages = null;
+        List<IconUsage> iconUsages;
         
         try {
             String query = null;

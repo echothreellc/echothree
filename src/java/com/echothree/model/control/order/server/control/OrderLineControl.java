@@ -187,7 +187,7 @@ public class OrderLineControl
     }
     
     private List<OrderLine> getOrderLinesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -225,7 +225,7 @@ public class OrderLineControl
     }
     
     private List<OrderLine> getOrderLinesByOrderShipmentGroup(OrderShipmentGroup orderShipmentGroup, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;

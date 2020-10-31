@@ -924,7 +924,7 @@ public class CoreControl
     }
     
     private List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
-        List<EntityType> entityTypes = null;
+        List<EntityType> entityTypes;
         
         try {
             String query = null;
@@ -1323,7 +1323,7 @@ public class CoreControl
     }
     
     private List<Command> getCommandsByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
-        List<Command> commands = null;
+        List<Command> commands;
         
         try {
             String query = null;
@@ -2110,7 +2110,7 @@ public class CoreControl
     }
     
     private List<CommandMessage> getCommandMessagesByCommandMessageType(CommandMessageType commandMessageType, EntityPermission entityPermission) {
-        List<CommandMessage> commandMessages = null;
+        List<CommandMessage> commandMessages;
         
         try {
             String query = null;
@@ -2226,7 +2226,7 @@ public class CoreControl
     }
     
     private List<CommandMessageTranslation> getCommandMessageTranslationsByCommandMessage(CommandMessage commandMessage, EntityPermission entityPermission) {
-        List<CommandMessageTranslation> commandMessageTranslations = null;
+        List<CommandMessageTranslation> commandMessageTranslations;
         
         try {
             String query = null;
@@ -2416,7 +2416,7 @@ public class CoreControl
     }
 
     public List<EntityInstance> getEntityInstancesByEntityType(EntityType entityType) {
-        List<EntityInstance> entityInstances = null;
+        List<EntityInstance> entityInstances;
         
         try {
             PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(
@@ -3191,7 +3191,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeWithLimit(EntityType entityType, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -3228,7 +3228,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeCreatedAfterWithLimit(EntityType entityType, Long createdTime, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -3266,7 +3266,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeModifiedAfterWithLimit(EntityType entityType, Long modifiedTime, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -3304,7 +3304,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeDeletedAfterWithLimit(EntityType entityType, Long deletedTime, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -4208,7 +4208,7 @@ public class CoreControl
     }
     
     private List<EntityAttributeGroup> getEntityAttributeGroupsByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<EntityAttributeGroup> entityAttributeGroups = null;
+        List<EntityAttributeGroup> entityAttributeGroups;
         
         try {
             String query = null;
@@ -4718,7 +4718,7 @@ public class CoreControl
     }
     
     private List<EntityAttribute> getEntityAttributesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes = null;
+        List<EntityAttribute> entityAttributes;
         
         try {
             String query = null;
@@ -4759,7 +4759,7 @@ public class CoreControl
     
     private List<EntityAttribute> getEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType,
             EntityAttributeType entityAttributeType, EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes = null;
+        List<EntityAttribute> entityAttributes;
         
         try {
             String query = null;
@@ -4803,7 +4803,7 @@ public class CoreControl
     
     private List<EntityAttribute> getEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType,
             EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes = null;
+        List<EntityAttribute> entityAttributes;
         
         try {
             String query = null;
@@ -5799,7 +5799,7 @@ public class CoreControl
     
     private List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = null;
+        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups;
         
         try {
             String query = null;
@@ -5840,7 +5840,7 @@ public class CoreControl
     
     private List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup,
             EntityPermission entityPermission) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = null;
+        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups;
         
         try {
             String query = null;
@@ -6098,7 +6098,7 @@ public class CoreControl
     }
     
     private List<EntityListItem> getEntityListItems(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityListItem> entityListItems = null;
+        List<EntityListItem> entityListItems;
         
         try {
             String query = null;
@@ -6592,7 +6592,7 @@ public class CoreControl
     }
     
     private List<EntityIntegerRange> getEntityIntegerRanges(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityIntegerRange> entityIntegerRanges = null;
+        List<EntityIntegerRange> entityIntegerRanges;
         
         try {
             String query = null;
@@ -7080,7 +7080,7 @@ public class CoreControl
     }
     
     private List<EntityLongRange> getEntityLongRanges(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityLongRange> entityLongRanges = null;
+        List<EntityLongRange> entityLongRanges;
         
         try {
             String query = null;
@@ -8208,7 +8208,7 @@ public class CoreControl
     }
     
     public List<MimeTypeUsage> getMimeTypeUsagesByMimeType(MimeType mimeType) {
-        List<MimeTypeUsage> mimeTypeUsages = null;
+        List<MimeTypeUsage> mimeTypeUsages;
         
         try {
             PreparedStatement ps = MimeTypeUsageFactory.getInstance().prepareStatement(
@@ -10339,7 +10339,7 @@ public class CoreControl
     }
     
     private List<EntityListItemAttribute> getEntityListItemAttributesByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityListItemAttribute> entityListItemAttributes = null;
+        List<EntityListItemAttribute> entityListItemAttributes;
         
         try {
             String query = null;
@@ -10379,7 +10379,7 @@ public class CoreControl
     }
     
     public List<EntityListItemAttribute> getEntityListItemAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityListItemAttribute> entityListItemAttributes = null;
+        List<EntityListItemAttribute> entityListItemAttributes;
         
         try {
             PreparedStatement ps = EntityListItemAttributeFactory.getInstance().prepareStatement(
@@ -10620,7 +10620,7 @@ public class CoreControl
     }
     
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = null;
+        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
             PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
@@ -10690,7 +10690,7 @@ public class CoreControl
     }
     
     private List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributesByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = null;
+        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
             String query = null;
@@ -10730,7 +10730,7 @@ public class CoreControl
     }
     
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = null;
+        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
             PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
@@ -10861,7 +10861,7 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityNameAttribute> entityNameAttributes = null;
+        List<EntityNameAttribute> entityNameAttributes;
         
         try {
             PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
@@ -10882,7 +10882,7 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityNameAttribute> entityNameAttributes = null;
+        List<EntityNameAttribute> entityNameAttributes;
         
         try {
             PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
@@ -10954,7 +10954,7 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByName(EntityAttribute entityAttribute, String nameAttribute) {
-        List<EntityNameAttribute> entityNameAttributes = null;
+        List<EntityNameAttribute> entityNameAttributes;
         
         try {
             PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
@@ -11048,7 +11048,7 @@ public class CoreControl
     }
     
     public List<EntityStringAttribute> getEntityStringAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityStringAttribute> entityStringAttributes = null;
+        List<EntityStringAttribute> entityStringAttributes;
         
         try {
             PreparedStatement ps = EntityStringAttributeFactory.getInstance().prepareStatement(
@@ -11069,7 +11069,7 @@ public class CoreControl
     }
     
     public List<EntityStringAttribute> getEntityStringAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityStringAttribute> entityStringAttributes = null;
+        List<EntityStringAttribute> entityStringAttributes;
         
         try {
             PreparedStatement ps = EntityStringAttributeFactory.getInstance().prepareStatement(
@@ -11358,7 +11358,7 @@ public class CoreControl
     }
     
     public List<EntityTimeAttribute> getEntityTimeAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityTimeAttribute> entityTimeAttributes = null;
+        List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
             PreparedStatement ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
@@ -11379,7 +11379,7 @@ public class CoreControl
     }
     
     public List<EntityTimeAttribute> getEntityTimeAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityTimeAttribute> entityTimeAttributes = null;
+        List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
             PreparedStatement ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
@@ -12156,7 +12156,7 @@ public class CoreControl
     }
     
     public List<EntityCollectionAttribute> getEntityCollectionAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        List<EntityCollectionAttribute> entityCollectionAttributes = null;
+        List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
             PreparedStatement ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
@@ -12713,7 +12713,7 @@ public class CoreControl
     }
     
     private List<EventSubscriber> getEventSubscribersByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<EventSubscriber> eventSubscribers = null;
+        List<EventSubscriber> eventSubscribers;
         
         try {
             String query = null;
@@ -12798,7 +12798,7 @@ public class CoreControl
     
     private List<QueuedSubscriberEvent> getQueuedSubscriberEventsByEventSubscriber(EventSubscriber eventSubscriber,
             EntityPermission entityPermission) {
-        List<QueuedSubscriberEvent> queuedSubscriberEvents = null;
+        List<QueuedSubscriberEvent> queuedSubscriberEvents;
         
         try {
             String query = null;
@@ -12865,7 +12865,7 @@ public class CoreControl
     }
     
     private List<EventSubscriberEventType> getEventSubscriberEventTypes(EventType eventType, EntityPermission entityPermission) {
-        List<EventSubscriberEventType> eventSubscriberEventTypes = null;
+        List<EventSubscriberEventType> eventSubscriberEventTypes;
         
         try {
             String query = null;
@@ -12920,7 +12920,7 @@ public class CoreControl
     
     private List<EventSubscriberEntityType> getEventSubscriberEntityTypes(EntityType entityType, EventType eventType, 
             EntityPermission entityPermission) {
-        List<EventSubscriberEntityType> eventSubscriberEntityTypes = null;
+        List<EventSubscriberEntityType> eventSubscriberEntityTypes;
         
         try {
             String query = null;
@@ -12976,7 +12976,7 @@ public class CoreControl
     
     private List<EventSubscriberEntityInstance> getEventSubscriberEntityInstances(EntityInstance entityInstance, 
             EventType eventType, EntityPermission entityPermission) {
-        List<EventSubscriberEntityInstance> eventSubscriberEntityInstances = null;
+        List<EventSubscriberEntityInstance> eventSubscriberEntityInstances;
         
         try {
             String query = null;

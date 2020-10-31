@@ -2313,7 +2313,7 @@ public class AccountingControl
     }
     
     private List<GlResourceType> getGlResourceTypes(EntityPermission entityPermission) {
-        List<GlResourceType> glResourceTypes = null;
+        List<GlResourceType> glResourceTypes;
         
         try {
             String query = null;
@@ -2811,7 +2811,7 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts = null;
+        List<GlAccount> glAccounts;
         
         try {
             String query = null;
@@ -2849,7 +2849,7 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccountsByGlAccountCategory(GlAccountCategoryPK glAccountCategoryPK, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts = null;
+        List<GlAccount> glAccounts;
         
         try {
             String query = null;
@@ -2899,7 +2899,7 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccountsByGlResourceType(GlResourceType glResourceType, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts = null;
+        List<GlAccount> glAccounts;
         
         try {
             String query = null;
@@ -3848,7 +3848,7 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccountCategory> getTransactionGlAccountCategoriesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionGlAccountCategory> transactionGlAccountCategories = null;
+        List<TransactionGlAccountCategory> transactionGlAccountCategories;
         
         try {
             String query = null;
@@ -4215,7 +4215,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleType> getTransactionEntityRoleTypesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleType> transactionEntityRoleTypes = null;
+        List<TransactionEntityRoleType> transactionEntityRoleTypes;
         
         try {
             String query = null;
@@ -4253,7 +4253,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleType> getTransactionEntityRoleTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleType> transactionEntityRoleTypes = null;
+        List<TransactionEntityRoleType> transactionEntityRoleTypes;
         
         try {
             String query = null;
@@ -4544,7 +4544,7 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccount> getTransactionGlAccountsByGlAccount(GlAccount glAccount, EntityPermission entityPermission) {
-        List<TransactionGlAccount> transactionGlAccounts = null;
+        List<TransactionGlAccount> transactionGlAccounts;
         
         try {
             String query = null;
@@ -4934,7 +4934,7 @@ public class AccountingControl
     }
     
     public List<Transaction> getTransactionsByTransactionGroup(TransactionGroup transactionGroup) {
-        List<Transaction> transactions = null;
+        List<Transaction> transactions;
         
         try {
             PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
@@ -4954,7 +4954,7 @@ public class AccountingControl
     }
     
     public List<Transaction> getTransactionsByTransactionType(TransactionType transactionType) {
-        List<Transaction> transactions = null;
+        List<Transaction> transactions;
         
         try {
             PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
@@ -5060,7 +5060,7 @@ public class AccountingControl
     }
     
     public List<TransactionGlEntry> getTransactionGlEntriesByTransaction(Transaction transaction) {
-        List<TransactionGlEntry> transactionGlEntries = null;
+        List<TransactionGlEntry> transactionGlEntries;
         
         try {
             PreparedStatement ps = TransactionGlEntryFactory.getInstance().prepareStatement(
@@ -5082,7 +5082,7 @@ public class AccountingControl
     }
     
     public List<TransactionGlEntry> getTransactionGlEntriesByGlAccount(GlAccount glAccount) {
-        List<TransactionGlEntry> transactionGlEntries = null;
+        List<TransactionGlEntry> transactionGlEntries;
         
         try {
             PreparedStatement ps = TransactionGlEntryFactory.getInstance().prepareStatement(
@@ -5159,7 +5159,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRole> getTransactionEntityRolesByTransaction(Transaction transaction, EntityPermission entityPermission) {
-        List<TransactionEntityRole> transactionEntityRoles = null;
+        List<TransactionEntityRole> transactionEntityRoles;
         
         try {
             String query = null;
@@ -5199,7 +5199,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRole> getTransactionEntityRolesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<TransactionEntityRole> transactionEntityRoles = null;
+        List<TransactionEntityRole> transactionEntityRoles;
         
         try {
             String query = null;
@@ -5413,7 +5413,7 @@ public class AccountingControl
     }
     
     private List<SymbolPosition> getSymbolPositions(EntityPermission entityPermission) {
-        List<SymbolPosition> symbolPositions = null;
+        List<SymbolPosition> symbolPositions;
         
         try {
             String query = null;

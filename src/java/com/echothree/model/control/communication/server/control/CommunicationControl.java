@@ -781,7 +781,7 @@ public class CommunicationControl
     }
 
     private List<CommunicationEvent> getCommunicationEventsByParty(Party party, EntityPermission entityPermission) {
-        List<CommunicationEvent> communicationEvents = null;
+        List<CommunicationEvent> communicationEvents;
         
         try {
             String query = null;
@@ -961,7 +961,7 @@ public class CommunicationControl
     
     private List<CommunicationEventRole> getCommunicationEventRolesByCommunicationEvent(CommunicationEvent communicationEvent,
             EntityPermission entityPermission) {
-        List<CommunicationEventRole> communicationEventRoles = null;
+        List<CommunicationEventRole> communicationEventRoles;
         
         try {
             String query = null;
@@ -1004,7 +1004,7 @@ public class CommunicationControl
     
     private List<CommunicationEventRole> getCommunicationEventRolesByPartyAndCommunicationEventRoleType(Party party,
             CommunicationEventRoleType communicationEventRoleType, EntityPermission entityPermission) {
-        List<CommunicationEventRole> communicationEventRoles = null;
+        List<CommunicationEventRole> communicationEventRoles;
         
         try {
             String query = null;
@@ -1251,7 +1251,7 @@ public class CommunicationControl
     
     private List<CommunicationSource> getCommunicationSourcesByCommunicationSourceType(CommunicationSourceType communicationSourceType,
             EntityPermission entityPermission) {
-        List<CommunicationSource> communicationSources = null;
+        List<CommunicationSource> communicationSources;
         
         try {
             String query = null;

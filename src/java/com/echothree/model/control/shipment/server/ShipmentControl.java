@@ -1149,7 +1149,7 @@ public class ShipmentControl
     }
     
     private List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShipmentType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = null;
+        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods;
         
         try {
             String query = null;
@@ -1189,7 +1189,7 @@ public class ShipmentControl
     }
     
     private List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = null;
+        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods;
         
         try {
             String query = null;

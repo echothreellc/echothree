@@ -858,7 +858,7 @@ public class SequenceControl
     }
     
     private List<Sequence> getSequencesBySequenceType(SequenceType sequenceType, EntityPermission entityPermission) {
-        List<Sequence> sequences = null;
+        List<Sequence> sequences;
         
         try {
             String query = null;

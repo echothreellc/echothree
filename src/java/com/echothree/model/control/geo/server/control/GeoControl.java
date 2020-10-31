@@ -1448,7 +1448,7 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasType> getGeoCodeAliasTypes(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeAliasType> geoCodeAliasTypes = null;
+        List<GeoCodeAliasType> geoCodeAliasTypes;
         
         try {
             String query = null;
@@ -1486,7 +1486,7 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasType> getGeoCodeAliasTypesExceptDefault(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeAliasType> geoCodeAliasTypes = null;
+        List<GeoCodeAliasType> geoCodeAliasTypes;
         
         try {
             String query = null;
@@ -1938,7 +1938,7 @@ public class GeoControl
     }
     
     private List<GeoCode> getGeoCodesByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        List<GeoCode> geoCode = null;
+        List<GeoCode> geoCode;
         
         try {
             String query = null;
@@ -2571,7 +2571,7 @@ public class GeoControl
     }
 
     public List<GeoCodeRelationship> getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(GeoCode fromGeoCode, GeoCodeType geoCodeType) {
-        List<GeoCodeRelationship> geoCodeRelationships = null;
+        List<GeoCodeRelationship> geoCodeRelationships;
         
         try {
             PreparedStatement ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
@@ -2769,7 +2769,7 @@ public class GeoControl
     }
     
     private List<GeoCodeLanguage> getGeoCodeLanguagesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeLanguage> geoCodeLanguages = null;
+        List<GeoCodeLanguage> geoCodeLanguages;
         
         try {
             String query = null;
@@ -2809,7 +2809,7 @@ public class GeoControl
     }
     
     private List<GeoCodeLanguage> getGeoCodeLanguagesByLanguage(Language language, EntityPermission entityPermission) {
-        List<GeoCodeLanguage> geoCodeLanguages = null;
+        List<GeoCodeLanguage> geoCodeLanguages;
         
         try {
             String query = null;
@@ -3069,7 +3069,7 @@ public class GeoControl
     }
     
     private List<GeoCodeCurrency> getGeoCodeCurrenciesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeCurrency> geoCodeCurrencies = null;
+        List<GeoCodeCurrency> geoCodeCurrencies;
         
         try {
             String query = null;
@@ -3109,7 +3109,7 @@ public class GeoControl
     }
     
     private List<GeoCodeCurrency> getGeoCodeCurrenciesByCurrency(Currency currency, EntityPermission entityPermission) {
-        List<GeoCodeCurrency> geoCodeCurrencies = null;
+        List<GeoCodeCurrency> geoCodeCurrencies;
         
         try {
             String query = null;
@@ -3369,7 +3369,7 @@ public class GeoControl
     }
     
     private List<GeoCodeTimeZone> getGeoCodeTimeZonesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeTimeZone> geoCodeTimeZones = null;
+        List<GeoCodeTimeZone> geoCodeTimeZones;
         
         try {
             String query = null;
@@ -3409,7 +3409,7 @@ public class GeoControl
     }
     
     private List<GeoCodeTimeZone> getGeoCodeTimeZonesByTimeZone(TimeZone timeZone, EntityPermission entityPermission) {
-        List<GeoCodeTimeZone> geoCodeTimeZones = null;
+        List<GeoCodeTimeZone> geoCodeTimeZones;
         
         try {
             String query = null;
@@ -3669,7 +3669,7 @@ public class GeoControl
     }
     
     private List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats = null;
+        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats;
         
         try {
             String query = null;
@@ -3709,7 +3709,7 @@ public class GeoControl
     }
     
     private List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByDateTimeFormat(DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
-        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats = null;
+        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats;
         
         try {
             String query = null;

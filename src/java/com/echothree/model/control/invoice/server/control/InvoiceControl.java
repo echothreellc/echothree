@@ -1872,7 +1872,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceLineType> getInvoiceLineTypes(InvoiceType invoiceType, EntityPermission entityPermission) {
-        List<InvoiceLineType> invoiceLineTypes = null;
+        List<InvoiceLineType> invoiceLineTypes;
         
         try {
             String query = null;
@@ -2367,7 +2367,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceRole> getInvoiceRolesByInvoice(Invoice invoice, EntityPermission entityPermission) {
-        List<InvoiceRole> invoiceRoles = null;
+        List<InvoiceRole> invoiceRoles;
         
         try {
             String query = null;
@@ -2408,7 +2408,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceRole> getInvoiceRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism, EntityPermission entityPermission) {
-        List<InvoiceRole> invoiceRoles = null;
+        List<InvoiceRole> invoiceRoles;
         
         try {
             String query = null;

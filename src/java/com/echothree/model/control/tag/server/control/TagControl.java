@@ -149,7 +149,7 @@ public class TagControl
     }
     
     private List<TagScope> getTagScopesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TagScope> tagScopes = null;
+        List<TagScope> tagScopes;
         
         try {
             String query = null;
@@ -616,7 +616,7 @@ public class TagControl
     }
     
     private List<TagScopeEntityType> getTagScopeEntityTypesByTagScope(TagScope tagScope, EntityPermission entityPermission) {
-        List<TagScopeEntityType> tagScopeEntityTypes = null;
+        List<TagScopeEntityType> tagScopeEntityTypes;
         
         try {
             String query = null;
@@ -656,7 +656,7 @@ public class TagControl
     }
     
     private List<TagScopeEntityType> getTagScopeEntityTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TagScopeEntityType> tagScopeEntityTypes = null;
+        List<TagScopeEntityType> tagScopeEntityTypes;
         
         try {
             String query = null;
@@ -760,7 +760,7 @@ public class TagControl
     }
     
     private List<Tag> getTags(TagScope tagScope, EntityPermission entityPermission) {
-        List<Tag> tags = null;
+        List<Tag> tags;
         
         try {
             String query = null;
@@ -799,7 +799,7 @@ public class TagControl
     
     private List<Tag> getTagsByTagScopeAndEntityInstance(TagScope tagScope, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        List<Tag> tags = null;
+        List<Tag> tags;
         
         try {
             String query = null;
@@ -1051,7 +1051,7 @@ public class TagControl
     }
     
     private List<EntityTag> getEntityTagsByTaggedEntityInstance(EntityInstance taggedEntityInstance, EntityPermission entityPermission) {
-        List<EntityTag> entityTags = null;
+        List<EntityTag> entityTags;
         
         try {
             String query = null;
@@ -1091,7 +1091,7 @@ public class TagControl
     }
     
     private List<EntityTag> getEntityTagsByTag(Tag tag, EntityPermission entityPermission) {
-        List<EntityTag> entityTags = null;
+        List<EntityTag> entityTags;
         
         try {
             String query = null;

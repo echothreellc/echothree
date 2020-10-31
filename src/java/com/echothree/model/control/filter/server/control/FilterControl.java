@@ -1309,7 +1309,7 @@ public class FilterControl
     }
     
     private List<FilterAdjustment> getFilterAdjustmentsByFilterKind(FilterKind filterKind, EntityPermission entityPermission) {
-        List<FilterAdjustment> filterAdjustments = null;
+        List<FilterAdjustment> filterAdjustments;
         
         try {
             String query = null;
@@ -1585,7 +1585,7 @@ public class FilterControl
     
     private List<FilterAdjustmentAmount> getFilterAdjustmentAmounts(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentAmount> filterAdjustmentAmounts = null;
+        List<FilterAdjustmentAmount> filterAdjustmentAmounts;
         
         try {
             String query = null;
@@ -1756,7 +1756,7 @@ public class FilterControl
     
     private List<FilterAdjustmentFixedAmount> getFilterAdjustmentFixedAmounts(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts = null;
+        List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts;
         
         try {
             String query = null;
@@ -1931,7 +1931,7 @@ public class FilterControl
     
     private List<FilterAdjustmentPercent> getFilterAdjustmentPercents(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentPercent> filterAdjustmentPercents = null;
+        List<FilterAdjustmentPercent> filterAdjustmentPercents;
         
         try {
             String query = null;
@@ -2302,7 +2302,7 @@ public class FilterControl
     }
     
     private List<Filter> getFilters(FilterType filterType, EntityPermission entityPermission) {
-        List<Filter> filters = null;
+        List<Filter> filters;
         
         try {
             PreparedStatement ps = FilterFactory.getInstance().prepareStatement(
@@ -2797,7 +2797,7 @@ public class FilterControl
     }
     
     private List<FilterStep> getFilterStepsByFilter(Filter filter, EntityPermission entityPermission) {
-        List<FilterStep> filterSteps = null;
+        List<FilterStep> filterSteps;
         
         try {
             String query = null;
@@ -3160,7 +3160,7 @@ public class FilterControl
     }
     
     private List<FilterEntranceStep> getFilterEntranceStepsByFilter(Filter filter, EntityPermission entityPermission) {
-        List<FilterEntranceStep> filterEntranceSteps = null;
+        List<FilterEntranceStep> filterEntranceSteps;
         
         try {
             String query = null;
@@ -3203,7 +3203,7 @@ public class FilterControl
     }
     
     private List<FilterEntranceStep> getFilterEntranceStepsByFilterStep(FilterStep filterStep, EntityPermission entityPermission) {
-        List<FilterEntranceStep> filterEntranceSteps = null;
+        List<FilterEntranceStep> filterEntranceSteps;
         
         try {
             String query = null;
@@ -3334,7 +3334,7 @@ public class FilterControl
     }
     
     private List<FilterStepDestination> getFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep, EntityPermission entityPermission) {
-        List<FilterStepDestination> filterStepDestinations = null;
+        List<FilterStepDestination> filterStepDestinations;
         
         try {
             String query = null;
@@ -3377,7 +3377,7 @@ public class FilterControl
     }
     
     private List<FilterStepDestination> getFilterStepDestinationsByToFilterStep(FilterStep toFilterStep, EntityPermission entityPermission) {
-        List<FilterStepDestination> filterStepDestinations = null;
+        List<FilterStepDestination> filterStepDestinations;
         
         try {
             String query = null;
@@ -3560,7 +3560,7 @@ public class FilterControl
     }
     
     private List<FilterStepElement> getFilterStepElementsByFilterStep(FilterStep filterStep, EntityPermission entityPermission) {
-        List<FilterStepElement> filterStepElements = null;
+        List<FilterStepElement> filterStepElements;
         
         try {
             String query = null;

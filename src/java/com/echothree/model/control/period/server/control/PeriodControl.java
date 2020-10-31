@@ -563,7 +563,7 @@ public class PeriodControl
     }
     
     private List<PeriodType> getPeriodTypes(PeriodKind periodKind, EntityPermission entityPermission) {
-        List<PeriodType> periodTypes = null;
+        List<PeriodType> periodTypes;
         
         try {
             String query = null;
@@ -1035,7 +1035,7 @@ public class PeriodControl
     }
     
     private List<Period> getContainingPeriodsUsingNames(String periodKindName, Long time, EntityPermission entityPermission) {
-        List<Period> periods = null;
+        List<Period> periods;
         
         try {
             String query = null;
@@ -1079,7 +1079,7 @@ public class PeriodControl
     }
     
     private List<Period> getPeriods(PeriodType periodType, EntityPermission entityPermission) {
-        List<Period> periods = null;
+        List<Period> periods;
         
         try {
             String query = null;
@@ -1117,7 +1117,7 @@ public class PeriodControl
     }
     
     private List<Period> getPeriodsByParentPeriod(Period parentPeriod, EntityPermission entityPermission) {
-        List<Period> periods = null;
+        List<Period> periods;
         
         try {
             String query = null;

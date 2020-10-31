@@ -1947,7 +1947,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntranceSelector> getWorkflowEntranceSelectorsBySelectorForUpdate(Selector selector, EntityPermission entityPermission) {
-        List<WorkflowEntranceSelector> workflowEntranceSelectors = null;
+        List<WorkflowEntranceSelector> workflowEntranceSelectors;
         
         try {
             String query = null;
@@ -1989,7 +1989,7 @@ public class WorkflowControl
     
     private List<WorkflowEntranceSelector> getWorkflowEntranceSelectorsByWorkflowEntrance(WorkflowEntrance workflowEntrance,
             EntityPermission entityPermission) {
-        List<WorkflowEntranceSelector> workflowEntranceSelectors = null;
+        List<WorkflowEntranceSelector> workflowEntranceSelectors;
         
         try {
             String query = null;
@@ -2030,7 +2030,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntranceSelector> getWorkflowEntranceSelectorsByWorkflow(Workflow workflow, EntityPermission entityPermission) {
-        List<WorkflowEntranceSelector> workflowEntranceSelectors = null;
+        List<WorkflowEntranceSelector> workflowEntranceSelectors;
         
         try {
             String query = null;
@@ -2169,7 +2169,7 @@ public class WorkflowControl
     
     private List<WorkflowEntrancePartyType> getWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance,
             EntityPermission entityPermission) {
-        List<WorkflowEntrancePartyType> workflowEntrancePartyTypes = null;
+        List<WorkflowEntrancePartyType> workflowEntrancePartyTypes;
         
         try {
             String query = null;
@@ -2310,7 +2310,7 @@ public class WorkflowControl
     
     private List<WorkflowEntranceSecurityRole> getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType,
             EntityPermission entityPermission) {
-        List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles = null;
+        List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles;
         
         try {
             String query = null;
@@ -3069,7 +3069,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowDestinationSelector> getWorkflowDestinationSelectorsBySelector(Selector selector, EntityPermission entityPermission) {
-        List<WorkflowDestinationSelector> workflowDestinationSelectors = null;
+        List<WorkflowDestinationSelector> workflowDestinationSelectors;
         
         try {
             String query = null;
@@ -3111,7 +3111,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowDestinationSelector> getWorkflowDestinationSelectorsByWorkflowDestination(WorkflowDestination workflowDestination, EntityPermission entityPermission) {
-        List<WorkflowDestinationSelector> workflowDestinationSelectors = null;
+        List<WorkflowDestinationSelector> workflowDestinationSelectors;
         
         try {
             String query = null;
@@ -3250,7 +3250,7 @@ public class WorkflowControl
     
     private List<WorkflowDestinationPartyType> getWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination,
             EntityPermission entityPermission) {
-        List<WorkflowDestinationPartyType> workflowDestinationPartyTypes = null;
+        List<WorkflowDestinationPartyType> workflowDestinationPartyTypes;
         
         try {
             String query = null;
@@ -3391,7 +3391,7 @@ public class WorkflowControl
     
     private List<WorkflowDestinationSecurityRole> getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(WorkflowDestinationPartyType workflowDestinationPartyType,
             EntityPermission entityPermission) {
-        List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles = null;
+        List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles;
         
         try {
             String query = null;
@@ -3678,7 +3678,7 @@ public class WorkflowControl
     
     private List<WorkflowSelectorKind> getWorkflowSelectorKindsByWorkflow(Workflow workflow,
             EntityPermission entityPermission) {
-        List<WorkflowSelectorKind> workflowSelectorKinds = null;
+        List<WorkflowSelectorKind> workflowSelectorKinds;
         
         try {
             String query = null;
@@ -3720,7 +3720,7 @@ public class WorkflowControl
     
     private List<WorkflowSelectorKind> getWorkflowSelectorKindsBySelectorKindForUpdate(SelectorKind selectorKind,
             EntityPermission entityPermission) {
-        List<WorkflowSelectorKind> workflowSelectorKinds = null;
+        List<WorkflowSelectorKind> workflowSelectorKinds;
         
         try {
             String query = null;
@@ -3853,7 +3853,7 @@ public class WorkflowControl
     
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope,
             EntityPermission entityPermission) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             String query = null;
@@ -3894,7 +3894,7 @@ public class WorkflowControl
     }
     
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByEntityInstance(Workflow workflow, EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             String query = null;
@@ -3983,7 +3983,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             String query = null;
@@ -4024,7 +4024,7 @@ public class WorkflowControl
     }
     
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflow(Workflow workflow) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             PreparedStatement ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(

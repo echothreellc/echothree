@@ -537,7 +537,7 @@ public class ShippingControl
     }
     
     private List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShippingMethodCarrierService> shippingMethodCarrierServices = null;
+        List<ShippingMethodCarrierService> shippingMethodCarrierServices;
         
         try {
             String query = null;
@@ -577,7 +577,7 @@ public class ShippingControl
     }
     
     private List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<ShippingMethodCarrierService> shippingMethodCarrierServices = null;
+        List<ShippingMethodCarrierService> shippingMethodCarrierServices;
         
         try {
             String query = null;

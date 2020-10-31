@@ -2202,7 +2202,7 @@ public class UserControl
     
     private List<UserLoginPasswordString> getUserLoginPasswordStringHistory(UserLoginPassword userLoginPassword, long limit,
             EntityPermission entityPermission) {
-        List<UserLoginPasswordString> userLoginPasswordStrings = null;
+        List<UserLoginPasswordString> userLoginPasswordStrings;
         
         try {
             PreparedStatement ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(

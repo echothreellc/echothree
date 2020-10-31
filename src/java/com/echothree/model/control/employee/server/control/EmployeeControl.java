@@ -3861,7 +3861,7 @@ public class EmployeeControl
     }
     
     public List<PartyEmployee> getPartyEmployees() {
-        List<PartyEmployee> partyEmployees = null;
+        List<PartyEmployee> partyEmployees;
         
         try {
             PreparedStatement ps = PartyEmployeeFactory.getInstance().prepareStatement(
@@ -4139,7 +4139,7 @@ public class EmployeeControl
     }
     
     private List<PartyResponsibility> getPartyResponsibilitiesByParty(Party party, EntityPermission entityPermission) {
-        List<PartyResponsibility> partyResponsibilities = null;
+        List<PartyResponsibility> partyResponsibilities;
         
         try {
             String query = null;
@@ -4179,7 +4179,7 @@ public class EmployeeControl
     }
     
     private List<PartyResponsibility> getPartyResponsibilitiesByResponsibilityType(ResponsibilityType responsibilityType, EntityPermission entityPermission) {
-        List<PartyResponsibility> partyResponsibilities = null;
+        List<PartyResponsibility> partyResponsibilities;
         
         try {
             String query = null;
@@ -4330,7 +4330,7 @@ public class EmployeeControl
     }
     
     private List<PartySkill> getPartySkillsByParty(Party party, EntityPermission entityPermission) {
-        List<PartySkill> partySkills = null;
+        List<PartySkill> partySkills;
         
         try {
             String query = null;
@@ -4370,7 +4370,7 @@ public class EmployeeControl
     }
     
     private List<PartySkill> getPartySkillsBySkillType(SkillType skillType, EntityPermission entityPermission) {
-        List<PartySkill> partySkills = null;
+        List<PartySkill> partySkills;
         
         try {
             String query = null;

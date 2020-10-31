@@ -193,7 +193,7 @@ public class UomControl
     }
     
     public List<UnitOfMeasureKind> getUnitOfMeasureKindsByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        List<UnitOfMeasureKind> unitOfMeasureKinds = null;
+        List<UnitOfMeasureKind> unitOfMeasureKinds;
         
         try {
             PreparedStatement ps = UnitOfMeasureKindFactory.getInstance().prepareStatement(
@@ -706,7 +706,7 @@ public class UomControl
     }
     
     private List<UnitOfMeasureType> getUnitOfMeasureTypesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        List<UnitOfMeasureType> unitOfMeasureTypes = null;
+        List<UnitOfMeasureType> unitOfMeasureTypes;
         
         try {
             String query = null;
@@ -1460,7 +1460,7 @@ public class UomControl
     
     private List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = null;
+        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents;
         
         try {
             String query = null;
@@ -1508,7 +1508,7 @@ public class UomControl
     
     private List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByFromUnitOfMeasureType(UnitOfMeasureType fromUnitOfMeasureType,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = null;
+        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents;
         
         try {
             String query = null;
@@ -1552,7 +1552,7 @@ public class UomControl
     
     private List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByToUnitOfMeasureType(UnitOfMeasureType toUnitOfMeasureType,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = null;
+        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents;
         
         try {
             String query = null;
@@ -1973,7 +1973,7 @@ public class UomControl
     
     private List<UnitOfMeasureKindUse> getUnitOfMeasureKindUsesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureKindUse> unitOfMeasureKindUses = null;
+        List<UnitOfMeasureKindUse> unitOfMeasureKindUses;
         
         try {
             String query = null;
@@ -2017,7 +2017,7 @@ public class UomControl
      */
     private List<UnitOfMeasureKindUse> getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureKindUse> unitOfMeasureKindUses = null;
+        List<UnitOfMeasureKindUse> unitOfMeasureKindUses;
         
         try {
             String query = null;

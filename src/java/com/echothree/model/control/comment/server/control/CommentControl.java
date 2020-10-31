@@ -144,7 +144,7 @@ public class CommentControl
     }
     
     private List<CommentType> getCommentTypes(EntityType entityType, EntityPermission entityPermission) {
-        List<CommentType> commentTypes = null;
+        List<CommentType> commentTypes;
         
         try {
             String query = null;
@@ -485,7 +485,7 @@ public class CommentControl
     }
     
     private List<CommentUsageType> getCommentUsageTypes(CommentType commentType, EntityPermission entityPermission) {
-        List<CommentUsageType> commentUsageTypes = null;
+        List<CommentUsageType> commentUsageTypes;
         
         try {
             String query = null;
@@ -879,7 +879,7 @@ public class CommentControl
     }
     
     private List<Comment> getCommentsByCommentedEntityInstance(EntityInstance commentedEntityInstance, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -916,7 +916,7 @@ public class CommentControl
     }
     
     private List<Comment> getCommentsByCommentedByEntityInstance(EntityInstance commentedByEntityInstance, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -953,7 +953,7 @@ public class CommentControl
     }
     
     private List<Comment> getCommentsByCommentType(CommentType commentType, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -991,7 +991,7 @@ public class CommentControl
     
     public List<Comment> getCommentsByCommentedEntityInstanceAndCommentType(EntityInstance commentedEntityInstance,
             CommentType commentType, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -1504,7 +1504,7 @@ public class CommentControl
     }
     
     private List<CommentUsage> getCommentUsagesByComment(Comment comment, EntityPermission entityPermission) {
-        List<CommentUsage> comments = null;
+        List<CommentUsage> comments;
         
         try {
             String query = null;
@@ -1545,7 +1545,7 @@ public class CommentControl
     }
     
     private List<CommentUsage> getCommentUsagesByCommentUsageType(CommentUsageType commentUsageType, EntityPermission entityPermission) {
-        List<CommentUsage> comments = null;
+        List<CommentUsage> comments;
         
         try {
             String query = null;

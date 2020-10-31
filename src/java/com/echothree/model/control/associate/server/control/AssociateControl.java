@@ -611,7 +611,7 @@ public class AssociateControl
     }
     
     private List<Associate> getAssociates(AssociateProgram associateProgram, EntityPermission entityPermission) {
-        List<Associate> associates = null;
+        List<Associate> associates;
         
         try {
             String query = null;
@@ -877,7 +877,7 @@ public class AssociateControl
     }
     
     private List<AssociatePartyContactMechanism> getAssociatePartyContactMechanismsByAssociate(Associate associate, EntityPermission entityPermission) {
-        List<AssociatePartyContactMechanism> associatePartyContactMechanisms = null;
+        List<AssociatePartyContactMechanism> associatePartyContactMechanisms;
         
         try {
             String query = null;
@@ -917,7 +917,7 @@ public class AssociateControl
     }
     
     private List<AssociatePartyContactMechanism> getAssociatePartyContactMechanismsByPartyContactMechanism(PartyContactMechanism partyContactMechanism, EntityPermission entityPermission) {
-        List<AssociatePartyContactMechanism> associatePartyContactMechanisms = null;
+        List<AssociatePartyContactMechanism> associatePartyContactMechanisms;
         
         try {
             String query = null;
@@ -1187,7 +1187,7 @@ public class AssociateControl
     }
     
     private List<AssociateReferral> getAssociateReferralsByAssociate(Associate associate, EntityPermission entityPermission) {
-        List<AssociateReferral> associateReferrals = null;
+        List<AssociateReferral> associateReferrals;
         
         try {
             String query = null;
@@ -1228,7 +1228,7 @@ public class AssociateControl
     
     private List<AssociateReferral> getAssociateReferralsByAssociatePartyContactMechanism(AssociatePartyContactMechanism associatePartyContactMechanism,
             EntityPermission entityPermission) {
-        List<AssociateReferral> associateReferrals = null;
+        List<AssociateReferral> associateReferrals;
         
         try {
             String query = null;
@@ -1269,7 +1269,7 @@ public class AssociateControl
     
     private List<AssociateReferral> getAssociateReferralsByTargetEntityInstance(EntityInstance targetEntityInstance,
             EntityPermission entityPermission) {
-        List<AssociateReferral> associateReferrals = null;
+        List<AssociateReferral> associateReferrals;
         
         try {
             String query = null;

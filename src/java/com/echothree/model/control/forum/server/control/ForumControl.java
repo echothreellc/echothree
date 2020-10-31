@@ -1064,7 +1064,7 @@ public class ForumControl
     }
     
     private List<ForumGroupForum> getForumGroupForumsByForumGroup(ForumGroup forumGroup, EntityPermission entityPermission) {
-        List<ForumGroupForum> forumGroupForums = null;
+        List<ForumGroupForum> forumGroupForums;
         
         try {
             String query = null;
@@ -1104,7 +1104,7 @@ public class ForumControl
     }
     
     private List<ForumGroupForum> getForumGroupForumsByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumGroupForum> forumGroupForums = null;
+        List<ForumGroupForum> forumGroupForums;
         
         try {
             String query = null;
@@ -1599,7 +1599,7 @@ public class ForumControl
     }
     
     private List<ForumMimeType> getForumMimeTypesByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumMimeType> forumMimeTypes = null;
+        List<ForumMimeType> forumMimeTypes;
         
         try {
             String query = null;
@@ -1639,7 +1639,7 @@ public class ForumControl
     }
     
     private List<ForumMimeType> getForumMimeTypesByMimeType(MimeType mimeType, EntityPermission entityPermission) {
-        List<ForumMimeType> forumMimeTypes = null;
+        List<ForumMimeType> forumMimeTypes;
         
         try {
             String query = null;
@@ -1846,7 +1846,7 @@ public class ForumControl
     }
 
     private List<ForumPartyRole> getForumPartyRolesByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumPartyRole> forumPartyRoles = null;
+        List<ForumPartyRole> forumPartyRoles;
         
         try {
             String query = null;
@@ -1887,7 +1887,7 @@ public class ForumControl
     }
     
     private List<ForumPartyRole> getForumPartyRolesByParty(Party party, EntityPermission entityPermission) {
-        List<ForumPartyRole> forumPartyRoles = null;
+        List<ForumPartyRole> forumPartyRoles;
         
         try {
             String query = null;
@@ -2035,7 +2035,7 @@ public class ForumControl
     }
 
     private List<ForumPartyTypeRole> getForumPartyTypeRolesByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumPartyTypeRole> forumPartyTypeRoles = null;
+        List<ForumPartyTypeRole> forumPartyTypeRoles;
         
         try {
             String query = null;
@@ -2162,7 +2162,7 @@ public class ForumControl
     }
     
     private List<ForumTypeMessageType> getForumTypeMessageTypesByForumType(ForumType forumType, EntityPermission entityPermission) {
-        List<ForumTypeMessageType> forumTypeMessageTypes = null;
+        List<ForumTypeMessageType> forumTypeMessageTypes;
         
         try {
             String query = null;
@@ -2393,7 +2393,7 @@ public class ForumControl
     }
     
     private List<ForumForumThread> getForumForumThreadsByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumForumThread> forumForumThreads = null;
+        List<ForumForumThread> forumForumThreads;
         
         try {
             String query = null;
@@ -2433,7 +2433,7 @@ public class ForumControl
     }
     
     private List<ForumForumThread> getForumForumThreadsByForumThread(ForumThread forumThread, EntityPermission entityPermission) {
-        List<ForumForumThread> forumForumThreads = null;
+        List<ForumForumThread> forumForumThreads;
         
         try {
             String query = null;
@@ -2695,7 +2695,7 @@ public class ForumControl
     }
     
     private List<ForumThread> getForumThreadsByForum(Forum forum, boolean includeFutureForumThreads, EntityPermission entityPermission) {
-        List<ForumThread> forumThreads = null;
+        List<ForumThread> forumThreads;
         
         try {
             String query = null;
@@ -2922,7 +2922,7 @@ public class ForumControl
     }
     
     private List<ForumMessage> getForumMessagesByForumThread(ForumThread forumThread, EntityPermission entityPermission) {
-        List<ForumMessage> forumMessages = null;
+        List<ForumMessage> forumMessages;
         
         try {
             String query = null;
@@ -3678,7 +3678,7 @@ public class ForumControl
     }
     
     private List<ForumMessageRole> getForumMessageRolesByForumMessage(ForumMessage forumMessage, EntityPermission entityPermission) {
-        List<ForumMessageRole> forumMessageRoles = null;
+        List<ForumMessageRole> forumMessageRoles;
         
         try {
             String query = null;
@@ -3831,7 +3831,7 @@ public class ForumControl
     }
     
     public List<ForumMessagePart> getForumMessagePartsByForumMessageForUpdate(ForumMessage forumMessage) {
-        List<ForumMessagePart> forumMessageParts = null;
+        List<ForumMessagePart> forumMessageParts;
         
         try {
             PreparedStatement ps = ForumMessagePartFactory.getInstance().prepareStatement(
@@ -4483,7 +4483,7 @@ public class ForumControl
     }
     
     public List<ForumMessageTypePartType> getForumMessageTypePartTypesByForumMessageType(ForumMessageType forumMessageType) {
-        List<ForumMessageTypePartType> forumMessageTypePartTypes = null;
+        List<ForumMessageTypePartType> forumMessageTypePartTypes;
         
         try {
             PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(
@@ -4503,7 +4503,7 @@ public class ForumControl
     }
     
     public List<ForumMessageTypePartType> getForumMessageTypePartTypesByForumMessageTypeAndIncludeInIndex(ForumMessageType forumMessageType) {
-        List<ForumMessageTypePartType> forumMessageTypePartTypes = null;
+        List<ForumMessageTypePartType> forumMessageTypePartTypes;
         
         try {
             PreparedStatement ps = ForumMessageTypePartTypeFactory.getInstance().prepareStatement(

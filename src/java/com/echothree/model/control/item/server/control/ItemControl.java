@@ -1891,7 +1891,7 @@ public class ItemControl
     }
     
     private List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes = null;
+        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes;
         
         try {
             String query = null;
@@ -1932,7 +1932,7 @@ public class ItemControl
     }
     
     private List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes = null;
+        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes;
         
         try {
             String query = null;
@@ -2151,7 +2151,7 @@ public class ItemControl
     }
     
     private List<ItemShippingTime> getItemShippingTimesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemShippingTime> itemShippingTimes = null;
+        List<ItemShippingTime> itemShippingTimes;
         
         try {
             String query = null;
@@ -2192,7 +2192,7 @@ public class ItemControl
     }
     
     private List<ItemShippingTime> getItemShippingTimesByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<ItemShippingTime> itemShippingTimes = null;
+        List<ItemShippingTime> itemShippingTimes;
         
         try {
             String query = null;
@@ -2924,7 +2924,7 @@ public class ItemControl
     
     private List<ItemAlias> getItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType,
             EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -2965,7 +2965,7 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -3005,7 +3005,7 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -3045,7 +3045,7 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByItemAliasType(ItemAliasType itemAliasType, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -3085,7 +3085,7 @@ public class ItemControl
     }
     
     public List<ItemAlias> getItemAliasesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(
@@ -3317,7 +3317,7 @@ public class ItemControl
     }
     
     private List<ItemCountryOfOrigin> getItemCountryOfOriginsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemCountryOfOrigin> itemCountryOfOrigins = null;
+        List<ItemCountryOfOrigin> itemCountryOfOrigins;
         
         try {
             String query = null;
@@ -3357,7 +3357,7 @@ public class ItemControl
     }
     
     private List<ItemCountryOfOrigin> getItemCountryOfOriginsByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        List<ItemCountryOfOrigin> itemCountryOfOrigins = null;
+        List<ItemCountryOfOrigin> itemCountryOfOrigins;
         
         try {
             String query = null;
@@ -3533,7 +3533,7 @@ public class ItemControl
     
     private List<ItemKitMember> getItemKitMembersFromItem(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3579,7 +3579,7 @@ public class ItemControl
     
     private List<ItemKitMember> getItemKitMembersFromMemberItem(Item memberItem, InventoryCondition memberInventoryCondition,
             UnitOfMeasureType memberUnitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3624,7 +3624,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByItem(Item item, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3663,7 +3663,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberItem(Item memberItem, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3702,7 +3702,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3741,7 +3741,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberInventoryCondition(InventoryCondition memberInventoryCondition, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3780,7 +3780,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3819,7 +3819,7 @@ public class ItemControl
     }
     
     public List<ItemKitMember> getItemKitMembersByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(
@@ -3841,7 +3841,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberUnitOfMeasureType(UnitOfMeasureType memberUnitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3880,7 +3880,7 @@ public class ItemControl
     }
     
     public List<ItemKitMember> getItemKitMembersByMemberItemAndUnitOfMeasureTypeForUpdate(Item memberItem, UnitOfMeasureType memberUnitOfMeasureType) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(
@@ -4042,7 +4042,7 @@ public class ItemControl
     }
 
     private List<ItemPackCheckRequirement> getItemPackCheckRequirementsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements = null;
+        List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
             String query = null;
@@ -4083,7 +4083,7 @@ public class ItemControl
     }
     
     private List<ItemPackCheckRequirement> getItemPackCheckRequirementsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements = null;
+        List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
             String query = null;
@@ -4124,7 +4124,7 @@ public class ItemControl
     
     public List<ItemPackCheckRequirement> getItemPackCheckRequirementsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements = null;
+        List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
             PreparedStatement ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(
@@ -4284,7 +4284,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4326,7 +4326,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4368,7 +4368,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4411,7 +4411,7 @@ public class ItemControl
     
     public List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(
@@ -4434,7 +4434,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4619,7 +4619,7 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             String query = null;
@@ -4660,7 +4660,7 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             String query = null;
@@ -4701,7 +4701,7 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             String query = null;
@@ -4742,7 +4742,7 @@ public class ItemControl
     }
     
     public List<ItemUnitLimit> getItemUnitLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             PreparedStatement ps = ItemUnitLimitFactory.getInstance().prepareStatement(
@@ -4904,7 +4904,7 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             String query = null;
@@ -4946,7 +4946,7 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             String query = null;
@@ -4988,7 +4988,7 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             String query = null;
@@ -5031,7 +5031,7 @@ public class ItemControl
     
     public List<ItemUnitPriceLimit> getItemUnitPriceLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             PreparedStatement ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(
@@ -5268,7 +5268,7 @@ public class ItemControl
     }
     
     private List<ItemPrice> getItemPricesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -5310,7 +5310,7 @@ public class ItemControl
     }
     
     private List<ItemPrice> getItemPricesByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -5352,7 +5352,7 @@ public class ItemControl
     }
     
     private List<ItemPrice> getItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -5394,7 +5394,7 @@ public class ItemControl
     }
     
     public List<ItemPrice> getItemPricesByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(
@@ -5417,7 +5417,7 @@ public class ItemControl
     
     private List<ItemPrice> getItemPrices(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -8394,7 +8394,7 @@ public class ItemControl
     }
     
     private List<ItemVolume> getItemVolumesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemVolume> itemVolumes = null;
+        List<ItemVolume> itemVolumes;
         
         try {
             String query = null;
@@ -8558,7 +8558,7 @@ public class ItemControl
     }
     
     private List<ItemWeight> getItemWeightsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemWeight> itemWeights = null;
+        List<ItemWeight> itemWeights;
         
         try {
             String query = null;

@@ -509,7 +509,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards = null;
+        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards;
         
         try {
             String query = null;
@@ -553,7 +553,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(PartyContactMechanism issuerPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards = null;
+        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards;
         
         try {
             String query = null;
@@ -853,7 +853,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyPaymentMethod(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms = null;
+        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms;
         
         try {
             String query = null;
@@ -893,7 +893,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyContactMechanismPurpose(PartyContactMechanismPurpose partyContactMechanismPurpose,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms = null;
+        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms;
         
         try {
             String query = null;

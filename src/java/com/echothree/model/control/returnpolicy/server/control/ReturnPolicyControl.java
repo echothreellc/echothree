@@ -764,7 +764,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicy> getReturnPolicies(ReturnKind returnKind, EntityPermission entityPermission) {
-        List<ReturnPolicy> returnPolicies = null;
+        List<ReturnPolicy> returnPolicies;
         
         try {
             String query = null;
@@ -1293,7 +1293,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicyReason> getReturnPolicyReasonsByReturnPolicy(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        List<ReturnPolicyReason> returnPolicyReasons = null;
+        List<ReturnPolicyReason> returnPolicyReasons;
         
         try {
             String query = null;
@@ -1333,7 +1333,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicyReason> getReturnPolicyReasonsByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnPolicyReason> returnPolicyReasons = null;
+        List<ReturnPolicyReason> returnPolicyReasons;
         
         try {
             String query = null;
@@ -1511,7 +1511,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReason> getReturnReasons(ReturnKind returnKind, EntityPermission entityPermission) {
-        List<ReturnReason> returnReasons = null;
+        List<ReturnReason> returnReasons;
         
         try {
             String query = null;
@@ -2057,7 +2057,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonType> getReturnReasonTypesByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnReasonType> returnReasonTypes = null;
+        List<ReturnReasonType> returnReasonTypes;
         
         try {
             String query = null;
@@ -2098,7 +2098,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonType> getReturnReasonTypesByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        List<ReturnReasonType> returnReasonTypes = null;
+        List<ReturnReasonType> returnReasonTypes;
         
         try {
             String query = null;
@@ -2784,7 +2784,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        List<ReturnTypeShippingMethod> returnTypeShippingMethods = null;
+        List<ReturnTypeShippingMethod> returnTypeShippingMethods;
         
         try {
             String query = null;
@@ -2824,7 +2824,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ReturnTypeShippingMethod> returnTypeShippingMethods = null;
+        List<ReturnTypeShippingMethod> returnTypeShippingMethods;
         
         try {
             String query = null;

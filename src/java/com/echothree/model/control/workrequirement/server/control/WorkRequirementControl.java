@@ -153,7 +153,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementType> getWorkRequirementTypes(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkRequirementType> workRequirementTypes = null;
+        List<WorkRequirementType> workRequirementTypes;
         
         try {
             String query = null;
@@ -191,7 +191,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementType> getWorkRequirementTypesByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkRequirementType> workRequirementTypes = null;
+        List<WorkRequirementType> workRequirementTypes;
         
         try {
             String query = null;
@@ -584,7 +584,7 @@ public class WorkRequirementControl
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkEffortScopeAndWorkflowStep(WorkEffortScope workEffortScope,
             WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes = null;
+        List<WorkRequirementScope> workRequirementScopes;
         
         try {
             String query = null;
@@ -631,7 +631,7 @@ public class WorkRequirementControl
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType,
             EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes = null;
+        List<WorkRequirementScope> workRequirementScopes;
         
         try {
             String query = null;
@@ -670,7 +670,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes = null;
+        List<WorkRequirementScope> workRequirementScopes;
         
         try {
             String query = null;
@@ -818,7 +818,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirement> getWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope, EntityPermission entityPermission) {
-        List<WorkRequirement> workRequirements = null;
+        List<WorkRequirement> workRequirements;
         
         try {
             String query = null;
@@ -856,7 +856,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirement> getWorkRequirementsByWorkEffort(WorkEffort workEffort, EntityPermission entityPermission) {
-        List<WorkRequirement> workRequirements = null;
+        List<WorkRequirement> workRequirements;
         
         try {
             String query = null;

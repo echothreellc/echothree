@@ -579,7 +579,7 @@ public class WishlistControl
     }
     
     private List<WishlistTypePriority> getWishlistTypePriorities(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<WishlistTypePriority> wishlistTypePriorities = null;
+        List<WishlistTypePriority> wishlistTypePriorities;
         
         try {
             String query = null;
@@ -1085,7 +1085,7 @@ public class WishlistControl
     }
     
     private List<Wishlist> getWishlistsByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<Wishlist> wishlists = null;
+        List<Wishlist> wishlists;
         
         try {
             String query = null;
@@ -1193,7 +1193,7 @@ public class WishlistControl
 
     private List<WishlistLine> getWishlistLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority,
             EntityPermission entityPermission) {
-        List<WishlistLine> wishlistLines = null;
+        List<WishlistLine> wishlistLines;
         
         try {
             String query = null;
@@ -1378,7 +1378,7 @@ public class WishlistControl
     }
     
     private List<Order> getWishlists(Party companyParty, Party party, EntityPermission entityPermission) {
-        List<Order> orders = null;
+        List<Order> orders;
         
         try {
             String query = null;
@@ -1443,7 +1443,7 @@ public class WishlistControl
     }
     
     private List<Order> getOrdersByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<Order> orders = null;
+        List<Order> orders;
         
         try {
             String query = null;
@@ -1595,7 +1595,7 @@ public class WishlistControl
     }
     
     private List<OrderLine> getWishlistLinesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -1632,7 +1632,7 @@ public class WishlistControl
     }
     
     private List<OrderLine> getWishlistLinesByItem(Item item, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -1670,7 +1670,7 @@ public class WishlistControl
     
     private List<OrderLine> getOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority,
             EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;

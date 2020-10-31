@@ -909,7 +909,7 @@ public class TermControl
     
     private List<CustomerTypeCreditLimit> getCustomerTypeCreditLimitsByCustomerType(CustomerType customerType,
             EntityPermission entityPermission) {
-        List<CustomerTypeCreditLimit> customerTypeCreditLimits = null;
+        List<CustomerTypeCreditLimit> customerTypeCreditLimits;
         
         try {
             String query = null;
@@ -1060,7 +1060,7 @@ public class TermControl
     }
     
     private List<PartyCreditLimit> getPartyCreditLimitsByParty(Party party, EntityPermission entityPermission) {
-        List<PartyCreditLimit> partyCreditLimits = null;
+        List<PartyCreditLimit> partyCreditLimits;
         
         try {
             String query = null;
@@ -1209,7 +1209,7 @@ public class TermControl
     }
     
     private List<PartyTerm> getPartyTermsByTerm(Term term, EntityPermission entityPermission) {
-        List<PartyTerm> partyTerms = null;
+        List<PartyTerm> partyTerms;
         
         try {
             String query = null;

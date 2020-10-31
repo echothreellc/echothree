@@ -549,7 +549,7 @@ public class SubscriptionControl
     
     private List<SubscriptionType> getSubscriptionTypesBySubscriptionKind(SubscriptionKind subscriptionKind,
             EntityPermission entityPermission) {
-        List<SubscriptionType> subscriptionTypes = null;
+        List<SubscriptionType> subscriptionTypes;
         
         try {
             String query = null;
@@ -1064,7 +1064,7 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeChain> subscriptionTypeChains = null;
+        List<SubscriptionTypeChain> subscriptionTypeChains;
         
         try {
             String query = null;
@@ -1105,7 +1105,7 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionTypeAndChainType(SubscriptionType subscriptionType, ChainType chainType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeChain> subscriptionTypeChains = null;
+        List<SubscriptionTypeChain> subscriptionTypeChains;
         
         try {
             String query = null;
@@ -1312,7 +1312,7 @@ public class SubscriptionControl
     
     private List<Subscription> getSubscriptionsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<Subscription> subscriptions = null;
+        List<Subscription> subscriptions;
         
         try {
             String query = null;
@@ -1350,7 +1350,7 @@ public class SubscriptionControl
     }
     
     private List<Subscription> getSubscriptionsByParty(Party party, EntityPermission entityPermission) {
-        List<Subscription> subscriptions = null;
+        List<Subscription> subscriptions;
         
         try {
             String query = null;

@@ -714,7 +714,7 @@ public class ClubControl
     }
     
     private List<ClubItem> getClubItemsByClub(Club club, EntityPermission entityPermission) {
-        List<ClubItem> clubItems = null;
+        List<ClubItem> clubItems;
         
         try {
             String query = null;
@@ -755,7 +755,7 @@ public class ClubControl
     }
     
     private List<ClubItem> getClubItemsByItem(Item item, EntityPermission entityPermission) {
-        List<ClubItem> clubItems = null;
+        List<ClubItem> clubItems;
         
         try {
             String query = null;

@@ -1227,7 +1227,7 @@ public class PartyControl
     }
     
     public List<TimeZone> getTimeZones() {
-        List<TimeZone> timeZones = null;
+        List<TimeZone> timeZones;
         
         try {
             PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
@@ -1548,7 +1548,7 @@ public class PartyControl
     }
     
     public List<DateTimeFormat> getDateTimeFormats() {
-        List<DateTimeFormat> dateTimeFormats = null;
+        List<DateTimeFormat> dateTimeFormats;
         
         try {
             PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
@@ -1977,7 +1977,7 @@ public class PartyControl
     }
 
     public List<Party> getPartiesByPartyType(PartyType partyType) {
-        List<Party> parties = null;
+        List<Party> parties;
         
         try {
             PreparedStatement ps = PartyFactory.getInstance().prepareStatement(
@@ -3323,7 +3323,7 @@ public class PartyControl
     }
     
     private List<PartyCompany> getCompanies(EntityPermission entityPermission) {
-        List<PartyCompany> partyCompanies = null;
+        List<PartyCompany> partyCompanies;
         
         try {
             String query = null;
@@ -3622,7 +3622,7 @@ public class PartyControl
     }
     
     private List<PartyDivision> getDivisionsByCompany(Party companyParty, EntityPermission entityPermission) {
-        List<PartyDivision> partyDivisions = null;
+        List<PartyDivision> partyDivisions;
         
         try {
             String query = null;
@@ -3926,7 +3926,7 @@ public class PartyControl
     }
     
     private List<PartyDepartment> getDepartmentsByDivision(Party divisionParty, EntityPermission entityPermission) {
-        List<PartyDepartment> partyDepartments = null;
+        List<PartyDepartment> partyDepartments;
         
         try {
             String query = null;

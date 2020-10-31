@@ -253,7 +253,7 @@ public class BillingControl
     }
     
     private List<BillingAccount> getBillingAccountsByBillFrom(Party billFrom, EntityPermission entityPermission) {
-        List<BillingAccount> billingAccounts = null;
+        List<BillingAccount> billingAccounts;
         
         try {
             String query = null;
@@ -304,7 +304,7 @@ public class BillingControl
     }
     
     private List<BillingAccount> getBillingAccountsByBillTo(Party billTo, EntityPermission entityPermission) {
-        List<BillingAccount> billingAccounts = null;
+        List<BillingAccount> billingAccounts;
         
         try {
             String query = null;
@@ -535,7 +535,7 @@ public class BillingControl
     }
     
     private List<BillingAccountRole> getBillingAccountRolesByBillingAccount(BillingAccount billingAccount, EntityPermission entityPermission) {
-        List<BillingAccountRole> billingAccountRoles = null;
+        List<BillingAccountRole> billingAccountRoles;
         
         try {
             String query = null;
@@ -576,7 +576,7 @@ public class BillingControl
     }
     
     private List<BillingAccountRole> getBillingAccountRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism, EntityPermission entityPermission) {
-        List<BillingAccountRole> billingAccountRoles = null;
+        List<BillingAccountRole> billingAccountRoles;
         
         try {
             String query = null;

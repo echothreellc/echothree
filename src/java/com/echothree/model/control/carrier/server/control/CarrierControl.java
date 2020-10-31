@@ -732,7 +732,7 @@ public class CarrierControl
     }
     
     private List<Carrier> getCarriers(EntityPermission entityPermission) {
-        List<Carrier> carriers = null;
+        List<Carrier> carriers;
         
         try {
             String query = null;
@@ -936,7 +936,7 @@ public class CarrierControl
     }
     
     private List<CarrierService> getCarrierServices(Party carrierParty, EntityPermission entityPermission) {
-        List<CarrierService> carrierPartyPriorities = null;
+        List<CarrierService> carrierPartyPriorities;
         
         try {
             String query = null;
@@ -1420,7 +1420,7 @@ public class CarrierControl
     }
     
     private List<CarrierOption> getCarrierOptions(Party carrierParty, EntityPermission entityPermission) {
-        List<CarrierOption> carrierPartyPriorities = null;
+        List<CarrierOption> carrierPartyPriorities;
         
         try {
             String query = null;
@@ -1941,7 +1941,7 @@ public class CarrierControl
     }
     
     private List<CarrierServiceOption> getCarrierServiceOptionsByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<CarrierServiceOption> carrierServiceOptions = null;
+        List<CarrierServiceOption> carrierServiceOptions;
         
         try {
             String query = null;
@@ -1981,7 +1981,7 @@ public class CarrierControl
     }
     
     private List<CarrierServiceOption> getCarrierServiceOptionsByCarrierOption(CarrierOption carrierOption, EntityPermission entityPermission) {
-        List<CarrierServiceOption> carrierServiceOptions = null;
+        List<CarrierServiceOption> carrierServiceOptions;
         
         try {
             String query = null;
@@ -2155,7 +2155,7 @@ public class CarrierControl
     }
     
     private List<PartyCarrier> getPartyCarriersByParty(Party party, EntityPermission entityPermission) {
-        List<PartyCarrier> partyCarriers = null;
+        List<PartyCarrier> partyCarriers;
         
         try {
             String query = null;
@@ -2195,7 +2195,7 @@ public class CarrierControl
     }
     
     private List<PartyCarrier> getPartyCarriersByCarrierParty(Party carrierParty, EntityPermission entityPermission) {
-        List<PartyCarrier> partyCarriers = null;
+        List<PartyCarrier> partyCarriers;
         
         try {
             String query = null;

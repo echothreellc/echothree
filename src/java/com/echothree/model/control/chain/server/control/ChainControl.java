@@ -3337,7 +3337,7 @@ public class ChainControl
     }
     
     private List<ChainInstance> getChainInstancesByChain(Chain chain, EntityPermission entityPermission) {
-        List<ChainInstance> chainInstances = null;
+        List<ChainInstance> chainInstances;
         
         try {
             String query = null;
@@ -3630,7 +3630,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRoles(final ChainEntityRoleType chainEntityRoleType, final EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
@@ -3671,7 +3671,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRolesByChainInstance(ChainInstance chainInstance, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
@@ -3713,7 +3713,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRolesByChainEntityRoleType(ChainEntityRoleType chainEntityRoleType, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
@@ -3752,7 +3752,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRolesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
