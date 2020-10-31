@@ -1364,10 +1364,9 @@ public class UserControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.RecoveryQuestion */
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        RecoveryQuestionPK pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
-        RecoveryQuestion recoveryQuestion = RecoveryQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return recoveryQuestion;
+        var pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
+
+        return RecoveryQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance) {

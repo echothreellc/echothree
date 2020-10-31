@@ -1316,10 +1316,9 @@ public class SelectorControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SelectorNodeType */
     public SelectorNodeType getSelectorNodeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        SelectorNodeTypePK pk = new SelectorNodeTypePK(entityInstance.getEntityUniqueId());
-        SelectorNodeType selectorNodeType = SelectorNodeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return selectorNodeType;
+        var pk = new SelectorNodeTypePK(entityInstance.getEntityUniqueId());
+
+        return SelectorNodeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public SelectorNodeType getSelectorNodeTypeByEntityInstance(EntityInstance entityInstance) {

@@ -305,10 +305,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Language */
     public Language getLanguageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        LanguagePK pk = new LanguagePK(entityInstance.getEntityUniqueId());
-        Language language = LanguageFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return language;
+        var pk = new LanguagePK(entityInstance.getEntityUniqueId());
+
+        return LanguageFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Language getLanguageByEntityInstance(EntityInstance entityInstance) {
@@ -1287,10 +1286,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.TimeZone */
     public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        TimeZonePK pk = new TimeZonePK(entityInstance.getEntityUniqueId());
-        TimeZone timeZone = TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return timeZone;
+        var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
+
+        return TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
@@ -1608,10 +1606,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.DateTimeFormat */
     public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        DateTimeFormatPK pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
-        DateTimeFormat dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return dateTimeFormat;
+        var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
+
+        return DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
@@ -2070,10 +2067,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Party */
     public Party getPartyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        PartyPK pk = new PartyPK(entityInstance.getEntityUniqueId());
-        Party party = PartyFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return party;
+        var pk = new PartyPK(entityInstance.getEntityUniqueId());
+
+        return PartyFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Party getPartyByEntityInstance(EntityInstance entityInstance) {

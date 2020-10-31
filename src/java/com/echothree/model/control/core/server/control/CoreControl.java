@@ -2991,10 +2991,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttributeType */
     public EntityAttributeType getEntityAttributeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityAttributeTypePK pk = new EntityAttributeTypePK(entityInstance.getEntityUniqueId());
-        EntityAttributeType entityAttributeType = EntityAttributeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityAttributeType;
+        var pk = new EntityAttributeTypePK(entityInstance.getEntityUniqueId());
+
+        return EntityAttributeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttributeType getEntityAttributeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -4165,10 +4164,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttributeGroup */
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityAttributeGroupPK pk = new EntityAttributeGroupPK(entityInstance.getEntityUniqueId());
-        EntityAttributeGroup entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityAttributeGroup;
+        var pk = new EntityAttributeGroupPK(entityInstance.getEntityUniqueId());
+
+        return EntityAttributeGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstance(EntityInstance entityInstance) {
@@ -4651,10 +4649,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttribute */
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityAttributePK pk = new EntityAttributePK(entityInstance.getEntityUniqueId());
-        EntityAttribute entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityAttribute;
+        var pk = new EntityAttributePK(entityInstance.getEntityUniqueId());
+
+        return EntityAttributeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance) {
@@ -5981,10 +5978,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityListItem */
     public EntityListItem getEntityListItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityListItemPK pk = new EntityListItemPK(entityInstance.getEntityUniqueId());
-        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityListItem;
+        var pk = new EntityListItemPK(entityInstance.getEntityUniqueId());
+
+        return EntityListItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityListItem getEntityListItemByEntityInstance(EntityInstance entityInstance) {
@@ -15278,10 +15274,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Color */
     public Color getColorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        ColorPK pk = new ColorPK(entityInstance.getEntityUniqueId());
-        Color entity = ColorFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new ColorPK(entityInstance.getEntityUniqueId());
+
+        return ColorFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Color getColorByEntityInstance(EntityInstance entityInstance) {
@@ -15727,10 +15722,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.FontStyle */
     public FontStyle getFontStyleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        FontStylePK pk = new FontStylePK(entityInstance.getEntityUniqueId());
-        FontStyle entity = FontStyleFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new FontStylePK(entityInstance.getEntityUniqueId());
+
+        return FontStyleFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public FontStyle getFontStyleByEntityInstance(EntityInstance entityInstance) {
@@ -16173,10 +16167,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.FontWeight */
     public FontWeight getFontWeightByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        FontWeightPK pk = new FontWeightPK(entityInstance.getEntityUniqueId());
-        FontWeight entity = FontWeightFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new FontWeightPK(entityInstance.getEntityUniqueId());
+
+        return FontWeightFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public FontWeight getFontWeightByEntityInstance(EntityInstance entityInstance) {
@@ -16619,10 +16612,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.TextDecoration */
     public TextDecoration getTextDecorationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        TextDecorationPK pk = new TextDecorationPK(entityInstance.getEntityUniqueId());
-        TextDecoration entity = TextDecorationFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new TextDecorationPK(entityInstance.getEntityUniqueId());
+
+        return TextDecorationFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public TextDecoration getTextDecorationByEntityInstance(EntityInstance entityInstance) {
@@ -17065,10 +17057,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.TextTransformation */
     public TextTransformation getTextTransformationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        TextTransformationPK pk = new TextTransformationPK(entityInstance.getEntityUniqueId());
-        TextTransformation entity = TextTransformationFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new TextTransformationPK(entityInstance.getEntityUniqueId());
+
+        return TextTransformationFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public TextTransformation getTextTransformationByEntityInstance(EntityInstance entityInstance) {

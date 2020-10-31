@@ -279,10 +279,9 @@ public class AccountingControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Currency */
     public Currency getCurrencyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        CurrencyPK pk = new CurrencyPK(entityInstance.getEntityUniqueId());
-        Currency currency = CurrencyFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return currency;
+        var pk = new CurrencyPK(entityInstance.getEntityUniqueId());
+
+        return CurrencyFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Currency getCurrencyByEntityInstance(EntityInstance entityInstance) {
@@ -5311,10 +5310,9 @@ public class AccountingControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SymbolPosition */
     public SymbolPosition getSymbolPositionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        SymbolPositionPK pk = new SymbolPositionPK(entityInstance.getEntityUniqueId());
-        SymbolPosition symbolPosition = SymbolPositionFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return symbolPosition;
+        var pk = new SymbolPositionPK(entityInstance.getEntityUniqueId());
+
+        return SymbolPositionFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public SymbolPosition getSymbolPositionByEntityInstance(EntityInstance entityInstance) {

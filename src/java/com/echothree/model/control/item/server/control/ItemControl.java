@@ -1133,10 +1133,9 @@ public class ItemControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemCategory */
     public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        ItemCategoryPK pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
-        ItemCategory itemCategory = ItemCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return itemCategory;
+        var pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
+
+        return ItemCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance) {

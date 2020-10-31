@@ -150,10 +150,9 @@ public class UomControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKind */
     public UnitOfMeasureKind getUnitOfMeasureKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        UnitOfMeasureKindPK pk = new UnitOfMeasureKindPK(entityInstance.getEntityUniqueId());
-        UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return unitOfMeasureKind;
+        var pk = new UnitOfMeasureKindPK(entityInstance.getEntityUniqueId());
+
+        return UnitOfMeasureKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureKind getUnitOfMeasureKindByEntityInstance(EntityInstance entityInstance) {
@@ -691,10 +690,9 @@ public class UomControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureType */
     public UnitOfMeasureType getUnitOfMeasureTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        UnitOfMeasureTypePK pk = new UnitOfMeasureTypePK(entityInstance.getEntityUniqueId());
-        UnitOfMeasureType unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return unitOfMeasureType;
+        var pk = new UnitOfMeasureTypePK(entityInstance.getEntityUniqueId());
+
+        return UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureType getUnitOfMeasureTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1684,10 +1682,9 @@ public class UomControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKindUseType */
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        UnitOfMeasureKindUseTypePK pk = new UnitOfMeasureKindUseTypePK(entityInstance.getEntityUniqueId());
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType = UnitOfMeasureKindUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return unitOfMeasureKindUseType;
+        var pk = new UnitOfMeasureKindUseTypePK(entityInstance.getEntityUniqueId());
+
+        return UnitOfMeasureKindUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1867,10 +1864,9 @@ public class UomControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKindUse */
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        UnitOfMeasureKindUsePK pk = new UnitOfMeasureKindUsePK(entityInstance.getEntityUniqueId());
-        UnitOfMeasureKindUse unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return unitOfMeasureKindUse;
+        var pk = new UnitOfMeasureKindUsePK(entityInstance.getEntityUniqueId());
+
+        return UnitOfMeasureKindUseFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByEntityInstance(EntityInstance entityInstance) {
