@@ -530,7 +530,7 @@ public class EmployeeControl
     }
     
     private List<ResponsibilityTypeDescription> getResponsibilityTypeDescriptionsByResponsibilityType(ResponsibilityType responsibilityType, EntityPermission entityPermission) {
-        List<ResponsibilityTypeDescription> responsibilityTypeDescriptions = null;
+        List<ResponsibilityTypeDescription> responsibilityTypeDescriptions;
         
         try {
             String query = null;
@@ -957,7 +957,7 @@ public class EmployeeControl
     }
     
     private List<SkillTypeDescription> getSkillTypeDescriptionsBySkillType(SkillType skillType, EntityPermission entityPermission) {
-        List<SkillTypeDescription> skillTypeDescriptions = null;
+        List<SkillTypeDescription> skillTypeDescriptions;
         
         try {
             String query = null;
@@ -2565,7 +2565,7 @@ public class EmployeeControl
     }
     
     private List<TerminationReasonDescription> getTerminationReasonDescriptionsByTerminationReason(TerminationReason terminationReason, EntityPermission entityPermission) {
-        List<TerminationReasonDescription> terminationReasonDescriptions = null;
+        List<TerminationReasonDescription> terminationReasonDescriptions;
         
         try {
             String query = null;
@@ -2993,7 +2993,7 @@ public class EmployeeControl
     }
     
     private List<TerminationTypeDescription> getTerminationTypeDescriptionsByTerminationType(TerminationType terminationType, EntityPermission entityPermission) {
-        List<TerminationTypeDescription> terminationTypeDescriptions = null;
+        List<TerminationTypeDescription> terminationTypeDescriptions;
         
         try {
             String query = null;
@@ -3736,7 +3736,7 @@ public class EmployeeControl
     }
     
     private List<EmployeeTypeDescription> getEmployeeTypeDescriptionsByEmployeeType(EmployeeType employeeType, EntityPermission entityPermission) {
-        List<EmployeeTypeDescription> employeeTypeDescriptions = null;
+        List<EmployeeTypeDescription> employeeTypeDescriptions;
         
         try {
             String query = null;

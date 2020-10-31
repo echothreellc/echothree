@@ -927,7 +927,7 @@ public class WarehouseControl
     }
     
     private List<LocationTypeDescription> getLocationTypeDescriptionsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<LocationTypeDescription> locationTypeDescriptions = null;
+        List<LocationTypeDescription> locationTypeDescriptions;
         
         try {
             String query = null;
@@ -1283,7 +1283,7 @@ public class WarehouseControl
     }
     
     private List<LocationNameElementDescription> getLocationNameElementDescriptionsByLocationNameElement(LocationNameElement locationNameElement, EntityPermission entityPermission) {
-        List<LocationNameElementDescription> locationNameElementDescriptions = null;
+        List<LocationNameElementDescription> locationNameElementDescriptions;
         
         try {
             String query = null;
@@ -1786,7 +1786,7 @@ public class WarehouseControl
     }
     
     private List<LocationDescription> getLocationDescriptionsByLocation(Location location, EntityPermission entityPermission) {
-        List<LocationDescription> locationDescriptions = null;
+        List<LocationDescription> locationDescriptions;
         
         try {
             String query = null;

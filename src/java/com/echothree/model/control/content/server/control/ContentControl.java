@@ -764,7 +764,7 @@ public class ContentControl
     }
     
     private List<ContentPageLayoutDescription> getContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, EntityPermission entityPermission) {
-        List<ContentPageLayoutDescription> contentPageLayoutDescriptions = null;
+        List<ContentPageLayoutDescription> contentPageLayoutDescriptions;
         
         try {
             String query = null;
@@ -1221,7 +1221,7 @@ public class ContentControl
     }
     
     private List<ContentCollectionDescription> getContentCollectionDescriptionsByContentCollection(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentCollectionDescription> contentCollectionDescriptions = null;
+        List<ContentCollectionDescription> contentCollectionDescriptions;
         
         try {
             String query = null;
@@ -1787,7 +1787,7 @@ public class ContentControl
     }
     
     private List<ContentSectionDescription> getContentSectionDescriptionsByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
-        List<ContentSectionDescription> contentSectionDescriptions = null;
+        List<ContentSectionDescription> contentSectionDescriptions;
         
         try {
             String query = null;
@@ -2267,7 +2267,7 @@ public class ContentControl
     }
     
     private List<ContentPageDescription> getContentPageDescriptionsByContentPage(ContentPage contentPage, EntityPermission entityPermission) {
-        List<ContentPageDescription> contentPageDescriptions = null;
+        List<ContentPageDescription> contentPageDescriptions;
         
         try {
             String query = null;
@@ -3060,7 +3060,7 @@ public class ContentControl
     }
     
     private List<ContentCatalogDescription> getContentCatalogDescriptionsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCatalogDescription> contentCatalogDescriptions = null;
+        List<ContentCatalogDescription> contentCatalogDescriptions;
         
         try {
             String query = null;
@@ -4275,7 +4275,7 @@ public class ContentControl
     }
     
     private List<ContentCategoryDescription> getContentCategoryDescriptionsByContentCategory(ContentCategory contentCategory, EntityPermission entityPermission) {
-        List<ContentCategoryDescription> contentCategoryDescriptions = null;
+        List<ContentCategoryDescription> contentCategoryDescriptions;
         
         try {
             String query = null;
@@ -5257,7 +5257,7 @@ public class ContentControl
     }
     
     private List<ContentWebAddressDescription> getContentWebAddressDescriptionsByContentWebAddress(ContentWebAddress contentWebAddress, EntityPermission entityPermission) {
-        List<ContentWebAddressDescription> contentWebAddressDescriptions = null;
+        List<ContentWebAddressDescription> contentWebAddressDescriptions;
         
         try {
             String query = null;

@@ -1362,7 +1362,7 @@ public class ItemControl
     }
     
     private List<ItemCategoryDescription> getItemCategoryDescriptionsByItemCategory(ItemCategory itemCategory, EntityPermission entityPermission) {
-        List<ItemCategoryDescription> itemCategoryDescriptions = null;
+        List<ItemCategoryDescription> itemCategoryDescriptions;
         
         try {
             String query = null;
@@ -2749,7 +2749,7 @@ public class ItemControl
     
     private List<ItemAliasTypeDescription> getItemAliasTypeDescriptionsByItemAliasType(ItemAliasType itemAliasType,
             EntityPermission entityPermission) {
-        List<ItemAliasTypeDescription> itemAliasTypeDescriptions = null;
+        List<ItemAliasTypeDescription> itemAliasTypeDescriptions;
         
         try {
             String query = null;
@@ -7654,7 +7654,7 @@ public class ItemControl
     }
 
     private List<ItemDescription> getItemDescriptionsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemDescription> itemDescriptions = null;
+        List<ItemDescription> itemDescriptions;
 
         try {
             String query = null;
@@ -7695,7 +7695,7 @@ public class ItemControl
     }
 
     private List<ItemDescription> getItemDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        List<ItemDescription> itemDescriptions = null;
+        List<ItemDescription> itemDescriptions;
 
         try {
             String query = null;

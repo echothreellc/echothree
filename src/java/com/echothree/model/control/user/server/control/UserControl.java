@@ -1569,7 +1569,7 @@ public class UserControl
     
     private List<RecoveryQuestionDescription> getRecoveryQuestionDescriptionsByRecoveryQuestion(RecoveryQuestion recoveryQuestion,
             EntityPermission entityPermission) {
-        List<RecoveryQuestionDescription> recoveryQuestionDescriptions = null;
+        List<RecoveryQuestionDescription> recoveryQuestionDescriptions;
         
         try {
             String query = null;

@@ -791,7 +791,7 @@ public class GeoControl
     
     
     private List<GeoCodeTypeDescription> getGeoCodeTypeDescriptionsByGeoCodeType(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeTypeDescription> geoCodeTypeDescriptions = null;
+        List<GeoCodeTypeDescription> geoCodeTypeDescriptions;
         
         try {
             String query = null;
@@ -1219,7 +1219,7 @@ public class GeoControl
     
     
     private List<GeoCodeScopeDescription> getGeoCodeScopeDescriptionsByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        List<GeoCodeScopeDescription> geoCodeScopeDescriptions = null;
+        List<GeoCodeScopeDescription> geoCodeScopeDescriptions;
         
         try {
             String query = null;
@@ -1716,7 +1716,7 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasTypeDescription> getGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, EntityPermission entityPermission) {
-        List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions = null;
+        List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions;
         
         try {
             String query = null;
@@ -2148,7 +2148,7 @@ public class GeoControl
     
     
     private List<GeoCodeDescription> getGeoCodeDescriptionsByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeDescription> geoCodeDescriptions = null;
+        List<GeoCodeDescription> geoCodeDescriptions;
         
         try {
             String query = null;

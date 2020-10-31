@@ -314,7 +314,7 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortTypeDescription> getWorkEffortTypeDescriptionsByWorkEffortType(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkEffortTypeDescription> workEffortTypeDescriptions = null;
+        List<WorkEffortTypeDescription> workEffortTypeDescriptions;
         
         try {
             String query = null;
@@ -800,7 +800,7 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortScopeDescription> getWorkEffortScopeDescriptionsByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkEffortScopeDescription> workEffortScopeDescriptions = null;
+        List<WorkEffortScopeDescription> workEffortScopeDescriptions;
         
         try {
             String query = null;

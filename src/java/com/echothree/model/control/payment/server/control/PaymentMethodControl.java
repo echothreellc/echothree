@@ -494,7 +494,7 @@ public class PaymentMethodControl
     }
     
     private List<PaymentMethodDescription> getPaymentMethodDescriptions(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        List<PaymentMethodDescription> paymentMethodDescriptions = null;
+        List<PaymentMethodDescription> paymentMethodDescriptions;
         
         try {
             String query = null;

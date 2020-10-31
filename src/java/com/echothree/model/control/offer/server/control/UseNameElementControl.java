@@ -292,7 +292,7 @@ public class UseNameElementControl
     }
 
     private List<UseNameElementDescription> getUseNameElementDescriptionsByUseNameElement(UseNameElement useNameElement, EntityPermission entityPermission) {
-        List<UseNameElementDescription> useNameElementDescriptions = null;
+        List<UseNameElementDescription> useNameElementDescriptions;
 
         try {
             String query = null;

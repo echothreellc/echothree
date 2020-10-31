@@ -1090,7 +1090,7 @@ public class TaxControl
     }
     
     private List<TaxDescription> getTaxDescriptionsByTax(Tax tax, EntityPermission entityPermission) {
-        List<TaxDescription> taxDescriptions = null;
+        List<TaxDescription> taxDescriptions;
         
         try {
             String query = null;

@@ -1772,7 +1772,7 @@ public class DocumentControl
     }
     
     private List<DocumentDescription> getDocumentDescriptionsByDocument(Document document, EntityPermission entityPermission) {
-        List<DocumentDescription> documentDescriptions = null;
+        List<DocumentDescription> documentDescriptions;
         
         try {
             String query = null;

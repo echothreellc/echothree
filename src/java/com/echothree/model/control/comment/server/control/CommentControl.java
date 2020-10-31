@@ -358,7 +358,7 @@ public class CommentControl
     }
     
     private List<CommentTypeDescription> getCommentTypeDescriptionsByCommentType(CommentType commentType, EntityPermission entityPermission) {
-        List<CommentTypeDescription> commentTypeDescriptions = null;
+        List<CommentTypeDescription> commentTypeDescriptions;
         
         try {
             String query = null;
@@ -700,7 +700,7 @@ public class CommentControl
     
     private List<CommentUsageTypeDescription> getCommentUsageTypeDescriptionsByCommentUsageType(CommentUsageType commentUsageType,
             EntityPermission entityPermission) {
-        List<CommentUsageTypeDescription> commentUsageTypeDescriptions = null;
+        List<CommentUsageTypeDescription> commentUsageTypeDescriptions;
         
         try {
             String query = null;

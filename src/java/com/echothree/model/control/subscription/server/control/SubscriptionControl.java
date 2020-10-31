@@ -883,7 +883,7 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeDescription> getSubscriptionTypeDescriptionsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeDescription> subscriptionTypeDescriptions = null;
+        List<SubscriptionTypeDescription> subscriptionTypeDescriptions;
         
         try {
             String query = null;

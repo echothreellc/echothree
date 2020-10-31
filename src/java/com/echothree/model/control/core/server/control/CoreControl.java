@@ -1126,7 +1126,7 @@ public class CoreControl
     
     private List<EntityTypeDescription> getEntityTypeDescriptionsByEntityType(EntityType entityType,
             EntityPermission entityPermission) {
-        List<EntityTypeDescription> entityTypeDescriptions = null;
+        List<EntityTypeDescription> entityTypeDescriptions;
         
         try {
             String query = null;
@@ -1502,7 +1502,7 @@ public class CoreControl
     
     private List<CommandDescription> getCommandDescriptionsByCommand(Command command,
             EntityPermission entityPermission) {
-        List<CommandDescription> commandDescriptions = null;
+        List<CommandDescription> commandDescriptions;
         
         try {
             String query = null;
@@ -1934,7 +1934,7 @@ public class CoreControl
     
     private List<CommandMessageTypeDescription> getCommandMessageTypeDescriptionsByCommandMessageType(CommandMessageType commandMessageType,
             EntityPermission entityPermission) {
-        List<CommandMessageTypeDescription> commandMessageTypeDescriptions = null;
+        List<CommandMessageTypeDescription> commandMessageTypeDescriptions;
         
         try {
             String query = null;
@@ -4522,7 +4522,7 @@ public class CoreControl
     }
     
     private List<EntityAttributeGroupDescription> getEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, EntityPermission entityPermission) {
-        List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions = null;
+        List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions;
         
         try {
             String query = null;
@@ -5101,7 +5101,7 @@ public class CoreControl
     
     private List<EntityAttributeDescription> getEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
-        List<EntityAttributeDescription> entityAttributeDescriptions = null;
+        List<EntityAttributeDescription> entityAttributeDescriptions;
         
         try {
             String query = null;
@@ -6356,7 +6356,7 @@ public class CoreControl
     }
     
     private List<EntityListItemDescription> getEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityListItemDescription> entityListItemDescriptions = null;
+        List<EntityListItemDescription> entityListItemDescriptions;
         
         try {
             String query = null;
@@ -6844,7 +6844,7 @@ public class CoreControl
     }
     
     private List<EntityIntegerRangeDescription> getEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange, EntityPermission entityPermission) {
-        List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions = null;
+        List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions;
         
         try {
             String query = null;
@@ -7332,7 +7332,7 @@ public class CoreControl
     }
     
     private List<EntityLongRangeDescription> getEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange, EntityPermission entityPermission) {
-        List<EntityLongRangeDescription> entityLongRangeDescriptions = null;
+        List<EntityLongRangeDescription> entityLongRangeDescriptions;
         
         try {
             String query = null;

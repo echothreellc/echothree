@@ -449,7 +449,7 @@ public class CommunicationControl
     }
     
     private List<CommunicationEventPurposeDescription> getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose, EntityPermission entityPermission) {
-        List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions = null;
+        List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions;
         
         try {
             String query = null;
@@ -1411,7 +1411,7 @@ public class CommunicationControl
     }
     
     private List<CommunicationSourceDescription> getCommunicationSourceDescriptionsByCommunicationSource(CommunicationSource communicationSource, EntityPermission entityPermission) {
-        List<CommunicationSourceDescription> communicationSourceDescriptions = null;
+        List<CommunicationSourceDescription> communicationSourceDescriptions;
         
         try {
             String query = null;

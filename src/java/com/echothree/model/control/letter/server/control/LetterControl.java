@@ -579,7 +579,7 @@ public class LetterControl
     }
     
     private List<LetterSourceDescription> getLetterSourceDescriptionsByLetterSource(LetterSource letterSource, EntityPermission entityPermission) {
-        List<LetterSourceDescription> letterSourceDescriptions = null;
+        List<LetterSourceDescription> letterSourceDescriptions;
         
         try {
             String query = null;
@@ -1133,7 +1133,7 @@ public class LetterControl
     }
     
     private List<LetterDescription> getLetterDescriptionsByLetter(Letter letter, EntityPermission entityPermission) {
-        List<LetterDescription> letterDescriptions = null;
+        List<LetterDescription> letterDescriptions;
         
         try {
             String query = null;

@@ -438,7 +438,7 @@ public class WishlistControl
     }
     
     private List<WishlistTypeDescription> getWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<WishlistTypeDescription> wishlistTypeDescriptions = null;
+        List<WishlistTypeDescription> wishlistTypeDescriptions;
         
         try {
             String query = null;
@@ -904,7 +904,7 @@ public class WishlistControl
     }
     
     private List<WishlistTypePriorityDescription> getWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, EntityPermission entityPermission) {
-        List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions = null;
+        List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions;
         
         try {
             String query = null;

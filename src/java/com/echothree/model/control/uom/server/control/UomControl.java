@@ -542,7 +542,7 @@ public class UomControl
     }
     
     private List<UnitOfMeasureKindDescription> getUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        List<UnitOfMeasureKindDescription> unitOfMeasureKindDescriptions = null;
+        List<UnitOfMeasureKindDescription> unitOfMeasureKindDescriptions;
         
         try {
             String query = null;
@@ -1052,7 +1052,7 @@ public class UomControl
     }
     
     private List<UnitOfMeasureTypeDescription> getUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<UnitOfMeasureTypeDescription> unitOfMeasureTypeDescriptions = null;
+        List<UnitOfMeasureTypeDescription> unitOfMeasureTypeDescriptions;
         
         try {
             String query = null;

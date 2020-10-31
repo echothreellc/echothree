@@ -483,7 +483,7 @@ public class OfferControl
     }
     
     private List<OfferDescription> getOfferDescriptionsByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferDescription> offerDescriptions = null;
+        List<OfferDescription> offerDescriptions;
         
         try {
             String query = null;

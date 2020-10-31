@@ -463,7 +463,7 @@ public class UseControl
     }
 
     private List<UseDescription> getUseDescriptionsByUse(Use use, EntityPermission entityPermission) {
-        List<UseDescription> useDescriptions = null;
+        List<UseDescription> useDescriptions;
 
         try {
             String query = null;

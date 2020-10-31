@@ -638,7 +638,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationKindDescription> getCancellationKindDescriptionsByCancellationKind(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationKindDescription> cancellationKindDescriptions = null;
+        List<CancellationKindDescription> cancellationKindDescriptions;
         
         try {
             String query = null;
@@ -1851,7 +1851,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonDescription> getCancellationReasonDescriptionsByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationReasonDescription> cancellationReasonDescriptions = null;
+        List<CancellationReasonDescription> cancellationReasonDescriptions;
         
         try {
             String query = null;
@@ -2616,7 +2616,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationTypeDescription> getCancellationTypeDescriptionsByCancellationType(CancellationType cancellationType, EntityPermission entityPermission) {
-        List<CancellationTypeDescription> cancellationTypeDescriptions = null;
+        List<CancellationTypeDescription> cancellationTypeDescriptions;
         
         try {
             String query = null;

@@ -493,7 +493,7 @@ public class VendorControl
     }
     
     private List<VendorTypeDescription> getVendorTypeDescriptionsByVendorType(VendorType vendorType, EntityPermission entityPermission) {
-        List<VendorTypeDescription> vendorTypeDescriptions = null;
+        List<VendorTypeDescription> vendorTypeDescriptions;
         
         try {
             String query = null;
@@ -1833,7 +1833,7 @@ public class VendorControl
     }
     
     private List<ItemPurchasingCategoryDescription> getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, EntityPermission entityPermission) {
-        List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions = null;
+        List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions;
         
         try {
             String query = null;

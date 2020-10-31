@@ -404,7 +404,7 @@ public class PaymentProcessorControl
     }
     
     private List<PaymentProcessorDescription> getPaymentProcessorDescriptions(PaymentProcessor paymentProcessor, EntityPermission entityPermission) {
-        List<PaymentProcessorDescription> paymentProcessorDescriptions = null;
+        List<PaymentProcessorDescription> paymentProcessorDescriptions;
         
         try {
             String query = null;

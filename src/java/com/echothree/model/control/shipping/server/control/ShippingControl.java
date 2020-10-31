@@ -367,7 +367,7 @@ public class ShippingControl
     }
     
     private List<ShippingMethodDescription> getShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShippingMethodDescription> shippingMethodDescriptions = null;
+        List<ShippingMethodDescription> shippingMethodDescriptions;
         
         try {
             String query = null;

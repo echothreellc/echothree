@@ -498,7 +498,7 @@ public class CustomerControl
     }
     
     private List<CustomerTypeDescription> getCustomerTypeDescriptionsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<CustomerTypeDescription> customerTypeDescriptions = null;
+        List<CustomerTypeDescription> customerTypeDescriptions;
         
         try {
             String query = null;

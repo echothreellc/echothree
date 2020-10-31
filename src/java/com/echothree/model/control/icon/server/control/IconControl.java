@@ -543,7 +543,7 @@ public class IconControl
     }
     
     private List<IconUsageTypeDescription> getIconUsageTypeDescriptionsByIconUsageType(IconUsageType iconUsageType, EntityPermission entityPermission) {
-        List<IconUsageTypeDescription> iconUsageTypeDescriptions = null;
+        List<IconUsageTypeDescription> iconUsageTypeDescriptions;
         
         try {
             String query = null;

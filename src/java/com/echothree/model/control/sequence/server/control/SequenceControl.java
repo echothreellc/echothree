@@ -452,7 +452,7 @@ public class SequenceControl
     }
     
     private List<SequenceTypeDescription> getSequenceTypeDescriptionsBySequenceType(SequenceType sequenceType, EntityPermission entityPermission) {
-        List<SequenceTypeDescription> sequenceTypeDescriptions = null;
+        List<SequenceTypeDescription> sequenceTypeDescriptions;
         
         try {
             String query = null;
@@ -1151,7 +1151,7 @@ public class SequenceControl
     }
     
     private List<SequenceDescription> getSequenceDescriptionsBySequence(Sequence sequence, EntityPermission entityPermission) {
-        List<SequenceDescription> sequenceDescriptions = null;
+        List<SequenceDescription> sequenceDescriptions;
         
         try {
             String query = null;

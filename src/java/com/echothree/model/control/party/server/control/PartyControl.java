@@ -1366,7 +1366,7 @@ public class PartyControl
     }
     
     private List<TimeZoneDescription> getTimeZoneDescriptionsByTimeZone(TimeZone timeZone, EntityPermission entityPermission) {
-        List<TimeZoneDescription> timeZoneDescriptions = null;
+        List<TimeZoneDescription> timeZoneDescriptions;
         
         try {
             String query = null;
@@ -1688,7 +1688,7 @@ public class PartyControl
     }
     
     private List<DateTimeFormatDescription> getDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
-        List<DateTimeFormatDescription> dateTimeFormatDescriptions = null;
+        List<DateTimeFormatDescription> dateTimeFormatDescriptions;
         
         try {
             String query = null;
@@ -5094,7 +5094,7 @@ public class PartyControl
     }
     
     private List<GenderDescription> getGenderDescriptionsByGender(Gender gender, EntityPermission entityPermission) {
-        List<GenderDescription> genderDescriptions = null;
+        List<GenderDescription> genderDescriptions;
         
         try {
             String query = null;
@@ -5517,7 +5517,7 @@ public class PartyControl
     }
     
     private List<MoodDescription> getMoodDescriptionsByMood(Mood mood, EntityPermission entityPermission) {
-        List<MoodDescription> moodDescriptions = null;
+        List<MoodDescription> moodDescriptions;
         
         try {
             String query = null;
@@ -5991,7 +5991,7 @@ public class PartyControl
     }
 
     private List<BirthdayFormatDescription> getBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, EntityPermission entityPermission) {
-        List<BirthdayFormatDescription> birthdayFormatDescriptions = null;
+        List<BirthdayFormatDescription> birthdayFormatDescriptions;
 
         try {
             String query = null;

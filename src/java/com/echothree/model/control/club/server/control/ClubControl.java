@@ -426,7 +426,7 @@ public class ClubControl
     
     private List<ClubDescription> getClubDescriptionsByClub(Club club,
             EntityPermission entityPermission) {
-        List<ClubDescription> clubDescriptions = null;
+        List<ClubDescription> clubDescriptions;
         
         try {
             String query = null;

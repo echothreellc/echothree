@@ -3908,7 +3908,7 @@ public class ContactControl
     }
     
     private List<PostalAddressFormatDescription> getPostalAddressFormatDescriptionsByPostalAddressFormat(PostalAddressFormat postalAddressFormat, EntityPermission entityPermission) {
-        List<PostalAddressFormatDescription> postalAddressFormatDescriptions = null;
+        List<PostalAddressFormatDescription> postalAddressFormatDescriptions;
         
         try {
             String query = null;

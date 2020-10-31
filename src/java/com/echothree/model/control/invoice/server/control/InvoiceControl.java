@@ -793,7 +793,7 @@ public class InvoiceControl
     }
     
     private List<InvoiceTypeDescription> getInvoiceTypeDescriptionsByInvoiceType(InvoiceType invoiceType, EntityPermission entityPermission) {
-        List<InvoiceTypeDescription> invoiceTypeDescriptions = null;
+        List<InvoiceTypeDescription> invoiceTypeDescriptions;
         
         try {
             String query = null;
@@ -2189,7 +2189,7 @@ public class InvoiceControl
     
     private List<InvoiceLineTypeDescription> getInvoiceLineTypeDescriptionsByInvoiceLineType(InvoiceLineType invoiceLineType,
             EntityPermission entityPermission) {
-        List<InvoiceLineTypeDescription> invoiceLineTypeDescriptions = null;
+        List<InvoiceLineTypeDescription> invoiceLineTypeDescriptions;
         
         try {
             String query = null;

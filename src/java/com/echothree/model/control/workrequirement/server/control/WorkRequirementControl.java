@@ -415,7 +415,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementTypeDescription> getWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType, EntityPermission entityPermission) {
-        List<WorkRequirementTypeDescription> workRequirementTypeDescriptions = null;
+        List<WorkRequirementTypeDescription> workRequirementTypeDescriptions;
         
         try {
             String query = null;

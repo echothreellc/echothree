@@ -1182,7 +1182,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowStepDescription> getWorkflowStepDescriptionsByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkflowStepDescription> workflowStepDescriptions = null;
+        List<WorkflowStepDescription> workflowStepDescriptions;
         
         try {
             String query = null;
@@ -1828,7 +1828,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntranceDescription> getWorkflowEntranceDescriptionsByWorkflowEntrance(WorkflowEntrance workflowEntrance, EntityPermission entityPermission) {
-        List<WorkflowEntranceDescription> workflowEntranceDescriptions = null;
+        List<WorkflowEntranceDescription> workflowEntranceDescriptions;
         
         try {
             String query = null;
@@ -2950,7 +2950,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowDestinationDescription> getWorkflowDestinationDescriptionsByWorkflowDestination(WorkflowDestination workflowDestination, EntityPermission entityPermission) {
-        List<WorkflowDestinationDescription> workflowDestinationDescriptions = null;
+        List<WorkflowDestinationDescription> workflowDestinationDescriptions;
         
         try {
             String query = null;

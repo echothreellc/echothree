@@ -541,7 +541,7 @@ public class InventoryControl
     }
     
     private List<InventoryLocationGroupDescription> getInventoryLocationGroupDescriptionsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
-        List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions = null;
+        List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions;
         
         try {
             String query = null;

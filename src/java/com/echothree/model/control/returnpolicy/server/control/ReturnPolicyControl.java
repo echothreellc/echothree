@@ -1837,7 +1837,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonDescription> getReturnReasonDescriptionsByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnReasonDescription> returnReasonDescriptions = null;
+        List<ReturnReasonDescription> returnReasonDescriptions;
         
         try {
             String query = null;

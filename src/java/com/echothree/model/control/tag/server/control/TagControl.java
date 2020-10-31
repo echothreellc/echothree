@@ -458,7 +458,7 @@ public class TagControl
     }
     
     private List<TagScopeDescription> getTagScopeDescriptionsByTagScope(TagScope tagScope, EntityPermission entityPermission) {
-        List<TagScopeDescription> tagScopeDescriptions = null;
+        List<TagScopeDescription> tagScopeDescriptions;
         
         try {
             String query = null;

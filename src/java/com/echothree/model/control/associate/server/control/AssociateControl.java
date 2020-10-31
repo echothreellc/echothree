@@ -437,7 +437,7 @@ public class AssociateControl
     }
     
     private List<AssociateProgramDescription> getAssociateProgramDescriptionsByAssociateProgram(AssociateProgram associateProgram, EntityPermission entityPermission) {
-        List<AssociateProgramDescription> associateProgramDescriptions = null;
+        List<AssociateProgramDescription> associateProgramDescriptions;
         
         try {
             String query = null;

@@ -290,7 +290,7 @@ public class OfferNameElementControl
     
     private List<OfferNameElementDescription> getOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement,
             EntityPermission entityPermission) {
-        List<OfferNameElementDescription> offerNameElementDescriptions = null;
+        List<OfferNameElementDescription> offerNameElementDescriptions;
         
         try {
             String query = null;

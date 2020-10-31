@@ -562,7 +562,7 @@ public class SecurityControl
     }
     
     private List<SecurityRoleGroupDescription> getSecurityRoleGroupDescriptionsBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
-        List<SecurityRoleGroupDescription> securityRoleGroupDescriptions = null;
+        List<SecurityRoleGroupDescription> securityRoleGroupDescriptions;
         
         try {
             String query = null;
@@ -1061,7 +1061,7 @@ public class SecurityControl
     }
     
     private List<SecurityRoleDescription> getSecurityRoleDescriptionsBySecurityRole(SecurityRole securityRole, EntityPermission entityPermission) {
-        List<SecurityRoleDescription> securityRoleDescriptions = null;
+        List<SecurityRoleDescription> securityRoleDescriptions;
         
         try {
             String query = null;
@@ -1675,7 +1675,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateDescription> getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions = null;
+        List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions;
         
         try {
             String query = null;

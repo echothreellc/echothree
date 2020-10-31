@@ -452,7 +452,7 @@ public class AccountingControl
     }
     
     private List<CurrencyDescription> getCurrencyDescriptionsByCurrency(Currency currency, EntityPermission entityPermission) {
-        List<CurrencyDescription> currencyDescriptions = null;
+        List<CurrencyDescription> currencyDescriptions;
         
         try {
             String query = null;
@@ -940,7 +940,7 @@ public class AccountingControl
     
     private List<ItemAccountingCategoryDescription> getItemAccountingCategoryDescriptionsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory,
             EntityPermission entityPermission) {
-        List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions = null;
+        List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions;
         
         try {
             String query = null;
@@ -1580,7 +1580,7 @@ public class AccountingControl
     }
     
     private List<GlAccountClassDescription> getGlAccountClassDescriptionsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
-        List<GlAccountClassDescription> glAccountClassDescriptions = null;
+        List<GlAccountClassDescription> glAccountClassDescriptions;
         
         try {
             String query = null;
@@ -2089,7 +2089,7 @@ public class AccountingControl
     }
     
     private List<GlAccountCategoryDescription> getGlAccountCategoryDescriptionsByGlAccountCategory(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
-        List<GlAccountCategoryDescription> glAccountCategoryDescriptions = null;
+        List<GlAccountCategoryDescription> glAccountCategoryDescriptions;
         
         try {
             String query = null;
@@ -2536,7 +2536,7 @@ public class AccountingControl
     }
     
     private List<GlResourceTypeDescription> getGlResourceTypeDescriptionsByGlResourceType(GlResourceType glResourceType, EntityPermission entityPermission) {
-        List<GlResourceTypeDescription> glResourceTypeDescriptions = null;
+        List<GlResourceTypeDescription> glResourceTypeDescriptions;
         
         try {
             String query = null;
@@ -3286,7 +3286,7 @@ public class AccountingControl
     }
     
     private List<GlAccountDescription> getGlAccountDescriptionsByGlAccount(GlAccount glAccount, EntityPermission entityPermission) {
-        List<GlAccountDescription> glAccountDescriptions = null;
+        List<GlAccountDescription> glAccountDescriptions;
         
         try {
             String query = null;
@@ -3648,7 +3648,7 @@ public class AccountingControl
     }
     
     private List<TransactionTypeDescription> getTransactionTypeDescriptionsByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionTypeDescription> transactionTypeDescriptions = null;
+        List<TransactionTypeDescription> transactionTypeDescriptions;
         
         try {
             String query = null;
@@ -4015,7 +4015,7 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccountCategoryDescription> getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, EntityPermission entityPermission) {
-        List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions = null;
+        List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions;
         
         try {
             String query = null;
@@ -4427,7 +4427,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleTypeDescription> getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions = null;
+        List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions;
         
         try {
             String query = null;
@@ -5638,7 +5638,7 @@ public class AccountingControl
     }
     
     private List<SymbolPositionDescription> getSymbolPositionDescriptionsBySymbolPosition(SymbolPosition symbolPosition, EntityPermission entityPermission) {
-        List<SymbolPositionDescription> symbolPositionDescriptions = null;
+        List<SymbolPositionDescription> symbolPositionDescriptions;
         
         try {
             String query = null;

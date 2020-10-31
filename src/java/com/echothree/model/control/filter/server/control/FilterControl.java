@@ -2159,7 +2159,7 @@ public class FilterControl
     
     private List<FilterAdjustmentDescription> getFilterAdjustmentDescriptions(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentDescription> filterAdjustmentDescriptions = null;
+        List<FilterAdjustmentDescription> filterAdjustmentDescriptions;
         
         try {
             String query = null;
@@ -2625,7 +2625,7 @@ public class FilterControl
     }
     
     private List<FilterDescription> getFilterDescriptions(Filter filter, EntityPermission entityPermission) {
-        List<FilterDescription> filterDescriptions = null;
+        List<FilterDescription> filterDescriptions;
         
         try {
             String query = null;
@@ -3000,7 +3000,7 @@ public class FilterControl
     }
     
     private List<FilterStepDescription> getFilterStepDescriptions(FilterStep filterStep, EntityPermission entityPermission) {
-        List<FilterStepDescription> filterStepDescriptions = null;
+        List<FilterStepDescription> filterStepDescriptions;
         
         try {
             String query = null;
@@ -3747,7 +3747,7 @@ public class FilterControl
     }
     
     private List<FilterStepElementDescription> getFilterStepElementDescriptions(FilterStepElement filterStepElement, EntityPermission entityPermission) {
-        List<FilterStepElementDescription> filterStepElementDescriptions = null;
+        List<FilterStepElementDescription> filterStepElementDescriptions;
         
         try {
             String query = null;

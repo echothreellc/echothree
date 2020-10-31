@@ -318,7 +318,7 @@ public class JobControl
     }
     
     private List<JobDescription> getJobDescriptionsByJob(Job job, EntityPermission entityPermission) {
-        List<JobDescription> jobDescriptions = null;
+        List<JobDescription> jobDescriptions;
         
         try {
             String query = null;

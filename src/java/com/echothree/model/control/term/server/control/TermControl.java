@@ -554,7 +554,7 @@ public class TermControl
     }
     
     private List<TermDescription> getTermDescriptionsByTerm(Term term, EntityPermission entityPermission) {
-        List<TermDescription> termDescriptions = null;
+        List<TermDescription> termDescriptions;
         
         try {
             String query = null;

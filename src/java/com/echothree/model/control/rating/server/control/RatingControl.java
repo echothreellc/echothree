@@ -327,7 +327,7 @@ public class RatingControl
     }
     
     private List<RatingTypeDescription> getRatingTypeDescriptionsByRatingType(RatingType ratingType, EntityPermission entityPermission) {
-        List<RatingTypeDescription> ratingTypeDescriptions = null;
+        List<RatingTypeDescription> ratingTypeDescriptions;
         
         try {
             String query = null;
@@ -796,7 +796,7 @@ public class RatingControl
     }
     
     private List<RatingTypeListItemDescription> getRatingTypeListItemDescriptionsByRatingTypeListItem(RatingTypeListItem ratingTypeListItem, EntityPermission entityPermission) {
-        List<RatingTypeListItemDescription> ratingTypeListItemDescriptions = null;
+        List<RatingTypeListItemDescription> ratingTypeListItemDescriptions;
         
         try {
             String query = null;

@@ -458,7 +458,7 @@ public class ForumControl
     
     private List<ForumGroupDescription> getForumGroupDescriptionsByForumGroup(ForumGroup forumGroup,
             EntityPermission entityPermission) {
-        List<ForumGroupDescription> forumGroupDescriptions = null;
+        List<ForumGroupDescription> forumGroupDescriptions;
         
         try {
             String query = null;
@@ -829,7 +829,7 @@ public class ForumControl
     }
     
     private List<ForumDescription> getForumDescriptionsByForum(Forum forum, EntityPermission entityPermission) {
-        List<ForumDescription> forumDescriptions = null;
+        List<ForumDescription> forumDescriptions;
         
         try {
             String query = null;

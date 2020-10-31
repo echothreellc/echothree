@@ -340,7 +340,7 @@ public class MessageControl
     }
     
     private List<MessageTypeDescription> getMessageTypeDescriptionsByMessageType(MessageType messageType, EntityPermission entityPermission) {
-        List<MessageTypeDescription> messageTypeDescriptions = null;
+        List<MessageTypeDescription> messageTypeDescriptions;
         
         try {
             String query = null;
@@ -810,7 +810,7 @@ public class MessageControl
     }
     
     private List<MessageDescription> getMessageDescriptionsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageDescription> messageDescriptions = null;
+        List<MessageDescription> messageDescriptions;
         
         try {
             String query = null;

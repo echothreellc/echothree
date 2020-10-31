@@ -1276,7 +1276,7 @@ public class CarrierControl
     }
     
     private List<CarrierServiceDescription> getCarrierServiceDescriptionsByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<CarrierServiceDescription> carrierServiceDescriptions = null;
+        List<CarrierServiceDescription> carrierServiceDescriptions;
         
         try {
             String query = null;
@@ -1767,7 +1767,7 @@ public class CarrierControl
     }
     
     private List<CarrierOptionDescription> getCarrierOptionDescriptionsByCarrierOption(CarrierOption carrierOption, EntityPermission entityPermission) {
-        List<CarrierOptionDescription> carrierOptionDescriptions = null;
+        List<CarrierOptionDescription> carrierOptionDescriptions;
         
         try {
             String query = null;

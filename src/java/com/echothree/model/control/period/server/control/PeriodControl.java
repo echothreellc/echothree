@@ -424,7 +424,7 @@ public class PeriodControl
     }
     
     private List<PeriodKindDescription> getPeriodKindDescriptionsByPeriodKind(PeriodKind periodKind, EntityPermission entityPermission) {
-        List<PeriodKindDescription> periodKindDescriptions = null;
+        List<PeriodKindDescription> periodKindDescriptions;
         
         try {
             String query = null;
@@ -910,7 +910,7 @@ public class PeriodControl
     }
     
     private List<PeriodTypeDescription> getPeriodTypeDescriptionsByPeriodType(PeriodType periodType, EntityPermission entityPermission) {
-        List<PeriodTypeDescription> periodTypeDescriptions = null;
+        List<PeriodTypeDescription> periodTypeDescriptions;
         
         try {
             String query = null;
@@ -1368,7 +1368,7 @@ public class PeriodControl
     }
     
     private List<PeriodDescription> getPeriodDescriptionsByPeriod(Period period, EntityPermission entityPermission) {
-        List<PeriodDescription> periodDescriptions = null;
+        List<PeriodDescription> periodDescriptions;
         
         try {
             String query = null;

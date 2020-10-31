@@ -405,7 +405,7 @@ public class UseTypeControl
     }
     
     private List<UseTypeDescription> getUseTypeDescriptionsByUseType(UseType useType, EntityPermission entityPermission) {
-        List<UseTypeDescription> useTypeDescriptions = null;
+        List<UseTypeDescription> useTypeDescriptions;
         
         try {
             String query = null;
