@@ -117,7 +117,7 @@ public class SequenceControl
             isDefault = Boolean.TRUE;
         }
         
-        SequenceType sequenceType = SequenceTypeFactory.getInstance().create((SequenceTypeDetailPK)null, (SequenceTypeDetailPK)null);
+        SequenceType sequenceType = SequenceTypeFactory.getInstance().create();
         SequenceTypeDetail sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceType,
                 sequenceTypeName, prefix, suffix, sequenceEncoderType, sequenceChecksumType, chunkSize, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -842,7 +842,7 @@ public class SequenceControl
             isDefault = Boolean.TRUE;
         }
         
-        Sequence sequence = SequenceFactory.getInstance().create((SequenceDetailPK)null, (SequenceDetailPK)null);
+        Sequence sequence = SequenceFactory.getInstance().create();
         SequenceDetail sequenceDetail = SequenceDetailFactory.getInstance().create(sequence, sequenceType, sequenceName,
                 mask, chunkSize, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         

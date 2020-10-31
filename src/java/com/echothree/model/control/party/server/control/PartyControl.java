@@ -974,7 +974,7 @@ public class PartyControl
             isDefault = Boolean.TRUE;
         }
         
-        NameSuffix nameSuffix = NameSuffixFactory.getInstance().create((NameSuffixDetailPK)null, (NameSuffixDetailPK)null);
+        NameSuffix nameSuffix = NameSuffixFactory.getInstance().create();
         NameSuffixDetail nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1211,7 +1211,7 @@ public class PartyControl
     public TimeZone createTimeZone(String javaTimeZoneName, String unixTimeZoneName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         
-        TimeZone timeZone = TimeZoneFactory.getInstance().create((TimeZoneDetailPK)null, (TimeZoneDetailPK)null);
+        TimeZone timeZone = TimeZoneFactory.getInstance().create();
         TimeZoneDetail timeZoneDetail = TimeZoneDetailFactory.getInstance().create(timeZone, javaTimeZoneName,
                 unixTimeZoneName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1846,7 +1846,7 @@ public class PartyControl
     
     public Party createParty(String partyName, PartyType partyType, Language preferredLanguage, Currency preferredCurrency,
             TimeZone preferredTimeZone, DateTimeFormat preferredDateTimeFormat, BasePK createdBy) {
-        Party party = PartyFactory.getInstance().create((PartyDetailPK)null, (PartyDetailPK)null);
+        Party party = PartyFactory.getInstance().create();
         
         if(createdBy == null) {
             createdBy = party.getPrimaryKey();
