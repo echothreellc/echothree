@@ -402,9 +402,9 @@ public class PartyPaymentMethodControl
     }
 
     public void deletePartyPaymentMethods(List<PartyPaymentMethod> partyPaymentMethods, BasePK deletedBy) {
-        partyPaymentMethods.stream().forEach((partyPaymentMethod) -> {
-            deletePartyPaymentMethod(partyPaymentMethod, deletedBy);
-        });
+        partyPaymentMethods.forEach((partyPaymentMethod) -> 
+                deletePartyPaymentMethod(partyPaymentMethod, deletedBy)
+        );
     }
 
     public void deletePartyPaymentMethodsByPaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
@@ -662,9 +662,9 @@ public class PartyPaymentMethodControl
     }
     
     public void deletePartyPaymentMethodCreditCards(List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards, BasePK deletedBy) {
-        partyPaymentMethodCreditCards.stream().forEach((partyPaymentMethodCreditCard) -> {
-            deletePartyPaymentMethodCreditCard(partyPaymentMethodCreditCard, deletedBy);
-        });
+        partyPaymentMethodCreditCards.forEach((partyPaymentMethodCreditCard) -> 
+                deletePartyPaymentMethodCreditCard(partyPaymentMethodCreditCard, deletedBy)
+        );
     }
     
     public void deletePartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism, BasePK deletedBy) {

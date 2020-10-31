@@ -476,9 +476,9 @@ public class OrderLineAdjustmentControl
     public void deleteOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(OrderLineAdjustmentType orderLineAdjustmentType, BasePK deletedBy) {
         List<OrderLineAdjustmentTypeDescription> orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentTypeForUpdate(orderLineAdjustmentType);
 
-        orderLineAdjustmentTypeDescriptions.stream().forEach((orderLineAdjustmentTypeDescription) -> {
-            deleteOrderLineAdjustmentTypeDescription(orderLineAdjustmentTypeDescription, deletedBy);
-        });
+        orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) -> 
+                deleteOrderLineAdjustmentTypeDescription(orderLineAdjustmentTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -554,9 +554,9 @@ public class OrderLineAdjustmentControl
     public void deleteOrderLineAdjustmentsByOrderLine(OrderLine orderLine, BasePK deletedBy) {
         List<OrderLineAdjustment> orderLineAdjustments = getOrderLineAdjustmentsByOrderLineForUpdate(orderLine);
 
-        orderLineAdjustments.stream().forEach((orderLineAdjustment) -> {
-            deleteOrderLineAdjustment(orderLineAdjustment, deletedBy);
-        });
+        orderLineAdjustments.forEach((orderLineAdjustment) -> 
+                deleteOrderLineAdjustment(orderLineAdjustment, deletedBy)
+        );
     }
 
 }

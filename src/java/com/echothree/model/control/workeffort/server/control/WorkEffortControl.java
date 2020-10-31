@@ -415,9 +415,9 @@ public class WorkEffortControl
     public void deleteWorkEffortTypeDescriptionsByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
         List<WorkEffortTypeDescription> workEffortTypeDescriptions = getWorkEffortTypeDescriptionsByWorkEffortTypeForUpdate(workEffortType);
         
-        workEffortTypeDescriptions.stream().forEach((workEffortTypeDescription) -> {
-            deleteWorkEffortTypeDescription(workEffortTypeDescription, deletedBy);
-        });
+        workEffortTypeDescriptions.forEach((workEffortTypeDescription) -> 
+                deleteWorkEffortTypeDescription(workEffortTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -901,9 +901,9 @@ public class WorkEffortControl
     public void deleteWorkEffortScopeDescriptionsByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {
         List<WorkEffortScopeDescription> workEffortScopeDescriptions = getWorkEffortScopeDescriptionsByWorkEffortScopeForUpdate(workEffortScope);
         
-        workEffortScopeDescriptions.stream().forEach((workEffortScopeDescription) -> {
-            deleteWorkEffortScopeDescription(workEffortScopeDescription, deletedBy);
-        });
+        workEffortScopeDescriptions.forEach((workEffortScopeDescription) -> 
+                deleteWorkEffortScopeDescription(workEffortScopeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1162,9 +1162,9 @@ public class WorkEffortControl
     }
 
     public void deleteWorkEfforts(List<WorkEffort> workEfforts, BasePK deletedBy) {
-        workEfforts.stream().forEach((workEffort) -> {
-            deleteWorkEffort(workEffort, deletedBy);
-        });
+        workEfforts.forEach((workEffort) -> 
+                deleteWorkEffort(workEffort, deletedBy)
+        );
     }
 
     public void deleteWorkEffortsByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {

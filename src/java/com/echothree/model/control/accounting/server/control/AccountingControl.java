@@ -1044,9 +1044,9 @@ public class AccountingControl
             BasePK deletedBy) {
         List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions = getItemAccountingCategoryDescriptionsByItemAccountingCategoryForUpdate(itemAccountingCategory);
         
-        itemAccountingCategoryDescriptions.stream().forEach((itemAccountingCategoryDescription) -> {
-            deleteItemAccountingCategoryDescription(itemAccountingCategoryDescription, deletedBy);
-        });
+        itemAccountingCategoryDescriptions.forEach((itemAccountingCategoryDescription) -> 
+                deleteItemAccountingCategoryDescription(itemAccountingCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1679,9 +1679,9 @@ public class AccountingControl
     public void deleteGlAccountClassDescriptionsByGlAccountClass(GlAccountClass glAccountClass, BasePK deletedBy) {
         List<GlAccountClassDescription> glAccountClassDescriptions = getGlAccountClassDescriptionsByGlAccountClassForUpdate(glAccountClass);
         
-        glAccountClassDescriptions.stream().forEach((glAccountClassDescription) -> {
-            deleteGlAccountClassDescription(glAccountClassDescription, deletedBy);
-        });
+        glAccountClassDescriptions.forEach((glAccountClassDescription) -> 
+                deleteGlAccountClassDescription(glAccountClassDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2188,9 +2188,9 @@ public class AccountingControl
     public void deleteGlAccountCategoryDescriptionsByGlAccountCategory(GlAccountCategory glAccountCategory, BasePK deletedBy) {
         List<GlAccountCategoryDescription> glAccountCategoryDescriptions = getGlAccountCategoryDescriptionsByGlAccountCategoryForUpdate(glAccountCategory);
         
-        glAccountCategoryDescriptions.stream().forEach((glAccountCategoryDescription) -> {
-            deleteGlAccountCategoryDescription(glAccountCategoryDescription, deletedBy);
-        });
+        glAccountCategoryDescriptions.forEach((glAccountCategoryDescription) -> 
+                deleteGlAccountCategoryDescription(glAccountCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2635,9 +2635,9 @@ public class AccountingControl
     public void deleteGlResourceTypeDescriptionsByGlResourceType(GlResourceType glResourceType, BasePK deletedBy) {
         List<GlResourceTypeDescription> glResourceTypeDescriptions = getGlResourceTypeDescriptionsByGlResourceTypeForUpdate(glResourceType);
         
-        glResourceTypeDescriptions.stream().forEach((glResourceTypeDescription) -> {
-            deleteGlResourceTypeDescription(glResourceTypeDescription, deletedBy);
-        });
+        glResourceTypeDescriptions.forEach((glResourceTypeDescription) -> 
+                deleteGlResourceTypeDescription(glResourceTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3384,9 +3384,9 @@ public class AccountingControl
     public void deleteGlAccountDescriptionsByGlAccount(GlAccount glAccount, BasePK deletedBy) {
         List<GlAccountDescription> glAccountDescriptions = getGlAccountDescriptionsByGlAccountForUpdate(glAccount);
         
-        glAccountDescriptions.stream().forEach((glAccountDescription) -> {
-            deleteGlAccountDescription(glAccountDescription, deletedBy);
-        });
+        glAccountDescriptions.forEach((glAccountDescription) -> 
+                deleteGlAccountDescription(glAccountDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3582,9 +3582,9 @@ public class AccountingControl
     }
 
     public void deleteTransactionTypes(List<TransactionType> transactionTypes, BasePK deletedBy) {
-        transactionTypes.stream().forEach((transactionType) -> {
-            deleteTransactionType(transactionType, deletedBy);
-        });
+        transactionTypes.forEach((transactionType) -> 
+                deleteTransactionType(transactionType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3747,9 +3747,9 @@ public class AccountingControl
     public void deleteTransactionTypeDescriptionsByTransactionType(TransactionType transactionType, BasePK deletedBy) {
         List<TransactionTypeDescription> transactionTypeDescriptions = getTransactionTypeDescriptionsByTransactionTypeForUpdate(transactionType);
         
-        transactionTypeDescriptions.stream().forEach((transactionTypeDescription) -> {
-            deleteTransactionTypeDescription(transactionTypeDescription, deletedBy);
-        });
+        transactionTypeDescriptions.forEach((transactionTypeDescription) -> 
+                deleteTransactionTypeDescription(transactionTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3944,9 +3944,9 @@ public class AccountingControl
     }
 
     public void deleteTransactionGlAccountCategories(List<TransactionGlAccountCategory> transactionGlAccountCategories, BasePK deletedBy) {
-        transactionGlAccountCategories.stream().forEach((transactionGlAccountCategory) -> {
-            deleteTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy);
-        });
+        transactionGlAccountCategories.forEach((transactionGlAccountCategory) -> 
+                deleteTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy)
+        );
     }
     
     public void deleteTransactionGlAccountCategoriesByTransactionType(TransactionType transactionType, BasePK deletedBy) {
@@ -4114,9 +4114,9 @@ public class AccountingControl
     public void deleteTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, BasePK deletedBy) {
         List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions = getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategoryForUpdate(transactionGlAccountCategory);
         
-        transactionGlAccountCategoryDescriptions.stream().forEach((transactionGlAccountCategoryDescription) -> {
-            deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, deletedBy);
-        });
+        transactionGlAccountCategoryDescriptions.forEach((transactionGlAccountCategoryDescription) -> 
+                deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4353,9 +4353,9 @@ public class AccountingControl
     }
 
     public void deleteTransactionEntityRoleTypes(List<TransactionEntityRoleType> transactionEntityRoleTypes, BasePK deletedBy) {
-        transactionEntityRoleTypes.stream().forEach((transactionEntityRoleType) -> {
-            deleteTransactionEntityRoleType(transactionEntityRoleType, deletedBy);
-        });
+        transactionEntityRoleTypes.forEach((transactionEntityRoleType) -> 
+                deleteTransactionEntityRoleType(transactionEntityRoleType, deletedBy)
+        );
     }
     
     public void deleteTransactionEntityRoleTypesByTransactionType(TransactionType transactionType, BasePK deletedBy) {
@@ -4526,9 +4526,9 @@ public class AccountingControl
     public void deleteTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, BasePK deletedBy) {
         List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions = getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleTypeForUpdate(transactionEntityRoleType);
         
-        transactionEntityRoleTypeDescriptions.stream().forEach((transactionEntityRoleTypeDescription) -> {
-            deleteTransactionEntityRoleTypeDescription(transactionEntityRoleTypeDescription, deletedBy);
-        });
+        transactionEntityRoleTypeDescriptions.forEach((transactionEntityRoleTypeDescription) -> 
+                deleteTransactionEntityRoleTypeDescription(transactionEntityRoleTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4665,9 +4665,9 @@ public class AccountingControl
     }
     
     public void deleteTransactionGlAccounts(List<TransactionGlAccount> transactionGlAccounts, BasePK deletedBy) {
-        transactionGlAccounts.stream().forEach((transactionGlAccount) -> {
-            deleteTransactionGlAccount(transactionGlAccount, deletedBy);
-        });
+        transactionGlAccounts.forEach((transactionGlAccount) -> 
+                deleteTransactionGlAccount(transactionGlAccount, deletedBy)
+        );
     }
     
     public void deleteTransactionGlAccountByGlAccount(GlAccount glAccount, BasePK deletedBy) {
@@ -5264,9 +5264,9 @@ public class AccountingControl
     }
     
     public void deleteTransactionEntityRoles(List<TransactionEntityRole> transactionEntityRoles, BasePK deletedBy) {
-        transactionEntityRoles.stream().forEach((transactionEntityRole) -> {
-            deleteTransactionEntityRole(transactionEntityRole, deletedBy);
-        });
+        transactionEntityRoles.forEach((transactionEntityRole) -> 
+                deleteTransactionEntityRole(transactionEntityRole, deletedBy)
+        );
     }
     
     public void deleteTransactionEntityRolesByTransaction(Transaction transaction, BasePK deletedBy) {
@@ -5737,9 +5737,9 @@ public class AccountingControl
     public void deleteSymbolPositionDescriptionsBySymbolPosition(SymbolPosition symbolPosition, BasePK deletedBy) {
         List<SymbolPositionDescription> symbolPositionDescriptions = getSymbolPositionDescriptionsBySymbolPositionForUpdate(symbolPosition);
         
-        symbolPositionDescriptions.stream().forEach((symbolPositionDescription) -> {
-            deleteSymbolPositionDescription(symbolPositionDescription, deletedBy);
-        });
+        symbolPositionDescriptions.forEach((symbolPositionDescription) -> 
+                deleteSymbolPositionDescription(symbolPositionDescription, deletedBy)
+        );
     }
     
 }

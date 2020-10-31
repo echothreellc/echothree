@@ -622,9 +622,9 @@ public class DocumentControl
     public void deleteDocumentTypeDescriptionsByDocumentType(DocumentType documentType, BasePK deletedBy) {
         List<DocumentTypeDescription> documentTypeDescriptions = getDocumentTypeDescriptionsByDocumentTypeForUpdate(documentType);
         
-        documentTypeDescriptions.stream().forEach((documentTypeDescription) -> {
-            deleteDocumentTypeDescription(documentTypeDescription, deletedBy);
-        });
+        documentTypeDescriptions.forEach((documentTypeDescription) -> 
+                deleteDocumentTypeDescription(documentTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1052,9 +1052,9 @@ public class DocumentControl
     public void deleteDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageType(DocumentTypeUsageType documentTypeUsageType, BasePK deletedBy) {
         List<DocumentTypeUsageTypeDescription> documentTypeUsageTypeDescriptions = getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeForUpdate(documentTypeUsageType);
 
-        documentTypeUsageTypeDescriptions.stream().forEach((documentTypeUsageTypeDescription) -> {
-            deleteDocumentTypeUsageTypeDescription(documentTypeUsageTypeDescription, deletedBy);
-        });
+        documentTypeUsageTypeDescriptions.forEach((documentTypeUsageTypeDescription) -> 
+                deleteDocumentTypeUsageTypeDescription(documentTypeUsageTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1500,9 +1500,9 @@ public class DocumentControl
     }
 
     public void deleteDocuments(List<Document> documents, BasePK deletedBy) {
-        documents.stream().forEach((document) -> {
-            deleteDocument(document, deletedBy);
-        });
+        documents.forEach((document) -> 
+                deleteDocument(document, deletedBy)
+        );
     }
 
     public void deleteDocumentsByDocumentType(DocumentType documentType, BasePK deletedBy) {
@@ -1874,9 +1874,9 @@ public class DocumentControl
     public void deleteDocumentDescriptionsByDocument(Document document, BasePK deletedBy) {
         List<DocumentDescription> documentDescriptions = getDocumentDescriptionsByDocumentForUpdate(document);
         
-        documentDescriptions.stream().forEach((documentDescription) -> {
-            deleteDocumentDescription(documentDescription, deletedBy);
-        });
+        documentDescriptions.forEach((documentDescription) -> 
+                deleteDocumentDescription(documentDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

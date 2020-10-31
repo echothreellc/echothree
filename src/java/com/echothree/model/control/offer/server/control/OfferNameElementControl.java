@@ -392,9 +392,9 @@ public class OfferNameElementControl
     public void deleteOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement, BasePK deletedBy) {
         List<OfferNameElementDescription> offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElementForUpdate(offerNameElement);
         
-        offerNameElementDescriptions.stream().forEach((offerNameElementDescription) -> {
-            deleteOfferNameElementDescription(offerNameElementDescription, deletedBy);
-        });
+        offerNameElementDescriptions.forEach((offerNameElementDescription) -> 
+                deleteOfferNameElementDescription(offerNameElementDescription, deletedBy)
+        );
     }
     
 }

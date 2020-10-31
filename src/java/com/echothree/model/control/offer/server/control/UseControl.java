@@ -392,9 +392,9 @@ public class UseControl
     }
 
     public void deleteUses(List<Use> uses, BasePK deletedBy) {
-        uses.stream().forEach((use) -> {
-            deleteUse(use, deletedBy);
-        });
+        uses.forEach((use) -> 
+                deleteUse(use, deletedBy)
+        );
     }
 
     public void deleteUsesByUseType(UseType useType, BasePK deletedBy) {
@@ -562,9 +562,9 @@ public class UseControl
     public void deleteUseDescriptionsByUse(Use use, BasePK deletedBy) {
         List<UseDescription> useDescriptions = getUseDescriptionsByUseForUpdate(use);
 
-        useDescriptions.stream().forEach((useDescription) -> {
-            deleteUseDescription(useDescription, deletedBy);
-        });
+        useDescriptions.forEach((useDescription) -> 
+                deleteUseDescription(useDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

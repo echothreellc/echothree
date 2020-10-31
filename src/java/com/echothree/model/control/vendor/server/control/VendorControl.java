@@ -600,9 +600,9 @@ public class VendorControl
     public void deleteVendorTypeDescriptionsByVendorType(VendorType vendorType, BasePK deletedBy) {
         List<VendorTypeDescription> vendorTypeDescriptions = getVendorTypeDescriptionsByVendorTypeForUpdate(vendorType);
         
-        vendorTypeDescriptions.stream().forEach((vendorTypeDescription) -> {
-            deleteVendorTypeDescription(vendorTypeDescription, deletedBy);
-        });
+        vendorTypeDescriptions.forEach((vendorTypeDescription) -> 
+                deleteVendorTypeDescription(vendorTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1171,9 +1171,9 @@ public class VendorControl
     }
     
     public void deleteVendorItems(List<VendorItem> vendorItems, BasePK deletedBy) {
-        vendorItems.stream().forEach((vendorItem) -> {
-            deleteVendorItem(vendorItem, deletedBy);
-        });
+        vendorItems.forEach((vendorItem) -> 
+                deleteVendorItem(vendorItem, deletedBy)
+        );
     }
     
     public void deleteVendorItemsByItem(Item item, BasePK deletedBy) {
@@ -1407,9 +1407,9 @@ public class VendorControl
     }
     
     public void deleteVendorItemCosts(List<VendorItemCost> vendorItemCosts, BasePK deletedBy) {
-        vendorItemCosts.stream().forEach((vendorItemCost) -> {
-            deleteVendorItemCost(vendorItemCost, deletedBy);
-        });
+        vendorItemCosts.forEach((vendorItemCost) -> 
+                deleteVendorItemCost(vendorItemCost, deletedBy)
+        );
     }
     
     public void deleteVendorItemCostsByVendorItem(VendorItem vendorItem, BasePK deletedBy) {
@@ -1933,9 +1933,9 @@ public class VendorControl
     public void deleteItemPurchasingCategoryDescriptionsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, BasePK deletedBy) {
         List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategoryForUpdate(itemPurchasingCategory);
         
-        itemPurchasingCategoryDescriptions.stream().forEach((itemPurchasingCategoryDescription) -> {
-            deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, deletedBy);
-        });
+        itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) -> 
+                deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

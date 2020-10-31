@@ -643,9 +643,9 @@ public class InventoryControl
     public void deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
         List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions = getInventoryLocationGroupDescriptionsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
-        inventoryLocationGroupDescriptions.stream().forEach((inventoryLocationGroupDescription) -> {
-            deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, deletedBy);
-        });
+        inventoryLocationGroupDescriptions.forEach((inventoryLocationGroupDescription) -> 
+                deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -900,9 +900,9 @@ public class InventoryControl
     public void deleteInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
         List<InventoryLocationGroupCapacity> inventoryLocationGroupCapacities = getInventoryLocationGroupCapacitiesByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
-        inventoryLocationGroupCapacities.stream().forEach((inventoryLocationGroupCapacity) -> {
-            deleteInventoryLocationGroupCapacity(inventoryLocationGroupCapacity, deletedBy);
-        });
+        inventoryLocationGroupCapacities.forEach((inventoryLocationGroupCapacity) -> 
+                deleteInventoryLocationGroupCapacity(inventoryLocationGroupCapacity, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1807,9 +1807,9 @@ public class InventoryControl
     public void deleteInventoryConditionUseByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
         List<InventoryConditionUse> inventoryConditionUses = getInventoryConditionUsesByInventoryConditionForUpdate(inventoryCondition);
         
-        inventoryConditionUses.stream().forEach((inventoryConditionUse) -> {
-            deleteInventoryConditionUse(inventoryConditionUse, deletedBy);
-        });
+        inventoryConditionUses.forEach((inventoryConditionUse) -> 
+                deleteInventoryConditionUse(inventoryConditionUse, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2005,9 +2005,9 @@ public class InventoryControl
     }
     
     public void deleteInventoryConditionGlAccounts(List<InventoryConditionGlAccount> inventoryConditionGlAccounts, BasePK deletedBy) {
-        inventoryConditionGlAccounts.stream().forEach((inventoryConditionGlAccount) -> {
-            deleteInventoryConditionGlAccount(inventoryConditionGlAccount, deletedBy);
-        });
+        inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) -> 
+                deleteInventoryConditionGlAccount(inventoryConditionGlAccount, deletedBy)
+        );
     }
     
     public void deleteInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
@@ -2272,9 +2272,9 @@ public class InventoryControl
     }
     
     public void deletePartyInventoryLevels(List<PartyInventoryLevel> partyInventoryLevels, BasePK deletedBy) {
-        partyInventoryLevels.stream().forEach((partyInventoryLevel) -> {
-            deletePartyInventoryLevel(partyInventoryLevel, deletedBy);
-        });
+        partyInventoryLevels.forEach((partyInventoryLevel) -> 
+                deletePartyInventoryLevel(partyInventoryLevel, deletedBy)
+        );
     }
     
     public void deletePartyInventoryLevelsByParty(Party party, BasePK deletedBy) {
@@ -2697,9 +2697,9 @@ public class InventoryControl
     public void deleteAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority, BasePK deletedBy) {
         List<AllocationPriorityDescription> allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriorityForUpdate(allocationPriority);
 
-        allocationPriorityDescriptions.stream().forEach((allocationPriorityDescription) -> {
-            deleteAllocationPriorityDescription(allocationPriorityDescription, deletedBy);
-        });
+        allocationPriorityDescriptions.forEach((allocationPriorityDescription) -> 
+                deleteAllocationPriorityDescription(allocationPriorityDescription, deletedBy)
+        );
     }
 
 }

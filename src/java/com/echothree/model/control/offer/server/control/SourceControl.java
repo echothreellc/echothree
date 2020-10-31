@@ -379,9 +379,9 @@ public class SourceControl
     }
 
     public void deleteSources(List<Source> sources, BasePK deletedBy) {
-        sources.stream().forEach((source) -> {
-            deleteSource(source, deletedBy);
-        });
+        sources.forEach((source) -> 
+                deleteSource(source, deletedBy)
+        );
     }
 
     public void deleteSourcesByOfferUse(OfferUse offerUse, BasePK deletedBy) {

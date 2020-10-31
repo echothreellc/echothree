@@ -528,9 +528,9 @@ public class ClubControl
     public void deleteClubDescriptionsByClub(Club club, BasePK deletedBy) {
         List<ClubDescription> clubDescriptions = getClubDescriptionsByClubForUpdate(club);
         
-        clubDescriptions.stream().forEach((clubDescription) -> {
-            deleteClubDescription(clubDescription, deletedBy);
-        });
+        clubDescriptions.forEach((clubDescription) -> 
+                deleteClubDescription(clubDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -846,9 +846,9 @@ public class ClubControl
     }
     
     private void deleteClubItems(List<ClubItem> clubItems, BasePK deletedBy) {
-        clubItems.stream().forEach((clubItem) -> {
-            deleteClubItem(clubItem, deletedBy);
-        });
+        clubItems.forEach((clubItem) -> 
+                deleteClubItem(clubItem, deletedBy)
+        );
     }
     
     public void deleteClubItemsByClub(Club club, BasePK deletedBy) {

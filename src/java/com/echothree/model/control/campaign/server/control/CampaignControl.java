@@ -664,9 +664,9 @@ public class CampaignControl
     public void deleteCampaignDescriptionsByCampaign(Campaign campaign, BasePK deletedBy) {
         List<CampaignDescription> campaignDescriptions = getCampaignDescriptionsByCampaignForUpdate(campaign);
 
-        campaignDescriptions.stream().forEach((campaignDescription) -> {
-            deleteCampaignDescription(campaignDescription, deletedBy);
-        });
+        campaignDescriptions.forEach((campaignDescription) -> 
+                deleteCampaignDescription(campaignDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1182,9 +1182,9 @@ public class CampaignControl
     public void deleteCampaignSourceDescriptionsByCampaignSource(CampaignSource campaignSource, BasePK deletedBy) {
         List<CampaignSourceDescription> campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSourceForUpdate(campaignSource);
 
-        campaignSourceDescriptions.stream().forEach((campaignSourceDescription) -> {
-            deleteCampaignSourceDescription(campaignSourceDescription, deletedBy);
-        });
+        campaignSourceDescriptions.forEach((campaignSourceDescription) -> 
+                deleteCampaignSourceDescription(campaignSourceDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1700,9 +1700,9 @@ public class CampaignControl
     public void deleteCampaignMediumDescriptionsByCampaignMedium(CampaignMedium campaignMedium, BasePK deletedBy) {
         List<CampaignMediumDescription> campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMediumForUpdate(campaignMedium);
 
-        campaignMediumDescriptions.stream().forEach((campaignMediumDescription) -> {
-            deleteCampaignMediumDescription(campaignMediumDescription, deletedBy);
-        });
+        campaignMediumDescriptions.forEach((campaignMediumDescription) -> 
+                deleteCampaignMediumDescription(campaignMediumDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2218,9 +2218,9 @@ public class CampaignControl
     public void deleteCampaignTermDescriptionsByCampaignTerm(CampaignTerm campaignTerm, BasePK deletedBy) {
         List<CampaignTermDescription> campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTermForUpdate(campaignTerm);
 
-        campaignTermDescriptions.stream().forEach((campaignTermDescription) -> {
-            deleteCampaignTermDescription(campaignTermDescription, deletedBy);
-        });
+        campaignTermDescriptions.forEach((campaignTermDescription) -> 
+                deleteCampaignTermDescription(campaignTermDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2736,9 +2736,9 @@ public class CampaignControl
     public void deleteCampaignContentDescriptionsByCampaignContent(CampaignContent campaignContent, BasePK deletedBy) {
         List<CampaignContentDescription> campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContentForUpdate(campaignContent);
 
-        campaignContentDescriptions.stream().forEach((campaignContentDescription) -> {
-            deleteCampaignContentDescription(campaignContentDescription, deletedBy);
-        });
+        campaignContentDescriptions.forEach((campaignContentDescription) -> 
+                deleteCampaignContentDescription(campaignContentDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

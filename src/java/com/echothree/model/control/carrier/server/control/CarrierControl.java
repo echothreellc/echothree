@@ -575,9 +575,9 @@ public class CarrierControl
     public void deleteCarrierTypeDescriptionsByCarrierType(CarrierType carrierType, BasePK deletedBy) {
         List<CarrierTypeDescription> carrierTypeDescriptions = getCarrierTypeDescriptionsByCarrierTypeForUpdate(carrierType);
 
-        carrierTypeDescriptions.stream().forEach((carrierTypeDescription) -> {
-            deleteCarrierTypeDescription(carrierTypeDescription, deletedBy);
-        });
+        carrierTypeDescriptions.forEach((carrierTypeDescription) -> 
+                deleteCarrierTypeDescription(carrierTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1377,9 +1377,9 @@ public class CarrierControl
     public void deleteCarrierServiceDescriptionsByCarrierService(CarrierService carrierService, BasePK deletedBy) {
         List<CarrierServiceDescription> carrierServiceDescriptions = getCarrierServiceDescriptionsByCarrierServiceForUpdate(carrierService);
         
-        carrierServiceDescriptions.stream().forEach((carrierServiceDescription) -> {
-            deleteCarrierServiceDescription(carrierServiceDescription, deletedBy);
-        });
+        carrierServiceDescriptions.forEach((carrierServiceDescription) -> 
+                deleteCarrierServiceDescription(carrierServiceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1868,9 +1868,9 @@ public class CarrierControl
     public void deleteCarrierOptionDescriptionsByCarrierOption(CarrierOption carrierOption, BasePK deletedBy) {
         List<CarrierOptionDescription> carrierOptionDescriptions = getCarrierOptionDescriptionsByCarrierOptionForUpdate(carrierOption);
         
-        carrierOptionDescriptions.stream().forEach((carrierOptionDescription) -> {
-            deleteCarrierOptionDescription(carrierOptionDescription, deletedBy);
-        });
+        carrierOptionDescriptions.forEach((carrierOptionDescription) -> 
+                deleteCarrierOptionDescription(carrierOptionDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2082,9 +2082,9 @@ public class CarrierControl
     }
     
     public void deleteCarrierServiceOptions(List<CarrierServiceOption> carrierServiceOptions, BasePK deletedBy) {
-        carrierServiceOptions.stream().forEach((carrierServiceOption) -> {
-            deleteCarrierServiceOption(carrierServiceOption, deletedBy);
-        });
+        carrierServiceOptions.forEach((carrierServiceOption) -> 
+                deleteCarrierServiceOption(carrierServiceOption, deletedBy)
+        );
     }
     
     public void deleteCarrierServiceOptionsByCarrierService(CarrierService carrierService, BasePK deletedBy) {
@@ -2267,9 +2267,9 @@ public class CarrierControl
     }
     
     public void deletePartyCarriers(List<PartyCarrier> partyCarriers, BasePK deletedBy) {
-        partyCarriers.stream().forEach((partyCarrier) -> {
-            deletePartyCarrier(partyCarrier, deletedBy);
-        });
+        partyCarriers.forEach((partyCarrier) -> 
+                deletePartyCarrier(partyCarrier, deletedBy)
+        );
     }
     
     public void deletePartyCarriersByParty(Party party, BasePK deletedBy) {
@@ -2470,9 +2470,9 @@ public class CarrierControl
     }
 
     public void deletePartyCarrierAccounts(List<PartyCarrierAccount> partyCarrierAccounts, BasePK deletedBy) {
-        partyCarrierAccounts.stream().forEach((partyCarrierAccount) -> {
-            deletePartyCarrierAccount(partyCarrierAccount, deletedBy);
-        });
+        partyCarrierAccounts.forEach((partyCarrierAccount) -> 
+                deletePartyCarrierAccount(partyCarrierAccount, deletedBy)
+        );
     }
 
     public void deletePartyCarrierAccountsByParty(Party party, BasePK deletedBy) {

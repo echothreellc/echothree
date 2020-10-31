@@ -511,9 +511,9 @@ public class QueueControl
     public void deleteQueueTypeDescriptionsByQueueType(QueueType queueType, BasePK deletedBy) {
         List<QueueTypeDescription> queueTypeDescriptions = getQueueTypeDescriptionsByQueueTypeForUpdate(queueType);
 
-        queueTypeDescriptions.stream().forEach((queueTypeDescription) -> {
-            deleteQueueTypeDescription(queueTypeDescription, deletedBy);
-        });
+        queueTypeDescriptions.forEach((queueTypeDescription) -> 
+                deleteQueueTypeDescription(queueTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

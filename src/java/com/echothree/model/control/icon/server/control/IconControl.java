@@ -642,9 +642,9 @@ public class IconControl
     public void deleteIconUsageTypeDescriptionsByIconUsageType(IconUsageType iconUsageType, BasePK deletedBy) {
         List<IconUsageTypeDescription> iconUsageTypeDescriptions = getIconUsageTypeDescriptionsByIconUsageTypeForUpdate(iconUsageType);
         
-        iconUsageTypeDescriptions.stream().forEach((iconUsageTypeDescription) -> {
-            deleteIconUsageTypeDescription(iconUsageTypeDescription, deletedBy);
-        });
+        iconUsageTypeDescriptions.forEach((iconUsageTypeDescription) -> 
+                deleteIconUsageTypeDescription(iconUsageTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -933,9 +933,9 @@ public class IconControl
     }
     
     public void deleteIconUsages(List<IconUsage> iconUsages, BasePK deletedBy) {
-        iconUsages.stream().forEach((iconUsage) -> {
-            deleteIconUsage(iconUsage, deletedBy);
-        });
+        iconUsages.forEach((iconUsage) -> 
+                deleteIconUsage(iconUsage, deletedBy)
+        );
     }
     
     public void deleteIconUsagesByIconUsageType(IconUsageType iconUsageType, BasePK deletedBy) {

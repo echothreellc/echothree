@@ -468,9 +468,9 @@ public class ShippingControl
     public void deleteShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
         List<ShippingMethodDescription> shippingMethodDescriptions = getShippingMethodDescriptionsByShippingMethodForUpdate(shippingMethod);
         
-        shippingMethodDescriptions.stream().forEach((shippingMethodDescription) -> {
-            deleteShippingMethodDescription(shippingMethodDescription, deletedBy);
-        });
+        shippingMethodDescriptions.forEach((shippingMethodDescription) -> 
+                deleteShippingMethodDescription(shippingMethodDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -651,9 +651,9 @@ public class ShippingControl
     }
     
     public void deleteShippingMethodCarrierServices(List<ShippingMethodCarrierService> shippingMethodCarrierServices, BasePK deletedBy) {
-        shippingMethodCarrierServices.stream().forEach((shippingMethodCarrierService) -> {
-            deleteShippingMethodCarrierService(shippingMethodCarrierService, deletedBy);
-        });
+        shippingMethodCarrierServices.forEach((shippingMethodCarrierService) -> 
+                deleteShippingMethodCarrierService(shippingMethodCarrierService, deletedBy)
+        );
     }
     
     public void deleteShippingMethodCarrierServicesByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {

@@ -256,9 +256,9 @@ public class RatingControl
     }
     
     public void deleteRatingTypes(List<RatingType> ratingTypes, BasePK deletedBy) {
-        ratingTypes.stream().forEach((ratingType) -> {
-            deleteRatingType(ratingType, deletedBy);
-        });
+        ratingTypes.forEach((ratingType) -> 
+                deleteRatingType(ratingType, deletedBy)
+        );
     }
     
     public void deleteRatingTypesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -425,9 +425,9 @@ public class RatingControl
     public void deleteRatingTypeDescriptionsByRatingType(RatingType ratingType, BasePK deletedBy) {
         List<RatingTypeDescription> ratingTypeDescriptions = getRatingTypeDescriptionsByRatingTypeForUpdate(ratingType);
         
-        ratingTypeDescriptions.stream().forEach((ratingTypeDescription) -> {
-            deleteRatingTypeDescription(ratingTypeDescription, deletedBy);
-        });
+        ratingTypeDescriptions.forEach((ratingTypeDescription) -> 
+                deleteRatingTypeDescription(ratingTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -725,9 +725,9 @@ public class RatingControl
     }
     
     public void deleteRatingTypeListItems(List<RatingTypeListItem> ratingTypeListItems, BasePK deletedBy) {
-        ratingTypeListItems.stream().forEach((ratingTypeListItem) -> {
-            deleteRatingTypeListItem(ratingTypeListItem, deletedBy);
-        });
+        ratingTypeListItems.forEach((ratingTypeListItem) -> 
+                deleteRatingTypeListItem(ratingTypeListItem, deletedBy)
+        );
     }
     
     public void deleteRatingTypeListItemsByRatingType(RatingType ratingType, BasePK deletedBy) {
@@ -894,9 +894,9 @@ public class RatingControl
     public void deleteRatingTypeListItemDescriptionsByRatingTypeListItem(RatingTypeListItem ratingTypeListItem, BasePK deletedBy) {
         List<RatingTypeListItemDescription> ratingTypeListItemDescriptions = getRatingTypeListItemDescriptionsByRatingTypeListItemForUpdate(ratingTypeListItem);
         
-        ratingTypeListItemDescriptions.stream().forEach((ratingTypeListItemDescription) -> {
-            deleteRatingTypeListItemDescription(ratingTypeListItemDescription, deletedBy);
-        });
+        ratingTypeListItemDescriptions.forEach((ratingTypeListItemDescription) -> 
+                deleteRatingTypeListItemDescription(ratingTypeListItemDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1231,9 +1231,9 @@ public class RatingControl
     }
     
     public void deleteRatings(List<Rating> ratings, BasePK deletedBy) {
-        ratings.stream().forEach((rating) -> {
-            deleteRating(rating, deletedBy);
-        });
+        ratings.forEach((rating) -> 
+                deleteRating(rating, deletedBy)
+        );
     }
     
     public void deleteRatingsByRatedEntityInstance(EntityInstance ratedEntityInstance, BasePK deletedBy) {

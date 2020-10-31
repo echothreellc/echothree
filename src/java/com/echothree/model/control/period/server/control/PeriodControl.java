@@ -523,9 +523,9 @@ public class PeriodControl
     public void deletePeriodKindDescriptionsByPeriodKind(PeriodKind periodKind, BasePK deletedBy) {
         List<PeriodKindDescription> periodKindDescriptions = getPeriodKindDescriptionsByPeriodKindForUpdate(periodKind);
         
-        periodKindDescriptions.stream().forEach((periodKindDescription) -> {
-            deletePeriodKindDescription(periodKindDescription, deletedBy);
-        });
+        periodKindDescriptions.forEach((periodKindDescription) -> 
+                deletePeriodKindDescription(periodKindDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -843,9 +843,9 @@ public class PeriodControl
     public void deletePeriodTypesByPeriodKind(PeriodKind periodKind, BasePK deletedBy) {
         List<PeriodType> periodTypes = getPeriodTypesForUpdate(periodKind);
         
-        periodTypes.stream().forEach((periodType) -> {
-            deletePeriodType(periodType, deletedBy);
-        });
+        periodTypes.forEach((periodType) -> 
+                deletePeriodType(periodType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1008,9 +1008,9 @@ public class PeriodControl
     public void deletePeriodTypeDescriptionsByPeriodType(PeriodType periodType, BasePK deletedBy) {
         List<PeriodTypeDescription> periodTypeDescriptions = getPeriodTypeDescriptionsByPeriodTypeForUpdate(periodType);
         
-        periodTypeDescriptions.stream().forEach((periodTypeDescription) -> {
-            deletePeriodTypeDescription(periodTypeDescription, deletedBy);
-        });
+        periodTypeDescriptions.forEach((periodTypeDescription) -> 
+                deletePeriodTypeDescription(periodTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1289,9 +1289,9 @@ public class PeriodControl
     }
     
     public void deletePeriods(List<Period> periods, BasePK deletedBy) {
-        periods.stream().forEach((period) -> {
-            deletePeriod(period, deletedBy);
-        });
+        periods.forEach((period) -> 
+                deletePeriod(period, deletedBy)
+        );
     }
 
     private void deletePeriodsByParentPeriod(Period parentPeriod, BasePK deletedBy) {
@@ -1301,9 +1301,9 @@ public class PeriodControl
     public void deletePeriodsByPeriodType(PeriodType periodType, BasePK deletedBy) {
         List<Period> periods = getPeriodsForUpdate(periodType);
         
-        periods.stream().forEach((period) -> {
-            deletePeriod(period, deletedBy);
-        });
+        periods.forEach((period) -> 
+                deletePeriod(period, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1466,9 +1466,9 @@ public class PeriodControl
     public void deletePeriodDescriptionsByPeriod(Period period, BasePK deletedBy) {
         List<PeriodDescription> periodDescriptions = getPeriodDescriptionsByPeriodForUpdate(period);
         
-        periodDescriptions.stream().forEach((periodDescription) -> {
-            deletePeriodDescription(periodDescription, deletedBy);
-        });
+        periodDescriptions.forEach((periodDescription) -> 
+                deletePeriodDescription(periodDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

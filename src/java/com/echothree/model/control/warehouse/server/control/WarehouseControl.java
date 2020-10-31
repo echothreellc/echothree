@@ -1030,9 +1030,9 @@ public class WarehouseControl
     public void deleteLocationTypeDescriptionsByLocationType(LocationType locationType, BasePK deletedBy) {
         List<LocationTypeDescription> locationTypeDescriptions = getLocationTypeDescriptionsByLocationTypeForUpdate(locationType);
         
-        locationTypeDescriptions.stream().forEach((locationTypeDescription) -> {
-            deleteLocationTypeDescription(locationTypeDescription, deletedBy);
-        });
+        locationTypeDescriptions.forEach((locationTypeDescription) -> 
+                deleteLocationTypeDescription(locationTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1215,9 +1215,9 @@ public class WarehouseControl
     public void deleteLocationNameElementsByLocationType(LocationType locationType, BasePK deletedBy) {
         List<LocationNameElement> locationNameElements = getLocationNameElementsByLocationTypeForUpdate(locationType);
         
-        locationNameElements.stream().forEach((locationNameElement) -> {
-            deleteLocationNameElement(locationNameElement, deletedBy);
-        });
+        locationNameElements.forEach((locationNameElement) -> 
+                deleteLocationNameElement(locationNameElement, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1385,9 +1385,9 @@ public class WarehouseControl
     public void deleteLocationNameElementDescriptionsByLocationNameElement(LocationNameElement locationNameElement, BasePK deletedBy) {
         List<LocationNameElementDescription> locationNameElementDescriptions = getLocationNameElementDescriptionsByLocationNameElementForUpdate(locationNameElement);
         
-        locationNameElementDescriptions.stream().forEach((locationNameElementDescription) -> {
-            deleteLocationNameElementDescription(locationNameElementDescription, deletedBy);
-        });
+        locationNameElementDescriptions.forEach((locationNameElementDescription) -> 
+                deleteLocationNameElementDescription(locationNameElementDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1704,25 +1704,25 @@ public class WarehouseControl
     public void deleteLocationsByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
         List<Location> locations = getLocationsByWarehousePartyForUpdate(warehouseParty);
         
-        locations.stream().forEach((location) -> {
-            deleteLocation(location, deletedBy);
-        });
+        locations.forEach((location) -> 
+                deleteLocation(location, deletedBy)
+        );
     }
     
     public void deleteLocationsByLocationType(LocationType locationType, BasePK deletedBy) {
         List<Location> locations = getLocationsByLocationTypeForUpdate(locationType);
         
-        locations.stream().forEach((location) -> {
-            deleteLocation(location, deletedBy);
-        });
+        locations.forEach((location) -> 
+                deleteLocation(location, deletedBy)
+        );
     }
     
     public void deleteLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
         List<Location> locations = getLocationsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
-        locations.stream().forEach((location) -> {
-            deleteLocation(location, deletedBy);
-        });
+        locations.forEach((location) -> 
+                deleteLocation(location, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1888,9 +1888,9 @@ public class WarehouseControl
     public void deleteLocationDescriptionsByLocation(Location location, BasePK deletedBy) {
         List<LocationDescription> locationDescriptions = getLocationDescriptionsByLocationForUpdate(location);
         
-        locationDescriptions.stream().forEach((locationDescription) -> {
-            deleteLocationDescription(locationDescription, deletedBy);
-        });
+        locationDescriptions.forEach((locationDescription) -> 
+                deleteLocationDescription(locationDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2142,9 +2142,9 @@ public class WarehouseControl
     public void deleteLocationCapacitiesByLocation(Location location, BasePK deletedBy) {
         List<LocationCapacity> locationCapacities = getLocationCapacitiesByLocationForUpdate(location);
         
-        locationCapacities.stream().forEach((locationCapacity) -> {
-            deleteLocationCapacity(locationCapacity, deletedBy);
-        });
+        locationCapacities.forEach((locationCapacity) -> 
+                deleteLocationCapacity(locationCapacity, deletedBy)
+        );
     }
     
 }

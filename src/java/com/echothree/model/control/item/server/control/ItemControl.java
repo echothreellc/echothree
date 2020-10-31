@@ -1462,9 +1462,9 @@ public class ItemControl
     public void deleteItemCategoryDescriptionsByItemCategory(ItemCategory itemCategory, BasePK deletedBy) {
         List<ItemCategoryDescription> itemCategoryDescriptions = getItemCategoryDescriptionsByItemCategoryForUpdate(itemCategory);
         
-        itemCategoryDescriptions.stream().forEach((itemCategoryDescription) -> {
-            deleteItemCategoryDescription(itemCategoryDescription, deletedBy);
-        });
+        itemCategoryDescriptions.forEach((itemCategoryDescription) -> 
+                deleteItemCategoryDescription(itemCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2076,9 +2076,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitOfMeasureTypes(List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes, BasePK deletedBy) {
-        itemUnitOfMeasureTypes.stream().forEach((itemUnitOfMeasureType) -> {
-            deleteItemUnitOfMeasureType(itemUnitOfMeasureType, deletedBy);
-        });
+        itemUnitOfMeasureTypes.forEach((itemUnitOfMeasureType) -> 
+                deleteItemUnitOfMeasureType(itemUnitOfMeasureType, deletedBy)
+        );
     }
     
     public void deleteItemUnitOfMeasureTypesByItem(Item item, BasePK deletedBy) {
@@ -2280,17 +2280,17 @@ public class ItemControl
     public void deleteItemShippingTimesByItem(Item item, BasePK deletedBy) {
         List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByItemForUpdate(item);
         
-        itemShippingTimes.stream().forEach((itemShippingTime) -> {
-            deleteItemShippingTime(itemShippingTime, deletedBy);
-        });
+        itemShippingTimes.forEach((itemShippingTime) -> 
+                deleteItemShippingTime(itemShippingTime, deletedBy)
+        );
     }
     
     public void deleteItemShippingTimesByCustomerType(CustomerType customerType, BasePK deletedBy) {
         List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByCustomerTypeForUpdate(customerType);
         
-        itemShippingTimes.stream().forEach((itemShippingTime) -> {
-            deleteItemShippingTime(itemShippingTime, deletedBy);
-        });
+        itemShippingTimes.forEach((itemShippingTime) -> 
+                deleteItemShippingTime(itemShippingTime, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2849,9 +2849,9 @@ public class ItemControl
     public void deleteItemAliasTypeDescriptionsByItemAliasType(ItemAliasType itemAliasType, BasePK deletedBy) {
         List<ItemAliasTypeDescription> itemAliasTypeDescriptions = getItemAliasTypeDescriptionsByItemAliasTypeForUpdate(itemAliasType);
         
-        itemAliasTypeDescriptions.stream().forEach((itemAliasTypeDescription) -> {
-            deleteItemAliasTypeDescription(itemAliasTypeDescription, deletedBy);
-        });
+        itemAliasTypeDescriptions.forEach((itemAliasTypeDescription) -> 
+                deleteItemAliasTypeDescription(itemAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3148,9 +3148,9 @@ public class ItemControl
     }
     
     public void deleteItemAliases(List<ItemAlias> itemAliases, BasePK deletedBy) {
-        itemAliases.stream().forEach((itemAlias) -> {
-            deleteItemAlias(itemAlias, deletedBy);
-        });
+        itemAliases.forEach((itemAlias) -> 
+                deleteItemAlias(itemAlias, deletedBy)
+        );
     }
     
     public void deleteItemAliasesByItem(Item item, BasePK deletedBy) {
@@ -3442,9 +3442,9 @@ public class ItemControl
     }
     
     public void deleteItemCountryOfOrigins(List<ItemCountryOfOrigin> itemCountryOfOrigins, BasePK deletedBy) {
-        itemCountryOfOrigins.stream().forEach((itemCountryOfOrigin) -> {
-            deleteItemCountryOfOrigin(itemCountryOfOrigin, deletedBy);
-        });
+        itemCountryOfOrigins.forEach((itemCountryOfOrigin) -> 
+                deleteItemCountryOfOrigin(itemCountryOfOrigin, deletedBy)
+        );
     }
     
     public void deleteItemCountryOfOriginsByItem(Item item, BasePK deletedBy) {
@@ -3955,9 +3955,9 @@ public class ItemControl
     }
     
     public void deleteItemKitMembers(List<ItemKitMember> itemKitMembers, BasePK deletedBy) {
-        itemKitMembers.stream().forEach((itemKitMember) -> {
-            deleteItemKitMember(itemKitMember, deletedBy);
-        });
+        itemKitMembers.forEach((itemKitMember) -> 
+                deleteItemKitMember(itemKitMember, deletedBy)
+        );
     }
     
     public void deleteItemKitMembersByItem(Item item, BasePK deletedBy) {
@@ -4195,9 +4195,9 @@ public class ItemControl
     }
     
     public void deleteItemPackCheckRequirements(List<ItemPackCheckRequirement> itemPackCheckRequirements, BasePK deletedBy) {
-        itemPackCheckRequirements.stream().forEach((itemPackCheckRequirement) -> {
-            deleteItemPackCheckRequirement(itemPackCheckRequirement, deletedBy);
-        });
+        itemPackCheckRequirements.forEach((itemPackCheckRequirement) -> 
+                deleteItemPackCheckRequirement(itemPackCheckRequirement, deletedBy)
+        );
     }
     
     public void deleteItemPackCheckRequirementsByItem(Item item, BasePK deletedBy) {
@@ -4526,9 +4526,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitCustomerTypeLimits(List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits, BasePK deletedBy) {
-        itemUnitCustomerTypeLimits.stream().forEach((itemUnitCustomerTypeLimit) -> {
-            deleteItemUnitCustomerTypeLimit(itemUnitCustomerTypeLimit, deletedBy);
-        });
+        itemUnitCustomerTypeLimits.forEach((itemUnitCustomerTypeLimit) -> 
+                deleteItemUnitCustomerTypeLimit(itemUnitCustomerTypeLimit, deletedBy)
+        );
     }
     
     public void deleteItemUnitCustomerTypeLimitsByItem(Item item, BasePK deletedBy) {
@@ -4812,9 +4812,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitLimits(List<ItemUnitLimit> itemUnitLimits, BasePK deletedBy) {
-        itemUnitLimits.stream().forEach((itemUnitLimit) -> {
-            deleteItemUnitLimit(itemUnitLimit, deletedBy);
-        });
+        itemUnitLimits.forEach((itemUnitLimit) -> 
+                deleteItemUnitLimit(itemUnitLimit, deletedBy)
+        );
     }
     
     public void deleteItemUnitLimitsByItem(Item item, BasePK deletedBy) {
@@ -5102,9 +5102,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitPriceLimits(List<ItemUnitPriceLimit> itemUnitPriceLimits, BasePK deletedBy) {
-        itemUnitPriceLimits.stream().forEach((itemUnitPriceLimit) -> {
-            deleteItemUnitPriceLimit(itemUnitPriceLimit, deletedBy);
-        });
+        itemUnitPriceLimits.forEach((itemUnitPriceLimit) -> 
+                deleteItemUnitPriceLimit(itemUnitPriceLimit, deletedBy)
+        );
     }
     
     public void deleteItemUnitPriceLimitsByItem(Item item, BasePK deletedBy) {
@@ -5558,9 +5558,9 @@ public class ItemControl
     }
     
     public void deleteItemPrices(List<ItemPrice> itemPrices, BasePK deletedBy) {
-        itemPrices.stream().forEach((itemPrice) -> {
-            deleteItemPrice(itemPrice, deletedBy);
-        });
+        itemPrices.forEach((itemPrice) -> 
+                deleteItemPrice(itemPrice, deletedBy)
+        );
     }
     
     public void deleteItemPricesByItem(Item item, BasePK deletedBy) {
@@ -6370,9 +6370,9 @@ public class ItemControl
     public void deleteItemDescriptionTypeDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
         List<ItemDescriptionTypeDescription> itemDescriptionTypeDescriptions = getItemDescriptionTypeDescriptionsByItemDescriptionTypeForUpdate(itemDescriptionType);
 
-        itemDescriptionTypeDescriptions.stream().forEach((itemDescriptionTypeDescription) -> {
-            deleteItemDescriptionTypeDescription(itemDescriptionTypeDescription, deletedBy);
-        });
+        itemDescriptionTypeDescriptions.forEach((itemDescriptionTypeDescription) -> 
+                deleteItemDescriptionTypeDescription(itemDescriptionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -6929,9 +6929,9 @@ public class ItemControl
     public void deleteItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType, BasePK deletedBy) {
         List<ItemDescriptionTypeUseTypeDescription> itemDescriptionTypeUseTypeDescriptions = getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeForUpdate(itemDescriptionTypeUseType);
 
-        itemDescriptionTypeUseTypeDescriptions.stream().forEach((itemDescriptionTypeUseTypeDescription) -> {
-            deleteItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseTypeDescription, deletedBy);
-        });
+        itemDescriptionTypeUseTypeDescriptions.forEach((itemDescriptionTypeUseTypeDescription) -> 
+                deleteItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -7082,9 +7082,9 @@ public class ItemControl
     }
 
     public void deleteItemDescriptionTypeUses(List<ItemDescriptionTypeUse> itemDescriptionTypeUses, BasePK deletedBy) {
-        itemDescriptionTypeUses.stream().forEach((itemDescriptionTypeUse) -> {
-            deleteItemDescriptionTypeUse(itemDescriptionTypeUse, deletedBy);
-        });
+        itemDescriptionTypeUses.forEach((itemDescriptionTypeUse) -> 
+                deleteItemDescriptionTypeUse(itemDescriptionTypeUse, deletedBy)
+        );
     }
 
     public void deleteItemDescriptionTypeUsesByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
@@ -7556,9 +7556,9 @@ public class ItemControl
     public void deleteItemImageTypeDescriptionsByItemImageType(ItemImageType itemImageType, BasePK deletedBy) {
         List<ItemImageTypeDescription> itemImageTypeDescriptions = getItemImageTypeDescriptionsByItemImageTypeForUpdate(itemImageType);
 
-        itemImageTypeDescriptions.stream().forEach((itemImageTypeDescription) -> {
-            deleteItemImageTypeDescription(itemImageTypeDescription, deletedBy);
-        });
+        itemImageTypeDescriptions.forEach((itemImageTypeDescription) -> 
+                deleteItemImageTypeDescription(itemImageTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -7915,9 +7915,9 @@ public class ItemControl
     }
     
     public void deleteItemDescriptions(List<ItemDescription> itemDescriptions, BasePK deletedBy) {
-        itemDescriptions.stream().forEach((itemDescription) -> {
-            deleteItemDescription(itemDescription, deletedBy);
-        });
+        itemDescriptions.forEach((itemDescription) -> 
+                deleteItemDescription(itemDescription, deletedBy)
+        );
     }
 
     public void deleteItemDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
@@ -8484,9 +8484,9 @@ public class ItemControl
     public void deleteItemVolumesByItem(Item item, BasePK deletedBy) {
         List<ItemVolume> itemVolumes = getItemVolumesByItemForUpdate(item);
         
-        itemVolumes.stream().forEach((itemVolume) -> {
-            deleteItemVolume(itemVolume, deletedBy);
-        });
+        itemVolumes.forEach((itemVolume) -> 
+                deleteItemVolume(itemVolume, deletedBy)
+        );
     }
     
     public void deleteItemVolumeByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -8646,9 +8646,9 @@ public class ItemControl
     public void deleteItemWeightsByItem(Item item, BasePK deletedBy) {
         List<ItemWeight> itemWeights = getItemWeightsByItemForUpdate(item);
         
-        itemWeights.stream().forEach((itemWeight) -> {
-            deleteItemWeight(itemWeight, deletedBy);
-        });
+        itemWeights.forEach((itemWeight) -> 
+                deleteItemWeight(itemWeight, deletedBy)
+        );
     }
     
     public void deleteItemWeightByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -9109,9 +9109,9 @@ public class ItemControl
     public void deleteRelatedItemTypeDescriptionsByRelatedItemType(RelatedItemType relatedItemType, BasePK deletedBy) {
         List<RelatedItemTypeDescription> relatedItemTypeDescriptions = getRelatedItemTypeDescriptionsByRelatedItemTypeForUpdate(relatedItemType);
 
-        relatedItemTypeDescriptions.stream().forEach((relatedItemTypeDescription) -> {
-            deleteRelatedItemTypeDescription(relatedItemTypeDescription, deletedBy);
-        });
+        relatedItemTypeDescriptions.forEach((relatedItemTypeDescription) -> 
+                deleteRelatedItemTypeDescription(relatedItemTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -9457,9 +9457,9 @@ public class ItemControl
     }
 
     public void deleteRelatedItems(List<RelatedItem> relatedItems, BasePK deletedBy) {
-        relatedItems.stream().forEach((relatedItem) -> {
-            deleteRelatedItem(relatedItem, deletedBy);
-        });
+        relatedItems.forEach((relatedItem) -> 
+                deleteRelatedItem(relatedItem, deletedBy)
+        );
     }
 
     public void deleteRelatedItemsByFromItem(Item fromItem, BasePK deletedBy) {
@@ -9847,9 +9847,9 @@ public class ItemControl
     }
 
     public void deleteHarmonizedTariffScheduleCodes(List<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodes, BasePK deletedBy) {
-        harmonizedTariffScheduleCodes.stream().forEach((harmonizedTariffScheduleCode) -> {
-            deleteHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, deletedBy);
-        });
+        harmonizedTariffScheduleCodes.forEach((harmonizedTariffScheduleCode) -> 
+                deleteHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, deletedBy)
+        );
     }
 
     public void deleteHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode, BasePK deletedBy) {
@@ -10008,9 +10008,9 @@ public class ItemControl
     public void deleteHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, BasePK deletedBy) {
         List<HarmonizedTariffScheduleCodeTranslation> harmonizedTariffScheduleCodeTranslations = getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeForUpdate(harmonizedTariffScheduleCode);
 
-        harmonizedTariffScheduleCodeTranslations.stream().forEach((harmonizedTariffScheduleCodeTranslation) -> {
-            deleteHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCodeTranslation, deletedBy);
-        });
+        harmonizedTariffScheduleCodeTranslations.forEach((harmonizedTariffScheduleCodeTranslation) -> 
+                deleteHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCodeTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -10414,9 +10414,9 @@ public class ItemControl
     public void deleteHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, BasePK deletedBy) {
         List<HarmonizedTariffScheduleCodeUseTypeDescription> harmonizedTariffScheduleCodeUseTypeDescriptions = getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeForUpdate(harmonizedTariffScheduleCodeUseType);
 
-        harmonizedTariffScheduleCodeUseTypeDescriptions.stream().forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> {
-            deleteHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseTypeDescription, deletedBy);
-        });
+        harmonizedTariffScheduleCodeUseTypeDescriptions.forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> 
+                deleteHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -10820,9 +10820,9 @@ public class ItemControl
     public void deleteHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, BasePK deletedBy) {
         List<HarmonizedTariffScheduleCodeUnitDescription> harmonizedTariffScheduleCodeUnitDescriptions = getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitForUpdate(harmonizedTariffScheduleCodeUnit);
 
-        harmonizedTariffScheduleCodeUnitDescriptions.stream().forEach((harmonizedTariffScheduleCodeUnitDescription) -> {
-            deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, deletedBy);
-        });
+        harmonizedTariffScheduleCodeUnitDescriptions.forEach((harmonizedTariffScheduleCodeUnitDescription) -> 
+                deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -10976,9 +10976,9 @@ public class ItemControl
     }
 
     public void deleteHarmonizedTariffScheduleCodeUses(List<HarmonizedTariffScheduleCodeUse> harmonizedTariffScheduleCodeUses, BasePK deletedBy) {
-        harmonizedTariffScheduleCodeUses.stream().forEach((harmonizedTariffScheduleCodeUse) -> {
-            deleteHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCodeUse, deletedBy);
-        });
+        harmonizedTariffScheduleCodeUses.forEach((harmonizedTariffScheduleCodeUse) -> 
+                deleteHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCodeUse, deletedBy)
+        );
     }
 
     public void deleteHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, BasePK deletedBy) {
@@ -11258,9 +11258,9 @@ public class ItemControl
     }
 
     public void deleteItemHarmonizedTariffScheduleCodes(List<ItemHarmonizedTariffScheduleCode> itemHarmonizedTariffScheduleCodes, BasePK deletedBy) {
-        itemHarmonizedTariffScheduleCodes.stream().forEach((itemHarmonizedTariffScheduleCode) -> {
-            deleteItemHarmonizedTariffScheduleCode(itemHarmonizedTariffScheduleCode, deletedBy);
-        });
+        itemHarmonizedTariffScheduleCodes.forEach((itemHarmonizedTariffScheduleCode) -> 
+                deleteItemHarmonizedTariffScheduleCode(itemHarmonizedTariffScheduleCode, deletedBy)
+        );
     }
 
     public void deleteItemHarmonizedTariffScheduleCodesByItem(Item item, BasePK deletedBy) {

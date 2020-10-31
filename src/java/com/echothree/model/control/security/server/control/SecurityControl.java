@@ -661,9 +661,9 @@ public class SecurityControl
     public void deleteSecurityRoleGroupDescriptionsBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
         List<SecurityRoleGroupDescription> securityRoleGroupDescriptions = getSecurityRoleGroupDescriptionsBySecurityRoleGroupForUpdate(securityRoleGroup);
         
-        securityRoleGroupDescriptions.stream().forEach((securityRoleGroupDescription) -> {
-            deleteSecurityRoleGroupDescription(securityRoleGroupDescription, deletedBy);
-        });
+        securityRoleGroupDescriptions.forEach((securityRoleGroupDescription) -> 
+                deleteSecurityRoleGroupDescription(securityRoleGroupDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -995,9 +995,9 @@ public class SecurityControl
     public void deleteSecurityRolesBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
         List<SecurityRole> securityRoles = getSecurityRolesForUpdate(securityRoleGroup);
         
-        securityRoles.stream().forEach((securityRole) -> {
-            deleteSecurityRole(securityRole, deletedBy);
-        });
+        securityRoles.forEach((securityRole) -> 
+                deleteSecurityRole(securityRole, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1160,9 +1160,9 @@ public class SecurityControl
     public void deleteSecurityRoleDescriptionsBySecurityRole(SecurityRole securityRole, BasePK deletedBy) {
         List<SecurityRoleDescription> securityRoleDescriptions = getSecurityRoleDescriptionsBySecurityRoleForUpdate(securityRole);
         
-        securityRoleDescriptions.stream().forEach((securityRoleDescription) -> {
-            deleteSecurityRoleDescription(securityRoleDescription, deletedBy);
-        });
+        securityRoleDescriptions.forEach((securityRoleDescription) -> 
+                deleteSecurityRoleDescription(securityRoleDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1326,9 +1326,9 @@ public class SecurityControl
     }
     
     public void deleteSecurityRolePartyTypes(List<SecurityRolePartyType> securityRolePartyTypes, BasePK deletedBy) {
-        securityRolePartyTypes.stream().forEach((securityRolePartyType) -> {
-            deleteSecurityRolePartyType(securityRolePartyType, deletedBy);
-        });
+        securityRolePartyTypes.forEach((securityRolePartyType) -> 
+                deleteSecurityRolePartyType(securityRolePartyType, deletedBy)
+        );
     }
     
     public void deleteSecurityRolePartyTypesBySecurityRole(SecurityRole securityRole, BasePK deletedBy) {
@@ -1776,9 +1776,9 @@ public class SecurityControl
     public void deletePartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK deletedBy) {
         List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions = getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplateForUpdate(partySecurityRoleTemplate);
         
-        partySecurityRoleTemplateDescriptions.stream().forEach((partySecurityRoleTemplateDescription) -> {
-            deletePartySecurityRoleTemplateDescription(partySecurityRoleTemplateDescription, deletedBy);
-        });
+        partySecurityRoleTemplateDescriptions.forEach((partySecurityRoleTemplateDescription) -> 
+                deletePartySecurityRoleTemplateDescription(partySecurityRoleTemplateDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2407,9 +2407,9 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRoles(List<PartySecurityRole> partySecurityRoles, BasePK deletedBy) {
-        partySecurityRoles.stream().forEach((partySecurityRole) -> {
-            deletePartySecurityRole(partySecurityRole, deletedBy);
-        });
+        partySecurityRoles.forEach((partySecurityRole) -> 
+                deletePartySecurityRole(partySecurityRole, deletedBy)
+        );
     }
     
     public void deletePartySecurityRolesBySecurityRole(SecurityRole securityRole, BasePK deletedBy) {
@@ -2606,9 +2606,9 @@ public class SecurityControl
     }
     
     public void deletePartyEntitySecurityRoles(List<PartyEntitySecurityRole> partyEntitySecurityRoles, BasePK deletedBy) {
-        partyEntitySecurityRoles.stream().forEach((partyEntitySecurityRole) -> {
-            deletePartyEntitySecurityRole(partyEntitySecurityRole, deletedBy);
-        });
+        partyEntitySecurityRoles.forEach((partyEntitySecurityRole) -> 
+                deletePartyEntitySecurityRole(partyEntitySecurityRole, deletedBy)
+        );
     }
     
     public void deletePartyEntitySecurityRolesByParty(Party party, BasePK deletedBy) {

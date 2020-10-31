@@ -597,9 +597,9 @@ public class SequenceControl
     public void deleteSequenceTypeDescriptionsBySequenceType(SequenceType sequenceType, BasePK deletedBy) {
         List<SequenceTypeDescription> sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceTypeForUpdate(sequenceType);
         
-        sequenceTypeDescriptions.stream().forEach((sequenceTypeDescription) -> {
-            deleteSequenceTypeDescription(sequenceTypeDescription, deletedBy);
-        });
+        sequenceTypeDescriptions.forEach((sequenceTypeDescription) -> 
+                deleteSequenceTypeDescription(sequenceTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1133,9 +1133,9 @@ public class SequenceControl
     public void deleteSequencesBySequenceType(SequenceType sequenceType, BasePK deletedBy) {
         List<Sequence> sequences = getSequencesBySequenceTypeForUpdate(sequenceType);
         
-        sequences.stream().forEach((sequence) -> {
-            deleteSequence(sequence, deletedBy);
-        });
+        sequences.forEach((sequence) -> 
+                deleteSequence(sequence, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1295,9 +1295,9 @@ public class SequenceControl
     public void deleteSequenceDescriptionsBySequence(Sequence sequence, BasePK deletedBy) {
         List<SequenceDescription> sequenceDescriptions = getSequenceDescriptionsBySequenceForUpdate(sequence);
         
-        sequenceDescriptions.stream().forEach((sequenceDescription) -> {
-            deleteSequenceDescription(sequenceDescription, deletedBy);
-        });
+        sequenceDescriptions.forEach((sequenceDescription) -> 
+                deleteSequenceDescription(sequenceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

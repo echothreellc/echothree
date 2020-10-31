@@ -323,9 +323,9 @@ public class LotAliasControl
     }
 
     public void deleteLotAliasTypes(List<LotAliasType> lotAliasTypes, BasePK deletedBy) {
-        lotAliasTypes.stream().forEach((lotAliasType) -> {
-            deleteLotAliasType(lotAliasType, deletedBy);
-        });
+        lotAliasTypes.forEach((lotAliasType) -> 
+                deleteLotAliasType(lotAliasType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -472,9 +472,9 @@ public class LotAliasControl
     public void deleteLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
         List<LotAliasTypeDescription> lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasTypeForUpdate(lotAliasType);
 
-        lotAliasTypeDescriptions.stream().forEach((lotAliasTypeDescription) -> {
-            deleteLotAliasTypeDescription(lotAliasTypeDescription, deletedBy);
-        });
+        lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) -> 
+                deleteLotAliasTypeDescription(lotAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -663,17 +663,17 @@ public class LotAliasControl
     public void deleteLotAliasesByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
         List<LotAlias> lotaliases = getLotAliasesByLotAliasTypeForUpdate(lotAliasType);
 
-        lotaliases.stream().forEach((lotAlias) -> {
-            deleteLotAlias(lotAlias, deletedBy);
-        });
+        lotaliases.forEach((lotAlias) -> 
+                deleteLotAlias(lotAlias, deletedBy)
+        );
     }
 
     public void deleteLotAliasesByLot(Lot lot, BasePK deletedBy) {
         List<LotAlias> lotaliases = getLotAliasesByLotForUpdate(lot);
 
-        lotaliases.stream().forEach((lotAlias) -> {
-            deleteLotAlias(lotAlias, deletedBy);
-        });
+        lotaliases.forEach((lotAlias) -> 
+                deleteLotAlias(lotAlias, deletedBy)
+        );
     }
 
 }

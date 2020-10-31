@@ -608,9 +608,9 @@ public class PicklistControl
     public void deletePicklistTypeDescriptionsByPicklistType(PicklistType picklistType, BasePK deletedBy) {
         List<PicklistTypeDescription> picklistTypeDescriptions = getPicklistTypeDescriptionsByPicklistTypeForUpdate(picklistType);
 
-        picklistTypeDescriptions.stream().forEach((picklistTypeDescription) -> {
-            deletePicklistTypeDescription(picklistTypeDescription, deletedBy);
-        });
+        picklistTypeDescriptions.forEach((picklistTypeDescription) -> 
+                deletePicklistTypeDescription(picklistTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1027,9 +1027,9 @@ public class PicklistControl
     public void deletePicklistTimeTypeDescriptionsByPicklistTimeType(PicklistTimeType picklistTimeType, BasePK deletedBy) {
         List<PicklistTimeTypeDescription> picklistTimeTypeDescriptions = getPicklistTimeTypeDescriptionsByPicklistTimeTypeForUpdate(picklistTimeType);
 
-        picklistTimeTypeDescriptions.stream().forEach((picklistTimeTypeDescription) -> {
-            deletePicklistTimeTypeDescription(picklistTimeTypeDescription, deletedBy);
-        });
+        picklistTimeTypeDescriptions.forEach((picklistTimeTypeDescription) -> 
+                deletePicklistTimeTypeDescription(picklistTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1301,9 +1301,9 @@ public class PicklistControl
     }
 
     public void deletePicklistAliasTypes(List<PicklistAliasType> picklistAliasTypes, BasePK deletedBy) {
-        picklistAliasTypes.stream().forEach((picklistAliasType) -> {
-            deletePicklistAliasType(picklistAliasType, deletedBy);
-        });
+        picklistAliasTypes.forEach((picklistAliasType) -> 
+                deletePicklistAliasType(picklistAliasType, deletedBy)
+        );
     }
 
     public void deletePicklistAliasTypesByPicklistType(PicklistType picklistType, BasePK deletedBy) {
@@ -1454,9 +1454,9 @@ public class PicklistControl
     public void deletePicklistAliasTypeDescriptionsByPicklistAliasType(PicklistAliasType picklistAliasType, BasePK deletedBy) {
         List<PicklistAliasTypeDescription> picklistAliasTypeDescriptions = getPicklistAliasTypeDescriptionsByPicklistAliasTypeForUpdate(picklistAliasType);
 
-        picklistAliasTypeDescriptions.stream().forEach((picklistAliasTypeDescription) -> {
-            deletePicklistAliasTypeDescription(picklistAliasTypeDescription, deletedBy);
-        });
+        picklistAliasTypeDescriptions.forEach((picklistAliasTypeDescription) -> 
+                deletePicklistAliasTypeDescription(picklistAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1635,9 +1635,9 @@ public class PicklistControl
     }
 
     public void deletePicklistTimes(List<PicklistTime> picklistTimes, BasePK deletedBy) {
-        picklistTimes.stream().forEach((picklistTime) -> {
-            deletePicklistTime(picklistTime, deletedBy);
-        });
+        picklistTimes.forEach((picklistTime) -> 
+                deletePicklistTime(picklistTime, deletedBy)
+        );
     }
 
     public void deletePicklistTimesByPicklist(Picklist picklist, BasePK deletedBy) {
@@ -1834,17 +1834,17 @@ public class PicklistControl
     public void deletePicklistAliasesByPicklistAliasType(PicklistAliasType picklistAliasType, BasePK deletedBy) {
         List<PicklistAlias> picklistaliases = getPicklistAliasesByPicklistAliasTypeForUpdate(picklistAliasType);
 
-        picklistaliases.stream().forEach((picklistAlias) -> {
-            deletePicklistAlias(picklistAlias, deletedBy);
-        });
+        picklistaliases.forEach((picklistAlias) -> 
+                deletePicklistAlias(picklistAlias, deletedBy)
+        );
     }
 
     public void deletePicklistAliasesByPicklist(Picklist picklist, BasePK deletedBy) {
         List<PicklistAlias> picklistaliases = getPicklistAliasesByPicklistForUpdate(picklist);
 
-        picklistaliases.stream().forEach((picklistAlias) -> {
-            deletePicklistAlias(picklistAlias, deletedBy);
-        });
+        picklistaliases.forEach((picklistAlias) -> 
+                deletePicklistAlias(picklistAlias, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

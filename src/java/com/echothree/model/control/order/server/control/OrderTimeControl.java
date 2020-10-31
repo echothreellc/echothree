@@ -481,9 +481,9 @@ public class OrderTimeControl
     public void deleteOrderTimeTypeDescriptionsByOrderTimeType(OrderTimeType orderTimeType, BasePK deletedBy) {
         List<OrderTimeTypeDescription> orderTimeTypeDescriptions = getOrderTimeTypeDescriptionsByOrderTimeTypeForUpdate(orderTimeType);
 
-        orderTimeTypeDescriptions.stream().forEach((orderTimeTypeDescription) -> {
-            deleteOrderTimeTypeDescription(orderTimeTypeDescription, deletedBy);
-        });
+        orderTimeTypeDescriptions.forEach((orderTimeTypeDescription) -> 
+                deleteOrderTimeTypeDescription(orderTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -670,9 +670,9 @@ public class OrderTimeControl
     }
 
     public void deleteOrderTimes(List<OrderTime> orderTimes, BasePK deletedBy) {
-        orderTimes.stream().forEach((orderTime) -> {
-            deleteOrderTime(orderTime, deletedBy);
-        });
+        orderTimes.forEach((orderTime) -> 
+                deleteOrderTime(orderTime, deletedBy)
+        );
     }
 
     public void deleteOrderTimesByOrder(Order order, BasePK deletedBy) {
@@ -870,9 +870,9 @@ public class OrderTimeControl
     }
 
     public void deleteOrderLineTimes(List<OrderLineTime> orderLineTimes, BasePK deletedBy) {
-        orderLineTimes.stream().forEach((orderLineTime) -> {
-            deleteOrderLineTime(orderLineTime, deletedBy);
-        });
+        orderLineTimes.forEach((orderLineTime) -> 
+                deleteOrderLineTime(orderLineTime, deletedBy)
+        );
     }
 
     public void deleteOrderLineTimesByOrder(OrderLine orderLine, BasePK deletedBy) {

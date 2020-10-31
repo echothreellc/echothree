@@ -697,9 +697,9 @@ public class SearchControl
     public void deleteSearchUseTypeDescriptionsBySearchUseType(SearchUseType searchUseType, BasePK deletedBy) {
         List<SearchUseTypeDescription> searchUseTypeDescriptions = getSearchUseTypeDescriptionsBySearchUseTypeForUpdate(searchUseType);
 
-        searchUseTypeDescriptions.stream().forEach((searchUseTypeDescription) -> {
-            deleteSearchUseTypeDescription(searchUseTypeDescription, deletedBy);
-        });
+        searchUseTypeDescriptions.forEach((searchUseTypeDescription) -> 
+                deleteSearchUseTypeDescription(searchUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1132,9 +1132,9 @@ public class SearchControl
     public void deleteSearchResultActionTypeDescriptionsBySearchResultActionType(SearchResultActionType searchResultActionType, BasePK deletedBy) {
         List<SearchResultActionTypeDescription> searchResultActionTypeDescriptions = getSearchResultActionTypeDescriptionsBySearchResultActionTypeForUpdate(searchResultActionType);
 
-        searchResultActionTypeDescriptions.stream().forEach((searchResultActionTypeDescription) -> {
-            deleteSearchResultActionTypeDescription(searchResultActionTypeDescription, deletedBy);
-        });
+        searchResultActionTypeDescriptions.forEach((searchResultActionTypeDescription) -> 
+                deleteSearchResultActionTypeDescription(searchResultActionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1566,9 +1566,9 @@ public class SearchControl
     public void deleteSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType, BasePK deletedBy) {
         List<SearchCheckSpellingActionTypeDescription> searchCheckSpellingActionTypeDescriptions = getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionTypeForUpdate(searchCheckSpellingActionType);
 
-        searchCheckSpellingActionTypeDescriptions.stream().forEach((searchCheckSpellingActionTypeDescription) -> {
-            deleteSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionTypeDescription, deletedBy);
-        });
+        searchCheckSpellingActionTypeDescriptions.forEach((searchCheckSpellingActionTypeDescription) -> 
+                deleteSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2002,9 +2002,9 @@ public class SearchControl
     public void deleteSearchDefaultOperatorDescriptionsBySearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, BasePK deletedBy) {
         List<SearchDefaultOperatorDescription> searchDefaultOperatorDescriptions = getSearchDefaultOperatorDescriptionsBySearchDefaultOperatorForUpdate(searchDefaultOperator);
 
-        searchDefaultOperatorDescriptions.stream().forEach((searchDefaultOperatorDescription) -> {
-            deleteSearchDefaultOperatorDescription(searchDefaultOperatorDescription, deletedBy);
-        });
+        searchDefaultOperatorDescriptions.forEach((searchDefaultOperatorDescription) -> 
+                deleteSearchDefaultOperatorDescription(searchDefaultOperatorDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2438,9 +2438,9 @@ public class SearchControl
     public void deleteSearchSortDirectionDescriptionsBySearchSortDirection(SearchSortDirection searchSortDirection, BasePK deletedBy) {
         List<SearchSortDirectionDescription> searchSortDirectionDescriptions = getSearchSortDirectionDescriptionsBySearchSortDirectionForUpdate(searchSortDirection);
 
-        searchSortDirectionDescriptions.stream().forEach((searchSortDirectionDescription) -> {
-            deleteSearchSortDirectionDescription(searchSortDirectionDescription, deletedBy);
-        });
+        searchSortDirectionDescriptions.forEach((searchSortDirectionDescription) -> 
+                deleteSearchSortDirectionDescription(searchSortDirectionDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2860,9 +2860,9 @@ public class SearchControl
     public void deleteSearchKindDescriptionsBySearchKind(SearchKind searchKind, BasePK deletedBy) {
         List<SearchKindDescription> searchKindDescriptions = getSearchKindDescriptionsBySearchKindForUpdate(searchKind);
 
-        searchKindDescriptions.stream().forEach((searchKindDescription) -> {
-            deleteSearchKindDescription(searchKindDescription, deletedBy);
-        });
+        searchKindDescriptions.forEach((searchKindDescription) -> 
+                deleteSearchKindDescription(searchKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3138,9 +3138,9 @@ public class SearchControl
     public void deleteSearchTypesBySearchKind(SearchKind searchKind, BasePK deletedBy) {
         List<SearchType> searchTypes = getSearchTypesForUpdate(searchKind);
 
-        searchTypes.stream().forEach((searchType) -> {
-            deleteSearchType(searchType, deletedBy);
-        });
+        searchTypes.forEach((searchType) -> 
+                deleteSearchType(searchType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3287,9 +3287,9 @@ public class SearchControl
     public void deleteSearchTypeDescriptionsBySearchType(SearchType searchType, BasePK deletedBy) {
         List<SearchTypeDescription> searchTypeDescriptions = getSearchTypeDescriptionsBySearchTypeForUpdate(searchType);
 
-        searchTypeDescriptions.stream().forEach((searchTypeDescription) -> {
-            deleteSearchTypeDescription(searchTypeDescription, deletedBy);
-        });
+        searchTypeDescriptions.forEach((searchTypeDescription) -> 
+                deleteSearchTypeDescription(searchTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3563,9 +3563,9 @@ public class SearchControl
     public void deleteSearchSortOrdersBySearchKind(SearchKind searchKind, BasePK deletedBy) {
         List<SearchSortOrder> searchSortOrders = getSearchSortOrdersForUpdate(searchKind);
 
-        searchSortOrders.stream().forEach((searchSortOrder) -> {
-            deleteSearchSortOrder(searchSortOrder, deletedBy);
-        });
+        searchSortOrders.forEach((searchSortOrder) -> 
+                deleteSearchSortOrder(searchSortOrder, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3712,9 +3712,9 @@ public class SearchControl
     public void deleteSearchSortOrderDescriptionsBySearchSortOrder(SearchSortOrder searchSortOrder, BasePK deletedBy) {
         List<SearchSortOrderDescription> searchSortOrderDescriptions = getSearchSortOrderDescriptionsBySearchSortOrderForUpdate(searchSortOrder);
 
-        searchSortOrderDescriptions.stream().forEach((searchSortOrderDescription) -> {
-            deleteSearchSortOrderDescription(searchSortOrderDescription, deletedBy);
-        });
+        searchSortOrderDescriptions.forEach((searchSortOrderDescription) -> 
+                deleteSearchSortOrderDescription(searchSortOrderDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3865,9 +3865,9 @@ public class SearchControl
     }
     
     public void deleteSearches(List<Search> searches, BasePK deletedBy) {
-        searches.stream().forEach((search) -> {
-            deleteSearch(search, deletedBy);
-        });
+        searches.forEach((search) -> 
+                deleteSearch(search, deletedBy)
+        );
     }
 
     public void deleteSearchesByParty(Party party, BasePK deletedBy) {
@@ -4118,9 +4118,9 @@ public class SearchControl
     }
     
     public void deletedCachedSearches(List<CachedSearch> cachedSearches, BasePK deletedBy) {
-        cachedSearches.stream().forEach((cachedSearch) -> {
-            deleteCachedSearch(cachedSearch, deletedBy);
-        });
+        cachedSearches.forEach((cachedSearch) -> 
+                deleteCachedSearch(cachedSearch, deletedBy)
+        );
     }
     
     public void deleteCachedSearchesByIndex(Index index, BasePK deletedBy) {
@@ -4269,9 +4269,9 @@ public class SearchControl
     }
     
     public void deleteCachedSearchIndexFields(List<CachedSearchIndexField> cachedSearchIndexFields, BasePK deletedBy) {
-        cachedSearchIndexFields.stream().forEach((cachedSearchIndexField) -> {
-            deleteCachedSearchIndexField(cachedSearchIndexField, deletedBy);
-        });
+        cachedSearchIndexFields.forEach((cachedSearchIndexField) -> 
+                deleteCachedSearchIndexField(cachedSearchIndexField, deletedBy)
+        );
     }
     
     public void deleteCachedSearchIndexFieldsByCachedSearch(CachedSearch cachedSearch, BasePK deletedBy) {
@@ -4760,9 +4760,9 @@ public class SearchControl
     }
 
     public void deletePartySearchTypePreferences(List<PartySearchTypePreference> partySearchTypePreferences, BasePK deletedBy) {
-        partySearchTypePreferences.stream().forEach((partySearchTypePreference) -> {
-            deletePartySearchTypePreference(partySearchTypePreference, deletedBy);
-        });
+        partySearchTypePreferences.forEach((partySearchTypePreference) -> 
+                deletePartySearchTypePreference(partySearchTypePreference, deletedBy)
+        );
     }
 
     public void deletePartySearchTypePreferencesByParty(Party party, BasePK deletedBy) {
@@ -4882,9 +4882,9 @@ public class SearchControl
     }
     
     public void deleteSearchResultActions(List<SearchResultAction> searchResultActions, BasePK deletedBy) {
-        searchResultActions.stream().forEach((searchResultAction) -> {
-            deleteSearchResultAction(searchResultAction, deletedBy);
-        });
+        searchResultActions.forEach((searchResultAction) -> 
+                deleteSearchResultAction(searchResultAction, deletedBy)
+        );
     }
     
     public void deleteSearchResultActionsBySearch(Search search, BasePK deletedBy) {

@@ -336,9 +336,9 @@ public class OfferUseControl
     }
 
     public void deleteOfferUses(List<OfferUse> offerUses, BasePK deletedBy) {
-        offerUses.stream().forEach((offerUse) -> {
-            deleteOfferUse(offerUse, deletedBy);
-        });
+        offerUses.forEach((offerUse) -> 
+                deleteOfferUse(offerUse, deletedBy)
+        );
     }
 
     public void deleteOfferUsesByOffer(Offer offer, BasePK deletedBy) {

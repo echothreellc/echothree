@@ -329,9 +329,9 @@ public class OrderAliasControl
     }
 
     public void deleteOrderAliasTypes(List<OrderAliasType> orderAliasTypes, BasePK deletedBy) {
-        orderAliasTypes.stream().forEach((orderAliasType) -> {
-            deleteOrderAliasType(orderAliasType, deletedBy);
-        });
+        orderAliasTypes.forEach((orderAliasType) -> 
+                deleteOrderAliasType(orderAliasType, deletedBy)
+        );
     }
 
     public void deleteOrderAliasTypesByOrderType(OrderType orderType, BasePK deletedBy) {
@@ -482,9 +482,9 @@ public class OrderAliasControl
     public void deleteOrderAliasTypeDescriptionsByOrderAliasType(OrderAliasType orderAliasType, BasePK deletedBy) {
         List<OrderAliasTypeDescription> orderAliasTypeDescriptions = getOrderAliasTypeDescriptionsByOrderAliasTypeForUpdate(orderAliasType);
 
-        orderAliasTypeDescriptions.stream().forEach((orderAliasTypeDescription) -> {
-            deleteOrderAliasTypeDescription(orderAliasTypeDescription, deletedBy);
-        });
+        orderAliasTypeDescriptions.forEach((orderAliasTypeDescription) -> 
+                deleteOrderAliasTypeDescription(orderAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -673,17 +673,17 @@ public class OrderAliasControl
     public void deleteOrderAliasesByOrderAliasType(OrderAliasType orderAliasType, BasePK deletedBy) {
         List<OrderAlias> orderaliases = getOrderAliasesByOrderAliasTypeForUpdate(orderAliasType);
 
-        orderaliases.stream().forEach((orderAlias) -> {
-            deleteOrderAlias(orderAlias, deletedBy);
-        });
+        orderaliases.forEach((orderAlias) -> 
+                deleteOrderAlias(orderAlias, deletedBy)
+        );
     }
 
     public void deleteOrderAliasesByOrder(Order order, BasePK deletedBy) {
         List<OrderAlias> orderaliases = getOrderAliasesByOrderForUpdate(order);
 
-        orderaliases.stream().forEach((orderAlias) -> {
-            deleteOrderAlias(orderAlias, deletedBy);
-        });
+        orderaliases.forEach((orderAlias) -> 
+                deleteOrderAlias(orderAlias, deletedBy)
+        );
     }
 
 }

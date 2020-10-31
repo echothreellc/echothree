@@ -538,9 +538,9 @@ public class WishlistControl
     public void deleteWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
         List<WishlistTypeDescription> wishlistTypeDescriptions = getWishlistTypeDescriptionsByWishlistTypeForUpdate(wishlistType);
         
-        wishlistTypeDescriptions.stream().forEach((wishlistTypeDescription) -> {
-            deleteWishlistTypeDescription(wishlistTypeDescription, deletedBy);
-        });
+        wishlistTypeDescriptions.forEach((wishlistTypeDescription) -> 
+                deleteWishlistTypeDescription(wishlistTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -837,9 +837,9 @@ public class WishlistControl
     public void deleteWishlistTypePrioritiesByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
         List<WishlistTypePriority> wishlistTypePriorities = getWishlistTypePrioritiesForUpdate(wishlistType);
         
-        wishlistTypePriorities.stream().forEach((wishlistTypePriority) -> {
-            deleteWishlistTypePriority(wishlistTypePriority, deletedBy);
-        });
+        wishlistTypePriorities.forEach((wishlistTypePriority) -> 
+                deleteWishlistTypePriority(wishlistTypePriority, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1004,9 +1004,9 @@ public class WishlistControl
     public void deleteWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
         List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions = getWishlistTypePriorityDescriptionsByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
-        wishlistTypePriorityDescriptions.stream().forEach((wishlistTypePriorityDescription) -> {
-            deleteWishlistTypePriorityDescription(wishlistTypePriorityDescription, deletedBy);
-        });
+        wishlistTypePriorityDescriptions.forEach((wishlistTypePriorityDescription) -> 
+                deleteWishlistTypePriorityDescription(wishlistTypePriorityDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

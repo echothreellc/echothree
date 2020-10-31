@@ -402,9 +402,9 @@ public class TaxControl
     }
 
     public void deleteTaxClassifications(List<TaxClassification> taxClassifications, BasePK deletedBy) {
-        taxClassifications.stream().forEach((taxClassification) -> {
-            deleteTaxClassification(taxClassification, deletedBy);
-        });
+        taxClassifications.forEach((taxClassification) -> 
+                deleteTaxClassification(taxClassification, deletedBy)
+        );
     }
 
     public void deleteTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode, BasePK deletedBy) {
@@ -550,9 +550,9 @@ public class TaxControl
     public void deleteTaxClassificationTranslationsByTaxClassification(TaxClassification taxClassification, BasePK deletedBy) {
         List<TaxClassificationTranslation> taxClassificationTranslations = getTaxClassificationTranslationsByTaxClassificationForUpdate(taxClassification);
 
-        taxClassificationTranslations.stream().forEach((taxClassificationTranslation) -> {
-            deleteTaxClassificationTranslation(taxClassificationTranslation, deletedBy);
-        });
+        taxClassificationTranslations.forEach((taxClassificationTranslation) -> 
+                deleteTaxClassificationTranslation(taxClassificationTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -776,9 +776,9 @@ public class TaxControl
     }
 
     public void deleteItemTaxClassifications(List<ItemTaxClassification> itemTaxClassifications, BasePK deletedBy) {
-        itemTaxClassifications.stream().forEach((itemTaxClassification) -> {
-            deleteItemTaxClassification(itemTaxClassification, deletedBy);
-        });
+        itemTaxClassifications.forEach((itemTaxClassification) -> 
+                deleteItemTaxClassification(itemTaxClassification, deletedBy)
+        );
     }
 
     public void deleteItemTaxClassificationsByItem(Item item, BasePK deletedBy) {
@@ -1193,9 +1193,9 @@ public class TaxControl
     public void deleteTaxDescriptionsByTax(Tax tax, BasePK deletedBy) {
         List<TaxDescription> taxDescriptions = getTaxDescriptionsByTaxForUpdate(tax);
         
-        taxDescriptions.stream().forEach((taxDescription) -> {
-            deleteTaxDescription(taxDescription, deletedBy);
-        });
+        taxDescriptions.forEach((taxDescription) -> 
+                deleteTaxDescription(taxDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1371,9 +1371,9 @@ public class TaxControl
     }
     
     private void deleteGeoCodeTaxes(List<GeoCodeTax> geoCodeTaxes, BasePK deletedBy) {
-        geoCodeTaxes.stream().forEach((geoCodeTax) -> {
-            deleteGeoCodeTax(geoCodeTax, deletedBy);
-        });
+        geoCodeTaxes.forEach((geoCodeTax) -> 
+                deleteGeoCodeTax(geoCodeTax, deletedBy)
+        );
     }
     
     public void deleteGeoCodeTaxesByGeoCode(GeoCode geoCode, BasePK deletedBy) {

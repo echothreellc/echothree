@@ -464,9 +464,9 @@ public class LotTimeControl
     public void deleteLotTimeTypeDescriptionsByLotTimeType(LotTimeType lotTimeType, BasePK deletedBy) {
         List<LotTimeTypeDescription> lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeTypeForUpdate(lotTimeType);
 
-        lotTimeTypeDescriptions.stream().forEach((lotTimeTypeDescription) -> {
-            deleteLotTimeTypeDescription(lotTimeTypeDescription, deletedBy);
-        });
+        lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) -> 
+                deleteLotTimeTypeDescription(lotTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -645,9 +645,9 @@ public class LotTimeControl
     }
 
     public void deleteLotTimes(List<LotTime> lotTimes, BasePK deletedBy) {
-        lotTimes.stream().forEach((lotTime) -> {
-            deleteLotTime(lotTime, deletedBy);
-        });
+        lotTimes.forEach((lotTime) -> 
+                deleteLotTime(lotTime, deletedBy)
+        );
     }
 
     public void deleteLotTimesByLot(Lot lot, BasePK deletedBy) {

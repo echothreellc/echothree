@@ -629,9 +629,9 @@ public class EmployeeControl
     public void deleteResponsibilityTypeDescriptionsByResponsibilityType(ResponsibilityType responsibilityType, BasePK deletedBy) {
         List<ResponsibilityTypeDescription> responsibilityTypeDescriptions = getResponsibilityTypeDescriptionsByResponsibilityTypeForUpdate(responsibilityType);
         
-        responsibilityTypeDescriptions.stream().forEach((responsibilityTypeDescription) -> {
-            deleteResponsibilityTypeDescription(responsibilityTypeDescription, deletedBy);
-        });
+        responsibilityTypeDescriptions.forEach((responsibilityTypeDescription) -> 
+                deleteResponsibilityTypeDescription(responsibilityTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1056,9 +1056,9 @@ public class EmployeeControl
     public void deleteSkillTypeDescriptionsBySkillType(SkillType skillType, BasePK deletedBy) {
         List<SkillTypeDescription> skillTypeDescriptions = getSkillTypeDescriptionsBySkillTypeForUpdate(skillType);
         
-        skillTypeDescriptions.stream().forEach((skillTypeDescription) -> {
-            deleteSkillTypeDescription(skillTypeDescription, deletedBy);
-        });
+        skillTypeDescriptions.forEach((skillTypeDescription) -> 
+                deleteSkillTypeDescription(skillTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1473,9 +1473,9 @@ public class EmployeeControl
     public void deleteLeaveTypeDescriptionsByLeaveType(LeaveType leaveType, BasePK deletedBy) {
         List<LeaveTypeDescription> leaveTypeDescriptions = getLeaveTypeDescriptionsByLeaveTypeForUpdate(leaveType);
 
-        leaveTypeDescriptions.stream().forEach((leaveTypeDescription) -> {
-            deleteLeaveTypeDescription(leaveTypeDescription, deletedBy);
-        });
+        leaveTypeDescriptions.forEach((leaveTypeDescription) -> 
+                deleteLeaveTypeDescription(leaveTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1890,9 +1890,9 @@ public class EmployeeControl
     public void deleteLeaveReasonDescriptionsByLeaveReason(LeaveReason leaveReason, BasePK deletedBy) {
         List<LeaveReasonDescription> leaveReasonDescriptions = getLeaveReasonDescriptionsByLeaveReasonForUpdate(leaveReason);
 
-        leaveReasonDescriptions.stream().forEach((leaveReasonDescription) -> {
-            deleteLeaveReasonDescription(leaveReasonDescription, deletedBy);
-        });
+        leaveReasonDescriptions.forEach((leaveReasonDescription) -> 
+                deleteLeaveReasonDescription(leaveReasonDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2224,9 +2224,9 @@ public class EmployeeControl
     }
 
     public void deleteLeaves(List<Leave> leaves, BasePK deletedBy) {
-        leaves.stream().forEach((leave) -> {
-            deleteLeave(leave, deletedBy);
-        });
+        leaves.forEach((leave) -> 
+                deleteLeave(leave, deletedBy)
+        );
     }
 
     public void deleteLeavesByParty(Party party, BasePK deletedBy) {
@@ -2664,9 +2664,9 @@ public class EmployeeControl
     public void deleteTerminationReasonDescriptionsByTerminationReason(TerminationReason terminationReason, BasePK deletedBy) {
         List<TerminationReasonDescription> terminationReasonDescriptions = getTerminationReasonDescriptionsByTerminationReasonForUpdate(terminationReason);
         
-        terminationReasonDescriptions.stream().forEach((terminationReasonDescription) -> {
-            deleteTerminationReasonDescription(terminationReasonDescription, deletedBy);
-        });
+        terminationReasonDescriptions.forEach((terminationReasonDescription) -> 
+                deleteTerminationReasonDescription(terminationReasonDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3092,9 +3092,9 @@ public class EmployeeControl
     public void deleteTerminationTypeDescriptionsByTerminationType(TerminationType terminationType, BasePK deletedBy) {
         List<TerminationTypeDescription> terminationTypeDescriptions = getTerminationTypeDescriptionsByTerminationTypeForUpdate(terminationType);
         
-        terminationTypeDescriptions.stream().forEach((terminationTypeDescription) -> {
-            deleteTerminationTypeDescription(terminationTypeDescription, deletedBy);
-        });
+        terminationTypeDescriptions.forEach((terminationTypeDescription) -> 
+                deleteTerminationTypeDescription(terminationTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3390,9 +3390,9 @@ public class EmployeeControl
     }
 
     public void deleteEmployments(List<Employment> employments, BasePK deletedBy) {
-        employments.stream().forEach((employment) -> {
-            deleteEmployment(employment, deletedBy);
-        });
+        employments.forEach((employment) -> 
+                deleteEmployment(employment, deletedBy)
+        );
     }
 
     public void deleteEmploymentsByParty(Party party, BasePK deletedBy) {
@@ -3842,9 +3842,9 @@ public class EmployeeControl
     public void deleteEmployeeTypeDescriptionsByEmployeeType(EmployeeType employeeType, BasePK deletedBy) {
         List<EmployeeTypeDescription> employeeTypeDescriptions = getEmployeeTypeDescriptionsByEmployeeTypeForUpdate(employeeType);
         
-        employeeTypeDescriptions.stream().forEach((employeeTypeDescription) -> {
-            deleteEmployeeTypeDescription(employeeTypeDescription, deletedBy);
-        });
+        employeeTypeDescriptions.forEach((employeeTypeDescription) -> 
+                deleteEmployeeTypeDescription(employeeTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4256,17 +4256,17 @@ public class EmployeeControl
     public void deletePartyResponsibilityByParty(Party party, BasePK deletedBy) {
         List<PartyResponsibility> partyResponsibilities = getPartyResponsibilitiesByPartyForUpdate(party);
         
-        partyResponsibilities.stream().forEach((partyResponsibility) -> {
-            deletePartyResponsibility(partyResponsibility, deletedBy);
-        });
+        partyResponsibilities.forEach((partyResponsibility) -> 
+                deletePartyResponsibility(partyResponsibility, deletedBy)
+        );
     }
     
     public void deletePartyResponsibilitiesByResponsibilityType(ResponsibilityType responsibilityType, BasePK deletedBy) {
         List<PartyResponsibility> partyResponsibilities = getPartyResponsibilitiesByResponsibilityTypeForUpdate(responsibilityType);
         
-        partyResponsibilities.stream().forEach((partyResponsibility) -> {
-            deletePartyResponsibility(partyResponsibility, deletedBy);
-        });
+        partyResponsibilities.forEach((partyResponsibility) -> 
+                deletePartyResponsibility(partyResponsibility, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4447,17 +4447,17 @@ public class EmployeeControl
     public void deletePartySkillByParty(Party party, BasePK deletedBy) {
         List<PartySkill> partySkills = getPartySkillsByPartyForUpdate(party);
         
-        partySkills.stream().forEach((partySkill) -> {
-            deletePartySkill(partySkill, deletedBy);
-        });
+        partySkills.forEach((partySkill) -> 
+                deletePartySkill(partySkill, deletedBy)
+        );
     }
     
     public void deletePartySkillsBySkillType(SkillType skillType, BasePK deletedBy) {
         List<PartySkill> partySkills = getPartySkillsBySkillTypeForUpdate(skillType);
         
-        partySkills.stream().forEach((partySkill) -> {
-            deletePartySkill(partySkill, deletedBy);
-        });
+        partySkills.forEach((partySkill) -> 
+                deletePartySkill(partySkill, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

@@ -602,9 +602,9 @@ public class CustomerControl
     public void deleteCustomerTypeDescriptionsByCustomerType(CustomerType customerType, BasePK deletedBy) {
         List<CustomerTypeDescription> customerTypeDescriptions = getCustomerTypeDescriptionsByCustomerTypeForUpdate(customerType);
         
-        customerTypeDescriptions.stream().forEach((customerTypeDescription) -> {
-            deleteCustomerTypeDescription(customerTypeDescription, deletedBy);
-        });
+        customerTypeDescriptions.forEach((customerTypeDescription) -> 
+                deleteCustomerTypeDescription(customerTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1109,9 +1109,9 @@ public class CustomerControl
     }
     
     public void deleteCustomerTypePaymentMethods(List<CustomerTypePaymentMethod> customerTypePaymentMethods, BasePK deletedBy) {
-        customerTypePaymentMethods.stream().forEach((customerTypePaymentMethod) -> {
-            deleteCustomerTypePaymentMethod(customerTypePaymentMethod, deletedBy);
-        });
+        customerTypePaymentMethods.forEach((customerTypePaymentMethod) -> 
+                deleteCustomerTypePaymentMethod(customerTypePaymentMethod, deletedBy)
+        );
     }
     
     public void deleteCustomerTypePaymentMethodsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -1403,9 +1403,9 @@ public class CustomerControl
     }
     
     public void deleteCustomerTypeShippingMethods(List<CustomerTypeShippingMethod> customerTypeShippingMethods, BasePK deletedBy) {
-        customerTypeShippingMethods.stream().forEach((customerTypeShippingMethod) -> {
-            deleteCustomerTypeShippingMethod(customerTypeShippingMethod, deletedBy);
-        });
+        customerTypeShippingMethods.forEach((customerTypeShippingMethod) -> 
+                deleteCustomerTypeShippingMethod(customerTypeShippingMethod, deletedBy)
+        );
     }
     
     public void deleteCustomerTypeShippingMethodsByCustomerType(CustomerType customerType, BasePK deletedBy) {

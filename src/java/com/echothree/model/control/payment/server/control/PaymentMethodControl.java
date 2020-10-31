@@ -425,9 +425,9 @@ public class PaymentMethodControl
     public void deletePaymentMethodsByPaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
         List<PaymentMethod> paymentMethods = getPaymentMethodsByPaymentProcessorForUpdate(paymentProcessor);
         
-        paymentMethods.stream().forEach((paymentMethod) -> {
-            deletePaymentMethod(paymentMethod, deletedBy);
-        });
+        paymentMethods.forEach((paymentMethod) -> 
+                deletePaymentMethod(paymentMethod, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -595,9 +595,9 @@ public class PaymentMethodControl
     public void deletePaymentMethodDescriptionsByPaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
         List<PaymentMethodDescription> paymentMethodDescriptions = getPaymentMethodDescriptionsForUpdate(paymentMethod);
         
-        paymentMethodDescriptions.stream().forEach((paymentMethodDescription) -> {
-            deletePaymentMethodDescription(paymentMethodDescription, deletedBy);
-        });
+        paymentMethodDescriptions.forEach((paymentMethodDescription) -> 
+                deletePaymentMethodDescription(paymentMethodDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

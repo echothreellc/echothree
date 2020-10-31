@@ -805,9 +805,9 @@ public class ContactControl
     public void deleteContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType, BasePK deletedBy) {
         List<ContactMechanismAliasTypeDescription> contactMechanismAliasTypeDescriptions = getContactMechanismAliasTypeDescriptionsByContactMechanismAliasTypeForUpdate(contactMechanismAliasType);
 
-        contactMechanismAliasTypeDescriptions.stream().forEach((contactMechanismAliasTypeDescription) -> {
-            deleteContactMechanismAliasTypeDescription(contactMechanismAliasTypeDescription, deletedBy);
-        });
+        contactMechanismAliasTypeDescriptions.forEach((contactMechanismAliasTypeDescription) -> 
+                deleteContactMechanismAliasTypeDescription(contactMechanismAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1489,9 +1489,9 @@ public class ContactControl
     }
     
     public void deleteContactMechanismAliases(List<ContactMechanismAlias> contactMechanismAliases, BasePK deletedBy) {
-        contactMechanismAliases.stream().forEach((contactMechanismAlias) -> {
-            deleteContactMechanismAlias(contactMechanismAlias, deletedBy);
-        });
+        contactMechanismAliases.forEach((contactMechanismAlias) -> 
+                deleteContactMechanismAlias(contactMechanismAlias, deletedBy)
+        );
     }
 
     public void deleteContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -2694,17 +2694,17 @@ public class ContactControl
     public void deletePartyContactMechanismsByParty(Party party, BasePK deletedBy) {
         List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByPartyForUpdate(party);
         
-        partyContactMechanisms.stream().forEach((partyContactMechanism) -> {
-            deletePartyContactMechanism(partyContactMechanism, deletedBy);
-        });
+        partyContactMechanisms.forEach((partyContactMechanism) -> 
+                deletePartyContactMechanism(partyContactMechanism, deletedBy)
+        );
     }
     
     public void deletePartyContactMechanismsByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
         List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByContactMechanismForUpdate(contactMechanism);
         
-        partyContactMechanisms.stream().forEach((partyContactMechanism) -> {
-            deletePartyContactMechanism(partyContactMechanism, deletedBy);
-        });
+        partyContactMechanisms.forEach((partyContactMechanism) -> 
+                deletePartyContactMechanism(partyContactMechanism, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2939,17 +2939,17 @@ public class ContactControl
     public void deletePartyContactMechanismAliasesByParty(Party party, BasePK deletedBy) {
         List<PartyContactMechanismAlias> partyContactMechanismAliases = getPartyContactMechanismAliasesByParty(party);
         
-        partyContactMechanismAliases.stream().forEach((partyContactMechanismAlias) -> {
-            deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy);
-        });
+        partyContactMechanismAliases.forEach((partyContactMechanismAlias) -> 
+                deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy)
+        );
     }
     
     public void deletePartyContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
         List<PartyContactMechanismAlias> partyContactMechanismAliases = getPartyContactMechanismAliasesByContactMechanismForUpdate(contactMechanism);
         
-        partyContactMechanismAliases.stream().forEach((partyContactMechanismAlias) -> {
-            deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy);
-        });
+        partyContactMechanismAliases.forEach((partyContactMechanismAlias) -> 
+                deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3275,9 +3275,9 @@ public class ContactControl
             BasePK deletedBy) {
         List<PartyContactMechanismPurpose> partyContactMechanismPurposes = getPartyContactMechanismPurposesByPartyContactMechanismForUpdate(partyContactMechanism);
         
-        partyContactMechanismPurposes.stream().forEach((partyContactMechanismPurpose) -> {
-            deletePartyContactMechanismPurpose(partyContactMechanismPurpose, deletedBy);
-        });
+        partyContactMechanismPurposes.forEach((partyContactMechanismPurpose) -> 
+                deletePartyContactMechanismPurpose(partyContactMechanismPurpose, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3449,9 +3449,9 @@ public class ContactControl
     }
 
     public void deletePartyContactMechanismRelationships(List<PartyContactMechanismRelationship> partyContactMechanismRelationships, BasePK deletedBy) {
-        partyContactMechanismRelationships.stream().forEach((partyContactMechanismRelationship) -> {
-            deletePartyContactMechanismRelationship(partyContactMechanismRelationship, deletedBy);
-        });
+        partyContactMechanismRelationships.forEach((partyContactMechanismRelationship) -> 
+                deletePartyContactMechanismRelationship(partyContactMechanismRelationship, deletedBy)
+        );
     }
 
     public void deletePartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism, BasePK deletedBy) {
@@ -4007,9 +4007,9 @@ public class ContactControl
     public void deletePostalAddressFormatDescriptionsByPostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
         List<PostalAddressFormatDescription> postalAddressFormatDescriptions = getPostalAddressFormatDescriptionsByPostalAddressFormatForUpdate(postalAddressFormat);
         
-        postalAddressFormatDescriptions.stream().forEach((postalAddressFormatDescription) -> {
-            deletePostalAddressFormatDescription(postalAddressFormatDescription, deletedBy);
-        });
+        postalAddressFormatDescriptions.forEach((postalAddressFormatDescription) -> 
+                deletePostalAddressFormatDescription(postalAddressFormatDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4185,9 +4185,9 @@ public class ContactControl
     public void deletePostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
         List<PostalAddressLine> postalAddressLines = getPostalAddressLinesByPostalAddressFormatForUpdate(postalAddressFormat);
         
-        postalAddressLines.stream().forEach((postalAddressLine) -> {
-            deletePostalAddressLine(postalAddressLine, deletedBy);
-        });
+        postalAddressLines.forEach((postalAddressLine) -> 
+                deletePostalAddressLine(postalAddressLine, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4330,9 +4330,9 @@ public class ContactControl
     public void deletePostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine, BasePK deletedBy) {
         List<PostalAddressLineElement> postalAddressLineElements = getPostalAddressLineElementsByPostalAddressLineForUpdate(postalAddressLine);
         
-        postalAddressLineElements.stream().forEach((postalAddressLineElement) -> {
-            deletePostalAddressLineElement(postalAddressLineElement, deletedBy);
-        });
+        postalAddressLineElements.forEach((postalAddressLineElement) -> 
+                deletePostalAddressLineElement(postalAddressLineElement, deletedBy)
+        );
     }
     
 }

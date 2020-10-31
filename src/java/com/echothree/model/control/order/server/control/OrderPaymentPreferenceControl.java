@@ -323,9 +323,9 @@ public class OrderPaymentPreferenceControl
     }
 
     public void deleteOrderPaymentPreferencesByOrder(List<OrderPaymentPreference> orderPaymentPreferences, BasePK deletedBy) {
-        orderPaymentPreferences.stream().forEach((orderPaymentPreference) -> {
-            deleteOrderPaymentPreference(orderPaymentPreference, deletedBy);
-        });
+        orderPaymentPreferences.forEach((orderPaymentPreference) -> 
+                deleteOrderPaymentPreference(orderPaymentPreference, deletedBy)
+        );
     }
 
     public void deleteOrderPaymentPreferencesByOrder(Order order, BasePK deletedBy) {

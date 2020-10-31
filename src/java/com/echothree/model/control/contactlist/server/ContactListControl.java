@@ -519,9 +519,9 @@ public class ContactListControl
     }
 
     public void deleteContactListTypes(List<ContactListType> contactListTypes, BasePK deletedBy) {
-        contactListTypes.stream().forEach((contactListType) -> {
-            deleteContactListType(contactListType, deletedBy);
-        });
+        contactListTypes.forEach((contactListType) -> 
+                deleteContactListType(contactListType, deletedBy)
+        );
     }
 
     public void deleteContactListTypesByConfirmationRequestChain(Chain confirmationRequestChain, BasePK deletedBy) {
@@ -686,9 +686,9 @@ public class ContactListControl
     public void deleteContactListTypeDescriptionsByContactListType(ContactListType contactListType, BasePK deletedBy) {
         List<ContactListTypeDescription> contactListTypeDescriptions = getContactListTypeDescriptionsByContactListTypeForUpdate(contactListType);
 
-        contactListTypeDescriptions.stream().forEach((contactListTypeDescription) -> {
-            deleteContactListTypeDescription(contactListTypeDescription, deletedBy);
-        });
+        contactListTypeDescriptions.forEach((contactListTypeDescription) -> 
+                deleteContactListTypeDescription(contactListTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1094,9 +1094,9 @@ public class ContactListControl
     public void deleteContactListGroupDescriptionsByContactListGroup(ContactListGroup contactListGroup, BasePK deletedBy) {
         List<ContactListGroupDescription> contactListGroupDescriptions = getContactListGroupDescriptionsByContactListGroupForUpdate(contactListGroup);
 
-        contactListGroupDescriptions.stream().forEach((contactListGroupDescription) -> {
-            deleteContactListGroupDescription(contactListGroupDescription, deletedBy);
-        });
+        contactListGroupDescriptions.forEach((contactListGroupDescription) -> 
+                deleteContactListGroupDescription(contactListGroupDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1499,9 +1499,9 @@ public class ContactListControl
     public void deleteContactListFrequencyDescriptionsByContactListFrequency(ContactListFrequency contactListFrequency, BasePK deletedBy) {
         List<ContactListFrequencyDescription> contactListFrequencyDescriptions = getContactListFrequencyDescriptionsByContactListFrequencyForUpdate(contactListFrequency);
 
-        contactListFrequencyDescriptions.stream().forEach((contactListFrequencyDescription) -> {
-            deleteContactListFrequencyDescription(contactListFrequencyDescription, deletedBy);
-        });
+        contactListFrequencyDescriptions.forEach((contactListFrequencyDescription) -> 
+                deleteContactListFrequencyDescription(contactListFrequencyDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1904,9 +1904,9 @@ public class ContactListControl
     }
 
     public void deleteContactLists(List<ContactList> contactLists, BasePK deletedBy) {
-        contactLists.stream().forEach((contactList) -> {
-            deleteContactList(contactList, deletedBy);
-        });
+        contactLists.forEach((contactList) -> 
+                deleteContactList(contactList, deletedBy)
+        );
     }
 
     public void deleteContactListsByContactListGroup(ContactListGroup contactListGroup, BasePK deletedBy) {
@@ -2069,9 +2069,9 @@ public class ContactListControl
     public void deleteContactListDescriptionsByContactList(ContactList contactList, BasePK deletedBy) {
         List<ContactListDescription> contactListDescriptions = getContactListDescriptionsByContactListForUpdate(contactList);
 
-        contactListDescriptions.stream().forEach((contactListDescription) -> {
-            deleteContactListDescription(contactListDescription, deletedBy);
-        });
+        contactListDescriptions.forEach((contactListDescription) -> 
+                deleteContactListDescription(contactListDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2334,17 +2334,17 @@ public class ContactListControl
     public void deletePartyContactListsByParty(Party party, BasePK deletedBy) {
         List<PartyContactList> partyContactLists = getPartyContactListsByPartyForUpdate(party);
         
-        partyContactLists.stream().forEach((partyContactList) -> {
-            deletePartyContactList(partyContactList, deletedBy);
-        });
+        partyContactLists.forEach((partyContactList) -> 
+                deletePartyContactList(partyContactList, deletedBy)
+        );
     }
     
     public void deletePartyContactListsByContactList(ContactList contactList, BasePK deletedBy) {
         List<PartyContactList> partyContactLists = getPartyContactListsByContactListForUpdate(contactList);
         
-        partyContactLists.stream().forEach((partyContactList) -> {
-            deletePartyContactList(partyContactList, deletedBy);
-        });
+        partyContactLists.forEach((partyContactList) -> 
+                deletePartyContactList(partyContactList, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2513,9 +2513,9 @@ public class ContactListControl
     }
     
     public void deletePartyTypeContactListGroups(List<PartyTypeContactListGroup> partyTypeContactListGroups, BasePK deletedBy) {
-        partyTypeContactListGroups.stream().forEach((partyTypeContactListGroup) -> {
-            deletePartyTypeContactListGroup(partyTypeContactListGroup, deletedBy);
-        });
+        partyTypeContactListGroups.forEach((partyTypeContactListGroup) -> 
+                deletePartyTypeContactListGroup(partyTypeContactListGroup, deletedBy)
+        );
     }
     
     public void deletePartyTypeContactListGroupsByPartyType(PartyType partyType, BasePK deletedBy) {
@@ -2691,9 +2691,9 @@ public class ContactListControl
     }
     
     public void deletePartyTypeContactLists(List<PartyTypeContactList> partyTypeContactLists, BasePK deletedBy) {
-        partyTypeContactLists.stream().forEach((partyTypeContactList) -> {
-            deletePartyTypeContactList(partyTypeContactList, deletedBy);
-        });
+        partyTypeContactLists.forEach((partyTypeContactList) -> 
+                deletePartyTypeContactList(partyTypeContactList, deletedBy)
+        );
     }
     
     public void deletePartyTypeContactListsByPartyType(PartyType partyType, BasePK deletedBy) {
@@ -2870,9 +2870,9 @@ public class ContactListControl
     }
 
     public void deleteCustomerTypeContactListGroups(List<CustomerTypeContactListGroup> customerTypeContactListGroups, BasePK deletedBy) {
-        customerTypeContactListGroups.stream().forEach((customerTypeContactListGroup) -> {
-            deleteCustomerTypeContactListGroup(customerTypeContactListGroup, deletedBy);
-        });
+        customerTypeContactListGroups.forEach((customerTypeContactListGroup) -> 
+                deleteCustomerTypeContactListGroup(customerTypeContactListGroup, deletedBy)
+        );
     }
 
     public void deleteCustomerTypeContactListGroupsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -3048,9 +3048,9 @@ public class ContactListControl
     }
 
     public void deleteCustomerTypeContactLists(List<CustomerTypeContactList> customerTypeContactLists, BasePK deletedBy) {
-        customerTypeContactLists.stream().forEach((customerTypeContactList) -> {
-            deleteCustomerTypeContactList(customerTypeContactList, deletedBy);
-        });
+        customerTypeContactLists.forEach((customerTypeContactList) -> 
+                deleteCustomerTypeContactList(customerTypeContactList, deletedBy)
+        );
     }
 
     public void deleteCustomerTypeContactListsByCustomerType(CustomerType customerType, BasePK deletedBy) {

@@ -608,9 +608,9 @@ public class FilterControl
     public void deleteFilterKindDescriptionsByFilterKind(FilterKind filterKind, BasePK deletedBy) {
         List<FilterKindDescription> filterKindDescriptions = getFilterKindDescriptionsByFilterKindForUpdate(filterKind);
 
-        filterKindDescriptions.stream().forEach((filterKindDescription) -> {
-            deleteFilterKindDescription(filterKindDescription, deletedBy);
-        });
+        filterKindDescriptions.forEach((filterKindDescription) -> 
+                deleteFilterKindDescription(filterKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -882,9 +882,9 @@ public class FilterControl
     public void deleteFilterTypesByFilterKind(FilterKind filterKind, BasePK deletedBy) {
         List<FilterType> filterTypes = getFilterTypesForUpdate(filterKind);
 
-        filterTypes.stream().forEach((filterType) -> {
-            deleteFilterType(filterType, deletedBy);
-        });
+        filterTypes.forEach((filterType) -> 
+                deleteFilterType(filterType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1031,9 +1031,9 @@ public class FilterControl
     public void deleteFilterTypeDescriptionsByFilterType(FilterType filterType, BasePK deletedBy) {
         List<FilterTypeDescription> filterTypeDescriptions = getFilterTypeDescriptionsByFilterTypeForUpdate(filterType);
 
-        filterTypeDescriptions.stream().forEach((filterTypeDescription) -> {
-            deleteFilterTypeDescription(filterTypeDescription, deletedBy);
-        });
+        filterTypeDescriptions.forEach((filterTypeDescription) -> 
+                deleteFilterTypeDescription(filterTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1734,9 +1734,9 @@ public class FilterControl
     public void deleteFilterAdjustmentAmountsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentAmount> filterAdjustmentAmounts = getFilterAdjustmentAmountsForUpdate(filterAdjustment);
         
-        filterAdjustmentAmounts.stream().forEach((deleteFilterAdjustmentAmount) -> {
-            deleteFilterAdjustmentAmount(deleteFilterAdjustmentAmount, deletedBy);
-        });
+        filterAdjustmentAmounts.forEach((deleteFilterAdjustmentAmount) -> 
+                deleteFilterAdjustmentAmount(deleteFilterAdjustmentAmount, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1909,9 +1909,9 @@ public class FilterControl
     public void deleteFilterAdjustmentFixedAmountsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts = getFilterAdjustmentFixedAmountsForUpdate(filterAdjustment);
         
-        filterAdjustmentFixedAmounts.stream().forEach((filterAdjustmentFixedAmount) -> {
-            deleteFilterAdjustmentFixedAmount(filterAdjustmentFixedAmount, deletedBy);
-        });
+        filterAdjustmentFixedAmounts.forEach((filterAdjustmentFixedAmount) -> 
+                deleteFilterAdjustmentFixedAmount(filterAdjustmentFixedAmount, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2082,9 +2082,9 @@ public class FilterControl
     public void deleteFilterAdjustmentPercentsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentPercent> filterAdjustmentPercents = getFilterAdjustmentPercentsForUpdate(filterAdjustment);
         
-        filterAdjustmentPercents.stream().forEach((filterAdjustmentPercent) -> {
-            deleteFilterAdjustmentPercent(filterAdjustmentPercent, deletedBy);
-        });
+        filterAdjustmentPercents.forEach((filterAdjustmentPercent) -> 
+                deleteFilterAdjustmentPercent(filterAdjustmentPercent, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2263,9 +2263,9 @@ public class FilterControl
     public void deleteFilterAdjustmentDescriptionsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentDescription> filterAdjustmentDescriptions = getFilterAdjustmentDescriptionsForUpdate(filterAdjustment);
         
-        filterAdjustmentDescriptions.stream().forEach((filterAdjustmentDescription) -> {
-            deleteFilterAdjustmentDescription(filterAdjustmentDescription, deletedBy);
-        });
+        filterAdjustmentDescriptions.forEach((filterAdjustmentDescription) -> 
+                deleteFilterAdjustmentDescription(filterAdjustmentDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2723,9 +2723,9 @@ public class FilterControl
     public void deleteFilterDescriptionsByFilter(Filter filter, BasePK deletedBy) {
         List<FilterDescription> filterDescriptions = getFilterDescriptionsForUpdate(filter);
         
-        filterDescriptions.stream().forEach((filterDescription) -> {
-            deleteFilterDescription(filterDescription, deletedBy);
-        });
+        filterDescriptions.forEach((filterDescription) -> 
+                deleteFilterDescription(filterDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2930,9 +2930,9 @@ public class FilterControl
     public void deleteFilterStepsByFilter(Filter filter, BasePK deletedBy) {
         List<FilterStep> filterSteps = getFilterStepsByFilterForUpdate(filter);
         
-        filterSteps.stream().forEach((filterStep) -> {
-            deleteFilterStep(filterStep, deletedBy);
-        });
+        filterSteps.forEach((filterStep) -> 
+                deleteFilterStep(filterStep, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3102,9 +3102,9 @@ public class FilterControl
     public void deleteFilterStepDescriptionsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
         List<FilterStepDescription> filterStepDescriptions = getFilterStepDescriptionsForUpdate(filterStep);
         
-        filterStepDescriptions.stream().forEach((filterStepDescription) -> {
-            deleteFilterStepDescription(filterStepDescription, deletedBy);
-        });
+        filterStepDescriptions.forEach((filterStepDescription) -> 
+                deleteFilterStepDescription(filterStepDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3274,9 +3274,9 @@ public class FilterControl
     public void deleteFilterEntranceStepsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
         List<FilterEntranceStep> filterEntranceSteps = getFilterEntranceStepsByFilterStepForUpdate(filterStep);
         
-        filterEntranceSteps.stream().forEach((filterEntranceStep) -> {
-            deleteFilterEntranceStep(filterEntranceStep, deletedBy);
-        });
+        filterEntranceSteps.forEach((filterEntranceStep) -> 
+                deleteFilterEntranceStep(filterEntranceStep, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3471,17 +3471,17 @@ public class FilterControl
     public void deleteFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep, BasePK deletedBy) {
         List<FilterStepDestination> filterStepDestinations = getFilterStepDestinationsByFromFilterStepForUpdate(fromFilterStep);
         
-        filterStepDestinations.stream().forEach((filterStepDestination) -> {
-            deleteFilterStepDestination(filterStepDestination, deletedBy);
-        });
+        filterStepDestinations.forEach((filterStepDestination) -> 
+                deleteFilterStepDestination(filterStepDestination, deletedBy)
+        );
     }
     
     public void deleteFilterStepDestinationsByToFilterStep(FilterStep toFilterStep, BasePK deletedBy) {
         List<FilterStepDestination> filterStepDestinations = getFilterStepDestinationsByToFilterStepForUpdate(toFilterStep);
         
-        filterStepDestinations.stream().forEach((filterStepDestination) -> {
-            deleteFilterStepDestination(filterStepDestination, deletedBy);
-        });
+        filterStepDestinations.forEach((filterStepDestination) -> 
+                deleteFilterStepDestination(filterStepDestination, deletedBy)
+        );
     }
     
     public void deleteFilterStepDestinationsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
@@ -3675,9 +3675,9 @@ public class FilterControl
     public void deleteFilterStepElementsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
         List<FilterStepElement> filterStepElements = getFilterStepElementsByFilterStepForUpdate(filterStep);
         
-        filterStepElements.stream().forEach((filterStepElement) -> {
-            deleteFilterStepElement(filterStepElement, deletedBy);
-        });
+        filterStepElements.forEach((filterStepElement) -> 
+                deleteFilterStepElement(filterStepElement, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3846,9 +3846,9 @@ public class FilterControl
     public void deleteFilterStepElementDescriptionsByFilterStepElement(FilterStepElement filterStepElement, BasePK deletedBy) {
         List<FilterStepElementDescription> filterStepElementDescriptions = getFilterStepElementDescriptionsForUpdate(filterStepElement);
         
-        filterStepElementDescriptions.stream().forEach((filterStepElementDescription) -> {
-            deleteFilterStepElementDescription(filterStepElementDescription, deletedBy);
-        });
+        filterStepElementDescriptions.forEach((filterStepElementDescription) -> 
+                deleteFilterStepElementDescription(filterStepElementDescription, deletedBy)
+        );
     }
     
 }

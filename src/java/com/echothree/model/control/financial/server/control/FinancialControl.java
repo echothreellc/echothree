@@ -782,9 +782,9 @@ public class FinancialControl
     public void deleteFinancialAccountTypeDescriptionsByFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
         List<FinancialAccountTypeDescription> financialAccountTypeDescriptions = getFinancialAccountTypeDescriptionsByFinancialAccountTypeForUpdate(financialAccountType);
         
-        financialAccountTypeDescriptions.stream().forEach((financialAccountTypeDescription) -> {
-            deleteFinancialAccountTypeDescription(financialAccountTypeDescription, deletedBy);
-        });
+        financialAccountTypeDescriptions.forEach((financialAccountTypeDescription) -> 
+                deleteFinancialAccountTypeDescription(financialAccountTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1303,9 +1303,9 @@ public class FinancialControl
     public void deleteFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType, BasePK deletedBy) {
         List<FinancialAccountTransactionTypeDescription> financialAccountTransactionTypeDescriptions = getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeForUpdate(financialAccountTransactionType);
         
-        financialAccountTransactionTypeDescriptions.stream().forEach((financialAccountTransactionTypeDescription) -> {
-            deleteFinancialAccountTransactionTypeDescription(financialAccountTransactionTypeDescription, deletedBy);
-        });
+        financialAccountTransactionTypeDescriptions.forEach((financialAccountTransactionTypeDescription) -> 
+                deleteFinancialAccountTransactionTypeDescription(financialAccountTransactionTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1580,9 +1580,9 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountAliasTypes(List<FinancialAccountAliasType> financialAccountAliasTypes, BasePK deletedBy) {
-        financialAccountAliasTypes.stream().forEach((financialAccountAliasType) -> {
-            deleteFinancialAccountAliasType(financialAccountAliasType, deletedBy);
-        });
+        financialAccountAliasTypes.forEach((financialAccountAliasType) -> 
+                deleteFinancialAccountAliasType(financialAccountAliasType, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountAliasTypesByFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
@@ -1741,9 +1741,9 @@ public class FinancialControl
     public void deleteFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType, BasePK deletedBy) {
         List<FinancialAccountAliasTypeDescription> financialAccountAliasTypeDescriptions = getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
         
-        financialAccountAliasTypeDescriptions.stream().forEach((financialAccountAliasTypeDescription) -> {
-            deleteFinancialAccountAliasTypeDescription(financialAccountAliasTypeDescription, deletedBy);
-        });
+        financialAccountAliasTypeDescriptions.forEach((financialAccountAliasTypeDescription) -> 
+                deleteFinancialAccountAliasTypeDescription(financialAccountAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2079,9 +2079,9 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccounts(List<FinancialAccount> financialAccounts, BasePK deletedBy) {
-        financialAccounts.stream().forEach((financialAccount) -> {
-            deleteFinancialAccount(financialAccount, deletedBy);
-        });
+        financialAccounts.forEach((financialAccount) -> 
+                deleteFinancialAccount(financialAccount, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountsByFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
@@ -2302,17 +2302,17 @@ public class FinancialControl
     public void deleteFinancialAccountAliasesByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType, BasePK deletedBy) {
         List<FinancialAccountAlias> financialaccountaliases = getFinancialAccountAliasesByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
         
-        financialaccountaliases.stream().forEach((financialAccountAlias) -> {
-            deleteFinancialAccountAlias(financialAccountAlias, deletedBy);
-        });
+        financialaccountaliases.forEach((financialAccountAlias) -> 
+                deleteFinancialAccountAlias(financialAccountAlias, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountAliasesByFinancialAccount(FinancialAccount financialAccount, BasePK deletedBy) {
         List<FinancialAccountAlias> financialaccountaliases = getFinancialAccountAliasesByFinancialAccountForUpdate(financialAccount);
         
-        financialaccountaliases.stream().forEach((financialAccountAlias) -> {
-            deleteFinancialAccountAlias(financialAccountAlias, deletedBy);
-        });
+        financialaccountaliases.forEach((financialAccountAlias) -> 
+                deleteFinancialAccountAlias(financialAccountAlias, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2490,9 +2490,9 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountTransactions(List<FinancialAccountTransaction> financialAccountTransactions, BasePK deletedBy) {
-        financialAccountTransactions.stream().forEach((financialAccountTransaction) -> {
-            deleteFinancialAccountTransaction(financialAccountTransaction, deletedBy);
-        });
+        financialAccountTransactions.forEach((financialAccountTransaction) -> 
+                deleteFinancialAccountTransaction(financialAccountTransaction, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountTransactionsByFinancialAccount(FinancialAccount financialAccount, BasePK deletedBy) {

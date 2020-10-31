@@ -551,9 +551,9 @@ public class OrderTypeControl
     public void deleteOrderTypeDescriptionsByOrderType(OrderType orderType, BasePK deletedBy) {
         List<OrderTypeDescription> orderTypeDescriptions = getOrderTypeDescriptionsByOrderTypeForUpdate(orderType);
 
-        orderTypeDescriptions.stream().forEach((orderTypeDescription) -> {
-            deleteOrderTypeDescription(orderTypeDescription, deletedBy);
-        });
+        orderTypeDescriptions.forEach((orderTypeDescription) -> 
+                deleteOrderTypeDescription(orderTypeDescription, deletedBy)
+        );
     }
 
 }

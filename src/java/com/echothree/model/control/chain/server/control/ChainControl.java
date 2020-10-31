@@ -587,9 +587,9 @@ public class ChainControl
     public void deleteChainKindDescriptionsByChainKind(ChainKind chainKind, BasePK deletedBy) {
         List<ChainKindDescription> chainKindDescriptions = getChainKindDescriptionsByChainKindForUpdate(chainKind);
 
-        chainKindDescriptions.stream().forEach((chainKindDescription) -> {
-            deleteChainKindDescription(chainKindDescription, deletedBy);
-        });
+        chainKindDescriptions.forEach((chainKindDescription) -> 
+                deleteChainKindDescription(chainKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -893,9 +893,9 @@ public class ChainControl
     }
 
     public void deleteChainTypes(List<ChainType> chainTypes, BasePK deletedBy) {
-        chainTypes.stream().forEach((chainType) -> {
-            deleteChainType(chainType, deletedBy);
-        });
+        chainTypes.forEach((chainType) -> 
+                deleteChainType(chainType, deletedBy)
+        );
     }
 
     public void deleteChainTypesByChainKind(ChainKind chainKind, BasePK deletedBy) {
@@ -1050,9 +1050,9 @@ public class ChainControl
     public void deleteChainTypeDescriptionsByChainType(ChainType chainType, BasePK deletedBy) {
         List<ChainTypeDescription> chainTypeDescriptions = getChainTypeDescriptionsByChainTypeForUpdate(chainType);
 
-        chainTypeDescriptions.stream().forEach((chainTypeDescription) -> {
-            deleteChainTypeDescription(chainTypeDescription, deletedBy);
-        });
+        chainTypeDescriptions.forEach((chainTypeDescription) -> 
+                deleteChainTypeDescription(chainTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1205,9 +1205,9 @@ public class ChainControl
     public void deleteChainEntityRoleTypesByChainType(ChainType chainType, BasePK deletedBy) {
         List<ChainEntityRoleType> chainEntityRoleTypes = getChainEntityRoleTypesForUpdate(chainType);
 
-        chainEntityRoleTypes.stream().forEach((chainEntityRoleType) -> {
-            deleteChainEntityRoleType(chainEntityRoleType, deletedBy);
-        });
+        chainEntityRoleTypes.forEach((chainEntityRoleType) -> 
+                deleteChainEntityRoleType(chainEntityRoleType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1354,9 +1354,9 @@ public class ChainControl
     public void deleteChainEntityRoleTypeDescriptionsByChainEntityRoleType(ChainEntityRoleType chainEntityRoleType, BasePK deletedBy) {
         List<ChainEntityRoleTypeDescription> chainEntityRoleTypeDescriptions = getChainEntityRoleTypeDescriptionsByChainEntityRoleTypeForUpdate(chainEntityRoleType);
 
-        chainEntityRoleTypeDescriptions.stream().forEach((chainEntityRoleTypeDescription) -> {
-            deleteChainEntityRoleTypeDescription(chainEntityRoleTypeDescription, deletedBy);
-        });
+        chainEntityRoleTypeDescriptions.forEach((chainEntityRoleTypeDescription) -> 
+                deleteChainEntityRoleTypeDescription(chainEntityRoleTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1666,9 +1666,9 @@ public class ChainControl
     }
 
     public void deleteChains(List<Chain> chains, BasePK deletedBy) {
-        chains.stream().forEach((chain) -> {
-            deleteChain(chain, deletedBy);
-        });
+        chains.forEach((chain) -> 
+                deleteChain(chain, deletedBy)
+        );
     }
 
     public void deleteChainsByChainType(ChainType chainType, BasePK deletedBy) {
@@ -1823,9 +1823,9 @@ public class ChainControl
     public void deleteChainDescriptionsByChain(Chain chain, BasePK deletedBy) {
         List<ChainDescription> chainDescriptions = getChainDescriptionsByChainForUpdate(chain);
 
-        chainDescriptions.stream().forEach((chainDescription) -> {
-            deleteChainDescription(chainDescription, deletedBy);
-        });
+        chainDescriptions.forEach((chainDescription) -> 
+                deleteChainDescription(chainDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2095,9 +2095,9 @@ public class ChainControl
     }
 
     public void deleteChainActionSets(List<ChainActionSet> chainActionSets, BasePK deletedBy) {
-        chainActionSets.stream().forEach((chainActionSet) -> {
-            deleteChainActionSet(chainActionSet, deletedBy);
-        });
+        chainActionSets.forEach((chainActionSet) -> 
+                deleteChainActionSet(chainActionSet, deletedBy)
+        );
     }
 
     public void deleteChainActionSetsByChain(Chain chain, BasePK deletedBy) {
@@ -2247,9 +2247,9 @@ public class ChainControl
     public void deleteChainActionSetDescriptionsByChainActionSet(ChainActionSet chainActionSet, BasePK deletedBy) {
         List<ChainActionSetDescription> chainActionSetDescriptions = getChainActionSetDescriptionsByChainActionSetForUpdate(chainActionSet);
 
-        chainActionSetDescriptions.stream().forEach((chainActionSetDescription) -> {
-            deleteChainActionSetDescription(chainActionSetDescription, deletedBy);
-        });
+        chainActionSetDescriptions.forEach((chainActionSetDescription) -> 
+                deleteChainActionSetDescription(chainActionSetDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2652,9 +2652,9 @@ public class ChainControl
     public void deleteChainActionTypeDescriptionsByChainActionType(ChainActionType chainActionType, BasePK deletedBy) {
         List<ChainActionTypeDescription> chainActionTypeDescriptions = getChainActionTypeDescriptionsByChainActionTypeForUpdate(chainActionType);
 
-        chainActionTypeDescriptions.stream().forEach((chainActionTypeDescription) -> {
-            deleteChainActionTypeDescription(chainActionTypeDescription, deletedBy);
-        });
+        chainActionTypeDescriptions.forEach((chainActionTypeDescription) -> 
+                deleteChainActionTypeDescription(chainActionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2839,9 +2839,9 @@ public class ChainControl
     }
 
     public void deleteChainActions(List<ChainAction> chainActions, BasePK deletedBy) {
-        chainActions.stream().forEach((chainAction) -> {
-            deleteChainAction(chainAction, deletedBy);
-        });
+        chainActions.forEach((chainAction) -> 
+                deleteChainAction(chainAction, deletedBy)
+        );
     }
     
     public void deleteChainActionsByChainActionSet(ChainActionSet chainActionSet, BasePK deletedBy) {
@@ -2991,9 +2991,9 @@ public class ChainControl
     public void deleteChainActionDescriptionsByChainAction(ChainAction chainAction, BasePK deletedBy) {
         List<ChainActionDescription> chainActionDescriptions = getChainActionDescriptionsByChainActionForUpdate(chainAction);
 
-        chainActionDescriptions.stream().forEach((chainActionDescription) -> {
-            deleteChainActionDescription(chainActionDescription, deletedBy);
-        });
+        chainActionDescriptions.forEach((chainActionDescription) -> 
+                deleteChainActionDescription(chainActionDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3409,9 +3409,9 @@ public class ChainControl
     }
     
     public void deleteChainInstances(Collection<ChainInstance> chainInstances, BasePK deletedBy) {
-        chainInstances.stream().forEach((chainInstance) -> {
-            deleteChainInstance(chainInstance, deletedBy);
-        });
+        chainInstances.forEach((chainInstance) -> 
+                deleteChainInstance(chainInstance, deletedBy)
+        );
     }
     
     public void deleteChainInstancesByChain(Chain chain, BasePK deletedBy) {
@@ -3818,9 +3818,9 @@ public class ChainControl
     }
     
     public void deleteChainInstanceEntityRoles(List<ChainInstanceEntityRole> chainInstanceEntityRoles, BasePK deletedBy) {
-        chainInstanceEntityRoles.stream().forEach((chainInstanceEntityRole) -> {
-            deleteChainInstanceEntityRole(chainInstanceEntityRole, deletedBy);
-        });
+        chainInstanceEntityRoles.forEach((chainInstanceEntityRole) -> 
+                deleteChainInstanceEntityRole(chainInstanceEntityRole, deletedBy)
+        );
     }
     
     public void deleteChainInstanceEntityRolesByChainInstance(ChainInstance chainInstance, BasePK deletedBy) {

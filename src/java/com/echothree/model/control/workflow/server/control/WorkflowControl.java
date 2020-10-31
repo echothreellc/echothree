@@ -818,9 +818,9 @@ public class WorkflowControl
     public void deleteWorkflowDescriptionsByWorkflow(Workflow workflow, BasePK deletedBy) {
         List<WorkflowDescription> workflowDescriptions = getWorkflowDescriptionsByWorkflowForUpdate(workflow);
         
-        workflowDescriptions.stream().forEach((workflowDescription) -> {
-            deleteWorkflowDescription(workflowDescription, deletedBy);
-        });
+        workflowDescriptions.forEach((workflowDescription) -> 
+                deleteWorkflowDescription(workflowDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1281,9 +1281,9 @@ public class WorkflowControl
     public void deleteWorkflowStepDescriptionsByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
         List<WorkflowStepDescription> workflowStepDescriptions = getWorkflowStepDescriptionsByWorkflowStepForUpdate(workflowStep);
         
-        workflowStepDescriptions.stream().forEach((workflowStepDescription) -> {
-            deleteWorkflowStepDescription(workflowStepDescription, deletedBy);
-        });
+        workflowStepDescriptions.forEach((workflowStepDescription) -> 
+                deleteWorkflowStepDescription(workflowStepDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1423,9 +1423,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntityTypes(List<WorkflowEntityType> workflowEntityTypes, BasePK deletedBy) {
-        workflowEntityTypes.stream().forEach((workflowEntityType) -> {
-            deleteWorkflowEntityType(workflowEntityType, deletedBy);
-        });
+        workflowEntityTypes.forEach((workflowEntityType) -> 
+                deleteWorkflowEntityType(workflowEntityType, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntityTypesByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -1927,9 +1927,9 @@ public class WorkflowControl
     public void deleteWorkflowEntranceDescriptionsByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
         List<WorkflowEntranceDescription> workflowEntranceDescriptions = getWorkflowEntranceDescriptionsByWorkflowEntranceForUpdate(workflowEntrance);
         
-        workflowEntranceDescriptions.stream().forEach((workflowEntranceDescription) -> {
-            deleteWorkflowEntranceDescription(workflowEntranceDescription, deletedBy);
-        });
+        workflowEntranceDescriptions.forEach((workflowEntranceDescription) -> 
+                deleteWorkflowEntranceDescription(workflowEntranceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2140,9 +2140,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSelectors(List<WorkflowEntranceSelector> workflowEntranceSelectors, BasePK deletedBy) {
-        workflowEntranceSelectors.stream().forEach((workflowEntranceSelector) -> {
-            deleteWorkflowEntranceSelector(workflowEntranceSelector, deletedBy);
-        });
+        workflowEntranceSelectors.forEach((workflowEntranceSelector) -> 
+                deleteWorkflowEntranceSelector(workflowEntranceSelector, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntranceSelectorsByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
@@ -2285,9 +2285,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntrancePartyTypes(List<WorkflowEntrancePartyType> workflowEntrancePartyTypes, BasePK deletedBy) {
-        workflowEntrancePartyTypes.stream().forEach((workflowEntrancePartyType) -> {
-            deleteWorkflowEntrancePartyType(workflowEntrancePartyType, deletedBy);
-        });
+        workflowEntrancePartyTypes.forEach((workflowEntrancePartyType) -> 
+                deleteWorkflowEntrancePartyType(workflowEntrancePartyType, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
@@ -2417,9 +2417,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSecurityRoles(List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles, BasePK deletedBy) {
-        workflowEntranceSecurityRoles.stream().forEach((workflowEntranceSecurityRole) -> {
-            deleteWorkflowEntranceSecurityRole(workflowEntranceSecurityRole, deletedBy);
-        });
+        workflowEntranceSecurityRoles.forEach((workflowEntranceSecurityRole) -> 
+                deleteWorkflowEntranceSecurityRole(workflowEntranceSecurityRole, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType, BasePK deletedBy) {
@@ -2576,9 +2576,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSteps(List<WorkflowEntranceStep> workflowEntranceSteps, BasePK deletedBy) {
-        workflowEntranceSteps.stream().forEach((workflowEntranceStep) -> {
-            deleteWorkflowEntranceStep(workflowEntranceStep, deletedBy);
-        });
+        workflowEntranceSteps.forEach((workflowEntranceStep) -> 
+                deleteWorkflowEntranceStep(workflowEntranceStep, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
@@ -3049,9 +3049,9 @@ public class WorkflowControl
     public void deleteWorkflowDestinationDescriptionsByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
         List<WorkflowDestinationDescription> workflowDestinationDescriptions = getWorkflowDestinationDescriptionsByWorkflowDestinationForUpdate(workflowDestination);
         
-        workflowDestinationDescriptions.stream().forEach((workflowDestinationDescription) -> {
-            deleteWorkflowDestinationDescription(workflowDestinationDescription, deletedBy);
-        });
+        workflowDestinationDescriptions.forEach((workflowDestinationDescription) -> 
+                deleteWorkflowDestinationDescription(workflowDestinationDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3221,9 +3221,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSelectors(List<WorkflowDestinationSelector> workflowDestinationSelectors, BasePK deletedBy) {
-        workflowDestinationSelectors.stream().forEach((workflowDestinationSelector) -> {
-            deleteWorkflowDestinationSelector(workflowDestinationSelector, deletedBy);
-        });
+        workflowDestinationSelectors.forEach((workflowDestinationSelector) -> 
+                deleteWorkflowDestinationSelector(workflowDestinationSelector, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationSelectorsByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
@@ -3366,9 +3366,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationPartyTypes(List<WorkflowDestinationPartyType> workflowDestinationPartyTypes, BasePK deletedBy) {
-        workflowDestinationPartyTypes.stream().forEach((workflowDestinationPartyType) -> {
-            deleteWorkflowDestinationPartyType(workflowDestinationPartyType, deletedBy);
-        });
+        workflowDestinationPartyTypes.forEach((workflowDestinationPartyType) -> 
+                deleteWorkflowDestinationPartyType(workflowDestinationPartyType, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
@@ -3498,9 +3498,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSecurityRoles(List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles, BasePK deletedBy) {
-        workflowDestinationSecurityRoles.stream().forEach((workflowDestinationSecurityRole) -> {
-            deleteWorkflowDestinationSecurityRole(workflowDestinationSecurityRole, deletedBy);
-        });
+        workflowDestinationSecurityRoles.forEach((workflowDestinationSecurityRole) -> 
+                deleteWorkflowDestinationSecurityRole(workflowDestinationSecurityRole, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(WorkflowDestinationPartyType workflowDestinationPartyType, BasePK deletedBy) {
@@ -3649,9 +3649,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSteps(List<WorkflowDestinationStep> workflowDestinationSteps, BasePK deletedBy) {
-        workflowDestinationSteps.stream().forEach((workflowDestinationStep) -> {
-            deleteWorkflowDestinationStep(workflowDestinationStep, deletedBy);
-        });
+        workflowDestinationSteps.forEach((workflowDestinationStep) -> 
+                deleteWorkflowDestinationStep(workflowDestinationStep, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationStepsByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
@@ -3828,9 +3828,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowSelectorKinds(List<WorkflowSelectorKind> workflowSelectorKinds, BasePK deletedBy) {
-        workflowSelectorKinds.stream().forEach((workflowSelectorKind) -> {
-            deleteWorkflowSelectorKind(workflowSelectorKind, deletedBy);
-        });
+        workflowSelectorKinds.forEach((workflowSelectorKind) -> 
+                deleteWorkflowSelectorKind(workflowSelectorKind, deletedBy)
+        );
     }
     
     public void deleteWorkflowSelectorKindsByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -4128,9 +4128,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntityStatuses(List<WorkflowEntityStatus> workflowEntityStatuses, BasePK deletedBy) {
-        workflowEntityStatuses.stream().forEach((workflowEntityStatus) -> {
-            deleteWorkflowEntityStatus(workflowEntityStatus, deletedBy);
-        });
+        workflowEntityStatuses.forEach((workflowEntityStatus) -> 
+                deleteWorkflowEntityStatus(workflowEntityStatus, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntityStatusesByEntityInstance(Workflow workflow, EntityInstance entityInstance, BasePK deletedBy) {

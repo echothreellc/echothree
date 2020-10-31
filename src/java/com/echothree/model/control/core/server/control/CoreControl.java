@@ -1057,9 +1057,9 @@ public class CoreControl
     public void deleteEntityTypesByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
         List<EntityType> entityTypes = getEntityTypesByComponentVendorForUpdate(componentVendor);
         
-        entityTypes.stream().forEach((entityType) -> {
-            deleteEntityType(entityType, deletedBy);
-        });
+        entityTypes.forEach((entityType) -> 
+                deleteEntityType(entityType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1226,9 +1226,9 @@ public class CoreControl
     public void deleteEntityTypeDescriptionsByEntityType(EntityType entityType, BasePK deletedBy) {
         List<EntityTypeDescription> entityTypeDescriptions = getEntityTypeDescriptionsByEntityTypeForUpdate(entityType);
         
-        entityTypeDescriptions.stream().forEach((entityTypeDescription) -> {
-            deleteEntityTypeDescription(entityTypeDescription, deletedBy);
-        });
+        entityTypeDescriptions.forEach((entityTypeDescription) -> 
+                deleteEntityTypeDescription(entityTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1433,9 +1433,9 @@ public class CoreControl
     public void deleteCommandsByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
         List<Command> commands = getCommandsByComponentVendorForUpdate(componentVendor);
         
-        commands.stream().forEach((command) -> {
-            deleteCommand(command, deletedBy);
-        });
+        commands.forEach((command) -> 
+                deleteCommand(command, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1602,9 +1602,9 @@ public class CoreControl
     public void deleteCommandDescriptionsByCommand(Command command, BasePK deletedBy) {
         List<CommandDescription> commandDescriptions = getCommandDescriptionsByCommandForUpdate(command);
         
-        commandDescriptions.stream().forEach((commandDescription) -> {
-            deleteCommandDescription(commandDescription, deletedBy);
-        });
+        commandDescriptions.forEach((commandDescription) -> 
+                deleteCommandDescription(commandDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2035,9 +2035,9 @@ public class CoreControl
     public void deleteCommandMessageTypeDescriptionsByCommandMessageType(CommandMessageType commandMessageType, BasePK deletedBy) {
         List<CommandMessageTypeDescription> commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageTypeForUpdate(commandMessageType);
         
-        commandMessageTypeDescriptions.stream().forEach((commandMessageTypeDescription) -> {
-            deleteCommandMessageTypeDescription(commandMessageTypeDescription, deletedBy);
-        });
+        commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) -> 
+                deleteCommandMessageTypeDescription(commandMessageTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2203,9 +2203,9 @@ public class CoreControl
     }
     
     public void deleteCommandMessages(List<CommandMessage> commandMessages, BasePK deletedBy) {
-        commandMessages.stream().forEach((commandMessage) -> {
-            deleteCommandMessage(commandMessage, deletedBy);
-        });
+        commandMessages.forEach((commandMessage) -> 
+                deleteCommandMessage(commandMessage, deletedBy)
+        );
     }
     
     public void deleteCommandMessagesByCommandMessageType(CommandMessageType commandMessageType, BasePK deletedBy) {
@@ -2369,9 +2369,9 @@ public class CoreControl
     }
     
     public void deleteCommandMessageTranslations(List<CommandMessageTranslation> commandMessageTranslations, BasePK deletedBy) {
-        commandMessageTranslations.stream().forEach((commandMessageTranslation) -> {
-            deleteCommandMessageTranslation(commandMessageTranslation, deletedBy);
-        });
+        commandMessageTranslations.forEach((commandMessageTranslation) -> 
+                deleteCommandMessageTranslation(commandMessageTranslation, deletedBy)
+        );
     }
     
     public void deleteCommandMessageTranslationsByCommandMessage(CommandMessage commandMessage, BasePK deletedBy) {
@@ -4622,9 +4622,9 @@ public class CoreControl
     public void deleteEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
         List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions = getEntityAttributeGroupDescriptionsByEntityAttributeGroupForUpdate(entityAttributeGroup);
         
-        entityAttributeGroupDescriptions.stream().forEach((entityAttributeGroupDescription) -> {
-            deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, deletedBy);
-        });
+        entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) -> 
+                deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -5028,9 +5028,9 @@ public class CoreControl
     }
     
     public void deleteEntityAttributes(List<EntityAttribute> entityAttributes, BasePK deletedBy) {
-        entityAttributes.stream().forEach((entityAttribute) -> {
-            deleteEntityAttribute(entityAttribute, deletedBy);
-        });
+        entityAttributes.forEach((entityAttribute) -> 
+                deleteEntityAttribute(entityAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityAttributesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -5201,9 +5201,9 @@ public class CoreControl
     public void deleteEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityAttributeDescription> entityAttributeDescriptions = getEntityAttributeDescriptionsByEntityAttributeForUpdate(entityAttribute);
         
-        entityAttributeDescriptions.stream().forEach((entityAttributeDescription) -> {
-            deleteEntityAttributeDescription(entityAttributeDescription, deletedBy);
-        });
+        entityAttributeDescriptions.forEach((entityAttributeDescription) -> 
+                deleteEntityAttributeDescription(entityAttributeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -5933,17 +5933,17 @@ public class CoreControl
     public void deleteEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeForUpdate(entityAttribute);
         
-        entityAttributeEntityAttributeGroups.stream().forEach((entityAttributeEntityAttributeGroup) -> {
-            deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy);
-        });
+        entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> 
+                deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy)
+        );
     }
     
     public void deleteEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
         List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeGroupForUpdate(entityAttributeGroup);
         
-        entityAttributeEntityAttributeGroups.stream().forEach((entityAttributeEntityAttributeGroup) -> {
-            deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy);
-        });
+        entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> 
+                deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -6454,9 +6454,9 @@ public class CoreControl
     public void deleteEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
         List<EntityListItemDescription> entityListItemDescriptions = getEntityListItemDescriptionsByEntityListItemForUpdate(entityListItem);
         
-        entityListItemDescriptions.stream().forEach((entityListItemDescription) -> {
-            deleteEntityListItemDescription(entityListItemDescription, deletedBy);
-        });
+        entityListItemDescriptions.forEach((entityListItemDescription) -> 
+                deleteEntityListItemDescription(entityListItemDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -6942,9 +6942,9 @@ public class CoreControl
     public void deleteEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange, BasePK deletedBy) {
         List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions = getEntityIntegerRangeDescriptionsByEntityIntegerRangeForUpdate(entityIntegerRange);
         
-        entityIntegerRangeDescriptions.stream().forEach((entityIntegerRangeDescription) -> {
-            deleteEntityIntegerRangeDescription(entityIntegerRangeDescription, deletedBy);
-        });
+        entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) -> 
+                deleteEntityIntegerRangeDescription(entityIntegerRangeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -7430,9 +7430,9 @@ public class CoreControl
     public void deleteEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange, BasePK deletedBy) {
         List<EntityLongRangeDescription> entityLongRangeDescriptions = getEntityLongRangeDescriptionsByEntityLongRangeForUpdate(entityLongRange);
         
-        entityLongRangeDescriptions.stream().forEach((entityLongRangeDescription) -> {
-            deleteEntityLongRangeDescription(entityLongRangeDescription, deletedBy);
-        });
+        entityLongRangeDescriptions.forEach((entityLongRangeDescription) -> 
+                deleteEntityLongRangeDescription(entityLongRangeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -8174,9 +8174,9 @@ public class CoreControl
     public void deleteMimeTypeDescriptionsByMimeType(MimeType mimeType, BasePK deletedBy) {
         List<MimeTypeDescription> mimeTypeDescriptions = getMimeTypeDescriptionsByMimeTypeForUpdate(mimeType);
 
-        mimeTypeDescriptions.stream().forEach((mimeTypeDescription) -> {
-            deleteMimeTypeDescription(mimeTypeDescription, deletedBy);
-        });
+        mimeTypeDescriptions.forEach((mimeTypeDescription) -> 
+                deleteMimeTypeDescription(mimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -8759,9 +8759,9 @@ public class CoreControl
     public void deleteProtocolDescriptionsByProtocol(Protocol protocol, BasePK deletedBy) {
         List<ProtocolDescription> protocolDescriptions = getProtocolDescriptionsByProtocolForUpdate(protocol);
 
-        protocolDescriptions.stream().forEach((protocolDescription) -> {
-            deleteProtocolDescription(protocolDescription, deletedBy);
-        });
+        protocolDescriptions.forEach((protocolDescription) -> 
+                deleteProtocolDescription(protocolDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -9226,9 +9226,9 @@ public class CoreControl
     public void deleteServiceDescriptionsByService(Service service, BasePK deletedBy) {
         List<ServiceDescription> serviceDescriptions = getServiceDescriptionsByServiceForUpdate(service);
 
-        serviceDescriptions.stream().forEach((serviceDescription) -> {
-            deleteServiceDescription(serviceDescription, deletedBy);
-        });
+        serviceDescriptions.forEach((serviceDescription) -> 
+                deleteServiceDescription(serviceDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -9653,9 +9653,9 @@ public class CoreControl
     public void deleteServerDescriptionsByServer(Server server, BasePK deletedBy) {
         List<ServerDescription> serverDescriptions = getServerDescriptionsByServerForUpdate(server);
 
-        serverDescriptions.stream().forEach((serverDescription) -> {
-            deleteServerDescription(serverDescription, deletedBy);
-        });
+        serverDescriptions.forEach((serverDescription) -> 
+                deleteServerDescription(serverDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -9800,9 +9800,9 @@ public class CoreControl
     }
 
     public void deleteServerServices(List<ServerService> serverServices, BasePK deletedBy) {
-        serverServices.stream().forEach((serverService) -> {
-            deleteServerService(serverService, deletedBy);
-        });
+        serverServices.forEach((serverService) -> 
+                deleteServerService(serverService, deletedBy)
+        );
     }
 
     public void deleteServerServicesByServer(Server server, BasePK deletedBy) {
@@ -9956,9 +9956,9 @@ public class CoreControl
     }
     
     public void deleteEntityBooleanAttributes(List<EntityBooleanAttribute> entityBooleanAttributes, BasePK deletedBy) {
-        entityBooleanAttributes.stream().forEach((entityBooleanAttribute) -> {
-            deleteEntityBooleanAttribute(entityBooleanAttribute, deletedBy);
-        });
+        entityBooleanAttributes.forEach((entityBooleanAttribute) -> 
+                deleteEntityBooleanAttribute(entityBooleanAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityBooleanAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10109,9 +10109,9 @@ public class CoreControl
     }
     
     public void deleteEntityDateAttributes(List<EntityDateAttribute> entityDateAttributes, BasePK deletedBy) {
-        entityDateAttributes.stream().forEach((entityDateAttribute) -> {
-            deleteEntityDateAttribute(entityDateAttribute, deletedBy);
-        });
+        entityDateAttributes.forEach((entityDateAttribute) -> 
+                deleteEntityDateAttribute(entityDateAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityDateAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10263,9 +10263,9 @@ public class CoreControl
     }
     
     public void deleteEntityIntegerAttributes(List<EntityIntegerAttribute> entityIntegerAttributes, BasePK deletedBy) {
-        entityIntegerAttributes.stream().forEach((entityIntegerAttribute) -> {
-            deleteEntityIntegerAttribute(entityIntegerAttribute, deletedBy);
-        });
+        entityIntegerAttributes.forEach((entityIntegerAttribute) -> 
+                deleteEntityIntegerAttribute(entityIntegerAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityIntegerAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10437,9 +10437,9 @@ public class CoreControl
     }
     
     public void deleteEntityListItemAttributes(List<EntityListItemAttribute> entityListItemAttributes, BasePK deletedBy) {
-        entityListItemAttributes.stream().forEach((entityListItemAttribute) -> {
-            deleteEntityListItemAttribute(entityListItemAttribute, deletedBy);
-        });
+        entityListItemAttributes.forEach((entityListItemAttribute) -> 
+                deleteEntityListItemAttribute(entityListItemAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityListItemAttributesByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
@@ -10592,9 +10592,9 @@ public class CoreControl
     }
     
     public void deleteEntityLongAttributes(List<EntityLongAttribute> entityLongAttributes, BasePK deletedBy) {
-        entityLongAttributes.stream().forEach((entityLongAttribute) -> {
-            deleteEntityLongAttribute(entityLongAttribute, deletedBy);
-        });
+        entityLongAttributes.forEach((entityLongAttribute) -> 
+                deleteEntityLongAttribute(entityLongAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityLongAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10785,9 +10785,9 @@ public class CoreControl
     }
     
     public void deleteEntityMultipleListItemAttributes(List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes, BasePK deletedBy) {
-        entityMultipleListItemAttributes.stream().forEach((entityMultipleListItemAttribute) -> {
-            deleteEntityMultipleListItemAttribute(entityMultipleListItemAttribute, deletedBy);
-        });
+        entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> 
+                deleteEntityMultipleListItemAttribute(entityMultipleListItemAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityMultipleListItemAttributesByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
@@ -10940,9 +10940,9 @@ public class CoreControl
     }
     
     public void deleteEntityNameAttributes(List<EntityNameAttribute> entityNameAttributes, BasePK deletedBy) {
-        entityNameAttributes.stream().forEach((entityNameAttribute) -> {
-            deleteEntityNameAttribute(entityNameAttribute, deletedBy);
-        });
+        entityNameAttributes.forEach((entityNameAttribute) -> 
+                deleteEntityNameAttribute(entityNameAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityNameAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11128,9 +11128,9 @@ public class CoreControl
     }
     
     public void deleteEntityStringAttributes(List<EntityStringAttribute> entityStringAttributes, BasePK deletedBy) {
-        entityStringAttributes.stream().forEach((entityStringAttribute) -> {
-            deleteEntityStringAttribute(entityStringAttribute, deletedBy);
-        });
+        entityStringAttributes.forEach((entityStringAttribute) -> 
+                deleteEntityStringAttribute(entityStringAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityStringAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11284,9 +11284,9 @@ public class CoreControl
     }
     
     public void deleteEntityGeoPointAttributes(List<EntityGeoPointAttribute> entityGeoPointAttributes, BasePK deletedBy) {
-        entityGeoPointAttributes.stream().forEach((entityGeoPointAttribute) -> {
-            deleteEntityGeoPointAttribute(entityGeoPointAttribute, deletedBy);
-        });
+        entityGeoPointAttributes.forEach((entityGeoPointAttribute) -> 
+                deleteEntityGeoPointAttribute(entityGeoPointAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityGeoPointAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11437,9 +11437,9 @@ public class CoreControl
     }
     
     public void deleteEntityTimeAttributes(List<EntityTimeAttribute> entityTimeAttributes, BasePK deletedBy) {
-        entityTimeAttributes.stream().forEach((entityTimeAttribute) -> {
-            deleteEntityTimeAttribute(entityTimeAttribute, deletedBy);
-        });
+        entityTimeAttributes.forEach((entityTimeAttribute) -> 
+                deleteEntityTimeAttribute(entityTimeAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityTimeAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11606,9 +11606,9 @@ public class CoreControl
     }
     
     public void deleteEntityBlobAttributes(List<EntityBlobAttribute> entityBlobAttributes, BasePK deletedBy) {
-        entityBlobAttributes.stream().forEach((entityBlobAttribute) -> {
-            deleteEntityBlobAttribute(entityBlobAttribute, deletedBy);
-        });
+        entityBlobAttributes.forEach((entityBlobAttribute) -> 
+                deleteEntityBlobAttribute(entityBlobAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityBlobAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11775,9 +11775,9 @@ public class CoreControl
     }
     
     public void deleteEntityClobAttributes(List<EntityClobAttribute> entityClobAttributes, BasePK deletedBy) {
-        entityClobAttributes.stream().forEach((entityClobAttribute) -> {
-            deleteEntityClobAttribute(entityClobAttribute, deletedBy);
-        });
+        entityClobAttributes.forEach((entityClobAttribute) -> 
+                deleteEntityClobAttribute(entityClobAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityClobAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11950,9 +11950,9 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeEntityTypes(List<EntityAttributeEntityType> entityAttributeEntityTypes, BasePK deletedBy) {
-        entityAttributeEntityTypes.stream().forEach((entityAttributeEntityType) -> {
-            deleteEntityAttributeEntityType(entityAttributeEntityType, deletedBy);
-        });
+        entityAttributeEntityTypes.forEach((entityAttributeEntityType) -> 
+                deleteEntityAttributeEntityType(entityAttributeEntityType, deletedBy)
+        );
     }
     
     public void deleteEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -12127,9 +12127,9 @@ public class CoreControl
     }
     
     public void deleteEntityEntityAttributes(List<EntityEntityAttribute> entityEntityAttributes, BasePK deletedBy) {
-        entityEntityAttributes.stream().forEach((entityEntityAttribute) -> {
-            deleteEntityEntityAttribute(entityEntityAttribute, deletedBy);
-        });
+        entityEntityAttributes.forEach((entityEntityAttribute) -> 
+                deleteEntityEntityAttribute(entityEntityAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityEntityAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -12324,9 +12324,9 @@ public class CoreControl
     }
     
     public void deleteEntityCollectionAttributes(List<EntityCollectionAttribute> entityCollectionAttributes, BasePK deletedBy) {
-        entityCollectionAttributes.stream().forEach((entityCollectionAttribute) -> {
-            deleteEntityCollectionAttribute(entityCollectionAttribute, deletedBy);
-        });
+        entityCollectionAttributes.forEach((entityCollectionAttribute) -> 
+                deleteEntityCollectionAttribute(entityCollectionAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityCollectionAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -12779,9 +12779,9 @@ public class CoreControl
     }
     
     public void deleteEventSubscribers(List<EventSubscriber> eventSubscribers, BasePK deletedBy) {
-        eventSubscribers.stream().forEach((eventSubscriber) -> {
-            deleteEventSubscriber(eventSubscriber, deletedBy);
-        });
+        eventSubscribers.forEach((eventSubscriber) -> 
+                deleteEventSubscriber(eventSubscriber, deletedBy)
+        );
     }
     
     public void deleteEventSubscribersByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
@@ -13736,9 +13736,9 @@ public class CoreControl
     public void deleteApplicationDescriptionsByApplication(Application application, BasePK deletedBy) {
         List<ApplicationDescription> applicationDescriptions = getApplicationDescriptionsByApplicationForUpdate(application);
 
-        applicationDescriptions.stream().forEach((applicationDescription) -> {
-            deleteApplicationDescription(applicationDescription, deletedBy);
-        });
+        applicationDescriptions.forEach((applicationDescription) -> 
+                deleteApplicationDescription(applicationDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -14171,9 +14171,9 @@ public class CoreControl
     public void deleteEditorDescriptionsByEditor(Editor editor, BasePK deletedBy) {
         List<EditorDescription> editorDescriptions = getEditorDescriptionsByEditorForUpdate(editor);
 
-        editorDescriptions.stream().forEach((editorDescription) -> {
-            deleteEditorDescription(editorDescription, deletedBy);
-        });
+        editorDescriptions.forEach((editorDescription) -> 
+                deleteEditorDescription(editorDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -14995,9 +14995,9 @@ public class CoreControl
     public void deleteApplicationEditorUseDescriptionsByApplicationEditorUse(ApplicationEditorUse applicationEditorUse, BasePK deletedBy) {
         List<ApplicationEditorUseDescription> applicationEditorUseDescriptions = getApplicationEditorUseDescriptionsByApplicationEditorUseForUpdate(applicationEditorUse);
 
-        applicationEditorUseDescriptions.stream().forEach((applicationEditorUseDescription) -> {
-            deleteApplicationEditorUseDescription(applicationEditorUseDescription, deletedBy);
-        });
+        applicationEditorUseDescriptions.forEach((applicationEditorUseDescription) -> 
+                deleteApplicationEditorUseDescription(applicationEditorUseDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -15227,9 +15227,9 @@ public class CoreControl
     }
 
     public void deletePartyApplicationEditorUses(List<PartyApplicationEditorUse> partyApplicationEditorUses, BasePK deletedBy) {
-        partyApplicationEditorUses.stream().forEach((partyApplicationEditorUse) -> {
-            deletePartyApplicationEditorUse(partyApplicationEditorUse, deletedBy);
-        });
+        partyApplicationEditorUses.forEach((partyApplicationEditorUse) -> 
+                deletePartyApplicationEditorUse(partyApplicationEditorUse, deletedBy)
+        );
     }
 
     public void deletePartyApplicationEditorUsesByParty(Party party, BasePK deletedBy) {
@@ -15688,9 +15688,9 @@ public class CoreControl
     public void deleteColorDescriptionsByColor(Color color, BasePK deletedBy) {
         List<ColorDescription> colorDescriptions = getColorDescriptionsByColorForUpdate(color);
 
-        colorDescriptions.stream().forEach((colorDescription) -> {
-            deleteColorDescription(colorDescription, deletedBy);
-        });
+        colorDescriptions.forEach((colorDescription) -> 
+                deleteColorDescription(colorDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -16134,9 +16134,9 @@ public class CoreControl
     public void deleteFontStyleDescriptionsByFontStyle(FontStyle fontStyle, BasePK deletedBy) {
         List<FontStyleDescription> fontStyleDescriptions = getFontStyleDescriptionsByFontStyleForUpdate(fontStyle);
 
-        fontStyleDescriptions.stream().forEach((fontStyleDescription) -> {
-            deleteFontStyleDescription(fontStyleDescription, deletedBy);
-        });
+        fontStyleDescriptions.forEach((fontStyleDescription) -> 
+                deleteFontStyleDescription(fontStyleDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -16580,9 +16580,9 @@ public class CoreControl
     public void deleteFontWeightDescriptionsByFontWeight(FontWeight fontWeight, BasePK deletedBy) {
         List<FontWeightDescription> fontWeightDescriptions = getFontWeightDescriptionsByFontWeightForUpdate(fontWeight);
 
-        fontWeightDescriptions.stream().forEach((fontWeightDescription) -> {
-            deleteFontWeightDescription(fontWeightDescription, deletedBy);
-        });
+        fontWeightDescriptions.forEach((fontWeightDescription) -> 
+                deleteFontWeightDescription(fontWeightDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -17026,9 +17026,9 @@ public class CoreControl
     public void deleteTextDecorationDescriptionsByTextDecoration(TextDecoration textDecoration, BasePK deletedBy) {
         List<TextDecorationDescription> textDecorationDescriptions = getTextDecorationDescriptionsByTextDecorationForUpdate(textDecoration);
 
-        textDecorationDescriptions.stream().forEach((textDecorationDescription) -> {
-            deleteTextDecorationDescription(textDecorationDescription, deletedBy);
-        });
+        textDecorationDescriptions.forEach((textDecorationDescription) -> 
+                deleteTextDecorationDescription(textDecorationDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -17472,9 +17472,9 @@ public class CoreControl
     public void deleteTextTransformationDescriptionsByTextTransformation(TextTransformation textTransformation, BasePK deletedBy) {
         List<TextTransformationDescription> textTransformationDescriptions = getTextTransformationDescriptionsByTextTransformationForUpdate(textTransformation);
 
-        textTransformationDescriptions.stream().forEach((textTransformationDescription) -> {
-            deleteTextTransformationDescription(textTransformationDescription, deletedBy);
-        });
+        textTransformationDescriptions.forEach((textTransformationDescription) -> 
+                deleteTextTransformationDescription(textTransformationDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -18073,9 +18073,9 @@ public class CoreControl
     public void deleteAppearanceDescriptionsByAppearance(Appearance appearance, BasePK deletedBy) {
         List<AppearanceDescription> appearanceDescriptions = getAppearanceDescriptionsByAppearanceForUpdate(appearance);
 
-        appearanceDescriptions.stream().forEach((appearanceDescription) -> {
-            deleteAppearanceDescription(appearanceDescription, deletedBy);
-        });
+        appearanceDescriptions.forEach((appearanceDescription) -> 
+                deleteAppearanceDescription(appearanceDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -18223,9 +18223,9 @@ public class CoreControl
     }
 
     public void deleteAppearanceTextDecorationsByAppearance(List<AppearanceTextDecoration> appearanceTextDecorations, BasePK deletedBy) {
-        appearanceTextDecorations.stream().forEach((appearanceTextDecoration) -> {
-            deleteAppearanceTextDecoration(appearanceTextDecoration, deletedBy);
-        });
+        appearanceTextDecorations.forEach((appearanceTextDecoration) -> 
+                deleteAppearanceTextDecoration(appearanceTextDecoration, deletedBy)
+        );
     }
 
     public void deleteAppearanceTextDecorationsByAppearance(Appearance appearance, BasePK deletedBy) {
@@ -18381,9 +18381,9 @@ public class CoreControl
     }
 
     public void deleteAppearanceTextTransformationsByAppearance(List<AppearanceTextTransformation> appearanceTextTransformations, BasePK deletedBy) {
-        appearanceTextTransformations.stream().forEach((appearanceTextTransformation) -> {
-            deleteAppearanceTextTransformation(appearanceTextTransformation, deletedBy);
-        });
+        appearanceTextTransformations.forEach((appearanceTextTransformation) -> 
+                deleteAppearanceTextTransformation(appearanceTextTransformation, deletedBy)
+        );
     }
 
     public void deleteAppearanceTextTransformationsByAppearance(Appearance appearance, BasePK deletedBy) {
@@ -18521,9 +18521,9 @@ public class CoreControl
     public void deleteEntityAppearancesByAppearance(Appearance appearance, BasePK deletedBy) {
         List<EntityAppearance> entityAppearances = getEntityAppearancesByAppearanceForUpdate(appearance);
 
-        entityAppearances.stream().forEach((entityAppearance) -> {
-            deleteEntityAppearance(entityAppearance, deletedBy);
-        });
+        entityAppearances.forEach((entityAppearance) -> 
+                deleteEntityAppearance(entityAppearance, deletedBy)
+        );
     }
 
 }

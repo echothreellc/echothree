@@ -609,9 +609,9 @@ public class ShipmentControl
     public void deleteShipmentTypeDescriptionsByShipmentType(ShipmentType shipmentType, BasePK deletedBy) {
         List<ShipmentTypeDescription> shipmentTypeDescriptions = getShipmentTypeDescriptionsByShipmentTypeForUpdate(shipmentType);
 
-        shipmentTypeDescriptions.stream().forEach((shipmentTypeDescription) -> {
-            deleteShipmentTypeDescription(shipmentTypeDescription, deletedBy);
-        });
+        shipmentTypeDescriptions.forEach((shipmentTypeDescription) -> 
+                deleteShipmentTypeDescription(shipmentTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1028,9 +1028,9 @@ public class ShipmentControl
     public void deleteShipmentTimeTypeDescriptionsByShipmentTimeType(ShipmentTimeType shipmentTimeType, BasePK deletedBy) {
         List<ShipmentTimeTypeDescription> shipmentTimeTypeDescriptions = getShipmentTimeTypeDescriptionsByShipmentTimeTypeForUpdate(shipmentTimeType);
 
-        shipmentTimeTypeDescriptions.stream().forEach((shipmentTimeTypeDescription) -> {
-            deleteShipmentTimeTypeDescription(shipmentTimeTypeDescription, deletedBy);
-        });
+        shipmentTimeTypeDescriptions.forEach((shipmentTimeTypeDescription) -> 
+                deleteShipmentTimeTypeDescription(shipmentTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1319,9 +1319,9 @@ public class ShipmentControl
     }
     
     public void deleteShipmentTypeShippingMethods(List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods, BasePK deletedBy) {
-        shipmentTypeShippingMethods.stream().forEach((shipmentTypeShippingMethod) -> {
-            deleteShipmentTypeShippingMethod(shipmentTypeShippingMethod, deletedBy);
-        });
+        shipmentTypeShippingMethods.forEach((shipmentTypeShippingMethod) -> 
+                deleteShipmentTypeShippingMethod(shipmentTypeShippingMethod, deletedBy)
+        );
     }
     
     public void deleteShipmentTypeShippingMethodsByShipmentType(ShipmentType shipmentType, BasePK deletedBy) {
@@ -1508,9 +1508,9 @@ public class ShipmentControl
     }
 
     public void deleteShipmentTimes(List<ShipmentTime> shipmentTimes, BasePK deletedBy) {
-        shipmentTimes.stream().forEach((shipmentTime) -> {
-            deleteShipmentTime(shipmentTime, deletedBy);
-        });
+        shipmentTimes.forEach((shipmentTime) -> 
+                deleteShipmentTime(shipmentTime, deletedBy)
+        );
     }
 
     public void deleteShipmentTimesByShipment(Shipment shipment, BasePK deletedBy) {
@@ -1790,9 +1790,9 @@ public class ShipmentControl
     }
 
     public void deleteShipmentAliasTypes(List<ShipmentAliasType> shipmentAliasTypes, BasePK deletedBy) {
-        shipmentAliasTypes.stream().forEach((shipmentAliasType) -> {
-            deleteShipmentAliasType(shipmentAliasType, deletedBy);
-        });
+        shipmentAliasTypes.forEach((shipmentAliasType) -> 
+                deleteShipmentAliasType(shipmentAliasType, deletedBy)
+        );
     }
 
     public void deleteShipmentAliasTypesByShipmentType(ShipmentType shipmentType, BasePK deletedBy) {
@@ -1943,9 +1943,9 @@ public class ShipmentControl
     public void deleteShipmentAliasTypeDescriptionsByShipmentAliasType(ShipmentAliasType shipmentAliasType, BasePK deletedBy) {
         List<ShipmentAliasTypeDescription> shipmentAliasTypeDescriptions = getShipmentAliasTypeDescriptionsByShipmentAliasTypeForUpdate(shipmentAliasType);
 
-        shipmentAliasTypeDescriptions.stream().forEach((shipmentAliasTypeDescription) -> {
-            deleteShipmentAliasTypeDescription(shipmentAliasTypeDescription, deletedBy);
-        });
+        shipmentAliasTypeDescriptions.forEach((shipmentAliasTypeDescription) -> 
+                deleteShipmentAliasTypeDescription(shipmentAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2134,17 +2134,17 @@ public class ShipmentControl
     public void deleteShipmentAliasesByShipmentAliasType(ShipmentAliasType shipmentAliasType, BasePK deletedBy) {
         List<ShipmentAlias> shipmentaliases = getShipmentAliasesByShipmentAliasTypeForUpdate(shipmentAliasType);
 
-        shipmentaliases.stream().forEach((shipmentAlias) -> {
-            deleteShipmentAlias(shipmentAlias, deletedBy);
-        });
+        shipmentaliases.forEach((shipmentAlias) -> 
+                deleteShipmentAlias(shipmentAlias, deletedBy)
+        );
     }
 
     public void deleteShipmentAliasesByShipment(Shipment shipment, BasePK deletedBy) {
         List<ShipmentAlias> shipmentaliases = getShipmentAliasesByShipmentForUpdate(shipment);
 
-        shipmentaliases.stream().forEach((shipmentAlias) -> {
-            deleteShipmentAlias(shipmentAlias, deletedBy);
-        });
+        shipmentaliases.forEach((shipmentAlias) -> 
+                deleteShipmentAlias(shipmentAlias, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

@@ -507,9 +507,9 @@ public class SubscriptionControl
     public void deleteSubscriptionKindDescriptionsBySubscriptionKind(SubscriptionKind subscriptionKind, BasePK deletedBy) {
         List<SubscriptionKindDescription> subscriptionKindDescriptions = getSubscriptionKindDescriptionsBySubscriptionKindForUpdate(subscriptionKind);
 
-        subscriptionKindDescriptions.stream().forEach((subscriptionKindDescription) -> {
-            deleteSubscriptionKindDescription(subscriptionKindDescription, deletedBy);
-        });
+        subscriptionKindDescriptions.forEach((subscriptionKindDescription) -> 
+                deleteSubscriptionKindDescription(subscriptionKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -992,9 +992,9 @@ public class SubscriptionControl
     public void deleteSubscriptionTypeDescriptionsBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
         List<SubscriptionTypeDescription> subscriptionTypeDescriptions = getSubscriptionTypeDescriptionsBySubscriptionTypeForUpdate(subscriptionType);
         
-        subscriptionTypeDescriptions.stream().forEach((subscriptionTypeDescription) -> {
-            deleteSubscriptionTypeDescription(subscriptionTypeDescription, deletedBy);
-        });
+        subscriptionTypeDescriptions.forEach((subscriptionTypeDescription) -> 
+                deleteSubscriptionTypeDescription(subscriptionTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1193,9 +1193,9 @@ public class SubscriptionControl
     public void deleteSubscriptionTypeChainsBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
         List<SubscriptionTypeChain> subscriptionTypeChains = getSubscriptionTypeChainsBySubscriptionTypeForUpdate(subscriptionType);
         
-        subscriptionTypeChains.stream().forEach((subscriptionTypeChain) -> {
-            deleteSubscriptionTypeChain(subscriptionTypeChain, deletedBy);
-        });
+        subscriptionTypeChains.forEach((subscriptionTypeChain) -> 
+                deleteSubscriptionTypeChain(subscriptionTypeChain, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1453,9 +1453,9 @@ public class SubscriptionControl
     public void deleteSubscriptionsBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
         List<Subscription> subscriptions = getSubscriptionsBySubscriptionType(subscriptionType);
         
-        subscriptions.stream().forEach((subscription) -> {
-            deleteSubscription(subscription, deletedBy);
-        });
+        subscriptions.forEach((subscription) -> 
+                deleteSubscription(subscription, deletedBy)
+        );
     }
     
 }

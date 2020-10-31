@@ -605,9 +605,9 @@ public class BatchControl
     public void deleteBatchTypeDescriptionsByBatchType(BatchType batchType, BasePK deletedBy) {
         List<BatchTypeDescription> batchTypeDescriptions = getBatchTypeDescriptionsByBatchTypeForUpdate(batchType);
         
-        batchTypeDescriptions.stream().forEach((batchTypeDescription) -> {
-            deleteBatchTypeDescription(batchTypeDescription, deletedBy);
-        });
+        batchTypeDescriptions.forEach((batchTypeDescription) -> 
+                deleteBatchTypeDescription(batchTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -763,9 +763,9 @@ public class BatchControl
     }
 
     public void deleteBatchTypeEntityTypes(List<BatchTypeEntityType> batchTypeEntityTypes, BasePK deletedBy) {
-        batchTypeEntityTypes.stream().forEach((batchTypeEntityType) -> {
-            deleteBatchTypeEntityType(batchTypeEntityType, deletedBy);
-        });
+        batchTypeEntityTypes.forEach((batchTypeEntityType) -> 
+                deleteBatchTypeEntityType(batchTypeEntityType, deletedBy)
+        );
     }
 
     public void deleteBatchTypeEntityTypesByBatchType(BatchType batchType, BasePK deletedBy) {
@@ -1045,9 +1045,9 @@ public class BatchControl
     }
     
     public void deleteBatchAliasTypes(List<BatchAliasType> batchAliasTypes, BasePK deletedBy) {
-        batchAliasTypes.stream().forEach((batchAliasType) -> {
-            deleteBatchAliasType(batchAliasType, deletedBy);
-        });
+        batchAliasTypes.forEach((batchAliasType) -> 
+                deleteBatchAliasType(batchAliasType, deletedBy)
+        );
     }
     
     public void deleteBatchAliasTypesByBatchType(BatchType batchType, BasePK deletedBy) {
@@ -1198,9 +1198,9 @@ public class BatchControl
     public void deleteBatchAliasTypeDescriptionsByBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
         List<BatchAliasTypeDescription> batchAliasTypeDescriptions = getBatchAliasTypeDescriptionsByBatchAliasTypeForUpdate(batchAliasType);
         
-        batchAliasTypeDescriptions.stream().forEach((batchAliasTypeDescription) -> {
-            deleteBatchAliasTypeDescription(batchAliasTypeDescription, deletedBy);
-        });
+        batchAliasTypeDescriptions.forEach((batchAliasTypeDescription) -> 
+                deleteBatchAliasTypeDescription(batchAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1389,9 +1389,9 @@ public class BatchControl
     }
     
     public void deleteBatches(List<Batch> batches, BasePK deletedBy) {
-        batches.stream().forEach((batch) -> {
-            deleteBatch(batch, deletedBy);
-        });
+        batches.forEach((batch) -> 
+                deleteBatch(batch, deletedBy)
+        );
     }
     
     public void deleteBatchesByBatchType(BatchType batchType, BasePK deletedBy) {
@@ -1584,17 +1584,17 @@ public class BatchControl
     public void deleteBatchAliasesByBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
         List<BatchAlias> batchaliases = getBatchAliasesByBatchAliasTypeForUpdate(batchAliasType);
         
-        batchaliases.stream().forEach((batchAlias) -> {
-            deleteBatchAlias(batchAlias, deletedBy);
-        });
+        batchaliases.forEach((batchAlias) -> 
+                deleteBatchAlias(batchAlias, deletedBy)
+        );
     }
     
     public void deleteBatchAliasesByBatch(Batch batch, BasePK deletedBy) {
         List<BatchAlias> batchaliases = getBatchAliasesByBatchForUpdate(batch);
         
-        batchaliases.stream().forEach((batchAlias) -> {
-            deleteBatchAlias(batchAlias, deletedBy);
-        });
+        batchaliases.forEach((batchAlias) -> 
+                deleteBatchAlias(batchAlias, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1749,9 +1749,9 @@ public class BatchControl
     }
 
     public void deleteBatchEntities(List<BatchEntity> batchEntities, BasePK deletedBy) {
-        batchEntities.stream().forEach((batchEntity) -> {
-            deleteBatchEntity(batchEntity, deletedBy);
-        });
+        batchEntities.forEach((batchEntity) -> 
+                deleteBatchEntity(batchEntity, deletedBy)
+        );
     }
 
     public void deleteBatchEntitiesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {

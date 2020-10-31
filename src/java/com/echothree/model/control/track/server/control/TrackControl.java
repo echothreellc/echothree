@@ -599,9 +599,9 @@ public class TrackControl
     public void deleteTrackDescriptionsByTrack(Track track, BasePK deletedBy) {
         List<TrackDescription> trackDescriptions = getTrackDescriptionsByTrackForUpdate(track);
 
-        trackDescriptions.stream().forEach((trackDescription) -> {
-            deleteTrackDescription(trackDescription, deletedBy);
-        });
+        trackDescriptions.forEach((trackDescription) -> 
+                deleteTrackDescription(trackDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

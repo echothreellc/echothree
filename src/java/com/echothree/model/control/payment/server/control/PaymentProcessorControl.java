@@ -505,9 +505,9 @@ public class PaymentProcessorControl
     public void deletePaymentProcessorDescriptionsByPaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
         List<PaymentProcessorDescription> paymentProcessorDescriptions = getPaymentProcessorDescriptionsForUpdate(paymentProcessor);
         
-        paymentProcessorDescriptions.stream().forEach((paymentProcessorDescription) -> {
-            deletePaymentProcessorDescription(paymentProcessorDescription, deletedBy);
-        });
+        paymentProcessorDescriptions.forEach((paymentProcessorDescription) -> 
+                deletePaymentProcessorDescription(paymentProcessorDescription, deletedBy)
+        );
     }
     
 }

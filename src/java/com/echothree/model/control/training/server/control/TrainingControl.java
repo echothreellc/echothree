@@ -618,9 +618,9 @@ public class TrainingControl
     public void deleteTrainingClassTranslationsByTrainingClass(TrainingClass trainingClass, BasePK deletedBy) {
         List<TrainingClassTranslation> trainingClassTranslations = getTrainingClassTranslationsByTrainingClassForUpdate(trainingClass);
         
-        trainingClassTranslations.stream().forEach((trainingClassTranslation) -> {
-            deleteTrainingClassTranslation(trainingClassTranslation, deletedBy);
-        });
+        trainingClassTranslations.forEach((trainingClassTranslation) -> 
+                deleteTrainingClassTranslation(trainingClassTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -777,9 +777,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassSections(List<TrainingClassSection> trainingClassSections, BasePK deletedBy) {
-        trainingClassSections.stream().forEach((trainingClassSection) -> {
-            deleteTrainingClassSection(trainingClassSection, deletedBy);
-        });
+        trainingClassSections.forEach((trainingClassSection) -> 
+                deleteTrainingClassSection(trainingClassSection, deletedBy)
+        );
     }
     
     public void deleteTrainingClassSectionsByTrainingClass(TrainingClass trainingClass, BasePK deletedBy) {
@@ -929,9 +929,9 @@ public class TrainingControl
     public void deleteTrainingClassSectionTranslationsByTrainingClassSection(TrainingClassSection trainingClassSection, BasePK deletedBy) {
         List<TrainingClassSectionTranslation> trainingClassSectionTranslations = getTrainingClassSectionTranslationsByTrainingClassSectionForUpdate(trainingClassSection);
         
-        trainingClassSectionTranslations.stream().forEach((trainingClassSectionTranslation) -> {
-            deleteTrainingClassSectionTranslation(trainingClassSectionTranslation, deletedBy);
-        });
+        trainingClassSectionTranslations.forEach((trainingClassSectionTranslation) -> 
+                deleteTrainingClassSectionTranslation(trainingClassSectionTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1106,9 +1106,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassPages(List<TrainingClassPage> trainingClassPages, BasePK deletedBy) {
-        trainingClassPages.stream().forEach((trainingClassPage) -> {
-            deleteTrainingClassPage(trainingClassPage, deletedBy);
-        });
+        trainingClassPages.forEach((trainingClassPage) -> 
+                deleteTrainingClassPage(trainingClassPage, deletedBy)
+        );
     }
     
     public void deleteTrainingClassPagesByTrainingClassSection(TrainingClassSection trainingClassSection, BasePK deletedBy) {
@@ -1258,9 +1258,9 @@ public class TrainingControl
     public void deleteTrainingClassPageTranslationsByTrainingClassPage(TrainingClassPage trainingClassPage, BasePK deletedBy) {
         List<TrainingClassPageTranslation> trainingClassPageTranslations = getTrainingClassPageTranslationsByTrainingClassPageForUpdate(trainingClassPage);
         
-        trainingClassPageTranslations.stream().forEach((trainingClassPageTranslation) -> {
-            deleteTrainingClassPageTranslation(trainingClassPageTranslation, deletedBy);
-        });
+        trainingClassPageTranslations.forEach((trainingClassPageTranslation) -> 
+                deleteTrainingClassPageTranslation(trainingClassPageTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1439,9 +1439,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassQuestions(List<TrainingClassQuestion> trainingClassQuestions, BasePK deletedBy) {
-        trainingClassQuestions.stream().forEach((trainingClassQuestion) -> {
-            deleteTrainingClassQuestion(trainingClassQuestion, deletedBy);
-        });
+        trainingClassQuestions.forEach((trainingClassQuestion) -> 
+                deleteTrainingClassQuestion(trainingClassQuestion, deletedBy)
+        );
     }
     
     public void deleteTrainingClassQuestionsByTrainingClassSection(TrainingClassSection trainingClassSection, BasePK deletedBy) {
@@ -1590,9 +1590,9 @@ public class TrainingControl
     public void deleteTrainingClassQuestionTranslationsByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion, BasePK deletedBy) {
         List<TrainingClassQuestionTranslation> trainingClassQuestionTranslations = getTrainingClassQuestionTranslationsByTrainingClassQuestionForUpdate(trainingClassQuestion);
         
-        trainingClassQuestionTranslations.stream().forEach((trainingClassQuestionTranslation) -> {
-            deleteTrainingClassQuestionTranslation(trainingClassQuestionTranslation, deletedBy);
-        });
+        trainingClassQuestionTranslations.forEach((trainingClassQuestionTranslation) -> 
+                deleteTrainingClassQuestionTranslation(trainingClassQuestionTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1745,9 +1745,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassAnswers(List<TrainingClassAnswer> trainingClassAnswers, BasePK deletedBy) {
-        trainingClassAnswers.stream().forEach((trainingClassAnswer) -> {
-            deleteTrainingClassAnswer(trainingClassAnswer, deletedBy);
-        });
+        trainingClassAnswers.forEach((trainingClassAnswer) -> 
+                deleteTrainingClassAnswer(trainingClassAnswer, deletedBy)
+        );
     }
     
     public void deleteTrainingClassAnswersByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion, BasePK deletedBy) {
@@ -1897,9 +1897,9 @@ public class TrainingControl
     public void deleteTrainingClassAnswerTranslationsByTrainingClassAnswer(TrainingClassAnswer trainingClassAnswer, BasePK deletedBy) {
         List<TrainingClassAnswerTranslation> trainingClassAnswerTranslations = getTrainingClassAnswerTranslationsByTrainingClassAnswerForUpdate(trainingClassAnswer);
         
-        trainingClassAnswerTranslations.stream().forEach((trainingClassAnswerTranslation) -> {
-            deleteTrainingClassAnswerTranslation(trainingClassAnswerTranslation, deletedBy);
-        });
+        trainingClassAnswerTranslations.forEach((trainingClassAnswerTranslation) -> 
+                deleteTrainingClassAnswerTranslation(trainingClassAnswerTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2257,17 +2257,17 @@ public class TrainingControl
     public void deletePartyTrainingClassByParty(Party party, BasePK deletedBy) {
         List<PartyTrainingClass> partyTrainingClasses = getPartyTrainingClassesByPartyForUpdate(party);
         
-        partyTrainingClasses.stream().forEach((partyTrainingClass) -> {
-            deletePartyTrainingClass(partyTrainingClass, deletedBy);
-        });
+        partyTrainingClasses.forEach((partyTrainingClass) -> 
+                deletePartyTrainingClass(partyTrainingClass, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassesByTrainingClass(TrainingClass trainingClass, BasePK deletedBy) {
         List<PartyTrainingClass> partyTrainingClasses = getPartyTrainingClassesByTrainingClassForUpdate(trainingClass);
         
-        partyTrainingClasses.stream().forEach((partyTrainingClass) -> {
-            deletePartyTrainingClass(partyTrainingClass, deletedBy);
-        });
+        partyTrainingClasses.forEach((partyTrainingClass) -> 
+                deletePartyTrainingClass(partyTrainingClass, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2485,9 +2485,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessions(List<PartyTrainingClassSession> partyTrainingClassSessions, BasePK deletedBy) {
-        partyTrainingClassSessions.stream().forEach((partyTrainingClassSession) -> {
-            deletePartyTrainingClassSession(partyTrainingClassSession, deletedBy);
-        });
+        partyTrainingClassSessions.forEach((partyTrainingClassSession) -> 
+                deletePartyTrainingClassSession(partyTrainingClassSession, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionsByPartyTrainingClass(PartyTrainingClass partyTrainingClass, BasePK deletedBy) {
@@ -2814,9 +2814,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionSections(List<PartyTrainingClassSessionSection> partyTrainingClassSessionSections, BasePK deletedBy) {
-        partyTrainingClassSessionSections.stream().forEach((partyTrainingClassSessionSection) -> {
-            deletePartyTrainingClassSessionSection(partyTrainingClassSessionSection, deletedBy);
-        });
+        partyTrainingClassSessionSections.forEach((partyTrainingClassSessionSection) -> 
+                deletePartyTrainingClassSessionSection(partyTrainingClassSessionSection, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionSectionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession, BasePK deletedBy) {
@@ -3013,9 +3013,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionPages(List<PartyTrainingClassSessionPage> partyTrainingClassSessionPages, BasePK deletedBy) {
-        partyTrainingClassSessionPages.stream().forEach((partyTrainingClassSessionPage) -> {
-            deletePartyTrainingClassSessionPage(partyTrainingClassSessionPage, deletedBy);
-        });
+        partyTrainingClassSessionPages.forEach((partyTrainingClassSessionPage) -> 
+                deletePartyTrainingClassSessionPage(partyTrainingClassSessionPage, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionPagesByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession, BasePK deletedBy) {
@@ -3227,9 +3227,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionQuestions(List<PartyTrainingClassSessionQuestion> partyTrainingClassSessionQuestions, BasePK deletedBy) {
-        partyTrainingClassSessionQuestions.stream().forEach((partyTrainingClassSessionQuestion) -> {
-            deletePartyTrainingClassSessionQuestion(partyTrainingClassSessionQuestion, deletedBy);
-        });
+        partyTrainingClassSessionQuestions.forEach((partyTrainingClassSessionQuestion) -> 
+                deletePartyTrainingClassSessionQuestion(partyTrainingClassSessionQuestion, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionQuestionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession, BasePK deletedBy) {
@@ -3472,9 +3472,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionAnswers(List<PartyTrainingClassSessionAnswer> partyTrainingClassSessionAnswers, BasePK deletedBy) {
-        partyTrainingClassSessionAnswers.stream().forEach((partyTrainingClassSessionAnswer) -> {
-            deletePartyTrainingClassSessionAnswer(partyTrainingClassSessionAnswer, deletedBy);
-        });
+        partyTrainingClassSessionAnswers.forEach((partyTrainingClassSessionAnswer) -> 
+                deletePartyTrainingClassSessionAnswer(partyTrainingClassSessionAnswer, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion, BasePK deletedBy) {

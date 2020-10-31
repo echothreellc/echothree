@@ -493,9 +493,9 @@ public class LetterControl
     }
     
     public void deleteLetterSources(List<LetterSource> letterSources, BasePK deletedBy) {
-        letterSources.stream().forEach((letterSource) -> {
-            deleteLetterSource(letterSource, deletedBy);
-        });
+        letterSources.forEach((letterSource) -> 
+                deleteLetterSource(letterSource, deletedBy)
+        );
     }
     
     public void deleteLetterSourcesByEmailAddressPartyContactMechanism(PartyContactMechanism emailAddressPartyContactMechanism, BasePK deletedBy) {
@@ -683,9 +683,9 @@ public class LetterControl
     public void deleteLetterSourceDescriptionsByLetterSource(LetterSource letterSource, BasePK deletedBy) {
         List<LetterSourceDescription> letterSourceDescriptions = getLetterSourceDescriptionsByLetterSourceForUpdate(letterSource);
         
-        letterSourceDescriptions.stream().forEach((letterSourceDescription) -> {
-            deleteLetterSourceDescription(letterSourceDescription, deletedBy);
-        });
+        letterSourceDescriptions.forEach((letterSourceDescription) -> 
+                deleteLetterSourceDescription(letterSourceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1057,9 +1057,9 @@ public class LetterControl
     }
     
     public void deleteLetters(List<Letter> letters, BasePK deletedBy) {
-        letters.stream().forEach((letter) -> {
-            deleteLetter(letter, deletedBy);
-        });
+        letters.forEach((letter) -> 
+                deleteLetter(letter, deletedBy)
+        );
     }
     
     public void deleteLettersByLetterSource(LetterSource letterSource, BasePK deletedBy) {
@@ -1237,9 +1237,9 @@ public class LetterControl
     public void deleteLetterDescriptionsByLetter(Letter letter, BasePK deletedBy) {
         List<LetterDescription> letterDescriptions = getLetterDescriptionsByLetterForUpdate(letter);
         
-        letterDescriptions.stream().forEach((letterDescription) -> {
-            deleteLetterDescription(letterDescription, deletedBy);
-        });
+        letterDescriptions.forEach((letterDescription) -> 
+                deleteLetterDescription(letterDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1408,9 +1408,9 @@ public class LetterControl
     public void deleteLetterContactMechanismPurposesByLetter(Letter letter, BasePK deletedBy) {
         List<LetterContactMechanismPurpose> letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetterForUpdate(letter);
         
-        letterContactMechanismPurposes.stream().forEach((letterContactMechanismPurpose) -> {
-            deleteLetterContactMechanismPurpose(letterContactMechanismPurpose, deletedBy);
-        });
+        letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) -> 
+                deleteLetterContactMechanismPurpose(letterContactMechanismPurpose, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

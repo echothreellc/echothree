@@ -269,9 +269,9 @@ public class MessageControl
     }
     
     public void deleteMessageTypes(List<MessageType> messageTypes, BasePK deletedBy) {
-        messageTypes.stream().forEach((messageType) -> {
-            deleteMessageType(messageType, deletedBy);
-        });
+        messageTypes.forEach((messageType) -> 
+                deleteMessageType(messageType, deletedBy)
+        );
     }
     
     public void deleteMessageTypesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -440,9 +440,9 @@ public class MessageControl
     public void deleteMessageTypeDescriptionsByMessageType(MessageType messageType, BasePK deletedBy) {
         List<MessageTypeDescription> messageTypeDescriptions = getMessageTypeDescriptionsByMessageTypeForUpdate(messageType);
         
-        messageTypeDescriptions.stream().forEach((messageTypeDescription) -> {
-            deleteMessageTypeDescription(messageTypeDescription, deletedBy);
-        });
+        messageTypeDescriptions.forEach((messageTypeDescription) -> 
+                deleteMessageTypeDescription(messageTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -740,9 +740,9 @@ public class MessageControl
     }
     
     public void deleteMessages(List<Message> messages, BasePK deletedBy) {
-        messages.stream().forEach((message) -> {
-            deleteMessage(message, deletedBy);
-        });
+        messages.forEach((message) -> 
+                deleteMessage(message, deletedBy)
+        );
     }
     
     public void deleteMessagesByMessageType(MessageType messageType, BasePK deletedBy) {
@@ -908,9 +908,9 @@ public class MessageControl
     public void deleteMessageDescriptionsByMessage(Message message, BasePK deletedBy) {
         List<MessageDescription> messageDescriptions = getMessageDescriptionsByMessageForUpdate(message);
         
-        messageDescriptions.stream().forEach((messageDescription) -> {
-            deleteMessageDescription(messageDescription, deletedBy);
-        });
+        messageDescriptions.forEach((messageDescription) -> 
+                deleteMessageDescription(messageDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1056,9 +1056,9 @@ public class MessageControl
     }
     
     public void deleteMessageStrings(List<MessageString> messageStrings, BasePK deletedBy) {
-        messageStrings.stream().forEach((messageString) -> {
-            deleteMessageString(messageString, deletedBy);
-        });
+        messageStrings.forEach((messageString) -> 
+                deleteMessageString(messageString, deletedBy)
+        );
     }
     
     public void deleteMessageStringsByMessage(Message message, BasePK deletedBy) {
@@ -1209,9 +1209,9 @@ public class MessageControl
     }
     
     public void deleteMessageBlobs(List<MessageBlob> messageBlobs, BasePK deletedBy) {
-        messageBlobs.stream().forEach((messageBlob) -> {
-            deleteMessageBlob(messageBlob, deletedBy);
-        });
+        messageBlobs.forEach((messageBlob) -> 
+                deleteMessageBlob(messageBlob, deletedBy)
+        );
     }
     
     public void deleteMessageBlobsByMessage(Message message, BasePK deletedBy) {
@@ -1362,9 +1362,9 @@ public class MessageControl
     }
     
     public void deleteMessageClobs(List<MessageClob> messageClobs, BasePK deletedBy) {
-        messageClobs.stream().forEach((messageClob) -> {
-            deleteMessageClob(messageClob, deletedBy);
-        });
+        messageClobs.forEach((messageClob) -> 
+                deleteMessageClob(messageClob, deletedBy)
+        );
     }
     
     public void deleteMessageClobsByMessage(Message message, BasePK deletedBy) {
@@ -1533,9 +1533,9 @@ public class MessageControl
     }
     
     public void deleteEntityMessages(List<EntityMessage> entityMessages, BasePK deletedBy) {
-        entityMessages.stream().forEach((entityMessage) -> {
-            deleteEntityMessage(entityMessage, deletedBy);
-        });
+        entityMessages.forEach((entityMessage) -> 
+                deleteEntityMessage(entityMessage, deletedBy)
+        );
     }
     
     public void deleteEntityMessagesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {

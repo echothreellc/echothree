@@ -558,9 +558,9 @@ public class TagControl
     public void deleteTagScopeDescriptionsByTagScope(TagScope tagScope, BasePK deletedBy) {
         List<TagScopeDescription> tagScopeDescriptions = getTagScopeDescriptionsByTagScopeForUpdate(tagScope);
         
-        tagScopeDescriptions.stream().forEach((tagScopeDescription) -> {
-            deleteTagScopeDescription(tagScopeDescription, deletedBy);
-        });
+        tagScopeDescriptions.forEach((tagScopeDescription) -> 
+                deleteTagScopeDescription(tagScopeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -725,9 +725,9 @@ public class TagControl
     }
     
     public void deleteTagScopeEntityTypes(List<TagScopeEntityType> tagScopeEntityTypes, BasePK deletedBy) {
-        tagScopeEntityTypes.stream().forEach((tagScopeEntityType) -> {
-            deleteTagScopeEntityType(tagScopeEntityType, deletedBy);
-        });
+        tagScopeEntityTypes.forEach((tagScopeEntityType) -> 
+                deleteTagScopeEntityType(tagScopeEntityType, deletedBy)
+        );
     }
     
     public void deleteTagScopeEntityTypesByTagScope(TagScope tagScope, BasePK deletedBy) {
@@ -974,9 +974,9 @@ public class TagControl
     }
     
     public void deleteTags(List<Tag> tags, BasePK deletedBy) {
-        tags.stream().forEach((tag) -> {
-            deleteTag(tag, deletedBy);
-        });
+        tags.forEach((tag) -> 
+                deleteTag(tag, deletedBy)
+        );
     }
     
     public void deleteTagsByTagScope(TagScope tagScope, BasePK deletedBy) {
@@ -1165,9 +1165,9 @@ public class TagControl
     }
     
     public void deleteEntityTags(List<EntityTag> entityTags, BasePK deletedBy) {
-        entityTags.stream().forEach((entityTag) -> {
-            deleteEntityTag(entityTag, deletedBy);
-        });
+        entityTags.forEach((entityTag) -> 
+                deleteEntityTag(entityTag, deletedBy)
+        );
     }
     
     public void deleteEntityTagsByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {

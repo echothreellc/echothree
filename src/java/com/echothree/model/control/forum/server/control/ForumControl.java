@@ -565,9 +565,9 @@ public class ForumControl
     public void deleteForumGroupDescriptionsByForumGroup(ForumGroup forumGroup, BasePK deletedBy) {
         List<ForumGroupDescription> forumGroupDescriptions = getForumGroupDescriptionsByForumGroupForUpdate(forumGroup);
         
-        forumGroupDescriptions.stream().forEach((forumGroupDescription) -> {
-            deleteForumGroupDescription(forumGroupDescription, deletedBy);
-        });
+        forumGroupDescriptions.forEach((forumGroupDescription) -> 
+                deleteForumGroupDescription(forumGroupDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -763,9 +763,9 @@ public class ForumControl
     }
     
     public void deleteForums(List<Forum> forums, BasePK deletedBy) {
-        forums.stream().forEach((forum) -> {
-            deleteForum(forum, deletedBy);
-        });
+        forums.forEach((forum) -> 
+                deleteForum(forum, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -933,9 +933,9 @@ public class ForumControl
     public void deleteForumDescriptionsByForum(Forum forum, BasePK deletedBy) {
         List<ForumDescription> forumDescriptions = getForumDescriptionsByForumForUpdate(forum);
         
-        forumDescriptions.stream().forEach((forumDescription) -> {
-            deleteForumDescription(forumDescription, deletedBy);
-        });
+        forumDescriptions.forEach((forumDescription) -> 
+                deleteForumDescription(forumDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1232,9 +1232,9 @@ public class ForumControl
     }
     
     public void deleteForumGroupForums(List<ForumGroupForum> forumGroupForums, BasePK deletedBy) {
-        forumGroupForums.stream().forEach((forumGroupForum) -> {
-            deleteForumGroupForum(forumGroupForum, deletedBy);
-        });
+        forumGroupForums.forEach((forumGroupForum) -> 
+                deleteForumGroupForum(forumGroupForum, deletedBy)
+        );
     }
     
     public void deleteForumGroupForumsByForumGroup(ForumGroup forumGroup, BasePK deletedBy) {
@@ -1803,9 +1803,9 @@ public class ForumControl
     }
     
     public void deleteForumMimeTypes(List<ForumMimeType> forumMimeTypes, BasePK deletedBy) {
-        forumMimeTypes.stream().forEach((forumMimeType) -> {
-            deleteForumMimeType(forumMimeType, deletedBy);
-        });
+        forumMimeTypes.forEach((forumMimeType) -> 
+                deleteForumMimeType(forumMimeType, deletedBy)
+        );
     }
     
     public void deleteForumMimeTypesByForum(Forum forum, BasePK deletedBy) {
@@ -1999,9 +1999,9 @@ public class ForumControl
     public void deleteForumPartyRolesByForum(Forum forum, BasePK deletedBy) {
         List<ForumPartyRole> forumPartyRoles = getForumPartyRolesByForumForUpdate(forum);
         
-        forumPartyRoles.stream().forEach((forumPartyRole) -> {
-            deleteForumPartyRole(forumPartyRole, deletedBy);
-        });
+        forumPartyRoles.forEach((forumPartyRole) -> 
+                deleteForumPartyRole(forumPartyRole, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2147,9 +2147,9 @@ public class ForumControl
     public void deleteForumPartyTypeRolesByForum(Forum forum, BasePK deletedBy) {
         List<ForumPartyTypeRole> forumPartyTypeRoles = getForumPartyTypeRolesByForumForUpdate(forum);
         
-        forumPartyTypeRoles.stream().forEach((forumPartyTypeRole) -> {
-            deleteForumPartyTypeRole(forumPartyTypeRole, deletedBy);
-        });
+        forumPartyTypeRoles.forEach((forumPartyTypeRole) -> 
+                deleteForumPartyTypeRole(forumPartyTypeRole, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2805,9 +2805,9 @@ public class ForumControl
     }
     
     public void deleteForumThreads(List<ForumThread> forumThreads, BasePK deletedBy) {
-        forumThreads.stream().forEach((forumThread) -> {
-            deleteForumThread(forumThread, deletedBy);
-        });
+        forumThreads.forEach((forumThread) -> 
+                deleteForumThread(forumThread, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3056,9 +3056,9 @@ public class ForumControl
     }
     
     public void deleteForumMessages(List<ForumMessage> forumMessages, BasePK deletedBy) {
-        forumMessages.stream().forEach((forumMessage) -> {
-            deleteForumMessage(forumMessage, deletedBy);
-        });
+        forumMessages.forEach((forumMessage) -> 
+                deleteForumMessage(forumMessage, deletedBy)
+        );
     }
 
     private void deleteForumMessagesByParentForumMessage(ForumMessage parentForumMessage, BasePK deletedBy) {
@@ -3280,9 +3280,9 @@ public class ForumControl
     }
 
     public void deleteForumMessageAttachments(List<ForumMessageAttachment> forumMessageAttachments, BasePK deletedBy) {
-        forumMessageAttachments.stream().forEach((forumMessageAttachment) -> {
-            deleteForumMessageAttachment(forumMessageAttachment, deletedBy);
-        });
+        forumMessageAttachments.forEach((forumMessageAttachment) -> 
+                deleteForumMessageAttachment(forumMessageAttachment, deletedBy)
+        );
     }
 
     public void deleteForumMessageAttachmentsByForumMessage(ForumMessage forumMessage, BasePK deletedBy) {
@@ -3618,9 +3618,9 @@ public class ForumControl
     public void deleteForumMessageAttachmentDescriptionsByForumMessageAttachment(ForumMessageAttachment forumMessageAttachment, BasePK deletedBy) {
         List<ForumMessageAttachmentDescription> forumMessageAttachmentDescriptions = getForumMessageAttachmentDescriptionsByForumMessageAttachmentForUpdate(forumMessageAttachment);
 
-        forumMessageAttachmentDescriptions.stream().forEach((forumMessageAttachmentDescription) -> {
-            deleteForumMessageAttachmentDescription(forumMessageAttachmentDescription, deletedBy);
-        });
+        forumMessageAttachmentDescriptions.forEach((forumMessageAttachmentDescription) -> 
+                deleteForumMessageAttachmentDescription(forumMessageAttachmentDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3744,9 +3744,9 @@ public class ForumControl
     }
     
     public void deleteForumMessageRoles(List<ForumMessageRole> forumMessageRoles, BasePK deletedBy) {
-        forumMessageRoles.stream().forEach((forumMessageRole) -> {
-            deleteForumMessageRole(forumMessageRole, deletedBy);
-        });
+        forumMessageRoles.forEach((forumMessageRole) -> 
+                deleteForumMessageRole(forumMessageRole, deletedBy)
+        );
     }
     
     public void deleteForumMessageRolesByForumMessage(ForumMessage forumMessage, BasePK deletedBy) {
@@ -3938,9 +3938,9 @@ public class ForumControl
     }
     
     public void deleteForumMessageParts(List<ForumMessagePart> forumMessageParts, BasePK deletedBy) {
-        forumMessageParts.stream().forEach((forumMessagePart) -> {
-            deleteForumMessagePart(forumMessagePart, deletedBy);
-        });
+        forumMessageParts.forEach((forumMessagePart) -> 
+                deleteForumMessagePart(forumMessagePart, deletedBy)
+        );
     }
     
     public void deleteForumMessagePartsByForumMessage(ForumMessage forumMessage, BasePK deletedBy) {

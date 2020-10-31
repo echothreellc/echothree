@@ -652,9 +652,9 @@ public class TermControl
     public void deleteTermDescriptionsByTerm(Term term, BasePK deletedBy) {
         List<TermDescription> termDescriptions = getTermDescriptionsByTermForUpdate(term);
         
-        termDescriptions.stream().forEach((termDescription) -> {
-            deleteTermDescription(termDescription, deletedBy);
-        });
+        termDescriptions.forEach((termDescription) -> 
+                deleteTermDescription(termDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -993,9 +993,9 @@ public class TermControl
     public void deleteCustomerTypeCreditLimitsByCustomerType(CustomerType customerType, BasePK deletedBy) {
         List<CustomerTypeCreditLimit> customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerTypeForUpdate(customerType);
         
-        customerTypeCreditLimits.stream().forEach((customerTypeCreditLimit) -> {
-            deleteCustomerTypeCreditLimit(customerTypeCreditLimit, deletedBy);
-        });
+        customerTypeCreditLimits.forEach((customerTypeCreditLimit) -> 
+                deleteCustomerTypeCreditLimit(customerTypeCreditLimit, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1144,9 +1144,9 @@ public class TermControl
     public void deletePartyCreditLimitsByParty(Party party, BasePK deletedBy) {
         List<PartyCreditLimit> partyCreditLimits = getPartyCreditLimitsByPartyForUpdate(party);
         
-        partyCreditLimits.stream().forEach((partyCreditLimit) -> {
-            deletePartyCreditLimit(partyCreditLimit, deletedBy);
-        });
+        partyCreditLimits.forEach((partyCreditLimit) -> 
+                deletePartyCreditLimit(partyCreditLimit, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1294,9 +1294,9 @@ public class TermControl
     public void deletePartyTermsByTerm(Term term, BasePK deletedBy) {
         List<PartyTerm> partyTerms = getPartyTermsByTermForUpdate(term);
         
-        partyTerms.stream().forEach((partyTerm) -> {
-            deletePartyTerm(partyTerm, deletedBy);
-        });
+        partyTerms.forEach((partyTerm) -> 
+                deletePartyTerm(partyTerm, deletedBy)
+        );
     }
     
 }

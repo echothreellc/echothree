@@ -588,9 +588,9 @@ public class IndexControl
     public void deleteIndexTypeDescriptionsByIndexType(IndexType indexType, BasePK deletedBy) {
         List<IndexTypeDescription> indexTypeDescriptions = getIndexTypeDescriptionsByIndexTypeForUpdate(indexType);
 
-        indexTypeDescriptions.stream().forEach((indexTypeDescription) -> {
-            deleteIndexTypeDescription(indexTypeDescription, deletedBy);
-        });
+        indexTypeDescriptions.forEach((indexTypeDescription) -> 
+                deleteIndexTypeDescription(indexTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -864,9 +864,9 @@ public class IndexControl
     public void deleteIndexFieldsByIndexType(IndexType indexType, BasePK deletedBy) {
         List<IndexField> indexFields = getIndexFieldsForUpdate(indexType);
 
-        indexFields.stream().forEach((indexField) -> {
-            deleteIndexField(indexField, deletedBy);
-        });
+        indexFields.forEach((indexField) -> 
+                deleteIndexField(indexField, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1013,9 +1013,9 @@ public class IndexControl
     public void deleteIndexFieldDescriptionsByIndexField(IndexField indexField, BasePK deletedBy) {
         List<IndexFieldDescription> indexFieldDescriptions = getIndexFieldDescriptionsByIndexFieldForUpdate(indexField);
 
-        indexFieldDescriptions.stream().forEach((indexFieldDescription) -> {
-            deleteIndexFieldDescription(indexFieldDescription, deletedBy);
-        });
+        indexFieldDescriptions.forEach((indexFieldDescription) -> 
+                deleteIndexFieldDescription(indexFieldDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1579,9 +1579,9 @@ public class IndexControl
     public void deleteIndexDescriptionsByIndex(Index index, BasePK deletedBy) {
         List<IndexDescription> indexDescriptions = getIndexDescriptionsByIndexForUpdate(index);
 
-        indexDescriptions.stream().forEach((indexDescription) -> {
-            deleteIndexDescription(indexDescription, deletedBy);
-        });
+        indexDescriptions.forEach((indexDescription) -> 
+                deleteIndexDescription(indexDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

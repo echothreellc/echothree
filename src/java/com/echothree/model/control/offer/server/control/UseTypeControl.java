@@ -505,9 +505,9 @@ public class UseTypeControl
     public void deleteUseTypeDescriptionsByUseType(UseType useType, BasePK deletedBy) {
         List<UseTypeDescription> useTypeDescriptions = getUseTypeDescriptionsByUseTypeForUpdate(useType);
         
-        useTypeDescriptions.stream().forEach((useTypeDescription) -> {
-            deleteUseTypeDescription(useTypeDescription, deletedBy);
-        });
+        useTypeDescriptions.forEach((useTypeDescription) -> 
+                deleteUseTypeDescription(useTypeDescription, deletedBy)
+        );
     }
 
 

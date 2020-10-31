@@ -863,9 +863,9 @@ public class ContentControl
     public void deleteContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
         List<ContentPageLayoutDescription> contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayoutForUpdate(contentPageLayout);
         
-        contentPageLayoutDescriptions.stream().forEach((contentPageLayoutDescription) -> {
-            deleteContentPageLayoutDescription(contentPageLayoutDescription, deletedBy);
-        });
+        contentPageLayoutDescriptions.forEach((contentPageLayoutDescription) -> 
+                deleteContentPageLayoutDescription(contentPageLayoutDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1320,9 +1320,9 @@ public class ContentControl
     public void deleteContentCollectionDescriptionsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
         List<ContentCollectionDescription> contentCollectionDescriptions = getContentCollectionDescriptionsByContentCollectionForUpdate(contentCollection);
         
-        contentCollectionDescriptions.stream().forEach((contentCollectionDescription) -> {
-            deleteContentCollectionDescription(contentCollectionDescription, deletedBy);
-        });
+        contentCollectionDescriptions.forEach((contentCollectionDescription) -> 
+                deleteContentCollectionDescription(contentCollectionDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3507,9 +3507,9 @@ public class ContentControl
     }
     
     public void deleteContentCatalogItems(List<ContentCatalogItem> contentCatalogItems, BasePK deletedBy) {
-        contentCatalogItems.stream().forEach((contentCatalogItem) -> {
-            deleteContentCatalogItem(contentCatalogItem, deletedBy);
-        });
+        contentCatalogItems.forEach((contentCatalogItem) -> 
+                deleteContentCatalogItem(contentCatalogItem, deletedBy)
+        );
     }
     
     public void deleteContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {

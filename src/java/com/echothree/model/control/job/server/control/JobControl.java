@@ -417,9 +417,9 @@ public class JobControl
     public void deleteJobDescriptionsByJob(Job job, BasePK deletedBy) {
         List<JobDescription> jobDescriptions = getJobDescriptionsByJobForUpdate(job);
         
-        jobDescriptions.stream().forEach((jobDescription) -> {
-            deleteJobDescription(jobDescription, deletedBy);
-        });
+        jobDescriptions.forEach((jobDescription) -> 
+                deleteJobDescription(jobDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

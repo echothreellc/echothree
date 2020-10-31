@@ -583,9 +583,9 @@ public class OfferControl
     public void deleteOfferDescriptionsByOffer(Offer offer, BasePK deletedBy) {
         List<OfferDescription> offerDescriptions = getOfferDescriptionsByOfferForUpdate(offer);
         
-        offerDescriptions.stream().forEach((offerDescription) -> {
-            deleteOfferDescription(offerDescription, deletedBy);
-        });
+        offerDescriptions.forEach((offerDescription) -> 
+                deleteOfferDescription(offerDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -913,9 +913,9 @@ public class OfferControl
     }
 
     public void deleteOfferCustomerTypes(List<OfferCustomerType> offerCustomerTypes, BasePK deletedBy) {
-        offerCustomerTypes.stream().forEach((offerCustomerType) -> {
-            deleteOfferCustomerType(offerCustomerType, deletedBy);
-        });
+        offerCustomerTypes.forEach((offerCustomerType) -> 
+                deleteOfferCustomerType(offerCustomerType, deletedBy)
+        );
     }
 
     public void deleteOfferCustomerTypesByOffer(Offer offer, BasePK deletedBy) {
@@ -1159,9 +1159,9 @@ public class OfferControl
     }
     
     public void deleteOfferChainTypes(List<OfferChainType> offerChainTypes, BasePK deletedBy) {
-        offerChainTypes.stream().forEach((offerChainType) -> {
-            deleteOfferChainType(offerChainType, deletedBy);
-        });
+        offerChainTypes.forEach((offerChainType) -> 
+                deleteOfferChainType(offerChainType, deletedBy)
+        );
     }
     
     public void deleteOfferChainTypesByOffer(Offer offer, BasePK deletedBy) {

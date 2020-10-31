@@ -537,9 +537,9 @@ public class AssociateControl
     public void deleteAssociateProgramDescriptionsByAssociateProgram(AssociateProgram associateProgram, BasePK deletedBy) {
         List<AssociateProgramDescription> associateProgramDescriptions = getAssociateProgramDescriptionsByAssociateProgramForUpdate(associateProgram);
         
-        associateProgramDescriptions.stream().forEach((associateProgramDescription) -> {
-            deleteAssociateProgramDescription(associateProgramDescription, deletedBy);
-        });
+        associateProgramDescriptions.forEach((associateProgramDescription) -> 
+                deleteAssociateProgramDescription(associateProgramDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -741,9 +741,9 @@ public class AssociateControl
     }
     
     public void deleteAssociates(List<Associate> associates, BasePK deletedBy) {
-        associates.stream().forEach((associate) -> {
-            deleteAssociate(associate, deletedBy);
-        });
+        associates.forEach((associate) -> 
+                deleteAssociate(associate, deletedBy)
+        );
     }
     
     public void deleteAssociatesByAssociateProgram(AssociateProgram associateProgram, BasePK deletedBy) {
@@ -1092,9 +1092,9 @@ public class AssociateControl
     }
     
     public void deleteAssociatePartyContactMechanisms(List<AssociatePartyContactMechanism> associatePartyContactMechanisms, BasePK deletedBy) {
-        associatePartyContactMechanisms.stream().forEach((associatePartyContactMechanism) -> {
-            deleteAssociatePartyContactMechanism(associatePartyContactMechanism, deletedBy);
-        });
+        associatePartyContactMechanisms.forEach((associatePartyContactMechanism) -> 
+                deleteAssociatePartyContactMechanism(associatePartyContactMechanism, deletedBy)
+        );
     }
     
     public void deleteAssociatePartyContactMechanismsByAssociate(Associate associate, BasePK deletedBy) {
@@ -1364,9 +1364,9 @@ public class AssociateControl
     }
     
     public void deleteAssociateReferrals(List<AssociateReferral> associateReferrals, BasePK deletedBy) {
-        associateReferrals.stream().forEach((associateReferral) -> {
-            deleteAssociateReferral(associateReferral, deletedBy);
-        });
+        associateReferrals.forEach((associateReferral) -> 
+                deleteAssociateReferral(associateReferral, deletedBy)
+        );
     }
     
     public void deleteAssociateReferralsByAssociate(Associate associate, BasePK deletedBy) {

@@ -303,9 +303,9 @@ public class CancellationPolicyControl
     }
     
     public void deletePartyCancellationPoliciesByParty(List<PartyCancellationPolicy> partyCancellationPolicies, BasePK deletedBy) {
-        partyCancellationPolicies.stream().forEach((partyCancellationPolicy) -> {
-            deletePartyCancellationPolicy(partyCancellationPolicy, deletedBy);
-        });
+        partyCancellationPolicies.forEach((partyCancellationPolicy) -> 
+                deletePartyCancellationPolicy(partyCancellationPolicy, deletedBy)
+        );
     }
 
     public void deletePartyCancellationPoliciesByParty(Party party, BasePK deletedBy) {
@@ -737,9 +737,9 @@ public class CancellationPolicyControl
     public void deleteCancellationKindDescriptionsByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationKindDescription> cancellationKindDescriptions = getCancellationKindDescriptionsByCancellationKindForUpdate(cancellationKind);
         
-        cancellationKindDescriptions.stream().forEach((cancellationKindDescription) -> {
-            deleteCancellationKindDescription(cancellationKindDescription, deletedBy);
-        });
+        cancellationKindDescriptions.forEach((cancellationKindDescription) -> 
+                deleteCancellationKindDescription(cancellationKindDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1040,9 +1040,9 @@ public class CancellationPolicyControl
     public void deleteCancellationPoliciesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationPolicy> cancellationPolicies = getCancellationPoliciesForUpdate(cancellationKind);
         
-        cancellationPolicies.stream().forEach((cancellationPolicy) -> {
-            deleteCancellationPolicy(cancellationPolicy, deletedBy);
-        });
+        cancellationPolicies.forEach((cancellationPolicy) -> 
+                deleteCancellationPolicy(cancellationPolicy, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1186,9 +1186,9 @@ public class CancellationPolicyControl
     public void deleteCancellationPolicyTranslationsByCancellationPolicy(CancellationPolicy cancellationPolicy, BasePK deletedBy) {
         List<CancellationPolicyTranslation> cancellationPolicyTranslations = getCancellationPolicyTranslationsByCancellationPolicyForUpdate(cancellationPolicy);
 
-        cancellationPolicyTranslations.stream().forEach((cancellationPolicyTranslation) -> {
-            deleteCancellationPolicyTranslation(cancellationPolicyTranslation, deletedBy);
-        });
+        cancellationPolicyTranslations.forEach((cancellationPolicyTranslation) -> 
+                deleteCancellationPolicyTranslation(cancellationPolicyTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1476,9 +1476,9 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationPolicyReasons(List<CancellationPolicyReason> cancellationPolicyReasons, BasePK deletedBy) {
-        cancellationPolicyReasons.stream().forEach((cancellationPolicyReason) -> {
-            deleteCancellationPolicyReason(cancellationPolicyReason, deletedBy);
-        });
+        cancellationPolicyReasons.forEach((cancellationPolicyReason) -> 
+                deleteCancellationPolicyReason(cancellationPolicyReason, deletedBy)
+        );
     }
     
     public void deleteCancellationPolicyReasonsByCancellationPolicy(CancellationPolicy cancellationPolicy, BasePK deletedBy) {
@@ -1784,9 +1784,9 @@ public class CancellationPolicyControl
     public void deleteCancellationReasonsByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationReason> cancellationReasons = getCancellationReasonsForUpdate(cancellationKind);
         
-        cancellationReasons.stream().forEach((cancellationReason) -> {
-            deleteCancellationReason(cancellationReason, deletedBy);
-        });
+        cancellationReasons.forEach((cancellationReason) -> 
+                deleteCancellationReason(cancellationReason, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1950,9 +1950,9 @@ public class CancellationPolicyControl
     public void deleteCancellationReasonDescriptionsByCancellationReason(CancellationReason cancellationReason, BasePK deletedBy) {
         List<CancellationReasonDescription> cancellationReasonDescriptions = getCancellationReasonDescriptionsByCancellationReasonForUpdate(cancellationReason);
         
-        cancellationReasonDescriptions.stream().forEach((cancellationReasonDescription) -> {
-            deleteCancellationReasonDescription(cancellationReasonDescription, deletedBy);
-        });
+        cancellationReasonDescriptions.forEach((cancellationReasonDescription) -> 
+                deleteCancellationReasonDescription(cancellationReasonDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2241,9 +2241,9 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationReasonTypes(List<CancellationReasonType> cancellationReasonTypes, BasePK deletedBy) {
-        cancellationReasonTypes.stream().forEach((cancellationReasonType) -> {
-            deleteCancellationReasonType(cancellationReasonType, deletedBy);
-        });
+        cancellationReasonTypes.forEach((cancellationReasonType) -> 
+                deleteCancellationReasonType(cancellationReasonType, deletedBy)
+        );
     }
     
     public void deleteCancellationReasonTypesByCancellationReason(CancellationReason cancellationReason, BasePK deletedBy) {
@@ -2549,9 +2549,9 @@ public class CancellationPolicyControl
     public void deleteCancellationTypesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationType> cancellationTypes = getCancellationTypesForUpdate(cancellationKind);
         
-        cancellationTypes.stream().forEach((cancellationType) -> {
-            deleteCancellationType(cancellationType, deletedBy);
-        });
+        cancellationTypes.forEach((cancellationType) -> 
+                deleteCancellationType(cancellationType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2715,9 +2715,9 @@ public class CancellationPolicyControl
     public void deleteCancellationTypeDescriptionsByCancellationType(CancellationType cancellationType, BasePK deletedBy) {
         List<CancellationTypeDescription> cancellationTypeDescriptions = getCancellationTypeDescriptionsByCancellationTypeForUpdate(cancellationType);
         
-        cancellationTypeDescriptions.stream().forEach((cancellationTypeDescription) -> {
-            deleteCancellationTypeDescription(cancellationTypeDescription, deletedBy);
-        });
+        cancellationTypeDescriptions.forEach((cancellationTypeDescription) -> 
+                deleteCancellationTypeDescription(cancellationTypeDescription, deletedBy)
+        );
     }
     
 }

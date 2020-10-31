@@ -1512,9 +1512,9 @@ public class PartyControl
     public void deleteTimeZoneDescriptionsByTimeZone(TimeZone timeZone, BasePK deletedBy) {
         List<TimeZoneDescription> timeZoneDescriptions = getTimeZoneDescriptionsByTimeZoneForUpdate(timeZone);
         
-        timeZoneDescriptions.stream().forEach((timeZoneDescription) -> {
-            deleteTimeZoneDescription(timeZoneDescription, deletedBy);
-        });
+        timeZoneDescriptions.forEach((timeZoneDescription) -> 
+                deleteTimeZoneDescription(timeZoneDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1835,9 +1835,9 @@ public class PartyControl
     public void deleteDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat, BasePK deletedBy) {
         List<DateTimeFormatDescription> dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormatForUpdate(dateTimeFormat);
         
-        dateTimeFormatDescriptions.stream().forEach((dateTimeFormatDescription) -> {
-            deleteDateTimeFormatDescription(dateTimeFormatDescription, deletedBy);
-        });
+        dateTimeFormatDescriptions.forEach((dateTimeFormatDescription) -> 
+                deleteDateTimeFormatDescription(dateTimeFormatDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2493,17 +2493,17 @@ public class PartyControl
     public void deletePartyAliasesByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
         List<PartyAlias> partyaliases = getPartyAliasesByPartyAliasTypeForUpdate(partyAliasType);
 
-        partyaliases.stream().forEach((partyAlias) -> {
-            deletePartyAlias(partyAlias, deletedBy);
-        });
+        partyaliases.forEach((partyAlias) -> 
+                deletePartyAlias(partyAlias, deletedBy)
+        );
     }
 
     public void deletePartyAliasesByParty(Party party, BasePK deletedBy) {
         List<PartyAlias> partyaliases = getPartyAliasesByPartyForUpdate(party);
 
-        partyaliases.stream().forEach((partyAlias) -> {
-            deletePartyAlias(partyAlias, deletedBy);
-        });
+        partyaliases.forEach((partyAlias) -> 
+                deletePartyAlias(partyAlias, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2833,9 +2833,9 @@ public class PartyControl
     }
 
     public void deletePartyAliasTypes(List<PartyAliasType> partyAliasTypes, BasePK deletedBy) {
-        partyAliasTypes.stream().forEach((partyAliasType) -> {
-            deletePartyAliasType(partyAliasType, deletedBy);
-        });
+        partyAliasTypes.forEach((partyAliasType) -> 
+                deletePartyAliasType(partyAliasType, deletedBy)
+        );
     }
 
     public void deletePartyAliasTypesByPartyType(PartyType partyType, BasePK deletedBy) {
@@ -2986,9 +2986,9 @@ public class PartyControl
     public void deletePartyAliasTypeDescriptionsByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
         List<PartyAliasTypeDescription> partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasTypeForUpdate(partyAliasType);
 
-        partyAliasTypeDescriptions.stream().forEach((partyAliasTypeDescription) -> {
-            deletePartyAliasTypeDescription(partyAliasTypeDescription, deletedBy);
-        });
+        partyAliasTypeDescriptions.forEach((partyAliasTypeDescription) -> 
+                deletePartyAliasTypeDescription(partyAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -4417,9 +4417,9 @@ public class PartyControl
     }
     
     public void deletePartyRelationships(List<PartyRelationship> partyRelationships, BasePK deletedBy) {
-        partyRelationships.stream().forEach((partyRelationship) -> {
-            deletePartyRelationship(partyRelationship, deletedBy);
-        });
+        partyRelationships.forEach((partyRelationship) -> 
+                deletePartyRelationship(partyRelationship, deletedBy)
+        );
     }
     
     public void deletePartyRelationshipsByParty(Party party, BasePK deletedBy) {
@@ -5194,9 +5194,9 @@ public class PartyControl
     public void deleteGenderDescriptionsByGender(Gender gender, BasePK deletedBy) {
         List<GenderDescription> genderDescriptions = getGenderDescriptionsByGenderForUpdate(gender);
         
-        genderDescriptions.stream().forEach((genderDescription) -> {
-            deleteGenderDescription(genderDescription, deletedBy);
-        });
+        genderDescriptions.forEach((genderDescription) -> 
+                deleteGenderDescription(genderDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -5617,9 +5617,9 @@ public class PartyControl
     public void deleteMoodDescriptionsByMood(Mood mood, BasePK deletedBy) {
         List<MoodDescription> moodDescriptions = getMoodDescriptionsByMoodForUpdate(mood);
         
-        moodDescriptions.stream().forEach((moodDescription) -> {
-            deleteMoodDescription(moodDescription, deletedBy);
-        });
+        moodDescriptions.forEach((moodDescription) -> 
+                deleteMoodDescription(moodDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -6091,9 +6091,9 @@ public class PartyControl
     public void deleteBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
         List<BirthdayFormatDescription> birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormatForUpdate(birthdayFormat);
 
-        birthdayFormatDescriptions.stream().forEach((birthdayFormatDescription) -> {
-            deleteBirthdayFormatDescription(birthdayFormatDescription, deletedBy);
-        });
+        birthdayFormatDescriptions.forEach((birthdayFormatDescription) -> 
+                deleteBirthdayFormatDescription(birthdayFormatDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

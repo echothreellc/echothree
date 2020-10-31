@@ -312,9 +312,9 @@ public class OrderLineControl
     }
     
     public void deleteOrderLinesByOrder(List<OrderLine> orderLines, BasePK deletedBy) {
-        orderLines.stream().forEach((orderLine) -> {
-            deleteOrderLine(orderLine, deletedBy);
-        });
+        orderLines.forEach((orderLine) -> 
+                deleteOrderLine(orderLine, deletedBy)
+        );
     }
     
     public void deleteOrderLinesByOrder(Order order, BasePK deletedBy) {

@@ -892,9 +892,9 @@ public class InvoiceControl
     public void deleteInvoiceTypeDescriptionsByInvoiceType(InvoiceType invoiceType, BasePK deletedBy) {
         List<InvoiceTypeDescription> invoiceTypeDescriptions = getInvoiceTypeDescriptionsByInvoiceTypeForUpdate(invoiceType);
         
-        invoiceTypeDescriptions.stream().forEach((invoiceTypeDescription) -> {
-            deleteInvoiceTypeDescription(invoiceTypeDescription, deletedBy);
-        });
+        invoiceTypeDescriptions.forEach((invoiceTypeDescription) -> 
+                deleteInvoiceTypeDescription(invoiceTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1166,9 +1166,9 @@ public class InvoiceControl
     }
     
     public void deleteInvoiceAliasTypes(List<InvoiceAliasType> invoiceAliasTypes, BasePK deletedBy) {
-        invoiceAliasTypes.stream().forEach((invoiceAliasType) -> {
-            deleteInvoiceAliasType(invoiceAliasType, deletedBy);
-        });
+        invoiceAliasTypes.forEach((invoiceAliasType) -> 
+                deleteInvoiceAliasType(invoiceAliasType, deletedBy)
+        );
     }
     
     public void deleteInvoiceAliasTypesByInvoiceType(InvoiceType invoiceType, BasePK deletedBy) {
@@ -1589,9 +1589,9 @@ public class InvoiceControl
     public void deleteInvoiceTimeTypeDescriptionsByInvoiceTimeType(InvoiceTimeType invoiceTimeType, BasePK deletedBy) {
         List<InvoiceTimeTypeDescription> invoiceTimeTypeDescriptions = getInvoiceTimeTypeDescriptionsByInvoiceTimeTypeForUpdate(invoiceTimeType);
 
-        invoiceTimeTypeDescriptions.stream().forEach((invoiceTimeTypeDescription) -> {
-            deleteInvoiceTimeTypeDescription(invoiceTimeTypeDescription, deletedBy);
-        });
+        invoiceTimeTypeDescriptions.forEach((invoiceTimeTypeDescription) -> 
+                deleteInvoiceTimeTypeDescription(invoiceTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1738,9 +1738,9 @@ public class InvoiceControl
     public void deleteInvoiceAliasTypeDescriptionsByInvoiceAliasType(InvoiceAliasType invoiceAliasType, BasePK deletedBy) {
         List<InvoiceAliasTypeDescription> invoiceAliasTypeDescriptions = getInvoiceAliasTypeDescriptionsByInvoiceAliasTypeForUpdate(invoiceAliasType);
         
-        invoiceAliasTypeDescriptions.stream().forEach((invoiceAliasTypeDescription) -> {
-            deleteInvoiceAliasTypeDescription(invoiceAliasTypeDescription, deletedBy);
-        });
+        invoiceAliasTypeDescriptions.forEach((invoiceAliasTypeDescription) -> 
+                deleteInvoiceAliasTypeDescription(invoiceAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2289,9 +2289,9 @@ public class InvoiceControl
     public void deleteInvoiceLineTypeDescriptionsByInvoiceLineType(InvoiceLineType invoiceLineType, BasePK deletedBy) {
         List<InvoiceLineTypeDescription> invoiceLineTypeDescriptions = getInvoiceLineTypeDescriptionsByInvoiceLineTypeForUpdate(invoiceLineType);
         
-        invoiceLineTypeDescriptions.stream().forEach((invoiceLineTypeDescription) -> {
-            deleteInvoiceLineTypeDescription(invoiceLineTypeDescription, deletedBy);
-        });
+        invoiceLineTypeDescriptions.forEach((invoiceLineTypeDescription) -> 
+                deleteInvoiceLineTypeDescription(invoiceLineTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2923,9 +2923,9 @@ public class InvoiceControl
     }
 
     public void deleteInvoiceTimes(List<InvoiceTime> invoiceTimes, BasePK deletedBy) {
-        invoiceTimes.stream().forEach((invoiceTime) -> {
-            deleteInvoiceTime(invoiceTime, deletedBy);
-        });
+        invoiceTimes.forEach((invoiceTime) -> 
+                deleteInvoiceTime(invoiceTime, deletedBy)
+        );
     }
 
     public void deleteInvoiceTimesByInvoice(Invoice invoice, BasePK deletedBy) {
@@ -3093,17 +3093,17 @@ public class InvoiceControl
     public void deleteInvoiceAliasesByInvoiceAliasType(InvoiceAliasType invoiceAliasType, BasePK deletedBy) {
         List<InvoiceAlias> invoicealiases = getInvoiceAliasesByInvoiceAliasTypeForUpdate(invoiceAliasType);
         
-        invoicealiases.stream().forEach((invoiceAlias) -> {
-            deleteInvoiceAlias(invoiceAlias, deletedBy);
-        });
+        invoicealiases.forEach((invoiceAlias) -> 
+                deleteInvoiceAlias(invoiceAlias, deletedBy)
+        );
     }
     
     public void deleteInvoiceAliasesByInvoice(Invoice invoice, BasePK deletedBy) {
         List<InvoiceAlias> invoicealiases = getInvoiceAliasesByInvoiceForUpdate(invoice);
         
-        invoicealiases.stream().forEach((invoiceAlias) -> {
-            deleteInvoiceAlias(invoiceAlias, deletedBy);
-        });
+        invoicealiases.forEach((invoiceAlias) -> 
+                deleteInvoiceAlias(invoiceAlias, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

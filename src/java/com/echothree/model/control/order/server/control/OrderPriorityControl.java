@@ -468,9 +468,9 @@ public class OrderPriorityControl
     public void deleteOrderPriorityDescriptionsByOrderPriority(OrderPriority orderPriority, BasePK deletedBy) {
         List<OrderPriorityDescription> orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriorityForUpdate(orderPriority);
 
-        orderPriorityDescriptions.stream().forEach((orderPriorityDescription) -> {
-            deleteOrderPriorityDescription(orderPriorityDescription, deletedBy);
-        });
+        orderPriorityDescriptions.forEach((orderPriorityDescription) -> 
+                deleteOrderPriorityDescription(orderPriorityDescription, deletedBy)
+        );
     }
 
 }

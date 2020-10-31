@@ -576,9 +576,9 @@ public class PrinterControl
     public void deletePrinterGroupDescriptionsByPrinterGroup(PrinterGroup printerGroup, BasePK deletedBy) {
         List<PrinterGroupDescription> printerGroupDescriptions = getPrinterGroupDescriptionsByPrinterGroupForUpdate(printerGroup);
 
-        printerGroupDescriptions.stream().forEach((printerGroupDescription) -> {
-            deletePrinterGroupDescription(printerGroupDescription, deletedBy);
-        });
+        printerGroupDescriptions.forEach((printerGroupDescription) -> 
+                deletePrinterGroupDescription(printerGroupDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -835,9 +835,9 @@ public class PrinterControl
     }
 
     public void deletePrinters(List<Printer> printers, BasePK deletedBy) {
-        printers.stream().forEach((printer) -> {
-            deletePrinter(printer, deletedBy);
-        });
+        printers.forEach((printer) -> 
+                deletePrinter(printer, deletedBy)
+        );
     }
 
     public void deletePrintersByPrinterGroup(PrinterGroup printerGroup, BasePK deletedBy) {
@@ -990,9 +990,9 @@ public class PrinterControl
     public void deletePrinterDescriptionsByPrinter(Printer printer, BasePK deletedBy) {
         List<PrinterDescription> printerDescriptions = getPrinterDescriptionsByPrinterForUpdate(printer);
 
-        printerDescriptions.stream().forEach((printerDescription) -> {
-            deletePrinterDescription(printerDescription, deletedBy);
-        });
+        printerDescriptions.forEach((printerDescription) -> 
+                deletePrinterDescription(printerDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1354,9 +1354,9 @@ public class PrinterControl
     }
 
     public void deletePrinterGroupJobs(List<PrinterGroupJob> printerGroupJobs, BasePK deletedBy) {
-        printerGroupJobs.stream().forEach((printerGroupJob) -> {
-            deletePrinterGroupJob(printerGroupJob, deletedBy);
-        });
+        printerGroupJobs.forEach((printerGroupJob) -> 
+                deletePrinterGroupJob(printerGroupJob, deletedBy)
+        );
     }
 
     public void deletePrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup, BasePK deletedBy) {
@@ -1795,9 +1795,9 @@ public class PrinterControl
     public void deletePrinterGroupUseTypeDescriptionsByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType, BasePK deletedBy) {
         List<PrinterGroupUseTypeDescription> printerGroupUseTypeDescriptions = getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeForUpdate(printerGroupUseType);
 
-        printerGroupUseTypeDescriptions.stream().forEach((printerGroupUseTypeDescription) -> {
-            deletePrinterGroupUseTypeDescription(printerGroupUseTypeDescription, deletedBy);
-        });
+        printerGroupUseTypeDescriptions.forEach((printerGroupUseTypeDescription) -> 
+                deletePrinterGroupUseTypeDescription(printerGroupUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2009,9 +2009,9 @@ public class PrinterControl
     }
 
     public void deletePartyPrinterGroupUses(List<PartyPrinterGroupUse> partyPrinterGroupUses, BasePK deletedBy) {
-        partyPrinterGroupUses.stream().forEach((partyPrinterGroupUse) -> {
-            deletePartyPrinterGroupUse(partyPrinterGroupUse, deletedBy);
-        });
+        partyPrinterGroupUses.forEach((partyPrinterGroupUse) -> 
+                deletePartyPrinterGroupUse(partyPrinterGroupUse, deletedBy)
+        );
     }
 
     public void deletePartyPrinterGroupUsesByParty(Party party, BasePK deletedBy) {

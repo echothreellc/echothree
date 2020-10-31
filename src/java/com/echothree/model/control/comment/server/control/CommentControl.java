@@ -287,9 +287,9 @@ public class CommentControl
     }
     
     public void deleteCommentTypes(List<CommentType> commentTypes, BasePK deletedBy) {
-        commentTypes.stream().forEach((commentType) -> {
-            deleteCommentType(commentType, deletedBy);
-        });
+        commentTypes.forEach((commentType) -> 
+                deleteCommentType(commentType, deletedBy)
+        );
     }
     
     public void deleteCommentTypesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -456,9 +456,9 @@ public class CommentControl
     public void deleteCommentTypeDescriptionsByCommentType(CommentType commentType, BasePK deletedBy) {
         List<CommentTypeDescription> commentTypeDescriptions = getCommentTypeDescriptionsByCommentTypeForUpdate(commentType);
         
-        commentTypeDescriptions.stream().forEach((commentTypeDescription) -> {
-            deleteCommentTypeDescription(commentTypeDescription, deletedBy);
-        });
+        commentTypeDescriptions.forEach((commentTypeDescription) -> 
+                deleteCommentTypeDescription(commentTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -627,9 +627,9 @@ public class CommentControl
     }
     
     public void deleteCommentUsageTypes(List<CommentUsageType> commentUsageTypes, BasePK deletedBy) {
-        commentUsageTypes.stream().forEach((commentUsageType) -> {
-            deleteCommentUsageType(commentUsageType, deletedBy);
-        });
+        commentUsageTypes.forEach((commentUsageType) -> 
+                deleteCommentUsageType(commentUsageType, deletedBy)
+        );
     }
     
     public void deleteCommentUsageTypesByCommentType(CommentType commentType, BasePK deletedBy) {
@@ -801,9 +801,9 @@ public class CommentControl
     public void deleteCommentUsageTypeDescriptionsByCommentUsageType(CommentUsageType commentUsageType, BasePK deletedBy) {
         List<CommentUsageTypeDescription> commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageTypeForUpdate(commentUsageType);
         
-        commentUsageTypeDescriptions.stream().forEach((commentUsageTypeDescription) -> {
-            deleteCommentUsageTypeDescription(commentUsageTypeDescription, deletedBy);
-        });
+        commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) -> 
+                deleteCommentUsageTypeDescription(commentUsageTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1172,9 +1172,9 @@ public class CommentControl
     }
     
     public void deleteComments(List<Comment> comments, BasePK deletedBy) {
-        comments.stream().forEach((comment) -> {
-            deleteComment(comment, deletedBy);
-        });
+        comments.forEach((comment) -> 
+                deleteComment(comment, deletedBy)
+        );
     }
     
     public void deleteCommentsByCommentedEntityInstance(EntityInstance ratedEntityInstance, BasePK deletedBy) {
@@ -1610,9 +1610,9 @@ public class CommentControl
     }
     
     public void deleteCommentUsages(List<CommentUsage> commentUsages, BasePK deletedBy) {
-        commentUsages.stream().forEach((commentUsage) -> {
-            deleteCommentUsage(commentUsage, deletedBy);
-        });
+        commentUsages.forEach((commentUsage) -> 
+                deleteCommentUsage(commentUsage, deletedBy)
+        );
     }
     
     public void deleteCommentUsagesByComment(Comment comment, BasePK deletedBy) {

@@ -1670,9 +1670,9 @@ public class UserControl
     public void deleteRecoveryQuestionDescriptionsByRecoveryQuestion(RecoveryQuestion recoveryQuestion, BasePK deletedBy) {
         List<RecoveryQuestionDescription> recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestionForUpdate(recoveryQuestion);
         
-        recoveryQuestionDescriptions.stream().forEach((recoveryQuestionDescription) -> {
-            deleteRecoveryQuestionDescription(recoveryQuestionDescription, deletedBy);
-        });
+        recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) -> 
+                deleteRecoveryQuestionDescription(recoveryQuestionDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1830,9 +1830,9 @@ public class UserControl
     }
     
     public void deleteRecoveryAnswers(List<RecoveryAnswer> recoveryAnswers, BasePK deletedBy) {
-        recoveryAnswers.stream().forEach((recoveryAnswer) -> {
-            deleteRecoveryAnswer(recoveryAnswer, deletedBy);
-        });
+        recoveryAnswers.forEach((recoveryAnswer) -> 
+                deleteRecoveryAnswer(recoveryAnswer, deletedBy)
+        );
     }
     
     public void deleteRecoveryAnswersByRecoveryQuestion(RecoveryQuestion recoveryQuestion, BasePK deletedBy) {
@@ -2125,9 +2125,9 @@ public class UserControl
     }
     
     public void deleteUserLoginPasswords(List<UserLoginPassword> userLoginPasswords, BasePK deletedBy) {
-        userLoginPasswords.stream().forEach((userLoginPassword) -> {
-            deleteUserLoginPassword(userLoginPassword, deletedBy);
-        });
+        userLoginPasswords.forEach((userLoginPassword) -> 
+                deleteUserLoginPassword(userLoginPassword, deletedBy)
+        );
     }
     
     public void deleteUserLoginPasswordsByParty(Party party, BasePK deletedBy) {

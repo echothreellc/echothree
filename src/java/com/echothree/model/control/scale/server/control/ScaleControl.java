@@ -517,9 +517,9 @@ public class ScaleControl
     public void deleteScaleTypeDescriptionsByScaleType(ScaleType scaleType, BasePK deletedBy) {
         List<ScaleTypeDescription> scaleTypeDescriptions = getScaleTypeDescriptionsByScaleTypeForUpdate(scaleType);
 
-        scaleTypeDescriptions.stream().forEach((scaleTypeDescription) -> {
-            deleteScaleTypeDescription(scaleTypeDescription, deletedBy);
-        });
+        scaleTypeDescriptions.forEach((scaleTypeDescription) -> 
+                deleteScaleTypeDescription(scaleTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1031,9 +1031,9 @@ public class ScaleControl
     public void deleteScaleDescriptionsByScale(Scale scale, BasePK deletedBy) {
         List<ScaleDescription> scaleDescriptions = getScaleDescriptionsByScaleForUpdate(scale);
 
-        scaleDescriptions.stream().forEach((scaleDescription) -> {
-            deleteScaleDescription(scaleDescription, deletedBy);
-        });
+        scaleDescriptions.forEach((scaleDescription) -> 
+                deleteScaleDescription(scaleDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1449,9 +1449,9 @@ public class ScaleControl
     public void deleteScaleUseTypeDescriptionsByScaleUseType(ScaleUseType scaleUseType, BasePK deletedBy) {
         List<ScaleUseTypeDescription> scaleUseTypeDescriptions = getScaleUseTypeDescriptionsByScaleUseTypeForUpdate(scaleUseType);
 
-        scaleUseTypeDescriptions.stream().forEach((scaleUseTypeDescription) -> {
-            deleteScaleUseTypeDescription(scaleUseTypeDescription, deletedBy);
-        });
+        scaleUseTypeDescriptions.forEach((scaleUseTypeDescription) -> 
+                deleteScaleUseTypeDescription(scaleUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1663,9 +1663,9 @@ public class ScaleControl
     }
 
     public void deletePartyScaleUses(List<PartyScaleUse> partyScaleUses, BasePK deletedBy) {
-        partyScaleUses.stream().forEach((partyScaleUse) -> {
-            deletePartyScaleUse(partyScaleUse, deletedBy);
-        });
+        partyScaleUses.forEach((partyScaleUse) -> 
+                deletePartyScaleUse(partyScaleUse, deletedBy)
+        );
     }
 
     public void deletePartyScaleUsesByParty(Party party, BasePK deletedBy) {

@@ -396,9 +396,9 @@ public class UseNameElementControl
     public void deleteUseNameElementDescriptionsByUseNameElement(UseNameElement useNameElement, BasePK deletedBy) {
         List<UseNameElementDescription> useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElementForUpdate(useNameElement);
 
-        useNameElementDescriptions.stream().forEach((useNameElementDescription) -> {
-            deleteUseNameElementDescription(useNameElementDescription, deletedBy);
-        });
+        useNameElementDescriptions.forEach((useNameElementDescription) -> 
+                deleteUseNameElementDescription(useNameElementDescription, deletedBy)
+        );
     }
 
 }

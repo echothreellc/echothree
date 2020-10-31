@@ -475,9 +475,9 @@ public class OrderAdjustmentControl
     public void deleteOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(OrderAdjustmentType orderAdjustmentType, BasePK deletedBy) {
         List<OrderAdjustmentTypeDescription> orderAdjustmentTypeDescriptions = getOrderAdjustmentTypeDescriptionsByOrderAdjustmentTypeForUpdate(orderAdjustmentType);
 
-        orderAdjustmentTypeDescriptions.stream().forEach((orderAdjustmentTypeDescription) -> {
-            deleteOrderAdjustmentTypeDescription(orderAdjustmentTypeDescription, deletedBy);
-        });
+        orderAdjustmentTypeDescriptions.forEach((orderAdjustmentTypeDescription) -> 
+                deleteOrderAdjustmentTypeDescription(orderAdjustmentTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -552,9 +552,9 @@ public class OrderAdjustmentControl
     public void deleteOrderAdjustmentsByOrder(Order order, BasePK deletedBy) {
         List<OrderAdjustment> orderAdjustments = getOrderAdjustmentsByOrderForUpdate(order);
 
-        orderAdjustments.stream().forEach((orderAdjustment) -> {
-            deleteOrderAdjustment(orderAdjustment, deletedBy);
-        });
+        orderAdjustments.forEach((orderAdjustment) -> 
+                deleteOrderAdjustment(orderAdjustment, deletedBy)
+        );
     }
 
 }

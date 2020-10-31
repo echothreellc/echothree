@@ -548,9 +548,9 @@ public class CommunicationControl
     public void deleteCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose, BasePK deletedBy) {
         List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurposeForUpdate(communicationEventPurpose);
         
-        communicationEventPurposeDescriptions.stream().forEach((communicationEventPurposeDescription) -> {
-            deleteCommunicationEventPurposeDescription(communicationEventPurposeDescription, deletedBy);
-        });
+        communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) -> 
+                deleteCommunicationEventPurposeDescription(communicationEventPurposeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1510,9 +1510,9 @@ public class CommunicationControl
     public void deleteCommunicationSourceDescriptionsByCommunicationSource(CommunicationSource communicationSource, BasePK deletedBy) {
         List<CommunicationSourceDescription> communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSourceForUpdate(communicationSource);
         
-        communicationSourceDescriptions.stream().forEach((communicationSourceDescription) -> {
-            deleteCommunicationSourceDescription(communicationSourceDescription, deletedBy);
-        });
+        communicationSourceDescriptions.forEach((communicationSourceDescription) -> 
+                deleteCommunicationSourceDescription(communicationSourceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

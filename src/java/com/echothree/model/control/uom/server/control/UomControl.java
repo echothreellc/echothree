@@ -641,9 +641,9 @@ public class UomControl
     public void deleteUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
         List<UnitOfMeasureKindDescription> unitOfMeasureKindDescriptions = getUnitOfMeasureKindDescriptionsByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
         
-        unitOfMeasureKindDescriptions.stream().forEach((unitOfMeasureKindDescription) -> {
-            deleteUnitOfMeasureKindDescription(unitOfMeasureKindDescription, deletedBy);
-        });
+        unitOfMeasureKindDescriptions.forEach((unitOfMeasureKindDescription) -> 
+                deleteUnitOfMeasureKindDescription(unitOfMeasureKindDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -984,9 +984,9 @@ public class UomControl
     public void deleteUnitOfMeasureTypesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
         List<UnitOfMeasureType> unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
         
-        unitOfMeasureTypes.stream().forEach((unitOfMeasureType) -> {
-            deleteUnitOfMeasureType(unitOfMeasureType, deletedBy);
-        });
+        unitOfMeasureTypes.forEach((unitOfMeasureType) -> 
+                deleteUnitOfMeasureType(unitOfMeasureType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1194,9 +1194,9 @@ public class UomControl
     public void deleteUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
         List<UnitOfMeasureTypeDescription> unitOfMeasureTypeDescriptions = getUnitOfMeasureTypeDescriptionsByUnitOfMeasureTypeForUpdate(unitOfMeasureType);
         
-        unitOfMeasureTypeDescriptions.stream().forEach((unitOfMeasureTypeDescription) -> {
-            deleteUnitOfMeasureTypeDescription(unitOfMeasureTypeDescription, deletedBy);
-        });
+        unitOfMeasureTypeDescriptions.forEach((unitOfMeasureTypeDescription) -> 
+                deleteUnitOfMeasureTypeDescription(unitOfMeasureTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1655,17 +1655,17 @@ public class UomControl
     public void deleteUnitOfMeasureEquivalentsByFromUnitOfMeasureType(UnitOfMeasureType fromUnitOfMeasureType, BasePK deletedBy) {
         List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = getUnitOfMeasureEquivalentsByFromUnitOfMeasureTypeForUpdate(fromUnitOfMeasureType);
         
-        unitOfMeasureEquivalents.stream().forEach((unitOfMeasureEquivalent) -> {
-            deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, deletedBy);
-        });
+        unitOfMeasureEquivalents.forEach((unitOfMeasureEquivalent) -> 
+                deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, deletedBy)
+        );
     }
     
     public void deleteUnitOfMeasureEquivalentsByToUnitOfMeasureType(UnitOfMeasureType toUnitOfMeasureType, BasePK deletedBy) {
         List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = getUnitOfMeasureEquivalentsByToUnitOfMeasureTypeForUpdate(toUnitOfMeasureType);
         
-        unitOfMeasureEquivalents.stream().forEach((unitOfMeasureEquivalent) -> {
-            deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, deletedBy);
-        });
+        unitOfMeasureEquivalents.forEach((unitOfMeasureEquivalent) -> 
+                deleteUnitOfMeasureEquivalent(unitOfMeasureEquivalent, deletedBy)
+        );
     }
     
     public void deleteUnitOfMeasureEquivalentsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -2200,9 +2200,9 @@ public class UomControl
     public void deleteUnitOfMeasureKindUseByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, BasePK deletedBy) {
         List<UnitOfMeasureKindUse> unitOfMeasureKindUses = getUnitOfMeasureKindUsesByUnitOfMeasureKindForUpdate(unitOfMeasureKind);
         
-        unitOfMeasureKindUses.stream().forEach((unitOfMeasureKindUse) -> {
-            deleteUnitOfMeasureKindUse(unitOfMeasureKindUse, deletedBy);
-        });
+        unitOfMeasureKindUses.forEach((unitOfMeasureKindUse) -> 
+                deleteUnitOfMeasureKindUse(unitOfMeasureKindUse, deletedBy)
+        );
     }
     
 }

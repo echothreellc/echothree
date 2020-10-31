@@ -497,9 +497,9 @@ public class LicenseControl
     public void deleteLicenseTypeDescriptionsByLicenseType(LicenseType licenseType, BasePK deletedBy) {
         List<LicenseTypeDescription> licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseTypeForUpdate(licenseType);
 
-        licenseTypeDescriptions.stream().forEach((licenseTypeDescription) -> {
-            deleteLicenseTypeDescription(licenseTypeDescription, deletedBy);
-        });
+        licenseTypeDescriptions.forEach((licenseTypeDescription) -> 
+                deleteLicenseTypeDescription(licenseTypeDescription, deletedBy)
+        );
     }
 
 }

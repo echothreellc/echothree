@@ -339,17 +339,17 @@ public class WorkRequirementControl
     public void deleteWorkRequirementTypesByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
         List<WorkRequirementType> workRequirementTypes = getWorkRequirementTypesForUpdate(workEffortType);
         
-        workRequirementTypes.stream().forEach((workRequirementType) -> {
-            deleteWorkRequirementType(workRequirementType, deletedBy);
-        });
+        workRequirementTypes.forEach((workRequirementType) -> 
+                deleteWorkRequirementType(workRequirementType, deletedBy)
+        );
     }
     
     public void deleteWorkRequirementTypesByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
         List<WorkRequirementType> workRequirementTypes = getWorkRequirementTypesByWorkflowStepForUpdate(workflowStep);
         
-        workRequirementTypes.stream().forEach((workRequirementType) -> {
-            deleteWorkRequirementType(workRequirementType, deletedBy);
-        });
+        workRequirementTypes.forEach((workRequirementType) -> 
+                deleteWorkRequirementType(workRequirementType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -514,9 +514,9 @@ public class WorkRequirementControl
     public void deleteWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
         List<WorkRequirementTypeDescription> workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementTypeForUpdate(workRequirementType);
         
-        workRequirementTypeDescriptions.stream().forEach((workRequirementTypeDescription) -> {
-            deleteWorkRequirementTypeDescription(workRequirementTypeDescription, deletedBy);
-        });
+        workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) -> 
+                deleteWorkRequirementTypeDescription(workRequirementTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -779,17 +779,17 @@ public class WorkRequirementControl
     public void deleteWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
         List<WorkRequirementScope> workRequirementScopes = getWorkRequirementScopesByWorkRequirementTypeForUpdate(workRequirementType);
         
-        workRequirementScopes.stream().forEach((workRequirementScope) -> {
-            deleteWorkRequirementScope(workRequirementScope, deletedBy);
-        });
+        workRequirementScopes.forEach((workRequirementScope) -> 
+                deleteWorkRequirementScope(workRequirementScope, deletedBy)
+        );
     }
     
     public void deleteWorkRequirementScopesByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {
         List<WorkRequirementScope> workRequirementScopes = getWorkRequirementScopesByWorkEffortScopeForUpdate(workEffortScope);
         
-        workRequirementScopes.stream().forEach((workRequirementScope) -> {
-            deleteWorkRequirementScope(workRequirementScope, deletedBy);
-        });
+        workRequirementScopes.forEach((workRequirementScope) -> 
+                deleteWorkRequirementScope(workRequirementScope, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1041,17 +1041,17 @@ public class WorkRequirementControl
     public void deleteWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope, BasePK deletedBy) {
         List<WorkRequirement> workRequirements = getWorkRequirementsByWorkRequirementScopeForUpdate(workRequirementScope);
         
-        workRequirements.stream().forEach((workRequirement) -> {
-            deleteWorkRequirement(workRequirement, deletedBy);
-        });
+        workRequirements.forEach((workRequirement) -> 
+                deleteWorkRequirement(workRequirement, deletedBy)
+        );
     }
     
     public void deleteWorkRequirementsByWorkEffort(WorkEffort workEffort, BasePK deletedBy) {
         List<WorkRequirement> workRequirements = getWorkRequirementsByWorkEffortForUpdate(workEffort);
         
-        workRequirements.stream().forEach((workRequirement) -> {
-            deleteWorkRequirement(workRequirement, deletedBy);
-        });
+        workRequirements.forEach((workRequirement) -> 
+                deleteWorkRequirement(workRequirement, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1340,9 +1340,9 @@ public class WorkRequirementControl
     }
 
     public void deleteWorkAssignments(List<WorkAssignment> workAssignments, BasePK deletedBy) {
-        workAssignments.stream().forEach((workAssignment) -> {
-            deleteWorkAssignment(workAssignment, deletedBy);
-        });
+        workAssignments.forEach((workAssignment) -> 
+                deleteWorkAssignment(workAssignment, deletedBy)
+        );
     }
 
     public void deleteWorkAssignmentsByWorkRequirement(WorkRequirement workRequirement, BasePK deletedBy) {
@@ -1589,9 +1589,9 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkTimes(List<WorkTime> workTimes, BasePK deletedBy) {
-        workTimes.stream().forEach((workTime) -> {
-            deleteWorkTime(workTime, deletedBy);
-        });
+        workTimes.forEach((workTime) -> 
+                deleteWorkTime(workTime, deletedBy)
+        );
     }
     
     public void deleteWorkTimesByWorkRequirement(WorkRequirement workRequirement, BasePK deletedBy) {

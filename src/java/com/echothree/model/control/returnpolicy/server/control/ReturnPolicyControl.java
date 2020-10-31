@@ -309,9 +309,9 @@ public class ReturnPolicyControl
     }
 
     public void deletePartyReturnPoliciesByParty(List<PartyReturnPolicy> partyReturnPolicies, BasePK deletedBy) {
-        partyReturnPolicies.stream().forEach((partyReturnPolicy) -> {
-            deletePartyReturnPolicy(partyReturnPolicy, deletedBy);
-        });
+        partyReturnPolicies.forEach((partyReturnPolicy) -> 
+                deletePartyReturnPolicy(partyReturnPolicy, deletedBy)
+        );
     }
 
     public void deletePartyReturnPoliciesByParty(Party party, BasePK deletedBy) {
@@ -723,9 +723,9 @@ public class ReturnPolicyControl
     public void deleteReturnKindDescriptionsByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnKindDescription> returnKindDescriptions = getReturnKindDescriptionsByReturnKindForUpdate(returnKind);
         
-        returnKindDescriptions.stream().forEach((returnKindDescription) -> {
-            deleteReturnKindDescription(returnKindDescription, deletedBy);
-        });
+        returnKindDescriptions.forEach((returnKindDescription) -> 
+                deleteReturnKindDescription(returnKindDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1026,9 +1026,9 @@ public class ReturnPolicyControl
     public void deleteReturnPoliciesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnPolicy> returnPolicies = getReturnPoliciesForUpdate(returnKind);
         
-        returnPolicies.stream().forEach((returnPolicy) -> {
-            deleteReturnPolicy(returnPolicy, deletedBy);
-        });
+        returnPolicies.forEach((returnPolicy) -> 
+                deleteReturnPolicy(returnPolicy, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1172,9 +1172,9 @@ public class ReturnPolicyControl
     public void deleteReturnPolicyTranslationsByReturnPolicy(ReturnPolicy returnPolicy, BasePK deletedBy) {
         List<ReturnPolicyTranslation> returnPolicyTranslations = getReturnPolicyTranslationsByReturnPolicyForUpdate(returnPolicy);
 
-        returnPolicyTranslations.stream().forEach((returnPolicyTranslation) -> {
-            deleteReturnPolicyTranslation(returnPolicyTranslation, deletedBy);
-        });
+        returnPolicyTranslations.forEach((returnPolicyTranslation) -> 
+                deleteReturnPolicyTranslation(returnPolicyTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1462,9 +1462,9 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnPolicyReasons(List<ReturnPolicyReason> returnPolicyReasons, BasePK deletedBy) {
-        returnPolicyReasons.stream().forEach((returnPolicyReason) -> {
-            deleteReturnPolicyReason(returnPolicyReason, deletedBy);
-        });
+        returnPolicyReasons.forEach((returnPolicyReason) -> 
+                deleteReturnPolicyReason(returnPolicyReason, deletedBy)
+        );
     }
     
     public void deleteReturnPolicyReasonsByReturnPolicy(ReturnPolicy returnPolicy, BasePK deletedBy) {
@@ -1770,9 +1770,9 @@ public class ReturnPolicyControl
     public void deleteReturnReasonsByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnReason> returnReasons = getReturnReasonsForUpdate(returnKind);
         
-        returnReasons.stream().forEach((returnReason) -> {
-            deleteReturnReason(returnReason, deletedBy);
-        });
+        returnReasons.forEach((returnReason) -> 
+                deleteReturnReason(returnReason, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1936,9 +1936,9 @@ public class ReturnPolicyControl
     public void deleteReturnReasonDescriptionsByReturnReason(ReturnReason returnReason, BasePK deletedBy) {
         List<ReturnReasonDescription> returnReasonDescriptions = getReturnReasonDescriptionsByReturnReasonForUpdate(returnReason);
         
-        returnReasonDescriptions.stream().forEach((returnReasonDescription) -> {
-            deleteReturnReasonDescription(returnReasonDescription, deletedBy);
-        });
+        returnReasonDescriptions.forEach((returnReasonDescription) -> 
+                deleteReturnReasonDescription(returnReasonDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2227,9 +2227,9 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnReasonTypes(List<ReturnReasonType> returnReasonTypes, BasePK deletedBy) {
-        returnReasonTypes.stream().forEach((returnReasonType) -> {
-            deleteReturnReasonType(returnReasonType, deletedBy);
-        });
+        returnReasonTypes.forEach((returnReasonType) -> 
+                deleteReturnReasonType(returnReasonType, deletedBy)
+        );
     }
     
     public void deleteReturnReasonTypesByReturnReason(ReturnReason returnReason, BasePK deletedBy) {
@@ -2514,9 +2514,9 @@ public class ReturnPolicyControl
     public void deleteReturnTypesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnType> returnTypes = getReturnTypesForUpdate(returnKind);
         
-        returnTypes.stream().forEach((returnType) -> {
-            deleteReturnType(returnType, deletedBy);
-        });
+        returnTypes.forEach((returnType) -> 
+                deleteReturnType(returnType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2663,9 +2663,9 @@ public class ReturnPolicyControl
     public void deleteReturnTypeDescriptionsByReturnType(ReturnType returnType, BasePK deletedBy) {
         List<ReturnTypeDescription> returnTypeDescriptions = getReturnTypeDescriptionsByReturnTypeForUpdate(returnType);
         
-        returnTypeDescriptions.stream().forEach((returnTypeDescription) -> {
-            deleteReturnTypeDescription(returnTypeDescription, deletedBy);
-        });
+        returnTypeDescriptions.forEach((returnTypeDescription) -> 
+                deleteReturnTypeDescription(returnTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2954,9 +2954,9 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnTypeShippingMethods(List<ReturnTypeShippingMethod> returnTypeShippingMethods, BasePK deletedBy) {
-        returnTypeShippingMethods.stream().forEach((returnTypeShippingMethod) -> {
-            deleteReturnTypeShippingMethod(returnTypeShippingMethod, deletedBy);
-        });
+        returnTypeShippingMethods.forEach((returnTypeShippingMethod) -> 
+                deleteReturnTypeShippingMethod(returnTypeShippingMethod, deletedBy)
+        );
     }
     
     public void deleteReturnTypeShippingMethodsByReturnType(ReturnType returnType, BasePK deletedBy) {

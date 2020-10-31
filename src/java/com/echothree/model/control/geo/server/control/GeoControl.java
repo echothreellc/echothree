@@ -888,9 +888,9 @@ public class GeoControl
     public void deleteGeoCodeTypeDescriptionsByGeoCodeType(GeoCodeType geoCodeType, BasePK deletedBy) {
         List<GeoCodeTypeDescription> geoCodeTypeDescriptions = getGeoCodeTypeDescriptionsByGeoCodeTypeForUpdate(geoCodeType);
         
-        geoCodeTypeDescriptions.stream().forEach((geoCodeTypeDescription) -> {
-            deleteGeoCodeTypeDescription(geoCodeTypeDescription, deletedBy);
-        });
+        geoCodeTypeDescriptions.forEach((geoCodeTypeDescription) -> 
+                deleteGeoCodeTypeDescription(geoCodeTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1316,9 +1316,9 @@ public class GeoControl
     public void deleteGeoCodeScopeDescriptionsByGeoCodeScope(GeoCodeScope geoCodeScope, BasePK deletedBy) {
         List<GeoCodeScopeDescription> geoCodeScopeDescriptions = getGeoCodeScopeDescriptionsByGeoCodeScopeForUpdate(geoCodeScope);
         
-        geoCodeScopeDescriptions.stream().forEach((geoCodeScopeDescription) -> {
-            deleteGeoCodeScopeDescription(geoCodeScopeDescription, deletedBy);
-        });
+        geoCodeScopeDescriptions.forEach((geoCodeScopeDescription) -> 
+                deleteGeoCodeScopeDescription(geoCodeScopeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1813,9 +1813,9 @@ public class GeoControl
     public void deleteGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, BasePK deletedBy) {
         List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions = getGeoCodeAliasTypeDescriptionsByGeoCodeAliasTypeForUpdate(geoCodeAliasType);
         
-        geoCodeAliasTypeDescriptions.stream().forEach((geoCodeAliasTypeDescription) -> {
-            deleteGeoCodeAliasTypeDescription(geoCodeAliasTypeDescription, deletedBy);
-        });
+        geoCodeAliasTypeDescriptions.forEach((geoCodeAliasTypeDescription) -> 
+                deleteGeoCodeAliasTypeDescription(geoCodeAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2245,9 +2245,9 @@ public class GeoControl
     public void deleteGeoCodeDescriptionsByGeoCode(GeoCode geoCode, BasePK deletedBy) {
         List<GeoCodeDescription> geoCodeDescriptions = getGeoCodeDescriptionsByGeoCodeForUpdate(geoCode);
         
-        geoCodeDescriptions.stream().forEach((geoCodeDescription) -> {
-            deleteGeoCodeDescription(geoCodeDescription, deletedBy);
-        });
+        geoCodeDescriptions.forEach((geoCodeDescription) -> 
+                deleteGeoCodeDescription(geoCodeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2473,9 +2473,9 @@ public class GeoControl
     }
 
     public void deleteGeoCodeAliases(List<GeoCodeAlias> geoCodeAliases, BasePK deletedBy) {
-        geoCodeAliases.stream().forEach((geoCodeAlias) -> {
-            deleteGeoCodeAlias(geoCodeAlias, deletedBy);
-        });
+        geoCodeAliases.forEach((geoCodeAlias) -> 
+                deleteGeoCodeAlias(geoCodeAlias, deletedBy)
+        );
     }
 
     public void deleteGeoCodeAliasesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -2633,9 +2633,9 @@ public class GeoControl
     }
 
     public void deleteGeoCodeRelationships(List<GeoCodeRelationship> geoCodeRelationships, BasePK deletedBy) {
-        geoCodeRelationships.stream().forEach((geoCodeRelationship) -> {
-            deleteGeoCodeRelationship(geoCodeRelationship, deletedBy);
-        });
+        geoCodeRelationships.forEach((geoCodeRelationship) -> 
+                deleteGeoCodeRelationship(geoCodeRelationship, deletedBy)
+        );
     }
 
     public void deleteGeoCodeRelationshipsByFromGeoCode(GeoCode fromGeoCode, BasePK deletedBy) {
@@ -2938,9 +2938,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeLanguages(List<GeoCodeLanguage> geoCodeLanguages, BasePK deletedBy) {
-        geoCodeLanguages.stream().forEach((geoCodeLanguage) -> {
-            deleteGeoCodeLanguage(geoCodeLanguage, deletedBy);
-        });
+        geoCodeLanguages.forEach((geoCodeLanguage) -> 
+                deleteGeoCodeLanguage(geoCodeLanguage, deletedBy)
+        );
     }
     
     public void deleteGeoCodeLanguagesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -3238,9 +3238,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeCurrencies(List<GeoCodeCurrency> geoCodeCurrencies, BasePK deletedBy) {
-        geoCodeCurrencies.stream().forEach((geoCodeCurrency) -> {
-            deleteGeoCodeCurrency(geoCodeCurrency, deletedBy);
-        });
+        geoCodeCurrencies.forEach((geoCodeCurrency) -> 
+                deleteGeoCodeCurrency(geoCodeCurrency, deletedBy)
+        );
     }
     
     public void deleteGeoCodeCurrenciesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -3538,9 +3538,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeTimeZones(List<GeoCodeTimeZone> geoCodeTimeZones, BasePK deletedBy) {
-        geoCodeTimeZones.stream().forEach((geoCodeTimeZone) -> {
-            deleteGeoCodeTimeZone(geoCodeTimeZone, deletedBy);
-        });
+        geoCodeTimeZones.forEach((geoCodeTimeZone) -> 
+                deleteGeoCodeTimeZone(geoCodeTimeZone, deletedBy)
+        );
     }
     
     public void deleteGeoCodeTimeZonesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -3841,9 +3841,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeDateTimeFormats(List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats, BasePK deletedBy) {
-        geoCodeDateTimeFormats.stream().forEach((geoCodeDateTimeFormat) -> {
-            deleteGeoCodeDateTimeFormat(geoCodeDateTimeFormat, deletedBy);
-        });
+        geoCodeDateTimeFormats.forEach((geoCodeDateTimeFormat) -> 
+                deleteGeoCodeDateTimeFormat(geoCodeDateTimeFormat, deletedBy)
+        );
     }
     
     public void deleteGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode, BasePK deletedBy) {

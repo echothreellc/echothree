@@ -632,9 +632,9 @@ public class SelectorControl
     public void deleteSelectorKindDescriptionsBySelectorKind(SelectorKind selectorKind, BasePK deletedBy) {
         List<SelectorKindDescription> selectorKindDescriptions = getSelectorKindDescriptionsBySelectorKindForUpdate(selectorKind);
 
-        selectorKindDescriptions.stream().forEach((selectorKindDescription) -> {
-            deleteSelectorKindDescription(selectorKindDescription, deletedBy);
-        });
+        selectorKindDescriptions.forEach((selectorKindDescription) -> 
+                deleteSelectorKindDescription(selectorKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -907,9 +907,9 @@ public class SelectorControl
     public void deleteSelectorTypesBySelectorKind(SelectorKind selectorKind, BasePK deletedBy) {
         List<SelectorType> selectorTypes = getSelectorTypesForUpdate(selectorKind);
 
-        selectorTypes.stream().forEach((selectorType) -> {
-            deleteSelectorType(selectorType, deletedBy);
-        });
+        selectorTypes.forEach((selectorType) -> 
+                deleteSelectorType(selectorType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1056,9 +1056,9 @@ public class SelectorControl
     public void deleteSelectorTypeDescriptionsBySelectorType(SelectorType selectorType, BasePK deletedBy) {
         List<SelectorTypeDescription> selectorTypeDescriptions = getSelectorTypeDescriptionsBySelectorTypeForUpdate(selectorType);
 
-        selectorTypeDescriptions.stream().forEach((selectorTypeDescription) -> {
-            deleteSelectorTypeDescription(selectorTypeDescription, deletedBy);
-        });
+        selectorTypeDescriptions.forEach((selectorTypeDescription) -> 
+                deleteSelectorTypeDescription(selectorTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1935,9 +1935,9 @@ public class SelectorControl
     }
     
     public void deleteSelectors(List<Selector> selectors, BasePK deletedBy) {
-        selectors.stream().forEach((selector) -> {
-            deleteSelector(selector, deletedBy);
-        });
+        selectors.forEach((selector) -> 
+                deleteSelector(selector, deletedBy)
+        );
     }
     
     public void deleteSelectorsBySelectorType(SelectorType selectorType, BasePK deletedBy) {
@@ -2103,9 +2103,9 @@ public class SelectorControl
     public void deleteSelectorDescriptionsBySelector(Selector selector, BasePK deletedBy) {
         List<SelectorDescription> selectorDescriptions = getSelectorDescriptionsBySelectorForUpdate(selector);
         
-        selectorDescriptions.stream().forEach((selectorDescription) -> {
-            deleteSelectorDescription(selectorDescription, deletedBy);
-        });
+        selectorDescriptions.forEach((selectorDescription) -> 
+                deleteSelectorDescription(selectorDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2468,9 +2468,9 @@ public class SelectorControl
     public void deleteSelectorNodesBySelector(Selector selector, BasePK deletedBy) {
         List<SelectorNode> selectorNodes = getSelectorNodesBySelectorForUpdate(selector);
         
-        selectorNodes.stream().forEach((selectorNode) -> {
-            deleteSelectorNode(selectorNode, deletedBy);
-        });
+        selectorNodes.forEach((selectorNode) -> 
+                deleteSelectorNode(selectorNode, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2639,9 +2639,9 @@ public class SelectorControl
     public void deleteSelectorNodeDescriptionsBySelectorNode(SelectorNode selectorNode, BasePK deletedBy) {
         List<SelectorNodeDescription> selectorNodeDescriptions = getSelectorNodeDescriptionsBySelectorNodeForUpdate(selectorNode);
         
-        selectorNodeDescriptions.stream().forEach((selectorNodeDescription) -> {
-            deleteSelectorNodeDescription(selectorNodeDescription, deletedBy);
-        });
+        selectorNodeDescriptions.forEach((selectorNodeDescription) -> 
+                deleteSelectorNodeDescription(selectorNodeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4328,9 +4328,9 @@ public class SelectorControl
     public void deleteSelectorPartiesBySelector(Selector selector, BasePK deletedBy) {
         List<SelectorParty> selectorParties = getSelectorPartiesBySelectorForUpdate(selector);
         
-        selectorParties.stream().forEach((selectorParty) -> {
-            deleteSelectorParty(selectorParty, deletedBy);
-        });
+        selectorParties.forEach((selectorParty) -> 
+                deleteSelectorParty(selectorParty, deletedBy)
+        );
     }
     
 }
