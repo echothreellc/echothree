@@ -92,6 +92,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class UomControl
         extends BaseModelControl {
@@ -394,7 +395,7 @@ public class UomControl
                 labels.add(label == null? value: label);
                 values.add(value);
                 
-                boolean usingDefaultChoice = defaultUnitOfMeasureChoice == null? false: defaultUnitOfMeasureChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultUnitOfMeasureChoice, value);
                 if(usingDefaultChoice || defaultValue == null)
                     defaultValue = value;
             }

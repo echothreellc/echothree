@@ -160,6 +160,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FilterControl
         extends BaseModelControl {
@@ -1477,7 +1478,7 @@ public class FilterControl
                 labels.add(label == null? value: label);
                 values.add(value);
                 
-                boolean usingDefaultChoice = defaultFilterAdjustmentChoice == null? false: defaultFilterAdjustmentChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultFilterAdjustmentChoice, value);
                 if(usingDefaultChoice || defaultValue == null)
                     defaultValue = value;
             }

@@ -211,6 +211,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class ContentControl
@@ -1563,7 +1564,7 @@ public class ContentControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultContentSectionChoice == null? false: defaultContentSectionChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultContentSectionChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && contentSectionDetail.getIsDefault())) {
                     defaultValue = value;
                 }
@@ -4046,7 +4047,7 @@ public class ContentControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultContentCategoryChoice == null? false: defaultContentCategoryChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultContentCategoryChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && contentCategoryDetail.getIsDefault())) {
                     defaultValue = value;
                 }

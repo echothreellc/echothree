@@ -108,6 +108,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Objects;
 
 public class SecurityControl
         extends BaseModelControl {
@@ -370,7 +371,7 @@ public class SecurityControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultSecurityRoleGroupChoice == null? false: defaultSecurityRoleGroupChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultSecurityRoleGroupChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && securityRoleGroupDetail.getIsDefault())) {
                     defaultValue = value;
                 }

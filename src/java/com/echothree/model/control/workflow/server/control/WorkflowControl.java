@@ -172,6 +172,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class WorkflowControl
         extends BaseModelControl {
@@ -1628,7 +1629,7 @@ public class WorkflowControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultWorkflowEntranceChoice == null? false: defaultWorkflowEntranceChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultWorkflowEntranceChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && workflowEntranceDetail.getIsDefault())) {
                     defaultValue = value;
                 }
@@ -2741,7 +2742,7 @@ public class WorkflowControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultWorkflowDestinationChoice == null? false: defaultWorkflowDestinationChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultWorkflowDestinationChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && workflowDestinationDetail.getIsDefault())) {
                     defaultValue = value;
                 }
