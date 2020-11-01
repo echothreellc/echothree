@@ -866,9 +866,7 @@ public class ScaleControl
     }
 
     private void deleteScales(List<Scale> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteScale(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteScale(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteScales(List<Scale> itemDescriptionTypes, BasePK deletedBy) {

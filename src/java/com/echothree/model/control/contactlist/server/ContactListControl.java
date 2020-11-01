@@ -3379,9 +3379,7 @@ public class ContactListControl
     }
 
     private void deleteContactListContactMechanismPurposes(List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes, boolean checkDefault, BasePK deletedBy) {
-        contactListContactMechanismPurposes.stream().forEach((contactListContactMechanismPurpose) -> {
-            deleteContactListContactMechanismPurpose(contactListContactMechanismPurpose, checkDefault, deletedBy);
-        });
+        contactListContactMechanismPurposes.forEach((contactListContactMechanismPurpose) -> deleteContactListContactMechanismPurpose(contactListContactMechanismPurpose, checkDefault, deletedBy));
     }
 
     public void deleteContactListContactMechanismPurposes(List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes, BasePK deletedBy) {

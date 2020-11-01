@@ -451,9 +451,7 @@ public class PicklistControl
     }
 
     private void deletePicklistTypes(List<PicklistType> picklistTypes, boolean checkDefault, BasePK deletedBy) {
-        picklistTypes.stream().forEach((picklistType) -> {
-            deletePicklistType(picklistType, checkDefault, deletedBy);
-        });
+        picklistTypes.forEach((picklistType) -> deletePicklistType(picklistType, checkDefault, deletedBy));
     }
 
     public void deletePicklistTypes(List<PicklistType> picklistTypes, BasePK deletedBy) {

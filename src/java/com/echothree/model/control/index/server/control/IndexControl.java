@@ -431,9 +431,7 @@ public class IndexControl
     }
 
     private void deleteIndexTypes(List<IndexType> indexTypes, boolean checkDefault, BasePK deletedBy) {
-        indexTypes.stream().forEach((indexType) -> {
-            deleteIndexType(indexType, checkDefault, deletedBy);
-        });
+        indexTypes.forEach((indexType) -> deleteIndexType(indexType, checkDefault, deletedBy));
     }
 
     public void deleteIndexTypes(List<IndexType> indexTypes, BasePK deletedBy) {
@@ -1422,9 +1420,7 @@ public class IndexControl
     }
 
     private void deleteIndexes(List<Index> indexes, boolean checkDefault, BasePK deletedBy) {
-        indexes.stream().forEach((index) -> {
-            deleteIndex(index, checkDefault, deletedBy);
-        });
+        indexes.forEach((index) -> deleteIndex(index, checkDefault, deletedBy));
     }
 
     public void deleteIndexes(List<Index> indexes, BasePK deletedBy) {

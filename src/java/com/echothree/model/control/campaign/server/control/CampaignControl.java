@@ -511,9 +511,7 @@ public class CampaignControl
     }
 
     private void deleteCampaigns(List<Campaign> campaigns, boolean checkDefault, BasePK deletedBy) {
-        campaigns.stream().forEach((campaign) -> {
-            deleteCampaign(campaign, checkDefault, deletedBy);
-        });
+        campaigns.forEach((campaign) -> deleteCampaign(campaign, checkDefault, deletedBy));
     }
 
     public void deleteCampaigns(List<Campaign> campaigns, BasePK deletedBy) {
@@ -1029,9 +1027,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignSources(List<CampaignSource> campaignSources, boolean checkDefault, BasePK deletedBy) {
-        campaignSources.stream().forEach((campaignSource) -> {
-            deleteCampaignSource(campaignSource, checkDefault, deletedBy);
-        });
+        campaignSources.forEach((campaignSource) -> deleteCampaignSource(campaignSource, checkDefault, deletedBy));
     }
 
     public void deleteCampaignSources(List<CampaignSource> campaignSources, BasePK deletedBy) {
@@ -1547,9 +1543,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignMediums(List<CampaignMedium> campaignMediums, boolean checkDefault, BasePK deletedBy) {
-        campaignMediums.stream().forEach((campaignMedium) -> {
-            deleteCampaignMedium(campaignMedium, checkDefault, deletedBy);
-        });
+        campaignMediums.forEach((campaignMedium) -> deleteCampaignMedium(campaignMedium, checkDefault, deletedBy));
     }
 
     public void deleteCampaignMediums(List<CampaignMedium> campaignMediums, BasePK deletedBy) {
@@ -2065,9 +2059,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignTerms(List<CampaignTerm> campaignTerms, boolean checkDefault, BasePK deletedBy) {
-        campaignTerms.stream().forEach((campaignTerm) -> {
-            deleteCampaignTerm(campaignTerm, checkDefault, deletedBy);
-        });
+        campaignTerms.forEach((campaignTerm) -> deleteCampaignTerm(campaignTerm, checkDefault, deletedBy));
     }
 
     public void deleteCampaignTerms(List<CampaignTerm> campaignTerms, BasePK deletedBy) {
@@ -2583,9 +2575,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignContents(List<CampaignContent> campaignContents, boolean checkDefault, BasePK deletedBy) {
-        campaignContents.stream().forEach((campaignContent) -> {
-            deleteCampaignContent(campaignContent, checkDefault, deletedBy);
-        });
+        campaignContents.forEach((campaignContent) -> deleteCampaignContent(campaignContent, checkDefault, deletedBy));
     }
 
     public void deleteCampaignContents(List<CampaignContent> campaignContents, BasePK deletedBy) {

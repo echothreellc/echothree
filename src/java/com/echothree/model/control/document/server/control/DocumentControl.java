@@ -464,9 +464,7 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypes(List<DocumentType> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteDocumentType(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteDocumentType(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteDocumentTypes(List<DocumentType> itemDescriptionTypes, BasePK deletedBy) {
@@ -898,9 +896,7 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypeUsageTypes(List<DocumentTypeUsageType> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteDocumentTypeUsageType(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteDocumentTypeUsageType(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteDocumentTypeUsageTypes(List<DocumentTypeUsageType> itemDescriptionTypes, BasePK deletedBy) {
@@ -1320,9 +1316,7 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypeUsages(List<DocumentTypeUsage> documentTypeUsages, boolean checkDefault, BasePK deletedBy) {
-        documentTypeUsages.stream().forEach((documentTypeUsage) -> {
-            deleteDocumentTypeUsage(documentTypeUsage, checkDefault, deletedBy);
-        });
+        documentTypeUsages.forEach((documentTypeUsage) -> deleteDocumentTypeUsage(documentTypeUsage, checkDefault, deletedBy));
     }
 
     public void deleteDocumentTypeUsages(List<DocumentTypeUsage> itemDescriptionTypes, BasePK deletedBy) {
@@ -2141,9 +2135,7 @@ public class DocumentControl
     }
 
     private void deletePartyTypeDocumentTypeUsageTypes(List<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes, boolean checkDefault, BasePK deletedBy) {
-        partyTypeDocumentTypeUsageTypes.stream().forEach((partyTypeDocumentTypeUsageType) -> {
-            deletePartyTypeDocumentTypeUsageType(partyTypeDocumentTypeUsageType, checkDefault, deletedBy);
-        });
+        partyTypeDocumentTypeUsageTypes.forEach((partyTypeDocumentTypeUsageType) -> deletePartyTypeDocumentTypeUsageType(partyTypeDocumentTypeUsageType, checkDefault, deletedBy));
     }
 
     public void deletePartyTypeDocumentTypeUsageTypes(List<PartyTypeDocumentTypeUsageType> itemDescriptionTypes, BasePK deletedBy) {
@@ -2504,9 +2496,7 @@ public class DocumentControl
     }
 
     private void deletePartyDocuments(List<PartyDocument> partyDocuments, boolean checkDefault, BasePK deletedBy) {
-        partyDocuments.stream().forEach((partyDocument) -> {
-            deletePartyDocument(partyDocument, checkDefault, deletedBy);
-        });
+        partyDocuments.forEach((partyDocument) -> deletePartyDocument(partyDocument, checkDefault, deletedBy));
     }
 
     public void deletePartyDocuments(List<PartyDocument> itemDescriptionTypes, BasePK deletedBy) {

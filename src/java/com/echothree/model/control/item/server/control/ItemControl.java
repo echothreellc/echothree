@@ -1287,9 +1287,7 @@ public class ItemControl
     }
 
     private void deleteItemCategories(List<ItemCategory> itemCategories, boolean checkDefault, BasePK deletedBy) {
-        itemCategories.stream().forEach((itemCategory) -> {
-            deleteItemCategory(itemCategory, checkDefault, deletedBy);
-        });
+        itemCategories.forEach((itemCategory) -> deleteItemCategory(itemCategory, checkDefault, deletedBy));
     }
 
     public void deleteItemCategories(List<ItemCategory> itemCategories, BasePK deletedBy) {
@@ -6211,9 +6209,7 @@ public class ItemControl
     }
 
     private void deleteItemDescriptionTypes(List<ItemDescriptionType> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteItemDescriptionType(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteItemDescriptionType(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteItemDescriptionTypes(List<ItemDescriptionType> itemDescriptionTypes, BasePK deletedBy) {

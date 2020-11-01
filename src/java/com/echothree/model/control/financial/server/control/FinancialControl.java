@@ -625,9 +625,7 @@ public class FinancialControl
     }
 
     private void deleteFinancialAccountTypes(List<FinancialAccountType> financialAccountTypes, boolean checkDefault, BasePK deletedBy) {
-        financialAccountTypes.stream().forEach((financialAccountType) -> {
-            deleteFinancialAccountType(financialAccountType, checkDefault, deletedBy);
-        });
+        financialAccountTypes.forEach((financialAccountType) -> deleteFinancialAccountType(financialAccountType, checkDefault, deletedBy));
     }
 
     public void deleteFinancialAccountTypes(List<FinancialAccountType> financialAccountTypes, BasePK deletedBy) {
@@ -1138,9 +1136,7 @@ public class FinancialControl
     }
 
     private void deleteFinancialAccountTransactionTypes(List<FinancialAccountTransactionType> financialAccountTransactionTypes, boolean checkDefault, BasePK deletedBy) {
-        financialAccountTransactionTypes.stream().forEach((financialAccountTransactionType) -> {
-            deleteFinancialAccountTransactionType(financialAccountTransactionType, checkDefault, deletedBy);
-        });
+        financialAccountTransactionTypes.forEach((financialAccountTransactionType) -> deleteFinancialAccountTransactionType(financialAccountTransactionType, checkDefault, deletedBy));
     }
 
     public void deleteFinancialAccountTransactionTypes(List<FinancialAccountTransactionType> financialAccountTransactionTypes, BasePK deletedBy) {

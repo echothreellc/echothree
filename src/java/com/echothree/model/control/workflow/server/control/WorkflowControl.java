@@ -1111,9 +1111,7 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowSteps(List<WorkflowStep> workflowSteps, boolean checkDefault, BasePK deletedBy) {
-        workflowSteps.stream().forEach((workflowStep) -> {
-            deleteWorkflowStep(workflowStep, checkDefault, deletedBy);
-        });
+        workflowSteps.forEach((workflowStep) -> deleteWorkflowStep(workflowStep, checkDefault, deletedBy));
     }
     
     public void deleteWorkflowStepsByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -1757,9 +1755,7 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowEntrances(List<WorkflowEntrance> workflowEntrances, boolean checkDefault, BasePK deletedBy) {
-        workflowEntrances.stream().forEach((workflowEntrance) -> {
-            deleteWorkflowEntrance(workflowEntrance, checkDefault, deletedBy);
-        });
+        workflowEntrances.forEach((workflowEntrance) -> deleteWorkflowEntrance(workflowEntrance, checkDefault, deletedBy));
     }
     
     public void deleteWorkflowEntrancesByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -2880,9 +2876,7 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowDestinations(List<WorkflowDestination> workflowDestinations, boolean checkDefault, BasePK deletedBy) {
-        workflowDestinations.stream().forEach((workflowDestination) -> {
-            deleteWorkflowDestination(workflowDestination, checkDefault, deletedBy);
-        });
+        workflowDestinations.forEach((workflowDestination) -> deleteWorkflowDestination(workflowDestination, checkDefault, deletedBy));
     }
     
     public void deleteWorkflowDestinationsByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {

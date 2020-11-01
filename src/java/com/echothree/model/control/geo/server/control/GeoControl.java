@@ -716,9 +716,7 @@ public class GeoControl
     }
 
     private void deleteGeoCodeTypes(List<GeoCodeType> geoCodeTypes, boolean checkDefault, BasePK deletedBy) {
-        geoCodeTypes.stream().forEach((geoCodeType) -> {
-            deleteGeoCodeType(geoCodeType, checkDefault, deletedBy);
-        });
+        geoCodeTypes.forEach((geoCodeType) -> deleteGeoCodeType(geoCodeType, checkDefault, deletedBy));
     }
 
     public void deleteGeoCodeTypes(List<GeoCodeType> geoCodeTypes, BasePK deletedBy) {

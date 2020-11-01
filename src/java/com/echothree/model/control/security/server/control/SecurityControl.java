@@ -488,9 +488,7 @@ public class SecurityControl
     }
 
     private void deleteSecurityRoleGroups(List<SecurityRoleGroup> securityRoleGroups, boolean checkDefault, BasePK deletedBy) {
-        securityRoleGroups.stream().forEach((securityRoleGroup) -> {
-            deleteSecurityRoleGroup(securityRoleGroup, checkDefault, deletedBy);
-        });
+        securityRoleGroups.forEach((securityRoleGroup) -> deleteSecurityRoleGroup(securityRoleGroup, checkDefault, deletedBy));
     }
 
     public void deleteSecurityRoleGroups(List<SecurityRoleGroup> securityRoleGroups, BasePK deletedBy) {

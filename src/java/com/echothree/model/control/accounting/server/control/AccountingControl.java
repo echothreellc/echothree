@@ -860,9 +860,7 @@ public class AccountingControl
     }
 
     private void deleteItemAccountingCategories(List<ItemAccountingCategory> itemAccountingCategories, boolean checkDefault, BasePK deletedBy) {
-        itemAccountingCategories.stream().forEach((itemAccountingCategory) -> {
-            deleteItemAccountingCategory(itemAccountingCategory, checkDefault, deletedBy);
-        });
+        itemAccountingCategories.forEach((itemAccountingCategory) -> deleteItemAccountingCategory(itemAccountingCategory, checkDefault, deletedBy));
     }
 
     public void deleteItemAccountingCategories(List<ItemAccountingCategory> itemAccountingCategories, BasePK deletedBy) {
@@ -1505,9 +1503,7 @@ public class AccountingControl
     }
 
     private void deleteGlAccountClasses(List<GlAccountClass> glAccountClasses, boolean checkDefault, BasePK deletedBy) {
-        glAccountClasses.stream().forEach((glAccountClass) -> {
-            deleteGlAccountClass(glAccountClass, checkDefault, deletedBy);
-        });
+        glAccountClasses.forEach((glAccountClass) -> deleteGlAccountClass(glAccountClass, checkDefault, deletedBy));
     }
 
     public void deleteGlAccountClasses(List<GlAccountClass> glAccountClasses, BasePK deletedBy) {
@@ -2014,9 +2010,7 @@ public class AccountingControl
     }
 
     private void deleteGlAccountCategories(List<GlAccountCategory> glAccountCategories, boolean checkDefault, BasePK deletedBy) {
-        glAccountCategories.stream().forEach((glAccountCategory) -> {
-            deleteGlAccountCategory(glAccountCategory, checkDefault, deletedBy);
-        });
+        glAccountCategories.forEach((glAccountCategory) -> deleteGlAccountCategory(glAccountCategory, checkDefault, deletedBy));
     }
 
     public void deleteGlAccountCategories(List<GlAccountCategory> glAccountCategories, BasePK deletedBy) {
@@ -3199,9 +3193,7 @@ public class AccountingControl
     }
 
     private void deleteGlAccounts(List<GlAccount> glAccounts, boolean checkDefault, BasePK deletedBy) {
-        glAccounts.stream().forEach((glAccount) -> {
-            deleteGlAccount(glAccount, checkDefault, deletedBy);
-        });
+        glAccounts.forEach((glAccount) -> deleteGlAccount(glAccount, checkDefault, deletedBy));
     }
 
     public void deleteGlAccounts(List<GlAccount> glAccounts, BasePK deletedBy) {

@@ -719,9 +719,7 @@ public class InvoiceControl
     }
 
     private void deleteInvoiceTypes(List<InvoiceType> invoiceTypes, boolean checkDefault, BasePK deletedBy) {
-        invoiceTypes.stream().forEach((invoiceType) -> {
-            deleteInvoiceType(invoiceType, checkDefault, deletedBy);
-        });
+        invoiceTypes.forEach((invoiceType) -> deleteInvoiceType(invoiceType, checkDefault, deletedBy));
     }
 
     public void deleteInvoiceTypes(List<InvoiceType> invoiceTypes, BasePK deletedBy) {
@@ -2108,9 +2106,7 @@ public class InvoiceControl
     }
 
     private void deleteInvoiceLineTypes(List<InvoiceLineType> invoiceLineTypes, boolean checkDefault, BasePK deletedBy) {
-        invoiceLineTypes.stream().forEach((invoiceLineType) -> {
-            deleteInvoiceLineType(invoiceLineType, checkDefault, deletedBy);
-        });
+        invoiceLineTypes.forEach((invoiceLineType) -> deleteInvoiceLineType(invoiceLineType, checkDefault, deletedBy));
     }
 
     public void deleteInvoiceLineTypes(List<InvoiceLineType> invoiceLineTypes, BasePK deletedBy) {

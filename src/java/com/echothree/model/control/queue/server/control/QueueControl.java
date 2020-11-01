@@ -358,9 +358,7 @@ public class QueueControl
     }
 
     private void deleteQueueTypes(List<QueueType> queueTypes, boolean checkDefault, BasePK deletedBy) {
-        queueTypes.stream().forEach((queueType) -> {
-            deleteQueueType(queueType, checkDefault, deletedBy);
-        });
+        queueTypes.forEach((queueType) -> deleteQueueType(queueType, checkDefault, deletedBy));
     }
 
     public void deleteQueueTypes(List<QueueType> queueTypes, BasePK deletedBy) {

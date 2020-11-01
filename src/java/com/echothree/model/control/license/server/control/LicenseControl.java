@@ -344,9 +344,7 @@ public class LicenseControl
     }
 
     private void deleteLicenseTypes(List<LicenseType> licenseTypes, boolean checkDefault, BasePK deletedBy) {
-        licenseTypes.stream().forEach((licenseType) -> {
-            deleteLicenseType(licenseType, checkDefault, deletedBy);
-        });
+        licenseTypes.forEach((licenseType) -> deleteLicenseType(licenseType, checkDefault, deletedBy));
     }
 
     public void deleteLicenseTypes(List<LicenseType> licenseTypes, BasePK deletedBy) {

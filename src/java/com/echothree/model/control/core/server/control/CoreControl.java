@@ -8602,9 +8602,7 @@ public class CoreControl
     }
 
     private void deleteProtocols(List<Protocol> protocols, boolean checkDefault, BasePK deletedBy) {
-        protocols.stream().forEach((protocol) -> {
-            deleteProtocol(protocol, checkDefault, deletedBy);
-        });
+        protocols.forEach((protocol) -> deleteProtocol(protocol, checkDefault, deletedBy));
     }
 
     public void deleteProtocols(List<Protocol> protocols, BasePK deletedBy) {
@@ -9065,9 +9063,7 @@ public class CoreControl
     }
 
     private void deleteServices(List<Service> services, boolean checkDefault, BasePK deletedBy) {
-        services.stream().forEach((service) -> {
-            deleteService(service, checkDefault, deletedBy);
-        });
+        services.forEach((service) -> deleteService(service, checkDefault, deletedBy));
     }
 
     public void deleteServices(List<Service> services, BasePK deletedBy) {
@@ -9496,9 +9492,7 @@ public class CoreControl
     }
 
     private void deleteServers(List<Server> servers, boolean checkDefault, BasePK deletedBy) {
-        servers.stream().forEach((server) -> {
-            deleteServer(server, checkDefault, deletedBy);
-        });
+        servers.forEach((server) -> deleteServer(server, checkDefault, deletedBy));
     }
 
     public void deleteServers(List<Server> servers, BasePK deletedBy) {
@@ -13579,9 +13573,7 @@ public class CoreControl
     }
 
     private void deleteApplications(List<Application> applications, boolean checkDefault, BasePK deletedBy) {
-        applications.stream().forEach((application) -> {
-            deleteApplication(application, checkDefault, deletedBy);
-        });
+        applications.forEach((application) -> deleteApplication(application, checkDefault, deletedBy));
     }
 
     public void deleteApplications(List<Application> applications, BasePK deletedBy) {
@@ -14014,9 +14006,7 @@ public class CoreControl
     }
 
     private void deleteEditors(List<Editor> editors, boolean checkDefault, BasePK deletedBy) {
-        editors.stream().forEach((editor) -> {
-            deleteEditor(editor, checkDefault, deletedBy);
-        });
+        editors.forEach((editor) -> deleteEditor(editor, checkDefault, deletedBy));
     }
 
     public void deleteEditors(List<Editor> editors, BasePK deletedBy) {
@@ -14490,9 +14480,7 @@ public class CoreControl
     }
 
     private void deleteApplicationEditors(List<ApplicationEditor> applicationEditors, boolean checkDefault, BasePK deletedBy) {
-        applicationEditors.stream().forEach((applicationEditor) -> {
-            deleteApplicationEditor(applicationEditor, checkDefault, deletedBy);
-        });
+        applicationEditors.forEach((applicationEditor) -> deleteApplicationEditor(applicationEditor, checkDefault, deletedBy));
     }
 
     public void deleteApplicationEditors(List<ApplicationEditor> applicationEditors, BasePK deletedBy) {
@@ -14829,9 +14817,7 @@ public class CoreControl
     }
 
     private void deleteApplicationEditorUses(List<ApplicationEditorUse> applicationEditorUses, boolean checkDefault, BasePK deletedBy) {
-        applicationEditorUses.stream().forEach((applicationEditorUse) -> {
-            deleteApplicationEditorUse(applicationEditorUse, checkDefault, deletedBy);
-        });
+        applicationEditorUses.forEach((applicationEditorUse) -> deleteApplicationEditorUse(applicationEditorUse, checkDefault, deletedBy));
     }
 
     public void deleteApplicationEditorUses(List<ApplicationEditorUse> applicationEditorUses, BasePK deletedBy) {
@@ -15530,9 +15516,7 @@ public class CoreControl
     }
 
     private void deleteColors(List<Color> colors, boolean checkDefault, BasePK deletedBy) {
-        colors.stream().forEach((color) -> {
-            deleteColor(color, checkDefault, deletedBy);
-        });
+        colors.forEach((color) -> deleteColor(color, checkDefault, deletedBy));
     }
 
     public void deleteColors(List<Color> colors, BasePK deletedBy) {
@@ -15975,9 +15959,7 @@ public class CoreControl
     }
 
     private void deleteFontStyles(List<FontStyle> fontStyles, boolean checkDefault, BasePK deletedBy) {
-        fontStyles.stream().forEach((fontStyle) -> {
-            deleteFontStyle(fontStyle, checkDefault, deletedBy);
-        });
+        fontStyles.forEach((fontStyle) -> deleteFontStyle(fontStyle, checkDefault, deletedBy));
     }
 
     public void deleteFontStyles(List<FontStyle> fontStyles, BasePK deletedBy) {
@@ -16420,9 +16402,7 @@ public class CoreControl
     }
 
     private void deleteFontWeights(List<FontWeight> fontWeights, boolean checkDefault, BasePK deletedBy) {
-        fontWeights.stream().forEach((fontWeight) -> {
-            deleteFontWeight(fontWeight, checkDefault, deletedBy);
-        });
+        fontWeights.forEach((fontWeight) -> deleteFontWeight(fontWeight, checkDefault, deletedBy));
     }
 
     public void deleteFontWeights(List<FontWeight> fontWeights, BasePK deletedBy) {
@@ -16865,9 +16845,7 @@ public class CoreControl
     }
 
     private void deleteTextDecorations(List<TextDecoration> textDecorations, boolean checkDefault, BasePK deletedBy) {
-        textDecorations.stream().forEach((textDecoration) -> {
-            deleteTextDecoration(textDecoration, checkDefault, deletedBy);
-        });
+        textDecorations.forEach((textDecoration) -> deleteTextDecoration(textDecoration, checkDefault, deletedBy));
     }
 
     public void deleteTextDecorations(List<TextDecoration> textDecorations, BasePK deletedBy) {
@@ -17310,9 +17288,7 @@ public class CoreControl
     }
 
     private void deleteTextTransformations(List<TextTransformation> textTransformations, boolean checkDefault, BasePK deletedBy) {
-        textTransformations.stream().forEach((textTransformation) -> {
-            deleteTextTransformation(textTransformation, checkDefault, deletedBy);
-        });
+        textTransformations.forEach((textTransformation) -> deleteTextTransformation(textTransformation, checkDefault, deletedBy));
     }
 
     public void deleteTextTransformations(List<TextTransformation> textTransformations, BasePK deletedBy) {
@@ -17890,9 +17866,7 @@ public class CoreControl
     }
 
     private void deleteAppearances(List<Appearance> appearances, boolean checkDefault, BasePK deletedBy) {
-        appearances.stream().forEach((appearance) -> {
-            deleteAppearance(appearance, checkDefault, deletedBy);
-        });
+        appearances.forEach((appearance) -> deleteAppearance(appearance, checkDefault, deletedBy));
     }
 
     public void deleteAppearances(List<Appearance> appearances, BasePK deletedBy) {

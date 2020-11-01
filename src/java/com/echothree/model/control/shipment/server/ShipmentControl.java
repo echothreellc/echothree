@@ -452,9 +452,7 @@ public class ShipmentControl
     }
 
     private void deleteShipmentTypes(List<ShipmentType> shipmentTypes, boolean checkDefault, BasePK deletedBy) {
-        shipmentTypes.stream().forEach((shipmentType) -> {
-            deleteShipmentType(shipmentType, checkDefault, deletedBy);
-        });
+        shipmentTypes.forEach((shipmentType) -> deleteShipmentType(shipmentType, checkDefault, deletedBy));
     }
 
     public void deleteShipmentTypes(List<ShipmentType> shipmentTypes, BasePK deletedBy) {

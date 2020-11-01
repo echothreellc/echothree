@@ -1759,9 +1759,7 @@ public class VendorControl
     }
 
     private void deleteItemPurchasingCategories(List<ItemPurchasingCategory> itemPurchasingCategories, boolean checkDefault, BasePK deletedBy) {
-        itemPurchasingCategories.stream().forEach((itemPurchasingCategory) -> {
-            deleteItemPurchasingCategory(itemPurchasingCategory, checkDefault, deletedBy);
-        });
+        itemPurchasingCategories.forEach((itemPurchasingCategory) -> deleteItemPurchasingCategory(itemPurchasingCategory, checkDefault, deletedBy));
     }
 
     public void deleteItemPurchasingCategories(List<ItemPurchasingCategory> itemPurchasingCategories, BasePK deletedBy) {

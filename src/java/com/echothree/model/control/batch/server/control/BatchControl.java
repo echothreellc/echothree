@@ -448,9 +448,7 @@ public class BatchControl
     }
 
     private void deleteBatchTypes(List<BatchType> batchTypes, boolean checkDefault, BasePK deletedBy) {
-        batchTypes.stream().forEach((batchType) -> {
-            deleteBatchType(batchType, checkDefault, deletedBy);
-        });
+        batchTypes.forEach((batchType) -> deleteBatchType(batchType, checkDefault, deletedBy));
     }
 
     public void deleteBatchTypes(List<BatchType> batchTypes, BasePK deletedBy) {

@@ -544,9 +544,7 @@ public class SearchControl
     }
 
     private void deleteSearchUseTypes(List<SearchUseType> searchUseTypes, boolean checkDefault, BasePK deletedBy) {
-        searchUseTypes.stream().forEach((searchUseType) -> {
-            deleteSearchUseType(searchUseType, checkDefault, deletedBy);
-        });
+        searchUseTypes.forEach((searchUseType) -> deleteSearchUseType(searchUseType, checkDefault, deletedBy));
     }
 
     public void deleteSearchUseTypes(List<SearchUseType> searchUseTypes, BasePK deletedBy) {
@@ -979,9 +977,7 @@ public class SearchControl
     }
 
     private void deleteSearchResultActionTypes(List<SearchResultActionType> searchResultActionTypes, boolean checkDefault, BasePK deletedBy) {
-        searchResultActionTypes.stream().forEach((searchResultActionType) -> {
-            deleteSearchResultActionType(searchResultActionType, checkDefault, deletedBy);
-        });
+        searchResultActionTypes.forEach((searchResultActionType) -> deleteSearchResultActionType(searchResultActionType, checkDefault, deletedBy));
     }
 
     public void deleteSearchResultActionTypes(List<SearchResultActionType> searchResultActionTypes, BasePK deletedBy) {
@@ -1413,9 +1409,7 @@ public class SearchControl
     }
 
     private void deleteSearchCheckSpellingActionTypes(List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes, boolean checkDefault, BasePK deletedBy) {
-        searchCheckSpellingActionTypes.stream().forEach((searchCheckSpellingActionType) -> {
-            deleteSearchCheckSpellingActionType(searchCheckSpellingActionType, checkDefault, deletedBy);
-        });
+        searchCheckSpellingActionTypes.forEach((searchCheckSpellingActionType) -> deleteSearchCheckSpellingActionType(searchCheckSpellingActionType, checkDefault, deletedBy));
     }
 
     public void deleteSearchCheckSpellingActionTypes(List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes, BasePK deletedBy) {
@@ -1849,9 +1843,7 @@ public class SearchControl
     }
 
     private void deleteSearchDefaultOperators(List<SearchDefaultOperator> searchDefaultOperators, boolean checkDefault, BasePK deletedBy) {
-        searchDefaultOperators.stream().forEach((searchDefaultOperator) -> {
-            deleteSearchDefaultOperator(searchDefaultOperator, checkDefault, deletedBy);
-        });
+        searchDefaultOperators.forEach((searchDefaultOperator) -> deleteSearchDefaultOperator(searchDefaultOperator, checkDefault, deletedBy));
     }
 
     public void deleteSearchDefaultOperators(List<SearchDefaultOperator> searchDefaultOperators, BasePK deletedBy) {
@@ -2285,9 +2277,7 @@ public class SearchControl
     }
 
     private void deleteSearchSortDirections(List<SearchSortDirection> searchSortDirections, boolean checkDefault, BasePK deletedBy) {
-        searchSortDirections.stream().forEach((searchSortDirection) -> {
-            deleteSearchSortDirection(searchSortDirection, checkDefault, deletedBy);
-        });
+        searchSortDirections.forEach((searchSortDirection) -> deleteSearchSortDirection(searchSortDirection, checkDefault, deletedBy));
     }
 
     public void deleteSearchSortDirections(List<SearchSortDirection> searchSortDirections, BasePK deletedBy) {
@@ -2707,9 +2697,7 @@ public class SearchControl
     }
 
     private void deleteSearchKinds(List<SearchKind> searchKinds, boolean checkDefault, BasePK deletedBy) {
-        searchKinds.stream().forEach((searchKind) -> {
-            deleteSearchKind(searchKind, checkDefault, deletedBy);
-        });
+        searchKinds.forEach((searchKind) -> deleteSearchKind(searchKind, checkDefault, deletedBy));
     }
 
     public void deleteSearchKinds(List<SearchKind> searchKinds, BasePK deletedBy) {

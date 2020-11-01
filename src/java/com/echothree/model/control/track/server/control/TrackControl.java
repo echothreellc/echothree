@@ -446,9 +446,7 @@ public class TrackControl
     }
 
     private void deleteTracks(List<Track> tracks, boolean checkDefault, BasePK deletedBy) {
-        tracks.stream().forEach((track) -> {
-            deleteTrack(track, checkDefault, deletedBy);
-        });
+        tracks.forEach((track) -> deleteTrack(track, checkDefault, deletedBy));
     }
 
     public void deleteTracks(List<Track> tracks, BasePK deletedBy) {

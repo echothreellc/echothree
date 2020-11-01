@@ -394,9 +394,7 @@ public class OrderTypeControl
     }
 
     private void deleteOrderTypes(List<OrderType> orderTypes, boolean checkDefault, BasePK deletedBy) {
-        orderTypes.stream().forEach((orderType) -> {
-            deleteOrderType(orderType, checkDefault, deletedBy);
-        });
+        orderTypes.forEach((orderType) -> deleteOrderType(orderType, checkDefault, deletedBy));
     }
 
     public void deleteOrderTypes(List<OrderType> orderTypes, BasePK deletedBy) {
