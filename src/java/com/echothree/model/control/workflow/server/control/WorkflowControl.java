@@ -3942,7 +3942,7 @@ public class WorkflowControl
     
     public WorkflowEntityStatus getWorkflowEntityStatusByEntityInstance(Workflow workflow, EntityInstance entityInstance) {
         List<WorkflowEntityStatus> workflowEntityStatuses = getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
-        WorkflowEntityStatus workflowEntityStatus = null;
+        WorkflowEntityStatus workflowEntityStatus;
         
         if(workflowEntityStatuses.size() > 1) {
             throw new IllegalStateException();
@@ -3958,7 +3958,7 @@ public class WorkflowControl
     }
     
     private WorkflowEntityStatus getWorkflowEntityStatus(List<WorkflowEntityStatus> workflowEntityStatuses) {
-        WorkflowEntityStatus workflowEntityStatus = null;
+        WorkflowEntityStatus workflowEntityStatus;
         
         if(workflowEntityStatuses.size() != 1) {
             throw new IllegalStateException();
