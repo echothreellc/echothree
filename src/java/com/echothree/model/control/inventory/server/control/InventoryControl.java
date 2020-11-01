@@ -453,7 +453,7 @@ public class InventoryControl
                     if(iter.hasNext()) {
                         defaultInventoryLocationGroup = (InventoryLocationGroup)iter.next();
                     }
-                    InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue = defaultInventoryLocationGroup.getLastDetailForUpdate().getInventoryLocationGroupDetailValue().clone();
+                    InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue = Objects.requireNonNull(defaultInventoryLocationGroup).getLastDetailForUpdate().getInventoryLocationGroupDetailValue().clone();
                     
                     inventoryLocationGroupDetailValue.setIsDefault(Boolean.TRUE);
                     updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, false, deletedBy);
@@ -1204,7 +1204,7 @@ public class InventoryControl
                 if(iter.hasNext()) {
                     defaultInventoryCondition = iter.next();
                 }
-                var inventoryConditionDetailValue = defaultInventoryCondition.getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
+                var inventoryConditionDetailValue = Objects.requireNonNull(defaultInventoryCondition).getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
                 
                 inventoryConditionDetailValue.setIsDefault(Boolean.TRUE);
                 updateInventoryConditionFromValue(inventoryConditionDetailValue, false, deletedBy);
@@ -2543,7 +2543,7 @@ public class InventoryControl
                 if(iter.hasNext()) {
                     defaultAllocationPriority = iter.next();
                 }
-                AllocationPriorityDetailValue allocationPriorityDetailValue = defaultAllocationPriority.getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
+                AllocationPriorityDetailValue allocationPriorityDetailValue = Objects.requireNonNull(defaultAllocationPriority).getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
 
                 allocationPriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateAllocationPriorityFromValue(allocationPriorityDetailValue, false, deletedBy);

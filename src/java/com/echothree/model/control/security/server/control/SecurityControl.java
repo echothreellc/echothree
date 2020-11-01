@@ -473,7 +473,7 @@ public class SecurityControl
                     if(iter.hasNext()) {
                         defaultSecurityRoleGroup = iter.next();
                     }
-                    SecurityRoleGroupDetailValue securityRoleGroupDetailValue = defaultSecurityRoleGroup.getLastDetailForUpdate().getSecurityRoleGroupDetailValue().clone();
+                    SecurityRoleGroupDetailValue securityRoleGroupDetailValue = Objects.requireNonNull(defaultSecurityRoleGroup).getLastDetailForUpdate().getSecurityRoleGroupDetailValue().clone();
 
                     securityRoleGroupDetailValue.setIsDefault(Boolean.TRUE);
                     updateSecurityRoleGroupFromValue(securityRoleGroupDetailValue, false, deletedBy);
@@ -981,7 +981,7 @@ public class SecurityControl
                 if(iter.hasNext()) {
                     defaultSecurityRole = iter.next();
                 }
-                SecurityRoleDetailValue securityRoleDetailValue = defaultSecurityRole.getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
+                SecurityRoleDetailValue securityRoleDetailValue = Objects.requireNonNull(defaultSecurityRole).getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
                 
                 securityRoleDetailValue.setIsDefault(Boolean.TRUE);
                 updateSecurityRoleFromValue(securityRoleDetailValue, false, deletedBy);
@@ -1600,7 +1600,7 @@ public class SecurityControl
                 if(iter.hasNext()) {
                     defaultPartySecurityRoleTemplate = iter.next();
                 }
-                PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = defaultPartySecurityRoleTemplate.getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
+                PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = Objects.requireNonNull(defaultPartySecurityRoleTemplate).getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
                 
                 partySecurityRoleTemplateDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartySecurityRoleTemplateFromValue(partySecurityRoleTemplateDetailValue, false, deletedBy);

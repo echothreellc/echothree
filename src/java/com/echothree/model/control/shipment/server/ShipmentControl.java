@@ -104,6 +104,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class ShipmentControl
@@ -436,7 +437,7 @@ public class ShipmentControl
                     if(iter.hasNext()) {
                         defaultShipmentType = iter.next();
                     }
-                    ShipmentTypeDetailValue shipmentTypeDetailValue = defaultShipmentType.getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
+                    ShipmentTypeDetailValue shipmentTypeDetailValue = Objects.requireNonNull(defaultShipmentType).getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
 
                     shipmentTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateShipmentTypeFromValue(shipmentTypeDetailValue, false, deletedBy);
@@ -872,7 +873,7 @@ public class ShipmentControl
                 if(iter.hasNext()) {
                     defaultShipmentTimeType = iter.next();
                 }
-                ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = defaultShipmentTimeType.getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
+                ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = Objects.requireNonNull(defaultShipmentTimeType).getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
 
                 shipmentTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateShipmentTimeTypeFromValue(shipmentTimeTypeDetailValue, false, deletedBy);
@@ -1777,7 +1778,7 @@ public class ShipmentControl
                 if(iter.hasNext()) {
                     defaultShipmentAliasType = iter.next();
                 }
-                ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue = defaultShipmentAliasType.getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
+                ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue = Objects.requireNonNull(defaultShipmentAliasType).getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
 
                 shipmentAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateShipmentAliasTypeFromValue(shipmentAliasTypeDetailValue, false, deletedBy);

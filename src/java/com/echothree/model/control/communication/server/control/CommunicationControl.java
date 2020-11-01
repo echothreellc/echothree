@@ -103,6 +103,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class CommunicationControl
         extends BaseModelControl {
@@ -376,7 +377,7 @@ public class CommunicationControl
                 if(iter.hasNext()) {
                     defaultCommunicationEventPurpose = (CommunicationEventPurpose)iter.next();
                 }
-                CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = defaultCommunicationEventPurpose.getLastDetailForUpdate().getCommunicationEventPurposeDetailValue().clone();
+                CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = Objects.requireNonNull(defaultCommunicationEventPurpose).getLastDetailForUpdate().getCommunicationEventPurposeDetailValue().clone();
                 
                 communicationEventPurposeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCommunicationEventPurposeFromValue(communicationEventPurposeDetailValue, false, deletedBy);

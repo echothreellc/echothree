@@ -140,6 +140,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ContactListControl
         extends BaseModelControl {
@@ -508,7 +509,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactListType = iter.next();
                 }
-                ContactListTypeDetailValue contactListTypeDetailValue = defaultContactListType.getLastDetailForUpdate().getContactListTypeDetailValue().clone();
+                ContactListTypeDetailValue contactListTypeDetailValue = Objects.requireNonNull(defaultContactListType).getLastDetailForUpdate().getContactListTypeDetailValue().clone();
 
                 contactListTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListTypeFromValue(contactListTypeDetailValue, false, deletedBy);
@@ -940,7 +941,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactListGroup = iter.next();
                 }
-                ContactListGroupDetailValue contactListGroupDetailValue = defaultContactListGroup.getLastDetailForUpdate().getContactListGroupDetailValue().clone();
+                ContactListGroupDetailValue contactListGroupDetailValue = Objects.requireNonNull(defaultContactListGroup).getLastDetailForUpdate().getContactListGroupDetailValue().clone();
 
                 contactListGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListGroupFromValue(contactListGroupDetailValue, false, deletedBy);
@@ -1345,7 +1346,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactListFrequency = iter.next();
                 }
-                ContactListFrequencyDetailValue contactListFrequencyDetailValue = defaultContactListFrequency.getLastDetailForUpdate().getContactListFrequencyDetailValue().clone();
+                ContactListFrequencyDetailValue contactListFrequencyDetailValue = Objects.requireNonNull(defaultContactListFrequency).getLastDetailForUpdate().getContactListFrequencyDetailValue().clone();
 
                 contactListFrequencyDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListFrequencyFromValue(contactListFrequencyDetailValue, false, deletedBy);
@@ -1893,7 +1894,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactList = iter.next();
                 }
-                ContactListDetailValue contactListDetailValue = defaultContactList.getLastDetailForUpdate().getContactListDetailValue().clone();
+                ContactListDetailValue contactListDetailValue = Objects.requireNonNull(defaultContactList).getLastDetailForUpdate().getContactListDetailValue().clone();
 
                 contactListDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListFromValue(contactListDetailValue, false, deletedBy);
@@ -3363,7 +3364,7 @@ public class ContactListControl
                     if(iter.hasNext()) {
                         defaultContactListContactMechanismPurpose = iter.next();
                     }
-                    ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = defaultContactListContactMechanismPurpose.getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
+                    ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultContactListContactMechanismPurpose).getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
 
                     contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
                     updateContactListContactMechanismPurposeFromValue(contactListContactMechanismPurposeDetailValue, false, deletedBy);

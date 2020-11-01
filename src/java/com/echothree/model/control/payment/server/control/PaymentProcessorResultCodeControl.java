@@ -300,7 +300,7 @@ public class PaymentProcessorResultCodeControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessorResultCode = iter.next();
                 }
-                var paymentProcessorResultCodeDetailValue = defaultPaymentProcessorResultCode.getLastDetailForUpdate().getPaymentProcessorResultCodeDetailValue().clone();
+                var paymentProcessorResultCodeDetailValue = Objects.requireNonNull(defaultPaymentProcessorResultCode).getLastDetailForUpdate().getPaymentProcessorResultCodeDetailValue().clone();
 
                 paymentProcessorResultCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorResultCodeFromValue(paymentProcessorResultCodeDetailValue, false, deletedBy);

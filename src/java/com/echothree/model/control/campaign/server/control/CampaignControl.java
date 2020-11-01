@@ -128,6 +128,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CampaignControl
         extends BaseModelControl {
@@ -495,7 +496,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaign = iter.next();
                     }
-                    CampaignDetailValue campaignDetailValue = defaultCampaign.getLastDetailForUpdate().getCampaignDetailValue().clone();
+                    CampaignDetailValue campaignDetailValue = Objects.requireNonNull(defaultCampaign).getLastDetailForUpdate().getCampaignDetailValue().clone();
 
                     campaignDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignFromValue(campaignDetailValue, false, deletedBy);
@@ -1011,7 +1012,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignSource = iter.next();
                     }
-                    CampaignSourceDetailValue campaignSourceDetailValue = defaultCampaignSource.getLastDetailForUpdate().getCampaignSourceDetailValue().clone();
+                    CampaignSourceDetailValue campaignSourceDetailValue = Objects.requireNonNull(defaultCampaignSource).getLastDetailForUpdate().getCampaignSourceDetailValue().clone();
 
                     campaignSourceDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignSourceFromValue(campaignSourceDetailValue, false, deletedBy);
@@ -1527,7 +1528,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignMedium = iter.next();
                     }
-                    CampaignMediumDetailValue campaignMediumDetailValue = defaultCampaignMedium.getLastDetailForUpdate().getCampaignMediumDetailValue().clone();
+                    CampaignMediumDetailValue campaignMediumDetailValue = Objects.requireNonNull(defaultCampaignMedium).getLastDetailForUpdate().getCampaignMediumDetailValue().clone();
 
                     campaignMediumDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignMediumFromValue(campaignMediumDetailValue, false, deletedBy);
@@ -2043,7 +2044,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignTerm = iter.next();
                     }
-                    CampaignTermDetailValue campaignTermDetailValue = defaultCampaignTerm.getLastDetailForUpdate().getCampaignTermDetailValue().clone();
+                    CampaignTermDetailValue campaignTermDetailValue = Objects.requireNonNull(defaultCampaignTerm).getLastDetailForUpdate().getCampaignTermDetailValue().clone();
 
                     campaignTermDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignTermFromValue(campaignTermDetailValue, false, deletedBy);
@@ -2559,7 +2560,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignContent = iter.next();
                     }
-                    CampaignContentDetailValue campaignContentDetailValue = defaultCampaignContent.getLastDetailForUpdate().getCampaignContentDetailValue().clone();
+                    CampaignContentDetailValue campaignContentDetailValue = Objects.requireNonNull(defaultCampaignContent).getLastDetailForUpdate().getCampaignContentDetailValue().clone();
 
                     campaignContentDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignContentFromValue(campaignContentDetailValue, false, deletedBy);

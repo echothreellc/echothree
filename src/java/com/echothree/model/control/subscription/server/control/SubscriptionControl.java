@@ -85,6 +85,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SubscriptionControl
         extends BaseModelControl {
@@ -353,7 +354,7 @@ public class SubscriptionControl
                 if(iter.hasNext()) {
                     defaultSubscriptionKind = iter.next();
                 }
-                SubscriptionKindDetailValue subscriptionKindDetailValue = defaultSubscriptionKind.getLastDetailForUpdate().getSubscriptionKindDetailValue().clone();
+                SubscriptionKindDetailValue subscriptionKindDetailValue = Objects.requireNonNull(defaultSubscriptionKind).getLastDetailForUpdate().getSubscriptionKindDetailValue().clone();
 
                 subscriptionKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateSubscriptionKindFromValue(subscriptionKindDetailValue, false, deletedBy);
@@ -803,7 +804,7 @@ public class SubscriptionControl
                 if(iter.hasNext()) {
                     defaultSubscriptionType = iter.next();
                 }
-                SubscriptionTypeDetailValue subscriptionTypeDetailValue = defaultSubscriptionType.getLastDetailForUpdate().getSubscriptionTypeDetailValue().clone();
+                SubscriptionTypeDetailValue subscriptionTypeDetailValue = Objects.requireNonNull(defaultSubscriptionType).getLastDetailForUpdate().getSubscriptionTypeDetailValue().clone();
                 
                 subscriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSubscriptionTypeFromValue(subscriptionTypeDetailValue, false, deletedBy);

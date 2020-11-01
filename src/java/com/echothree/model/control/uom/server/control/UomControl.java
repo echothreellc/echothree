@@ -470,7 +470,7 @@ public class UomControl
                 if(iter.hasNext()) {
                     defaultUnitOfMeasureKind = (UnitOfMeasureKind)iter.next();
                 }
-                UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue = defaultUnitOfMeasureKind.getLastDetailForUpdate().getUnitOfMeasureKindDetailValue().clone();
+                UnitOfMeasureKindDetailValue unitOfMeasureKindDetailValue = Objects.requireNonNull(defaultUnitOfMeasureKind).getLastDetailForUpdate().getUnitOfMeasureKindDetailValue().clone();
                 
                 unitOfMeasureKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateUnitOfMeasureKindFromValue(unitOfMeasureKindDetailValue, false, deletedBy);
@@ -970,7 +970,7 @@ public class UomControl
                 if(iter.hasNext()) {
                     defaultUnitOfMeasureType = (UnitOfMeasureType)iter.next();
                 }
-                UnitOfMeasureTypeDetailValue unitOfMeasureTypeDetailValue = defaultUnitOfMeasureType.getLastDetailForUpdate().getUnitOfMeasureTypeDetailValue().clone();
+                UnitOfMeasureTypeDetailValue unitOfMeasureTypeDetailValue = Objects.requireNonNull(defaultUnitOfMeasureType).getLastDetailForUpdate().getUnitOfMeasureTypeDetailValue().clone();
                 
                 unitOfMeasureTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateUnitOfMeasureTypeFromValue(unitOfMeasureTypeDetailValue, false, deletedBy);

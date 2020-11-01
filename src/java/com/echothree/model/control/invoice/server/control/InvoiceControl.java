@@ -160,6 +160,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class InvoiceControl
@@ -703,7 +704,7 @@ public class InvoiceControl
                     if(iter.hasNext()) {
                         defaultInvoiceType = iter.next();
                     }
-                    InvoiceTypeDetailValue invoiceTypeDetailValue = defaultInvoiceType.getLastDetailForUpdate().getInvoiceTypeDetailValue().clone();
+                    InvoiceTypeDetailValue invoiceTypeDetailValue = Objects.requireNonNull(defaultInvoiceType).getLastDetailForUpdate().getInvoiceTypeDetailValue().clone();
 
                     invoiceTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateInvoiceTypeFromValue(invoiceTypeDetailValue, false, deletedBy);
@@ -1153,7 +1154,7 @@ public class InvoiceControl
                 if(iter.hasNext()) {
                     defaultInvoiceAliasType = iter.next();
                 }
-                InvoiceAliasTypeDetailValue invoiceAliasTypeDetailValue = defaultInvoiceAliasType.getLastDetailForUpdate().getInvoiceAliasTypeDetailValue().clone();
+                InvoiceAliasTypeDetailValue invoiceAliasTypeDetailValue = Objects.requireNonNull(defaultInvoiceAliasType).getLastDetailForUpdate().getInvoiceAliasTypeDetailValue().clone();
                 
                 invoiceAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateInvoiceAliasTypeFromValue(invoiceAliasTypeDetailValue, false, deletedBy);
@@ -1433,7 +1434,7 @@ public class InvoiceControl
                 if(iter.hasNext()) {
                     defaultInvoiceTimeType = iter.next();
                 }
-                InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue = defaultInvoiceTimeType.getLastDetailForUpdate().getInvoiceTimeTypeDetailValue().clone();
+                InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue = Objects.requireNonNull(defaultInvoiceTimeType).getLastDetailForUpdate().getInvoiceTimeTypeDetailValue().clone();
 
                 invoiceTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateInvoiceTimeTypeFromValue(invoiceTimeTypeDetailValue, false, deletedBy);
@@ -2090,7 +2091,7 @@ public class InvoiceControl
                     if(iter.hasNext()) {
                         defaultInvoiceLineType = iter.next();
                     }
-                    InvoiceLineTypeDetailValue invoiceLineTypeDetailValue = defaultInvoiceLineType.getLastDetailForUpdate().getInvoiceLineTypeDetailValue().clone();
+                    InvoiceLineTypeDetailValue invoiceLineTypeDetailValue = Objects.requireNonNull(defaultInvoiceLineType).getLastDetailForUpdate().getInvoiceLineTypeDetailValue().clone();
 
                     invoiceLineTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateInvoiceLineTypeFromValue(invoiceLineTypeDetailValue, false, deletedBy);

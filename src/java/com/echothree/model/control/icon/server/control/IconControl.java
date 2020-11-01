@@ -57,6 +57,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class IconControl
         extends BaseModelControl {
@@ -471,7 +472,7 @@ public class IconControl
                 if(iter.hasNext()) {
                     defaultIconUsageType = iter.next();
                 }
-                IconUsageTypeDetailValue iconUsageTypeDetailValue = defaultIconUsageType.getLastDetailForUpdate().getIconUsageTypeDetailValue().clone();
+                IconUsageTypeDetailValue iconUsageTypeDetailValue = Objects.requireNonNull(defaultIconUsageType).getLastDetailForUpdate().getIconUsageTypeDetailValue().clone();
                 
                 iconUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateIconUsageTypeFromValue(iconUsageTypeDetailValue, false, deletedBy);

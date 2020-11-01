@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class QueueControl
         extends BaseModelControl {
@@ -342,7 +343,7 @@ public class QueueControl
                     if(iter.hasNext()) {
                         defaultQueueType = iter.next();
                     }
-                    QueueTypeDetailValue queueTypeDetailValue = defaultQueueType.getLastDetailForUpdate().getQueueTypeDetailValue().clone();
+                    QueueTypeDetailValue queueTypeDetailValue = Objects.requireNonNull(defaultQueueType).getLastDetailForUpdate().getQueueTypeDetailValue().clone();
 
                     queueTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateQueueTypeFromValue(queueTypeDetailValue, false, deletedBy);

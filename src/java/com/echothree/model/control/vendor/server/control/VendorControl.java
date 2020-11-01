@@ -117,6 +117,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class VendorControl
@@ -419,7 +420,7 @@ public class VendorControl
                 if(iter.hasNext()) {
                     defaultVendorType = iter.next();
                 }
-                VendorTypeDetailValue vendorTypeDetailValue = defaultVendorType.getLastDetailForUpdate().getVendorTypeDetailValue().clone();
+                VendorTypeDetailValue vendorTypeDetailValue = Objects.requireNonNull(defaultVendorType).getLastDetailForUpdate().getVendorTypeDetailValue().clone();
                 
                 vendorTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateVendorTypeFromValue(vendorTypeDetailValue, false, deletedBy);
@@ -1743,7 +1744,7 @@ public class VendorControl
                     if(iter.hasNext()) {
                         defaultItemPurchasingCategory = iter.next();
                     }
-                    ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = defaultItemPurchasingCategory.getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
+                    ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = Objects.requireNonNull(defaultItemPurchasingCategory).getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
 
                     itemPurchasingCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemPurchasingCategoryFromValue(itemPurchasingCategoryDetailValue, false, deletedBy);

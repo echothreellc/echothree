@@ -304,7 +304,7 @@ public class PaymentProcessorTypeControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessorType = iter.next();
                 }
-                var paymentProcessorTypeDetailValue = defaultPaymentProcessorType.getLastDetailForUpdate().getPaymentProcessorTypeDetailValue().clone();
+                var paymentProcessorTypeDetailValue = Objects.requireNonNull(defaultPaymentProcessorType).getLastDetailForUpdate().getPaymentProcessorTypeDetailValue().clone();
 
                 paymentProcessorTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorTypeFromValue(paymentProcessorTypeDetailValue, false, deletedBy);

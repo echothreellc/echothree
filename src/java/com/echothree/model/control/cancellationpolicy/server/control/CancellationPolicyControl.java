@@ -110,6 +110,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CancellationPolicyControl
         extends BaseModelControl {
@@ -566,7 +567,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationKind = iter.next();
                 }
-                CancellationKindDetailValue cancellationKindDetailValue = defaultCancellationKind.getLastDetailForUpdate().getCancellationKindDetailValue().clone();
+                CancellationKindDetailValue cancellationKindDetailValue = Objects.requireNonNull(defaultCancellationKind).getLastDetailForUpdate().getCancellationKindDetailValue().clone();
                 
                 cancellationKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationKindFromValue(cancellationKindDetailValue, false, deletedBy);
@@ -1027,7 +1028,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationPolicy = iter.next();
                 }
-                CancellationPolicyDetailValue cancellationPolicyDetailValue = defaultCancellationPolicy.getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
+                CancellationPolicyDetailValue cancellationPolicyDetailValue = Objects.requireNonNull(defaultCancellationPolicy).getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
                 
                 cancellationPolicyDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationPolicyFromValue(cancellationPolicyDetailValue, false, deletedBy);
@@ -1771,7 +1772,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationReason = iter.next();
                 }
-                CancellationReasonDetailValue cancellationReasonDetailValue = defaultCancellationReason.getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
+                CancellationReasonDetailValue cancellationReasonDetailValue = Objects.requireNonNull(defaultCancellationReason).getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
                 
                 cancellationReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationReasonFromValue(cancellationReasonDetailValue, false, deletedBy);
@@ -2536,7 +2537,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationType = iter.next();
                 }
-                CancellationTypeDetailValue cancellationTypeDetailValue = defaultCancellationType.getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
+                CancellationTypeDetailValue cancellationTypeDetailValue = Objects.requireNonNull(defaultCancellationType).getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
                 
                 cancellationTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationTypeFromValue(cancellationTypeDetailValue, false, deletedBy);

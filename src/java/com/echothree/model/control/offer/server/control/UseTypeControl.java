@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class UseTypeControl
         extends BaseOfferControl {
@@ -333,7 +334,7 @@ public class UseTypeControl
                 if(iter.hasNext()) {
                     defaultUseType = iter.next();
                 }
-                UseTypeDetailValue useTypeDetailValue = defaultUseType.getLastDetailForUpdate().getUseTypeDetailValue().clone();
+                UseTypeDetailValue useTypeDetailValue = Objects.requireNonNull(defaultUseType).getLastDetailForUpdate().getUseTypeDetailValue().clone();
                 
                 useTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateUseTypeFromValue(useTypeDetailValue, false, deletedBy);

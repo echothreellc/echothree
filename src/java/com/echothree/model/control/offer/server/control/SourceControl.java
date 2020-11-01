@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class SourceControl
         extends BaseOfferControl {
@@ -367,7 +368,7 @@ public class SourceControl
                 if(iter.hasNext()) {
                     defaultSource = iter.next();
                 }
-                SourceDetailValue sourceDetailValue = defaultSource.getLastDetailForUpdate().getSourceDetailValue().clone();
+                SourceDetailValue sourceDetailValue = Objects.requireNonNull(defaultSource).getLastDetailForUpdate().getSourceDetailValue().clone();
 
                 sourceDetailValue.setIsDefault(Boolean.TRUE);
                 updateSourceFromValue(sourceDetailValue, false, deletedBy);

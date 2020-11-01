@@ -164,6 +164,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ChainControl
         extends BaseModelControl {
@@ -433,7 +434,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainKind = iter.next();
                 }
-                ChainKindDetailValue chainKindDetailValue = defaultChainKind.getLastDetailForUpdate().getChainKindDetailValue().clone();
+                ChainKindDetailValue chainKindDetailValue = Objects.requireNonNull(defaultChainKind).getLastDetailForUpdate().getChainKindDetailValue().clone();
 
                 chainKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainKindFromValue(chainKindDetailValue, false, deletedBy);
@@ -882,7 +883,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainType = iter.next();
                 }
-                ChainTypeDetailValue chainTypeDetailValue = defaultChainType.getLastDetailForUpdate().getChainTypeDetailValue().clone();
+                ChainTypeDetailValue chainTypeDetailValue = Objects.requireNonNull(defaultChainType).getLastDetailForUpdate().getChainTypeDetailValue().clone();
 
                 chainTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainTypeFromValue(chainTypeDetailValue, false, deletedBy);
@@ -1655,7 +1656,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChain = iter.next();
                 }
-                ChainDetailValue chainDetailValue = defaultChain.getLastDetailForUpdate().getChainDetailValue().clone();
+                ChainDetailValue chainDetailValue = Objects.requireNonNull(defaultChain).getLastDetailForUpdate().getChainDetailValue().clone();
 
                 chainDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainFromValue(chainDetailValue, false, deletedBy);
@@ -2084,7 +2085,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainActionSet = iter.next();
                 }
-                ChainActionSetDetailValue chainActionSetDetailValue = defaultChainActionSet.getLastDetailForUpdate().getChainActionSetDetailValue().clone();
+                ChainActionSetDetailValue chainActionSetDetailValue = Objects.requireNonNull(defaultChainActionSet).getLastDetailForUpdate().getChainActionSetDetailValue().clone();
 
                 chainActionSetDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainActionSetFromValue(chainActionSetDetailValue, false, deletedBy);
@@ -2498,7 +2499,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainActionType = iter.next();
                 }
-                ChainActionTypeDetailValue chainActionTypeDetailValue = defaultChainActionType.getLastDetailForUpdate().getChainActionTypeDetailValue().clone();
+                ChainActionTypeDetailValue chainActionTypeDetailValue = Objects.requireNonNull(defaultChainActionType).getLastDetailForUpdate().getChainActionTypeDetailValue().clone();
 
                 chainActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainActionTypeFromValue(chainActionTypeDetailValue, false, deletedBy);

@@ -121,6 +121,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class FinancialControl
@@ -609,7 +610,7 @@ public class FinancialControl
                     if(iter.hasNext()) {
                         defaultFinancialAccountType = iter.next();
                     }
-                    FinancialAccountTypeDetailValue financialAccountTypeDetailValue = defaultFinancialAccountType.getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
+                    FinancialAccountTypeDetailValue financialAccountTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountType).getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
 
                     financialAccountTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateFinancialAccountTypeFromValue(financialAccountTypeDetailValue, false, deletedBy);
@@ -1120,7 +1121,7 @@ public class FinancialControl
                     if(iter.hasNext()) {
                         defaultFinancialAccountTransactionType = iter.next();
                     }
-                    FinancialAccountTransactionTypeDetailValue financialAccountTransactionTypeDetailValue = defaultFinancialAccountTransactionType.getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
+                    FinancialAccountTransactionTypeDetailValue financialAccountTransactionTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountTransactionType).getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
 
                     financialAccountTransactionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateFinancialAccountTransactionTypeFromValue(financialAccountTransactionTypeDetailValue, false, deletedBy);
@@ -1565,7 +1566,7 @@ public class FinancialControl
                 if(iter.hasNext()) {
                     defaultFinancialAccountAliasType = iter.next();
                 }
-                FinancialAccountAliasTypeDetailValue financialAccountAliasTypeDetailValue = defaultFinancialAccountAliasType.getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
+                FinancialAccountAliasTypeDetailValue financialAccountAliasTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountAliasType).getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
                 
                 financialAccountAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateFinancialAccountAliasTypeFromValue(financialAccountAliasTypeDetailValue, false, deletedBy);

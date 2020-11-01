@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LotAliasControl
         extends BaseInventoryControl {
@@ -312,7 +313,7 @@ public class LotAliasControl
                 if(iter.hasNext()) {
                     defaultLotAliasType = iter.next();
                 }
-                LotAliasTypeDetailValue lotAliasTypeDetailValue = defaultLotAliasType.getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
+                LotAliasTypeDetailValue lotAliasTypeDetailValue = Objects.requireNonNull(defaultLotAliasType).getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
 
                 lotAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLotAliasTypeFromValue(lotAliasTypeDetailValue, false, deletedBy);

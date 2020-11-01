@@ -79,6 +79,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class PeriodControl
@@ -352,7 +353,7 @@ public class PeriodControl
                 if(iter.hasNext()) {
                     defaultPeriodKind = iter.next();
                 }
-                PeriodKindDetailValue periodKindDetailValue = defaultPeriodKind.getLastDetailForUpdate().getPeriodKindDetailValue().clone();
+                PeriodKindDetailValue periodKindDetailValue = Objects.requireNonNull(defaultPeriodKind).getLastDetailForUpdate().getPeriodKindDetailValue().clone();
                 
                 periodKindDetailValue.setIsDefault(Boolean.TRUE);
                 updatePeriodKindFromValue(periodKindDetailValue, false, deletedBy);
@@ -830,7 +831,7 @@ public class PeriodControl
                 if(iter.hasNext()) {
                     defaultPeriodType = iter.next();
                 }
-                PeriodTypeDetailValue periodTypeDetailValue = defaultPeriodType.getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
+                PeriodTypeDetailValue periodTypeDetailValue = Objects.requireNonNull(defaultPeriodType).getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
                 
                 periodTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePeriodTypeFromValue(periodTypeDetailValue, false, deletedBy);

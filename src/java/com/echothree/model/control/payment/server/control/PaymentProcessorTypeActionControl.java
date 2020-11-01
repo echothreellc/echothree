@@ -353,7 +353,7 @@ public class PaymentProcessorTypeActionControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessorTypeAction = iter.next();
                 }
-                var paymentProcessorTypeActionDetailValue = defaultPaymentProcessorTypeAction.getLastDetailForUpdate().getPaymentProcessorTypeActionDetailValue().clone();
+                var paymentProcessorTypeActionDetailValue = Objects.requireNonNull(defaultPaymentProcessorTypeAction).getLastDetailForUpdate().getPaymentProcessorTypeActionDetailValue().clone();
 
                 paymentProcessorTypeActionDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorTypeActionFromValue(paymentProcessorTypeActionDetailValue, false, deletedBy);

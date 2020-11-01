@@ -143,6 +143,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class UserControl
@@ -1489,7 +1490,7 @@ public class UserControl
                 if(iter.hasNext()) {
                     defaultRecoveryQuestion = iter.next();
                 }
-                RecoveryQuestionDetailValue recoveryQuestionDetailValue = defaultRecoveryQuestion.getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
+                RecoveryQuestionDetailValue recoveryQuestionDetailValue = Objects.requireNonNull(defaultRecoveryQuestion).getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
                 
                 recoveryQuestionDetailValue.setIsDefault(Boolean.TRUE);
                 updateRecoveryQuestionFromValue(recoveryQuestionDetailValue, false, deletedBy);

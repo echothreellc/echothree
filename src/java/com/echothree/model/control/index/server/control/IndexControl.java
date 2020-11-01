@@ -78,6 +78,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class IndexControl
         extends BaseModelControl {
@@ -415,7 +416,7 @@ public class IndexControl
                     if(iter.hasNext()) {
                         defaultIndexType = iter.next();
                     }
-                    IndexTypeDetailValue indexTypeDetailValue = defaultIndexType.getLastDetailForUpdate().getIndexTypeDetailValue().clone();
+                    IndexTypeDetailValue indexTypeDetailValue = Objects.requireNonNull(defaultIndexType).getLastDetailForUpdate().getIndexTypeDetailValue().clone();
 
                     indexTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateIndexTypeFromValue(indexTypeDetailValue, false, deletedBy);
@@ -849,7 +850,7 @@ public class IndexControl
                 if(iter.hasNext()) {
                     defaultIndexField = iter.next();
                 }
-                IndexFieldDetailValue indexFieldDetailValue = defaultIndexField.getLastDetailForUpdate().getIndexFieldDetailValue().clone();
+                IndexFieldDetailValue indexFieldDetailValue = Objects.requireNonNull(defaultIndexField).getLastDetailForUpdate().getIndexFieldDetailValue().clone();
 
                 indexFieldDetailValue.setIsDefault(Boolean.TRUE);
                 updateIndexFieldFromValue(indexFieldDetailValue, false, deletedBy);
@@ -1404,7 +1405,7 @@ public class IndexControl
                     if(iter.hasNext()) {
                         defaultIndex = iter.next();
                     }
-                    IndexDetailValue indexDetailValue = defaultIndex.getLastDetailForUpdate().getIndexDetailValue().clone();
+                    IndexDetailValue indexDetailValue = Objects.requireNonNull(defaultIndex).getLastDetailForUpdate().getIndexDetailValue().clone();
 
                     indexDetailValue.setIsDefault(Boolean.TRUE);
                     updateIndexFromValue(indexDetailValue, false, deletedBy);

@@ -67,6 +67,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class PartyPaymentMethodControl
         extends BasePaymentControl {
@@ -391,7 +392,7 @@ public class PartyPaymentMethodControl
                 if(iter.hasNext()) {
                     defaultPartyPaymentMethod = iter.next();
                 }
-                var partyPaymentMethodDetailValue = defaultPartyPaymentMethod.getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
+                var partyPaymentMethodDetailValue = Objects.requireNonNull(defaultPartyPaymentMethod).getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
 
                 partyPaymentMethodDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, false, deletedBy);

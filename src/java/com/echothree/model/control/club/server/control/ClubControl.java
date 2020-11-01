@@ -64,6 +64,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class ClubControl
         extends BaseModelControl {
@@ -344,7 +345,7 @@ public class ClubControl
                 if(iter.hasNext()) {
                     defaultClub = iter.next();
                 }
-                ClubDetailValue clubDetailValue = defaultClub.getLastDetailForUpdate().getClubDetailValue().clone();
+                ClubDetailValue clubDetailValue = Objects.requireNonNull(defaultClub).getLastDetailForUpdate().getClubDetailValue().clone();
                 
                 clubDetailValue.setIsDefault(Boolean.TRUE);
                 updateClubFromValue(clubDetailValue, false, deletedBy);

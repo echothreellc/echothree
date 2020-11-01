@@ -76,6 +76,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class SequenceControl
         extends BaseModelControl {
@@ -429,7 +430,7 @@ public class SequenceControl
                 if(iter.hasNext()) {
                     defaultSequenceType = iter.next();
                 }
-                SequenceTypeDetailValue sequenceTypeDetailValue = defaultSequenceType.getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
+                SequenceTypeDetailValue sequenceTypeDetailValue = Objects.requireNonNull(defaultSequenceType).getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
                 
                 sequenceTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSequenceTypeFromValue(sequenceTypeDetailValue, false, deletedBy);
@@ -1120,7 +1121,7 @@ public class SequenceControl
                 if(iter.hasNext()) {
                     defaultSequence = iter.next();
                 }
-                SequenceDetailValue sequenceDetailValue = defaultSequence.getLastDetailForUpdate().getSequenceDetailValue().clone();
+                SequenceDetailValue sequenceDetailValue = Objects.requireNonNull(defaultSequence).getLastDetailForUpdate().getSequenceDetailValue().clone();
                 
                 sequenceDetailValue.setIsDefault(Boolean.TRUE);
                 updateSequenceFromValue(sequenceDetailValue, false, deletedBy);

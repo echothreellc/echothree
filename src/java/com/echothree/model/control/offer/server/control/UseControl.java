@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class UseControl
         extends BaseOfferControl {
@@ -381,7 +382,7 @@ public class UseControl
                 if(iter.hasNext()) {
                     defaultUse = iter.next();
                 }
-                UseDetailValue useDetailValue = defaultUse.getLastDetailForUpdate().getUseDetailValue().clone();
+                UseDetailValue useDetailValue = Objects.requireNonNull(defaultUse).getLastDetailForUpdate().getUseDetailValue().clone();
 
                 useDetailValue.setIsDefault(Boolean.TRUE);
                 updateUseFromValue(useDetailValue, false, deletedBy);

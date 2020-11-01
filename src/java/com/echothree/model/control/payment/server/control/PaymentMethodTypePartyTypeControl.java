@@ -355,7 +355,7 @@ public class PaymentMethodTypePartyTypeControl
                 if(iter.hasNext()) {
                     defaultPaymentMethodTypePartyType = iter.next();
                 }
-                var paymentMethodTypePartyTypeDetailValue = defaultPaymentMethodTypePartyType.getLastDetailForUpdate().getPaymentMethodTypePartyTypeDetailValue().clone();
+                var paymentMethodTypePartyTypeDetailValue = Objects.requireNonNull(defaultPaymentMethodTypePartyType).getLastDetailForUpdate().getPaymentMethodTypePartyTypeDetailValue().clone();
 
                 paymentMethodTypePartyTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentMethodTypePartyTypeFromValue(paymentMethodTypePartyTypeDetailValue, false, deletedBy);

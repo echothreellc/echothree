@@ -389,6 +389,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class ItemControl
@@ -1271,7 +1272,7 @@ public class ItemControl
                     if(iter.hasNext()) {
                         defaultItemCategory = iter.next();
                     }
-                    ItemCategoryDetailValue itemCategoryDetailValue = defaultItemCategory.getLastDetailForUpdate().getItemCategoryDetailValue().clone();
+                    ItemCategoryDetailValue itemCategoryDetailValue = Objects.requireNonNull(defaultItemCategory).getLastDetailForUpdate().getItemCategoryDetailValue().clone();
 
                     itemCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemCategoryFromValue(itemCategoryDetailValue, false, deletedBy);
@@ -2673,7 +2674,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultItemAliasType = (ItemAliasType)iter.next();
                 }
-                ItemAliasTypeDetailValue itemAliasTypeDetailValue = defaultItemAliasType.getLastDetailForUpdate().getItemAliasTypeDetailValue().clone();
+                ItemAliasTypeDetailValue itemAliasTypeDetailValue = Objects.requireNonNull(defaultItemAliasType).getLastDetailForUpdate().getItemAliasTypeDetailValue().clone();
                 
                 itemAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemAliasTypeFromValue(itemAliasTypeDetailValue, false, deletedBy);
@@ -6193,7 +6194,7 @@ public class ItemControl
                     if(iter.hasNext()) {
                         defaultItemDescriptionType = iter.next();
                     }
-                    ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = defaultItemDescriptionType.getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
+                    ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionType).getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
 
                     itemDescriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemDescriptionTypeFromValue(itemDescriptionTypeDetailValue, false, deletedBy);
@@ -6766,7 +6767,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultItemDescriptionTypeUseType = iter.next();
                 }
-                ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = defaultItemDescriptionTypeUseType.getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
+                ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionTypeUseType).getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
 
                 itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, false, deletedBy);
@@ -7393,7 +7394,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultItemImageType = iter.next();
                 }
-                ItemImageTypeDetailValue itemImageTypeDetailValue = defaultItemImageType.getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
+                ItemImageTypeDetailValue itemImageTypeDetailValue = Objects.requireNonNull(defaultItemImageType).getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
 
                 itemImageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemImageTypeFromValue(itemImageTypeDetailValue, false, deletedBy);
@@ -8946,7 +8947,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultRelatedItemType = iter.next();
                 }
-                RelatedItemTypeDetailValue relatedItemTypeDetailValue = defaultRelatedItemType.getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
+                RelatedItemTypeDetailValue relatedItemTypeDetailValue = Objects.requireNonNull(defaultRelatedItemType).getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
 
                 relatedItemTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, false, deletedBy);
@@ -9831,7 +9832,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCode = iter.next();
                 }
-                HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue = defaultHarmonizedTariffScheduleCode.getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
+                HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCode).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
 
                 harmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeFromValue(harmonizedTariffScheduleCodeDetailValue, false, deletedBy);
@@ -10255,7 +10256,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCodeUseType = iter.next();
                 }
-                HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue = defaultHarmonizedTariffScheduleCodeUseType.getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue().clone();
+                HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUseType).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue().clone();
 
                 harmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeUseTypeFromValue(harmonizedTariffScheduleCodeUseTypeDetailValue, false, deletedBy);
@@ -10661,7 +10662,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCodeUnit = iter.next();
                 }
-                HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = defaultHarmonizedTariffScheduleCodeUnit.getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue().clone();
+                HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUnit).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue().clone();
 
                 harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeUnitFromValue(harmonizedTariffScheduleCodeUnitDetailValue, false, deletedBy);

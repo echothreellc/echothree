@@ -83,6 +83,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class AssociateControl
         extends BaseModelControl {
@@ -365,7 +366,7 @@ public class AssociateControl
                 if(iter.hasNext()) {
                     defaultAssociateProgram = iter.next();
                 }
-                AssociateProgramDetailValue associateProgramDetailValue = defaultAssociateProgram.getLastDetailForUpdate().getAssociateProgramDetailValue().clone();
+                AssociateProgramDetailValue associateProgramDetailValue = Objects.requireNonNull(defaultAssociateProgram).getLastDetailForUpdate().getAssociateProgramDetailValue().clone();
                 
                 associateProgramDetailValue.setIsDefault(Boolean.TRUE);
                 updateAssociateProgramFromValue(associateProgramDetailValue, false, deletedBy);
@@ -1081,7 +1082,7 @@ public class AssociateControl
                 if(iter.hasNext()) {
                     defaultAssociatePartyContactMechanism = iter.next();
                 }
-                AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue = defaultAssociatePartyContactMechanism.getLastDetailForUpdate().getAssociatePartyContactMechanismDetailValue().clone();
+                AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue = Objects.requireNonNull(defaultAssociatePartyContactMechanism).getLastDetailForUpdate().getAssociatePartyContactMechanismDetailValue().clone();
                 
                 associatePartyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
                 updateAssociatePartyContactMechanismFromValue(associatePartyContactMechanismDetailValue, false, deletedBy);

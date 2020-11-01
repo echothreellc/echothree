@@ -103,6 +103,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class WarehouseControl
         extends BaseModelControl {
@@ -842,7 +843,7 @@ public class WarehouseControl
                     if(iter.hasNext()) {
                         defaultLocationType = (LocationType)iter.next();
                     }
-                    LocationTypeDetailValue locationTypeDetailValue = defaultLocationType.getLastDetailForUpdate().getLocationTypeDetailValue().clone();
+                    LocationTypeDetailValue locationTypeDetailValue = Objects.requireNonNull(defaultLocationType).getLastDetailForUpdate().getLocationTypeDetailValue().clone();
                     
                     locationTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateLocationTypeFromValue(locationTypeDetailValue, false, deletedBy);

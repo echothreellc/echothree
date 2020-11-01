@@ -134,6 +134,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -700,7 +701,7 @@ public class GeoControl
                     if(iter.hasNext()) {
                         defaultGeoCodeType = iter.next();
                     }
-                    GeoCodeTypeDetailValue geoCodeTypeDetailValue = defaultGeoCodeType.getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
+                    GeoCodeTypeDetailValue geoCodeTypeDetailValue = Objects.requireNonNull(defaultGeoCodeType).getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
 
                     geoCodeTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateGeoCodeTypeFromValue(geoCodeTypeDetailValue, false, deletedBy);
@@ -1145,7 +1146,7 @@ public class GeoControl
                 if(iter.hasNext()) {
                     defaultGeoCodeScope = iter.next();
                 }
-                GeoCodeScopeDetailValue geoCodeScopeDetailValue = defaultGeoCodeScope.getLastDetailForUpdate().getGeoCodeScopeDetailValue().clone();
+                GeoCodeScopeDetailValue geoCodeScopeDetailValue = Objects.requireNonNull(defaultGeoCodeScope).getLastDetailForUpdate().getGeoCodeScopeDetailValue().clone();
                 
                 geoCodeScopeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeScopeFromValue(geoCodeScopeDetailValue, false, deletedBy);
@@ -1643,7 +1644,7 @@ public class GeoControl
                 if(iter.hasNext()) {
                     defaultGeoCodeAliasType = iter.next();
                 }
-                GeoCodeAliasTypeDetailValue geoCodeAliasTypeDetailValue = defaultGeoCodeAliasType.getLastDetailForUpdate().getGeoCodeAliasTypeDetailValue().clone();
+                GeoCodeAliasTypeDetailValue geoCodeAliasTypeDetailValue = Objects.requireNonNull(defaultGeoCodeAliasType).getLastDetailForUpdate().getGeoCodeAliasTypeDetailValue().clone();
                 
                 geoCodeAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeAliasTypeFromValue(geoCodeAliasTypeDetailValue, false, deletedBy);
@@ -2074,7 +2075,7 @@ public class GeoControl
                 if(iter.hasNext()) {
                     defaultGeoCode = iter.next();
                 }
-                GeoCodeDetailValue geoCodeDetailValue = defaultGeoCode.getLastDetailForUpdate().getGeoCodeDetailValue().clone();
+                GeoCodeDetailValue geoCodeDetailValue = Objects.requireNonNull(defaultGeoCode).getLastDetailForUpdate().getGeoCodeDetailValue().clone();
 
                 geoCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeFromValue(geoCodeDetailValue, false, deletedBy);

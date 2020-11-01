@@ -88,6 +88,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class BatchControl
@@ -432,7 +433,7 @@ public class BatchControl
                     if(iter.hasNext()) {
                         defaultBatchType = iter.next();
                     }
-                    BatchTypeDetailValue batchTypeDetailValue = defaultBatchType.getLastDetailForUpdate().getBatchTypeDetailValue().clone();
+                    BatchTypeDetailValue batchTypeDetailValue = Objects.requireNonNull(defaultBatchType).getLastDetailForUpdate().getBatchTypeDetailValue().clone();
 
                     batchTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateBatchTypeFromValue(batchTypeDetailValue, false, deletedBy);
@@ -1032,7 +1033,7 @@ public class BatchControl
                 if(iter.hasNext()) {
                     defaultBatchAliasType = iter.next();
                 }
-                BatchAliasTypeDetailValue batchAliasTypeDetailValue = defaultBatchAliasType.getLastDetailForUpdate().getBatchAliasTypeDetailValue().clone();
+                BatchAliasTypeDetailValue batchAliasTypeDetailValue = Objects.requireNonNull(defaultBatchAliasType).getLastDetailForUpdate().getBatchAliasTypeDetailValue().clone();
                 
                 batchAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateBatchAliasTypeFromValue(batchAliasTypeDetailValue, false, deletedBy);

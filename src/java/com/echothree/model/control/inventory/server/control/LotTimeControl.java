@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LotTimeControl
         extends BaseInventoryControl {
@@ -310,7 +311,7 @@ public class LotTimeControl
                 if(iter.hasNext()) {
                     defaultLotTimeType = iter.next();
                 }
-                LotTimeTypeDetailValue lotTimeTypeDetailValue = defaultLotTimeType.getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
+                LotTimeTypeDetailValue lotTimeTypeDetailValue = Objects.requireNonNull(defaultLotTimeType).getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
 
                 lotTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLotTimeTypeFromValue(lotTimeTypeDetailValue, false, deletedBy);

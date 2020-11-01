@@ -103,6 +103,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CarrierControl
         extends BaseModelControl {
@@ -417,7 +418,7 @@ public class CarrierControl
                 if(iter.hasNext()) {
                     defaultCarrierType = iter.next();
                 }
-                CarrierTypeDetailValue carrierTypeDetailValue = defaultCarrierType.getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
+                CarrierTypeDetailValue carrierTypeDetailValue = Objects.requireNonNull(defaultCarrierType).getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
 
                 carrierTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCarrierTypeFromValue(carrierTypeDetailValue, false, deletedBy);
@@ -1190,7 +1191,7 @@ public class CarrierControl
                         defaultCarrierService = iter.next();
                     }
                     
-                    CarrierServiceDetailValue carrierServiceDetailValue = defaultCarrierService.getLastDetailForUpdate().getCarrierServiceDetailValue().clone();
+                    CarrierServiceDetailValue carrierServiceDetailValue = Objects.requireNonNull(defaultCarrierService).getLastDetailForUpdate().getCarrierServiceDetailValue().clone();
                     
                     carrierServiceDetailValue.setIsDefault(Boolean.TRUE);
                     updateCarrierServiceFromValue(carrierServiceDetailValue, false, deletedBy);
@@ -1681,7 +1682,7 @@ public class CarrierControl
                         defaultCarrierOption = iter.next();
                     }
                     
-                    CarrierOptionDetailValue carrierOptionDetailValue = defaultCarrierOption.getLastDetailForUpdate().getCarrierOptionDetailValue().clone();
+                    CarrierOptionDetailValue carrierOptionDetailValue = Objects.requireNonNull(defaultCarrierOption).getLastDetailForUpdate().getCarrierOptionDetailValue().clone();
                     
                     carrierOptionDetailValue.setIsDefault(Boolean.TRUE);
                     updateCarrierOptionFromValue(carrierOptionDetailValue, false, deletedBy);

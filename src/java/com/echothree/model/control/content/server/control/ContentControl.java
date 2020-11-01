@@ -692,7 +692,7 @@ public class ContentControl
                 if(iter.hasNext()) {
                     defaultContentPageLayout = iter.next();
                 }
-                ContentPageLayoutDetailValue contentPageLayoutDetailValue = defaultContentPageLayout.getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
+                ContentPageLayoutDetailValue contentPageLayoutDetailValue = Objects.requireNonNull(defaultContentPageLayout).getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
                 
                 contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentPageLayoutFromValue(contentPageLayoutDetailValue, false, deletedBy);
@@ -1702,7 +1702,7 @@ public class ContentControl
                         break;
                     }
                 }
-                ContentSectionDetailValue contentSectionDetailValue = defaultContentSection.getLastDetailForUpdate().getContentSectionDetailValue().clone();
+                ContentSectionDetailValue contentSectionDetailValue = Objects.requireNonNull(defaultContentSection).getLastDetailForUpdate().getContentSectionDetailValue().clone();
                 
                 contentSectionDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentSectionFromValue(contentSectionDetailValue, false, deletedBy);
@@ -2183,7 +2183,7 @@ public class ContentControl
             
             if(!contentPages.isEmpty()) {
                 defaultContentPage = contentPages.iterator().next();
-                ContentPageDetailValue contentPageDetailValue = defaultContentPage.getLastDetailForUpdate().getContentPageDetailValue().clone();
+                ContentPageDetailValue contentPageDetailValue = Objects.requireNonNull(defaultContentPage).getLastDetailForUpdate().getContentPageDetailValue().clone();
                 
                 contentPageDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentPageFromValue(contentPageDetailValue, false, deletedBy);
@@ -2981,7 +2981,7 @@ public class ContentControl
             
             if(!contentCatalogs.isEmpty()) {
                 defaultContentCatalog = contentCatalogs.iterator().next();
-                ContentCatalogDetailValue contentCatalogDetailValue = defaultContentCatalog.getLastDetailForUpdate().getContentCatalogDetailValue().clone();
+                ContentCatalogDetailValue contentCatalogDetailValue = Objects.requireNonNull(defaultContentCatalog).getLastDetailForUpdate().getContentCatalogDetailValue().clone();
                 
                 contentCatalogDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentCatalogFromValue(contentCatalogDetailValue, false, deletedBy);
@@ -4189,7 +4189,7 @@ public class ContentControl
                     if(!defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
                         break;
                 }
-                ContentCategoryDetailValue contentCategoryDetailValue = defaultContentCategory.getLastDetailForUpdate().getContentCategoryDetailValue().clone();
+                ContentCategoryDetailValue contentCategoryDetailValue = Objects.requireNonNull(defaultContentCategory).getLastDetailForUpdate().getContentCategoryDetailValue().clone();
                 
                 contentCategoryDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentCategoryFromValue(contentCategoryDetailValue, false, deletedBy);
@@ -4947,7 +4947,7 @@ public class ContentControl
                     defaultContentForum = iter.next();
                     break;
                 }
-                ContentForumDetailValue contentForumDetailValue = defaultContentForum.getLastDetailForUpdate().getContentForumDetailValue().clone();
+                ContentForumDetailValue contentForumDetailValue = Objects.requireNonNull(defaultContentForum).getLastDetailForUpdate().getContentForumDetailValue().clone();
                 
                 contentForumDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentForumFromValue(contentForumDetailValue, false, deletedBy);

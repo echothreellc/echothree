@@ -184,6 +184,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SelectorControl
         extends BaseModelControl {
@@ -478,7 +479,7 @@ public class SelectorControl
                 if(iter.hasNext()) {
                     defaultSelectorKind = iter.next();
                 }
-                SelectorKindDetailValue selectorKindDetailValue = defaultSelectorKind.getLastDetailForUpdate().getSelectorKindDetailValue().clone();
+                SelectorKindDetailValue selectorKindDetailValue = Objects.requireNonNull(defaultSelectorKind).getLastDetailForUpdate().getSelectorKindDetailValue().clone();
 
                 selectorKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateSelectorKindFromValue(selectorKindDetailValue, false, deletedBy);
@@ -894,7 +895,7 @@ public class SelectorControl
                 if(iter.hasNext()) {
                     defaultSelectorType = iter.next();
                 }
-                SelectorTypeDetailValue selectorTypeDetailValue = defaultSelectorType.getLastDetailForUpdate().getSelectorTypeDetailValue().clone();
+                SelectorTypeDetailValue selectorTypeDetailValue = Objects.requireNonNull(defaultSelectorType).getLastDetailForUpdate().getSelectorTypeDetailValue().clone();
 
                 selectorTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSelectorTypeFromValue(selectorTypeDetailValue, false, deletedBy);
@@ -1923,7 +1924,7 @@ public class SelectorControl
                 if(iter.hasNext()) {
                     defaultSelector = iter.next();
                 }
-                SelectorDetailValue selectorDetailValue = defaultSelector.getLastDetailForUpdate().getSelectorDetailValue().clone();
+                SelectorDetailValue selectorDetailValue = Objects.requireNonNull(defaultSelector).getLastDetailForUpdate().getSelectorDetailValue().clone();
                 
                 selectorDetailValue.setIsDefault(Boolean.TRUE);
                 updateSelectorFromValue(selectorDetailValue, false, deletedBy);
@@ -2453,7 +2454,7 @@ public class SelectorControl
                 if(iter.hasNext()) {
                     rootSelectorNode = iter.next();
                 }
-                SelectorNodeDetailValue selectorNodeDetailValue = rootSelectorNode.getLastDetailForUpdate().getSelectorNodeDetailValue().clone();
+                SelectorNodeDetailValue selectorNodeDetailValue = Objects.requireNonNull(rootSelectorNode).getLastDetailForUpdate().getSelectorNodeDetailValue().clone();
                 
                 selectorNodeDetailValue.setIsRootSelectorNode(Boolean.TRUE);
                 updateSelectorNodeFromValue(selectorNodeDetailValue, false, deletedBy);

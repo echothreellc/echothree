@@ -183,6 +183,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class EmployeeControl
         extends BaseModelControl {
@@ -457,7 +458,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultResponsibilityType = (ResponsibilityType)iter.next();
                 }
-                ResponsibilityTypeDetailValue responsibilityTypeDetailValue = defaultResponsibilityType.getLastDetailForUpdate().getResponsibilityTypeDetailValue().clone();
+                ResponsibilityTypeDetailValue responsibilityTypeDetailValue = Objects.requireNonNull(defaultResponsibilityType).getLastDetailForUpdate().getResponsibilityTypeDetailValue().clone();
                 
                 responsibilityTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateResponsibilityTypeFromValue(responsibilityTypeDetailValue, false, deletedBy);
@@ -884,7 +885,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultSkillType = (SkillType)iter.next();
                 }
-                SkillTypeDetailValue skillTypeDetailValue = defaultSkillType.getLastDetailForUpdate().getSkillTypeDetailValue().clone();
+                SkillTypeDetailValue skillTypeDetailValue = Objects.requireNonNull(defaultSkillType).getLastDetailForUpdate().getSkillTypeDetailValue().clone();
                 
                 skillTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSkillTypeFromValue(skillTypeDetailValue, false, deletedBy);
@@ -1315,7 +1316,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultLeaveType = iter.next();
                 }
-                LeaveTypeDetailValue leaveTypeDetailValue = defaultLeaveType.getLastDetailForUpdate().getLeaveTypeDetailValue().clone();
+                LeaveTypeDetailValue leaveTypeDetailValue = Objects.requireNonNull(defaultLeaveType).getLastDetailForUpdate().getLeaveTypeDetailValue().clone();
 
                 leaveTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLeaveTypeFromValue(leaveTypeDetailValue, false, deletedBy);
@@ -1732,7 +1733,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultLeaveReason = iter.next();
                 }
-                LeaveReasonDetailValue leaveReasonDetailValue = defaultLeaveReason.getLastDetailForUpdate().getLeaveReasonDetailValue().clone();
+                LeaveReasonDetailValue leaveReasonDetailValue = Objects.requireNonNull(defaultLeaveReason).getLastDetailForUpdate().getLeaveReasonDetailValue().clone();
 
                 leaveReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateLeaveReasonFromValue(leaveReasonDetailValue, false, deletedBy);
@@ -2492,7 +2493,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultTerminationReason = (TerminationReason)iter.next();
                 }
-                TerminationReasonDetailValue terminationReasonDetailValue = defaultTerminationReason.getLastDetailForUpdate().getTerminationReasonDetailValue().clone();
+                TerminationReasonDetailValue terminationReasonDetailValue = Objects.requireNonNull(defaultTerminationReason).getLastDetailForUpdate().getTerminationReasonDetailValue().clone();
                 
                 terminationReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateTerminationReasonFromValue(terminationReasonDetailValue, false, deletedBy);
@@ -2920,7 +2921,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultTerminationType = (TerminationType)iter.next();
                 }
-                TerminationTypeDetailValue terminationTypeDetailValue = defaultTerminationType.getLastDetailForUpdate().getTerminationTypeDetailValue().clone();
+                TerminationTypeDetailValue terminationTypeDetailValue = Objects.requireNonNull(defaultTerminationType).getLastDetailForUpdate().getTerminationTypeDetailValue().clone();
                 
                 terminationTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateTerminationTypeFromValue(terminationTypeDetailValue, false, deletedBy);
@@ -3662,7 +3663,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultEmployeeType = iter.next();
                 }
-                EmployeeTypeDetailValue employeeTypeDetailValue = defaultEmployeeType.getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
+                EmployeeTypeDetailValue employeeTypeDetailValue = Objects.requireNonNull(defaultEmployeeType).getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
                 
                 employeeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateEmployeeTypeFromValue(employeeTypeDetailValue, false, deletedBy);

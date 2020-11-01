@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderLineAdjustmentControl
         extends BaseOrderControl {
@@ -322,7 +323,7 @@ public class OrderLineAdjustmentControl
                 if(iter.hasNext()) {
                     defaultOrderLineAdjustmentType = iter.next();
                 }
-                OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = defaultOrderLineAdjustmentType.getLastDetailForUpdate().getOrderLineAdjustmentTypeDetailValue().clone();
+                OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderLineAdjustmentType).getLastDetailForUpdate().getOrderLineAdjustmentTypeDetailValue().clone();
 
                 orderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderLineAdjustmentTypeFromValue(orderLineAdjustmentTypeDetailValue, false, deletedBy);

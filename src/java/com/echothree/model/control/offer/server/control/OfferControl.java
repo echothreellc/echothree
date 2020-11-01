@@ -75,6 +75,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OfferControl
         extends BaseOfferControl {
@@ -411,7 +412,7 @@ public class OfferControl
                 if(iter.hasNext()) {
                     defaultOffer = iter.next();
                 }
-                OfferDetailValue offerDetailValue = defaultOffer.getLastDetailForUpdate().getOfferDetailValue().clone();
+                OfferDetailValue offerDetailValue = Objects.requireNonNull(defaultOffer).getLastDetailForUpdate().getOfferDetailValue().clone();
                 
                 offerDetailValue.setIsDefault(Boolean.TRUE);
                 updateOfferFromValue(offerDetailValue, false, deletedBy);

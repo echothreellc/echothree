@@ -64,6 +64,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class TagControl
         extends BaseModelControl {
@@ -385,7 +386,7 @@ public class TagControl
                 if(iter.hasNext()) {
                     defaultTagScope = iter.next();
                 }
-                TagScopeDetailValue tagScopeDetailValue = defaultTagScope.getLastDetailForUpdate().getTagScopeDetailValue().clone();
+                TagScopeDetailValue tagScopeDetailValue = Objects.requireNonNull(defaultTagScope).getLastDetailForUpdate().getTagScopeDetailValue().clone();
                 
                 tagScopeDetailValue.setIsDefault(Boolean.TRUE);
                 updateTagScopeFromValue(tagScopeDetailValue, false, deletedBy);

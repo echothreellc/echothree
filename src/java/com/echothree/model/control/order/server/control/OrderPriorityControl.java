@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderPriorityControl
         extends BaseOrderControl {
@@ -314,7 +315,7 @@ public class OrderPriorityControl
                 if(iter.hasNext()) {
                     defaultOrderPriority = iter.next();
                 }
-                OrderPriorityDetailValue orderPriorityDetailValue = defaultOrderPriority.getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
+                OrderPriorityDetailValue orderPriorityDetailValue = Objects.requireNonNull(defaultOrderPriority).getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
 
                 orderPriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderPriorityFromValue(orderPriorityDetailValue, false, deletedBy);

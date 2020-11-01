@@ -86,6 +86,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LetterControl
         extends BaseModelControl {
@@ -482,7 +483,7 @@ public class LetterControl
                 if(iter.hasNext()) {
                     defaultLetterSource = (LetterSource)iter.next();
                 }
-                LetterSourceDetailValue letterSourceDetailValue = defaultLetterSource.getLastDetailForUpdate().getLetterSourceDetailValue().clone();
+                LetterSourceDetailValue letterSourceDetailValue = Objects.requireNonNull(defaultLetterSource).getLastDetailForUpdate().getLetterSourceDetailValue().clone();
                 
                 letterSourceDetailValue.setIsDefault(Boolean.TRUE);
                 updateLetterSourceFromValue(letterSourceDetailValue, false, deletedBy);
@@ -1046,7 +1047,7 @@ public class LetterControl
                 if(iter.hasNext()) {
                     defaultLetter = (Letter)iter.next();
                 }
-                LetterDetailValue letterDetailValue = defaultLetter.getLastDetailForUpdate().getLetterDetailValue().clone();
+                LetterDetailValue letterDetailValue = Objects.requireNonNull(defaultLetter).getLastDetailForUpdate().getLetterDetailValue().clone();
                 
                 letterDetailValue.setIsDefault(Boolean.TRUE);
                 updateLetterFromValue(letterDetailValue, false, deletedBy);

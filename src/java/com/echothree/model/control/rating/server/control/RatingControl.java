@@ -71,6 +71,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class RatingControl
         extends BaseModelControl {
@@ -714,7 +715,7 @@ public class RatingControl
                 if(iter.hasNext()) {
                     defaultRatingTypeListItem = iter.next();
                 }
-                RatingTypeListItemDetailValue ratingTypeListItemDetailValue = defaultRatingTypeListItem.getLastDetailForUpdate().getRatingTypeListItemDetailValue().clone();
+                RatingTypeListItemDetailValue ratingTypeListItemDetailValue = Objects.requireNonNull(defaultRatingTypeListItem).getLastDetailForUpdate().getRatingTypeListItemDetailValue().clone();
                 
                 ratingTypeListItemDetailValue.setIsDefault(Boolean.TRUE);
                 updateRatingTypeListItemFromValue(ratingTypeListItemDetailValue, false, deletedBy);

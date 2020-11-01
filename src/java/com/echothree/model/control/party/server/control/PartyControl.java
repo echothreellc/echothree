@@ -268,6 +268,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class PartyControl
         extends BaseModelControl {
@@ -946,7 +947,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultPersonalTitle = iter.next();
                 }
-                PersonalTitleDetailValue personalTitleDetailValue = defaultPersonalTitle.getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
+                PersonalTitleDetailValue personalTitleDetailValue = Objects.requireNonNull(defaultPersonalTitle).getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
                 
                 personalTitleDetailValue.setIsDefault(Boolean.TRUE);
                 updatePersonalTitleFromValue(personalTitleDetailValue, false, deletedBy);
@@ -1193,7 +1194,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultNameSuffix = iter.next();
                 }
-                NameSuffixDetailValue nameSuffixDetailValue = defaultNameSuffix.getLastDetailForUpdate().getNameSuffixDetailValue().clone();
+                NameSuffixDetailValue nameSuffixDetailValue = Objects.requireNonNull(defaultNameSuffix).getLastDetailForUpdate().getNameSuffixDetailValue().clone();
                 
                 nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
                 updateNameSuffixFromValue(nameSuffixDetailValue, false, deletedBy);
@@ -2818,7 +2819,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultPartyAliasType = iter.next();
                 }
-                PartyAliasTypeDetailValue partyAliasTypeDetailValue = defaultPartyAliasType.getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
+                PartyAliasTypeDetailValue partyAliasTypeDetailValue = Objects.requireNonNull(defaultPartyAliasType).getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
 
                 partyAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, false, deletedBy);
@@ -5019,7 +5020,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultGender = iter.next();
                 }
-                GenderDetailValue genderDetailValue = defaultGender.getLastDetailForUpdate().getGenderDetailValue().clone();
+                GenderDetailValue genderDetailValue = Objects.requireNonNull(defaultGender).getLastDetailForUpdate().getGenderDetailValue().clone();
                 
                 genderDetailValue.setIsDefault(Boolean.TRUE);
                 updateGenderFromValue(genderDetailValue, false, deletedBy);
@@ -5442,7 +5443,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultMood = iter.next();
                 }
-                MoodDetailValue moodDetailValue = defaultMood.getLastDetailForUpdate().getMoodDetailValue().clone();
+                MoodDetailValue moodDetailValue = Objects.requireNonNull(defaultMood).getLastDetailForUpdate().getMoodDetailValue().clone();
                 
                 moodDetailValue.setIsDefault(Boolean.TRUE);
                 updateMoodFromValue(moodDetailValue, false, deletedBy);
@@ -5914,7 +5915,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultBirthdayFormat = iter.next();
                 }
-                BirthdayFormatDetailValue birthdayFormatDetailValue = defaultBirthdayFormat.getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
+                BirthdayFormatDetailValue birthdayFormatDetailValue = Objects.requireNonNull(defaultBirthdayFormat).getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
 
                 birthdayFormatDetailValue.setIsDefault(Boolean.TRUE);
                 updateBirthdayFormatFromValue(birthdayFormatDetailValue, false, deletedBy);

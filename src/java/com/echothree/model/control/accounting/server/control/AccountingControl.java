@@ -226,6 +226,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class AccountingControl
@@ -844,7 +845,7 @@ public class AccountingControl
                     if(iter.hasNext()) {
                         defaultItemAccountingCategory = iter.next();
                     }
-                    ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = defaultItemAccountingCategory.getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
+                    ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = Objects.requireNonNull(defaultItemAccountingCategory).getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
 
                     itemAccountingCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, false, deletedBy);
@@ -1487,7 +1488,7 @@ public class AccountingControl
                     if(iter.hasNext()) {
                         defaultGlAccountClass = iter.next();
                     }
-                    GlAccountClassDetailValue glAccountClassDetailValue = defaultGlAccountClass.getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
+                    GlAccountClassDetailValue glAccountClassDetailValue = Objects.requireNonNull(defaultGlAccountClass).getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
 
                     glAccountClassDetailValue.setIsDefault(Boolean.TRUE);
                     updateGlAccountClassFromValue(glAccountClassDetailValue, false, deletedBy);
@@ -1994,7 +1995,7 @@ public class AccountingControl
                     if(iter.hasNext()) {
                         defaultGlAccountCategory = iter.next();
                     }
-                    GlAccountCategoryDetailValue glAccountCategoryDetailValue = defaultGlAccountCategory.getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
+                    GlAccountCategoryDetailValue glAccountCategoryDetailValue = Objects.requireNonNull(defaultGlAccountCategory).getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
 
                     glAccountCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateGlAccountCategoryFromValue(glAccountCategoryDetailValue, false, deletedBy);
@@ -2458,7 +2459,7 @@ public class AccountingControl
                 if(iter.hasNext()) {
                     defaultGlResourceType = iter.next();
                 }
-                GlResourceTypeDetailValue glResourceTypeDetailValue = defaultGlResourceType.getLastDetailForUpdate().getGlResourceTypeDetailValue().clone();
+                GlResourceTypeDetailValue glResourceTypeDetailValue = Objects.requireNonNull(defaultGlResourceType).getLastDetailForUpdate().getGlResourceTypeDetailValue().clone();
                 
                 glResourceTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGlResourceTypeFromValue(glResourceTypeDetailValue, false, deletedBy);
@@ -3094,7 +3095,7 @@ public class AccountingControl
                 if(iter.hasNext()) {
                     defaultGlAccount = iter.next();
                 }
-                GlAccountDetailValue glAccountDetailValue = defaultGlAccount.getLastDetailForUpdate().getGlAccountDetailValue().clone();
+                GlAccountDetailValue glAccountDetailValue = Objects.requireNonNull(defaultGlAccount).getLastDetailForUpdate().getGlAccountDetailValue().clone();
                 
                 glAccountDetailValue.setIsDefault(Boolean.TRUE);
                 updateGlAccountFromValue(glAccountDetailValue, false, updatedBy);
@@ -5557,7 +5558,7 @@ public class AccountingControl
                 if(iter.hasNext()) {
                     defaultSymbolPosition = iter.next();
                 }
-                SymbolPositionDetailValue symbolPositionDetailValue = defaultSymbolPosition.getLastDetailForUpdate().getSymbolPositionDetailValue().clone();
+                SymbolPositionDetailValue symbolPositionDetailValue = Objects.requireNonNull(defaultSymbolPosition).getLastDetailForUpdate().getSymbolPositionDetailValue().clone();
                 
                 symbolPositionDetailValue.setIsDefault(Boolean.TRUE);
                 updateSymbolPositionFromValue(symbolPositionDetailValue, false, deletedBy);

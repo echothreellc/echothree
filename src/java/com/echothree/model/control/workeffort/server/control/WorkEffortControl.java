@@ -72,6 +72,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class WorkEffortControl
         extends BaseModelControl {
@@ -713,7 +714,7 @@ public class WorkEffortControl
                         defaultWorkEffortScope = iter.next();
                     }
                     
-                    WorkEffortScopeDetailValue workEffortScopeDetailValue = defaultWorkEffortScope.getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
+                    WorkEffortScopeDetailValue workEffortScopeDetailValue = Objects.requireNonNull(defaultWorkEffortScope).getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
                     
                     workEffortScopeDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkEffortScopeFromValue(workEffortScopeDetailValue, false, deletedBy);

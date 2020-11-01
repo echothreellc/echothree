@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class PaymentProcessorControl
         extends BasePaymentControl {
@@ -330,7 +331,7 @@ public class PaymentProcessorControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessor = iter.next();
                 }
-                PaymentProcessorDetailValue paymentProcessorDetailValue = defaultPaymentProcessor.getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
+                PaymentProcessorDetailValue paymentProcessorDetailValue = Objects.requireNonNull(defaultPaymentProcessor).getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
                 
                 paymentProcessorDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorFromValue(paymentProcessorDetailValue, false, deletedBy);

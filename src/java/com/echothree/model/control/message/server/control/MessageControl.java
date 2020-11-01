@@ -85,6 +85,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class MessageControl
         extends BaseModelControl {
@@ -729,7 +730,7 @@ public class MessageControl
                 if(iter.hasNext()) {
                     defaultMessage = iter.next();
                 }
-                MessageDetailValue messageDetailValue = defaultMessage.getLastDetailForUpdate().getMessageDetailValue().clone();
+                MessageDetailValue messageDetailValue = Objects.requireNonNull(defaultMessage).getLastDetailForUpdate().getMessageDetailValue().clone();
                 
                 messageDetailValue.setIsDefault(Boolean.TRUE);
                 updateMessageFromValue(messageDetailValue, false, deletedBy);

@@ -81,6 +81,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TaxControl
         extends BaseModelControl {
@@ -391,7 +392,7 @@ public class TaxControl
                 if(iter.hasNext()) {
                     defaultTaxClassification = iter.next();
                 }
-                TaxClassificationDetailValue taxClassificationDetailValue = defaultTaxClassification.getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
+                TaxClassificationDetailValue taxClassificationDetailValue = Objects.requireNonNull(defaultTaxClassification).getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
 
                 taxClassificationDetailValue.setIsDefault(Boolean.TRUE);
                 updateTaxClassificationFromValue(taxClassificationDetailValue, false, deletedBy);
@@ -1019,7 +1020,7 @@ public class TaxControl
                 if(iter.hasNext()) {
                     defaultTax = iter.next();
                 }
-                TaxDetailValue taxDetailValue = defaultTax.getLastDetailForUpdate().getTaxDetailValue().clone();
+                TaxDetailValue taxDetailValue = Objects.requireNonNull(defaultTax).getLastDetailForUpdate().getTaxDetailValue().clone();
                 
                 taxDetailValue.setIsDefault(Boolean.TRUE);
                 updateTaxFromValue(taxDetailValue, false, deletedBy);

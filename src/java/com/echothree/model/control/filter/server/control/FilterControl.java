@@ -455,7 +455,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilterKind = iter.next();
                 }
-                FilterKindDetailValue filterKindDetailValue = defaultFilterKind.getLastDetailForUpdate().getFilterKindDetailValue().clone();
+                FilterKindDetailValue filterKindDetailValue = Objects.requireNonNull(defaultFilterKind).getLastDetailForUpdate().getFilterKindDetailValue().clone();
 
                 filterKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterKindFromValue(filterKindDetailValue, false, deletedBy);
@@ -870,7 +870,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilterType = iter.next();
                 }
-                FilterTypeDetailValue filterTypeDetailValue = defaultFilterType.getLastDetailForUpdate().getFilterTypeDetailValue().clone();
+                FilterTypeDetailValue filterTypeDetailValue = Objects.requireNonNull(defaultFilterType).getLastDetailForUpdate().getFilterTypeDetailValue().clone();
 
                 filterTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterTypeFromValue(filterTypeDetailValue, false, deletedBy);
@@ -1559,7 +1559,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilterAdjustment = iter.next();
                 }
-                FilterAdjustmentDetailValue filterAdjustmentDetailValue = defaultFilterAdjustment.getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
+                FilterAdjustmentDetailValue filterAdjustmentDetailValue = Objects.requireNonNull(defaultFilterAdjustment).getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
                 
                 filterAdjustmentDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, false, deletedBy);
@@ -2554,7 +2554,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilter = iter.next();
                 }
-                FilterDetailValue filterDetailValue = defaultFilter.getLastDetailForUpdate().getFilterDetailValue().clone();
+                FilterDetailValue filterDetailValue = Objects.requireNonNull(defaultFilter).getLastDetailForUpdate().getFilterDetailValue().clone();
                 
                 filterDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterFromValue(filterDetailValue, false, deletedBy);

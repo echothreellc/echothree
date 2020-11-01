@@ -87,6 +87,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class WishlistControl
         extends BaseModelControl {
@@ -365,7 +366,7 @@ public class WishlistControl
                 if(iter.hasNext()) {
                     defaultWishlistType = iter.next();
                 }
-                WishlistTypeDetailValue wishlistTypeDetailValue = defaultWishlistType.getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
+                WishlistTypeDetailValue wishlistTypeDetailValue = Objects.requireNonNull(defaultWishlistType).getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
                 
                 wishlistTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateWishlistTypeFromValue(wishlistTypeDetailValue, false, deletedBy);
@@ -824,7 +825,7 @@ public class WishlistControl
                 if(iter.hasNext()) {
                     defaultWishlistTypePriority = iter.next();
                 }
-                WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue = defaultWishlistTypePriority.getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
+                WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue = Objects.requireNonNull(defaultWishlistTypePriority).getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
                 
                 wishlistTypePriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateWishlistTypePriorityFromValue(wishlistTypePriorityDetailValue, false, deletedBy);

@@ -194,6 +194,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ContactControl
         extends BaseModelControl {
@@ -647,7 +648,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultContactMechanismAliasType = iter.next();
                 }
-                ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = defaultContactMechanismAliasType.getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
+                ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = Objects.requireNonNull(defaultContactMechanismAliasType).getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
 
                 contactMechanismAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactMechanismAliasTypeFromValue(contactMechanismAliasTypeDetailValue, false, deletedBy);
@@ -2681,7 +2682,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultPartyContactMechanism = iter.next();
                 }
-                PartyContactMechanismDetailValue partyContactMechanismDetailValue = defaultPartyContactMechanism.getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
+                PartyContactMechanismDetailValue partyContactMechanismDetailValue = Objects.requireNonNull(defaultPartyContactMechanism).getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
                 
                 partyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, false, deletedBy);
@@ -3261,7 +3262,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultPartyContactMechanismPurpose = iter.next();
                 }
-                PartyContactMechanismPurposeDetailValue partyContactMechanismPurposeDetailValue = defaultPartyContactMechanismPurpose.getLastDetailForUpdate().getPartyContactMechanismPurposeDetailValue().clone();
+                PartyContactMechanismPurposeDetailValue partyContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultPartyContactMechanismPurpose).getLastDetailForUpdate().getPartyContactMechanismPurposeDetailValue().clone();
                 
                 partyContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyContactMechanismPurposeFromValue(partyContactMechanismPurposeDetailValue, false, deletedBy);
@@ -3836,7 +3837,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultPostalAddressFormat = iter.next();
                 }
-                PostalAddressFormatDetailValue postalAddressFormatDetailValue = defaultPostalAddressFormat.getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
+                PostalAddressFormatDetailValue postalAddressFormatDetailValue = Objects.requireNonNull(defaultPostalAddressFormat).getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
                 
                 postalAddressFormatDetailValue.setIsDefault(Boolean.TRUE);
                 updatePostalAddressFormatFromValue(postalAddressFormatDetailValue, false, deletedBy);

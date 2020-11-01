@@ -81,6 +81,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ScaleControl
         extends BaseModelControl {
@@ -359,7 +360,7 @@ public class ScaleControl
                 if(iter.hasNext()) {
                     defaultScaleType = iter.next();
                 }
-                ScaleTypeDetailValue scaleTypeDetailValue = defaultScaleType.getLastDetailForUpdate().getScaleTypeDetailValue().clone();
+                ScaleTypeDetailValue scaleTypeDetailValue = Objects.requireNonNull(defaultScaleType).getLastDetailForUpdate().getScaleTypeDetailValue().clone();
 
                 scaleTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateScaleTypeFromValue(scaleTypeDetailValue, false, deletedBy);
@@ -850,7 +851,7 @@ public class ScaleControl
                     if(iter.hasNext()) {
                         defaultScale = iter.next();
                     }
-                    ScaleDetailValue scaleDetailValue = defaultScale.getLastDetailForUpdate().getScaleDetailValue().clone();
+                    ScaleDetailValue scaleDetailValue = Objects.requireNonNull(defaultScale).getLastDetailForUpdate().getScaleDetailValue().clone();
 
                     scaleDetailValue.setIsDefault(Boolean.TRUE);
                     updateScaleFromValue(scaleDetailValue, false, deletedBy);
@@ -1289,7 +1290,7 @@ public class ScaleControl
                 if(iter.hasNext()) {
                     defaultScaleUseType = iter.next();
                 }
-                ScaleUseTypeDetailValue scaleUseTypeDetailValue = defaultScaleUseType.getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
+                ScaleUseTypeDetailValue scaleUseTypeDetailValue = Objects.requireNonNull(defaultScaleUseType).getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
 
                 scaleUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateScaleUseTypeFromValue(scaleUseTypeDetailValue, false, deletedBy);

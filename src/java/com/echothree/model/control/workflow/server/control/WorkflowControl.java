@@ -1096,7 +1096,7 @@ public class WorkflowControl
                     if(iter.hasNext()) {
                         defaultWorkflowStep = iter.next();
                     }
-                    WorkflowStepDetailValue workflowStepDetailValue = defaultWorkflowStep.getLastDetailForUpdate().getWorkflowStepDetailValue().clone();
+                    WorkflowStepDetailValue workflowStepDetailValue = Objects.requireNonNull(defaultWorkflowStep).getLastDetailForUpdate().getWorkflowStepDetailValue().clone();
 
                     workflowStepDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowStepFromValue(workflowStepDetailValue, false, deletedBy);
@@ -1740,7 +1740,7 @@ public class WorkflowControl
                     if(iter.hasNext()) {
                         defaultWorkflowEntrance = iter.next();
                     }
-                    WorkflowEntranceDetailValue workflowEntranceDetailValue = defaultWorkflowEntrance.getLastDetailForUpdate().getWorkflowEntranceDetailValue().clone();
+                    WorkflowEntranceDetailValue workflowEntranceDetailValue = Objects.requireNonNull(defaultWorkflowEntrance).getLastDetailForUpdate().getWorkflowEntranceDetailValue().clone();
 
                     workflowEntranceDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowEntranceFromValue(workflowEntranceDetailValue, false, deletedBy);
@@ -2861,7 +2861,7 @@ public class WorkflowControl
                     if(iter.hasNext()) {
                         defaultWorkflowDestination = iter.next();
                     }
-                    WorkflowDestinationDetailValue workflowDestinationDetailValue = defaultWorkflowDestination.getLastDetailForUpdate().getWorkflowDestinationDetailValue().clone();
+                    WorkflowDestinationDetailValue workflowDestinationDetailValue = Objects.requireNonNull(defaultWorkflowDestination).getLastDetailForUpdate().getWorkflowDestinationDetailValue().clone();
 
                     workflowDestinationDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowDestinationFromValue(workflowDestinationDetailValue, false, deletedBy);

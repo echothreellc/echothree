@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Objects;
 
 public class PaymentMethodTypeControl
         extends BasePaymentControl {
@@ -313,7 +314,7 @@ public class PaymentMethodTypeControl
                 if(iter.hasNext()) {
                     defaultPaymentMethodType = iter.next();
                 }
-                var paymentMethodTypeDetailValue = defaultPaymentMethodType.getLastDetailForUpdate().getPaymentMethodTypeDetailValue().clone();
+                var paymentMethodTypeDetailValue = Objects.requireNonNull(defaultPaymentMethodType).getLastDetailForUpdate().getPaymentMethodTypeDetailValue().clone();
 
                 paymentMethodTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentMethodTypeFromValue(paymentMethodTypeDetailValue, false, deletedBy);

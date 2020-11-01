@@ -615,6 +615,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class CoreControl
@@ -1858,7 +1859,7 @@ public class CoreControl
                 if(iter.hasNext()) {
                     defaultCommandMessageType = iter.next();
                 }
-                CommandMessageTypeDetailValue commandMessageTypeDetailValue = defaultCommandMessageType.getLastDetailForUpdate().getCommandMessageTypeDetailValue().clone();
+                CommandMessageTypeDetailValue commandMessageTypeDetailValue = Objects.requireNonNull(defaultCommandMessageType).getLastDetailForUpdate().getCommandMessageTypeDetailValue().clone();
                 
                 commandMessageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCommandMessageTypeFromValue(commandMessageTypeDetailValue, false, deletedBy);
@@ -4447,7 +4448,7 @@ public class CoreControl
                 if(iter.hasNext()) {
                     defaultEntityAttributeGroup = iter.next();
                 }
-                EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = defaultEntityAttributeGroup.getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
+                EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = Objects.requireNonNull(defaultEntityAttributeGroup).getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
                 
                 entityAttributeGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, false, deletedBy);
@@ -6268,7 +6269,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEntityListItem = iter.next();
                     }
-                    EntityListItemDetailValue entityListItemDetailValue = defaultEntityListItem.getLastDetailForUpdate().getEntityListItemDetailValue().clone();
+                    EntityListItemDetailValue entityListItemDetailValue = Objects.requireNonNull(defaultEntityListItem).getLastDetailForUpdate().getEntityListItemDetailValue().clone();
 
                     entityListItemDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityListItemFromValue(entityListItemDetailValue, false, deletedBy);
@@ -6756,7 +6757,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEntityIntegerRange = iter.next();
                     }
-                    EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = defaultEntityIntegerRange.getLastDetailForUpdate().getEntityIntegerRangeDetailValue().clone();
+                    EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = Objects.requireNonNull(defaultEntityIntegerRange).getLastDetailForUpdate().getEntityIntegerRangeDetailValue().clone();
 
                     entityIntegerRangeDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityIntegerRangeFromValue(entityIntegerRangeDetailValue, false, deletedBy);
@@ -7244,7 +7245,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEntityLongRange = iter.next();
                     }
-                    EntityLongRangeDetailValue entityLongRangeDetailValue = defaultEntityLongRange.getLastDetailForUpdate().getEntityLongRangeDetailValue().clone();
+                    EntityLongRangeDetailValue entityLongRangeDetailValue = Objects.requireNonNull(defaultEntityLongRange).getLastDetailForUpdate().getEntityLongRangeDetailValue().clone();
 
                     entityLongRangeDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityLongRangeFromValue(entityLongRangeDetailValue, false, deletedBy);
@@ -8012,7 +8013,7 @@ public class CoreControl
                 if(iter.hasNext()) {
                     defaultMimeType = iter.next();
                 }
-                MimeTypeDetailValue mimeTypeDetailValue = defaultMimeType.getLastDetailForUpdate().getMimeTypeDetailValue().clone();
+                MimeTypeDetailValue mimeTypeDetailValue = Objects.requireNonNull(defaultMimeType).getLastDetailForUpdate().getMimeTypeDetailValue().clone();
 
                 mimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateMimeTypeFromValue(mimeTypeDetailValue, false, deletedBy);
@@ -8586,7 +8587,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultProtocol = iter.next();
                     }
-                    ProtocolDetailValue protocolDetailValue = defaultProtocol.getLastDetailForUpdate().getProtocolDetailValue().clone();
+                    ProtocolDetailValue protocolDetailValue = Objects.requireNonNull(defaultProtocol).getLastDetailForUpdate().getProtocolDetailValue().clone();
 
                     protocolDetailValue.setIsDefault(Boolean.TRUE);
                     updateProtocolFromValue(protocolDetailValue, false, deletedBy);
@@ -9047,7 +9048,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultService = iter.next();
                     }
-                    ServiceDetailValue serviceDetailValue = defaultService.getLastDetailForUpdate().getServiceDetailValue().clone();
+                    ServiceDetailValue serviceDetailValue = Objects.requireNonNull(defaultService).getLastDetailForUpdate().getServiceDetailValue().clone();
 
                     serviceDetailValue.setIsDefault(Boolean.TRUE);
                     updateServiceFromValue(serviceDetailValue, false, deletedBy);
@@ -9476,7 +9477,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultServer = iter.next();
                     }
-                    ServerDetailValue serverDetailValue = defaultServer.getLastDetailForUpdate().getServerDetailValue().clone();
+                    ServerDetailValue serverDetailValue = Objects.requireNonNull(defaultServer).getLastDetailForUpdate().getServerDetailValue().clone();
 
                     serverDetailValue.setIsDefault(Boolean.TRUE);
                     updateServerFromValue(serverDetailValue, false, deletedBy);
@@ -13557,7 +13558,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultApplication = iter.next();
                     }
-                    ApplicationDetailValue applicationDetailValue = defaultApplication.getLastDetailForUpdate().getApplicationDetailValue().clone();
+                    ApplicationDetailValue applicationDetailValue = Objects.requireNonNull(defaultApplication).getLastDetailForUpdate().getApplicationDetailValue().clone();
 
                     applicationDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationFromValue(applicationDetailValue, false, deletedBy);
@@ -13990,7 +13991,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEditor = iter.next();
                     }
-                    EditorDetailValue editorDetailValue = defaultEditor.getLastDetailForUpdate().getEditorDetailValue().clone();
+                    EditorDetailValue editorDetailValue = Objects.requireNonNull(defaultEditor).getLastDetailForUpdate().getEditorDetailValue().clone();
 
                     editorDetailValue.setIsDefault(Boolean.TRUE);
                     updateEditorFromValue(editorDetailValue, false, deletedBy);
@@ -14464,7 +14465,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultApplicationEditor = iter.next();
                     }
-                    ApplicationEditorDetailValue applicationEditorDetailValue = defaultApplicationEditor.getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
+                    ApplicationEditorDetailValue applicationEditorDetailValue = Objects.requireNonNull(defaultApplicationEditor).getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
 
                     applicationEditorDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationEditorFromValue(applicationEditorDetailValue, false, deletedBy);
@@ -14801,7 +14802,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultApplicationEditorUse = iter.next();
                     }
-                    ApplicationEditorUseDetailValue applicationEditorUseDetailValue = defaultApplicationEditorUse.getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
+                    ApplicationEditorUseDetailValue applicationEditorUseDetailValue = Objects.requireNonNull(defaultApplicationEditorUse).getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
 
                     applicationEditorUseDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationEditorUseFromValue(applicationEditorUseDetailValue, false, deletedBy);
@@ -15500,7 +15501,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultColor = iter.next();
                     }
-                    ColorDetailValue colorDetailValue = defaultColor.getLastDetailForUpdate().getColorDetailValue().clone();
+                    ColorDetailValue colorDetailValue = Objects.requireNonNull(defaultColor).getLastDetailForUpdate().getColorDetailValue().clone();
 
                     colorDetailValue.setIsDefault(Boolean.TRUE);
                     updateColorFromValue(colorDetailValue, false, deletedBy);
@@ -15943,7 +15944,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultFontStyle = iter.next();
                     }
-                    FontStyleDetailValue fontStyleDetailValue = defaultFontStyle.getLastDetailForUpdate().getFontStyleDetailValue().clone();
+                    FontStyleDetailValue fontStyleDetailValue = Objects.requireNonNull(defaultFontStyle).getLastDetailForUpdate().getFontStyleDetailValue().clone();
 
                     fontStyleDetailValue.setIsDefault(Boolean.TRUE);
                     updateFontStyleFromValue(fontStyleDetailValue, false, deletedBy);
@@ -16386,7 +16387,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultFontWeight = iter.next();
                     }
-                    FontWeightDetailValue fontWeightDetailValue = defaultFontWeight.getLastDetailForUpdate().getFontWeightDetailValue().clone();
+                    FontWeightDetailValue fontWeightDetailValue = Objects.requireNonNull(defaultFontWeight).getLastDetailForUpdate().getFontWeightDetailValue().clone();
 
                     fontWeightDetailValue.setIsDefault(Boolean.TRUE);
                     updateFontWeightFromValue(fontWeightDetailValue, false, deletedBy);
@@ -16829,7 +16830,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultTextDecoration = iter.next();
                     }
-                    TextDecorationDetailValue textDecorationDetailValue = defaultTextDecoration.getLastDetailForUpdate().getTextDecorationDetailValue().clone();
+                    TextDecorationDetailValue textDecorationDetailValue = Objects.requireNonNull(defaultTextDecoration).getLastDetailForUpdate().getTextDecorationDetailValue().clone();
 
                     textDecorationDetailValue.setIsDefault(Boolean.TRUE);
                     updateTextDecorationFromValue(textDecorationDetailValue, false, deletedBy);
@@ -17272,7 +17273,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultTextTransformation = iter.next();
                     }
-                    TextTransformationDetailValue textTransformationDetailValue = defaultTextTransformation.getLastDetailForUpdate().getTextTransformationDetailValue().clone();
+                    TextTransformationDetailValue textTransformationDetailValue = Objects.requireNonNull(defaultTextTransformation).getLastDetailForUpdate().getTextTransformationDetailValue().clone();
 
                     textTransformationDetailValue.setIsDefault(Boolean.TRUE);
                     updateTextTransformationFromValue(textTransformationDetailValue, false, deletedBy);
@@ -17850,7 +17851,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultAppearance = iter.next();
                     }
-                    AppearanceDetailValue appearanceDetailValue = defaultAppearance.getLastDetailForUpdate().getAppearanceDetailValue().clone();
+                    AppearanceDetailValue appearanceDetailValue = Objects.requireNonNull(defaultAppearance).getLastDetailForUpdate().getAppearanceDetailValue().clone();
 
                     appearanceDetailValue.setIsDefault(Boolean.TRUE);
                     updateAppearanceFromValue(appearanceDetailValue, false, deletedBy);

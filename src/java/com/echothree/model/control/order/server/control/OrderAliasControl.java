@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderAliasControl
         extends BaseOrderControl {
@@ -318,7 +319,7 @@ public class OrderAliasControl
                 if(iter.hasNext()) {
                     defaultOrderAliasType = iter.next();
                 }
-                OrderAliasTypeDetailValue orderAliasTypeDetailValue = defaultOrderAliasType.getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
+                OrderAliasTypeDetailValue orderAliasTypeDetailValue = Objects.requireNonNull(defaultOrderAliasType).getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
 
                 orderAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderAliasTypeFromValue(orderAliasTypeDetailValue, false, deletedBy);

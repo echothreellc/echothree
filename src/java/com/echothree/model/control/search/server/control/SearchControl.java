@@ -244,6 +244,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SearchControl
         extends BaseModelControl {
@@ -528,7 +529,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchUseType = iter.next();
                     }
-                    SearchUseTypeDetailValue searchUseTypeDetailValue = defaultSearchUseType.getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
+                    SearchUseTypeDetailValue searchUseTypeDetailValue = Objects.requireNonNull(defaultSearchUseType).getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
 
                     searchUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchUseTypeFromValue(searchUseTypeDetailValue, false, deletedBy);
@@ -961,7 +962,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchResultActionType = iter.next();
                     }
-                    SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = defaultSearchResultActionType.getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
+                    SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = Objects.requireNonNull(defaultSearchResultActionType).getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
 
                     searchResultActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, false, deletedBy);
@@ -1393,7 +1394,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchCheckSpellingActionType = iter.next();
                     }
-                    SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = defaultSearchCheckSpellingActionType.getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
+                    SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = Objects.requireNonNull(defaultSearchCheckSpellingActionType).getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
 
                     searchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchCheckSpellingActionTypeFromValue(searchCheckSpellingActionTypeDetailValue, false, deletedBy);
@@ -1827,7 +1828,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchDefaultOperator = iter.next();
                     }
-                    SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = defaultSearchDefaultOperator.getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
+                    SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = Objects.requireNonNull(defaultSearchDefaultOperator).getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
 
                     searchDefaultOperatorDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchDefaultOperatorFromValue(searchDefaultOperatorDetailValue, false, deletedBy);
@@ -2261,7 +2262,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchSortDirection = iter.next();
                     }
-                    SearchSortDirectionDetailValue searchSortDirectionDetailValue = defaultSearchSortDirection.getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
+                    SearchSortDirectionDetailValue searchSortDirectionDetailValue = Objects.requireNonNull(defaultSearchSortDirection).getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
 
                     searchSortDirectionDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchSortDirectionFromValue(searchSortDirectionDetailValue, false, deletedBy);
@@ -2681,7 +2682,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchKind = iter.next();
                     }
-                    SearchKindDetailValue searchKindDetailValue = defaultSearchKind.getLastDetailForUpdate().getSearchKindDetailValue().clone();
+                    SearchKindDetailValue searchKindDetailValue = Objects.requireNonNull(defaultSearchKind).getLastDetailForUpdate().getSearchKindDetailValue().clone();
 
                     searchKindDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchKindFromValue(searchKindDetailValue, false, deletedBy);
@@ -3113,7 +3114,7 @@ public class SearchControl
                 if(iter.hasNext()) {
                     defaultSearchType = iter.next();
                 }
-                SearchTypeDetailValue searchTypeDetailValue = defaultSearchType.getLastDetailForUpdate().getSearchTypeDetailValue().clone();
+                SearchTypeDetailValue searchTypeDetailValue = Objects.requireNonNull(defaultSearchType).getLastDetailForUpdate().getSearchTypeDetailValue().clone();
 
                 searchTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSearchTypeFromValue(searchTypeDetailValue, false, deletedBy);
@@ -3538,7 +3539,7 @@ public class SearchControl
                 if(iter.hasNext()) {
                     defaultSearchSortOrder = iter.next();
                 }
-                SearchSortOrderDetailValue searchSortOrderDetailValue = defaultSearchSortOrder.getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
+                SearchSortOrderDetailValue searchSortOrderDetailValue = Objects.requireNonNull(defaultSearchSortOrder).getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
 
                 searchSortOrderDetailValue.setIsDefault(Boolean.TRUE);
                 updateSearchSortOrderFromValue(searchSortOrderDetailValue, false, deletedBy);

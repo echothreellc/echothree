@@ -317,7 +317,7 @@ public class PaymentProcessorTypeCodeControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessorTypeCode = iter.next();
                 }
-                var paymentProcessorTypeCodeDetailValue = defaultPaymentProcessorTypeCode.getLastDetailForUpdate().getPaymentProcessorTypeCodeDetailValue().clone();
+                var paymentProcessorTypeCodeDetailValue = Objects.requireNonNull(defaultPaymentProcessorTypeCode).getLastDetailForUpdate().getPaymentProcessorTypeCodeDetailValue().clone();
 
                 paymentProcessorTypeCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorTypeCodeFromValue(paymentProcessorTypeCodeDetailValue, false, deletedBy);

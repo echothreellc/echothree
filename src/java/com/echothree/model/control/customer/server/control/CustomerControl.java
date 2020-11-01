@@ -100,6 +100,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CustomerControl
         extends BaseModelControl {
@@ -425,7 +426,7 @@ public class CustomerControl
                 if(iter.hasNext()) {
                     defaultCustomerType = iter.next();
                 }
-                CustomerTypeDetailValue customerTypeDetailValue = defaultCustomerType.getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
+                CustomerTypeDetailValue customerTypeDetailValue = Objects.requireNonNull(defaultCustomerType).getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
                 
                 customerTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCustomerTypeFromValue(customerTypeDetailValue, false, deletedBy);

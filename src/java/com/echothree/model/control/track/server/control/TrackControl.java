@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TrackControl
         extends BaseModelControl {
@@ -430,7 +431,7 @@ public class TrackControl
                     if(iter.hasNext()) {
                         defaultTrack = iter.next();
                     }
-                    TrackDetailValue trackDetailValue = defaultTrack.getLastDetailForUpdate().getTrackDetailValue().clone();
+                    TrackDetailValue trackDetailValue = Objects.requireNonNull(defaultTrack).getLastDetailForUpdate().getTrackDetailValue().clone();
 
                     trackDetailValue.setIsDefault(Boolean.TRUE);
                     updateTrackFromValue(trackDetailValue, false, deletedBy);

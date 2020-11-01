@@ -302,7 +302,7 @@ public class FreeOnBoardControl
                 if(iter.hasNext()) {
                     defaultFreeOnBoard = iter.next();
                 }
-                var freeOnBoardDetailValue = defaultFreeOnBoard.getLastDetailForUpdate().getFreeOnBoardDetailValue().clone();
+                var freeOnBoardDetailValue = Objects.requireNonNull(defaultFreeOnBoard).getLastDetailForUpdate().getFreeOnBoardDetailValue().clone();
 
                 freeOnBoardDetailValue.setIsDefault(Boolean.TRUE);
                 updateFreeOnBoardFromValue(freeOnBoardDetailValue, false, deletedBy);

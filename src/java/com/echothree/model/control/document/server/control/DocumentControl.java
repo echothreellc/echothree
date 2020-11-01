@@ -109,6 +109,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class DocumentControl
@@ -448,7 +449,7 @@ public class DocumentControl
                     if(iter.hasNext()) {
                         defaultDocumentType = iter.next();
                     }
-                    DocumentTypeDetailValue documentTypeDetailValue = defaultDocumentType.getLastDetailForUpdate().getDocumentTypeDetailValue().clone();
+                    DocumentTypeDetailValue documentTypeDetailValue = Objects.requireNonNull(defaultDocumentType).getLastDetailForUpdate().getDocumentTypeDetailValue().clone();
 
                     documentTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateDocumentTypeFromValue(documentTypeDetailValue, false, deletedBy);
@@ -880,7 +881,7 @@ public class DocumentControl
                     if(iter.hasNext()) {
                         defaultDocumentTypeUsageType = iter.next();
                     }
-                    DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = defaultDocumentTypeUsageType.getLastDetailForUpdate().getDocumentTypeUsageTypeDetailValue().clone();
+                    DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = Objects.requireNonNull(defaultDocumentTypeUsageType).getLastDetailForUpdate().getDocumentTypeUsageTypeDetailValue().clone();
 
                     documentTypeUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateDocumentTypeUsageTypeFromValue(documentTypeUsageTypeDetailValue, false, deletedBy);

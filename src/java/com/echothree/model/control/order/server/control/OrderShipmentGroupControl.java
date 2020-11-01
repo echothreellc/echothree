@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderShipmentGroupControl
         extends BaseOrderControl {
@@ -320,7 +321,7 @@ public class OrderShipmentGroupControl
                 if(iter.hasNext()) {
                     defaultOrderShipmentGroup = iter.next();
                 }
-                OrderShipmentGroupDetailValue orderShipmentGroupDetailValue = defaultOrderShipmentGroup.getLastDetailForUpdate().getOrderShipmentGroupDetailValue().clone();
+                OrderShipmentGroupDetailValue orderShipmentGroupDetailValue = Objects.requireNonNull(defaultOrderShipmentGroup).getLastDetailForUpdate().getOrderShipmentGroupDetailValue().clone();
 
                 orderShipmentGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderShipmentGroupFromValue(orderShipmentGroupDetailValue, false, deletedBy);

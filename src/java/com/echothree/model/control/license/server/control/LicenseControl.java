@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LicenseControl
         extends BaseModelControl {
@@ -328,7 +329,7 @@ public class LicenseControl
                     if(iter.hasNext()) {
                         defaultLicenseType = iter.next();
                     }
-                    LicenseTypeDetailValue licenseTypeDetailValue = defaultLicenseType.getLastDetailForUpdate().getLicenseTypeDetailValue().clone();
+                    LicenseTypeDetailValue licenseTypeDetailValue = Objects.requireNonNull(defaultLicenseType).getLastDetailForUpdate().getLicenseTypeDetailValue().clone();
 
                     licenseTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateLicenseTypeFromValue(licenseTypeDetailValue, false, deletedBy);

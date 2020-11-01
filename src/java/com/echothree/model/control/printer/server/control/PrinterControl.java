@@ -108,6 +108,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class PrinterControl
         extends BaseModelControl {
@@ -418,7 +419,7 @@ public class PrinterControl
                 if(iter.hasNext()) {
                     defaultPrinterGroup = iter.next();
                 }
-                PrinterGroupDetailValue printerGroupDetailValue = defaultPrinterGroup.getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
+                PrinterGroupDetailValue printerGroupDetailValue = Objects.requireNonNull(defaultPrinterGroup).getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
 
                 printerGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updatePrinterGroupFromValue(printerGroupDetailValue, false, deletedBy);
@@ -1637,7 +1638,7 @@ public class PrinterControl
                 if(iter.hasNext()) {
                     defaultPrinterGroupUseType = iter.next();
                 }
-                PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = defaultPrinterGroupUseType.getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
+                PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = Objects.requireNonNull(defaultPrinterGroupUseType).getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
 
                 printerGroupUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePrinterGroupUseTypeFromValue(printerGroupUseTypeDetailValue, false, deletedBy);

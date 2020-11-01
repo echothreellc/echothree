@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderTimeControl
         extends BaseOrderControl {
@@ -327,7 +328,7 @@ public class OrderTimeControl
                 if(iter.hasNext()) {
                     defaultOrderTimeType = iter.next();
                 }
-                OrderTimeTypeDetailValue orderTimeTypeDetailValue = defaultOrderTimeType.getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
+                OrderTimeTypeDetailValue orderTimeTypeDetailValue = Objects.requireNonNull(defaultOrderTimeType).getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
 
                 orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, false, deletedBy);

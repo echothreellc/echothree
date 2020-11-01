@@ -117,6 +117,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ReturnPolicyControl
         extends BaseModelControl {
@@ -569,7 +570,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnKind = iter.next();
                 }
-                ReturnKindDetailValue returnKindDetailValue = defaultReturnKind.getLastDetailForUpdate().getReturnKindDetailValue().clone();
+                ReturnKindDetailValue returnKindDetailValue = Objects.requireNonNull(defaultReturnKind).getLastDetailForUpdate().getReturnKindDetailValue().clone();
                 
                 returnKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnKindFromValue(returnKindDetailValue, false, deletedBy);
@@ -1013,7 +1014,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnPolicy = iter.next();
                 }
-                ReturnPolicyDetailValue returnPolicyDetailValue = defaultReturnPolicy.getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
+                ReturnPolicyDetailValue returnPolicyDetailValue = Objects.requireNonNull(defaultReturnPolicy).getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
                 
                 returnPolicyDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnPolicyFromValue(returnPolicyDetailValue, false, deletedBy);
@@ -1757,7 +1758,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnReason = iter.next();
                 }
-                ReturnReasonDetailValue returnReasonDetailValue = defaultReturnReason.getLastDetailForUpdate().getReturnReasonDetailValue().clone();
+                ReturnReasonDetailValue returnReasonDetailValue = Objects.requireNonNull(defaultReturnReason).getLastDetailForUpdate().getReturnReasonDetailValue().clone();
                 
                 returnReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnReasonFromValue(returnReasonDetailValue, false, deletedBy);
@@ -2501,7 +2502,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnType = iter.next();
                 }
-                ReturnTypeDetailValue returnTypeDetailValue = defaultReturnType.getLastDetailForUpdate().getReturnTypeDetailValue().clone();
+                ReturnTypeDetailValue returnTypeDetailValue = Objects.requireNonNull(defaultReturnType).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
                 
                 returnTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnTypeFromValue(returnTypeDetailValue, false, deletedBy);

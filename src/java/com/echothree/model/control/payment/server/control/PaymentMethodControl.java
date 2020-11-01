@@ -56,6 +56,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class PaymentMethodControl
         extends BasePaymentControl {
@@ -412,7 +413,7 @@ public class PaymentMethodControl
                 if(iter.hasNext()) {
                     defaultPaymentMethod = iter.next();
                 }
-                PaymentMethodDetailValue paymentMethodDetailValue = defaultPaymentMethod.getLastDetailForUpdate().getPaymentMethodDetailValue().clone();
+                PaymentMethodDetailValue paymentMethodDetailValue = Objects.requireNonNull(defaultPaymentMethod).getLastDetailForUpdate().getPaymentMethodDetailValue().clone();
                 
                 paymentMethodDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentMethodFromValue(paymentMethodDetailValue, false, deletedBy);

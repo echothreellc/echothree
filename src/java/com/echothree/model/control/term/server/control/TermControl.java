@@ -78,6 +78,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class TermControl
         extends BaseModelControl {
@@ -483,7 +484,7 @@ public class TermControl
                 if(iter.hasNext()) {
                     defaultTerm = iter.next();
                 }
-                TermDetailValue termDetailValue = defaultTerm.getLastDetailForUpdate().getTermDetailValue().clone();
+                TermDetailValue termDetailValue = Objects.requireNonNull(defaultTerm).getLastDetailForUpdate().getTermDetailValue().clone();
                 
                 termDetailValue.setIsDefault(Boolean.TRUE);
                 updateTermFromValue(termDetailValue, false, deletedBy);

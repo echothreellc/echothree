@@ -92,6 +92,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class PicklistControl
@@ -435,7 +436,7 @@ public class PicklistControl
                     if(iter.hasNext()) {
                         defaultPicklistType = iter.next();
                     }
-                    PicklistTypeDetailValue picklistTypeDetailValue = defaultPicklistType.getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
+                    PicklistTypeDetailValue picklistTypeDetailValue = Objects.requireNonNull(defaultPicklistType).getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
 
                     picklistTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updatePicklistTypeFromValue(picklistTypeDetailValue, false, deletedBy);
@@ -871,7 +872,7 @@ public class PicklistControl
                 if(iter.hasNext()) {
                     defaultPicklistTimeType = iter.next();
                 }
-                PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = defaultPicklistTimeType.getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
+                PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = Objects.requireNonNull(defaultPicklistTimeType).getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
 
                 picklistTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePicklistTimeTypeFromValue(picklistTimeTypeDetailValue, false, deletedBy);
@@ -1288,7 +1289,7 @@ public class PicklistControl
                 if(iter.hasNext()) {
                     defaultPicklistAliasType = iter.next();
                 }
-                PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = defaultPicklistAliasType.getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
+                PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = Objects.requireNonNull(defaultPicklistAliasType).getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
 
                 picklistAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePicklistAliasTypeFromValue(picklistAliasTypeDetailValue, false, deletedBy);
