@@ -34,10 +34,8 @@ import com.echothree.model.control.sequence.server.transfer.SequenceTypeDescript
 import com.echothree.model.control.sequence.server.transfer.SequenceTypeTransferCache;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.common.pk.SequenceChecksumTypePK;
-import com.echothree.model.data.sequence.common.pk.SequenceDetailPK;
 import com.echothree.model.data.sequence.common.pk.SequenceEncoderTypePK;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
-import com.echothree.model.data.sequence.common.pk.SequenceTypeDetailPK;
 import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
@@ -348,19 +346,22 @@ public class SequenceControl
     public SequenceTypeTransfer getSequenceTypeTransfer(UserVisit userVisit, SequenceType sequenceType) {
         return getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache().getSequenceTypeTransfer(sequenceType);
     }
-    
-    public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit) {
-        List<SequenceType> sequenceTypes = getSequenceTypes();
+
+    public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit, List<SequenceType> sequenceTypes) {
         List<SequenceTypeTransfer> sequenceTypeTransfers = new ArrayList<>(sequenceTypes.size());
         SequenceTypeTransferCache sequenceTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
-        
+
         sequenceTypes.forEach((sequenceType) ->
                 sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType))
         );
-        
+
         return sequenceTypeTransfers;
     }
-    
+
+    public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit) {
+        return getSequenceTypeTransfers(userVisit, getSequenceTypes());
+    }
+
     private void updateSequenceTypeFromValue(SequenceTypeDetailValue sequenceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         SequenceType sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(session,
