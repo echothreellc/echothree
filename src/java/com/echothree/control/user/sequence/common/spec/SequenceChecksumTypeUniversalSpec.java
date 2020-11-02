@@ -18,9 +18,9 @@ package com.echothree.control.user.sequence.common.spec;
 
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface SelectorTypeUniversalSpec
-        extends SequenceTypeSpec, UniversalEntitySpec {
+public interface SequenceChecksumTypeUniversalSpec
+        extends SequenceChecksumTypeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond SequenceTypeSpec, UniversalEntitySpec
+    // Nothing additional beyond SequenceChecksumTypeSpec, UniversalEntitySpec
     
 }
