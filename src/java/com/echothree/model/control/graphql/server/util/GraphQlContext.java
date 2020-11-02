@@ -29,7 +29,7 @@ public class GraphQlContext {
     private final UserSession userSession;
     private final String remoteInet4Address;
     
-    private final Map<Class, Boolean> securityCache = new HashMap<>();
+    private final Map<Class<? extends GraphQlSecurityCommand>, Boolean> securityCache = new HashMap<>();
 
     public GraphQlContext(UserVisitPK userVisitPK, UserVisit userVisit, UserSession userSession, String remoteInet4Address) {
         this.userVisitPK = userVisitPK;
@@ -55,7 +55,7 @@ public class GraphQlContext {
     }
 
     public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command) {
-        Boolean hasAccess = securityCache.get(command);
+        var hasAccess = securityCache.get(command);
         
         if(hasAccess == null) {
             hasAccess = GraphQlSecurityUtils.getInstance().hasAccess(this, command);

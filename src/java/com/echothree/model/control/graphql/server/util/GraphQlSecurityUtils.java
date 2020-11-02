@@ -19,7 +19,6 @@ package com.echothree.model.control.graphql.server.util;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.GraphQlSecurityCommand;
-import graphql.schema.DataFetchingEnvironment;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -35,12 +34,12 @@ public final class GraphQlSecurityUtils {
     
     private Constructor<?> findConstructor(final Class<? extends GraphQlSecurityCommand> command) {
         Constructor<?> foundCtor = null;
-        Constructor<?>[] allConstructors = command.getDeclaredConstructors();
+        var allConstructors = command.getDeclaredConstructors();
 
         // Search all available Constructors for one that has a UserVisitPK as the
         // first parameter, and a type assignable to BaseForm as the second parameter.
-        for(Constructor ctor : allConstructors) {
-            Class<?>[] pType = ctor.getParameterTypes();
+        for(var ctor : allConstructors) {
+            var pType = ctor.getParameterTypes();
 
             if(pType.length == 2) {
                 if(pType[0] == UserVisitPK.class && BaseForm.class.isAssignableFrom(pType[1])) {
@@ -58,12 +57,12 @@ public final class GraphQlSecurityUtils {
     }
 
     public boolean hasAccess(final GraphQlContext context, final Class<? extends GraphQlSecurityCommand> command) {
-        boolean hasAccess = false;
+        boolean hasAccess;
 
         try {
-            Constructor<?> ctor = findConstructor(command); // Search for the Constructor that's required here
-            Object commandInstance = ctor.newInstance(context.getUserVisitPK(), null);
-            GraphQlSecurityCommand graphQlSecurityCommand = (GraphQlSecurityCommand) commandInstance;
+            var ctor = findConstructor(command); // Search for the Constructor that's required here
+            var commandInstance = ctor.newInstance(context.getUserVisitPK(), null);
+            var graphQlSecurityCommand = (GraphQlSecurityCommand) commandInstance;
 
             // Execute the instantiated command's security check function for the current user.
             graphQlSecurityCommand.security();
