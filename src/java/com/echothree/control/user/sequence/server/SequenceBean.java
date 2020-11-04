@@ -131,6 +131,16 @@ public class SequenceBean
     public CommandResult createSequenceEncoderType(UserVisitPK userVisitPK, CreateSequenceEncoderTypeForm form) {
         return new CreateSequenceEncoderTypeCommand(userVisitPK, form).run();
     }
+
+    @Override
+    public CommandResult getSequenceEncoderTypes(UserVisitPK userVisitPK, GetSequenceEncoderTypesForm form) {
+        return new GetSequenceEncoderTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getSequenceEncoderType(UserVisitPK userVisitPK, GetSequenceEncoderTypeForm form) {
+        return new GetSequenceEncoderTypeCommand(userVisitPK, form).run();
+    }
     
     @Override
     public CommandResult getSequenceEncoderTypeChoices(UserVisitPK userVisitPK, GetSequenceEncoderTypeChoicesForm form) {

@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSequenceEncoderTypesResult
         extends BaseResult {
-    
+
+    Long getSequenceEncoderTypeCount();
+    void setSequenceEncoderTypeCount(Long sequenceEncoderTypeCount);
+
     List<SequenceEncoderTypeTransfer> getSequenceEncoderTypes();
     void setSequenceEncoderTypes(List<SequenceEncoderTypeTransfer> sequenceEncoderTypes);
     
