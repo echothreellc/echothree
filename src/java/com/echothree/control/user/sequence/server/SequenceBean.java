@@ -108,7 +108,17 @@ public class SequenceBean
     public CommandResult createSequenceChecksumType(UserVisitPK userVisitPK, CreateSequenceChecksumTypeForm form) {
         return new CreateSequenceChecksumTypeCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getSequenceChecksumTypes(UserVisitPK userVisitPK, GetSequenceChecksumTypesForm form) {
+        return new GetSequenceChecksumTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getSequenceChecksumType(UserVisitPK userVisitPK, GetSequenceChecksumTypeForm form) {
+        return new GetSequenceChecksumTypeCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getSequenceChecksumTypeChoices(UserVisitPK userVisitPK, GetSequenceChecksumTypeChoicesForm form) {
         return new GetSequenceChecksumTypeChoicesCommand(userVisitPK, form).run();
