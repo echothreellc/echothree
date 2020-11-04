@@ -65,13 +65,8 @@ public class GetSequenceEncoderTypeCommand
     @Override
     protected SequenceEncoderType getEntity() {
         var sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
-        var sequenceEncoderType = SequenceEncoderTypeLogic.getInstance().getSequenceEncoderTypeByName(this, sequenceEncoderTypeName);
 
-        if(sequenceEncoderType != null) {
-            sendEventUsingNames(sequenceEncoderType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        }
-
-        return sequenceEncoderType;
+        return SequenceEncoderTypeLogic.getInstance().getSequenceEncoderTypeByName(this, sequenceEncoderTypeName);
     }
 
     @Override
