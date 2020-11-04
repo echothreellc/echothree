@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class UseTypeControl
         extends BaseOfferControl {
@@ -258,7 +259,7 @@ public class UseTypeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUseTypeChoice == null? false: defaultUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultUseTypeChoice != null && defaultUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && useTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -333,7 +334,7 @@ public class UseTypeControl
                 if(iter.hasNext()) {
                     defaultUseType = iter.next();
                 }
-                UseTypeDetailValue useTypeDetailValue = defaultUseType.getLastDetailForUpdate().getUseTypeDetailValue().clone();
+                UseTypeDetailValue useTypeDetailValue = Objects.requireNonNull(defaultUseType).getLastDetailForUpdate().getUseTypeDetailValue().clone();
                 
                 useTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateUseTypeFromValue(useTypeDetailValue, false, deletedBy);
@@ -405,7 +406,7 @@ public class UseTypeControl
     }
     
     private List<UseTypeDescription> getUseTypeDescriptionsByUseType(UseType useType, EntityPermission entityPermission) {
-        List<UseTypeDescription> useTypeDescriptions = null;
+        List<UseTypeDescription> useTypeDescriptions;
         
         try {
             String query = null;
@@ -505,9 +506,9 @@ public class UseTypeControl
     public void deleteUseTypeDescriptionsByUseType(UseType useType, BasePK deletedBy) {
         List<UseTypeDescription> useTypeDescriptions = getUseTypeDescriptionsByUseTypeForUpdate(useType);
         
-        useTypeDescriptions.stream().forEach((useTypeDescription) -> {
-            deleteUseTypeDescription(useTypeDescription, deletedBy);
-        });
+        useTypeDescriptions.forEach((useTypeDescription) -> 
+                deleteUseTypeDescription(useTypeDescription, deletedBy)
+        );
     }
 
 

@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderPriorityControl
         extends BaseOrderControl {
@@ -205,9 +206,9 @@ public class OrderPriorityControl
         List<OrderPriorityTransfer> orderPriorityTransfers = new ArrayList<>(orderPriorities.size());
         OrderPriorityTransferCache orderPriorityTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityTransferCache();
 
-        orderPriorities.stream().forEach((orderPriority) -> {
-            orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(orderPriority));
-        });
+        orderPriorities.forEach((orderPriority) ->
+                orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(orderPriority))
+        );
 
         return orderPriorityTransfers;
     }
@@ -238,7 +239,7 @@ public class OrderPriorityControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderPriorityChoice == null? false: defaultOrderPriorityChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderPriorityChoice != null && defaultOrderPriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderPriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -314,7 +315,7 @@ public class OrderPriorityControl
                 if(iter.hasNext()) {
                     defaultOrderPriority = iter.next();
                 }
-                OrderPriorityDetailValue orderPriorityDetailValue = defaultOrderPriority.getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
+                OrderPriorityDetailValue orderPriorityDetailValue = Objects.requireNonNull(defaultOrderPriority).getLastDetailForUpdate().getOrderPriorityDetailValue().clone();
 
                 orderPriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderPriorityFromValue(orderPriorityDetailValue, false, deletedBy);
@@ -432,9 +433,9 @@ public class OrderPriorityControl
         List<OrderPriorityDescriptionTransfer> orderPriorityDescriptionTransfers = new ArrayList<>(orderPriorityDescriptions.size());
         OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache();
 
-        orderPriorityDescriptions.stream().forEach((orderPriorityDescription) -> {
-            orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(orderPriorityDescription));
-        });
+        orderPriorityDescriptions.forEach((orderPriorityDescription) ->
+                orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(orderPriorityDescription))
+        );
 
         return orderPriorityDescriptionTransfers;
     }
@@ -468,9 +469,9 @@ public class OrderPriorityControl
     public void deleteOrderPriorityDescriptionsByOrderPriority(OrderPriority orderPriority, BasePK deletedBy) {
         List<OrderPriorityDescription> orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriorityForUpdate(orderPriority);
 
-        orderPriorityDescriptions.stream().forEach((orderPriorityDescription) -> {
-            deleteOrderPriorityDescription(orderPriorityDescription, deletedBy);
-        });
+        orderPriorityDescriptions.forEach((orderPriorityDescription) -> 
+                deleteOrderPriorityDescription(orderPriorityDescription, deletedBy)
+        );
     }
 
 }

@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderLineAdjustmentControl
         extends BaseOrderControl {
@@ -213,9 +214,9 @@ public class OrderLineAdjustmentControl
         List<OrderLineAdjustmentTypeTransfer> orderLineAdjustmentTypeTransfers = new ArrayList<>(orderLineAdjustmentTypes.size());
         OrderLineAdjustmentTypeTransferCache orderLineAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeTransferCache();
 
-        orderLineAdjustmentTypes.stream().forEach((orderLineAdjustmentType) -> {
-            orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType));
-        });
+        orderLineAdjustmentTypes.forEach((orderLineAdjustmentType) ->
+                orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType))
+        );
 
         return orderLineAdjustmentTypeTransfers;
     }
@@ -246,7 +247,7 @@ public class OrderLineAdjustmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderLineAdjustmentTypeChoice == null? false: defaultOrderLineAdjustmentTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderLineAdjustmentTypeChoice != null && defaultOrderLineAdjustmentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderLineAdjustmentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -322,7 +323,7 @@ public class OrderLineAdjustmentControl
                 if(iter.hasNext()) {
                     defaultOrderLineAdjustmentType = iter.next();
                 }
-                OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = defaultOrderLineAdjustmentType.getLastDetailForUpdate().getOrderLineAdjustmentTypeDetailValue().clone();
+                OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = Objects.requireNonNull(defaultOrderLineAdjustmentType).getLastDetailForUpdate().getOrderLineAdjustmentTypeDetailValue().clone();
 
                 orderLineAdjustmentTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderLineAdjustmentTypeFromValue(orderLineAdjustmentTypeDetailValue, false, deletedBy);
@@ -440,9 +441,9 @@ public class OrderLineAdjustmentControl
         List<OrderLineAdjustmentTypeDescriptionTransfer> orderLineAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderLineAdjustmentTypeDescriptions.size());
         OrderLineAdjustmentTypeDescriptionTransferCache orderLineAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeDescriptionTransferCache();
 
-        orderLineAdjustmentTypeDescriptions.stream().forEach((orderLineAdjustmentTypeDescription) -> {
-            orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription));
-        });
+        orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) ->
+                orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription))
+        );
 
         return orderLineAdjustmentTypeDescriptionTransfers;
     }
@@ -476,9 +477,9 @@ public class OrderLineAdjustmentControl
     public void deleteOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(OrderLineAdjustmentType orderLineAdjustmentType, BasePK deletedBy) {
         List<OrderLineAdjustmentTypeDescription> orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentTypeForUpdate(orderLineAdjustmentType);
 
-        orderLineAdjustmentTypeDescriptions.stream().forEach((orderLineAdjustmentTypeDescription) -> {
-            deleteOrderLineAdjustmentTypeDescription(orderLineAdjustmentTypeDescription, deletedBy);
-        });
+        orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) -> 
+                deleteOrderLineAdjustmentTypeDescription(orderLineAdjustmentTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -554,9 +555,9 @@ public class OrderLineAdjustmentControl
     public void deleteOrderLineAdjustmentsByOrderLine(OrderLine orderLine, BasePK deletedBy) {
         List<OrderLineAdjustment> orderLineAdjustments = getOrderLineAdjustmentsByOrderLineForUpdate(orderLine);
 
-        orderLineAdjustments.stream().forEach((orderLineAdjustment) -> {
-            deleteOrderLineAdjustment(orderLineAdjustment, deletedBy);
-        });
+        orderLineAdjustments.forEach((orderLineAdjustment) -> 
+                deleteOrderLineAdjustment(orderLineAdjustment, deletedBy)
+        );
     }
 
 }

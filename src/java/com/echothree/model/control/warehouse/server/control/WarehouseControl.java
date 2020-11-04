@@ -103,6 +103,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class WarehouseControl
         extends BaseModelControl {
@@ -273,7 +274,7 @@ public class WarehouseControl
     }
     
     private List<Warehouse> getWarehouses(EntityPermission entityPermission) {
-        List<Warehouse> warehouses = null;
+        List<Warehouse> warehouses;
         
         try {
             String query = null;
@@ -343,7 +344,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultWarehouseChoice == null? false: defaultWarehouseChoice.equals(value);
+            boolean usingDefaultChoice = defaultWarehouseChoice != null && defaultWarehouseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && warehouse.getIsDefault())) {
                 defaultValue = value;
             }
@@ -510,7 +511,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationUseTypeChoice == null? false: defaultLocationUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLocationUseTypeChoice != null && defaultLocationUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && locationUseType.getIsDefault()))
                 defaultValue = value;
         }
@@ -678,7 +679,7 @@ public class WarehouseControl
     }
     
     private List<LocationType> getLocationTypesByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
-        List<LocationType> locationTypes = null;
+        List<LocationType> locationTypes;
         
         try {
             String query = null;
@@ -765,7 +766,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationTypeChoice == null? false: defaultLocationTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLocationTypeChoice != null && defaultLocationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && locationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -842,7 +843,7 @@ public class WarehouseControl
                     if(iter.hasNext()) {
                         defaultLocationType = (LocationType)iter.next();
                     }
-                    LocationTypeDetailValue locationTypeDetailValue = defaultLocationType.getLastDetailForUpdate().getLocationTypeDetailValue().clone();
+                    LocationTypeDetailValue locationTypeDetailValue = Objects.requireNonNull(defaultLocationType).getLastDetailForUpdate().getLocationTypeDetailValue().clone();
                     
                     locationTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateLocationTypeFromValue(locationTypeDetailValue, false, deletedBy);
@@ -927,7 +928,7 @@ public class WarehouseControl
     }
     
     private List<LocationTypeDescription> getLocationTypeDescriptionsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<LocationTypeDescription> locationTypeDescriptions = null;
+        List<LocationTypeDescription> locationTypeDescriptions;
         
         try {
             String query = null;
@@ -1030,9 +1031,9 @@ public class WarehouseControl
     public void deleteLocationTypeDescriptionsByLocationType(LocationType locationType, BasePK deletedBy) {
         List<LocationTypeDescription> locationTypeDescriptions = getLocationTypeDescriptionsByLocationTypeForUpdate(locationType);
         
-        locationTypeDescriptions.stream().forEach((locationTypeDescription) -> {
-            deleteLocationTypeDescription(locationTypeDescription, deletedBy);
-        });
+        locationTypeDescriptions.forEach((locationTypeDescription) -> 
+                deleteLocationTypeDescription(locationTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1107,7 +1108,7 @@ public class WarehouseControl
     }
     
     private List<LocationNameElement> getLocationNameElementsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<LocationNameElement> locationNameElements = null;
+        List<LocationNameElement> locationNameElements;
         
         try {
             String query = null;
@@ -1167,9 +1168,9 @@ public class WarehouseControl
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
         LocationNameElementTransferCache locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
         
-        locationNameElements.stream().forEach((locationNameElement) -> {
-            locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement));
-        });
+        locationNameElements.forEach((locationNameElement) ->
+                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement))
+        );
         
         return locationNameElementTransfers;
     }
@@ -1215,9 +1216,9 @@ public class WarehouseControl
     public void deleteLocationNameElementsByLocationType(LocationType locationType, BasePK deletedBy) {
         List<LocationNameElement> locationNameElements = getLocationNameElementsByLocationTypeForUpdate(locationType);
         
-        locationNameElements.stream().forEach((locationNameElement) -> {
-            deleteLocationNameElement(locationNameElement, deletedBy);
-        });
+        locationNameElements.forEach((locationNameElement) -> 
+                deleteLocationNameElement(locationNameElement, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1283,7 +1284,7 @@ public class WarehouseControl
     }
     
     private List<LocationNameElementDescription> getLocationNameElementDescriptionsByLocationNameElement(LocationNameElement locationNameElement, EntityPermission entityPermission) {
-        List<LocationNameElementDescription> locationNameElementDescriptions = null;
+        List<LocationNameElementDescription> locationNameElementDescriptions;
         
         try {
             String query = null;
@@ -1385,9 +1386,9 @@ public class WarehouseControl
     public void deleteLocationNameElementDescriptionsByLocationNameElement(LocationNameElement locationNameElement, BasePK deletedBy) {
         List<LocationNameElementDescription> locationNameElementDescriptions = getLocationNameElementDescriptionsByLocationNameElementForUpdate(locationNameElement);
         
-        locationNameElementDescriptions.stream().forEach((locationNameElementDescription) -> {
-            deleteLocationNameElementDescription(locationNameElementDescription, deletedBy);
-        });
+        locationNameElementDescriptions.forEach((locationNameElementDescription) -> 
+                deleteLocationNameElementDescription(locationNameElementDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1461,7 +1462,7 @@ public class WarehouseControl
     }
     
     private List<Location> getLocationsByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
-        List<Location> locations = null;
+        List<Location> locations;
         
         try {
             String query = null;
@@ -1500,7 +1501,7 @@ public class WarehouseControl
     }
     
     private List<Location> getLocationsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<Location> locations = null;
+        List<Location> locations;
         
         try {
             String query = null;
@@ -1539,7 +1540,7 @@ public class WarehouseControl
     }
     
     private List<Location> getLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
-        List<Location> locations = null;
+        List<Location> locations;
         
         try {
             String query = null;
@@ -1612,7 +1613,7 @@ public class WarehouseControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationChoice == null? false: defaultLocationChoice.equals(value);
+            boolean usingDefaultChoice = defaultLocationChoice != null && defaultLocationChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -1704,25 +1705,25 @@ public class WarehouseControl
     public void deleteLocationsByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
         List<Location> locations = getLocationsByWarehousePartyForUpdate(warehouseParty);
         
-        locations.stream().forEach((location) -> {
-            deleteLocation(location, deletedBy);
-        });
+        locations.forEach((location) -> 
+                deleteLocation(location, deletedBy)
+        );
     }
     
     public void deleteLocationsByLocationType(LocationType locationType, BasePK deletedBy) {
         List<Location> locations = getLocationsByLocationTypeForUpdate(locationType);
         
-        locations.stream().forEach((location) -> {
-            deleteLocation(location, deletedBy);
-        });
+        locations.forEach((location) -> 
+                deleteLocation(location, deletedBy)
+        );
     }
     
     public void deleteLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
         List<Location> locations = getLocationsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
-        locations.stream().forEach((location) -> {
-            deleteLocation(location, deletedBy);
-        });
+        locations.forEach((location) -> 
+                deleteLocation(location, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1786,7 +1787,7 @@ public class WarehouseControl
     }
     
     private List<LocationDescription> getLocationDescriptionsByLocation(Location location, EntityPermission entityPermission) {
-        List<LocationDescription> locationDescriptions = null;
+        List<LocationDescription> locationDescriptions;
         
         try {
             String query = null;
@@ -1888,9 +1889,9 @@ public class WarehouseControl
     public void deleteLocationDescriptionsByLocation(Location location, BasePK deletedBy) {
         List<LocationDescription> locationDescriptions = getLocationDescriptionsByLocationForUpdate(location);
         
-        locationDescriptions.stream().forEach((locationDescription) -> {
-            deleteLocationDescription(locationDescription, deletedBy);
-        });
+        locationDescriptions.forEach((locationDescription) -> 
+                deleteLocationDescription(locationDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2008,7 +2009,7 @@ public class WarehouseControl
     }
     
     private List<LocationCapacity> getLocationCapacitiesByLocation(Location location, EntityPermission entityPermission) {
-        List<LocationCapacity> locationCapacities = null;
+        List<LocationCapacity> locationCapacities;
         
         try {
             String query = null;
@@ -2126,9 +2127,9 @@ public class WarehouseControl
         List<LocationCapacityTransfer> locationCapacityTransfers = new ArrayList<>(locationCapacities.size());
         LocationCapacityTransferCache locationCapacityTransferCache = getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache();
         
-        locationCapacities.stream().forEach((locationCapacity) -> {
-            locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity));
-        });
+        locationCapacities.forEach((locationCapacity) ->
+                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity))
+        );
         
         return locationCapacityTransfers;
     }
@@ -2142,9 +2143,9 @@ public class WarehouseControl
     public void deleteLocationCapacitiesByLocation(Location location, BasePK deletedBy) {
         List<LocationCapacity> locationCapacities = getLocationCapacitiesByLocationForUpdate(location);
         
-        locationCapacities.stream().forEach((locationCapacity) -> {
-            deleteLocationCapacity(locationCapacity, deletedBy);
-        });
+        locationCapacities.forEach((locationCapacity) -> 
+                deleteLocationCapacity(locationCapacity, deletedBy)
+        );
     }
     
 }

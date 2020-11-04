@@ -226,6 +226,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class AccountingControl
@@ -279,10 +280,9 @@ public class AccountingControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Currency */
     public Currency getCurrencyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        CurrencyPK pk = new CurrencyPK(entityInstance.getEntityUniqueId());
-        Currency currency = CurrencyFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return currency;
+        var pk = new CurrencyPK(entityInstance.getEntityUniqueId());
+
+        return CurrencyFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Currency getCurrencyByEntityInstance(EntityInstance entityInstance) {
@@ -389,7 +389,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCurrencyChoice == null? false: defaultCurrencyChoice.equals(value);
+            boolean usingDefaultChoice = defaultCurrencyChoice != null && defaultCurrencyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && currency.getIsDefault()))
                 defaultValue = value;
         }
@@ -452,7 +452,7 @@ public class AccountingControl
     }
     
     private List<CurrencyDescription> getCurrencyDescriptionsByCurrency(Currency currency, EntityPermission entityPermission) {
-        List<CurrencyDescription> currencyDescriptions = null;
+        List<CurrencyDescription> currencyDescriptions;
         
         try {
             String query = null;
@@ -512,9 +512,9 @@ public class AccountingControl
         List<CurrencyDescriptionTransfer> currencyDescriptionTransfers = new ArrayList<>(currencyDescriptions.size());
         CurrencyDescriptionTransferCache currencyDescriptionTransferCache = getAccountingTransferCaches(userVisit).getCurrencyDescriptionTransferCache();
         
-        currencyDescriptions.stream().forEach((currencyDescription) -> {
-            currencyDescriptionTransfers.add(currencyDescriptionTransferCache.getTransfer(currencyDescription));
-        });
+        currencyDescriptions.forEach((currencyDescription) ->
+                currencyDescriptionTransfers.add(currencyDescriptionTransferCache.getTransfer(currencyDescription))
+        );
         
         return currencyDescriptionTransfers;
     }
@@ -704,9 +704,9 @@ public class AccountingControl
         List<ItemAccountingCategoryTransfer> itemAccountingCategoryTransfers = new ArrayList<>(itemAccountingCategories.size());
         ItemAccountingCategoryTransferCache itemAccountingCategoryTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
         
-        itemAccountingCategories.stream().forEach((itemAccountingCategory) -> {
-            itemAccountingCategoryTransfers.add(itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategory));
-        });
+        itemAccountingCategories.forEach((itemAccountingCategory) ->
+                itemAccountingCategoryTransfers.add(itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategory))
+        );
         
         return itemAccountingCategoryTransfers;
     }
@@ -737,7 +737,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemAccountingCategoryChoice == null? false: defaultItemAccountingCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemAccountingCategoryChoice != null && defaultItemAccountingCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAccountingCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -845,7 +845,7 @@ public class AccountingControl
                     if(iter.hasNext()) {
                         defaultItemAccountingCategory = iter.next();
                     }
-                    ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = defaultItemAccountingCategory.getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
+                    ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = Objects.requireNonNull(defaultItemAccountingCategory).getLastDetailForUpdate().getItemAccountingCategoryDetailValue().clone();
 
                     itemAccountingCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, false, deletedBy);
@@ -861,9 +861,7 @@ public class AccountingControl
     }
 
     private void deleteItemAccountingCategories(List<ItemAccountingCategory> itemAccountingCategories, boolean checkDefault, BasePK deletedBy) {
-        itemAccountingCategories.stream().forEach((itemAccountingCategory) -> {
-            deleteItemAccountingCategory(itemAccountingCategory, checkDefault, deletedBy);
-        });
+        itemAccountingCategories.forEach((itemAccountingCategory) -> deleteItemAccountingCategory(itemAccountingCategory, checkDefault, deletedBy));
     }
 
     public void deleteItemAccountingCategories(List<ItemAccountingCategory> itemAccountingCategories, BasePK deletedBy) {
@@ -940,7 +938,7 @@ public class AccountingControl
     
     private List<ItemAccountingCategoryDescription> getItemAccountingCategoryDescriptionsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory,
             EntityPermission entityPermission) {
-        List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions = null;
+        List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions;
         
         try {
             String query = null;
@@ -1006,9 +1004,9 @@ public class AccountingControl
         List<ItemAccountingCategoryDescriptionTransfer> itemAccountingCategoryDescriptionTransfers = new ArrayList<>(itemAccountingCategoryDescriptions.size());
         ItemAccountingCategoryDescriptionTransferCache itemAccountingCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryDescriptionTransferCache();
         
-        itemAccountingCategoryDescriptions.stream().forEach((itemAccountingCategoryDescription) -> {
-            itemAccountingCategoryDescriptionTransfers.add(itemAccountingCategoryDescriptionTransferCache.getTransfer(itemAccountingCategoryDescription));
-        });
+        itemAccountingCategoryDescriptions.forEach((itemAccountingCategoryDescription) ->
+                itemAccountingCategoryDescriptionTransfers.add(itemAccountingCategoryDescriptionTransferCache.getTransfer(itemAccountingCategoryDescription))
+        );
         
         return itemAccountingCategoryDescriptionTransfers;
     }
@@ -1044,9 +1042,9 @@ public class AccountingControl
             BasePK deletedBy) {
         List<ItemAccountingCategoryDescription> itemAccountingCategoryDescriptions = getItemAccountingCategoryDescriptionsByItemAccountingCategoryForUpdate(itemAccountingCategory);
         
-        itemAccountingCategoryDescriptions.stream().forEach((itemAccountingCategoryDescription) -> {
-            deleteItemAccountingCategoryDescription(itemAccountingCategoryDescription, deletedBy);
-        });
+        itemAccountingCategoryDescriptions.forEach((itemAccountingCategoryDescription) -> 
+                deleteItemAccountingCategoryDescription(itemAccountingCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1108,7 +1106,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountTypeChoice == null? false: defaultGlAccountTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountTypeChoice != null && defaultGlAccountTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1125,9 +1123,9 @@ public class AccountingControl
         List<GlAccountTypeTransfer> glAccountTypeTransfers = new ArrayList<>(glAccountTypes.size());
         GlAccountTypeTransferCache glAccountTypeTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache();
         
-        glAccountTypes.stream().forEach((glAccountType) -> {
-            glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType));
-        });
+        glAccountTypes.forEach((glAccountType) ->
+                glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType))
+        );
         
         return glAccountTypeTransfers;
     }
@@ -1358,9 +1356,9 @@ public class AccountingControl
         List<GlAccountClassTransfer> glAccountClassTransfers = new ArrayList<>(glAccountClasses.size());
         GlAccountClassTransferCache glAccountClassTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
         
-        glAccountClasses.stream().forEach((glAccountClass) -> {
-            glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass));
-        });
+        glAccountClasses.forEach((glAccountClass) ->
+                glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass))
+        );
         
         return glAccountClassTransfers;
     }
@@ -1391,7 +1389,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountClassChoice == null? false: defaultGlAccountClassChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountClassChoice != null && defaultGlAccountClassChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountClassDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1490,7 +1488,7 @@ public class AccountingControl
                     if(iter.hasNext()) {
                         defaultGlAccountClass = iter.next();
                     }
-                    GlAccountClassDetailValue glAccountClassDetailValue = defaultGlAccountClass.getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
+                    GlAccountClassDetailValue glAccountClassDetailValue = Objects.requireNonNull(defaultGlAccountClass).getLastDetailForUpdate().getGlAccountClassDetailValue().clone();
 
                     glAccountClassDetailValue.setIsDefault(Boolean.TRUE);
                     updateGlAccountClassFromValue(glAccountClassDetailValue, false, deletedBy);
@@ -1506,9 +1504,7 @@ public class AccountingControl
     }
 
     private void deleteGlAccountClasses(List<GlAccountClass> glAccountClasses, boolean checkDefault, BasePK deletedBy) {
-        glAccountClasses.stream().forEach((glAccountClass) -> {
-            deleteGlAccountClass(glAccountClass, checkDefault, deletedBy);
-        });
+        glAccountClasses.forEach((glAccountClass) -> deleteGlAccountClass(glAccountClass, checkDefault, deletedBy));
     }
 
     public void deleteGlAccountClasses(List<GlAccountClass> glAccountClasses, BasePK deletedBy) {
@@ -1580,7 +1576,7 @@ public class AccountingControl
     }
     
     private List<GlAccountClassDescription> getGlAccountClassDescriptionsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
-        List<GlAccountClassDescription> glAccountClassDescriptions = null;
+        List<GlAccountClassDescription> glAccountClassDescriptions;
         
         try {
             String query = null;
@@ -1644,9 +1640,9 @@ public class AccountingControl
         List<GlAccountClassDescriptionTransfer> glAccountClassDescriptionTransfers = new ArrayList<>(glAccountClassDescriptions.size());
         GlAccountClassDescriptionTransferCache glAccountClassDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassDescriptionTransferCache();
         
-        glAccountClassDescriptions.stream().forEach((glAccountClassDescription) -> {
-            glAccountClassDescriptionTransfers.add(glAccountClassDescriptionTransferCache.getTransfer(glAccountClassDescription));
-        });
+        glAccountClassDescriptions.forEach((glAccountClassDescription) ->
+                glAccountClassDescriptionTransfers.add(glAccountClassDescriptionTransferCache.getTransfer(glAccountClassDescription))
+        );
         
         return glAccountClassDescriptionTransfers;
     }
@@ -1679,9 +1675,9 @@ public class AccountingControl
     public void deleteGlAccountClassDescriptionsByGlAccountClass(GlAccountClass glAccountClass, BasePK deletedBy) {
         List<GlAccountClassDescription> glAccountClassDescriptions = getGlAccountClassDescriptionsByGlAccountClassForUpdate(glAccountClass);
         
-        glAccountClassDescriptions.stream().forEach((glAccountClassDescription) -> {
-            deleteGlAccountClassDescription(glAccountClassDescription, deletedBy);
-        });
+        glAccountClassDescriptions.forEach((glAccountClassDescription) -> 
+                deleteGlAccountClassDescription(glAccountClassDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1866,9 +1862,9 @@ public class AccountingControl
         List<GlAccountCategoryTransfer> glAccountCategoryTransfers = new ArrayList<>(glAccountCategories.size());
         GlAccountCategoryTransferCache glAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
         
-        glAccountCategories.stream().forEach((glAccountCategory) -> {
-            glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory));
-        });
+        glAccountCategories.forEach((glAccountCategory) ->
+                glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory))
+        );
         
         return glAccountCategoryTransfers;
     }
@@ -1899,7 +1895,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountCategoryChoice == null? false: defaultGlAccountCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountCategoryChoice != null && defaultGlAccountCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1999,7 +1995,7 @@ public class AccountingControl
                     if(iter.hasNext()) {
                         defaultGlAccountCategory = iter.next();
                     }
-                    GlAccountCategoryDetailValue glAccountCategoryDetailValue = defaultGlAccountCategory.getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
+                    GlAccountCategoryDetailValue glAccountCategoryDetailValue = Objects.requireNonNull(defaultGlAccountCategory).getLastDetailForUpdate().getGlAccountCategoryDetailValue().clone();
 
                     glAccountCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateGlAccountCategoryFromValue(glAccountCategoryDetailValue, false, deletedBy);
@@ -2015,9 +2011,7 @@ public class AccountingControl
     }
 
     private void deleteGlAccountCategories(List<GlAccountCategory> glAccountCategories, boolean checkDefault, BasePK deletedBy) {
-        glAccountCategories.stream().forEach((glAccountCategory) -> {
-            deleteGlAccountCategory(glAccountCategory, checkDefault, deletedBy);
-        });
+        glAccountCategories.forEach((glAccountCategory) -> deleteGlAccountCategory(glAccountCategory, checkDefault, deletedBy));
     }
 
     public void deleteGlAccountCategories(List<GlAccountCategory> glAccountCategories, BasePK deletedBy) {
@@ -2089,7 +2083,7 @@ public class AccountingControl
     }
     
     private List<GlAccountCategoryDescription> getGlAccountCategoryDescriptionsByGlAccountCategory(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
-        List<GlAccountCategoryDescription> glAccountCategoryDescriptions = null;
+        List<GlAccountCategoryDescription> glAccountCategoryDescriptions;
         
         try {
             String query = null;
@@ -2153,9 +2147,9 @@ public class AccountingControl
         List<GlAccountCategoryDescriptionTransfer> glAccountCategoryDescriptionTransfers = new ArrayList<>(glAccountCategoryDescriptions.size());
         GlAccountCategoryDescriptionTransferCache glAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryDescriptionTransferCache();
         
-        glAccountCategoryDescriptions.stream().forEach((glAccountCategoryDescription) -> {
-            glAccountCategoryDescriptionTransfers.add(glAccountCategoryDescriptionTransferCache.getTransfer(glAccountCategoryDescription));
-        });
+        glAccountCategoryDescriptions.forEach((glAccountCategoryDescription) ->
+                glAccountCategoryDescriptionTransfers.add(glAccountCategoryDescriptionTransferCache.getTransfer(glAccountCategoryDescription))
+        );
         
         return glAccountCategoryDescriptionTransfers;
     }
@@ -2188,9 +2182,9 @@ public class AccountingControl
     public void deleteGlAccountCategoryDescriptionsByGlAccountCategory(GlAccountCategory glAccountCategory, BasePK deletedBy) {
         List<GlAccountCategoryDescription> glAccountCategoryDescriptions = getGlAccountCategoryDescriptionsByGlAccountCategoryForUpdate(glAccountCategory);
         
-        glAccountCategoryDescriptions.stream().forEach((glAccountCategoryDescription) -> {
-            deleteGlAccountCategoryDescription(glAccountCategoryDescription, deletedBy);
-        });
+        glAccountCategoryDescriptions.forEach((glAccountCategoryDescription) -> 
+                deleteGlAccountCategoryDescription(glAccountCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2313,7 +2307,7 @@ public class AccountingControl
     }
     
     private List<GlResourceType> getGlResourceTypes(EntityPermission entityPermission) {
-        List<GlResourceType> glResourceTypes = null;
+        List<GlResourceType> glResourceTypes;
         
         try {
             String query = null;
@@ -2359,9 +2353,9 @@ public class AccountingControl
         List<GlResourceTypeTransfer> glResourceTypeTransfers = new ArrayList<>(glResourceTypes.size());
         GlResourceTypeTransferCache glResourceTypeTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
         
-        glResourceTypes.stream().forEach((glResourceType) -> {
-            glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType));
-        });
+        glResourceTypes.forEach((glResourceType) ->
+                glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType))
+        );
         
         return glResourceTypeTransfers;
     }
@@ -2392,7 +2386,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlResourceTypeChoice == null? false: defaultGlResourceTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlResourceTypeChoice != null && defaultGlResourceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glResourceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2465,7 +2459,7 @@ public class AccountingControl
                 if(iter.hasNext()) {
                     defaultGlResourceType = iter.next();
                 }
-                GlResourceTypeDetailValue glResourceTypeDetailValue = defaultGlResourceType.getLastDetailForUpdate().getGlResourceTypeDetailValue().clone();
+                GlResourceTypeDetailValue glResourceTypeDetailValue = Objects.requireNonNull(defaultGlResourceType).getLastDetailForUpdate().getGlResourceTypeDetailValue().clone();
                 
                 glResourceTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGlResourceTypeFromValue(glResourceTypeDetailValue, false, deletedBy);
@@ -2536,7 +2530,7 @@ public class AccountingControl
     }
     
     private List<GlResourceTypeDescription> getGlResourceTypeDescriptionsByGlResourceType(GlResourceType glResourceType, EntityPermission entityPermission) {
-        List<GlResourceTypeDescription> glResourceTypeDescriptions = null;
+        List<GlResourceTypeDescription> glResourceTypeDescriptions;
         
         try {
             String query = null;
@@ -2600,9 +2594,9 @@ public class AccountingControl
         List<GlResourceTypeDescriptionTransfer> glResourceTypeDescriptionTransfers = new ArrayList<>(glResourceTypeDescriptions.size());
         GlResourceTypeDescriptionTransferCache glResourceTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeDescriptionTransferCache();
         
-        glResourceTypeDescriptions.stream().forEach((glResourceTypeDescription) -> {
-            glResourceTypeDescriptionTransfers.add(glResourceTypeDescriptionTransferCache.getTransfer(glResourceTypeDescription));
-        });
+        glResourceTypeDescriptions.forEach((glResourceTypeDescription) ->
+                glResourceTypeDescriptionTransfers.add(glResourceTypeDescriptionTransferCache.getTransfer(glResourceTypeDescription))
+        );
         
         return glResourceTypeDescriptionTransfers;
     }
@@ -2635,9 +2629,9 @@ public class AccountingControl
     public void deleteGlResourceTypeDescriptionsByGlResourceType(GlResourceType glResourceType, BasePK deletedBy) {
         List<GlResourceTypeDescription> glResourceTypeDescriptions = getGlResourceTypeDescriptionsByGlResourceTypeForUpdate(glResourceType);
         
-        glResourceTypeDescriptions.stream().forEach((glResourceTypeDescription) -> {
-            deleteGlResourceTypeDescription(glResourceTypeDescription, deletedBy);
-        });
+        glResourceTypeDescriptions.forEach((glResourceTypeDescription) -> 
+                deleteGlResourceTypeDescription(glResourceTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2811,7 +2805,7 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccountsByGlAccountClass(GlAccountClass glAccountClass, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts = null;
+        List<GlAccount> glAccounts;
         
         try {
             String query = null;
@@ -2849,7 +2843,7 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccountsByGlAccountCategory(GlAccountCategoryPK glAccountCategoryPK, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts = null;
+        List<GlAccount> glAccounts;
         
         try {
             String query = null;
@@ -2899,7 +2893,7 @@ public class AccountingControl
     }
     
     private List<GlAccount> getGlAccountsByGlResourceType(GlResourceType glResourceType, EntityPermission entityPermission) {
-        List<GlAccount> glAccounts = null;
+        List<GlAccount> glAccounts;
         
         try {
             String query = null;
@@ -2977,9 +2971,9 @@ public class AccountingControl
         List<GlAccountTransfer> glAccountTransfers = new ArrayList<>(glAccounts.size());
         GlAccountTransferCache glAccountTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
         
-        glAccounts.stream().forEach((glAccount) -> {
-            glAccountTransfers.add(glAccountTransferCache.getTransfer(glAccount));
-        });
+        glAccounts.forEach((glAccount) ->
+                glAccountTransfers.add(glAccountTransferCache.getTransfer(glAccount))
+        );
         
         return glAccountTransfers;
     }
@@ -3025,7 +3019,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountChoice == null? false: defaultGlAccountChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -3060,7 +3054,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountChoice == null? false: defaultGlAccountChoice.equals(value);
+            boolean usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3101,7 +3095,7 @@ public class AccountingControl
                 if(iter.hasNext()) {
                     defaultGlAccount = iter.next();
                 }
-                GlAccountDetailValue glAccountDetailValue = defaultGlAccount.getLastDetailForUpdate().getGlAccountDetailValue().clone();
+                GlAccountDetailValue glAccountDetailValue = Objects.requireNonNull(defaultGlAccount).getLastDetailForUpdate().getGlAccountDetailValue().clone();
                 
                 glAccountDetailValue.setIsDefault(Boolean.TRUE);
                 updateGlAccountFromValue(glAccountDetailValue, false, updatedBy);
@@ -3200,9 +3194,7 @@ public class AccountingControl
     }
 
     private void deleteGlAccounts(List<GlAccount> glAccounts, boolean checkDefault, BasePK deletedBy) {
-        glAccounts.stream().forEach((glAccount) -> {
-            deleteGlAccount(glAccount, checkDefault, deletedBy);
-        });
+        glAccounts.forEach((glAccount) -> deleteGlAccount(glAccount, checkDefault, deletedBy));
     }
 
     public void deleteGlAccounts(List<GlAccount> glAccounts, BasePK deletedBy) {
@@ -3286,7 +3278,7 @@ public class AccountingControl
     }
     
     private List<GlAccountDescription> getGlAccountDescriptionsByGlAccount(GlAccount glAccount, EntityPermission entityPermission) {
-        List<GlAccountDescription> glAccountDescriptions = null;
+        List<GlAccountDescription> glAccountDescriptions;
         
         try {
             String query = null;
@@ -3350,9 +3342,9 @@ public class AccountingControl
         List<GlAccountDescriptionTransfer> glAccountDescriptionTransfers = new ArrayList<>(glAccountDescriptions.size());
         GlAccountDescriptionTransferCache glAccountDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountDescriptionTransferCache();
         
-        glAccountDescriptions.stream().forEach((glAccountDescription) -> {
-            glAccountDescriptionTransfers.add(glAccountDescriptionTransferCache.getTransfer(glAccountDescription));
-        });
+        glAccountDescriptions.forEach((glAccountDescription) ->
+                glAccountDescriptionTransfers.add(glAccountDescriptionTransferCache.getTransfer(glAccountDescription))
+        );
         
         return glAccountDescriptionTransfers;
     }
@@ -3384,9 +3376,9 @@ public class AccountingControl
     public void deleteGlAccountDescriptionsByGlAccount(GlAccount glAccount, BasePK deletedBy) {
         List<GlAccountDescription> glAccountDescriptions = getGlAccountDescriptionsByGlAccountForUpdate(glAccount);
         
-        glAccountDescriptions.stream().forEach((glAccountDescription) -> {
-            deleteGlAccountDescription(glAccountDescription, deletedBy);
-        });
+        glAccountDescriptions.forEach((glAccountDescription) -> 
+                deleteGlAccountDescription(glAccountDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3537,9 +3529,9 @@ public class AccountingControl
         List<TransactionTypeTransfer> transactionTypeTransfers = new ArrayList<>(transactionTypes.size());
         TransactionTypeTransferCache transactionTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
         
-        transactionTypes.stream().forEach((transactionType) -> {
-            transactionTypeTransfers.add(transactionTypeTransferCache.getTransfer(transactionType));
-        });
+        transactionTypes.forEach((transactionType) ->
+                transactionTypeTransfers.add(transactionTypeTransferCache.getTransfer(transactionType))
+        );
         
         return transactionTypeTransfers;
     }
@@ -3582,9 +3574,9 @@ public class AccountingControl
     }
 
     public void deleteTransactionTypes(List<TransactionType> transactionTypes, BasePK deletedBy) {
-        transactionTypes.stream().forEach((transactionType) -> {
-            deleteTransactionType(transactionType, deletedBy);
-        });
+        transactionTypes.forEach((transactionType) -> 
+                deleteTransactionType(transactionType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3648,7 +3640,7 @@ public class AccountingControl
     }
     
     private List<TransactionTypeDescription> getTransactionTypeDescriptionsByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionTypeDescription> transactionTypeDescriptions = null;
+        List<TransactionTypeDescription> transactionTypeDescriptions;
         
         try {
             String query = null;
@@ -3712,9 +3704,9 @@ public class AccountingControl
         List<TransactionTypeDescriptionTransfer> transactionTypeDescriptionTransfers = new ArrayList<>(transactionTypeDescriptions.size());
         TransactionTypeDescriptionTransferCache transactionTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeDescriptionTransferCache();
         
-        transactionTypeDescriptions.stream().forEach((transactionTypeDescription) -> {
-            transactionTypeDescriptionTransfers.add(transactionTypeDescriptionTransferCache.getTransfer(transactionTypeDescription));
-        });
+        transactionTypeDescriptions.forEach((transactionTypeDescription) ->
+                transactionTypeDescriptionTransfers.add(transactionTypeDescriptionTransferCache.getTransfer(transactionTypeDescription))
+        );
         
         return transactionTypeDescriptionTransfers;
     }
@@ -3747,9 +3739,9 @@ public class AccountingControl
     public void deleteTransactionTypeDescriptionsByTransactionType(TransactionType transactionType, BasePK deletedBy) {
         List<TransactionTypeDescription> transactionTypeDescriptions = getTransactionTypeDescriptionsByTransactionTypeForUpdate(transactionType);
         
-        transactionTypeDescriptions.stream().forEach((transactionTypeDescription) -> {
-            deleteTransactionTypeDescription(transactionTypeDescription, deletedBy);
-        });
+        transactionTypeDescriptions.forEach((transactionTypeDescription) -> 
+                deleteTransactionTypeDescription(transactionTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3848,7 +3840,7 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccountCategory> getTransactionGlAccountCategoriesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionGlAccountCategory> transactionGlAccountCategories = null;
+        List<TransactionGlAccountCategory> transactionGlAccountCategories;
         
         try {
             String query = null;
@@ -3893,9 +3885,9 @@ public class AccountingControl
         List<TransactionGlAccountCategoryTransfer> transactionGlAccountCategoryTransfers = new ArrayList<>(transactionGlAccountCategories.size());
         TransactionGlAccountCategoryTransferCache transactionGlAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
         
-        transactionGlAccountCategories.stream().forEach((transactionGlAccountCategory) -> {
-            transactionGlAccountCategoryTransfers.add(transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategory));
-        });
+        transactionGlAccountCategories.forEach((transactionGlAccountCategory) ->
+                transactionGlAccountCategoryTransfers.add(transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategory))
+        );
         
         return transactionGlAccountCategoryTransfers;
     }
@@ -3944,9 +3936,9 @@ public class AccountingControl
     }
 
     public void deleteTransactionGlAccountCategories(List<TransactionGlAccountCategory> transactionGlAccountCategories, BasePK deletedBy) {
-        transactionGlAccountCategories.stream().forEach((transactionGlAccountCategory) -> {
-            deleteTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy);
-        });
+        transactionGlAccountCategories.forEach((transactionGlAccountCategory) -> 
+                deleteTransactionGlAccountCategory(transactionGlAccountCategory, deletedBy)
+        );
     }
     
     public void deleteTransactionGlAccountCategoriesByTransactionType(TransactionType transactionType, BasePK deletedBy) {
@@ -4015,7 +4007,7 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccountCategoryDescription> getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, EntityPermission entityPermission) {
-        List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions = null;
+        List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions;
         
         try {
             String query = null;
@@ -4079,9 +4071,9 @@ public class AccountingControl
         List<TransactionGlAccountCategoryDescriptionTransfer> transactionGlAccountCategoryDescriptionTransfers = new ArrayList<>(transactionGlAccountCategoryDescriptions.size());
         TransactionGlAccountCategoryDescriptionTransferCache transactionGlAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryDescriptionTransferCache();
         
-        transactionGlAccountCategoryDescriptions.stream().forEach((transactionGlAccountCategoryDescription) -> {
-            transactionGlAccountCategoryDescriptionTransfers.add(transactionGlAccountCategoryDescriptionTransferCache.getTransfer(transactionGlAccountCategoryDescription));
-        });
+        transactionGlAccountCategoryDescriptions.forEach((transactionGlAccountCategoryDescription) ->
+                transactionGlAccountCategoryDescriptionTransfers.add(transactionGlAccountCategoryDescriptionTransferCache.getTransfer(transactionGlAccountCategoryDescription))
+        );
         
         return transactionGlAccountCategoryDescriptionTransfers;
     }
@@ -4114,9 +4106,9 @@ public class AccountingControl
     public void deleteTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, BasePK deletedBy) {
         List<TransactionGlAccountCategoryDescription> transactionGlAccountCategoryDescriptions = getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategoryForUpdate(transactionGlAccountCategory);
         
-        transactionGlAccountCategoryDescriptions.stream().forEach((transactionGlAccountCategoryDescription) -> {
-            deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, deletedBy);
-        });
+        transactionGlAccountCategoryDescriptions.forEach((transactionGlAccountCategoryDescription) -> 
+                deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4215,7 +4207,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleType> getTransactionEntityRoleTypesByTransactionType(TransactionType transactionType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleType> transactionEntityRoleTypes = null;
+        List<TransactionEntityRoleType> transactionEntityRoleTypes;
         
         try {
             String query = null;
@@ -4253,7 +4245,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleType> getTransactionEntityRoleTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleType> transactionEntityRoleTypes = null;
+        List<TransactionEntityRoleType> transactionEntityRoleTypes;
         
         try {
             String query = null;
@@ -4299,9 +4291,9 @@ public class AccountingControl
         List<TransactionEntityRoleTypeTransfer> transactionEntityRoleTypeTransfers = new ArrayList<>(transactionEntityRoleTypes.size());
         TransactionEntityRoleTypeTransferCache transactionEntityRoleTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
         
-        transactionEntityRoleTypes.stream().forEach((transactionEntityRoleType) -> {
-            transactionEntityRoleTypeTransfers.add(transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleType));
-        });
+        transactionEntityRoleTypes.forEach((transactionEntityRoleType) ->
+                transactionEntityRoleTypeTransfers.add(transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleType))
+        );
         
         return transactionEntityRoleTypeTransfers;
     }
@@ -4353,9 +4345,9 @@ public class AccountingControl
     }
 
     public void deleteTransactionEntityRoleTypes(List<TransactionEntityRoleType> transactionEntityRoleTypes, BasePK deletedBy) {
-        transactionEntityRoleTypes.stream().forEach((transactionEntityRoleType) -> {
-            deleteTransactionEntityRoleType(transactionEntityRoleType, deletedBy);
-        });
+        transactionEntityRoleTypes.forEach((transactionEntityRoleType) -> 
+                deleteTransactionEntityRoleType(transactionEntityRoleType, deletedBy)
+        );
     }
     
     public void deleteTransactionEntityRoleTypesByTransactionType(TransactionType transactionType, BasePK deletedBy) {
@@ -4427,7 +4419,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRoleTypeDescription> getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, EntityPermission entityPermission) {
-        List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions = null;
+        List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions;
         
         try {
             String query = null;
@@ -4491,9 +4483,9 @@ public class AccountingControl
         List<TransactionEntityRoleTypeDescriptionTransfer> transactionEntityRoleTypeDescriptionTransfers = new ArrayList<>(transactionEntityRoleTypeDescriptions.size());
         TransactionEntityRoleTypeDescriptionTransferCache transactionEntityRoleTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeDescriptionTransferCache();
         
-        transactionEntityRoleTypeDescriptions.stream().forEach((transactionEntityRoleTypeDescription) -> {
-            transactionEntityRoleTypeDescriptionTransfers.add(transactionEntityRoleTypeDescriptionTransferCache.getTransfer(transactionEntityRoleTypeDescription));
-        });
+        transactionEntityRoleTypeDescriptions.forEach((transactionEntityRoleTypeDescription) ->
+                transactionEntityRoleTypeDescriptionTransfers.add(transactionEntityRoleTypeDescriptionTransferCache.getTransfer(transactionEntityRoleTypeDescription))
+        );
         
         return transactionEntityRoleTypeDescriptionTransfers;
     }
@@ -4526,9 +4518,9 @@ public class AccountingControl
     public void deleteTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, BasePK deletedBy) {
         List<TransactionEntityRoleTypeDescription> transactionEntityRoleTypeDescriptions = getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleTypeForUpdate(transactionEntityRoleType);
         
-        transactionEntityRoleTypeDescriptions.stream().forEach((transactionEntityRoleTypeDescription) -> {
-            deleteTransactionEntityRoleTypeDescription(transactionEntityRoleTypeDescription, deletedBy);
-        });
+        transactionEntityRoleTypeDescriptions.forEach((transactionEntityRoleTypeDescription) -> 
+                deleteTransactionEntityRoleTypeDescription(transactionEntityRoleTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4544,7 +4536,7 @@ public class AccountingControl
     }
     
     private List<TransactionGlAccount> getTransactionGlAccountsByGlAccount(GlAccount glAccount, EntityPermission entityPermission) {
-        List<TransactionGlAccount> transactionGlAccounts = null;
+        List<TransactionGlAccount> transactionGlAccounts;
         
         try {
             String query = null;
@@ -4665,9 +4657,9 @@ public class AccountingControl
     }
     
     public void deleteTransactionGlAccounts(List<TransactionGlAccount> transactionGlAccounts, BasePK deletedBy) {
-        transactionGlAccounts.stream().forEach((transactionGlAccount) -> {
-            deleteTransactionGlAccount(transactionGlAccount, deletedBy);
-        });
+        transactionGlAccounts.forEach((transactionGlAccount) -> 
+                deleteTransactionGlAccount(transactionGlAccount, deletedBy)
+        );
     }
     
     public void deleteTransactionGlAccountByGlAccount(GlAccount glAccount, BasePK deletedBy) {
@@ -4832,9 +4824,9 @@ public class AccountingControl
         List<TransactionGroupTransfer> transactionGroupTransfers = new ArrayList<>(transactionGroups.size());
         TransactionGroupTransferCache transactionGroupTransferCache = getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache();
         
-        transactionGroups.stream().forEach((transactionGroup) -> {
-            transactionGroupTransfers.add(transactionGroupTransferCache.getTransfer(transactionGroup));
-        });
+        transactionGroups.forEach((transactionGroup) ->
+                transactionGroupTransfers.add(transactionGroupTransferCache.getTransfer(transactionGroup))
+        );
         
         return transactionGroupTransfers;
     }
@@ -4934,7 +4926,7 @@ public class AccountingControl
     }
     
     public List<Transaction> getTransactionsByTransactionGroup(TransactionGroup transactionGroup) {
-        List<Transaction> transactions = null;
+        List<Transaction> transactions;
         
         try {
             PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
@@ -4954,7 +4946,7 @@ public class AccountingControl
     }
     
     public List<Transaction> getTransactionsByTransactionType(TransactionType transactionType) {
-        List<Transaction> transactions = null;
+        List<Transaction> transactions;
         
         try {
             PreparedStatement ps = TransactionFactory.getInstance().prepareStatement(
@@ -4981,9 +4973,9 @@ public class AccountingControl
         List<TransactionTransfer> transactionTransfers = new ArrayList<>(transactions.size());
         TransactionTransferCache transactionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTransferCache();
         
-        transactions.stream().forEach((transaction) -> {
-            transactionTransfers.add(transactionTransferCache.getTransfer(transaction));
-        });
+        transactions.forEach((transaction) ->
+                transactionTransfers.add(transactionTransferCache.getTransfer(transaction))
+        );
         
         return transactionTransfers;
     }
@@ -5060,7 +5052,7 @@ public class AccountingControl
     }
     
     public List<TransactionGlEntry> getTransactionGlEntriesByTransaction(Transaction transaction) {
-        List<TransactionGlEntry> transactionGlEntries = null;
+        List<TransactionGlEntry> transactionGlEntries;
         
         try {
             PreparedStatement ps = TransactionGlEntryFactory.getInstance().prepareStatement(
@@ -5082,7 +5074,7 @@ public class AccountingControl
     }
     
     public List<TransactionGlEntry> getTransactionGlEntriesByGlAccount(GlAccount glAccount) {
-        List<TransactionGlEntry> transactionGlEntries = null;
+        List<TransactionGlEntry> transactionGlEntries;
         
         try {
             PreparedStatement ps = TransactionGlEntryFactory.getInstance().prepareStatement(
@@ -5112,9 +5104,9 @@ public class AccountingControl
         List<TransactionGlEntryTransfer> transactionGlEntryTransfers = new ArrayList<>(transactionGlEntries.size());
         TransactionGlEntryTransferCache transactionGlEntryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache();
         
-        transactionGlEntries.stream().forEach((transactionGlEntry) -> {
-            transactionGlEntryTransfers.add(transactionGlEntryTransferCache.getTransfer(transactionGlEntry));
-        });
+        transactionGlEntries.forEach((transactionGlEntry) ->
+                transactionGlEntryTransfers.add(transactionGlEntryTransferCache.getTransfer(transactionGlEntry))
+        );
         
         return transactionGlEntryTransfers;
     }
@@ -5159,7 +5151,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRole> getTransactionEntityRolesByTransaction(Transaction transaction, EntityPermission entityPermission) {
-        List<TransactionEntityRole> transactionEntityRoles = null;
+        List<TransactionEntityRole> transactionEntityRoles;
         
         try {
             String query = null;
@@ -5199,7 +5191,7 @@ public class AccountingControl
     }
     
     private List<TransactionEntityRole> getTransactionEntityRolesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<TransactionEntityRole> transactionEntityRoles = null;
+        List<TransactionEntityRole> transactionEntityRoles;
         
         try {
             String query = null;
@@ -5246,9 +5238,9 @@ public class AccountingControl
         List<TransactionEntityRoleTransfer> transactionEntityRoleTransfers = new ArrayList<>(transactionEntityRoles.size());
         TransactionEntityRoleTransferCache transactionEntityRoleTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache();
         
-        transactionEntityRoles.stream().forEach((transactionEntityRole) -> {
-            transactionEntityRoleTransfers.add(transactionEntityRoleTransferCache.getTransfer(transactionEntityRole));
-        });
+        transactionEntityRoles.forEach((transactionEntityRole) ->
+                transactionEntityRoleTransfers.add(transactionEntityRoleTransferCache.getTransfer(transactionEntityRole))
+        );
         
         return transactionEntityRoleTransfers;
     }
@@ -5264,9 +5256,9 @@ public class AccountingControl
     }
     
     public void deleteTransactionEntityRoles(List<TransactionEntityRole> transactionEntityRoles, BasePK deletedBy) {
-        transactionEntityRoles.stream().forEach((transactionEntityRole) -> {
-            deleteTransactionEntityRole(transactionEntityRole, deletedBy);
-        });
+        transactionEntityRoles.forEach((transactionEntityRole) -> 
+                deleteTransactionEntityRole(transactionEntityRole, deletedBy)
+        );
     }
     
     public void deleteTransactionEntityRolesByTransaction(Transaction transaction, BasePK deletedBy) {
@@ -5311,10 +5303,9 @@ public class AccountingControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SymbolPosition */
     public SymbolPosition getSymbolPositionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        SymbolPositionPK pk = new SymbolPositionPK(entityInstance.getEntityUniqueId());
-        SymbolPosition symbolPosition = SymbolPositionFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return symbolPosition;
+        var pk = new SymbolPositionPK(entityInstance.getEntityUniqueId());
+
+        return SymbolPositionFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public SymbolPosition getSymbolPositionByEntityInstance(EntityInstance entityInstance) {
@@ -5413,7 +5404,7 @@ public class AccountingControl
     }
     
     private List<SymbolPosition> getSymbolPositions(EntityPermission entityPermission) {
-        List<SymbolPosition> symbolPositions = null;
+        List<SymbolPosition> symbolPositions;
         
         try {
             String query = null;
@@ -5458,9 +5449,9 @@ public class AccountingControl
         List<SymbolPositionTransfer> symbolPositionTransfers = new ArrayList<>(symbolPositions.size());
         SymbolPositionTransferCache symbolPositionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
         
-        symbolPositions.stream().forEach((symbolPosition) -> {
-            symbolPositionTransfers.add(symbolPositionTransferCache.getTransfer(symbolPosition));
-        });
+        symbolPositions.forEach((symbolPosition) ->
+                symbolPositionTransfers.add(symbolPositionTransferCache.getTransfer(symbolPosition))
+        );
         
         return symbolPositionTransfers;
     }
@@ -5495,7 +5486,7 @@ public class AccountingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSymbolPositionChoice == null? false: defaultSymbolPositionChoice.equals(value);
+            boolean usingDefaultChoice = defaultSymbolPositionChoice != null && defaultSymbolPositionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && symbolPositionDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5567,7 +5558,7 @@ public class AccountingControl
                 if(iter.hasNext()) {
                     defaultSymbolPosition = iter.next();
                 }
-                SymbolPositionDetailValue symbolPositionDetailValue = defaultSymbolPosition.getLastDetailForUpdate().getSymbolPositionDetailValue().clone();
+                SymbolPositionDetailValue symbolPositionDetailValue = Objects.requireNonNull(defaultSymbolPosition).getLastDetailForUpdate().getSymbolPositionDetailValue().clone();
                 
                 symbolPositionDetailValue.setIsDefault(Boolean.TRUE);
                 updateSymbolPositionFromValue(symbolPositionDetailValue, false, deletedBy);
@@ -5638,7 +5629,7 @@ public class AccountingControl
     }
     
     private List<SymbolPositionDescription> getSymbolPositionDescriptionsBySymbolPosition(SymbolPosition symbolPosition, EntityPermission entityPermission) {
-        List<SymbolPositionDescription> symbolPositionDescriptions = null;
+        List<SymbolPositionDescription> symbolPositionDescriptions;
         
         try {
             String query = null;
@@ -5702,9 +5693,9 @@ public class AccountingControl
         List<SymbolPositionDescriptionTransfer> symbolPositionDescriptionTransfers = new ArrayList<>(symbolPositionDescriptions.size());
         SymbolPositionDescriptionTransferCache symbolPositionDescriptionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionDescriptionTransferCache();
         
-        symbolPositionDescriptions.stream().forEach((symbolPositionDescription) -> {
-            symbolPositionDescriptionTransfers.add(symbolPositionDescriptionTransferCache.getTransfer(symbolPositionDescription));
-        });
+        symbolPositionDescriptions.forEach((symbolPositionDescription) ->
+                symbolPositionDescriptionTransfers.add(symbolPositionDescriptionTransferCache.getTransfer(symbolPositionDescription))
+        );
         
         return symbolPositionDescriptionTransfers;
     }
@@ -5737,9 +5728,9 @@ public class AccountingControl
     public void deleteSymbolPositionDescriptionsBySymbolPosition(SymbolPosition symbolPosition, BasePK deletedBy) {
         List<SymbolPositionDescription> symbolPositionDescriptions = getSymbolPositionDescriptionsBySymbolPositionForUpdate(symbolPosition);
         
-        symbolPositionDescriptions.stream().forEach((symbolPositionDescription) -> {
-            deleteSymbolPositionDescription(symbolPositionDescription, deletedBy);
-        });
+        symbolPositionDescriptions.forEach((symbolPositionDescription) -> 
+                deleteSymbolPositionDescription(symbolPositionDescription, deletedBy)
+        );
     }
     
 }

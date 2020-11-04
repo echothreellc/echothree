@@ -92,6 +92,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class PicklistControl
@@ -298,9 +299,9 @@ public class PicklistControl
         List<PicklistTypeTransfer> picklistTypeTransfers = new ArrayList<>(picklistTypes.size());
         PicklistTypeTransferCache picklistTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeTransferCache();
 
-        picklistTypes.stream().forEach((picklistType) -> {
-            picklistTypeTransfers.add(picklistTypeTransferCache.getPicklistTypeTransfer(picklistType));
-        });
+        picklistTypes.forEach((picklistType) ->
+                picklistTypeTransfers.add(picklistTypeTransferCache.getPicklistTypeTransfer(picklistType))
+        );
 
         return picklistTypeTransfers;
     }
@@ -331,7 +332,7 @@ public class PicklistControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistTypeChoice == null? false: defaultPicklistTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPicklistTypeChoice != null && defaultPicklistTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -435,7 +436,7 @@ public class PicklistControl
                     if(iter.hasNext()) {
                         defaultPicklistType = iter.next();
                     }
-                    PicklistTypeDetailValue picklistTypeDetailValue = defaultPicklistType.getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
+                    PicklistTypeDetailValue picklistTypeDetailValue = Objects.requireNonNull(defaultPicklistType).getLastDetailForUpdate().getPicklistTypeDetailValue().clone();
 
                     picklistTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updatePicklistTypeFromValue(picklistTypeDetailValue, false, deletedBy);
@@ -451,9 +452,7 @@ public class PicklistControl
     }
 
     private void deletePicklistTypes(List<PicklistType> picklistTypes, boolean checkDefault, BasePK deletedBy) {
-        picklistTypes.stream().forEach((picklistType) -> {
-            deletePicklistType(picklistType, checkDefault, deletedBy);
-        });
+        picklistTypes.forEach((picklistType) -> deletePicklistType(picklistType, checkDefault, deletedBy));
     }
 
     public void deletePicklistTypes(List<PicklistType> picklistTypes, BasePK deletedBy) {
@@ -572,9 +571,9 @@ public class PicklistControl
         List<PicklistTypeDescriptionTransfer> picklistTypeDescriptionTransfers = new ArrayList<>(picklistTypeDescriptions.size());
         PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeDescriptionTransferCache();
 
-        picklistTypeDescriptions.stream().forEach((picklistTypeDescription) -> {
-            picklistTypeDescriptionTransfers.add(picklistTypeDescriptionTransferCache.getPicklistTypeDescriptionTransfer(picklistTypeDescription));
-        });
+        picklistTypeDescriptions.forEach((picklistTypeDescription) ->
+                picklistTypeDescriptionTransfers.add(picklistTypeDescriptionTransferCache.getPicklistTypeDescriptionTransfer(picklistTypeDescription))
+        );
 
         return picklistTypeDescriptionTransfers;
     }
@@ -608,9 +607,9 @@ public class PicklistControl
     public void deletePicklistTypeDescriptionsByPicklistType(PicklistType picklistType, BasePK deletedBy) {
         List<PicklistTypeDescription> picklistTypeDescriptions = getPicklistTypeDescriptionsByPicklistTypeForUpdate(picklistType);
 
-        picklistTypeDescriptions.stream().forEach((picklistTypeDescription) -> {
-            deletePicklistTypeDescription(picklistTypeDescription, deletedBy);
-        });
+        picklistTypeDescriptions.forEach((picklistTypeDescription) -> 
+                deletePicklistTypeDescription(picklistTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -764,9 +763,9 @@ public class PicklistControl
         List<PicklistTimeTypeTransfer> picklistTimeTypeTransfers = new ArrayList<>(picklistTimeTypes.size());
         PicklistTimeTypeTransferCache picklistTimeTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeTransferCache();
 
-        picklistTimeTypes.stream().forEach((picklistTimeType) -> {
-            picklistTimeTypeTransfers.add(picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(picklistTimeType));
-        });
+        picklistTimeTypes.forEach((picklistTimeType) ->
+                picklistTimeTypeTransfers.add(picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(picklistTimeType))
+        );
 
         return picklistTimeTypeTransfers;
     }
@@ -797,7 +796,7 @@ public class PicklistControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistTimeTypeChoice == null? false: defaultPicklistTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPicklistTimeTypeChoice != null && defaultPicklistTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -873,7 +872,7 @@ public class PicklistControl
                 if(iter.hasNext()) {
                     defaultPicklistTimeType = iter.next();
                 }
-                PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = defaultPicklistTimeType.getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
+                PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = Objects.requireNonNull(defaultPicklistTimeType).getLastDetailForUpdate().getPicklistTimeTypeDetailValue().clone();
 
                 picklistTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePicklistTimeTypeFromValue(picklistTimeTypeDetailValue, false, deletedBy);
@@ -991,9 +990,9 @@ public class PicklistControl
         List<PicklistTimeTypeDescriptionTransfer> picklistTimeTypeDescriptionTransfers = new ArrayList<>(picklistTimeTypeDescriptions.size());
         PicklistTimeTypeDescriptionTransferCache picklistTimeTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeDescriptionTransferCache();
 
-        picklistTimeTypeDescriptions.stream().forEach((picklistTimeTypeDescription) -> {
-            picklistTimeTypeDescriptionTransfers.add(picklistTimeTypeDescriptionTransferCache.getPicklistTimeTypeDescriptionTransfer(picklistTimeTypeDescription));
-        });
+        picklistTimeTypeDescriptions.forEach((picklistTimeTypeDescription) ->
+                picklistTimeTypeDescriptionTransfers.add(picklistTimeTypeDescriptionTransferCache.getPicklistTimeTypeDescriptionTransfer(picklistTimeTypeDescription))
+        );
 
         return picklistTimeTypeDescriptionTransfers;
     }
@@ -1027,9 +1026,9 @@ public class PicklistControl
     public void deletePicklistTimeTypeDescriptionsByPicklistTimeType(PicklistTimeType picklistTimeType, BasePK deletedBy) {
         List<PicklistTimeTypeDescription> picklistTimeTypeDescriptions = getPicklistTimeTypeDescriptionsByPicklistTimeTypeForUpdate(picklistTimeType);
 
-        picklistTimeTypeDescriptions.stream().forEach((picklistTimeTypeDescription) -> {
-            deletePicklistTimeTypeDescription(picklistTimeTypeDescription, deletedBy);
-        });
+        picklistTimeTypeDescriptions.forEach((picklistTimeTypeDescription) -> 
+                deletePicklistTimeTypeDescription(picklistTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1180,9 +1179,9 @@ public class PicklistControl
         List<PicklistAliasTypeTransfer> picklistAliasTypeTransfers = new ArrayList<>(picklistAliasTypes.size());
         PicklistAliasTypeTransferCache picklistAliasTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeTransferCache();
 
-        picklistAliasTypes.stream().forEach((picklistAliasType) -> {
-            picklistAliasTypeTransfers.add(picklistAliasTypeTransferCache.getPicklistAliasTypeTransfer(picklistAliasType));
-        });
+        picklistAliasTypes.forEach((picklistAliasType) ->
+                picklistAliasTypeTransfers.add(picklistAliasTypeTransferCache.getPicklistAliasTypeTransfer(picklistAliasType))
+        );
 
         return picklistAliasTypeTransfers;
     }
@@ -1213,7 +1212,7 @@ public class PicklistControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistAliasTypeChoice == null? false: defaultPicklistAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPicklistAliasTypeChoice != null && defaultPicklistAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1290,7 +1289,7 @@ public class PicklistControl
                 if(iter.hasNext()) {
                     defaultPicklistAliasType = iter.next();
                 }
-                PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = defaultPicklistAliasType.getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
+                PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = Objects.requireNonNull(defaultPicklistAliasType).getLastDetailForUpdate().getPicklistAliasTypeDetailValue().clone();
 
                 picklistAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePicklistAliasTypeFromValue(picklistAliasTypeDetailValue, false, deletedBy);
@@ -1301,9 +1300,9 @@ public class PicklistControl
     }
 
     public void deletePicklistAliasTypes(List<PicklistAliasType> picklistAliasTypes, BasePK deletedBy) {
-        picklistAliasTypes.stream().forEach((picklistAliasType) -> {
-            deletePicklistAliasType(picklistAliasType, deletedBy);
-        });
+        picklistAliasTypes.forEach((picklistAliasType) -> 
+                deletePicklistAliasType(picklistAliasType, deletedBy)
+        );
     }
 
     public void deletePicklistAliasTypesByPicklistType(PicklistType picklistType, BasePK deletedBy) {
@@ -1418,9 +1417,9 @@ public class PicklistControl
         List<PicklistAliasTypeDescriptionTransfer> picklistAliasTypeDescriptionTransfers = new ArrayList<>(picklistAliasTypeDescriptions.size());
         PicklistAliasTypeDescriptionTransferCache picklistAliasTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeDescriptionTransferCache();
 
-        picklistAliasTypeDescriptions.stream().forEach((picklistAliasTypeDescription) -> {
-            picklistAliasTypeDescriptionTransfers.add(picklistAliasTypeDescriptionTransferCache.getPicklistAliasTypeDescriptionTransfer(picklistAliasTypeDescription));
-        });
+        picklistAliasTypeDescriptions.forEach((picklistAliasTypeDescription) ->
+                picklistAliasTypeDescriptionTransfers.add(picklistAliasTypeDescriptionTransferCache.getPicklistAliasTypeDescriptionTransfer(picklistAliasTypeDescription))
+        );
 
         return picklistAliasTypeDescriptionTransfers;
     }
@@ -1454,9 +1453,9 @@ public class PicklistControl
     public void deletePicklistAliasTypeDescriptionsByPicklistAliasType(PicklistAliasType picklistAliasType, BasePK deletedBy) {
         List<PicklistAliasTypeDescription> picklistAliasTypeDescriptions = getPicklistAliasTypeDescriptionsByPicklistAliasTypeForUpdate(picklistAliasType);
 
-        picklistAliasTypeDescriptions.stream().forEach((picklistAliasTypeDescription) -> {
-            deletePicklistAliasTypeDescription(picklistAliasTypeDescription, deletedBy);
-        });
+        picklistAliasTypeDescriptions.forEach((picklistAliasTypeDescription) -> 
+                deletePicklistAliasTypeDescription(picklistAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1594,9 +1593,9 @@ public class PicklistControl
         List<PicklistTimeTransfer> picklistTimeTransfers = new ArrayList<>(picklistTimes.size());
         PicklistTimeTransferCache picklistTimeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTransferCache();
 
-        picklistTimes.stream().forEach((picklistTime) -> {
-            picklistTimeTransfers.add(picklistTimeTransferCache.getPicklistTimeTransfer(picklistTime));
-        });
+        picklistTimes.forEach((picklistTime) ->
+                picklistTimeTransfers.add(picklistTimeTransferCache.getPicklistTimeTransfer(picklistTime))
+        );
 
         return picklistTimeTransfers;
     }
@@ -1635,9 +1634,9 @@ public class PicklistControl
     }
 
     public void deletePicklistTimes(List<PicklistTime> picklistTimes, BasePK deletedBy) {
-        picklistTimes.stream().forEach((picklistTime) -> {
-            deletePicklistTime(picklistTime, deletedBy);
-        });
+        picklistTimes.forEach((picklistTime) -> 
+                deletePicklistTime(picklistTime, deletedBy)
+        );
     }
 
     public void deletePicklistTimesByPicklist(Picklist picklist, BasePK deletedBy) {
@@ -1800,9 +1799,9 @@ public class PicklistControl
         List<PicklistAliasTransfer> picklistAliasTransfers = new ArrayList<>(picklistaliases.size());
         PicklistAliasTransferCache picklistAliasTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTransferCache();
 
-        picklistaliases.stream().forEach((picklistAlias) -> {
-            picklistAliasTransfers.add(picklistAliasTransferCache.getPicklistAliasTransfer(picklistAlias));
-        });
+        picklistaliases.forEach((picklistAlias) ->
+                picklistAliasTransfers.add(picklistAliasTransferCache.getPicklistAliasTransfer(picklistAlias))
+        );
 
         return picklistAliasTransfers;
     }
@@ -1834,17 +1833,17 @@ public class PicklistControl
     public void deletePicklistAliasesByPicklistAliasType(PicklistAliasType picklistAliasType, BasePK deletedBy) {
         List<PicklistAlias> picklistaliases = getPicklistAliasesByPicklistAliasTypeForUpdate(picklistAliasType);
 
-        picklistaliases.stream().forEach((picklistAlias) -> {
-            deletePicklistAlias(picklistAlias, deletedBy);
-        });
+        picklistaliases.forEach((picklistAlias) -> 
+                deletePicklistAlias(picklistAlias, deletedBy)
+        );
     }
 
     public void deletePicklistAliasesByPicklist(Picklist picklist, BasePK deletedBy) {
         List<PicklistAlias> picklistaliases = getPicklistAliasesByPicklistForUpdate(picklist);
 
-        picklistaliases.stream().forEach((picklistAlias) -> {
-            deletePicklistAlias(picklistAlias, deletedBy);
-        });
+        picklistaliases.forEach((picklistAlias) -> 
+                deletePicklistAlias(picklistAlias, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

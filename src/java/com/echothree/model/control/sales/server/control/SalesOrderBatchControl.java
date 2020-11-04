@@ -112,9 +112,9 @@ public class SalesOrderBatchControl
         List<SalesOrderBatchTransfer> salesOrderBatchTransfers = new ArrayList<>(batches.size());
         SalesOrderBatchTransferCache salesOrderBatchTransferCache = getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache();
 
-        batches.stream().forEach((batch) -> {
-            salesOrderBatchTransfers.add(salesOrderBatchTransferCache.getTransfer(batch));
-        });
+        batches.forEach((batch) ->
+                salesOrderBatchTransfers.add(salesOrderBatchTransferCache.getTransfer(batch))
+        );
 
         return salesOrderBatchTransfers;
     }

@@ -128,6 +128,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CampaignControl
         extends BaseModelControl {
@@ -386,9 +387,9 @@ public class CampaignControl
         List<CampaignTransfer> campaignTransfers = new ArrayList<>(campaigns.size());
         CampaignTransferCache campaignTransferCache = getCampaignTransferCaches(userVisit).getCampaignTransferCache();
 
-        campaigns.stream().forEach((campaign) -> {
-            campaignTransfers.add(campaignTransferCache.getCampaignTransfer(campaign));
-        });
+        campaigns.forEach((campaign) ->
+                campaignTransfers.add(campaignTransferCache.getCampaignTransfer(campaign))
+        );
 
         return campaignTransfers;
     }
@@ -418,7 +419,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignChoice == null? false: defaultCampaignChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignChoice != null && defaultCampaignChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -495,7 +496,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaign = iter.next();
                     }
-                    CampaignDetailValue campaignDetailValue = defaultCampaign.getLastDetailForUpdate().getCampaignDetailValue().clone();
+                    CampaignDetailValue campaignDetailValue = Objects.requireNonNull(defaultCampaign).getLastDetailForUpdate().getCampaignDetailValue().clone();
 
                     campaignDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignFromValue(campaignDetailValue, false, deletedBy);
@@ -511,9 +512,7 @@ public class CampaignControl
     }
 
     private void deleteCampaigns(List<Campaign> campaigns, boolean checkDefault, BasePK deletedBy) {
-        campaigns.stream().forEach((campaign) -> {
-            deleteCampaign(campaign, checkDefault, deletedBy);
-        });
+        campaigns.forEach((campaign) -> deleteCampaign(campaign, checkDefault, deletedBy));
     }
 
     public void deleteCampaigns(List<Campaign> campaigns, BasePK deletedBy) {
@@ -628,9 +627,9 @@ public class CampaignControl
         List<CampaignDescriptionTransfer> campaignDescriptionTransfers = new ArrayList<>(campaignDescriptions.size());
         CampaignDescriptionTransferCache campaignDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignDescriptionTransferCache();
 
-        campaignDescriptions.stream().forEach((campaignDescription) -> {
-            campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(campaignDescription));
-        });
+        campaignDescriptions.forEach((campaignDescription) ->
+                campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(campaignDescription))
+        );
 
         return campaignDescriptionTransfers;
     }
@@ -664,9 +663,9 @@ public class CampaignControl
     public void deleteCampaignDescriptionsByCampaign(Campaign campaign, BasePK deletedBy) {
         List<CampaignDescription> campaignDescriptions = getCampaignDescriptionsByCampaignForUpdate(campaign);
 
-        campaignDescriptions.stream().forEach((campaignDescription) -> {
-            deleteCampaignDescription(campaignDescription, deletedBy);
-        });
+        campaignDescriptions.forEach((campaignDescription) -> 
+                deleteCampaignDescription(campaignDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -904,9 +903,9 @@ public class CampaignControl
         List<CampaignSourceTransfer> campaignSourceTransfers = new ArrayList<>(campaignSources.size());
         CampaignSourceTransferCache campaignSourceTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceTransferCache();
 
-        campaignSources.stream().forEach((campaignSource) -> {
-            campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(campaignSource));
-        });
+        campaignSources.forEach((campaignSource) ->
+                campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(campaignSource))
+        );
 
         return campaignSourceTransfers;
     }
@@ -936,7 +935,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignSourceChoice == null? false: defaultCampaignSourceChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignSourceChoice != null && defaultCampaignSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignSourceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1013,7 +1012,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignSource = iter.next();
                     }
-                    CampaignSourceDetailValue campaignSourceDetailValue = defaultCampaignSource.getLastDetailForUpdate().getCampaignSourceDetailValue().clone();
+                    CampaignSourceDetailValue campaignSourceDetailValue = Objects.requireNonNull(defaultCampaignSource).getLastDetailForUpdate().getCampaignSourceDetailValue().clone();
 
                     campaignSourceDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignSourceFromValue(campaignSourceDetailValue, false, deletedBy);
@@ -1029,9 +1028,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignSources(List<CampaignSource> campaignSources, boolean checkDefault, BasePK deletedBy) {
-        campaignSources.stream().forEach((campaignSource) -> {
-            deleteCampaignSource(campaignSource, checkDefault, deletedBy);
-        });
+        campaignSources.forEach((campaignSource) -> deleteCampaignSource(campaignSource, checkDefault, deletedBy));
     }
 
     public void deleteCampaignSources(List<CampaignSource> campaignSources, BasePK deletedBy) {
@@ -1146,9 +1143,9 @@ public class CampaignControl
         List<CampaignSourceDescriptionTransfer> campaignSourceDescriptionTransfers = new ArrayList<>(campaignSourceDescriptions.size());
         CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceDescriptionTransferCache();
 
-        campaignSourceDescriptions.stream().forEach((campaignSourceDescription) -> {
-            campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(campaignSourceDescription));
-        });
+        campaignSourceDescriptions.forEach((campaignSourceDescription) ->
+                campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(campaignSourceDescription))
+        );
 
         return campaignSourceDescriptionTransfers;
     }
@@ -1182,9 +1179,9 @@ public class CampaignControl
     public void deleteCampaignSourceDescriptionsByCampaignSource(CampaignSource campaignSource, BasePK deletedBy) {
         List<CampaignSourceDescription> campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSourceForUpdate(campaignSource);
 
-        campaignSourceDescriptions.stream().forEach((campaignSourceDescription) -> {
-            deleteCampaignSourceDescription(campaignSourceDescription, deletedBy);
-        });
+        campaignSourceDescriptions.forEach((campaignSourceDescription) -> 
+                deleteCampaignSourceDescription(campaignSourceDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1422,9 +1419,9 @@ public class CampaignControl
         List<CampaignMediumTransfer> campaignMediumTransfers = new ArrayList<>(campaignMediums.size());
         CampaignMediumTransferCache campaignMediumTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumTransferCache();
 
-        campaignMediums.stream().forEach((campaignMedium) -> {
-            campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(campaignMedium));
-        });
+        campaignMediums.forEach((campaignMedium) ->
+                campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(campaignMedium))
+        );
 
         return campaignMediumTransfers;
     }
@@ -1454,7 +1451,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignMediumChoice == null? false: defaultCampaignMediumChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignMediumChoice != null && defaultCampaignMediumChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignMediumDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1531,7 +1528,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignMedium = iter.next();
                     }
-                    CampaignMediumDetailValue campaignMediumDetailValue = defaultCampaignMedium.getLastDetailForUpdate().getCampaignMediumDetailValue().clone();
+                    CampaignMediumDetailValue campaignMediumDetailValue = Objects.requireNonNull(defaultCampaignMedium).getLastDetailForUpdate().getCampaignMediumDetailValue().clone();
 
                     campaignMediumDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignMediumFromValue(campaignMediumDetailValue, false, deletedBy);
@@ -1547,9 +1544,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignMediums(List<CampaignMedium> campaignMediums, boolean checkDefault, BasePK deletedBy) {
-        campaignMediums.stream().forEach((campaignMedium) -> {
-            deleteCampaignMedium(campaignMedium, checkDefault, deletedBy);
-        });
+        campaignMediums.forEach((campaignMedium) -> deleteCampaignMedium(campaignMedium, checkDefault, deletedBy));
     }
 
     public void deleteCampaignMediums(List<CampaignMedium> campaignMediums, BasePK deletedBy) {
@@ -1664,9 +1659,9 @@ public class CampaignControl
         List<CampaignMediumDescriptionTransfer> campaignMediumDescriptionTransfers = new ArrayList<>(campaignMediumDescriptions.size());
         CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumDescriptionTransferCache();
 
-        campaignMediumDescriptions.stream().forEach((campaignMediumDescription) -> {
-            campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(campaignMediumDescription));
-        });
+        campaignMediumDescriptions.forEach((campaignMediumDescription) ->
+                campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(campaignMediumDescription))
+        );
 
         return campaignMediumDescriptionTransfers;
     }
@@ -1700,9 +1695,9 @@ public class CampaignControl
     public void deleteCampaignMediumDescriptionsByCampaignMedium(CampaignMedium campaignMedium, BasePK deletedBy) {
         List<CampaignMediumDescription> campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMediumForUpdate(campaignMedium);
 
-        campaignMediumDescriptions.stream().forEach((campaignMediumDescription) -> {
-            deleteCampaignMediumDescription(campaignMediumDescription, deletedBy);
-        });
+        campaignMediumDescriptions.forEach((campaignMediumDescription) -> 
+                deleteCampaignMediumDescription(campaignMediumDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1940,9 +1935,9 @@ public class CampaignControl
         List<CampaignTermTransfer> campaignTermTransfers = new ArrayList<>(campaignTerms.size());
         CampaignTermTransferCache campaignTermTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermTransferCache();
 
-        campaignTerms.stream().forEach((campaignTerm) -> {
-            campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(campaignTerm));
-        });
+        campaignTerms.forEach((campaignTerm) ->
+                campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(campaignTerm))
+        );
 
         return campaignTermTransfers;
     }
@@ -1972,7 +1967,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignTermChoice == null? false: defaultCampaignTermChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignTermChoice != null && defaultCampaignTermChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignTermDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2049,7 +2044,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignTerm = iter.next();
                     }
-                    CampaignTermDetailValue campaignTermDetailValue = defaultCampaignTerm.getLastDetailForUpdate().getCampaignTermDetailValue().clone();
+                    CampaignTermDetailValue campaignTermDetailValue = Objects.requireNonNull(defaultCampaignTerm).getLastDetailForUpdate().getCampaignTermDetailValue().clone();
 
                     campaignTermDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignTermFromValue(campaignTermDetailValue, false, deletedBy);
@@ -2065,9 +2060,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignTerms(List<CampaignTerm> campaignTerms, boolean checkDefault, BasePK deletedBy) {
-        campaignTerms.stream().forEach((campaignTerm) -> {
-            deleteCampaignTerm(campaignTerm, checkDefault, deletedBy);
-        });
+        campaignTerms.forEach((campaignTerm) -> deleteCampaignTerm(campaignTerm, checkDefault, deletedBy));
     }
 
     public void deleteCampaignTerms(List<CampaignTerm> campaignTerms, BasePK deletedBy) {
@@ -2182,9 +2175,9 @@ public class CampaignControl
         List<CampaignTermDescriptionTransfer> campaignTermDescriptionTransfers = new ArrayList<>(campaignTermDescriptions.size());
         CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermDescriptionTransferCache();
 
-        campaignTermDescriptions.stream().forEach((campaignTermDescription) -> {
-            campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(campaignTermDescription));
-        });
+        campaignTermDescriptions.forEach((campaignTermDescription) ->
+                campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(campaignTermDescription))
+        );
 
         return campaignTermDescriptionTransfers;
     }
@@ -2218,9 +2211,9 @@ public class CampaignControl
     public void deleteCampaignTermDescriptionsByCampaignTerm(CampaignTerm campaignTerm, BasePK deletedBy) {
         List<CampaignTermDescription> campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTermForUpdate(campaignTerm);
 
-        campaignTermDescriptions.stream().forEach((campaignTermDescription) -> {
-            deleteCampaignTermDescription(campaignTermDescription, deletedBy);
-        });
+        campaignTermDescriptions.forEach((campaignTermDescription) -> 
+                deleteCampaignTermDescription(campaignTermDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2458,9 +2451,9 @@ public class CampaignControl
         List<CampaignContentTransfer> campaignContentTransfers = new ArrayList<>(campaignContents.size());
         CampaignContentTransferCache campaignContentTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentTransferCache();
 
-        campaignContents.stream().forEach((campaignContent) -> {
-            campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(campaignContent));
-        });
+        campaignContents.forEach((campaignContent) ->
+                campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(campaignContent))
+        );
 
         return campaignContentTransfers;
     }
@@ -2490,7 +2483,7 @@ public class CampaignControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignContentChoice == null? false: defaultCampaignContentChoice.equals(value);
+            boolean usingDefaultChoice = defaultCampaignContentChoice != null && defaultCampaignContentChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignContentDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2567,7 +2560,7 @@ public class CampaignControl
                     if(iter.hasNext()) {
                         defaultCampaignContent = iter.next();
                     }
-                    CampaignContentDetailValue campaignContentDetailValue = defaultCampaignContent.getLastDetailForUpdate().getCampaignContentDetailValue().clone();
+                    CampaignContentDetailValue campaignContentDetailValue = Objects.requireNonNull(defaultCampaignContent).getLastDetailForUpdate().getCampaignContentDetailValue().clone();
 
                     campaignContentDetailValue.setIsDefault(Boolean.TRUE);
                     updateCampaignContentFromValue(campaignContentDetailValue, false, deletedBy);
@@ -2583,9 +2576,7 @@ public class CampaignControl
     }
 
     private void deleteCampaignContents(List<CampaignContent> campaignContents, boolean checkDefault, BasePK deletedBy) {
-        campaignContents.stream().forEach((campaignContent) -> {
-            deleteCampaignContent(campaignContent, checkDefault, deletedBy);
-        });
+        campaignContents.forEach((campaignContent) -> deleteCampaignContent(campaignContent, checkDefault, deletedBy));
     }
 
     public void deleteCampaignContents(List<CampaignContent> campaignContents, BasePK deletedBy) {
@@ -2700,9 +2691,9 @@ public class CampaignControl
         List<CampaignContentDescriptionTransfer> campaignContentDescriptionTransfers = new ArrayList<>(campaignContentDescriptions.size());
         CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentDescriptionTransferCache();
 
-        campaignContentDescriptions.stream().forEach((campaignContentDescription) -> {
-            campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(campaignContentDescription));
-        });
+        campaignContentDescriptions.forEach((campaignContentDescription) ->
+                campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(campaignContentDescription))
+        );
 
         return campaignContentDescriptionTransfers;
     }
@@ -2736,9 +2727,9 @@ public class CampaignControl
     public void deleteCampaignContentDescriptionsByCampaignContent(CampaignContent campaignContent, BasePK deletedBy) {
         List<CampaignContentDescription> campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContentForUpdate(campaignContent);
 
-        campaignContentDescriptions.stream().forEach((campaignContentDescription) -> {
-            deleteCampaignContentDescription(campaignContentDescription, deletedBy);
-        });
+        campaignContentDescriptions.forEach((campaignContentDescription) -> 
+                deleteCampaignContentDescription(campaignContentDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2951,9 +2942,9 @@ public class CampaignControl
         List<UserVisitCampaignTransfer> userVisitCampaignTransfers = new ArrayList<>(userVisitCampaigns.size());
         UserVisitCampaignTransferCache userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
 
-        userVisitCampaigns.stream().forEach((userVisitCampaign) -> {
-            userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisitCampaign));
-        });
+        userVisitCampaigns.forEach((userVisitCampaign) ->
+                userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisitCampaign))
+        );
 
         return userVisitCampaignTransfers;
     }

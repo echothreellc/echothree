@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LotAliasControl
         extends BaseInventoryControl {
@@ -205,9 +206,9 @@ public class LotAliasControl
         List<LotAliasTypeTransfer> lotAliasTypeTransfers = new ArrayList<>(lotAliasTypes.size());
         LotAliasTypeTransferCache lotAliasTypeTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache();
 
-        lotAliasTypes.stream().forEach((lotAliasType) -> {
-            lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getTransfer(lotAliasType));
-        });
+        lotAliasTypes.forEach((lotAliasType) ->
+                lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getTransfer(lotAliasType))
+        );
 
         return lotAliasTypeTransfers;
     }
@@ -238,7 +239,7 @@ public class LotAliasControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLotAliasTypeChoice == null? false: defaultLotAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLotAliasTypeChoice != null && defaultLotAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && lotAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -312,7 +313,7 @@ public class LotAliasControl
                 if(iter.hasNext()) {
                     defaultLotAliasType = iter.next();
                 }
-                LotAliasTypeDetailValue lotAliasTypeDetailValue = defaultLotAliasType.getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
+                LotAliasTypeDetailValue lotAliasTypeDetailValue = Objects.requireNonNull(defaultLotAliasType).getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
 
                 lotAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLotAliasTypeFromValue(lotAliasTypeDetailValue, false, deletedBy);
@@ -323,9 +324,9 @@ public class LotAliasControl
     }
 
     public void deleteLotAliasTypes(List<LotAliasType> lotAliasTypes, BasePK deletedBy) {
-        lotAliasTypes.stream().forEach((lotAliasType) -> {
-            deleteLotAliasType(lotAliasType, deletedBy);
-        });
+        lotAliasTypes.forEach((lotAliasType) -> 
+                deleteLotAliasType(lotAliasType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -436,9 +437,9 @@ public class LotAliasControl
         List<LotAliasTypeDescriptionTransfer> lotAliasTypeDescriptionTransfers = new ArrayList<>(lotAliasTypeDescriptions.size());
         LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache();
 
-        lotAliasTypeDescriptions.stream().forEach((lotAliasTypeDescription) -> {
-            lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getTransfer(lotAliasTypeDescription));
-        });
+        lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) ->
+                lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getTransfer(lotAliasTypeDescription))
+        );
 
         return lotAliasTypeDescriptionTransfers;
     }
@@ -472,9 +473,9 @@ public class LotAliasControl
     public void deleteLotAliasTypeDescriptionsByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
         List<LotAliasTypeDescription> lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasTypeForUpdate(lotAliasType);
 
-        lotAliasTypeDescriptions.stream().forEach((lotAliasTypeDescription) -> {
-            deleteLotAliasTypeDescription(lotAliasTypeDescription, deletedBy);
-        });
+        lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) -> 
+                deleteLotAliasTypeDescription(lotAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -629,9 +630,9 @@ public class LotAliasControl
         List<LotAliasTransfer> lotAliasTransfers = new ArrayList<>(lotaliases.size());
         LotAliasTransferCache lotAliasTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTransferCache();
 
-        lotaliases.stream().forEach((lotAlias) -> {
-            lotAliasTransfers.add(lotAliasTransferCache.getTransfer(lotAlias));
-        });
+        lotaliases.forEach((lotAlias) ->
+                lotAliasTransfers.add(lotAliasTransferCache.getTransfer(lotAlias))
+        );
 
         return lotAliasTransfers;
     }
@@ -663,17 +664,17 @@ public class LotAliasControl
     public void deleteLotAliasesByLotAliasType(LotAliasType lotAliasType, BasePK deletedBy) {
         List<LotAlias> lotaliases = getLotAliasesByLotAliasTypeForUpdate(lotAliasType);
 
-        lotaliases.stream().forEach((lotAlias) -> {
-            deleteLotAlias(lotAlias, deletedBy);
-        });
+        lotaliases.forEach((lotAlias) -> 
+                deleteLotAlias(lotAlias, deletedBy)
+        );
     }
 
     public void deleteLotAliasesByLot(Lot lot, BasePK deletedBy) {
         List<LotAlias> lotaliases = getLotAliasesByLotForUpdate(lot);
 
-        lotaliases.stream().forEach((lotAlias) -> {
-            deleteLotAlias(lotAlias, deletedBy);
-        });
+        lotaliases.forEach((lotAlias) -> 
+                deleteLotAlias(lotAlias, deletedBy)
+        );
     }
 
 }

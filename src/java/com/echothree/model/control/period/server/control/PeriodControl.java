@@ -79,6 +79,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class PeriodControl
@@ -265,7 +266,7 @@ public class PeriodControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPeriodKindChoice == null? false: defaultPeriodKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultPeriodKindChoice != null && defaultPeriodKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && periodKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -283,9 +284,9 @@ public class PeriodControl
         List<PeriodKindTransfer> periodKindTransfers = new ArrayList<>(periodKinds.size());
         PeriodKindTransferCache periodKindTransferCache = getPeriodTransferCaches(userVisit).getPeriodKindTransferCache();
         
-        periodKinds.stream().forEach((periodKind) -> {
-            periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(periodKind));
-        });
+        periodKinds.forEach((periodKind) ->
+                periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(periodKind))
+        );
         
         return periodKindTransfers;
     }
@@ -352,7 +353,7 @@ public class PeriodControl
                 if(iter.hasNext()) {
                     defaultPeriodKind = iter.next();
                 }
-                PeriodKindDetailValue periodKindDetailValue = defaultPeriodKind.getLastDetailForUpdate().getPeriodKindDetailValue().clone();
+                PeriodKindDetailValue periodKindDetailValue = Objects.requireNonNull(defaultPeriodKind).getLastDetailForUpdate().getPeriodKindDetailValue().clone();
                 
                 periodKindDetailValue.setIsDefault(Boolean.TRUE);
                 updatePeriodKindFromValue(periodKindDetailValue, false, deletedBy);
@@ -424,7 +425,7 @@ public class PeriodControl
     }
     
     private List<PeriodKindDescription> getPeriodKindDescriptionsByPeriodKind(PeriodKind periodKind, EntityPermission entityPermission) {
-        List<PeriodKindDescription> periodKindDescriptions = null;
+        List<PeriodKindDescription> periodKindDescriptions;
         
         try {
             String query = null;
@@ -523,9 +524,9 @@ public class PeriodControl
     public void deletePeriodKindDescriptionsByPeriodKind(PeriodKind periodKind, BasePK deletedBy) {
         List<PeriodKindDescription> periodKindDescriptions = getPeriodKindDescriptionsByPeriodKindForUpdate(periodKind);
         
-        periodKindDescriptions.stream().forEach((periodKindDescription) -> {
-            deletePeriodKindDescription(periodKindDescription, deletedBy);
-        });
+        periodKindDescriptions.forEach((periodKindDescription) -> 
+                deletePeriodKindDescription(periodKindDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -563,7 +564,7 @@ public class PeriodControl
     }
     
     private List<PeriodType> getPeriodTypes(PeriodKind periodKind, EntityPermission entityPermission) {
-        List<PeriodType> periodTypes = null;
+        List<PeriodType> periodTypes;
         
         try {
             String query = null;
@@ -716,7 +717,7 @@ public class PeriodControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPeriodTypeChoice == null? false: defaultPeriodTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPeriodTypeChoice != null && defaultPeriodTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && periodTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -755,9 +756,9 @@ public class PeriodControl
         List<PeriodTypeTransfer> periodTypeTransfers = new ArrayList<>(periodTypes.size());
         PeriodTypeTransferCache periodTypeTransferCache = getPeriodTransferCaches(userVisit).getPeriodTypeTransferCache();
         
-        periodTypes.stream().forEach((periodType) -> {
-            periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(periodType));
-        });
+        periodTypes.forEach((periodType) ->
+                periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(periodType))
+        );
         
         return periodTypeTransfers;
     }
@@ -830,7 +831,7 @@ public class PeriodControl
                 if(iter.hasNext()) {
                     defaultPeriodType = iter.next();
                 }
-                PeriodTypeDetailValue periodTypeDetailValue = defaultPeriodType.getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
+                PeriodTypeDetailValue periodTypeDetailValue = Objects.requireNonNull(defaultPeriodType).getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
                 
                 periodTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePeriodTypeFromValue(periodTypeDetailValue, false, deletedBy);
@@ -843,9 +844,9 @@ public class PeriodControl
     public void deletePeriodTypesByPeriodKind(PeriodKind periodKind, BasePK deletedBy) {
         List<PeriodType> periodTypes = getPeriodTypesForUpdate(periodKind);
         
-        periodTypes.stream().forEach((periodType) -> {
-            deletePeriodType(periodType, deletedBy);
-        });
+        periodTypes.forEach((periodType) -> 
+                deletePeriodType(periodType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -910,7 +911,7 @@ public class PeriodControl
     }
     
     private List<PeriodTypeDescription> getPeriodTypeDescriptionsByPeriodType(PeriodType periodType, EntityPermission entityPermission) {
-        List<PeriodTypeDescription> periodTypeDescriptions = null;
+        List<PeriodTypeDescription> periodTypeDescriptions;
         
         try {
             String query = null;
@@ -1008,9 +1009,9 @@ public class PeriodControl
     public void deletePeriodTypeDescriptionsByPeriodType(PeriodType periodType, BasePK deletedBy) {
         List<PeriodTypeDescription> periodTypeDescriptions = getPeriodTypeDescriptionsByPeriodTypeForUpdate(periodType);
         
-        periodTypeDescriptions.stream().forEach((periodTypeDescription) -> {
-            deletePeriodTypeDescription(periodTypeDescription, deletedBy);
-        });
+        periodTypeDescriptions.forEach((periodTypeDescription) -> 
+                deletePeriodTypeDescription(periodTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1035,7 +1036,7 @@ public class PeriodControl
     }
     
     private List<Period> getContainingPeriodsUsingNames(String periodKindName, Long time, EntityPermission entityPermission) {
-        List<Period> periods = null;
+        List<Period> periods;
         
         try {
             String query = null;
@@ -1079,7 +1080,7 @@ public class PeriodControl
     }
     
     private List<Period> getPeriods(PeriodType periodType, EntityPermission entityPermission) {
-        List<Period> periods = null;
+        List<Period> periods;
         
         try {
             String query = null;
@@ -1117,7 +1118,7 @@ public class PeriodControl
     }
     
     private List<Period> getPeriodsByParentPeriod(Period parentPeriod, EntityPermission entityPermission) {
-        List<Period> periods = null;
+        List<Period> periods;
         
         try {
             String query = null;
@@ -1243,9 +1244,9 @@ public class PeriodControl
         List<PeriodTransfer> periodTransfers = new ArrayList<>(periods.size());
         PeriodTransferCache periodTransferCache = getPeriodTransferCaches(userVisit).getPeriodTransferCache();
         
-        periods.stream().forEach((period) -> {
-            periodTransfers.add(periodTransferCache.getPeriodTransfer(period));
-        });
+        periods.forEach((period) ->
+                periodTransfers.add(periodTransferCache.getPeriodTransfer(period))
+        );
         
         return periodTransfers;
     }
@@ -1289,9 +1290,9 @@ public class PeriodControl
     }
     
     public void deletePeriods(List<Period> periods, BasePK deletedBy) {
-        periods.stream().forEach((period) -> {
-            deletePeriod(period, deletedBy);
-        });
+        periods.forEach((period) -> 
+                deletePeriod(period, deletedBy)
+        );
     }
 
     private void deletePeriodsByParentPeriod(Period parentPeriod, BasePK deletedBy) {
@@ -1301,9 +1302,9 @@ public class PeriodControl
     public void deletePeriodsByPeriodType(PeriodType periodType, BasePK deletedBy) {
         List<Period> periods = getPeriodsForUpdate(periodType);
         
-        periods.stream().forEach((period) -> {
-            deletePeriod(period, deletedBy);
-        });
+        periods.forEach((period) -> 
+                deletePeriod(period, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1368,7 +1369,7 @@ public class PeriodControl
     }
     
     private List<PeriodDescription> getPeriodDescriptionsByPeriod(Period period, EntityPermission entityPermission) {
-        List<PeriodDescription> periodDescriptions = null;
+        List<PeriodDescription> periodDescriptions;
         
         try {
             String query = null;
@@ -1466,9 +1467,9 @@ public class PeriodControl
     public void deletePeriodDescriptionsByPeriod(Period period, BasePK deletedBy) {
         List<PeriodDescription> periodDescriptions = getPeriodDescriptionsByPeriodForUpdate(period);
         
-        periodDescriptions.stream().forEach((periodDescription) -> {
-            deletePeriodDescription(periodDescription, deletedBy);
-        });
+        periodDescriptions.forEach((periodDescription) -> 
+                deletePeriodDescription(periodDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

@@ -244,6 +244,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SearchControl
         extends BaseModelControl {
@@ -421,9 +422,9 @@ public class SearchControl
         List<SearchUseTypeTransfer> searchUseTypeTransfers = new ArrayList<>(searchUseTypes.size());
         SearchUseTypeTransferCache searchUseTypeTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeTransferCache();
 
-        searchUseTypes.stream().forEach((searchUseType) -> {
-            searchUseTypeTransfers.add(searchUseTypeTransferCache.getSearchUseTypeTransfer(searchUseType));
-        });
+        searchUseTypes.forEach((searchUseType) ->
+                searchUseTypeTransfers.add(searchUseTypeTransferCache.getSearchUseTypeTransfer(searchUseType))
+        );
 
         return searchUseTypeTransfers;
     }
@@ -453,7 +454,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchUseTypeChoice == null? false: defaultSearchUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchUseTypeChoice != null && defaultSearchUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -528,7 +529,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchUseType = iter.next();
                     }
-                    SearchUseTypeDetailValue searchUseTypeDetailValue = defaultSearchUseType.getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
+                    SearchUseTypeDetailValue searchUseTypeDetailValue = Objects.requireNonNull(defaultSearchUseType).getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
 
                     searchUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchUseTypeFromValue(searchUseTypeDetailValue, false, deletedBy);
@@ -544,9 +545,7 @@ public class SearchControl
     }
 
     private void deleteSearchUseTypes(List<SearchUseType> searchUseTypes, boolean checkDefault, BasePK deletedBy) {
-        searchUseTypes.stream().forEach((searchUseType) -> {
-            deleteSearchUseType(searchUseType, checkDefault, deletedBy);
-        });
+        searchUseTypes.forEach((searchUseType) -> deleteSearchUseType(searchUseType, checkDefault, deletedBy));
     }
 
     public void deleteSearchUseTypes(List<SearchUseType> searchUseTypes, BasePK deletedBy) {
@@ -661,9 +660,9 @@ public class SearchControl
         List<SearchUseTypeDescriptionTransfer> searchUseTypeDescriptionTransfers = new ArrayList<>(searchUseTypeDescriptions.size());
         SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeDescriptionTransferCache();
 
-        searchUseTypeDescriptions.stream().forEach((searchUseTypeDescription) -> {
-            searchUseTypeDescriptionTransfers.add(searchUseTypeDescriptionTransferCache.getSearchUseTypeDescriptionTransfer(searchUseTypeDescription));
-        });
+        searchUseTypeDescriptions.forEach((searchUseTypeDescription) ->
+                searchUseTypeDescriptionTransfers.add(searchUseTypeDescriptionTransferCache.getSearchUseTypeDescriptionTransfer(searchUseTypeDescription))
+        );
 
         return searchUseTypeDescriptionTransfers;
     }
@@ -697,9 +696,9 @@ public class SearchControl
     public void deleteSearchUseTypeDescriptionsBySearchUseType(SearchUseType searchUseType, BasePK deletedBy) {
         List<SearchUseTypeDescription> searchUseTypeDescriptions = getSearchUseTypeDescriptionsBySearchUseTypeForUpdate(searchUseType);
 
-        searchUseTypeDescriptions.stream().forEach((searchUseTypeDescription) -> {
-            deleteSearchUseTypeDescription(searchUseTypeDescription, deletedBy);
-        });
+        searchUseTypeDescriptions.forEach((searchUseTypeDescription) -> 
+                deleteSearchUseTypeDescription(searchUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -856,9 +855,9 @@ public class SearchControl
         List<SearchResultActionTypeTransfer> searchResultActionTypeTransfers = new ArrayList<>(searchResultActionTypes.size());
         SearchResultActionTypeTransferCache searchResultActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache();
 
-        searchResultActionTypes.stream().forEach((searchResultActionType) -> {
-            searchResultActionTypeTransfers.add(searchResultActionTypeTransferCache.getSearchResultActionTypeTransfer(searchResultActionType));
-        });
+        searchResultActionTypes.forEach((searchResultActionType) ->
+                searchResultActionTypeTransfers.add(searchResultActionTypeTransferCache.getSearchResultActionTypeTransfer(searchResultActionType))
+        );
 
         return searchResultActionTypeTransfers;
     }
@@ -888,7 +887,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchResultActionTypeChoice == null? false: defaultSearchResultActionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchResultActionTypeChoice != null && defaultSearchResultActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchResultActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -963,7 +962,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchResultActionType = iter.next();
                     }
-                    SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = defaultSearchResultActionType.getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
+                    SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = Objects.requireNonNull(defaultSearchResultActionType).getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
 
                     searchResultActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, false, deletedBy);
@@ -979,9 +978,7 @@ public class SearchControl
     }
 
     private void deleteSearchResultActionTypes(List<SearchResultActionType> searchResultActionTypes, boolean checkDefault, BasePK deletedBy) {
-        searchResultActionTypes.stream().forEach((searchResultActionType) -> {
-            deleteSearchResultActionType(searchResultActionType, checkDefault, deletedBy);
-        });
+        searchResultActionTypes.forEach((searchResultActionType) -> deleteSearchResultActionType(searchResultActionType, checkDefault, deletedBy));
     }
 
     public void deleteSearchResultActionTypes(List<SearchResultActionType> searchResultActionTypes, BasePK deletedBy) {
@@ -1096,9 +1093,9 @@ public class SearchControl
         List<SearchResultActionTypeDescriptionTransfer> searchResultActionTypeDescriptionTransfers = new ArrayList<>(searchResultActionTypeDescriptions.size());
         SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeDescriptionTransferCache();
 
-        searchResultActionTypeDescriptions.stream().forEach((searchResultActionTypeDescription) -> {
-            searchResultActionTypeDescriptionTransfers.add(searchResultActionTypeDescriptionTransferCache.getSearchResultActionTypeDescriptionTransfer(searchResultActionTypeDescription));
-        });
+        searchResultActionTypeDescriptions.forEach((searchResultActionTypeDescription) ->
+                searchResultActionTypeDescriptionTransfers.add(searchResultActionTypeDescriptionTransferCache.getSearchResultActionTypeDescriptionTransfer(searchResultActionTypeDescription))
+        );
 
         return searchResultActionTypeDescriptionTransfers;
     }
@@ -1132,9 +1129,9 @@ public class SearchControl
     public void deleteSearchResultActionTypeDescriptionsBySearchResultActionType(SearchResultActionType searchResultActionType, BasePK deletedBy) {
         List<SearchResultActionTypeDescription> searchResultActionTypeDescriptions = getSearchResultActionTypeDescriptionsBySearchResultActionTypeForUpdate(searchResultActionType);
 
-        searchResultActionTypeDescriptions.stream().forEach((searchResultActionTypeDescription) -> {
-            deleteSearchResultActionTypeDescription(searchResultActionTypeDescription, deletedBy);
-        });
+        searchResultActionTypeDescriptions.forEach((searchResultActionTypeDescription) -> 
+                deleteSearchResultActionTypeDescription(searchResultActionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1291,9 +1288,9 @@ public class SearchControl
         List<SearchCheckSpellingActionTypeTransfer> searchCheckSpellingActionTypeTransfers = new ArrayList<>(searchCheckSpellingActionTypes.size());
         SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeTransferCache();
 
-        searchCheckSpellingActionTypes.stream().forEach((searchCheckSpellingActionType) -> {
-            searchCheckSpellingActionTypeTransfers.add(searchCheckSpellingActionTypeTransferCache.getSearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionType));
-        });
+        searchCheckSpellingActionTypes.forEach((searchCheckSpellingActionType) ->
+                searchCheckSpellingActionTypeTransfers.add(searchCheckSpellingActionTypeTransferCache.getSearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionType))
+        );
 
         return searchCheckSpellingActionTypeTransfers;
     }
@@ -1323,7 +1320,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchCheckSpellingActionTypeChoice == null? false: defaultSearchCheckSpellingActionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchCheckSpellingActionTypeChoice != null && defaultSearchCheckSpellingActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchCheckSpellingActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1397,7 +1394,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchCheckSpellingActionType = iter.next();
                     }
-                    SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = defaultSearchCheckSpellingActionType.getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
+                    SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = Objects.requireNonNull(defaultSearchCheckSpellingActionType).getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
 
                     searchCheckSpellingActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchCheckSpellingActionTypeFromValue(searchCheckSpellingActionTypeDetailValue, false, deletedBy);
@@ -1413,9 +1410,7 @@ public class SearchControl
     }
 
     private void deleteSearchCheckSpellingActionTypes(List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes, boolean checkDefault, BasePK deletedBy) {
-        searchCheckSpellingActionTypes.stream().forEach((searchCheckSpellingActionType) -> {
-            deleteSearchCheckSpellingActionType(searchCheckSpellingActionType, checkDefault, deletedBy);
-        });
+        searchCheckSpellingActionTypes.forEach((searchCheckSpellingActionType) -> deleteSearchCheckSpellingActionType(searchCheckSpellingActionType, checkDefault, deletedBy));
     }
 
     public void deleteSearchCheckSpellingActionTypes(List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes, BasePK deletedBy) {
@@ -1530,9 +1525,9 @@ public class SearchControl
         List<SearchCheckSpellingActionTypeDescriptionTransfer> searchCheckSpellingActionTypeDescriptionTransfers = new ArrayList<>(searchCheckSpellingActionTypeDescriptions.size());
         SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeDescriptionTransferCache();
 
-        searchCheckSpellingActionTypeDescriptions.stream().forEach((searchCheckSpellingActionTypeDescription) -> {
-            searchCheckSpellingActionTypeDescriptionTransfers.add(searchCheckSpellingActionTypeDescriptionTransferCache.getSearchCheckSpellingActionTypeDescriptionTransfer(searchCheckSpellingActionTypeDescription));
-        });
+        searchCheckSpellingActionTypeDescriptions.forEach((searchCheckSpellingActionTypeDescription) ->
+                searchCheckSpellingActionTypeDescriptionTransfers.add(searchCheckSpellingActionTypeDescriptionTransferCache.getSearchCheckSpellingActionTypeDescriptionTransfer(searchCheckSpellingActionTypeDescription))
+        );
 
         return searchCheckSpellingActionTypeDescriptionTransfers;
     }
@@ -1566,9 +1561,9 @@ public class SearchControl
     public void deleteSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType, BasePK deletedBy) {
         List<SearchCheckSpellingActionTypeDescription> searchCheckSpellingActionTypeDescriptions = getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionTypeForUpdate(searchCheckSpellingActionType);
 
-        searchCheckSpellingActionTypeDescriptions.stream().forEach((searchCheckSpellingActionTypeDescription) -> {
-            deleteSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionTypeDescription, deletedBy);
-        });
+        searchCheckSpellingActionTypeDescriptions.forEach((searchCheckSpellingActionTypeDescription) -> 
+                deleteSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1725,9 +1720,9 @@ public class SearchControl
         List<SearchDefaultOperatorTransfer> searchDefaultOperatorTransfers = new ArrayList<>(searchDefaultOperators.size());
         SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorTransferCache();
 
-        searchDefaultOperators.stream().forEach((searchDefaultOperator) -> {
-            searchDefaultOperatorTransfers.add(searchDefaultOperatorTransferCache.getSearchDefaultOperatorTransfer(searchDefaultOperator));
-        });
+        searchDefaultOperators.forEach((searchDefaultOperator) ->
+                searchDefaultOperatorTransfers.add(searchDefaultOperatorTransferCache.getSearchDefaultOperatorTransfer(searchDefaultOperator))
+        );
 
         return searchDefaultOperatorTransfers;
     }
@@ -1757,7 +1752,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchDefaultOperatorChoice == null? false: defaultSearchDefaultOperatorChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchDefaultOperatorChoice != null && defaultSearchDefaultOperatorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchDefaultOperatorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1833,7 +1828,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchDefaultOperator = iter.next();
                     }
-                    SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = defaultSearchDefaultOperator.getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
+                    SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = Objects.requireNonNull(defaultSearchDefaultOperator).getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
 
                     searchDefaultOperatorDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchDefaultOperatorFromValue(searchDefaultOperatorDetailValue, false, deletedBy);
@@ -1849,9 +1844,7 @@ public class SearchControl
     }
 
     private void deleteSearchDefaultOperators(List<SearchDefaultOperator> searchDefaultOperators, boolean checkDefault, BasePK deletedBy) {
-        searchDefaultOperators.stream().forEach((searchDefaultOperator) -> {
-            deleteSearchDefaultOperator(searchDefaultOperator, checkDefault, deletedBy);
-        });
+        searchDefaultOperators.forEach((searchDefaultOperator) -> deleteSearchDefaultOperator(searchDefaultOperator, checkDefault, deletedBy));
     }
 
     public void deleteSearchDefaultOperators(List<SearchDefaultOperator> searchDefaultOperators, BasePK deletedBy) {
@@ -1966,9 +1959,9 @@ public class SearchControl
         List<SearchDefaultOperatorDescriptionTransfer> searchDefaultOperatorDescriptionTransfers = new ArrayList<>(searchDefaultOperatorDescriptions.size());
         SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorDescriptionTransferCache();
 
-        searchDefaultOperatorDescriptions.stream().forEach((searchDefaultOperatorDescription) -> {
-            searchDefaultOperatorDescriptionTransfers.add(searchDefaultOperatorDescriptionTransferCache.getSearchDefaultOperatorDescriptionTransfer(searchDefaultOperatorDescription));
-        });
+        searchDefaultOperatorDescriptions.forEach((searchDefaultOperatorDescription) ->
+                searchDefaultOperatorDescriptionTransfers.add(searchDefaultOperatorDescriptionTransferCache.getSearchDefaultOperatorDescriptionTransfer(searchDefaultOperatorDescription))
+        );
 
         return searchDefaultOperatorDescriptionTransfers;
     }
@@ -2002,9 +1995,9 @@ public class SearchControl
     public void deleteSearchDefaultOperatorDescriptionsBySearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, BasePK deletedBy) {
         List<SearchDefaultOperatorDescription> searchDefaultOperatorDescriptions = getSearchDefaultOperatorDescriptionsBySearchDefaultOperatorForUpdate(searchDefaultOperator);
 
-        searchDefaultOperatorDescriptions.stream().forEach((searchDefaultOperatorDescription) -> {
-            deleteSearchDefaultOperatorDescription(searchDefaultOperatorDescription, deletedBy);
-        });
+        searchDefaultOperatorDescriptions.forEach((searchDefaultOperatorDescription) -> 
+                deleteSearchDefaultOperatorDescription(searchDefaultOperatorDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2161,9 +2154,9 @@ public class SearchControl
         List<SearchSortDirectionTransfer> searchSortDirectionTransfers = new ArrayList<>(searchSortDirections.size());
         SearchSortDirectionTransferCache searchSortDirectionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionTransferCache();
 
-        searchSortDirections.stream().forEach((searchSortDirection) -> {
-            searchSortDirectionTransfers.add(searchSortDirectionTransferCache.getSearchSortDirectionTransfer(searchSortDirection));
-        });
+        searchSortDirections.forEach((searchSortDirection) ->
+                searchSortDirectionTransfers.add(searchSortDirectionTransferCache.getSearchSortDirectionTransfer(searchSortDirection))
+        );
 
         return searchSortDirectionTransfers;
     }
@@ -2193,7 +2186,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchSortDirectionChoice == null? false: defaultSearchSortDirectionChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchSortDirectionChoice != null && defaultSearchSortDirectionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchSortDirectionDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2269,7 +2262,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchSortDirection = iter.next();
                     }
-                    SearchSortDirectionDetailValue searchSortDirectionDetailValue = defaultSearchSortDirection.getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
+                    SearchSortDirectionDetailValue searchSortDirectionDetailValue = Objects.requireNonNull(defaultSearchSortDirection).getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
 
                     searchSortDirectionDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchSortDirectionFromValue(searchSortDirectionDetailValue, false, deletedBy);
@@ -2285,9 +2278,7 @@ public class SearchControl
     }
 
     private void deleteSearchSortDirections(List<SearchSortDirection> searchSortDirections, boolean checkDefault, BasePK deletedBy) {
-        searchSortDirections.stream().forEach((searchSortDirection) -> {
-            deleteSearchSortDirection(searchSortDirection, checkDefault, deletedBy);
-        });
+        searchSortDirections.forEach((searchSortDirection) -> deleteSearchSortDirection(searchSortDirection, checkDefault, deletedBy));
     }
 
     public void deleteSearchSortDirections(List<SearchSortDirection> searchSortDirections, BasePK deletedBy) {
@@ -2402,9 +2393,9 @@ public class SearchControl
         List<SearchSortDirectionDescriptionTransfer> searchSortDirectionDescriptionTransfers = new ArrayList<>(searchSortDirectionDescriptions.size());
         SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionDescriptionTransferCache();
 
-        searchSortDirectionDescriptions.stream().forEach((searchSortDirectionDescription) -> {
-            searchSortDirectionDescriptionTransfers.add(searchSortDirectionDescriptionTransferCache.getSearchSortDirectionDescriptionTransfer(searchSortDirectionDescription));
-        });
+        searchSortDirectionDescriptions.forEach((searchSortDirectionDescription) ->
+                searchSortDirectionDescriptionTransfers.add(searchSortDirectionDescriptionTransferCache.getSearchSortDirectionDescriptionTransfer(searchSortDirectionDescription))
+        );
 
         return searchSortDirectionDescriptionTransfers;
     }
@@ -2438,9 +2429,9 @@ public class SearchControl
     public void deleteSearchSortDirectionDescriptionsBySearchSortDirection(SearchSortDirection searchSortDirection, BasePK deletedBy) {
         List<SearchSortDirectionDescription> searchSortDirectionDescriptions = getSearchSortDirectionDescriptionsBySearchSortDirectionForUpdate(searchSortDirection);
 
-        searchSortDirectionDescriptions.stream().forEach((searchSortDirectionDescription) -> {
-            deleteSearchSortDirectionDescription(searchSortDirectionDescription, deletedBy);
-        });
+        searchSortDirectionDescriptions.forEach((searchSortDirectionDescription) -> 
+                deleteSearchSortDirectionDescription(searchSortDirectionDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2602,7 +2593,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchKindChoice == null? false: defaultSearchKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchKindChoice != null && defaultSearchKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2620,9 +2611,9 @@ public class SearchControl
         List<SearchKindTransfer> searchKindTransfers = new ArrayList<>(searchKinds.size());
         SearchKindTransferCache searchKindTransferCache = getSearchTransferCaches(userVisit).getSearchKindTransferCache();
 
-        searchKinds.stream().forEach((searchKind) -> {
-            searchKindTransfers.add(searchKindTransferCache.getSearchKindTransfer(searchKind));
-        });
+        searchKinds.forEach((searchKind) ->
+                searchKindTransfers.add(searchKindTransferCache.getSearchKindTransfer(searchKind))
+        );
 
         return searchKindTransfers;
     }
@@ -2691,7 +2682,7 @@ public class SearchControl
                     if(iter.hasNext()) {
                         defaultSearchKind = iter.next();
                     }
-                    SearchKindDetailValue searchKindDetailValue = defaultSearchKind.getLastDetailForUpdate().getSearchKindDetailValue().clone();
+                    SearchKindDetailValue searchKindDetailValue = Objects.requireNonNull(defaultSearchKind).getLastDetailForUpdate().getSearchKindDetailValue().clone();
 
                     searchKindDetailValue.setIsDefault(Boolean.TRUE);
                     updateSearchKindFromValue(searchKindDetailValue, false, deletedBy);
@@ -2707,9 +2698,7 @@ public class SearchControl
     }
 
     private void deleteSearchKinds(List<SearchKind> searchKinds, boolean checkDefault, BasePK deletedBy) {
-        searchKinds.stream().forEach((searchKind) -> {
-            deleteSearchKind(searchKind, checkDefault, deletedBy);
-        });
+        searchKinds.forEach((searchKind) -> deleteSearchKind(searchKind, checkDefault, deletedBy));
     }
 
     public void deleteSearchKinds(List<SearchKind> searchKinds, BasePK deletedBy) {
@@ -2860,9 +2849,9 @@ public class SearchControl
     public void deleteSearchKindDescriptionsBySearchKind(SearchKind searchKind, BasePK deletedBy) {
         List<SearchKindDescription> searchKindDescriptions = getSearchKindDescriptionsBySearchKindForUpdate(searchKind);
 
-        searchKindDescriptions.stream().forEach((searchKindDescription) -> {
-            deleteSearchKindDescription(searchKindDescription, deletedBy);
-        });
+        searchKindDescriptions.forEach((searchKindDescription) -> 
+                deleteSearchKindDescription(searchKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3030,7 +3019,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchTypeChoice == null? false: defaultSearchTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchTypeChoice != null && defaultSearchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3048,9 +3037,9 @@ public class SearchControl
         List<SearchTypeTransfer> searchTypeTransfers = new ArrayList<>(searchTypes.size());
         SearchTypeTransferCache searchTypeTransferCache = getSearchTransferCaches(userVisit).getSearchTypeTransferCache();
 
-        searchTypes.stream().forEach((searchType) -> {
-            searchTypeTransfers.add(searchTypeTransferCache.getSearchTypeTransfer(searchType));
-        });
+        searchTypes.forEach((searchType) ->
+                searchTypeTransfers.add(searchTypeTransferCache.getSearchTypeTransfer(searchType))
+        );
 
         return searchTypeTransfers;
     }
@@ -3125,7 +3114,7 @@ public class SearchControl
                 if(iter.hasNext()) {
                     defaultSearchType = iter.next();
                 }
-                SearchTypeDetailValue searchTypeDetailValue = defaultSearchType.getLastDetailForUpdate().getSearchTypeDetailValue().clone();
+                SearchTypeDetailValue searchTypeDetailValue = Objects.requireNonNull(defaultSearchType).getLastDetailForUpdate().getSearchTypeDetailValue().clone();
 
                 searchTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSearchTypeFromValue(searchTypeDetailValue, false, deletedBy);
@@ -3138,9 +3127,9 @@ public class SearchControl
     public void deleteSearchTypesBySearchKind(SearchKind searchKind, BasePK deletedBy) {
         List<SearchType> searchTypes = getSearchTypesForUpdate(searchKind);
 
-        searchTypes.stream().forEach((searchType) -> {
-            deleteSearchType(searchType, deletedBy);
-        });
+        searchTypes.forEach((searchType) -> 
+                deleteSearchType(searchType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3287,9 +3276,9 @@ public class SearchControl
     public void deleteSearchTypeDescriptionsBySearchType(SearchType searchType, BasePK deletedBy) {
         List<SearchTypeDescription> searchTypeDescriptions = getSearchTypeDescriptionsBySearchTypeForUpdate(searchType);
 
-        searchTypeDescriptions.stream().forEach((searchTypeDescription) -> {
-            deleteSearchTypeDescription(searchTypeDescription, deletedBy);
-        });
+        searchTypeDescriptions.forEach((searchTypeDescription) -> 
+                deleteSearchTypeDescription(searchTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3457,7 +3446,7 @@ public class SearchControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchSortOrderChoice == null? false: defaultSearchSortOrderChoice.equals(value);
+            boolean usingDefaultChoice = defaultSearchSortOrderChoice != null && defaultSearchSortOrderChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchSortOrderDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3475,9 +3464,9 @@ public class SearchControl
         List<SearchSortOrderTransfer> searchSortOrderTransfers = new ArrayList<>(searchSortOrders.size());
         SearchSortOrderTransferCache searchSortOrderTransferCache = getSearchTransferCaches(userVisit).getSearchSortOrderTransferCache();
 
-        searchSortOrders.stream().forEach((searchSortOrder) -> {
-            searchSortOrderTransfers.add(searchSortOrderTransferCache.getSearchSortOrderTransfer(searchSortOrder));
-        });
+        searchSortOrders.forEach((searchSortOrder) ->
+                searchSortOrderTransfers.add(searchSortOrderTransferCache.getSearchSortOrderTransfer(searchSortOrder))
+        );
 
         return searchSortOrderTransfers;
     }
@@ -3550,7 +3539,7 @@ public class SearchControl
                 if(iter.hasNext()) {
                     defaultSearchSortOrder = iter.next();
                 }
-                SearchSortOrderDetailValue searchSortOrderDetailValue = defaultSearchSortOrder.getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
+                SearchSortOrderDetailValue searchSortOrderDetailValue = Objects.requireNonNull(defaultSearchSortOrder).getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
 
                 searchSortOrderDetailValue.setIsDefault(Boolean.TRUE);
                 updateSearchSortOrderFromValue(searchSortOrderDetailValue, false, deletedBy);
@@ -3563,9 +3552,9 @@ public class SearchControl
     public void deleteSearchSortOrdersBySearchKind(SearchKind searchKind, BasePK deletedBy) {
         List<SearchSortOrder> searchSortOrders = getSearchSortOrdersForUpdate(searchKind);
 
-        searchSortOrders.stream().forEach((searchSortOrder) -> {
-            deleteSearchSortOrder(searchSortOrder, deletedBy);
-        });
+        searchSortOrders.forEach((searchSortOrder) -> 
+                deleteSearchSortOrder(searchSortOrder, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3712,9 +3701,9 @@ public class SearchControl
     public void deleteSearchSortOrderDescriptionsBySearchSortOrder(SearchSortOrder searchSortOrder, BasePK deletedBy) {
         List<SearchSortOrderDescription> searchSortOrderDescriptions = getSearchSortOrderDescriptionsBySearchSortOrderForUpdate(searchSortOrder);
 
-        searchSortOrderDescriptions.stream().forEach((searchSortOrderDescription) -> {
-            deleteSearchSortOrderDescription(searchSortOrderDescription, deletedBy);
-        });
+        searchSortOrderDescriptions.forEach((searchSortOrderDescription) -> 
+                deleteSearchSortOrderDescription(searchSortOrderDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3865,9 +3854,9 @@ public class SearchControl
     }
     
     public void deleteSearches(List<Search> searches, BasePK deletedBy) {
-        searches.stream().forEach((search) -> {
-            deleteSearch(search, deletedBy);
-        });
+        searches.forEach((search) -> 
+                deleteSearch(search, deletedBy)
+        );
     }
 
     public void deleteSearchesByParty(Party party, BasePK deletedBy) {
@@ -4118,9 +4107,9 @@ public class SearchControl
     }
     
     public void deletedCachedSearches(List<CachedSearch> cachedSearches, BasePK deletedBy) {
-        cachedSearches.stream().forEach((cachedSearch) -> {
-            deleteCachedSearch(cachedSearch, deletedBy);
-        });
+        cachedSearches.forEach((cachedSearch) -> 
+                deleteCachedSearch(cachedSearch, deletedBy)
+        );
     }
     
     public void deleteCachedSearchesByIndex(Index index, BasePK deletedBy) {
@@ -4269,9 +4258,9 @@ public class SearchControl
     }
     
     public void deleteCachedSearchIndexFields(List<CachedSearchIndexField> cachedSearchIndexFields, BasePK deletedBy) {
-        cachedSearchIndexFields.stream().forEach((cachedSearchIndexField) -> {
-            deleteCachedSearchIndexField(cachedSearchIndexField, deletedBy);
-        });
+        cachedSearchIndexFields.forEach((cachedSearchIndexField) -> 
+                deleteCachedSearchIndexField(cachedSearchIndexField, deletedBy)
+        );
     }
     
     public void deleteCachedSearchIndexFieldsByCachedSearch(CachedSearch cachedSearch, BasePK deletedBy) {
@@ -4760,9 +4749,9 @@ public class SearchControl
     }
 
     public void deletePartySearchTypePreferences(List<PartySearchTypePreference> partySearchTypePreferences, BasePK deletedBy) {
-        partySearchTypePreferences.stream().forEach((partySearchTypePreference) -> {
-            deletePartySearchTypePreference(partySearchTypePreference, deletedBy);
-        });
+        partySearchTypePreferences.forEach((partySearchTypePreference) -> 
+                deletePartySearchTypePreference(partySearchTypePreference, deletedBy)
+        );
     }
 
     public void deletePartySearchTypePreferencesByParty(Party party, BasePK deletedBy) {
@@ -4882,9 +4871,9 @@ public class SearchControl
     }
     
     public void deleteSearchResultActions(List<SearchResultAction> searchResultActions, BasePK deletedBy) {
-        searchResultActions.stream().forEach((searchResultAction) -> {
-            deleteSearchResultAction(searchResultAction, deletedBy);
-        });
+        searchResultActions.forEach((searchResultAction) -> 
+                deleteSearchResultAction(searchResultAction, deletedBy)
+        );
     }
     
     public void deleteSearchResultActionsBySearch(Search search, BasePK deletedBy) {

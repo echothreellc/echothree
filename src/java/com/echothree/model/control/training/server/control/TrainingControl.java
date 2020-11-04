@@ -167,6 +167,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class TrainingControl
@@ -346,9 +347,9 @@ public class TrainingControl
         List<TrainingClassTransfer> trainingClassTransfers = new ArrayList<>(trainingClasses.size());
         TrainingClassTransferCache trainingClassTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassTransferCache();
         
-        trainingClasses.stream().forEach((trainingClass) -> {
-            trainingClassTransfers.add(trainingClassTransferCache.getTrainingClassTransfer(trainingClass));
-        });
+        trainingClasses.forEach((trainingClass) ->
+                trainingClassTransfers.add(trainingClassTransferCache.getTrainingClassTransfer(trainingClass))
+        );
         
         return trainingClassTransfers;
     }
@@ -380,7 +381,7 @@ public class TrainingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTrainingClassChoice == null? false: defaultTrainingClassChoice.equals(value);
+            boolean usingDefaultChoice = defaultTrainingClassChoice != null && defaultTrainingClassChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && trainingClassDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -465,7 +466,7 @@ public class TrainingControl
                 if(iter.hasNext()) {
                     defaultTrainingClass = (TrainingClass)iter.next();
                 }
-                TrainingClassDetailValue trainingClassDetailValue = defaultTrainingClass.getLastDetailForUpdate().getTrainingClassDetailValue().clone();
+                TrainingClassDetailValue trainingClassDetailValue = Objects.requireNonNull(defaultTrainingClass).getLastDetailForUpdate().getTrainingClassDetailValue().clone();
                 
                 trainingClassDetailValue.setIsDefault(Boolean.TRUE);
                 updateTrainingClassFromValue(trainingClassDetailValue, false, deletedBy);
@@ -578,9 +579,9 @@ public class TrainingControl
         List<TrainingClassTranslationTransfer> trainingClassTranslationTransfers = new ArrayList<>(trainingClassTranslations.size());
         TrainingClassTranslationTransferCache trainingClassTranslationTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassTranslationTransferCache();
         
-        trainingClassTranslations.stream().forEach((trainingClassTranslation) -> {
-            trainingClassTranslationTransfers.add(trainingClassTranslationTransferCache.getTrainingClassTranslationTransfer(trainingClassTranslation));
-        });
+        trainingClassTranslations.forEach((trainingClassTranslation) ->
+                trainingClassTranslationTransfers.add(trainingClassTranslationTransferCache.getTrainingClassTranslationTransfer(trainingClassTranslation))
+        );
         
         return trainingClassTranslationTransfers;
     }
@@ -618,9 +619,9 @@ public class TrainingControl
     public void deleteTrainingClassTranslationsByTrainingClass(TrainingClass trainingClass, BasePK deletedBy) {
         List<TrainingClassTranslation> trainingClassTranslations = getTrainingClassTranslationsByTrainingClassForUpdate(trainingClass);
         
-        trainingClassTranslations.stream().forEach((trainingClassTranslation) -> {
-            deleteTrainingClassTranslation(trainingClassTranslation, deletedBy);
-        });
+        trainingClassTranslations.forEach((trainingClassTranslation) -> 
+                deleteTrainingClassTranslation(trainingClassTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -725,9 +726,9 @@ public class TrainingControl
         List<TrainingClassSectionTransfer> trainingClassSectionTransfers = new ArrayList<>(trainingClassSections.size());
         TrainingClassSectionTransferCache trainingClassSectionTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassSectionTransferCache();
         
-        trainingClassSections.stream().forEach((trainingClassSection) -> {
-            trainingClassSectionTransfers.add(trainingClassSectionTransferCache.getTrainingClassSectionTransfer(trainingClassSection));
-        });
+        trainingClassSections.forEach((trainingClassSection) ->
+                trainingClassSectionTransfers.add(trainingClassSectionTransferCache.getTrainingClassSectionTransfer(trainingClassSection))
+        );
         
         return trainingClassSectionTransfers;
     }
@@ -777,9 +778,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassSections(List<TrainingClassSection> trainingClassSections, BasePK deletedBy) {
-        trainingClassSections.stream().forEach((trainingClassSection) -> {
-            deleteTrainingClassSection(trainingClassSection, deletedBy);
-        });
+        trainingClassSections.forEach((trainingClassSection) -> 
+                deleteTrainingClassSection(trainingClassSection, deletedBy)
+        );
     }
     
     public void deleteTrainingClassSectionsByTrainingClass(TrainingClass trainingClass, BasePK deletedBy) {
@@ -889,9 +890,9 @@ public class TrainingControl
         List<TrainingClassSectionTranslationTransfer> trainingClassSectionTranslationTransfers = new ArrayList<>(trainingClassSectionTranslations.size());
         TrainingClassSectionTranslationTransferCache trainingClassSectionTranslationTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassSectionTranslationTransferCache();
         
-        trainingClassSectionTranslations.stream().forEach((trainingClassSectionTranslation) -> {
-            trainingClassSectionTranslationTransfers.add(trainingClassSectionTranslationTransferCache.getTrainingClassSectionTranslationTransfer(trainingClassSectionTranslation));
-        });
+        trainingClassSectionTranslations.forEach((trainingClassSectionTranslation) ->
+                trainingClassSectionTranslationTransfers.add(trainingClassSectionTranslationTransferCache.getTrainingClassSectionTranslationTransfer(trainingClassSectionTranslation))
+        );
         
         return trainingClassSectionTranslationTransfers;
     }
@@ -929,9 +930,9 @@ public class TrainingControl
     public void deleteTrainingClassSectionTranslationsByTrainingClassSection(TrainingClassSection trainingClassSection, BasePK deletedBy) {
         List<TrainingClassSectionTranslation> trainingClassSectionTranslations = getTrainingClassSectionTranslationsByTrainingClassSectionForUpdate(trainingClassSection);
         
-        trainingClassSectionTranslations.stream().forEach((trainingClassSectionTranslation) -> {
-            deleteTrainingClassSectionTranslation(trainingClassSectionTranslation, deletedBy);
-        });
+        trainingClassSectionTranslations.forEach((trainingClassSectionTranslation) -> 
+                deleteTrainingClassSectionTranslation(trainingClassSectionTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1058,9 +1059,9 @@ public class TrainingControl
         List<TrainingClassPageTransfer> trainingClassPageTransfers = new ArrayList<>(trainingClassPages.size());
         TrainingClassPageTransferCache trainingClassPageTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassPageTransferCache();
         
-        trainingClassPages.stream().forEach((trainingClassPage) -> {
-            trainingClassPageTransfers.add(trainingClassPageTransferCache.getTrainingClassPageTransfer(trainingClassPage));
-        });
+        trainingClassPages.forEach((trainingClassPage) ->
+                trainingClassPageTransfers.add(trainingClassPageTransferCache.getTrainingClassPageTransfer(trainingClassPage))
+        );
         
         return trainingClassPageTransfers;
     }
@@ -1106,9 +1107,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassPages(List<TrainingClassPage> trainingClassPages, BasePK deletedBy) {
-        trainingClassPages.stream().forEach((trainingClassPage) -> {
-            deleteTrainingClassPage(trainingClassPage, deletedBy);
-        });
+        trainingClassPages.forEach((trainingClassPage) -> 
+                deleteTrainingClassPage(trainingClassPage, deletedBy)
+        );
     }
     
     public void deleteTrainingClassPagesByTrainingClassSection(TrainingClassSection trainingClassSection, BasePK deletedBy) {
@@ -1220,9 +1221,9 @@ public class TrainingControl
         List<TrainingClassPageTranslationTransfer> trainingClassPageTranslationTransfers = new ArrayList<>(trainingClassPageTranslations.size());
         TrainingClassPageTranslationTransferCache trainingClassPageTranslationTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassPageTranslationTransferCache();
         
-        trainingClassPageTranslations.stream().forEach((trainingClassPageTranslation) -> {
-            trainingClassPageTranslationTransfers.add(trainingClassPageTranslationTransferCache.getTrainingClassPageTranslationTransfer(trainingClassPageTranslation));
-        });
+        trainingClassPageTranslations.forEach((trainingClassPageTranslation) ->
+                trainingClassPageTranslationTransfers.add(trainingClassPageTranslationTransferCache.getTrainingClassPageTranslationTransfer(trainingClassPageTranslation))
+        );
         
         return trainingClassPageTranslationTransfers;
     }
@@ -1258,9 +1259,9 @@ public class TrainingControl
     public void deleteTrainingClassPageTranslationsByTrainingClassPage(TrainingClassPage trainingClassPage, BasePK deletedBy) {
         List<TrainingClassPageTranslation> trainingClassPageTranslations = getTrainingClassPageTranslationsByTrainingClassPageForUpdate(trainingClassPage);
         
-        trainingClassPageTranslations.stream().forEach((trainingClassPageTranslation) -> {
-            deleteTrainingClassPageTranslation(trainingClassPageTranslation, deletedBy);
-        });
+        trainingClassPageTranslations.forEach((trainingClassPageTranslation) -> 
+                deleteTrainingClassPageTranslation(trainingClassPageTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1388,9 +1389,9 @@ public class TrainingControl
         List<TrainingClassQuestionTransfer> trainingClassQuestionTransfers = new ArrayList<>(trainingClassQuestions.size());
         TrainingClassQuestionTransferCache trainingClassQuestionTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassQuestionTransferCache();
         
-        trainingClassQuestions.stream().forEach((trainingClassQuestion) -> {
-            trainingClassQuestionTransfers.add(trainingClassQuestionTransferCache.getTrainingClassQuestionTransfer(trainingClassQuestion));
-        });
+        trainingClassQuestions.forEach((trainingClassQuestion) ->
+                trainingClassQuestionTransfers.add(trainingClassQuestionTransferCache.getTrainingClassQuestionTransfer(trainingClassQuestion))
+        );
         
         return trainingClassQuestionTransfers;
     }
@@ -1439,9 +1440,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassQuestions(List<TrainingClassQuestion> trainingClassQuestions, BasePK deletedBy) {
-        trainingClassQuestions.stream().forEach((trainingClassQuestion) -> {
-            deleteTrainingClassQuestion(trainingClassQuestion, deletedBy);
-        });
+        trainingClassQuestions.forEach((trainingClassQuestion) -> 
+                deleteTrainingClassQuestion(trainingClassQuestion, deletedBy)
+        );
     }
     
     public void deleteTrainingClassQuestionsByTrainingClassSection(TrainingClassSection trainingClassSection, BasePK deletedBy) {
@@ -1554,9 +1555,9 @@ public class TrainingControl
         List<TrainingClassQuestionTranslationTransfer> trainingClassQuestionTranslationTransfers = new ArrayList<>(trainingClassQuestionTranslations.size());
         TrainingClassQuestionTranslationTransferCache trainingClassQuestionTranslationTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassQuestionTranslationTransferCache();
         
-        trainingClassQuestionTranslations.stream().forEach((trainingClassQuestionTranslation) -> {
-            trainingClassQuestionTranslationTransfers.add(trainingClassQuestionTranslationTransferCache.getTrainingClassQuestionTranslationTransfer(trainingClassQuestionTranslation));
-        });
+        trainingClassQuestionTranslations.forEach((trainingClassQuestionTranslation) ->
+                trainingClassQuestionTranslationTransfers.add(trainingClassQuestionTranslationTransferCache.getTrainingClassQuestionTranslationTransfer(trainingClassQuestionTranslation))
+        );
         
         return trainingClassQuestionTranslationTransfers;
     }
@@ -1590,9 +1591,9 @@ public class TrainingControl
     public void deleteTrainingClassQuestionTranslationsByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion, BasePK deletedBy) {
         List<TrainingClassQuestionTranslation> trainingClassQuestionTranslations = getTrainingClassQuestionTranslationsByTrainingClassQuestionForUpdate(trainingClassQuestion);
         
-        trainingClassQuestionTranslations.stream().forEach((trainingClassQuestionTranslation) -> {
-            deleteTrainingClassQuestionTranslation(trainingClassQuestionTranslation, deletedBy);
-        });
+        trainingClassQuestionTranslations.forEach((trainingClassQuestionTranslation) -> 
+                deleteTrainingClassQuestionTranslation(trainingClassQuestionTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1696,9 +1697,9 @@ public class TrainingControl
         List<TrainingClassAnswerTransfer> trainingClassAnswerTransfers = new ArrayList<>(trainingClassAnswers.size());
         TrainingClassAnswerTransferCache trainingClassAnswerTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassAnswerTransferCache();
         
-        trainingClassAnswers.stream().forEach((trainingClassAnswer) -> {
-            trainingClassAnswerTransfers.add(trainingClassAnswerTransferCache.getTrainingClassAnswerTransfer(trainingClassAnswer));
-        });
+        trainingClassAnswers.forEach((trainingClassAnswer) ->
+                trainingClassAnswerTransfers.add(trainingClassAnswerTransferCache.getTrainingClassAnswerTransfer(trainingClassAnswer))
+        );
         
         return trainingClassAnswerTransfers;
     }
@@ -1745,9 +1746,9 @@ public class TrainingControl
     }
     
     public void deleteTrainingClassAnswers(List<TrainingClassAnswer> trainingClassAnswers, BasePK deletedBy) {
-        trainingClassAnswers.stream().forEach((trainingClassAnswer) -> {
-            deleteTrainingClassAnswer(trainingClassAnswer, deletedBy);
-        });
+        trainingClassAnswers.forEach((trainingClassAnswer) -> 
+                deleteTrainingClassAnswer(trainingClassAnswer, deletedBy)
+        );
     }
     
     public void deleteTrainingClassAnswersByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion, BasePK deletedBy) {
@@ -1858,9 +1859,9 @@ public class TrainingControl
         List<TrainingClassAnswerTranslationTransfer> trainingClassAnswerTranslationTransfers = new ArrayList<>(trainingClassAnswerTranslations.size());
         TrainingClassAnswerTranslationTransferCache trainingClassAnswerTranslationTransferCache = getTrainingTransferCaches(userVisit).getTrainingClassAnswerTranslationTransferCache();
         
-        trainingClassAnswerTranslations.stream().forEach((trainingClassAnswerTranslation) -> {
-            trainingClassAnswerTranslationTransfers.add(trainingClassAnswerTranslationTransferCache.getTrainingClassAnswerTranslationTransfer(trainingClassAnswerTranslation));
-        });
+        trainingClassAnswerTranslations.forEach((trainingClassAnswerTranslation) ->
+                trainingClassAnswerTranslationTransfers.add(trainingClassAnswerTranslationTransferCache.getTrainingClassAnswerTranslationTransfer(trainingClassAnswerTranslation))
+        );
         
         return trainingClassAnswerTranslationTransfers;
     }
@@ -1897,9 +1898,9 @@ public class TrainingControl
     public void deleteTrainingClassAnswerTranslationsByTrainingClassAnswer(TrainingClassAnswer trainingClassAnswer, BasePK deletedBy) {
         List<TrainingClassAnswerTranslation> trainingClassAnswerTranslations = getTrainingClassAnswerTranslationsByTrainingClassAnswerForUpdate(trainingClassAnswer);
         
-        trainingClassAnswerTranslations.stream().forEach((trainingClassAnswerTranslation) -> {
-            deleteTrainingClassAnswerTranslation(trainingClassAnswerTranslation, deletedBy);
-        });
+        trainingClassAnswerTranslations.forEach((trainingClassAnswerTranslation) -> 
+                deleteTrainingClassAnswerTranslation(trainingClassAnswerTranslation, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2196,9 +2197,9 @@ public class TrainingControl
         List<PartyTrainingClassTransfer> partyTrainingClassTransfers = new ArrayList<>(partyTrainingClasses.size());
         PartyTrainingClassTransferCache partyTrainingClassTransferCache = getTrainingTransferCaches(userVisit).getPartyTrainingClassTransferCache();
         
-        partyTrainingClasses.stream().forEach((partyTrainingClass) -> {
-            partyTrainingClassTransfers.add(partyTrainingClassTransferCache.getPartyTrainingClassTransfer(partyTrainingClass));
-        });
+        partyTrainingClasses.forEach((partyTrainingClass) ->
+                partyTrainingClassTransfers.add(partyTrainingClassTransferCache.getPartyTrainingClassTransfer(partyTrainingClass))
+        );
         
         return partyTrainingClassTransfers;
     }
@@ -2257,17 +2258,17 @@ public class TrainingControl
     public void deletePartyTrainingClassByParty(Party party, BasePK deletedBy) {
         List<PartyTrainingClass> partyTrainingClasses = getPartyTrainingClassesByPartyForUpdate(party);
         
-        partyTrainingClasses.stream().forEach((partyTrainingClass) -> {
-            deletePartyTrainingClass(partyTrainingClass, deletedBy);
-        });
+        partyTrainingClasses.forEach((partyTrainingClass) -> 
+                deletePartyTrainingClass(partyTrainingClass, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassesByTrainingClass(TrainingClass trainingClass, BasePK deletedBy) {
         List<PartyTrainingClass> partyTrainingClasses = getPartyTrainingClassesByTrainingClassForUpdate(trainingClass);
         
-        partyTrainingClasses.stream().forEach((partyTrainingClass) -> {
-            deletePartyTrainingClass(partyTrainingClass, deletedBy);
-        });
+        partyTrainingClasses.forEach((partyTrainingClass) -> 
+                deletePartyTrainingClass(partyTrainingClass, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2437,9 +2438,9 @@ public class TrainingControl
         List<PartyTrainingClassSessionTransfer> partyTrainingClassSessionTransfers = new ArrayList<>(partyTrainingClassSessions.size());
         PartyTrainingClassSessionTransferCache partyTrainingClassSessionTransferCache = getTrainingTransferCaches(userVisit).getPartyTrainingClassSessionTransferCache();
         
-        partyTrainingClassSessions.stream().forEach((partyTrainingClassSession) -> {
-            partyTrainingClassSessionTransfers.add(partyTrainingClassSessionTransferCache.getPartyTrainingClassSessionTransfer(partyTrainingClassSession));
-        });
+        partyTrainingClassSessions.forEach((partyTrainingClassSession) ->
+                partyTrainingClassSessionTransfers.add(partyTrainingClassSessionTransferCache.getPartyTrainingClassSessionTransfer(partyTrainingClassSession))
+        );
         
         return partyTrainingClassSessionTransfers;
     }
@@ -2485,9 +2486,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessions(List<PartyTrainingClassSession> partyTrainingClassSessions, BasePK deletedBy) {
-        partyTrainingClassSessions.stream().forEach((partyTrainingClassSession) -> {
-            deletePartyTrainingClassSession(partyTrainingClassSession, deletedBy);
-        });
+        partyTrainingClassSessions.forEach((partyTrainingClassSession) -> 
+                deletePartyTrainingClassSession(partyTrainingClassSession, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionsByPartyTrainingClass(PartyTrainingClass partyTrainingClass, BasePK deletedBy) {
@@ -2771,9 +2772,9 @@ public class TrainingControl
         List<PartyTrainingClassSessionSectionTransfer> partyTrainingClassSessionSectionTransfers = new ArrayList<>(partyTrainingClassSessionSections.size());
         PartyTrainingClassSessionSectionTransferCache partyTrainingClassSessionSectionTransferCache = getTrainingTransferCaches(userVisit).getPartyTrainingClassSessionSectionTransferCache();
         
-        partyTrainingClassSessionSections.stream().forEach((partyTrainingClassSessionSection) -> {
-            partyTrainingClassSessionSectionTransfers.add(partyTrainingClassSessionSectionTransferCache.getPartyTrainingClassSessionSectionTransfer(partyTrainingClassSessionSection));
-        });
+        partyTrainingClassSessionSections.forEach((partyTrainingClassSessionSection) ->
+                partyTrainingClassSessionSectionTransfers.add(partyTrainingClassSessionSectionTransferCache.getPartyTrainingClassSessionSectionTransfer(partyTrainingClassSessionSection))
+        );
         
         return partyTrainingClassSessionSectionTransfers;
     }
@@ -2814,9 +2815,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionSections(List<PartyTrainingClassSessionSection> partyTrainingClassSessionSections, BasePK deletedBy) {
-        partyTrainingClassSessionSections.stream().forEach((partyTrainingClassSessionSection) -> {
-            deletePartyTrainingClassSessionSection(partyTrainingClassSessionSection, deletedBy);
-        });
+        partyTrainingClassSessionSections.forEach((partyTrainingClassSessionSection) -> 
+                deletePartyTrainingClassSessionSection(partyTrainingClassSessionSection, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionSectionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession, BasePK deletedBy) {
@@ -2970,9 +2971,9 @@ public class TrainingControl
         List<PartyTrainingClassSessionPageTransfer> partyTrainingClassSessionPageTransfers = new ArrayList<>(partyTrainingClassSessionPages.size());
         PartyTrainingClassSessionPageTransferCache partyTrainingClassSessionPageTransferCache = getTrainingTransferCaches(userVisit).getPartyTrainingClassSessionPageTransferCache();
         
-        partyTrainingClassSessionPages.stream().forEach((partyTrainingClassSessionPage) -> {
-            partyTrainingClassSessionPageTransfers.add(partyTrainingClassSessionPageTransferCache.getPartyTrainingClassSessionPageTransfer(partyTrainingClassSessionPage));
-        });
+        partyTrainingClassSessionPages.forEach((partyTrainingClassSessionPage) ->
+                partyTrainingClassSessionPageTransfers.add(partyTrainingClassSessionPageTransferCache.getPartyTrainingClassSessionPageTransfer(partyTrainingClassSessionPage))
+        );
         
         return partyTrainingClassSessionPageTransfers;
     }
@@ -3013,9 +3014,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionPages(List<PartyTrainingClassSessionPage> partyTrainingClassSessionPages, BasePK deletedBy) {
-        partyTrainingClassSessionPages.stream().forEach((partyTrainingClassSessionPage) -> {
-            deletePartyTrainingClassSessionPage(partyTrainingClassSessionPage, deletedBy);
-        });
+        partyTrainingClassSessionPages.forEach((partyTrainingClassSessionPage) -> 
+                deletePartyTrainingClassSessionPage(partyTrainingClassSessionPage, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionPagesByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession, BasePK deletedBy) {
@@ -3174,9 +3175,9 @@ public class TrainingControl
         List<PartyTrainingClassSessionQuestionTransfer> partyTrainingClassSessionQuestionTransfers = new ArrayList<>(partyTrainingClassSessionQuestions.size());
         PartyTrainingClassSessionQuestionTransferCache partyTrainingClassSessionQuestionTransferCache = getTrainingTransferCaches(userVisit).getPartyTrainingClassSessionQuestionTransferCache();
         
-        partyTrainingClassSessionQuestions.stream().forEach((partyTrainingClassSessionQuestion) -> {
-            partyTrainingClassSessionQuestionTransfers.add(partyTrainingClassSessionQuestionTransferCache.getPartyTrainingClassSessionQuestionTransfer(partyTrainingClassSessionQuestion));
-        });
+        partyTrainingClassSessionQuestions.forEach((partyTrainingClassSessionQuestion) ->
+                partyTrainingClassSessionQuestionTransfers.add(partyTrainingClassSessionQuestionTransferCache.getPartyTrainingClassSessionQuestionTransfer(partyTrainingClassSessionQuestion))
+        );
         
         return partyTrainingClassSessionQuestionTransfers;
     }
@@ -3227,9 +3228,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionQuestions(List<PartyTrainingClassSessionQuestion> partyTrainingClassSessionQuestions, BasePK deletedBy) {
-        partyTrainingClassSessionQuestions.stream().forEach((partyTrainingClassSessionQuestion) -> {
-            deletePartyTrainingClassSessionQuestion(partyTrainingClassSessionQuestion, deletedBy);
-        });
+        partyTrainingClassSessionQuestions.forEach((partyTrainingClassSessionQuestion) -> 
+                deletePartyTrainingClassSessionQuestion(partyTrainingClassSessionQuestion, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionQuestionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession, BasePK deletedBy) {
@@ -3431,9 +3432,9 @@ public class TrainingControl
         List<PartyTrainingClassSessionAnswerTransfer> partyTrainingClassSessionAnswerTransfers = new ArrayList<>(partyTrainingClassSessionAnswers.size());
         PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache = getTrainingTransferCaches(userVisit).getPartyTrainingClassSessionAnswerTransferCache();
         
-        partyTrainingClassSessionAnswers.stream().forEach((partyTrainingClassSessionAnswer) -> {
-            partyTrainingClassSessionAnswerTransfers.add(partyTrainingClassSessionAnswerTransferCache.getPartyTrainingClassSessionAnswerTransfer(partyTrainingClassSessionAnswer));
-        });
+        partyTrainingClassSessionAnswers.forEach((partyTrainingClassSessionAnswer) ->
+                partyTrainingClassSessionAnswerTransfers.add(partyTrainingClassSessionAnswerTransferCache.getPartyTrainingClassSessionAnswerTransfer(partyTrainingClassSessionAnswer))
+        );
         
         return partyTrainingClassSessionAnswerTransfers;
     }
@@ -3472,9 +3473,9 @@ public class TrainingControl
     }
     
     public void deletePartyTrainingClassSessionAnswers(List<PartyTrainingClassSessionAnswer> partyTrainingClassSessionAnswers, BasePK deletedBy) {
-        partyTrainingClassSessionAnswers.stream().forEach((partyTrainingClassSessionAnswer) -> {
-            deletePartyTrainingClassSessionAnswer(partyTrainingClassSessionAnswer, deletedBy);
-        });
+        partyTrainingClassSessionAnswers.forEach((partyTrainingClassSessionAnswer) -> 
+                deletePartyTrainingClassSessionAnswer(partyTrainingClassSessionAnswer, deletedBy)
+        );
     }
     
     public void deletePartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion, BasePK deletedBy) {

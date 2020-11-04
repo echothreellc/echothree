@@ -233,9 +233,9 @@ public class PaymentMethodTypePartyTypeControl
         var paymentMethodTypePartyTypeTransfers = new ArrayList<PaymentMethodTypePartyTypeTransfer>(paymentMethodTypePartyTypes.size());
         var paymentMethodTypePartyTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache();
 
-        paymentMethodTypePartyTypes.stream().forEach((paymentMethodTypePartyType) -> {
-            paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType));
-        });
+        paymentMethodTypePartyTypes.forEach((paymentMethodTypePartyType) ->
+                paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType))
+        );
 
         return paymentMethodTypePartyTypeTransfers;
     }
@@ -355,7 +355,7 @@ public class PaymentMethodTypePartyTypeControl
                 if(iter.hasNext()) {
                     defaultPaymentMethodTypePartyType = iter.next();
                 }
-                var paymentMethodTypePartyTypeDetailValue = defaultPaymentMethodTypePartyType.getLastDetailForUpdate().getPaymentMethodTypePartyTypeDetailValue().clone();
+                var paymentMethodTypePartyTypeDetailValue = Objects.requireNonNull(defaultPaymentMethodTypePartyType).getLastDetailForUpdate().getPaymentMethodTypePartyTypeDetailValue().clone();
 
                 paymentMethodTypePartyTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentMethodTypePartyTypeFromValue(paymentMethodTypePartyTypeDetailValue, false, deletedBy);

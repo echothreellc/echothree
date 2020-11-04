@@ -108,6 +108,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Objects;
 
 public class SecurityControl
         extends BaseModelControl {
@@ -327,9 +328,9 @@ public class SecurityControl
         List<SecurityRoleGroupTransfer> securityRoleGroupTransfers = new ArrayList<>(securityRoleGroups.size());
         SecurityRoleGroupTransferCache securityRoleGroupTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
         
-        securityRoleGroups.stream().forEach((securityRoleGroup) -> {
-            securityRoleGroupTransfers.add(securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroup));
-        });
+        securityRoleGroups.forEach((securityRoleGroup) ->
+                securityRoleGroupTransfers.add(securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroup))
+        );
         
         return securityRoleGroupTransfers;
     }
@@ -370,7 +371,7 @@ public class SecurityControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultSecurityRoleGroupChoice == null? false: defaultSecurityRoleGroupChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultSecurityRoleGroupChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && securityRoleGroupDetail.getIsDefault())) {
                     defaultValue = value;
                 }
@@ -472,7 +473,7 @@ public class SecurityControl
                     if(iter.hasNext()) {
                         defaultSecurityRoleGroup = iter.next();
                     }
-                    SecurityRoleGroupDetailValue securityRoleGroupDetailValue = defaultSecurityRoleGroup.getLastDetailForUpdate().getSecurityRoleGroupDetailValue().clone();
+                    SecurityRoleGroupDetailValue securityRoleGroupDetailValue = Objects.requireNonNull(defaultSecurityRoleGroup).getLastDetailForUpdate().getSecurityRoleGroupDetailValue().clone();
 
                     securityRoleGroupDetailValue.setIsDefault(Boolean.TRUE);
                     updateSecurityRoleGroupFromValue(securityRoleGroupDetailValue, false, deletedBy);
@@ -488,9 +489,7 @@ public class SecurityControl
     }
 
     private void deleteSecurityRoleGroups(List<SecurityRoleGroup> securityRoleGroups, boolean checkDefault, BasePK deletedBy) {
-        securityRoleGroups.stream().forEach((securityRoleGroup) -> {
-            deleteSecurityRoleGroup(securityRoleGroup, checkDefault, deletedBy);
-        });
+        securityRoleGroups.forEach((securityRoleGroup) -> deleteSecurityRoleGroup(securityRoleGroup, checkDefault, deletedBy));
     }
 
     public void deleteSecurityRoleGroups(List<SecurityRoleGroup> securityRoleGroups, BasePK deletedBy) {
@@ -562,7 +561,7 @@ public class SecurityControl
     }
     
     private List<SecurityRoleGroupDescription> getSecurityRoleGroupDescriptionsBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
-        List<SecurityRoleGroupDescription> securityRoleGroupDescriptions = null;
+        List<SecurityRoleGroupDescription> securityRoleGroupDescriptions;
         
         try {
             String query = null;
@@ -626,9 +625,9 @@ public class SecurityControl
         List<SecurityRoleGroupDescriptionTransfer> securityRoleGroupDescriptionTransfers = new ArrayList<>(securityRoleGroupDescriptions.size());
         SecurityRoleGroupDescriptionTransferCache securityRoleGroupDescriptionTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleGroupDescriptionTransferCache();
         
-        securityRoleGroupDescriptions.stream().forEach((securityRoleGroupDescription) -> {
-            securityRoleGroupDescriptionTransfers.add(securityRoleGroupDescriptionTransferCache.getSecurityRoleGroupDescriptionTransfer(securityRoleGroupDescription));
-        });
+        securityRoleGroupDescriptions.forEach((securityRoleGroupDescription) ->
+                securityRoleGroupDescriptionTransfers.add(securityRoleGroupDescriptionTransferCache.getSecurityRoleGroupDescriptionTransfer(securityRoleGroupDescription))
+        );
         
         return securityRoleGroupDescriptionTransfers;
     }
@@ -661,9 +660,9 @@ public class SecurityControl
     public void deleteSecurityRoleGroupDescriptionsBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
         List<SecurityRoleGroupDescription> securityRoleGroupDescriptions = getSecurityRoleGroupDescriptionsBySecurityRoleGroupForUpdate(securityRoleGroup);
         
-        securityRoleGroupDescriptions.stream().forEach((securityRoleGroupDescription) -> {
-            deleteSecurityRoleGroupDescription(securityRoleGroupDescription, deletedBy);
-        });
+        securityRoleGroupDescriptions.forEach((securityRoleGroupDescription) -> 
+                deleteSecurityRoleGroupDescription(securityRoleGroupDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -717,7 +716,7 @@ public class SecurityControl
     }
     
     private List<SecurityRole> getSecurityRoles(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
-        List<SecurityRole> securityRoles = null;
+        List<SecurityRole> securityRoles;
         
         try {
             String query = null;
@@ -887,7 +886,7 @@ public class SecurityControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSecurityRoleChoice == null? false: defaultSecurityRoleChoice.equals(value);
+            boolean usingDefaultChoice = defaultSecurityRoleChoice != null && defaultSecurityRoleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && securityRoleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -905,9 +904,9 @@ public class SecurityControl
         List<SecurityRoleTransfer> securityRoleTransfers = new ArrayList<>(securityRoles.size());
         SecurityRoleTransferCache securityRoleTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
         
-        securityRoles.stream().forEach((securityRole) -> {
-            securityRoleTransfers.add(securityRoleTransferCache.getSecurityRoleTransfer(securityRole));
-        });
+        securityRoles.forEach((securityRole) ->
+                securityRoleTransfers.add(securityRoleTransferCache.getSecurityRoleTransfer(securityRole))
+        );
         
         return securityRoleTransfers;
     }
@@ -982,7 +981,7 @@ public class SecurityControl
                 if(iter.hasNext()) {
                     defaultSecurityRole = iter.next();
                 }
-                SecurityRoleDetailValue securityRoleDetailValue = defaultSecurityRole.getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
+                SecurityRoleDetailValue securityRoleDetailValue = Objects.requireNonNull(defaultSecurityRole).getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
                 
                 securityRoleDetailValue.setIsDefault(Boolean.TRUE);
                 updateSecurityRoleFromValue(securityRoleDetailValue, false, deletedBy);
@@ -995,9 +994,9 @@ public class SecurityControl
     public void deleteSecurityRolesBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
         List<SecurityRole> securityRoles = getSecurityRolesForUpdate(securityRoleGroup);
         
-        securityRoles.stream().forEach((securityRole) -> {
-            deleteSecurityRole(securityRole, deletedBy);
-        });
+        securityRoles.forEach((securityRole) -> 
+                deleteSecurityRole(securityRole, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1061,7 +1060,7 @@ public class SecurityControl
     }
     
     private List<SecurityRoleDescription> getSecurityRoleDescriptionsBySecurityRole(SecurityRole securityRole, EntityPermission entityPermission) {
-        List<SecurityRoleDescription> securityRoleDescriptions = null;
+        List<SecurityRoleDescription> securityRoleDescriptions;
         
         try {
             String query = null;
@@ -1125,9 +1124,9 @@ public class SecurityControl
         List<SecurityRoleDescriptionTransfer> securityRoleDescriptionTransfers = new ArrayList<>(securityRoleDescriptions.size());
         SecurityRoleDescriptionTransferCache securityRoleDescriptionTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleDescriptionTransferCache();
         
-        securityRoleDescriptions.stream().forEach((securityRoleDescription) -> {
-            securityRoleDescriptionTransfers.add(securityRoleDescriptionTransferCache.getSecurityRoleDescriptionTransfer(securityRoleDescription));
-        });
+        securityRoleDescriptions.forEach((securityRoleDescription) ->
+                securityRoleDescriptionTransfers.add(securityRoleDescriptionTransferCache.getSecurityRoleDescriptionTransfer(securityRoleDescription))
+        );
         
         return securityRoleDescriptionTransfers;
     }
@@ -1160,9 +1159,9 @@ public class SecurityControl
     public void deleteSecurityRoleDescriptionsBySecurityRole(SecurityRole securityRole, BasePK deletedBy) {
         List<SecurityRoleDescription> securityRoleDescriptions = getSecurityRoleDescriptionsBySecurityRoleForUpdate(securityRole);
         
-        securityRoleDescriptions.stream().forEach((securityRoleDescription) -> {
-            deleteSecurityRoleDescription(securityRoleDescription, deletedBy);
-        });
+        securityRoleDescriptions.forEach((securityRoleDescription) -> 
+                deleteSecurityRoleDescription(securityRoleDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1288,9 +1287,9 @@ public class SecurityControl
         List<SecurityRolePartyTypeTransfer> securityRolePartyTypeTransfers = new ArrayList<>(securityRolePartyTypes.size());
         SecurityRolePartyTypeTransferCache securityRolePartyTypeTransferCache = getSecurityTransferCaches(userVisit).getSecurityRolePartyTypeTransferCache();
         
-        securityRolePartyTypes.stream().forEach((securityRolePartyType) -> {
-            securityRolePartyTypeTransfers.add(securityRolePartyTypeTransferCache.getSecurityRolePartyTypeTransfer(securityRolePartyType));
-        });
+        securityRolePartyTypes.forEach((securityRolePartyType) ->
+                securityRolePartyTypeTransfers.add(securityRolePartyTypeTransferCache.getSecurityRolePartyTypeTransfer(securityRolePartyType))
+        );
         
         return securityRolePartyTypeTransfers;
     }
@@ -1326,9 +1325,9 @@ public class SecurityControl
     }
     
     public void deleteSecurityRolePartyTypes(List<SecurityRolePartyType> securityRolePartyTypes, BasePK deletedBy) {
-        securityRolePartyTypes.stream().forEach((securityRolePartyType) -> {
-            deleteSecurityRolePartyType(securityRolePartyType, deletedBy);
-        });
+        securityRolePartyTypes.forEach((securityRolePartyType) -> 
+                deleteSecurityRolePartyType(securityRolePartyType, deletedBy)
+        );
     }
     
     public void deleteSecurityRolePartyTypesBySecurityRole(SecurityRole securityRole, BasePK deletedBy) {
@@ -1511,7 +1510,7 @@ public class SecurityControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPartySecurityRoleTemplateChoice == null? false: defaultPartySecurityRoleTemplateChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartySecurityRoleTemplateChoice != null && defaultPartySecurityRoleTemplateChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partySecurityRoleTemplateDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1529,9 +1528,9 @@ public class SecurityControl
         List<PartySecurityRoleTemplateTransfer> partySecurityRoleTemplateTransfers = new ArrayList<>(partySecurityRoleTemplates.size());
         PartySecurityRoleTemplateTransferCache partySecurityRoleTemplateTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTransferCache();
         
-        partySecurityRoleTemplates.stream().forEach((partySecurityRoleTemplate) -> {
-            partySecurityRoleTemplateTransfers.add(partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(partySecurityRoleTemplate));
-        });
+        partySecurityRoleTemplates.forEach((partySecurityRoleTemplate) ->
+                partySecurityRoleTemplateTransfers.add(partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(partySecurityRoleTemplate))
+        );
         
         return partySecurityRoleTemplateTransfers;
     }
@@ -1601,7 +1600,7 @@ public class SecurityControl
                 if(iter.hasNext()) {
                     defaultPartySecurityRoleTemplate = iter.next();
                 }
-                PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = defaultPartySecurityRoleTemplate.getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
+                PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = Objects.requireNonNull(defaultPartySecurityRoleTemplate).getLastDetailForUpdate().getPartySecurityRoleTemplateDetailValue().clone();
                 
                 partySecurityRoleTemplateDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartySecurityRoleTemplateFromValue(partySecurityRoleTemplateDetailValue, false, deletedBy);
@@ -1675,7 +1674,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateDescription> getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions = null;
+        List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions;
         
         try {
             String query = null;
@@ -1741,9 +1740,9 @@ public class SecurityControl
         List<PartySecurityRoleTemplateDescriptionTransfer> partySecurityRoleTemplateDescriptionTransfers = new ArrayList<>(partySecurityRoleTemplateDescriptions.size());
         PartySecurityRoleTemplateDescriptionTransferCache partySecurityRoleTemplateDescriptionTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateDescriptionTransferCache();
         
-        partySecurityRoleTemplateDescriptions.stream().forEach((partySecurityRoleTemplateDescription) -> {
-            partySecurityRoleTemplateDescriptionTransfers.add(partySecurityRoleTemplateDescriptionTransferCache.getPartySecurityRoleTemplateDescriptionTransfer(partySecurityRoleTemplateDescription));
-        });
+        partySecurityRoleTemplateDescriptions.forEach((partySecurityRoleTemplateDescription) ->
+                partySecurityRoleTemplateDescriptionTransfers.add(partySecurityRoleTemplateDescriptionTransferCache.getPartySecurityRoleTemplateDescriptionTransfer(partySecurityRoleTemplateDescription))
+        );
         
         return partySecurityRoleTemplateDescriptionTransfers;
     }
@@ -1776,9 +1775,9 @@ public class SecurityControl
     public void deletePartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK deletedBy) {
         List<PartySecurityRoleTemplateDescription> partySecurityRoleTemplateDescriptions = getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplateForUpdate(partySecurityRoleTemplate);
         
-        partySecurityRoleTemplateDescriptions.stream().forEach((partySecurityRoleTemplateDescription) -> {
-            deletePartySecurityRoleTemplateDescription(partySecurityRoleTemplateDescription, deletedBy);
-        });
+        partySecurityRoleTemplateDescriptions.forEach((partySecurityRoleTemplateDescription) -> 
+                deletePartySecurityRoleTemplateDescription(partySecurityRoleTemplateDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1841,7 +1840,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateRole> getPartySecurityRoleTemplateRoles(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles = null;
+        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles;
         
         try {
             String query = null;
@@ -1883,7 +1882,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateRole> getPartySecurityRoleTemplateRolesBySecurityRole(SecurityRole securityRole,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles = null;
+        List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles;
         
         try {
             String query = null;
@@ -1928,9 +1927,9 @@ public class SecurityControl
         List<PartySecurityRoleTemplateRoleTransfer> partySecurityRoleTemplateRoleTransfers = new ArrayList<>(partySecurityRoleTemplateRoles.size());
         PartySecurityRoleTemplateRoleTransferCache partySecurityRoleTemplateRoleTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateRoleTransferCache();
 
-        partySecurityRoleTemplateRoles.stream().forEach((partySecurityRoleTemplateRole) -> {
-            partySecurityRoleTemplateRoleTransfers.add(partySecurityRoleTemplateRoleTransferCache.getPartySecurityRoleTemplateRoleTransfer(partySecurityRoleTemplateRole));
-        });
+        partySecurityRoleTemplateRoles.forEach((partySecurityRoleTemplateRole) ->
+                partySecurityRoleTemplateRoleTransfers.add(partySecurityRoleTemplateRoleTransferCache.getPartySecurityRoleTemplateRoleTransfer(partySecurityRoleTemplateRole))
+        );
 
         return partySecurityRoleTemplateRoleTransfers;
     }
@@ -2006,7 +2005,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateTrainingClass> getPartySecurityRoleTemplateTrainingClasses(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses = null;
+        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses;
         
         try {
             String query = null;
@@ -2047,7 +2046,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateTrainingClass> getPartySecurityRoleTemplateTrainingClassesByTrainingClass(TrainingClass trainingClass,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses = null;
+        List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses;
         
         try {
             String query = null;
@@ -2094,9 +2093,9 @@ public class SecurityControl
         List<PartySecurityRoleTemplateTrainingClassTransfer> partySecurityRoleTemplateTrainingClassTransfers = new ArrayList<>(partySecurityRoleTemplateTrainingClasses.size());
         PartySecurityRoleTemplateTrainingClassTransferCache partySecurityRoleTemplateTrainingClassTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTrainingClassTransferCache();
 
-        partySecurityRoleTemplateTrainingClasses.stream().forEach((partySecurityRoleTemplateTrainingClass) -> {
-            partySecurityRoleTemplateTrainingClassTransfers.add(partySecurityRoleTemplateTrainingClassTransferCache.getPartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplateTrainingClass));
-        });
+        partySecurityRoleTemplateTrainingClasses.forEach((partySecurityRoleTemplateTrainingClass) ->
+                partySecurityRoleTemplateTrainingClassTransfers.add(partySecurityRoleTemplateTrainingClassTransferCache.getPartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplateTrainingClass))
+        );
 
         return partySecurityRoleTemplateTrainingClassTransfers;
     }
@@ -2192,7 +2191,7 @@ public class SecurityControl
     
     private List<PartySecurityRoleTemplateUse> getPartySecurityRoleTemplateUsesByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate,
             EntityPermission entityPermission) {
-        List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses = null;
+        List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2328,7 +2327,7 @@ public class SecurityControl
     }
     
     private List<PartySecurityRole> getPartySecurityRoles(Party party, EntityPermission entityPermission) {
-        List<PartySecurityRole> partySecurityRoles = null;
+        List<PartySecurityRole> partySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2364,7 +2363,7 @@ public class SecurityControl
     }
     
     private List<PartySecurityRole> getPartySecurityRolesBySecurityRole(SecurityRole securityRole, EntityPermission entityPermission) {
-        List<PartySecurityRole> partySecurityRoles = null;
+        List<PartySecurityRole> partySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2407,9 +2406,9 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRoles(List<PartySecurityRole> partySecurityRoles, BasePK deletedBy) {
-        partySecurityRoles.stream().forEach((partySecurityRole) -> {
-            deletePartySecurityRole(partySecurityRole, deletedBy);
-        });
+        partySecurityRoles.forEach((partySecurityRole) -> 
+                deletePartySecurityRole(partySecurityRole, deletedBy)
+        );
     }
     
     public void deletePartySecurityRolesBySecurityRole(SecurityRole securityRole, BasePK deletedBy) {
@@ -2474,7 +2473,7 @@ public class SecurityControl
     }
     
     private List<PartyEntitySecurityRole> getPartyEntitySecurityRolesByParty(Party party, EntityPermission entityPermission) {
-        List<PartyEntitySecurityRole> partyEntitySecurityRoles = null;
+        List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2518,7 +2517,7 @@ public class SecurityControl
     }
     
     private List<PartyEntitySecurityRole> getPartyEntitySecurityRolesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<PartyEntitySecurityRole> partyEntitySecurityRoles = null;
+        List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2558,7 +2557,7 @@ public class SecurityControl
     }
     
     private List<PartyEntitySecurityRole> getPartyEntitySecurityRolesBySecurityRole(SecurityRole securityRole, EntityPermission entityPermission) {
-        List<PartyEntitySecurityRole> partyEntitySecurityRoles = null;
+        List<PartyEntitySecurityRole> partyEntitySecurityRoles;
         
         try {
             final String queryReadOnly = "SELECT _ALL_ " +
@@ -2606,9 +2605,9 @@ public class SecurityControl
     }
     
     public void deletePartyEntitySecurityRoles(List<PartyEntitySecurityRole> partyEntitySecurityRoles, BasePK deletedBy) {
-        partyEntitySecurityRoles.stream().forEach((partyEntitySecurityRole) -> {
-            deletePartyEntitySecurityRole(partyEntitySecurityRole, deletedBy);
-        });
+        partyEntitySecurityRoles.forEach((partyEntitySecurityRole) -> 
+                deletePartyEntitySecurityRole(partyEntitySecurityRole, deletedBy)
+        );
     }
     
     public void deletePartyEntitySecurityRolesByParty(Party party, BasePK deletedBy) {

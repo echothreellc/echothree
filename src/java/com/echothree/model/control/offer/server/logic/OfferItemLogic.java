@@ -83,9 +83,9 @@ public class OfferItemLogic
     }
 
     public void deleteOfferItems(List<OfferItem> offerItems, BasePK deletedBy) {
-        offerItems.stream().forEach((offerItem) -> {
-            deleteOfferItem(offerItem, deletedBy);
-        });
+        offerItems.forEach((offerItem) -> 
+                deleteOfferItem(offerItem, deletedBy)
+        );
     }
 
     public void deleteOfferItemsByOffer(Offer offer, BasePK deletedBy) {
@@ -95,9 +95,9 @@ public class OfferItemLogic
     }
 
     public void deleteOfferItemsByOffers(List<Offer> offers, BasePK deletedBy) {
-        offers.stream().forEach((offer) -> {
-            deleteOfferItemsByOffer(offer, deletedBy);
-        });
+        offers.forEach((offer) -> 
+                deleteOfferItemsByOffer(offer, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -148,9 +148,9 @@ public class OfferItemLogic
     }
 
     public void deleteOfferItemPrices(List<OfferItemPrice> offerItemPrices, BasePK deletedBy) {
-        offerItemPrices.stream().forEach((offerItemPrice) -> {
-            deleteOfferItemPrice(offerItemPrice, deletedBy);
-        });
+        offerItemPrices.forEach((offerItemPrice) -> 
+                deleteOfferItemPrice(offerItemPrice, deletedBy)
+        );
     }
 
     public void deleteOfferItemPricesByOfferItem(OfferItem offerItem, BasePK deletedBy) {

@@ -85,6 +85,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SubscriptionControl
         extends BaseModelControl {
@@ -267,7 +268,7 @@ public class SubscriptionControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSubscriptionKindChoice == null? false: defaultSubscriptionKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultSubscriptionKindChoice != null && defaultSubscriptionKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && subscriptionKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -285,9 +286,9 @@ public class SubscriptionControl
         List<SubscriptionKindTransfer> subscriptionKindTransfers = new ArrayList<>(subscriptionKinds.size());
         SubscriptionKindTransferCache subscriptionKindTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionKindTransferCache();
 
-        subscriptionKinds.stream().forEach((subscriptionKind) -> {
-            subscriptionKindTransfers.add(subscriptionKindTransferCache.getSubscriptionKindTransfer(subscriptionKind));
-        });
+        subscriptionKinds.forEach((subscriptionKind) ->
+                subscriptionKindTransfers.add(subscriptionKindTransferCache.getSubscriptionKindTransfer(subscriptionKind))
+        );
 
         return subscriptionKindTransfers;
     }
@@ -353,7 +354,7 @@ public class SubscriptionControl
                 if(iter.hasNext()) {
                     defaultSubscriptionKind = iter.next();
                 }
-                SubscriptionKindDetailValue subscriptionKindDetailValue = defaultSubscriptionKind.getLastDetailForUpdate().getSubscriptionKindDetailValue().clone();
+                SubscriptionKindDetailValue subscriptionKindDetailValue = Objects.requireNonNull(defaultSubscriptionKind).getLastDetailForUpdate().getSubscriptionKindDetailValue().clone();
 
                 subscriptionKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateSubscriptionKindFromValue(subscriptionKindDetailValue, false, deletedBy);
@@ -507,9 +508,9 @@ public class SubscriptionControl
     public void deleteSubscriptionKindDescriptionsBySubscriptionKind(SubscriptionKind subscriptionKind, BasePK deletedBy) {
         List<SubscriptionKindDescription> subscriptionKindDescriptions = getSubscriptionKindDescriptionsBySubscriptionKindForUpdate(subscriptionKind);
 
-        subscriptionKindDescriptions.stream().forEach((subscriptionKindDescription) -> {
-            deleteSubscriptionKindDescription(subscriptionKindDescription, deletedBy);
-        });
+        subscriptionKindDescriptions.forEach((subscriptionKindDescription) -> 
+                deleteSubscriptionKindDescription(subscriptionKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -549,7 +550,7 @@ public class SubscriptionControl
     
     private List<SubscriptionType> getSubscriptionTypesBySubscriptionKind(SubscriptionKind subscriptionKind,
             EntityPermission entityPermission) {
-        List<SubscriptionType> subscriptionTypes = null;
+        List<SubscriptionType> subscriptionTypes;
         
         try {
             String query = null;
@@ -702,7 +703,7 @@ public class SubscriptionControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSubscriptionTypeChoice == null? false: defaultSubscriptionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSubscriptionTypeChoice != null && defaultSubscriptionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && subscriptionTypeDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -720,9 +721,9 @@ public class SubscriptionControl
         List<SubscriptionTypeTransfer> subscriptionTypeTransfers = new ArrayList<>(subscriptionTypes.size());
         SubscriptionTypeTransferCache subscriptionTypeTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTypeTransferCache();
         
-        subscriptionTypes.stream().forEach((subscriptionType) -> {
-            subscriptionTypeTransfers.add(subscriptionTypeTransferCache.getSubscriptionTypeTransfer(subscriptionType));
-        });
+        subscriptionTypes.forEach((subscriptionType) ->
+                subscriptionTypeTransfers.add(subscriptionTypeTransferCache.getSubscriptionTypeTransfer(subscriptionType))
+        );
         
         return subscriptionTypeTransfers;
     }
@@ -803,7 +804,7 @@ public class SubscriptionControl
                 if(iter.hasNext()) {
                     defaultSubscriptionType = iter.next();
                 }
-                SubscriptionTypeDetailValue subscriptionTypeDetailValue = defaultSubscriptionType.getLastDetailForUpdate().getSubscriptionTypeDetailValue().clone();
+                SubscriptionTypeDetailValue subscriptionTypeDetailValue = Objects.requireNonNull(defaultSubscriptionType).getLastDetailForUpdate().getSubscriptionTypeDetailValue().clone();
                 
                 subscriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSubscriptionTypeFromValue(subscriptionTypeDetailValue, false, deletedBy);
@@ -883,7 +884,7 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeDescription> getSubscriptionTypeDescriptionsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeDescription> subscriptionTypeDescriptions = null;
+        List<SubscriptionTypeDescription> subscriptionTypeDescriptions;
         
         try {
             String query = null;
@@ -992,9 +993,9 @@ public class SubscriptionControl
     public void deleteSubscriptionTypeDescriptionsBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
         List<SubscriptionTypeDescription> subscriptionTypeDescriptions = getSubscriptionTypeDescriptionsBySubscriptionTypeForUpdate(subscriptionType);
         
-        subscriptionTypeDescriptions.stream().forEach((subscriptionTypeDescription) -> {
-            deleteSubscriptionTypeDescription(subscriptionTypeDescription, deletedBy);
-        });
+        subscriptionTypeDescriptions.forEach((subscriptionTypeDescription) -> 
+                deleteSubscriptionTypeDescription(subscriptionTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1064,7 +1065,7 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeChain> subscriptionTypeChains = null;
+        List<SubscriptionTypeChain> subscriptionTypeChains;
         
         try {
             String query = null;
@@ -1105,7 +1106,7 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionTypeAndChainType(SubscriptionType subscriptionType, ChainType chainType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeChain> subscriptionTypeChains = null;
+        List<SubscriptionTypeChain> subscriptionTypeChains;
         
         try {
             String query = null;
@@ -1149,9 +1150,9 @@ public class SubscriptionControl
         List<SubscriptionTypeChainTransfer> subscriptionTypeChainTransfers = new ArrayList<>(subscriptionTypeChains.size());
         SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTypeChainTransferCache();
         
-        subscriptionTypeChains.stream().forEach((subscriptionTypeChain) -> {
-            subscriptionTypeChainTransfers.add(subscriptionTypeChainTransferCache.getSubscriptionTypeChainTransfer(subscriptionTypeChain));
-        });
+        subscriptionTypeChains.forEach((subscriptionTypeChain) ->
+                subscriptionTypeChainTransfers.add(subscriptionTypeChainTransferCache.getSubscriptionTypeChainTransfer(subscriptionTypeChain))
+        );
         
         return subscriptionTypeChainTransfers;
     }
@@ -1193,9 +1194,9 @@ public class SubscriptionControl
     public void deleteSubscriptionTypeChainsBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
         List<SubscriptionTypeChain> subscriptionTypeChains = getSubscriptionTypeChainsBySubscriptionTypeForUpdate(subscriptionType);
         
-        subscriptionTypeChains.stream().forEach((subscriptionTypeChain) -> {
-            deleteSubscriptionTypeChain(subscriptionTypeChain, deletedBy);
-        });
+        subscriptionTypeChains.forEach((subscriptionTypeChain) -> 
+                deleteSubscriptionTypeChain(subscriptionTypeChain, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1312,7 +1313,7 @@ public class SubscriptionControl
     
     private List<Subscription> getSubscriptionsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<Subscription> subscriptions = null;
+        List<Subscription> subscriptions;
         
         try {
             String query = null;
@@ -1350,7 +1351,7 @@ public class SubscriptionControl
     }
     
     private List<Subscription> getSubscriptionsByParty(Party party, EntityPermission entityPermission) {
-        List<Subscription> subscriptions = null;
+        List<Subscription> subscriptions;
         
         try {
             String query = null;
@@ -1397,9 +1398,9 @@ public class SubscriptionControl
         List<SubscriptionTransfer> subscriptionTransfers = new ArrayList<>(subscriptions.size());
         SubscriptionTransferCache subscriptionTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTransferCache();
         
-        subscriptions.stream().forEach((subscription) -> {
-            subscriptionTransfers.add(subscriptionTransferCache.getSubscriptionTransfer(subscription));
-        });
+        subscriptions.forEach((subscription) ->
+                subscriptionTransfers.add(subscriptionTransferCache.getSubscriptionTransfer(subscription))
+        );
         
         return subscriptionTransfers;
     }
@@ -1453,9 +1454,9 @@ public class SubscriptionControl
     public void deleteSubscriptionsBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
         List<Subscription> subscriptions = getSubscriptionsBySubscriptionType(subscriptionType);
         
-        subscriptions.stream().forEach((subscription) -> {
-            deleteSubscription(subscription, deletedBy);
-        });
+        subscriptions.forEach((subscription) -> 
+                deleteSubscription(subscription, deletedBy)
+        );
     }
     
 }

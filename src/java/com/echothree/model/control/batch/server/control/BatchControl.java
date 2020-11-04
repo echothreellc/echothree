@@ -88,6 +88,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class BatchControl
@@ -294,9 +295,9 @@ public class BatchControl
         List<BatchTypeTransfer> batchTypeTransfers = new ArrayList<>(batchTypes.size());
         BatchTypeTransferCache batchTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeTransferCache();
         
-        batchTypes.stream().forEach((batchType) -> {
-            batchTypeTransfers.add(batchTypeTransferCache.getTransfer(batchType));
-        });
+        batchTypes.forEach((batchType) ->
+                batchTypeTransfers.add(batchTypeTransferCache.getTransfer(batchType))
+        );
         
         return batchTypeTransfers;
     }
@@ -327,7 +328,7 @@ public class BatchControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultBatchTypeChoice == null? false: defaultBatchTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultBatchTypeChoice != null && defaultBatchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && batchTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -432,7 +433,7 @@ public class BatchControl
                     if(iter.hasNext()) {
                         defaultBatchType = iter.next();
                     }
-                    BatchTypeDetailValue batchTypeDetailValue = defaultBatchType.getLastDetailForUpdate().getBatchTypeDetailValue().clone();
+                    BatchTypeDetailValue batchTypeDetailValue = Objects.requireNonNull(defaultBatchType).getLastDetailForUpdate().getBatchTypeDetailValue().clone();
 
                     batchTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateBatchTypeFromValue(batchTypeDetailValue, false, deletedBy);
@@ -448,9 +449,7 @@ public class BatchControl
     }
 
     private void deleteBatchTypes(List<BatchType> batchTypes, boolean checkDefault, BasePK deletedBy) {
-        batchTypes.stream().forEach((batchType) -> {
-            deleteBatchType(batchType, checkDefault, deletedBy);
-        });
+        batchTypes.forEach((batchType) -> deleteBatchType(batchType, checkDefault, deletedBy));
     }
 
     public void deleteBatchTypes(List<BatchType> batchTypes, BasePK deletedBy) {
@@ -569,9 +568,9 @@ public class BatchControl
         List<BatchTypeDescriptionTransfer> batchTypeDescriptionTransfers = new ArrayList<>(batchTypeDescriptions.size());
         BatchTypeDescriptionTransferCache batchTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchTypeDescriptionTransferCache();
         
-        batchTypeDescriptions.stream().forEach((batchTypeDescription) -> {
-            batchTypeDescriptionTransfers.add(batchTypeDescriptionTransferCache.getTransfer(batchTypeDescription));
-        });
+        batchTypeDescriptions.forEach((batchTypeDescription) ->
+                batchTypeDescriptionTransfers.add(batchTypeDescriptionTransferCache.getTransfer(batchTypeDescription))
+        );
         
         return batchTypeDescriptionTransfers;
     }
@@ -605,9 +604,9 @@ public class BatchControl
     public void deleteBatchTypeDescriptionsByBatchType(BatchType batchType, BasePK deletedBy) {
         List<BatchTypeDescription> batchTypeDescriptions = getBatchTypeDescriptionsByBatchTypeForUpdate(batchType);
         
-        batchTypeDescriptions.stream().forEach((batchTypeDescription) -> {
-            deleteBatchTypeDescription(batchTypeDescription, deletedBy);
-        });
+        batchTypeDescriptions.forEach((batchTypeDescription) -> 
+                deleteBatchTypeDescription(batchTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -741,9 +740,9 @@ public class BatchControl
         List<BatchTypeEntityTypeTransfer> batchTypeEntityTypeTransfers = new ArrayList<>(batchTypeEntityTypes.size());
         BatchTypeEntityTypeTransferCache batchTypeEntityTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache();
 
-        batchTypeEntityTypes.stream().forEach((batchTypeEntityType) -> {
-            batchTypeEntityTypeTransfers.add(batchTypeEntityTypeTransferCache.getTransfer(batchTypeEntityType));
-        });
+        batchTypeEntityTypes.forEach((batchTypeEntityType) ->
+                batchTypeEntityTypeTransfers.add(batchTypeEntityTypeTransferCache.getTransfer(batchTypeEntityType))
+        );
 
         return batchTypeEntityTypeTransfers;
     }
@@ -763,9 +762,9 @@ public class BatchControl
     }
 
     public void deleteBatchTypeEntityTypes(List<BatchTypeEntityType> batchTypeEntityTypes, BasePK deletedBy) {
-        batchTypeEntityTypes.stream().forEach((batchTypeEntityType) -> {
-            deleteBatchTypeEntityType(batchTypeEntityType, deletedBy);
-        });
+        batchTypeEntityTypes.forEach((batchTypeEntityType) -> 
+                deleteBatchTypeEntityType(batchTypeEntityType, deletedBy)
+        );
     }
 
     public void deleteBatchTypeEntityTypesByBatchType(BatchType batchType, BasePK deletedBy) {
@@ -924,9 +923,9 @@ public class BatchControl
         List<BatchAliasTypeTransfer> batchAliasTypeTransfers = new ArrayList<>(batchAliasTypes.size());
         BatchAliasTypeTransferCache batchAliasTypeTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeTransferCache();
         
-        batchAliasTypes.stream().forEach((batchAliasType) -> {
-            batchAliasTypeTransfers.add(batchAliasTypeTransferCache.getTransfer(batchAliasType));
-        });
+        batchAliasTypes.forEach((batchAliasType) ->
+                batchAliasTypeTransfers.add(batchAliasTypeTransferCache.getTransfer(batchAliasType))
+        );
         
         return batchAliasTypeTransfers;
     }
@@ -957,7 +956,7 @@ public class BatchControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultBatchAliasTypeChoice == null? false: defaultBatchAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultBatchAliasTypeChoice != null && defaultBatchAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && batchAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1034,7 +1033,7 @@ public class BatchControl
                 if(iter.hasNext()) {
                     defaultBatchAliasType = iter.next();
                 }
-                BatchAliasTypeDetailValue batchAliasTypeDetailValue = defaultBatchAliasType.getLastDetailForUpdate().getBatchAliasTypeDetailValue().clone();
+                BatchAliasTypeDetailValue batchAliasTypeDetailValue = Objects.requireNonNull(defaultBatchAliasType).getLastDetailForUpdate().getBatchAliasTypeDetailValue().clone();
                 
                 batchAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateBatchAliasTypeFromValue(batchAliasTypeDetailValue, false, deletedBy);
@@ -1045,9 +1044,9 @@ public class BatchControl
     }
     
     public void deleteBatchAliasTypes(List<BatchAliasType> batchAliasTypes, BasePK deletedBy) {
-        batchAliasTypes.stream().forEach((batchAliasType) -> {
-            deleteBatchAliasType(batchAliasType, deletedBy);
-        });
+        batchAliasTypes.forEach((batchAliasType) -> 
+                deleteBatchAliasType(batchAliasType, deletedBy)
+        );
     }
     
     public void deleteBatchAliasTypesByBatchType(BatchType batchType, BasePK deletedBy) {
@@ -1162,9 +1161,9 @@ public class BatchControl
         List<BatchAliasTypeDescriptionTransfer> batchAliasTypeDescriptionTransfers = new ArrayList<>(batchAliasTypeDescriptions.size());
         BatchAliasTypeDescriptionTransferCache batchAliasTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeDescriptionTransferCache();
         
-        batchAliasTypeDescriptions.stream().forEach((batchAliasTypeDescription) -> {
-            batchAliasTypeDescriptionTransfers.add(batchAliasTypeDescriptionTransferCache.getTransfer(batchAliasTypeDescription));
-        });
+        batchAliasTypeDescriptions.forEach((batchAliasTypeDescription) ->
+                batchAliasTypeDescriptionTransfers.add(batchAliasTypeDescriptionTransferCache.getTransfer(batchAliasTypeDescription))
+        );
         
         return batchAliasTypeDescriptionTransfers;
     }
@@ -1198,9 +1197,9 @@ public class BatchControl
     public void deleteBatchAliasTypeDescriptionsByBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
         List<BatchAliasTypeDescription> batchAliasTypeDescriptions = getBatchAliasTypeDescriptionsByBatchAliasTypeForUpdate(batchAliasType);
         
-        batchAliasTypeDescriptions.stream().forEach((batchAliasTypeDescription) -> {
-            deleteBatchAliasTypeDescription(batchAliasTypeDescription, deletedBy);
-        });
+        batchAliasTypeDescriptions.forEach((batchAliasTypeDescription) -> 
+                deleteBatchAliasTypeDescription(batchAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1347,9 +1346,9 @@ public class BatchControl
         List<BatchTransfer> batchTransfers = new ArrayList<>(batches.size());
         BatchTransferCache batchTransferCache = getBatchTransferCaches(userVisit).getBatchTransferCache();
         
-        batches.stream().forEach((batch) -> {
-            batchTransfers.add(batchTransferCache.getTransfer(batch));
-        });
+        batches.forEach((batch) ->
+                batchTransfers.add(batchTransferCache.getTransfer(batch))
+        );
         
         return batchTransfers;
     }
@@ -1389,9 +1388,9 @@ public class BatchControl
     }
     
     public void deleteBatches(List<Batch> batches, BasePK deletedBy) {
-        batches.stream().forEach((batch) -> {
-            deleteBatch(batch, deletedBy);
-        });
+        batches.forEach((batch) -> 
+                deleteBatch(batch, deletedBy)
+        );
     }
     
     public void deleteBatchesByBatchType(BatchType batchType, BasePK deletedBy) {
@@ -1551,9 +1550,9 @@ public class BatchControl
         List<BatchAliasTransfer> batchAliasTransfers = new ArrayList<>(batchaliases.size());
         BatchAliasTransferCache batchAliasTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTransferCache();
         
-        batchaliases.stream().forEach((batchAlias) -> {
-            batchAliasTransfers.add(batchAliasTransferCache.getTransfer(batchAlias));
-        });
+        batchaliases.forEach((batchAlias) ->
+                batchAliasTransfers.add(batchAliasTransferCache.getTransfer(batchAlias))
+        );
         
         return batchAliasTransfers;
     }
@@ -1584,17 +1583,17 @@ public class BatchControl
     public void deleteBatchAliasesByBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
         List<BatchAlias> batchaliases = getBatchAliasesByBatchAliasTypeForUpdate(batchAliasType);
         
-        batchaliases.stream().forEach((batchAlias) -> {
-            deleteBatchAlias(batchAlias, deletedBy);
-        });
+        batchaliases.forEach((batchAlias) -> 
+                deleteBatchAlias(batchAlias, deletedBy)
+        );
     }
     
     public void deleteBatchAliasesByBatch(Batch batch, BasePK deletedBy) {
         List<BatchAlias> batchaliases = getBatchAliasesByBatchForUpdate(batch);
         
-        batchaliases.stream().forEach((batchAlias) -> {
-            deleteBatchAlias(batchAlias, deletedBy);
-        });
+        batchaliases.forEach((batchAlias) -> 
+                deleteBatchAlias(batchAlias, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1727,9 +1726,9 @@ public class BatchControl
         List<BatchEntityTransfer> batchEntityTransfers = new ArrayList<>(batchEntities.size());
         BatchEntityTransferCache batchEntityTransferCache = getBatchTransferCaches(userVisit).getBatchEntityTransferCache();
 
-        batchEntities.stream().forEach((batchEntity) -> {
-            batchEntityTransfers.add(batchEntityTransferCache.getTransfer(batchEntity));
-        });
+        batchEntities.forEach((batchEntity) ->
+                batchEntityTransfers.add(batchEntityTransferCache.getTransfer(batchEntity))
+        );
 
         return batchEntityTransfers;
     }
@@ -1749,9 +1748,9 @@ public class BatchControl
     }
 
     public void deleteBatchEntities(List<BatchEntity> batchEntities, BasePK deletedBy) {
-        batchEntities.stream().forEach((batchEntity) -> {
-            deleteBatchEntity(batchEntity, deletedBy);
-        });
+        batchEntities.forEach((batchEntity) -> 
+                deleteBatchEntity(batchEntity, deletedBy)
+        );
     }
 
     public void deleteBatchEntitiesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {

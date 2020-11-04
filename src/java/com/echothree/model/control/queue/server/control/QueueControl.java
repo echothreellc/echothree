@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class QueueControl
         extends BaseModelControl {
@@ -231,9 +232,9 @@ public class QueueControl
         List<QueueTypeTransfer> queueTypeTransfers = new ArrayList<>(queueTypes.size());
         QueueTypeTransferCache queueTypeTransferCache = getQueueTransferCaches(userVisit).getQueueTypeTransferCache();
 
-        queueTypes.stream().forEach((queueType) -> {
-            queueTypeTransfers.add(queueTypeTransferCache.getQueueTypeTransfer(queueType));
-        });
+        queueTypes.forEach((queueType) ->
+                queueTypeTransfers.add(queueTypeTransferCache.getQueueTypeTransfer(queueType))
+        );
 
         return queueTypeTransfers;
     }
@@ -267,7 +268,7 @@ public class QueueControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultQueueTypeChoice == null? false: defaultQueueTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultQueueTypeChoice != null && defaultQueueTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && queueTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -342,7 +343,7 @@ public class QueueControl
                     if(iter.hasNext()) {
                         defaultQueueType = iter.next();
                     }
-                    QueueTypeDetailValue queueTypeDetailValue = defaultQueueType.getLastDetailForUpdate().getQueueTypeDetailValue().clone();
+                    QueueTypeDetailValue queueTypeDetailValue = Objects.requireNonNull(defaultQueueType).getLastDetailForUpdate().getQueueTypeDetailValue().clone();
 
                     queueTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateQueueTypeFromValue(queueTypeDetailValue, false, deletedBy);
@@ -358,9 +359,7 @@ public class QueueControl
     }
 
     private void deleteQueueTypes(List<QueueType> queueTypes, boolean checkDefault, BasePK deletedBy) {
-        queueTypes.stream().forEach((queueType) -> {
-            deleteQueueType(queueType, checkDefault, deletedBy);
-        });
+        queueTypes.forEach((queueType) -> deleteQueueType(queueType, checkDefault, deletedBy));
     }
 
     public void deleteQueueTypes(List<QueueType> queueTypes, BasePK deletedBy) {
@@ -475,9 +474,9 @@ public class QueueControl
         List<QueueTypeDescriptionTransfer> queueTypeDescriptionTransfers = new ArrayList<>(queueTypeDescriptions.size());
         QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache = getQueueTransferCaches(userVisit).getQueueTypeDescriptionTransferCache();
 
-        queueTypeDescriptions.stream().forEach((queueTypeDescription) -> {
-            queueTypeDescriptionTransfers.add(queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(queueTypeDescription));
-        });
+        queueTypeDescriptions.forEach((queueTypeDescription) ->
+                queueTypeDescriptionTransfers.add(queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(queueTypeDescription))
+        );
 
         return queueTypeDescriptionTransfers;
     }
@@ -511,9 +510,9 @@ public class QueueControl
     public void deleteQueueTypeDescriptionsByQueueType(QueueType queueType, BasePK deletedBy) {
         List<QueueTypeDescription> queueTypeDescriptions = getQueueTypeDescriptionsByQueueTypeForUpdate(queueType);
 
-        queueTypeDescriptions.stream().forEach((queueTypeDescription) -> {
-            deleteQueueTypeDescription(queueTypeDescription, deletedBy);
-        });
+        queueTypeDescriptions.forEach((queueTypeDescription) -> 
+                deleteQueueTypeDescription(queueTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -610,7 +609,7 @@ public class QueueControl
     }
 
     private List<QueuedEntity> getQueuedEntitiesByQueueType(QueueType queueType, EntityPermission entityPermission) {
-        List<QueuedEntity> queuedEntities = null;
+        List<QueuedEntity> queuedEntities;
         
         try {
             String query = null;
@@ -651,7 +650,7 @@ public class QueueControl
     }
     
     private List<QueuedEntity> getQueuedEntitiesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<QueuedEntity> queuedEntities = null;
+        List<QueuedEntity> queuedEntities;
         
         try {
             String query = null;
@@ -697,9 +696,9 @@ public class QueueControl
         List<QueuedEntityTransfer> queuedEntityTransfers = new ArrayList<>(queuedEntities.size());
         QueuedEntityTransferCache queuedEntityTransferCache = getQueueTransferCaches(userVisit).getQueuedEntityTransferCache();
 
-        queuedEntities.stream().forEach((queuedEntity) -> {
-            queuedEntityTransfers.add(queuedEntityTransferCache.getQueuedEntityTransfer(queuedEntity));
-        });
+        queuedEntities.forEach((queuedEntity) ->
+                queuedEntityTransfers.add(queuedEntityTransferCache.getQueuedEntityTransfer(queuedEntity))
+        );
 
         return queuedEntityTransfers;
     }

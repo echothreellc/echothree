@@ -117,6 +117,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ReturnPolicyControl
         extends BaseModelControl {
@@ -282,9 +283,9 @@ public class ReturnPolicyControl
         List<PartyReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
         PartyReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getPartyReturnPolicyTransferCache();
 
-        returnPolicies.stream().forEach((returnPolicy) -> {
-            returnPolicyTransfers.add(returnPolicyTransferCache.getPartyReturnPolicyTransfer(returnPolicy));
-        });
+        returnPolicies.forEach((returnPolicy) ->
+                returnPolicyTransfers.add(returnPolicyTransferCache.getPartyReturnPolicyTransfer(returnPolicy))
+        );
 
         return returnPolicyTransfers;
     }
@@ -309,9 +310,9 @@ public class ReturnPolicyControl
     }
 
     public void deletePartyReturnPoliciesByParty(List<PartyReturnPolicy> partyReturnPolicies, BasePK deletedBy) {
-        partyReturnPolicies.stream().forEach((partyReturnPolicy) -> {
-            deletePartyReturnPolicy(partyReturnPolicy, deletedBy);
-        });
+        partyReturnPolicies.forEach((partyReturnPolicy) -> 
+                deletePartyReturnPolicy(partyReturnPolicy, deletedBy)
+        );
     }
 
     public void deletePartyReturnPoliciesByParty(Party party, BasePK deletedBy) {
@@ -482,7 +483,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnKindChoice == null? false: defaultReturnKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnKindChoice != null && defaultReturnKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -500,9 +501,9 @@ public class ReturnPolicyControl
         List<ReturnKindTransfer> returnKindTransfers = new ArrayList<>(returnKinds.size());
         ReturnKindTransferCache returnKindTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnKindTransferCache();
         
-        returnKinds.stream().forEach((returnKind) -> {
-            returnKindTransfers.add(returnKindTransferCache.getReturnKindTransfer(returnKind));
-        });
+        returnKinds.forEach((returnKind) ->
+                returnKindTransfers.add(returnKindTransferCache.getReturnKindTransfer(returnKind))
+        );
         
         return returnKindTransfers;
     }
@@ -569,7 +570,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnKind = iter.next();
                 }
-                ReturnKindDetailValue returnKindDetailValue = defaultReturnKind.getLastDetailForUpdate().getReturnKindDetailValue().clone();
+                ReturnKindDetailValue returnKindDetailValue = Objects.requireNonNull(defaultReturnKind).getLastDetailForUpdate().getReturnKindDetailValue().clone();
                 
                 returnKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnKindFromValue(returnKindDetailValue, false, deletedBy);
@@ -723,9 +724,9 @@ public class ReturnPolicyControl
     public void deleteReturnKindDescriptionsByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnKindDescription> returnKindDescriptions = getReturnKindDescriptionsByReturnKindForUpdate(returnKind);
         
-        returnKindDescriptions.stream().forEach((returnKindDescription) -> {
-            deleteReturnKindDescription(returnKindDescription, deletedBy);
-        });
+        returnKindDescriptions.forEach((returnKindDescription) -> 
+                deleteReturnKindDescription(returnKindDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -764,7 +765,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicy> getReturnPolicies(ReturnKind returnKind, EntityPermission entityPermission) {
-        List<ReturnPolicy> returnPolicies = null;
+        List<ReturnPolicy> returnPolicies;
         
         try {
             String query = null;
@@ -920,7 +921,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnPolicyChoice == null? false: defaultReturnPolicyChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnPolicyChoice != null && defaultReturnPolicyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnPolicyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -938,9 +939,9 @@ public class ReturnPolicyControl
         List<ReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
         ReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTransferCache();
         
-        returnPolicies.stream().forEach((returnPolicy) -> {
-            returnPolicyTransfers.add(returnPolicyTransferCache.getReturnPolicyTransfer(returnPolicy));
-        });
+        returnPolicies.forEach((returnPolicy) ->
+                returnPolicyTransfers.add(returnPolicyTransferCache.getReturnPolicyTransfer(returnPolicy))
+        );
         
         return returnPolicyTransfers;
     }
@@ -1013,7 +1014,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnPolicy = iter.next();
                 }
-                ReturnPolicyDetailValue returnPolicyDetailValue = defaultReturnPolicy.getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
+                ReturnPolicyDetailValue returnPolicyDetailValue = Objects.requireNonNull(defaultReturnPolicy).getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
                 
                 returnPolicyDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnPolicyFromValue(returnPolicyDetailValue, false, deletedBy);
@@ -1026,9 +1027,9 @@ public class ReturnPolicyControl
     public void deleteReturnPoliciesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnPolicy> returnPolicies = getReturnPoliciesForUpdate(returnKind);
         
-        returnPolicies.stream().forEach((returnPolicy) -> {
-            deleteReturnPolicy(returnPolicy, deletedBy);
-        });
+        returnPolicies.forEach((returnPolicy) -> 
+                deleteReturnPolicy(returnPolicy, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1134,9 +1135,9 @@ public class ReturnPolicyControl
         List<ReturnPolicyTranslationTransfer> returnPolicyTranslationTransfers = new ArrayList<>(returnPolicyTranslations.size());
         ReturnPolicyTranslationTransferCache returnPolicyTranslationTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTranslationTransferCache();
 
-        returnPolicyTranslations.stream().forEach((returnPolicyTranslation) -> {
-            returnPolicyTranslationTransfers.add(returnPolicyTranslationTransferCache.getReturnPolicyTranslationTransfer(returnPolicyTranslation));
-        });
+        returnPolicyTranslations.forEach((returnPolicyTranslation) ->
+                returnPolicyTranslationTransfers.add(returnPolicyTranslationTransferCache.getReturnPolicyTranslationTransfer(returnPolicyTranslation))
+        );
 
         return returnPolicyTranslationTransfers;
     }
@@ -1172,9 +1173,9 @@ public class ReturnPolicyControl
     public void deleteReturnPolicyTranslationsByReturnPolicy(ReturnPolicy returnPolicy, BasePK deletedBy) {
         List<ReturnPolicyTranslation> returnPolicyTranslations = getReturnPolicyTranslationsByReturnPolicyForUpdate(returnPolicy);
 
-        returnPolicyTranslations.stream().forEach((returnPolicyTranslation) -> {
-            deleteReturnPolicyTranslation(returnPolicyTranslation, deletedBy);
-        });
+        returnPolicyTranslations.forEach((returnPolicyTranslation) -> 
+                deleteReturnPolicyTranslation(returnPolicyTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1293,7 +1294,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicyReason> getReturnPolicyReasonsByReturnPolicy(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        List<ReturnPolicyReason> returnPolicyReasons = null;
+        List<ReturnPolicyReason> returnPolicyReasons;
         
         try {
             String query = null;
@@ -1333,7 +1334,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicyReason> getReturnPolicyReasonsByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnPolicyReason> returnPolicyReasons = null;
+        List<ReturnPolicyReason> returnPolicyReasons;
         
         try {
             String query = null;
@@ -1376,9 +1377,9 @@ public class ReturnPolicyControl
         List<ReturnPolicyReasonTransfer> returnPolicyReasonTransfers = new ArrayList<>(returnPolicyReasons.size());
         ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyReasonTransferCache();
         
-        returnPolicyReasons.stream().forEach((returnPolicyReason) -> {
-            returnPolicyReasonTransfers.add(returnPolicyReasonTransferCache.getReturnPolicyReasonTransfer(returnPolicyReason));
-        });
+        returnPolicyReasons.forEach((returnPolicyReason) ->
+                returnPolicyReasonTransfers.add(returnPolicyReasonTransferCache.getReturnPolicyReasonTransfer(returnPolicyReason))
+        );
         
         return returnPolicyReasonTransfers;
     }
@@ -1462,9 +1463,9 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnPolicyReasons(List<ReturnPolicyReason> returnPolicyReasons, BasePK deletedBy) {
-        returnPolicyReasons.stream().forEach((returnPolicyReason) -> {
-            deleteReturnPolicyReason(returnPolicyReason, deletedBy);
-        });
+        returnPolicyReasons.forEach((returnPolicyReason) -> 
+                deleteReturnPolicyReason(returnPolicyReason, deletedBy)
+        );
     }
     
     public void deleteReturnPolicyReasonsByReturnPolicy(ReturnPolicy returnPolicy, BasePK deletedBy) {
@@ -1511,7 +1512,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReason> getReturnReasons(ReturnKind returnKind, EntityPermission entityPermission) {
-        List<ReturnReason> returnReasons = null;
+        List<ReturnReason> returnReasons;
         
         try {
             String query = null;
@@ -1664,7 +1665,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnReasonChoice == null? false: defaultReturnReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnReasonChoice != null && defaultReturnReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1682,9 +1683,9 @@ public class ReturnPolicyControl
         List<ReturnReasonTransfer> returnReasonTransfers = new ArrayList<>(returnReasons.size());
         ReturnReasonTransferCache returnReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTransferCache();
         
-        returnReasons.stream().forEach((returnReason) -> {
-            returnReasonTransfers.add(returnReasonTransferCache.getReturnReasonTransfer(returnReason));
-        });
+        returnReasons.forEach((returnReason) ->
+                returnReasonTransfers.add(returnReasonTransferCache.getReturnReasonTransfer(returnReason))
+        );
         
         return returnReasonTransfers;
     }
@@ -1757,7 +1758,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnReason = iter.next();
                 }
-                ReturnReasonDetailValue returnReasonDetailValue = defaultReturnReason.getLastDetailForUpdate().getReturnReasonDetailValue().clone();
+                ReturnReasonDetailValue returnReasonDetailValue = Objects.requireNonNull(defaultReturnReason).getLastDetailForUpdate().getReturnReasonDetailValue().clone();
                 
                 returnReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnReasonFromValue(returnReasonDetailValue, false, deletedBy);
@@ -1770,9 +1771,9 @@ public class ReturnPolicyControl
     public void deleteReturnReasonsByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnReason> returnReasons = getReturnReasonsForUpdate(returnKind);
         
-        returnReasons.stream().forEach((returnReason) -> {
-            deleteReturnReason(returnReason, deletedBy);
-        });
+        returnReasons.forEach((returnReason) -> 
+                deleteReturnReason(returnReason, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1837,7 +1838,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonDescription> getReturnReasonDescriptionsByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnReasonDescription> returnReasonDescriptions = null;
+        List<ReturnReasonDescription> returnReasonDescriptions;
         
         try {
             String query = null;
@@ -1936,9 +1937,9 @@ public class ReturnPolicyControl
     public void deleteReturnReasonDescriptionsByReturnReason(ReturnReason returnReason, BasePK deletedBy) {
         List<ReturnReasonDescription> returnReasonDescriptions = getReturnReasonDescriptionsByReturnReasonForUpdate(returnReason);
         
-        returnReasonDescriptions.stream().forEach((returnReasonDescription) -> {
-            deleteReturnReasonDescription(returnReasonDescription, deletedBy);
-        });
+        returnReasonDescriptions.forEach((returnReasonDescription) -> 
+                deleteReturnReasonDescription(returnReasonDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2057,7 +2058,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonType> getReturnReasonTypesByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnReasonType> returnReasonTypes = null;
+        List<ReturnReasonType> returnReasonTypes;
         
         try {
             String query = null;
@@ -2098,7 +2099,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonType> getReturnReasonTypesByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        List<ReturnReasonType> returnReasonTypes = null;
+        List<ReturnReasonType> returnReasonTypes;
         
         try {
             String query = null;
@@ -2141,9 +2142,9 @@ public class ReturnPolicyControl
         List<ReturnReasonTypeTransfer> returnReasonTypeTransfers = new ArrayList<>(returnReasonTypes.size());
         ReturnReasonTypeTransferCache returnReasonTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTypeTransferCache();
         
-        returnReasonTypes.stream().forEach((returnReasonType) -> {
-            returnReasonTypeTransfers.add(returnReasonTypeTransferCache.getReturnReasonTypeTransfer(returnReasonType));
-        });
+        returnReasonTypes.forEach((returnReasonType) ->
+                returnReasonTypeTransfers.add(returnReasonTypeTransferCache.getReturnReasonTypeTransfer(returnReasonType))
+        );
         
         return returnReasonTypeTransfers;
     }
@@ -2227,9 +2228,9 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnReasonTypes(List<ReturnReasonType> returnReasonTypes, BasePK deletedBy) {
-        returnReasonTypes.stream().forEach((returnReasonType) -> {
-            deleteReturnReasonType(returnReasonType, deletedBy);
-        });
+        returnReasonTypes.forEach((returnReasonType) -> 
+                deleteReturnReasonType(returnReasonType, deletedBy)
+        );
     }
     
     public void deleteReturnReasonTypesByReturnReason(ReturnReason returnReason, BasePK deletedBy) {
@@ -2407,7 +2408,7 @@ public class ReturnPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnTypeChoice == null? false: defaultReturnTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultReturnTypeChoice != null && defaultReturnTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2425,9 +2426,9 @@ public class ReturnPolicyControl
         List<ReturnTypeTransfer> returnTypeTransfers = new ArrayList<>(returnTypes.size());
         ReturnTypeTransferCache returnTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeTransferCache();
         
-        returnTypes.stream().forEach((returnType) -> {
-            returnTypeTransfers.add(returnTypeTransferCache.getReturnTypeTransfer(returnType));
-        });
+        returnTypes.forEach((returnType) ->
+                returnTypeTransfers.add(returnTypeTransferCache.getReturnTypeTransfer(returnType))
+        );
         
         return returnTypeTransfers;
     }
@@ -2501,7 +2502,7 @@ public class ReturnPolicyControl
                 if(iter.hasNext()) {
                     defaultReturnType = iter.next();
                 }
-                ReturnTypeDetailValue returnTypeDetailValue = defaultReturnType.getLastDetailForUpdate().getReturnTypeDetailValue().clone();
+                ReturnTypeDetailValue returnTypeDetailValue = Objects.requireNonNull(defaultReturnType).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
                 
                 returnTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateReturnTypeFromValue(returnTypeDetailValue, false, deletedBy);
@@ -2514,9 +2515,9 @@ public class ReturnPolicyControl
     public void deleteReturnTypesByReturnKind(ReturnKind returnKind, BasePK deletedBy) {
         List<ReturnType> returnTypes = getReturnTypesForUpdate(returnKind);
         
-        returnTypes.stream().forEach((returnType) -> {
-            deleteReturnType(returnType, deletedBy);
-        });
+        returnTypes.forEach((returnType) -> 
+                deleteReturnType(returnType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2663,9 +2664,9 @@ public class ReturnPolicyControl
     public void deleteReturnTypeDescriptionsByReturnType(ReturnType returnType, BasePK deletedBy) {
         List<ReturnTypeDescription> returnTypeDescriptions = getReturnTypeDescriptionsByReturnTypeForUpdate(returnType);
         
-        returnTypeDescriptions.stream().forEach((returnTypeDescription) -> {
-            deleteReturnTypeDescription(returnTypeDescription, deletedBy);
-        });
+        returnTypeDescriptions.forEach((returnTypeDescription) -> 
+                deleteReturnTypeDescription(returnTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2784,7 +2785,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        List<ReturnTypeShippingMethod> returnTypeShippingMethods = null;
+        List<ReturnTypeShippingMethod> returnTypeShippingMethods;
         
         try {
             String query = null;
@@ -2824,7 +2825,7 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ReturnTypeShippingMethod> returnTypeShippingMethods = null;
+        List<ReturnTypeShippingMethod> returnTypeShippingMethods;
         
         try {
             String query = null;
@@ -2868,9 +2869,9 @@ public class ReturnPolicyControl
         List<ReturnTypeShippingMethodTransfer> returnTypeShippingMethodTransfers = new ArrayList<>(returnTypeShippingMethods.size());
         ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeShippingMethodTransferCache();
         
-        returnTypeShippingMethods.stream().forEach((returnTypeShippingMethod) -> {
-            returnTypeShippingMethodTransfers.add(returnTypeShippingMethodTransferCache.getReturnTypeShippingMethodTransfer(returnTypeShippingMethod));
-        });
+        returnTypeShippingMethods.forEach((returnTypeShippingMethod) ->
+                returnTypeShippingMethodTransfers.add(returnTypeShippingMethodTransferCache.getReturnTypeShippingMethodTransfer(returnTypeShippingMethod))
+        );
         
         return returnTypeShippingMethodTransfers;
     }
@@ -2954,9 +2955,9 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnTypeShippingMethods(List<ReturnTypeShippingMethod> returnTypeShippingMethods, BasePK deletedBy) {
-        returnTypeShippingMethods.stream().forEach((returnTypeShippingMethod) -> {
-            deleteReturnTypeShippingMethod(returnTypeShippingMethod, deletedBy);
-        });
+        returnTypeShippingMethods.forEach((returnTypeShippingMethod) -> 
+                deleteReturnTypeShippingMethod(returnTypeShippingMethod, deletedBy)
+        );
     }
     
     public void deleteReturnTypeShippingMethodsByReturnType(ReturnType returnType, BasePK deletedBy) {

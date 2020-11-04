@@ -164,6 +164,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ChainControl
         extends BaseModelControl {
@@ -346,7 +347,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainKindChoice == null? false: defaultChainKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainKindChoice != null && defaultChainKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -364,9 +365,9 @@ public class ChainControl
         List<ChainKindTransfer> chainKindTransfers = new ArrayList<>(chainKinds.size());
         ChainKindTransferCache chainKindTransferCache = getChainTransferCaches(userVisit).getChainKindTransferCache();
 
-        chainKinds.stream().forEach((chainKind) -> {
-            chainKindTransfers.add(chainKindTransferCache.getChainKindTransfer(chainKind));
-        });
+        chainKinds.forEach((chainKind) ->
+                chainKindTransfers.add(chainKindTransferCache.getChainKindTransfer(chainKind))
+        );
 
         return chainKindTransfers;
     }
@@ -433,7 +434,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainKind = iter.next();
                 }
-                ChainKindDetailValue chainKindDetailValue = defaultChainKind.getLastDetailForUpdate().getChainKindDetailValue().clone();
+                ChainKindDetailValue chainKindDetailValue = Objects.requireNonNull(defaultChainKind).getLastDetailForUpdate().getChainKindDetailValue().clone();
 
                 chainKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainKindFromValue(chainKindDetailValue, false, deletedBy);
@@ -587,9 +588,9 @@ public class ChainControl
     public void deleteChainKindDescriptionsByChainKind(ChainKind chainKind, BasePK deletedBy) {
         List<ChainKindDescription> chainKindDescriptions = getChainKindDescriptionsByChainKindForUpdate(chainKind);
 
-        chainKindDescriptions.stream().forEach((chainKindDescription) -> {
-            deleteChainKindDescription(chainKindDescription, deletedBy);
-        });
+        chainKindDescriptions.forEach((chainKindDescription) -> 
+                deleteChainKindDescription(chainKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -789,7 +790,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainTypeChoice == null? false: defaultChainTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainTypeChoice != null && defaultChainTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -807,9 +808,9 @@ public class ChainControl
         List<ChainTypeTransfer> chainTypeTransfers = new ArrayList<>(chainTypes.size());
         ChainTypeTransferCache chainTypeTransferCache = getChainTransferCaches(userVisit).getChainTypeTransferCache();
 
-        chainTypes.stream().forEach((chainType) -> {
-            chainTypeTransfers.add(chainTypeTransferCache.getChainTypeTransfer(chainType));
-        });
+        chainTypes.forEach((chainType) ->
+                chainTypeTransfers.add(chainTypeTransferCache.getChainTypeTransfer(chainType))
+        );
 
         return chainTypeTransfers;
     }
@@ -882,7 +883,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainType = iter.next();
                 }
-                ChainTypeDetailValue chainTypeDetailValue = defaultChainType.getLastDetailForUpdate().getChainTypeDetailValue().clone();
+                ChainTypeDetailValue chainTypeDetailValue = Objects.requireNonNull(defaultChainType).getLastDetailForUpdate().getChainTypeDetailValue().clone();
 
                 chainTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainTypeFromValue(chainTypeDetailValue, false, deletedBy);
@@ -893,9 +894,9 @@ public class ChainControl
     }
 
     public void deleteChainTypes(List<ChainType> chainTypes, BasePK deletedBy) {
-        chainTypes.stream().forEach((chainType) -> {
-            deleteChainType(chainType, deletedBy);
-        });
+        chainTypes.forEach((chainType) -> 
+                deleteChainType(chainType, deletedBy)
+        );
     }
 
     public void deleteChainTypesByChainKind(ChainKind chainKind, BasePK deletedBy) {
@@ -1050,9 +1051,9 @@ public class ChainControl
     public void deleteChainTypeDescriptionsByChainType(ChainType chainType, BasePK deletedBy) {
         List<ChainTypeDescription> chainTypeDescriptions = getChainTypeDescriptionsByChainTypeForUpdate(chainType);
 
-        chainTypeDescriptions.stream().forEach((chainTypeDescription) -> {
-            deleteChainTypeDescription(chainTypeDescription, deletedBy);
-        });
+        chainTypeDescriptions.forEach((chainTypeDescription) -> 
+                deleteChainTypeDescription(chainTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1157,9 +1158,9 @@ public class ChainControl
         List<ChainEntityRoleTypeTransfer> chainEntityRoleTypeTransfers = new ArrayList<>(chainEntityRoleTypes.size());
         ChainEntityRoleTypeTransferCache chainEntityRoleTypeTransferCache = getChainTransferCaches(userVisit).getChainEntityRoleTypeTransferCache();
 
-        chainEntityRoleTypes.stream().forEach((chainEntityRoleType) -> {
-            chainEntityRoleTypeTransfers.add(chainEntityRoleTypeTransferCache.getChainEntityRoleTypeTransfer(chainEntityRoleType));
-        });
+        chainEntityRoleTypes.forEach((chainEntityRoleType) ->
+                chainEntityRoleTypeTransfers.add(chainEntityRoleTypeTransferCache.getChainEntityRoleTypeTransfer(chainEntityRoleType))
+        );
 
         return chainEntityRoleTypeTransfers;
     }
@@ -1205,9 +1206,9 @@ public class ChainControl
     public void deleteChainEntityRoleTypesByChainType(ChainType chainType, BasePK deletedBy) {
         List<ChainEntityRoleType> chainEntityRoleTypes = getChainEntityRoleTypesForUpdate(chainType);
 
-        chainEntityRoleTypes.stream().forEach((chainEntityRoleType) -> {
-            deleteChainEntityRoleType(chainEntityRoleType, deletedBy);
-        });
+        chainEntityRoleTypes.forEach((chainEntityRoleType) -> 
+                deleteChainEntityRoleType(chainEntityRoleType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1354,9 +1355,9 @@ public class ChainControl
     public void deleteChainEntityRoleTypeDescriptionsByChainEntityRoleType(ChainEntityRoleType chainEntityRoleType, BasePK deletedBy) {
         List<ChainEntityRoleTypeDescription> chainEntityRoleTypeDescriptions = getChainEntityRoleTypeDescriptionsByChainEntityRoleTypeForUpdate(chainEntityRoleType);
 
-        chainEntityRoleTypeDescriptions.stream().forEach((chainEntityRoleTypeDescription) -> {
-            deleteChainEntityRoleTypeDescription(chainEntityRoleTypeDescription, deletedBy);
-        });
+        chainEntityRoleTypeDescriptions.forEach((chainEntityRoleTypeDescription) -> 
+                deleteChainEntityRoleTypeDescription(chainEntityRoleTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1556,7 +1557,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainChoice == null? false: defaultChainChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainChoice != null && defaultChainChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1574,9 +1575,9 @@ public class ChainControl
         List<ChainTransfer> chainTransfers = new ArrayList<>(chains.size());
         ChainTransferCache chainTransferCache = getChainTransferCaches(userVisit).getChainTransferCache();
 
-        chains.stream().forEach((chain) -> {
-            chainTransfers.add(chainTransferCache.getChainTransfer(chain));
-        });
+        chains.forEach((chain) ->
+                chainTransfers.add(chainTransferCache.getChainTransfer(chain))
+        );
 
         return chainTransfers;
     }
@@ -1655,7 +1656,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChain = iter.next();
                 }
-                ChainDetailValue chainDetailValue = defaultChain.getLastDetailForUpdate().getChainDetailValue().clone();
+                ChainDetailValue chainDetailValue = Objects.requireNonNull(defaultChain).getLastDetailForUpdate().getChainDetailValue().clone();
 
                 chainDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainFromValue(chainDetailValue, false, deletedBy);
@@ -1666,9 +1667,9 @@ public class ChainControl
     }
 
     public void deleteChains(List<Chain> chains, BasePK deletedBy) {
-        chains.stream().forEach((chain) -> {
-            deleteChain(chain, deletedBy);
-        });
+        chains.forEach((chain) -> 
+                deleteChain(chain, deletedBy)
+        );
     }
 
     public void deleteChainsByChainType(ChainType chainType, BasePK deletedBy) {
@@ -1823,9 +1824,9 @@ public class ChainControl
     public void deleteChainDescriptionsByChain(Chain chain, BasePK deletedBy) {
         List<ChainDescription> chainDescriptions = getChainDescriptionsByChainForUpdate(chain);
 
-        chainDescriptions.stream().forEach((chainDescription) -> {
-            deleteChainDescription(chainDescription, deletedBy);
-        });
+        chainDescriptions.forEach((chainDescription) -> 
+                deleteChainDescription(chainDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1991,7 +1992,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainActionSetChoice == null? false: defaultChainActionSetChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainActionSetChoice != null && defaultChainActionSetChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainActionSetDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2009,9 +2010,9 @@ public class ChainControl
         List<ChainActionSetTransfer> chainActionSetTransfers = new ArrayList<>(chainActionSets.size());
         ChainActionSetTransferCache chainActionSetTransferCache = getChainTransferCaches(userVisit).getChainActionSetTransferCache();
 
-        chainActionSets.stream().forEach((chainActionSet) -> {
-            chainActionSetTransfers.add(chainActionSetTransferCache.getChainActionSetTransfer(chainActionSet));
-        });
+        chainActionSets.forEach((chainActionSet) ->
+                chainActionSetTransfers.add(chainActionSetTransferCache.getChainActionSetTransfer(chainActionSet))
+        );
 
         return chainActionSetTransfers;
     }
@@ -2084,7 +2085,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainActionSet = iter.next();
                 }
-                ChainActionSetDetailValue chainActionSetDetailValue = defaultChainActionSet.getLastDetailForUpdate().getChainActionSetDetailValue().clone();
+                ChainActionSetDetailValue chainActionSetDetailValue = Objects.requireNonNull(defaultChainActionSet).getLastDetailForUpdate().getChainActionSetDetailValue().clone();
 
                 chainActionSetDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainActionSetFromValue(chainActionSetDetailValue, false, deletedBy);
@@ -2095,9 +2096,9 @@ public class ChainControl
     }
 
     public void deleteChainActionSets(List<ChainActionSet> chainActionSets, BasePK deletedBy) {
-        chainActionSets.stream().forEach((chainActionSet) -> {
-            deleteChainActionSet(chainActionSet, deletedBy);
-        });
+        chainActionSets.forEach((chainActionSet) -> 
+                deleteChainActionSet(chainActionSet, deletedBy)
+        );
     }
 
     public void deleteChainActionSetsByChain(Chain chain, BasePK deletedBy) {
@@ -2247,9 +2248,9 @@ public class ChainControl
     public void deleteChainActionSetDescriptionsByChainActionSet(ChainActionSet chainActionSet, BasePK deletedBy) {
         List<ChainActionSetDescription> chainActionSetDescriptions = getChainActionSetDescriptionsByChainActionSetForUpdate(chainActionSet);
 
-        chainActionSetDescriptions.stream().forEach((chainActionSetDescription) -> {
-            deleteChainActionSetDescription(chainActionSetDescription, deletedBy);
-        });
+        chainActionSetDescriptions.forEach((chainActionSetDescription) -> 
+                deleteChainActionSetDescription(chainActionSetDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2411,7 +2412,7 @@ public class ChainControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainActionTypeChoice == null? false: defaultChainActionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultChainActionTypeChoice != null && defaultChainActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2429,9 +2430,9 @@ public class ChainControl
         List<ChainActionTypeTransfer> chainActionTypeTransfers = new ArrayList<>(chainActionTypes.size());
         ChainActionTypeTransferCache chainActionTypeTransferCache = getChainTransferCaches(userVisit).getChainActionTypeTransferCache();
 
-        chainActionTypes.stream().forEach((chainActionType) -> {
-            chainActionTypeTransfers.add(chainActionTypeTransferCache.getChainActionTypeTransfer(chainActionType));
-        });
+        chainActionTypes.forEach((chainActionType) ->
+                chainActionTypeTransfers.add(chainActionTypeTransferCache.getChainActionTypeTransfer(chainActionType))
+        );
 
         return chainActionTypeTransfers;
     }
@@ -2498,7 +2499,7 @@ public class ChainControl
                 if(iter.hasNext()) {
                     defaultChainActionType = iter.next();
                 }
-                ChainActionTypeDetailValue chainActionTypeDetailValue = defaultChainActionType.getLastDetailForUpdate().getChainActionTypeDetailValue().clone();
+                ChainActionTypeDetailValue chainActionTypeDetailValue = Objects.requireNonNull(defaultChainActionType).getLastDetailForUpdate().getChainActionTypeDetailValue().clone();
 
                 chainActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateChainActionTypeFromValue(chainActionTypeDetailValue, false, deletedBy);
@@ -2652,9 +2653,9 @@ public class ChainControl
     public void deleteChainActionTypeDescriptionsByChainActionType(ChainActionType chainActionType, BasePK deletedBy) {
         List<ChainActionTypeDescription> chainActionTypeDescriptions = getChainActionTypeDescriptionsByChainActionTypeForUpdate(chainActionType);
 
-        chainActionTypeDescriptions.stream().forEach((chainActionTypeDescription) -> {
-            deleteChainActionTypeDescription(chainActionTypeDescription, deletedBy);
-        });
+        chainActionTypeDescriptions.forEach((chainActionTypeDescription) -> 
+                deleteChainActionTypeDescription(chainActionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2785,9 +2786,9 @@ public class ChainControl
         List<ChainActionTransfer> chainActionTransfers = new ArrayList<>(chainActions.size());
         ChainActionTransferCache chainActionTransferCache = getChainTransferCaches(userVisit).getChainActionTransferCache();
 
-        chainActions.stream().forEach((chainAction) -> {
-            chainActionTransfers.add(chainActionTransferCache.getChainActionTransfer(chainAction));
-        });
+        chainActions.forEach((chainAction) ->
+                chainActionTransfers.add(chainActionTransferCache.getChainActionTransfer(chainAction))
+        );
 
         return chainActionTransfers;
     }
@@ -2839,9 +2840,9 @@ public class ChainControl
     }
 
     public void deleteChainActions(List<ChainAction> chainActions, BasePK deletedBy) {
-        chainActions.stream().forEach((chainAction) -> {
-            deleteChainAction(chainAction, deletedBy);
-        });
+        chainActions.forEach((chainAction) -> 
+                deleteChainAction(chainAction, deletedBy)
+        );
     }
     
     public void deleteChainActionsByChainActionSet(ChainActionSet chainActionSet, BasePK deletedBy) {
@@ -2991,9 +2992,9 @@ public class ChainControl
     public void deleteChainActionDescriptionsByChainAction(ChainAction chainAction, BasePK deletedBy) {
         List<ChainActionDescription> chainActionDescriptions = getChainActionDescriptionsByChainActionForUpdate(chainAction);
 
-        chainActionDescriptions.stream().forEach((chainActionDescription) -> {
-            deleteChainActionDescription(chainActionDescription, deletedBy);
-        });
+        chainActionDescriptions.forEach((chainActionDescription) -> 
+                deleteChainActionDescription(chainActionDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3337,7 +3338,7 @@ public class ChainControl
     }
     
     private List<ChainInstance> getChainInstancesByChain(Chain chain, EntityPermission entityPermission) {
-        List<ChainInstance> chainInstances = null;
+        List<ChainInstance> chainInstances;
         
         try {
             String query = null;
@@ -3382,9 +3383,9 @@ public class ChainControl
         List<ChainInstanceTransfer> chainInstanceTransfers = new ArrayList<>(chainInstances.size());
         ChainInstanceTransferCache chainInstanceTransferCache = getChainTransferCaches(userVisit).getChainInstanceTransferCache();
         
-        chainInstances.stream().forEach((chainInstance) -> {
-            chainInstanceTransfers.add(chainInstanceTransferCache.getChainInstanceTransfer(chainInstance));
-        });
+        chainInstances.forEach((chainInstance) ->
+                chainInstanceTransfers.add(chainInstanceTransferCache.getChainInstanceTransfer(chainInstance))
+        );
         
         return chainInstanceTransfers;
     }
@@ -3409,9 +3410,9 @@ public class ChainControl
     }
     
     public void deleteChainInstances(Collection<ChainInstance> chainInstances, BasePK deletedBy) {
-        chainInstances.stream().forEach((chainInstance) -> {
-            deleteChainInstance(chainInstance, deletedBy);
-        });
+        chainInstances.forEach((chainInstance) -> 
+                deleteChainInstance(chainInstance, deletedBy)
+        );
     }
     
     public void deleteChainInstancesByChain(Chain chain, BasePK deletedBy) {
@@ -3630,7 +3631,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRoles(final ChainEntityRoleType chainEntityRoleType, final EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
@@ -3671,7 +3672,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRolesByChainInstance(ChainInstance chainInstance, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
@@ -3713,7 +3714,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRolesByChainEntityRoleType(ChainEntityRoleType chainEntityRoleType, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
@@ -3752,7 +3753,7 @@ public class ChainControl
     }
     
     private List<ChainInstanceEntityRole> getChainInstanceEntityRolesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<ChainInstanceEntityRole> chainInstanceEntityRoles = null;
+        List<ChainInstanceEntityRole> chainInstanceEntityRoles;
         
         try {
             String query = null;
@@ -3800,9 +3801,9 @@ public class ChainControl
         List<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoleTransfers = new ArrayList<>(chainInstanceEntityRoles.size());
         ChainInstanceEntityRoleTransferCache chainInstanceEntityRoleTransferCache = getChainTransferCaches(userVisit).getChainInstanceEntityRoleTransferCache();
         
-        chainInstanceEntityRoles.stream().forEach((chainInstanceEntityRole) -> {
-            chainInstanceEntityRoleTransfers.add(chainInstanceEntityRoleTransferCache.getChainInstanceEntityRoleTransfer(chainInstanceEntityRole));
-        });
+        chainInstanceEntityRoles.forEach((chainInstanceEntityRole) ->
+                chainInstanceEntityRoleTransfers.add(chainInstanceEntityRoleTransferCache.getChainInstanceEntityRoleTransfer(chainInstanceEntityRole))
+        );
         
         return chainInstanceEntityRoleTransfers;
     }
@@ -3818,9 +3819,9 @@ public class ChainControl
     }
     
     public void deleteChainInstanceEntityRoles(List<ChainInstanceEntityRole> chainInstanceEntityRoles, BasePK deletedBy) {
-        chainInstanceEntityRoles.stream().forEach((chainInstanceEntityRole) -> {
-            deleteChainInstanceEntityRole(chainInstanceEntityRole, deletedBy);
-        });
+        chainInstanceEntityRoles.forEach((chainInstanceEntityRole) -> 
+                deleteChainInstanceEntityRole(chainInstanceEntityRole, deletedBy)
+        );
     }
     
     public void deleteChainInstanceEntityRolesByChainInstance(ChainInstance chainInstance, BasePK deletedBy) {

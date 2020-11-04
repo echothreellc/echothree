@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LotTimeControl
         extends BaseInventoryControl {
@@ -205,9 +206,9 @@ public class LotTimeControl
         List<LotTimeTypeTransfer> lotTimeTypeTransfers = new ArrayList<>(lotTimeTypes.size());
         LotTimeTypeTransferCache lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
 
-        lotTimeTypes.stream().forEach((lotTimeType) -> {
-            lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType));
-        });
+        lotTimeTypes.forEach((lotTimeType) ->
+                lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType))
+        );
 
         return lotTimeTypeTransfers;
     }
@@ -237,7 +238,7 @@ public class LotTimeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLotTimeTypeChoice == null? false: defaultLotTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLotTimeTypeChoice != null && defaultLotTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && lotTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -310,7 +311,7 @@ public class LotTimeControl
                 if(iter.hasNext()) {
                     defaultLotTimeType = iter.next();
                 }
-                LotTimeTypeDetailValue lotTimeTypeDetailValue = defaultLotTimeType.getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
+                LotTimeTypeDetailValue lotTimeTypeDetailValue = Objects.requireNonNull(defaultLotTimeType).getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
 
                 lotTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLotTimeTypeFromValue(lotTimeTypeDetailValue, false, deletedBy);
@@ -428,9 +429,9 @@ public class LotTimeControl
         List<LotTimeTypeDescriptionTransfer> lotTimeTypeDescriptionTransfers = new ArrayList<>(lotTimeTypeDescriptions.size());
         LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache();
 
-        lotTimeTypeDescriptions.stream().forEach((lotTimeTypeDescription) -> {
-            lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription));
-        });
+        lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) ->
+                lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription))
+        );
 
         return lotTimeTypeDescriptionTransfers;
     }
@@ -464,9 +465,9 @@ public class LotTimeControl
     public void deleteLotTimeTypeDescriptionsByLotTimeType(LotTimeType lotTimeType, BasePK deletedBy) {
         List<LotTimeTypeDescription> lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeTypeForUpdate(lotTimeType);
 
-        lotTimeTypeDescriptions.stream().forEach((lotTimeTypeDescription) -> {
-            deleteLotTimeTypeDescription(lotTimeTypeDescription, deletedBy);
-        });
+        lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) -> 
+                deleteLotTimeTypeDescription(lotTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -604,9 +605,9 @@ public class LotTimeControl
         List<LotTimeTransfer> lotTimeTransfers = new ArrayList<>(lotTimes.size());
         LotTimeTransferCache lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
 
-        lotTimes.stream().forEach((lotTime) -> {
-            lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime));
-        });
+        lotTimes.forEach((lotTime) ->
+                lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime))
+        );
 
         return lotTimeTransfers;
     }
@@ -645,9 +646,9 @@ public class LotTimeControl
     }
 
     public void deleteLotTimes(List<LotTime> lotTimes, BasePK deletedBy) {
-        lotTimes.stream().forEach((lotTime) -> {
-            deleteLotTime(lotTime, deletedBy);
-        });
+        lotTimes.forEach((lotTime) -> 
+                deleteLotTime(lotTime, deletedBy)
+        );
     }
 
     public void deleteLotTimesByLot(Lot lot, BasePK deletedBy) {

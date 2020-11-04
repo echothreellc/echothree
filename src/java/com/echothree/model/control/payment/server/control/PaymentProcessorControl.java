@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class PaymentProcessorControl
         extends BasePaymentControl {
@@ -231,7 +232,7 @@ public class PaymentProcessorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPaymentProcessorChoice == null? false: defaultPaymentProcessorChoice.equals(value);
+            boolean usingDefaultChoice = defaultPaymentProcessorChoice != null && defaultPaymentProcessorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && paymentProcessorDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -247,9 +248,9 @@ public class PaymentProcessorControl
         List<PaymentProcessorTransfer> paymentProcessorTransfers = new ArrayList<>(paymentProcessors.size());
         PaymentProcessorTransferCache paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
 
-        paymentProcessors.stream().forEach((paymentProcessor) -> {
-            paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor));
-        });
+        paymentProcessors.forEach((paymentProcessor) ->
+                paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor))
+        );
 
         return paymentProcessorTransfers;
     }
@@ -330,7 +331,7 @@ public class PaymentProcessorControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessor = iter.next();
                 }
-                PaymentProcessorDetailValue paymentProcessorDetailValue = defaultPaymentProcessor.getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
+                PaymentProcessorDetailValue paymentProcessorDetailValue = Objects.requireNonNull(defaultPaymentProcessor).getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
                 
                 paymentProcessorDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorFromValue(paymentProcessorDetailValue, false, deletedBy);
@@ -404,7 +405,7 @@ public class PaymentProcessorControl
     }
     
     private List<PaymentProcessorDescription> getPaymentProcessorDescriptions(PaymentProcessor paymentProcessor, EntityPermission entityPermission) {
-        List<PaymentProcessorDescription> paymentProcessorDescriptions = null;
+        List<PaymentProcessorDescription> paymentProcessorDescriptions;
         
         try {
             String query = null;
@@ -468,9 +469,9 @@ public class PaymentProcessorControl
         List<PaymentProcessorDescriptionTransfer> paymentProcessorDescriptionTransfers = new ArrayList<>(paymentProcessorDescriptions.size());
         PaymentProcessorDescriptionTransferCache paymentProcessorDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache();
         
-        paymentProcessorDescriptions.stream().forEach((paymentProcessorDescription) -> {
-            paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription));
-        });
+        paymentProcessorDescriptions.forEach((paymentProcessorDescription) ->
+                paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription))
+        );
         
         return paymentProcessorDescriptionTransfers;
     }
@@ -505,9 +506,9 @@ public class PaymentProcessorControl
     public void deletePaymentProcessorDescriptionsByPaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
         List<PaymentProcessorDescription> paymentProcessorDescriptions = getPaymentProcessorDescriptionsForUpdate(paymentProcessor);
         
-        paymentProcessorDescriptions.stream().forEach((paymentProcessorDescription) -> {
-            deletePaymentProcessorDescription(paymentProcessorDescription, deletedBy);
-        });
+        paymentProcessorDescriptions.forEach((paymentProcessorDescription) -> 
+                deletePaymentProcessorDescription(paymentProcessorDescription, deletedBy)
+        );
     }
     
 }

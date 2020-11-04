@@ -261,7 +261,7 @@ public class InventoryControl
     }
     
     private List<InventoryLocationGroup> getInventoryLocationGroupsByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
-        List<InventoryLocationGroup> inventoryLocationGroups = null;
+        List<InventoryLocationGroup> inventoryLocationGroups;
         
         try {
             String query = null;
@@ -348,7 +348,7 @@ public class InventoryControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryLocationGroupChoice == null? false: defaultInventoryLocationGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultInventoryLocationGroupChoice != null && defaultInventoryLocationGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && inventoryLocationGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -453,7 +453,7 @@ public class InventoryControl
                     if(iter.hasNext()) {
                         defaultInventoryLocationGroup = (InventoryLocationGroup)iter.next();
                     }
-                    InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue = defaultInventoryLocationGroup.getLastDetailForUpdate().getInventoryLocationGroupDetailValue().clone();
+                    InventoryLocationGroupDetailValue inventoryLocationGroupDetailValue = Objects.requireNonNull(defaultInventoryLocationGroup).getLastDetailForUpdate().getInventoryLocationGroupDetailValue().clone();
                     
                     inventoryLocationGroupDetailValue.setIsDefault(Boolean.TRUE);
                     updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, false, deletedBy);
@@ -541,7 +541,7 @@ public class InventoryControl
     }
     
     private List<InventoryLocationGroupDescription> getInventoryLocationGroupDescriptionsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
-        List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions = null;
+        List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions;
         
         try {
             String query = null;
@@ -643,9 +643,9 @@ public class InventoryControl
     public void deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
         List<InventoryLocationGroupDescription> inventoryLocationGroupDescriptions = getInventoryLocationGroupDescriptionsByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
-        inventoryLocationGroupDescriptions.stream().forEach((inventoryLocationGroupDescription) -> {
-            deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, deletedBy);
-        });
+        inventoryLocationGroupDescriptions.forEach((inventoryLocationGroupDescription) -> 
+                deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -764,7 +764,7 @@ public class InventoryControl
     }
     
     private List<InventoryLocationGroupCapacity> getInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryInventoryLocationGroupGroup, EntityPermission entityPermission) {
-        List<InventoryLocationGroupCapacity> inventoryInventoryLocationGroupGroupCapacities = null;
+        List<InventoryLocationGroupCapacity> inventoryInventoryLocationGroupGroupCapacities;
         
         try {
             String query = null;
@@ -884,9 +884,9 @@ public class InventoryControl
         List<InventoryLocationGroupCapacityTransfer> inventoryLocationGroupCapacityTransfers = new ArrayList<>(inventoryLocationGroupCapacities.size());
         InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache = getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache();
         
-        inventoryLocationGroupCapacities.stream().forEach((inventoryLocationGroupCapacity) -> {
-            inventoryLocationGroupCapacityTransfers.add(inventoryLocationGroupCapacityTransferCache.getTransfer(inventoryLocationGroupCapacity));
-        });
+        inventoryLocationGroupCapacities.forEach((inventoryLocationGroupCapacity) ->
+                inventoryLocationGroupCapacityTransfers.add(inventoryLocationGroupCapacityTransferCache.getTransfer(inventoryLocationGroupCapacity))
+        );
         
         return inventoryLocationGroupCapacityTransfers;
     }
@@ -900,9 +900,9 @@ public class InventoryControl
     public void deleteInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy) {
         List<InventoryLocationGroupCapacity> inventoryLocationGroupCapacities = getInventoryLocationGroupCapacitiesByInventoryLocationGroupForUpdate(inventoryLocationGroup);
         
-        inventoryLocationGroupCapacities.stream().forEach((inventoryLocationGroupCapacity) -> {
-            deleteInventoryLocationGroupCapacity(inventoryLocationGroupCapacity, deletedBy);
-        });
+        inventoryLocationGroupCapacities.forEach((inventoryLocationGroupCapacity) -> 
+                deleteInventoryLocationGroupCapacity(inventoryLocationGroupCapacity, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1046,9 +1046,9 @@ public class InventoryControl
         var inventoryConditionTransfers = new ArrayList<InventoryConditionTransfer>(inventoryConditions.size());
         var inventoryConditionTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
         
-        inventoryConditions.stream().forEach((inventoryCondition) -> {
-            inventoryConditionTransfers.add(inventoryConditionTransferCache.getTransfer(inventoryCondition));
-        });
+        inventoryConditions.forEach((inventoryCondition) ->
+                inventoryConditionTransfers.add(inventoryConditionTransferCache.getTransfer(inventoryCondition))
+        );
         
         return inventoryConditionTransfers;
     }
@@ -1204,7 +1204,7 @@ public class InventoryControl
                 if(iter.hasNext()) {
                     defaultInventoryCondition = iter.next();
                 }
-                var inventoryConditionDetailValue = defaultInventoryCondition.getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
+                var inventoryConditionDetailValue = Objects.requireNonNull(defaultInventoryCondition).getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
                 
                 inventoryConditionDetailValue.setIsDefault(Boolean.TRUE);
                 updateInventoryConditionFromValue(inventoryConditionDetailValue, false, deletedBy);
@@ -1319,9 +1319,9 @@ public class InventoryControl
         var inventoryConditionDescriptionTransfers = new ArrayList<InventoryConditionDescriptionTransfer>(inventoryConditionDescriptions.size());
         var inventoryConditionDescriptionTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionDescriptionTransferCache();
         
-        inventoryConditionDescriptions.stream().forEach((inventoryConditionDescription) -> {
-            inventoryConditionDescriptionTransfers.add(inventoryConditionDescriptionTransferCache.getTransfer(inventoryConditionDescription));
-        });
+        inventoryConditionDescriptions.forEach((inventoryConditionDescription) ->
+                inventoryConditionDescriptionTransfers.add(inventoryConditionDescriptionTransferCache.getTransfer(inventoryConditionDescription))
+        );
         
         return inventoryConditionDescriptionTransfers;
     }
@@ -1415,7 +1415,7 @@ public class InventoryControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryConditionUseTypeChoice == null? false: defaultInventoryConditionUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultInventoryConditionUseTypeChoice != null && defaultInventoryConditionUseTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -1612,7 +1612,7 @@ public class InventoryControl
     
     private List<InventoryConditionUse> getInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition,
             EntityPermission entityPermission) {
-        List<InventoryConditionUse> inventoryConditionUses = null;
+        List<InventoryConditionUse> inventoryConditionUses;
         
         try {
             String query = null;
@@ -1656,7 +1656,7 @@ public class InventoryControl
      */
     private List<InventoryConditionUse> getInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType,
             EntityPermission entityPermission) {
-        List<InventoryConditionUse> inventoryConditionUses = null;
+        List<InventoryConditionUse> inventoryConditionUses;
         
         try {
             String query = null;
@@ -1807,9 +1807,9 @@ public class InventoryControl
     public void deleteInventoryConditionUseByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
         List<InventoryConditionUse> inventoryConditionUses = getInventoryConditionUsesByInventoryConditionForUpdate(inventoryCondition);
         
-        inventoryConditionUses.stream().forEach((inventoryConditionUse) -> {
-            deleteInventoryConditionUse(inventoryConditionUse, deletedBy);
-        });
+        inventoryConditionUses.forEach((inventoryConditionUse) -> 
+                deleteInventoryConditionUse(inventoryConditionUse, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1873,7 +1873,7 @@ public class InventoryControl
     }
     
     private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<InventoryConditionGlAccount> inventoryConditionGlAccounts = null;
+        List<InventoryConditionGlAccount> inventoryConditionGlAccounts;
         
         try {
             String query = null;
@@ -1914,7 +1914,7 @@ public class InventoryControl
     }
     
     private List<InventoryConditionGlAccount> getInventoryConditionGlAccountsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
-        List<InventoryConditionGlAccount> inventoryConditionGlAccounts = null;
+        List<InventoryConditionGlAccount> inventoryConditionGlAccounts;
         
         try {
             String query = null;
@@ -1991,9 +1991,9 @@ public class InventoryControl
         List<InventoryConditionGlAccountTransfer> inventoryConditionGlAccountTransfers = new ArrayList<>(inventoryConditionGlAccounts.size());
         InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache();
         
-        inventoryConditionGlAccounts.stream().forEach((inventoryConditionGlAccount) -> {
-            inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getTransfer(inventoryConditionGlAccount));
-        });
+        inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) ->
+                inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getTransfer(inventoryConditionGlAccount))
+        );
         
         return inventoryConditionGlAccountTransfers;
     }
@@ -2005,9 +2005,9 @@ public class InventoryControl
     }
     
     public void deleteInventoryConditionGlAccounts(List<InventoryConditionGlAccount> inventoryConditionGlAccounts, BasePK deletedBy) {
-        inventoryConditionGlAccounts.stream().forEach((inventoryConditionGlAccount) -> {
-            deleteInventoryConditionGlAccount(inventoryConditionGlAccount, deletedBy);
-        });
+        inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) -> 
+                deleteInventoryConditionGlAccount(inventoryConditionGlAccount, deletedBy)
+        );
     }
     
     public void deleteInventoryConditionGlAccountsByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
@@ -2092,7 +2092,7 @@ public class InventoryControl
     }
     
     private List<PartyInventoryLevel> getPartyInventoryLevelsByParty(Party party, EntityPermission entityPermission) {
-        List<PartyInventoryLevel> partyInventoryLevels = null;
+        List<PartyInventoryLevel> partyInventoryLevels;
         
         try {
             String query = null;
@@ -2133,7 +2133,7 @@ public class InventoryControl
     }
     
     private List<PartyInventoryLevel> getPartyInventoryLevelsByItem(Item item, EntityPermission entityPermission) {
-        List<PartyInventoryLevel> partyInventoryLevels = null;
+        List<PartyInventoryLevel> partyInventoryLevels;
         
         try {
             String query = null;
@@ -2175,7 +2175,7 @@ public class InventoryControl
     }
     
     private List<PartyInventoryLevel> getPartyInventoryLevelsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<PartyInventoryLevel> partyInventoryLevels = null;
+        List<PartyInventoryLevel> partyInventoryLevels;
         
         try {
             String query = null;
@@ -2224,9 +2224,9 @@ public class InventoryControl
         List<PartyInventoryLevelTransfer> partyInventoryLevelTransfers = new ArrayList<>(partyInventoryLevels.size());
         PartyInventoryLevelTransferCache partyInventoryLevelTransferCache = getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache();
         
-        partyInventoryLevels.stream().forEach((partyInventoryLevel) -> {
-            partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getTransfer(partyInventoryLevel));
-        });
+        partyInventoryLevels.forEach((partyInventoryLevel) ->
+                partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getTransfer(partyInventoryLevel))
+        );
         
         return partyInventoryLevelTransfers;
     }
@@ -2272,9 +2272,9 @@ public class InventoryControl
     }
     
     public void deletePartyInventoryLevels(List<PartyInventoryLevel> partyInventoryLevels, BasePK deletedBy) {
-        partyInventoryLevels.stream().forEach((partyInventoryLevel) -> {
-            deletePartyInventoryLevel(partyInventoryLevel, deletedBy);
-        });
+        partyInventoryLevels.forEach((partyInventoryLevel) -> 
+                deletePartyInventoryLevel(partyInventoryLevel, deletedBy)
+        );
     }
     
     public void deletePartyInventoryLevelsByParty(Party party, BasePK deletedBy) {
@@ -2438,9 +2438,9 @@ public class InventoryControl
         List<AllocationPriorityTransfer> allocationPriorityTransfers = new ArrayList<>(allocationPriorities.size());
         AllocationPriorityTransferCache allocationPriorityTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache();
 
-        allocationPriorities.stream().forEach((allocationPriority) -> {
-            allocationPriorityTransfers.add(allocationPriorityTransferCache.getTransfer(allocationPriority));
-        });
+        allocationPriorities.forEach((allocationPriority) ->
+                allocationPriorityTransfers.add(allocationPriorityTransferCache.getTransfer(allocationPriority))
+        );
 
         return allocationPriorityTransfers;
     }
@@ -2470,7 +2470,7 @@ public class InventoryControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultAllocationPriorityChoice == null? false: defaultAllocationPriorityChoice.equals(value);
+            boolean usingDefaultChoice = defaultAllocationPriorityChoice != null && defaultAllocationPriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && allocationPriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2543,7 +2543,7 @@ public class InventoryControl
                 if(iter.hasNext()) {
                     defaultAllocationPriority = iter.next();
                 }
-                AllocationPriorityDetailValue allocationPriorityDetailValue = defaultAllocationPriority.getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
+                AllocationPriorityDetailValue allocationPriorityDetailValue = Objects.requireNonNull(defaultAllocationPriority).getLastDetailForUpdate().getAllocationPriorityDetailValue().clone();
 
                 allocationPriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateAllocationPriorityFromValue(allocationPriorityDetailValue, false, deletedBy);
@@ -2661,9 +2661,9 @@ public class InventoryControl
         List<AllocationPriorityDescriptionTransfer> allocationPriorityDescriptionTransfers = new ArrayList<>(allocationPriorityDescriptions.size());
         AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache();
 
-        allocationPriorityDescriptions.stream().forEach((allocationPriorityDescription) -> {
-            allocationPriorityDescriptionTransfers.add(allocationPriorityDescriptionTransferCache.getTransfer(allocationPriorityDescription));
-        });
+        allocationPriorityDescriptions.forEach((allocationPriorityDescription) ->
+                allocationPriorityDescriptionTransfers.add(allocationPriorityDescriptionTransferCache.getTransfer(allocationPriorityDescription))
+        );
 
         return allocationPriorityDescriptionTransfers;
     }
@@ -2697,9 +2697,9 @@ public class InventoryControl
     public void deleteAllocationPriorityDescriptionsByAllocationPriority(AllocationPriority allocationPriority, BasePK deletedBy) {
         List<AllocationPriorityDescription> allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriorityForUpdate(allocationPriority);
 
-        allocationPriorityDescriptions.stream().forEach((allocationPriorityDescription) -> {
-            deleteAllocationPriorityDescription(allocationPriorityDescription, deletedBy);
-        });
+        allocationPriorityDescriptions.forEach((allocationPriorityDescription) -> 
+                deleteAllocationPriorityDescription(allocationPriorityDescription, deletedBy)
+        );
     }
 
 }

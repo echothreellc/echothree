@@ -72,6 +72,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class WorkEffortControl
         extends BaseModelControl {
@@ -200,9 +201,9 @@ public class WorkEffortControl
         List<WorkEffortTypeTransfer> workEffortTypeTransfers = new ArrayList<>(workEffortTypes.size());
         WorkEffortTypeTransferCache workEffortTypeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeTransferCache();
         
-        workEffortTypes.stream().forEach((workEffortType) -> {
-            workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(workEffortType));
-        });
+        workEffortTypes.forEach((workEffortType) ->
+                workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(workEffortType))
+        );
         
         return workEffortTypeTransfers;
     }
@@ -314,7 +315,7 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortTypeDescription> getWorkEffortTypeDescriptionsByWorkEffortType(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkEffortTypeDescription> workEffortTypeDescriptions = null;
+        List<WorkEffortTypeDescription> workEffortTypeDescriptions;
         
         try {
             String query = null;
@@ -378,9 +379,9 @@ public class WorkEffortControl
         List<WorkEffortTypeDescriptionTransfer> workEffortTypeDescriptionTransfers = new ArrayList<>(workEffortTypeDescriptions.size());
         WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTypeDescriptionTransferCache();
         
-        workEffortTypeDescriptions.stream().forEach((workEffortTypeDescription) -> {
-            workEffortTypeDescriptionTransfers.add(workEffortTypeDescriptionTransferCache.getWorkEffortTypeDescriptionTransfer(workEffortTypeDescription));
-        });
+        workEffortTypeDescriptions.forEach((workEffortTypeDescription) ->
+                workEffortTypeDescriptionTransfers.add(workEffortTypeDescriptionTransferCache.getWorkEffortTypeDescriptionTransfer(workEffortTypeDescription))
+        );
         
         return workEffortTypeDescriptionTransfers;
     }
@@ -415,9 +416,9 @@ public class WorkEffortControl
     public void deleteWorkEffortTypeDescriptionsByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
         List<WorkEffortTypeDescription> workEffortTypeDescriptions = getWorkEffortTypeDescriptionsByWorkEffortTypeForUpdate(workEffortType);
         
-        workEffortTypeDescriptions.stream().forEach((workEffortTypeDescription) -> {
-            deleteWorkEffortTypeDescription(workEffortTypeDescription, deletedBy);
-        });
+        workEffortTypeDescriptions.forEach((workEffortTypeDescription) -> 
+                deleteWorkEffortTypeDescription(workEffortTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -457,7 +458,7 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortScope> getWorkEffortScopes(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkEffortScope> workEffortScopes = null;
+        List<WorkEffortScope> workEffortScopes;
         
         try {
             String query = null;
@@ -610,7 +611,7 @@ public class WorkEffortControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkEffortScopeChoice == null? false: defaultWorkEffortScopeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkEffortScopeChoice != null && defaultWorkEffortScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workEffortScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -628,9 +629,9 @@ public class WorkEffortControl
         List<WorkEffortScopeTransfer> workEffortScopeTransfers = new ArrayList<>(workEffortScopes.size());
         WorkEffortScopeTransferCache workEffortScopeTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeTransferCache();
         
-        workEffortScopes.stream().forEach((workEffortScope) -> {
-            workEffortScopeTransfers.add(workEffortScopeTransferCache.getWorkEffortScopeTransfer(workEffortScope));
-        });
+        workEffortScopes.forEach((workEffortScope) ->
+                workEffortScopeTransfers.add(workEffortScopeTransferCache.getWorkEffortScopeTransfer(workEffortScope))
+        );
         
         return workEffortScopeTransfers;
     }
@@ -713,7 +714,7 @@ public class WorkEffortControl
                         defaultWorkEffortScope = iter.next();
                     }
                     
-                    WorkEffortScopeDetailValue workEffortScopeDetailValue = defaultWorkEffortScope.getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
+                    WorkEffortScopeDetailValue workEffortScopeDetailValue = Objects.requireNonNull(defaultWorkEffortScope).getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
                     
                     workEffortScopeDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkEffortScopeFromValue(workEffortScopeDetailValue, false, deletedBy);
@@ -800,7 +801,7 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortScopeDescription> getWorkEffortScopeDescriptionsByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkEffortScopeDescription> workEffortScopeDescriptions = null;
+        List<WorkEffortScopeDescription> workEffortScopeDescriptions;
         
         try {
             String query = null;
@@ -864,9 +865,9 @@ public class WorkEffortControl
         List<WorkEffortScopeDescriptionTransfer> workEffortScopeDescriptionTransfers = new ArrayList<>(workEffortScopeDescriptions.size());
         WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortScopeDescriptionTransferCache();
         
-        workEffortScopeDescriptions.stream().forEach((workEffortScopeDescription) -> {
-            workEffortScopeDescriptionTransfers.add(workEffortScopeDescriptionTransferCache.getWorkEffortScopeDescriptionTransfer(workEffortScopeDescription));
-        });
+        workEffortScopeDescriptions.forEach((workEffortScopeDescription) ->
+                workEffortScopeDescriptionTransfers.add(workEffortScopeDescriptionTransferCache.getWorkEffortScopeDescriptionTransfer(workEffortScopeDescription))
+        );
         
         return workEffortScopeDescriptionTransfers;
     }
@@ -901,9 +902,9 @@ public class WorkEffortControl
     public void deleteWorkEffortScopeDescriptionsByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {
         List<WorkEffortScopeDescription> workEffortScopeDescriptions = getWorkEffortScopeDescriptionsByWorkEffortScopeForUpdate(workEffortScope);
         
-        workEffortScopeDescriptions.stream().forEach((workEffortScopeDescription) -> {
-            deleteWorkEffortScopeDescription(workEffortScopeDescription, deletedBy);
-        });
+        workEffortScopeDescriptions.forEach((workEffortScopeDescription) -> 
+                deleteWorkEffortScopeDescription(workEffortScopeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1103,9 +1104,9 @@ public class WorkEffortControl
         List<WorkEffortTransfer> workEffortTransfers = new ArrayList<>(workEfforts.size());
         WorkEffortTransferCache workEffortTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTransferCache();
 
-        workEfforts.stream().forEach((workEffort) -> {
-            workEffortTransfers.add(workEffortTransferCache.getWorkEffortTransfer(workEffort));
-        });
+        workEfforts.forEach((workEffort) ->
+                workEffortTransfers.add(workEffortTransferCache.getWorkEffortTransfer(workEffort))
+        );
 
         return workEffortTransfers;
     }
@@ -1162,9 +1163,9 @@ public class WorkEffortControl
     }
 
     public void deleteWorkEfforts(List<WorkEffort> workEfforts, BasePK deletedBy) {
-        workEfforts.stream().forEach((workEffort) -> {
-            deleteWorkEffort(workEffort, deletedBy);
-        });
+        workEfforts.forEach((workEffort) -> 
+                deleteWorkEffort(workEffort, deletedBy)
+        );
     }
 
     public void deleteWorkEffortsByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {

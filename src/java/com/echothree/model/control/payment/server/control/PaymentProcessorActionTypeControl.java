@@ -187,9 +187,9 @@ public class PaymentProcessorActionTypeControl
         var paymentProcessorActionTypeTransfers = new ArrayList<PaymentProcessorActionTypeTransfer>(paymentProcessorActionTypes.size());
         var paymentProcessorActionTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeTransferCache();
 
-        paymentProcessorActionTypes.stream().forEach((paymentProcessorActionType) -> {
-            paymentProcessorActionTypeTransfers.add(paymentProcessorActionTypeTransferCache.getTransfer(paymentProcessorActionType));
-        });
+        paymentProcessorActionTypes.forEach((paymentProcessorActionType) ->
+                paymentProcessorActionTypeTransfers.add(paymentProcessorActionTypeTransferCache.getTransfer(paymentProcessorActionType))
+        );
 
         return paymentProcessorActionTypeTransfers;
     }
@@ -302,7 +302,7 @@ public class PaymentProcessorActionTypeControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessorActionType = iter.next();
                 }
-                var paymentProcessorActionTypeDetailValue = defaultPaymentProcessorActionType.getLastDetailForUpdate().getPaymentProcessorActionTypeDetailValue().clone();
+                var paymentProcessorActionTypeDetailValue = Objects.requireNonNull(defaultPaymentProcessorActionType).getLastDetailForUpdate().getPaymentProcessorActionTypeDetailValue().clone();
 
                 paymentProcessorActionTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorActionTypeFromValue(paymentProcessorActionTypeDetailValue, false, deletedBy);
@@ -417,9 +417,9 @@ public class PaymentProcessorActionTypeControl
         var paymentProcessorActionTypeDescriptionTransfers = new ArrayList<PaymentProcessorActionTypeDescriptionTransfer>(paymentProcessorActionTypeDescriptions.size());
         var paymentProcessorActionTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeDescriptionTransferCache();
 
-        paymentProcessorActionTypeDescriptions.stream().forEach((paymentProcessorActionTypeDescription) -> {
-            paymentProcessorActionTypeDescriptionTransfers.add(paymentProcessorActionTypeDescriptionTransferCache.getTransfer(paymentProcessorActionTypeDescription));
-        });
+        paymentProcessorActionTypeDescriptions.forEach((paymentProcessorActionTypeDescription) ->
+                paymentProcessorActionTypeDescriptionTransfers.add(paymentProcessorActionTypeDescriptionTransferCache.getTransfer(paymentProcessorActionTypeDescription))
+        );
 
         return paymentProcessorActionTypeDescriptionTransfers;
     }

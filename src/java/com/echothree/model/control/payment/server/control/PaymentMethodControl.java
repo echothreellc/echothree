@@ -56,6 +56,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class PaymentMethodControl
         extends BasePaymentControl {
@@ -298,7 +299,7 @@ public class PaymentMethodControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPaymentMethodChoice == null? false: defaultPaymentMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultPaymentMethodChoice != null && defaultPaymentMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && paymentMethodDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -323,9 +324,9 @@ public class PaymentMethodControl
         List<PaymentMethodTransfer> paymentMethodTransfers = new ArrayList<>(paymentMethods.size());
         PaymentMethodTransferCache paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
 
-        paymentMethods.stream().forEach((paymentMethod) -> {
-            paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod));
-        });
+        paymentMethods.forEach((paymentMethod) ->
+                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod))
+        );
 
         return paymentMethodTransfers;
     }
@@ -412,7 +413,7 @@ public class PaymentMethodControl
                 if(iter.hasNext()) {
                     defaultPaymentMethod = iter.next();
                 }
-                PaymentMethodDetailValue paymentMethodDetailValue = defaultPaymentMethod.getLastDetailForUpdate().getPaymentMethodDetailValue().clone();
+                PaymentMethodDetailValue paymentMethodDetailValue = Objects.requireNonNull(defaultPaymentMethod).getLastDetailForUpdate().getPaymentMethodDetailValue().clone();
                 
                 paymentMethodDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentMethodFromValue(paymentMethodDetailValue, false, deletedBy);
@@ -425,9 +426,9 @@ public class PaymentMethodControl
     public void deletePaymentMethodsByPaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
         List<PaymentMethod> paymentMethods = getPaymentMethodsByPaymentProcessorForUpdate(paymentProcessor);
         
-        paymentMethods.stream().forEach((paymentMethod) -> {
-            deletePaymentMethod(paymentMethod, deletedBy);
-        });
+        paymentMethods.forEach((paymentMethod) -> 
+                deletePaymentMethod(paymentMethod, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -494,7 +495,7 @@ public class PaymentMethodControl
     }
     
     private List<PaymentMethodDescription> getPaymentMethodDescriptions(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        List<PaymentMethodDescription> paymentMethodDescriptions = null;
+        List<PaymentMethodDescription> paymentMethodDescriptions;
         
         try {
             String query = null;
@@ -558,9 +559,9 @@ public class PaymentMethodControl
         List<PaymentMethodDescriptionTransfer> paymentMethodDescriptionTransfers = new ArrayList<>(paymentMethodDescriptions.size());
         PaymentMethodDescriptionTransferCache paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
         
-        paymentMethodDescriptions.stream().forEach((paymentMethodDescription) -> {
-            paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription));
-        });
+        paymentMethodDescriptions.forEach((paymentMethodDescription) ->
+                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription))
+        );
         
         return paymentMethodDescriptionTransfers;
     }
@@ -595,9 +596,9 @@ public class PaymentMethodControl
     public void deletePaymentMethodDescriptionsByPaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
         List<PaymentMethodDescription> paymentMethodDescriptions = getPaymentMethodDescriptionsForUpdate(paymentMethod);
         
-        paymentMethodDescriptions.stream().forEach((paymentMethodDescription) -> {
-            deletePaymentMethodDescription(paymentMethodDescription, deletedBy);
-        });
+        paymentMethodDescriptions.forEach((paymentMethodDescription) -> 
+                deletePaymentMethodDescription(paymentMethodDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

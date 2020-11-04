@@ -195,9 +195,9 @@ public class OfferItemControl
         List<OfferItemTransfer> offerItemTransfers = new ArrayList<>(offerItems.size());
         OfferItemTransferCache offerItemTransferCache = getOfferTransferCaches(userVisit).getOfferItemTransferCache();
 
-        offerItems.stream().forEach((offerItem) -> {
-            offerItemTransfers.add(offerItemTransferCache.getOfferItemTransfer(offerItem));
-        });
+        offerItems.forEach((offerItem) ->
+                offerItemTransfers.add(offerItemTransferCache.getOfferItemTransfer(offerItem))
+        );
 
         return offerItemTransfers;
     }
@@ -419,9 +419,9 @@ public class OfferItemControl
         List<OfferItemPriceTransfer> offerItemPriceTransfers = new ArrayList<>(offerItemPrices.size());
         OfferItemPriceTransferCache offerItemPriceTransferCache = getOfferTransferCaches(userVisit).getOfferItemPriceTransferCache();
 
-        offerItemPrices.stream().forEach((offerItemPrice) -> {
-            offerItemPriceTransfers.add(offerItemPriceTransferCache.getTransfer(offerItemPrice));
-        });
+        offerItemPrices.forEach((offerItemPrice) ->
+                offerItemPriceTransfers.add(offerItemPriceTransferCache.getTransfer(offerItemPrice))
+        );
 
         return offerItemPriceTransfers;
     }

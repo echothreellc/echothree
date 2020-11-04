@@ -389,6 +389,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class ItemControl
@@ -472,7 +473,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemTypeChoice == null? false: defaultItemTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemTypeChoice != null && defaultItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -490,9 +491,9 @@ public class ItemControl
         List<ItemTypeTransfer> itemTypeTransfers = new ArrayList<>(itemTypes.size());
         ItemTypeTransferCache itemTypeTransferCache = getItemTransferCaches(userVisit).getItemTypeTransferCache();
         
-        itemTypes.stream().forEach((itemType) -> {
-            itemTypeTransfers.add(itemTypeTransferCache.getTransfer(itemType));
-        });
+        itemTypes.forEach((itemType) ->
+                itemTypeTransfers.add(itemTypeTransferCache.getTransfer(itemType))
+        );
         
         return itemTypeTransfers;
     }
@@ -601,7 +602,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemDeliveryTypeChoice == null? false: defaultItemDeliveryTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemDeliveryTypeChoice != null && defaultItemDeliveryTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDeliveryType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -619,9 +620,9 @@ public class ItemControl
         List<ItemDeliveryTypeTransfer> itemDeliveryTypeTransfers = new ArrayList<>(itemDeliveryTypes.size());
         ItemDeliveryTypeTransferCache itemDeliveryTypeTransferCache = getItemTransferCaches(userVisit).getItemDeliveryTypeTransferCache();
         
-        itemDeliveryTypes.stream().forEach((itemDeliveryType) -> {
-            itemDeliveryTypeTransfers.add(itemDeliveryTypeTransferCache.getTransfer(itemDeliveryType));
-        });
+        itemDeliveryTypes.forEach((itemDeliveryType) ->
+                itemDeliveryTypeTransfers.add(itemDeliveryTypeTransferCache.getTransfer(itemDeliveryType))
+        );
         
         return itemDeliveryTypeTransfers;
     }
@@ -730,7 +731,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemInventoryTypeChoice == null? false: defaultItemInventoryTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemInventoryTypeChoice != null && defaultItemInventoryTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemInventoryType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -748,9 +749,9 @@ public class ItemControl
         List<ItemInventoryTypeTransfer> itemInventoryTypeTransfers = new ArrayList<>(itemInventoryTypes.size());
         ItemInventoryTypeTransferCache itemInventoryTypeTransferCache = getItemTransferCaches(userVisit).getItemInventoryTypeTransferCache();
         
-        itemInventoryTypes.stream().forEach((itemInventoryType) -> {
-            itemInventoryTypeTransfers.add(itemInventoryTypeTransferCache.getTransfer(itemInventoryType));
-        });
+        itemInventoryTypes.forEach((itemInventoryType) ->
+                itemInventoryTypeTransfers.add(itemInventoryTypeTransferCache.getTransfer(itemInventoryType))
+        );
         
         return itemInventoryTypeTransfers;
     }
@@ -859,7 +860,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemUseTypeChoice == null? false: defaultItemUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemUseTypeChoice != null && defaultItemUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemUseType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -877,9 +878,9 @@ public class ItemControl
         List<ItemUseTypeTransfer> itemUseTypeTransfers = new ArrayList<>(itemUseTypes.size());
         ItemUseTypeTransferCache itemUseTypeTransferCache = getItemTransferCaches(userVisit).getItemUseTypeTransferCache();
         
-        itemUseTypes.stream().forEach((itemUseType) -> {
-            itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(itemUseType));
-        });
+        itemUseTypes.forEach((itemUseType) ->
+                itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(itemUseType))
+        );
         
         return itemUseTypeTransfers;
     }
@@ -1115,9 +1116,9 @@ public class ItemControl
         List<ItemCategoryTransfer> itemCategoryTransfers = new ArrayList<>(itemCategories.size());
         ItemCategoryTransferCache itemCategoryTransferCache = getItemTransferCaches(userVisit).getItemCategoryTransferCache();
 
-        itemCategories.stream().forEach((itemCategory) -> {
-            itemCategoryTransfers.add(itemCategoryTransferCache.getTransfer(itemCategory));
-        });
+        itemCategories.forEach((itemCategory) ->
+                itemCategoryTransfers.add(itemCategoryTransferCache.getTransfer(itemCategory))
+        );
 
         return itemCategoryTransfers;
     }
@@ -1133,10 +1134,9 @@ public class ItemControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemCategory */
     public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        ItemCategoryPK pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
-        ItemCategory itemCategory = ItemCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return itemCategory;
+        var pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
+
+        return ItemCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance) {
@@ -1173,7 +1173,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemCategoryChoice == null? false: defaultItemCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemCategoryChoice != null && defaultItemCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1272,7 +1272,7 @@ public class ItemControl
                     if(iter.hasNext()) {
                         defaultItemCategory = iter.next();
                     }
-                    ItemCategoryDetailValue itemCategoryDetailValue = defaultItemCategory.getLastDetailForUpdate().getItemCategoryDetailValue().clone();
+                    ItemCategoryDetailValue itemCategoryDetailValue = Objects.requireNonNull(defaultItemCategory).getLastDetailForUpdate().getItemCategoryDetailValue().clone();
 
                     itemCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemCategoryFromValue(itemCategoryDetailValue, false, deletedBy);
@@ -1288,9 +1288,7 @@ public class ItemControl
     }
 
     private void deleteItemCategories(List<ItemCategory> itemCategories, boolean checkDefault, BasePK deletedBy) {
-        itemCategories.stream().forEach((itemCategory) -> {
-            deleteItemCategory(itemCategory, checkDefault, deletedBy);
-        });
+        itemCategories.forEach((itemCategory) -> deleteItemCategory(itemCategory, checkDefault, deletedBy));
     }
 
     public void deleteItemCategories(List<ItemCategory> itemCategories, BasePK deletedBy) {
@@ -1362,7 +1360,7 @@ public class ItemControl
     }
     
     private List<ItemCategoryDescription> getItemCategoryDescriptionsByItemCategory(ItemCategory itemCategory, EntityPermission entityPermission) {
-        List<ItemCategoryDescription> itemCategoryDescriptions = null;
+        List<ItemCategoryDescription> itemCategoryDescriptions;
         
         try {
             String query = null;
@@ -1426,9 +1424,9 @@ public class ItemControl
         List<ItemCategoryDescriptionTransfer> itemCategoryDescriptionTransfers = new ArrayList<>(itemCategoryDescriptions.size());
         ItemCategoryDescriptionTransferCache itemCategoryDescriptionTransferCache = getItemTransferCaches(userVisit).getItemCategoryDescriptionTransferCache();
         
-        itemCategoryDescriptions.stream().forEach((itemCategoryDescription) -> {
-            itemCategoryDescriptionTransfers.add(itemCategoryDescriptionTransferCache.getTransfer(itemCategoryDescription));
-        });
+        itemCategoryDescriptions.forEach((itemCategoryDescription) ->
+                itemCategoryDescriptionTransfers.add(itemCategoryDescriptionTransferCache.getTransfer(itemCategoryDescription))
+        );
         
         return itemCategoryDescriptionTransfers;
     }
@@ -1462,9 +1460,9 @@ public class ItemControl
     public void deleteItemCategoryDescriptionsByItemCategory(ItemCategory itemCategory, BasePK deletedBy) {
         List<ItemCategoryDescription> itemCategoryDescriptions = getItemCategoryDescriptionsByItemCategoryForUpdate(itemCategory);
         
-        itemCategoryDescriptions.stream().forEach((itemCategoryDescription) -> {
-            deleteItemCategoryDescription(itemCategoryDescription, deletedBy);
-        });
+        itemCategoryDescriptions.forEach((itemCategoryDescription) -> 
+                deleteItemCategoryDescription(itemCategoryDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1891,7 +1889,7 @@ public class ItemControl
     }
     
     private List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes = null;
+        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes;
         
         try {
             String query = null;
@@ -1932,7 +1930,7 @@ public class ItemControl
     }
     
     private List<ItemUnitOfMeasureType> getItemUnitOfMeasureTypesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes = null;
+        List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes;
         
         try {
             String query = null;
@@ -1975,9 +1973,9 @@ public class ItemControl
         List<ItemUnitOfMeasureTypeTransfer> itemUnitOfMeasureTypeTransfers = new ArrayList<>(itemUnitOfMeasureTypes.size());
         ItemUnitOfMeasureTypeTransferCache itemUnitOfMeasureTypeTransferCache = getItemTransferCaches(userVisit).getItemUnitOfMeasureTypeTransferCache();
         
-        itemUnitOfMeasureTypes.stream().forEach((itemUnitOfMeasureType) -> {
-            itemUnitOfMeasureTypeTransfers.add(itemUnitOfMeasureTypeTransferCache.getTransfer(itemUnitOfMeasureType));
-        });
+        itemUnitOfMeasureTypes.forEach((itemUnitOfMeasureType) ->
+                itemUnitOfMeasureTypeTransfers.add(itemUnitOfMeasureTypeTransferCache.getTransfer(itemUnitOfMeasureType))
+        );
         
         return itemUnitOfMeasureTypeTransfers;
     }
@@ -2076,9 +2074,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitOfMeasureTypes(List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes, BasePK deletedBy) {
-        itemUnitOfMeasureTypes.stream().forEach((itemUnitOfMeasureType) -> {
-            deleteItemUnitOfMeasureType(itemUnitOfMeasureType, deletedBy);
-        });
+        itemUnitOfMeasureTypes.forEach((itemUnitOfMeasureType) -> 
+                deleteItemUnitOfMeasureType(itemUnitOfMeasureType, deletedBy)
+        );
     }
     
     public void deleteItemUnitOfMeasureTypesByItem(Item item, BasePK deletedBy) {
@@ -2151,7 +2149,7 @@ public class ItemControl
     }
     
     private List<ItemShippingTime> getItemShippingTimesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemShippingTime> itemShippingTimes = null;
+        List<ItemShippingTime> itemShippingTimes;
         
         try {
             String query = null;
@@ -2192,7 +2190,7 @@ public class ItemControl
     }
     
     private List<ItemShippingTime> getItemShippingTimesByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<ItemShippingTime> itemShippingTimes = null;
+        List<ItemShippingTime> itemShippingTimes;
         
         try {
             String query = null;
@@ -2280,17 +2278,17 @@ public class ItemControl
     public void deleteItemShippingTimesByItem(Item item, BasePK deletedBy) {
         List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByItemForUpdate(item);
         
-        itemShippingTimes.stream().forEach((itemShippingTime) -> {
-            deleteItemShippingTime(itemShippingTime, deletedBy);
-        });
+        itemShippingTimes.forEach((itemShippingTime) -> 
+                deleteItemShippingTime(itemShippingTime, deletedBy)
+        );
     }
     
     public void deleteItemShippingTimesByCustomerType(CustomerType customerType, BasePK deletedBy) {
         List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByCustomerTypeForUpdate(customerType);
         
-        itemShippingTimes.stream().forEach((itemShippingTime) -> {
-            deleteItemShippingTime(itemShippingTime, deletedBy);
-        });
+        itemShippingTimes.forEach((itemShippingTime) -> 
+                deleteItemShippingTime(itemShippingTime, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2353,7 +2351,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemAliasChecksumTypeChoice == null? false: defaultItemAliasChecksumTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemAliasChecksumTypeChoice != null && defaultItemAliasChecksumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAliasChecksumType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2557,9 +2555,9 @@ public class ItemControl
         List<ItemAliasTypeTransfer> itemAliasTypeTransfers = new ArrayList<>(itemAliasTypes.size());
         ItemAliasTypeTransferCache itemAliasTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
         
-        itemAliasTypes.stream().forEach((itemAliasType) -> {
-            itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType));
-        });
+        itemAliasTypes.forEach((itemAliasType) ->
+                itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType))
+        );
         
         return itemAliasTypeTransfers;
     }
@@ -2590,7 +2588,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemAliasTypeChoice == null? false: defaultItemAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemAliasTypeChoice != null && defaultItemAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2676,7 +2674,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultItemAliasType = (ItemAliasType)iter.next();
                 }
-                ItemAliasTypeDetailValue itemAliasTypeDetailValue = defaultItemAliasType.getLastDetailForUpdate().getItemAliasTypeDetailValue().clone();
+                ItemAliasTypeDetailValue itemAliasTypeDetailValue = Objects.requireNonNull(defaultItemAliasType).getLastDetailForUpdate().getItemAliasTypeDetailValue().clone();
                 
                 itemAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemAliasTypeFromValue(itemAliasTypeDetailValue, false, deletedBy);
@@ -2749,7 +2747,7 @@ public class ItemControl
     
     private List<ItemAliasTypeDescription> getItemAliasTypeDescriptionsByItemAliasType(ItemAliasType itemAliasType,
             EntityPermission entityPermission) {
-        List<ItemAliasTypeDescription> itemAliasTypeDescriptions = null;
+        List<ItemAliasTypeDescription> itemAliasTypeDescriptions;
         
         try {
             String query = null;
@@ -2813,9 +2811,9 @@ public class ItemControl
         List<ItemAliasTypeDescriptionTransfer> itemAliasTypeDescriptionTransfers = new ArrayList<>(itemAliasTypeDescriptions.size());
         ItemAliasTypeDescriptionTransferCache itemAliasTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeDescriptionTransferCache();
         
-        itemAliasTypeDescriptions.stream().forEach((itemAliasTypeDescription) -> {
-            itemAliasTypeDescriptionTransfers.add(itemAliasTypeDescriptionTransferCache.getTransfer(itemAliasTypeDescription));
-        });
+        itemAliasTypeDescriptions.forEach((itemAliasTypeDescription) ->
+                itemAliasTypeDescriptionTransfers.add(itemAliasTypeDescriptionTransferCache.getTransfer(itemAliasTypeDescription))
+        );
         
         return itemAliasTypeDescriptionTransfers;
     }
@@ -2849,9 +2847,9 @@ public class ItemControl
     public void deleteItemAliasTypeDescriptionsByItemAliasType(ItemAliasType itemAliasType, BasePK deletedBy) {
         List<ItemAliasTypeDescription> itemAliasTypeDescriptions = getItemAliasTypeDescriptionsByItemAliasTypeForUpdate(itemAliasType);
         
-        itemAliasTypeDescriptions.stream().forEach((itemAliasTypeDescription) -> {
-            deleteItemAliasTypeDescription(itemAliasTypeDescription, deletedBy);
-        });
+        itemAliasTypeDescriptions.forEach((itemAliasTypeDescription) -> 
+                deleteItemAliasTypeDescription(itemAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2924,7 +2922,7 @@ public class ItemControl
     
     private List<ItemAlias> getItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType,
             EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -2965,7 +2963,7 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -3005,7 +3003,7 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -3045,7 +3043,7 @@ public class ItemControl
     }
     
     private List<ItemAlias> getItemAliasesByItemAliasType(ItemAliasType itemAliasType, EntityPermission entityPermission) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             String query = null;
@@ -3085,7 +3083,7 @@ public class ItemControl
     }
     
     public List<ItemAlias> getItemAliasesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemAlias> itemAliases = null;
+        List<ItemAlias> itemAliases;
         
         try {
             PreparedStatement ps = ItemAliasFactory.getInstance().prepareStatement(
@@ -3148,9 +3146,9 @@ public class ItemControl
     }
     
     public void deleteItemAliases(List<ItemAlias> itemAliases, BasePK deletedBy) {
-        itemAliases.stream().forEach((itemAlias) -> {
-            deleteItemAlias(itemAlias, deletedBy);
-        });
+        itemAliases.forEach((itemAlias) -> 
+                deleteItemAlias(itemAlias, deletedBy)
+        );
     }
     
     public void deleteItemAliasesByItem(Item item, BasePK deletedBy) {
@@ -3317,7 +3315,7 @@ public class ItemControl
     }
     
     private List<ItemCountryOfOrigin> getItemCountryOfOriginsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemCountryOfOrigin> itemCountryOfOrigins = null;
+        List<ItemCountryOfOrigin> itemCountryOfOrigins;
         
         try {
             String query = null;
@@ -3357,7 +3355,7 @@ public class ItemControl
     }
     
     private List<ItemCountryOfOrigin> getItemCountryOfOriginsByCountryGeoCode(GeoCode countryGeoCode, EntityPermission entityPermission) {
-        List<ItemCountryOfOrigin> itemCountryOfOrigins = null;
+        List<ItemCountryOfOrigin> itemCountryOfOrigins;
         
         try {
             String query = null;
@@ -3428,9 +3426,9 @@ public class ItemControl
         List<ItemCountryOfOriginTransfer> itemCountryOfOriginTransfers = new ArrayList<>(itemCountryOfOrigins.size());
         ItemCountryOfOriginTransferCache itemCountryOfOriginTransferCache = getItemTransferCaches(userVisit).getItemCountryOfOriginTransferCache();
         
-        itemCountryOfOrigins.stream().forEach((itemCountryOfOrigin) -> {
-            itemCountryOfOriginTransfers.add(itemCountryOfOriginTransferCache.getTransfer(itemCountryOfOrigin));
-        });
+        itemCountryOfOrigins.forEach((itemCountryOfOrigin) ->
+                itemCountryOfOriginTransfers.add(itemCountryOfOriginTransferCache.getTransfer(itemCountryOfOrigin))
+        );
         
         return itemCountryOfOriginTransfers;
     }
@@ -3442,9 +3440,9 @@ public class ItemControl
     }
     
     public void deleteItemCountryOfOrigins(List<ItemCountryOfOrigin> itemCountryOfOrigins, BasePK deletedBy) {
-        itemCountryOfOrigins.stream().forEach((itemCountryOfOrigin) -> {
-            deleteItemCountryOfOrigin(itemCountryOfOrigin, deletedBy);
-        });
+        itemCountryOfOrigins.forEach((itemCountryOfOrigin) -> 
+                deleteItemCountryOfOrigin(itemCountryOfOrigin, deletedBy)
+        );
     }
     
     public void deleteItemCountryOfOriginsByItem(Item item, BasePK deletedBy) {
@@ -3533,7 +3531,7 @@ public class ItemControl
     
     private List<ItemKitMember> getItemKitMembersFromItem(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3579,7 +3577,7 @@ public class ItemControl
     
     private List<ItemKitMember> getItemKitMembersFromMemberItem(Item memberItem, InventoryCondition memberInventoryCondition,
             UnitOfMeasureType memberUnitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3624,7 +3622,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByItem(Item item, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3663,7 +3661,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberItem(Item memberItem, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3702,7 +3700,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3741,7 +3739,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberInventoryCondition(InventoryCondition memberInventoryCondition, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3780,7 +3778,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3819,7 +3817,7 @@ public class ItemControl
     }
     
     public List<ItemKitMember> getItemKitMembersByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(
@@ -3841,7 +3839,7 @@ public class ItemControl
     }
     
     private List<ItemKitMember> getItemKitMembersByMemberUnitOfMeasureType(UnitOfMeasureType memberUnitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             String query = null;
@@ -3880,7 +3878,7 @@ public class ItemControl
     }
     
     public List<ItemKitMember> getItemKitMembersByMemberItemAndUnitOfMeasureTypeForUpdate(Item memberItem, UnitOfMeasureType memberUnitOfMeasureType) {
-        List<ItemKitMember> itemKitMembers = null;
+        List<ItemKitMember> itemKitMembers;
         
         try {
             PreparedStatement ps = ItemKitMemberFactory.getInstance().prepareStatement(
@@ -3940,9 +3938,9 @@ public class ItemControl
         List<ItemKitMemberTransfer> itemKitMemberTransfers = new ArrayList<>(itemKitMembers.size());
         ItemKitMemberTransferCache itemKitMemberTransferCache = getItemTransferCaches(userVisit).getItemKitMemberTransferCache();
         
-        itemKitMembers.stream().forEach((itemKitMember) -> {
-            itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(itemKitMember));
-        });
+        itemKitMembers.forEach((itemKitMember) ->
+                itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(itemKitMember))
+        );
         
         return itemKitMemberTransfers;
     }
@@ -3955,9 +3953,9 @@ public class ItemControl
     }
     
     public void deleteItemKitMembers(List<ItemKitMember> itemKitMembers, BasePK deletedBy) {
-        itemKitMembers.stream().forEach((itemKitMember) -> {
-            deleteItemKitMember(itemKitMember, deletedBy);
-        });
+        itemKitMembers.forEach((itemKitMember) -> 
+                deleteItemKitMember(itemKitMember, deletedBy)
+        );
     }
     
     public void deleteItemKitMembersByItem(Item item, BasePK deletedBy) {
@@ -4042,7 +4040,7 @@ public class ItemControl
     }
 
     private List<ItemPackCheckRequirement> getItemPackCheckRequirementsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements = null;
+        List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
             String query = null;
@@ -4083,7 +4081,7 @@ public class ItemControl
     }
     
     private List<ItemPackCheckRequirement> getItemPackCheckRequirementsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements = null;
+        List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
             String query = null;
@@ -4124,7 +4122,7 @@ public class ItemControl
     
     public List<ItemPackCheckRequirement> getItemPackCheckRequirementsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemPackCheckRequirement> itemPackCheckRequirements = null;
+        List<ItemPackCheckRequirement> itemPackCheckRequirements;
         
         try {
             PreparedStatement ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(
@@ -4181,9 +4179,9 @@ public class ItemControl
         List<ItemPackCheckRequirementTransfer> itemPackCheckRequirementTransfers = new ArrayList<>(itemPackCheckRequirements.size());
         ItemPackCheckRequirementTransferCache itemPackCheckRequirementTransferCache = getItemTransferCaches(userVisit).getItemPackCheckRequirementTransferCache();
         
-        itemPackCheckRequirements.stream().forEach((itemPackCheckRequirement) -> {
-            itemPackCheckRequirementTransfers.add(itemPackCheckRequirementTransferCache.getTransfer(itemPackCheckRequirement));
-        });
+        itemPackCheckRequirements.forEach((itemPackCheckRequirement) ->
+                itemPackCheckRequirementTransfers.add(itemPackCheckRequirementTransferCache.getTransfer(itemPackCheckRequirement))
+        );
         
         return itemPackCheckRequirementTransfers;
     }
@@ -4195,9 +4193,9 @@ public class ItemControl
     }
     
     public void deleteItemPackCheckRequirements(List<ItemPackCheckRequirement> itemPackCheckRequirements, BasePK deletedBy) {
-        itemPackCheckRequirements.stream().forEach((itemPackCheckRequirement) -> {
-            deleteItemPackCheckRequirement(itemPackCheckRequirement, deletedBy);
-        });
+        itemPackCheckRequirements.forEach((itemPackCheckRequirement) -> 
+                deleteItemPackCheckRequirement(itemPackCheckRequirement, deletedBy)
+        );
     }
     
     public void deleteItemPackCheckRequirementsByItem(Item item, BasePK deletedBy) {
@@ -4284,7 +4282,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4326,7 +4324,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4368,7 +4366,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4411,7 +4409,7 @@ public class ItemControl
     
     public List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             PreparedStatement ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(
@@ -4434,7 +4432,7 @@ public class ItemControl
     }
     
     private List<ItemUnitCustomerTypeLimit> getItemUnitCustomerTypeLimitsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits = null;
+        List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits;
         
         try {
             String query = null;
@@ -4512,9 +4510,9 @@ public class ItemControl
         List<ItemUnitCustomerTypeLimitTransfer> itemUnitCustomerTypeLimitTransfers = new ArrayList<>(itemUnitCustomerTypeLimits.size());
         ItemUnitCustomerTypeLimitTransferCache itemUnitCustomerTypeLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitCustomerTypeLimitTransferCache();
         
-        itemUnitCustomerTypeLimits.stream().forEach((itemUnitCustomerTypeLimit) -> {
-            itemUnitCustomerTypeLimitTransfers.add(itemUnitCustomerTypeLimitTransferCache.getTransfer(itemUnitCustomerTypeLimit));
-        });
+        itemUnitCustomerTypeLimits.forEach((itemUnitCustomerTypeLimit) ->
+                itemUnitCustomerTypeLimitTransfers.add(itemUnitCustomerTypeLimitTransferCache.getTransfer(itemUnitCustomerTypeLimit))
+        );
         
         return itemUnitCustomerTypeLimitTransfers;
     }
@@ -4526,9 +4524,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitCustomerTypeLimits(List<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits, BasePK deletedBy) {
-        itemUnitCustomerTypeLimits.stream().forEach((itemUnitCustomerTypeLimit) -> {
-            deleteItemUnitCustomerTypeLimit(itemUnitCustomerTypeLimit, deletedBy);
-        });
+        itemUnitCustomerTypeLimits.forEach((itemUnitCustomerTypeLimit) -> 
+                deleteItemUnitCustomerTypeLimit(itemUnitCustomerTypeLimit, deletedBy)
+        );
     }
     
     public void deleteItemUnitCustomerTypeLimitsByItem(Item item, BasePK deletedBy) {
@@ -4619,7 +4617,7 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             String query = null;
@@ -4660,7 +4658,7 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             String query = null;
@@ -4701,7 +4699,7 @@ public class ItemControl
     }
     
     private List<ItemUnitLimit> getItemUnitLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             String query = null;
@@ -4742,7 +4740,7 @@ public class ItemControl
     }
     
     public List<ItemUnitLimit> getItemUnitLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitLimit> itemUnitLimits = null;
+        List<ItemUnitLimit> itemUnitLimits;
         
         try {
             PreparedStatement ps = ItemUnitLimitFactory.getInstance().prepareStatement(
@@ -4798,9 +4796,9 @@ public class ItemControl
         List<ItemUnitLimitTransfer> itemUnitLimitTransfers = new ArrayList<>(itemUnitLimits.size());
         ItemUnitLimitTransferCache itemUnitLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitLimitTransferCache();
         
-        itemUnitLimits.stream().forEach((itemUnitLimit) -> {
-            itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(itemUnitLimit));
-        });
+        itemUnitLimits.forEach((itemUnitLimit) ->
+                itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(itemUnitLimit))
+        );
         
         return itemUnitLimitTransfers;
     }
@@ -4812,9 +4810,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitLimits(List<ItemUnitLimit> itemUnitLimits, BasePK deletedBy) {
-        itemUnitLimits.stream().forEach((itemUnitLimit) -> {
-            deleteItemUnitLimit(itemUnitLimit, deletedBy);
-        });
+        itemUnitLimits.forEach((itemUnitLimit) -> 
+                deleteItemUnitLimit(itemUnitLimit, deletedBy)
+        );
     }
     
     public void deleteItemUnitLimitsByItem(Item item, BasePK deletedBy) {
@@ -4904,7 +4902,7 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             String query = null;
@@ -4946,7 +4944,7 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             String query = null;
@@ -4988,7 +4986,7 @@ public class ItemControl
     }
     
     private List<ItemUnitPriceLimit> getItemUnitPriceLimitsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             String query = null;
@@ -5031,7 +5029,7 @@ public class ItemControl
     
     public List<ItemUnitPriceLimit> getItemUnitPriceLimitsByItemAndUnitOfMeasureTypeForUpdate(Item item,
             UnitOfMeasureType unitOfMeasureType) {
-        List<ItemUnitPriceLimit> itemUnitPriceLimits = null;
+        List<ItemUnitPriceLimit> itemUnitPriceLimits;
         
         try {
             PreparedStatement ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(
@@ -5088,9 +5086,9 @@ public class ItemControl
         List<ItemUnitPriceLimitTransfer> itemUnitPriceLimitTransfers = new ArrayList<>(itemUnitPriceLimits.size());
         ItemUnitPriceLimitTransferCache itemUnitPriceLimitTransferCache = getItemTransferCaches(userVisit).getItemUnitPriceLimitTransferCache();
         
-        itemUnitPriceLimits.stream().forEach((itemUnitPriceLimit) -> {
-            itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(itemUnitPriceLimit));
-        });
+        itemUnitPriceLimits.forEach((itemUnitPriceLimit) ->
+                itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(itemUnitPriceLimit))
+        );
         
         return itemUnitPriceLimitTransfers;
     }
@@ -5102,9 +5100,9 @@ public class ItemControl
     }
     
     public void deleteItemUnitPriceLimits(List<ItemUnitPriceLimit> itemUnitPriceLimits, BasePK deletedBy) {
-        itemUnitPriceLimits.stream().forEach((itemUnitPriceLimit) -> {
-            deleteItemUnitPriceLimit(itemUnitPriceLimit, deletedBy);
-        });
+        itemUnitPriceLimits.forEach((itemUnitPriceLimit) -> 
+                deleteItemUnitPriceLimit(itemUnitPriceLimit, deletedBy)
+        );
     }
     
     public void deleteItemUnitPriceLimitsByItem(Item item, BasePK deletedBy) {
@@ -5183,7 +5181,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemPriceTypeChoice == null? false: defaultItemPriceTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemPriceTypeChoice != null && defaultItemPriceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemPriceType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5201,9 +5199,9 @@ public class ItemControl
         List<ItemPriceTypeTransfer> itemPriceTypeTransfers = new ArrayList<>(itemPriceTypes.size());
         ItemPriceTypeTransferCache itemPriceTypeTransferCache = getItemTransferCaches(userVisit).getItemPriceTypeTransferCache();
         
-        itemPriceTypes.stream().forEach((itemPriceType) -> {
-            itemPriceTypeTransfers.add(itemPriceTypeTransferCache.getTransfer(itemPriceType));
-        });
+        itemPriceTypes.forEach((itemPriceType) ->
+                itemPriceTypeTransfers.add(itemPriceTypeTransferCache.getTransfer(itemPriceType))
+        );
         
         return itemPriceTypeTransfers;
     }
@@ -5268,7 +5266,7 @@ public class ItemControl
     }
     
     private List<ItemPrice> getItemPricesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -5310,7 +5308,7 @@ public class ItemControl
     }
     
     private List<ItemPrice> getItemPricesByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -5352,7 +5350,7 @@ public class ItemControl
     }
     
     private List<ItemPrice> getItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -5394,7 +5392,7 @@ public class ItemControl
     }
     
     public List<ItemPrice> getItemPricesByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(
@@ -5417,7 +5415,7 @@ public class ItemControl
     
     private List<ItemPrice> getItemPrices(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             EntityPermission entityPermission) {
-        List<ItemPrice> itemPrices = null;
+        List<ItemPrice> itemPrices;
         
         try {
             String query = null;
@@ -5513,9 +5511,9 @@ public class ItemControl
         List<ItemPriceTransfer> itemPriceTransfers = new ArrayList<>(itemPrices.size());
         ItemPriceTransferCache itemPriceTransferCache = getItemTransferCaches(userVisit).getItemPriceTransferCache();
         
-        itemPrices.stream().forEach((itemPrice) -> {
-            itemPriceTransfers.add(itemPriceTransferCache.getTransfer(itemPrice));
-        });
+        itemPrices.forEach((itemPrice) ->
+                itemPriceTransfers.add(itemPriceTransferCache.getTransfer(itemPrice))
+        );
         
         return itemPriceTransfers;
     }
@@ -5558,9 +5556,9 @@ public class ItemControl
     }
     
     public void deleteItemPrices(List<ItemPrice> itemPrices, BasePK deletedBy) {
-        itemPrices.stream().forEach((itemPrice) -> {
-            deleteItemPrice(itemPrice, deletedBy);
-        });
+        itemPrices.forEach((itemPrice) -> 
+                deleteItemPrice(itemPrice, deletedBy)
+        );
     }
     
     public void deleteItemPricesByItem(Item item, BasePK deletedBy) {
@@ -6039,9 +6037,9 @@ public class ItemControl
         List<ItemDescriptionTypeTransfer> itemDescriptionTypeTransfers = new ArrayList<>(itemDescriptionTypes.size());
         ItemDescriptionTypeTransferCache itemDescriptionTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeTransferCache();
 
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            itemDescriptionTypeTransfers.add(itemDescriptionTypeTransferCache.getTransfer(itemDescriptionType));
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) ->
+                itemDescriptionTypeTransfers.add(itemDescriptionTypeTransferCache.getTransfer(itemDescriptionType))
+        );
 
         return itemDescriptionTypeTransfers;
     }
@@ -6080,7 +6078,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemDescriptionTypeChoice == null? false: defaultItemDescriptionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemDescriptionTypeChoice != null && defaultItemDescriptionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDescriptionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6196,7 +6194,7 @@ public class ItemControl
                     if(iter.hasNext()) {
                         defaultItemDescriptionType = iter.next();
                     }
-                    ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = defaultItemDescriptionType.getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
+                    ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionType).getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
 
                     itemDescriptionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemDescriptionTypeFromValue(itemDescriptionTypeDetailValue, false, deletedBy);
@@ -6212,9 +6210,7 @@ public class ItemControl
     }
 
     private void deleteItemDescriptionTypes(List<ItemDescriptionType> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteItemDescriptionType(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteItemDescriptionType(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteItemDescriptionTypes(List<ItemDescriptionType> itemDescriptionTypes, BasePK deletedBy) {
@@ -6334,9 +6330,9 @@ public class ItemControl
         List<ItemDescriptionTypeDescriptionTransfer> itemDescriptionTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeDescriptions.size());
         ItemDescriptionTypeDescriptionTransferCache itemDescriptionTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeDescriptionTransferCache();
 
-        itemDescriptionTypeDescriptions.stream().forEach((itemDescriptionTypeDescription) -> {
-            itemDescriptionTypeDescriptionTransfers.add(itemDescriptionTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeDescription));
-        });
+        itemDescriptionTypeDescriptions.forEach((itemDescriptionTypeDescription) ->
+                itemDescriptionTypeDescriptionTransfers.add(itemDescriptionTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeDescription))
+        );
 
         return itemDescriptionTypeDescriptionTransfers;
     }
@@ -6370,9 +6366,9 @@ public class ItemControl
     public void deleteItemDescriptionTypeDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
         List<ItemDescriptionTypeDescription> itemDescriptionTypeDescriptions = getItemDescriptionTypeDescriptionsByItemDescriptionTypeForUpdate(itemDescriptionType);
 
-        itemDescriptionTypeDescriptions.stream().forEach((itemDescriptionTypeDescription) -> {
-            deleteItemDescriptionTypeDescription(itemDescriptionTypeDescription, deletedBy);
-        });
+        itemDescriptionTypeDescriptions.forEach((itemDescriptionTypeDescription) -> 
+                deleteItemDescriptionTypeDescription(itemDescriptionTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -6657,9 +6653,9 @@ public class ItemControl
         List<ItemDescriptionTypeUseTypeTransfer> itemDescriptionTypeUseTypeTransfers = new ArrayList<>(itemDescriptionTypeUseTypes.size());
         ItemDescriptionTypeUseTypeTransferCache itemDescriptionTypeUseTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeTransferCache();
 
-        itemDescriptionTypeUseTypes.stream().forEach((itemDescriptionTypeUseType) -> {
-            itemDescriptionTypeUseTypeTransfers.add(itemDescriptionTypeUseTypeTransferCache.getTransfer(itemDescriptionTypeUseType));
-        });
+        itemDescriptionTypeUseTypes.forEach((itemDescriptionTypeUseType) ->
+                itemDescriptionTypeUseTypeTransfers.add(itemDescriptionTypeUseTypeTransferCache.getTransfer(itemDescriptionTypeUseType))
+        );
 
         return itemDescriptionTypeUseTypeTransfers;
     }
@@ -6698,7 +6694,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemDescriptionTypeUseTypeChoice == null? false: defaultItemDescriptionTypeUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemDescriptionTypeUseTypeChoice != null && defaultItemDescriptionTypeUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDescriptionTypeUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6771,7 +6767,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultItemDescriptionTypeUseType = iter.next();
                 }
-                ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = defaultItemDescriptionTypeUseType.getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
+                ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = Objects.requireNonNull(defaultItemDescriptionTypeUseType).getLastDetailForUpdate().getItemDescriptionTypeUseTypeDetailValue().clone();
 
                 itemDescriptionTypeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, false, deletedBy);
@@ -6893,9 +6889,9 @@ public class ItemControl
         List<ItemDescriptionTypeUseTypeDescriptionTransfer> itemDescriptionTypeUseTypeDescriptionTransfers = new ArrayList<>(itemDescriptionTypeUseTypeDescriptions.size());
         ItemDescriptionTypeUseTypeDescriptionTransferCache itemDescriptionTypeUseTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeDescriptionTransferCache();
 
-        itemDescriptionTypeUseTypeDescriptions.stream().forEach((itemDescriptionTypeUseTypeDescription) -> {
-            itemDescriptionTypeUseTypeDescriptionTransfers.add(itemDescriptionTypeUseTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeUseTypeDescription));
-        });
+        itemDescriptionTypeUseTypeDescriptions.forEach((itemDescriptionTypeUseTypeDescription) ->
+                itemDescriptionTypeUseTypeDescriptionTransfers.add(itemDescriptionTypeUseTypeDescriptionTransferCache.getTransfer(itemDescriptionTypeUseTypeDescription))
+        );
 
         return itemDescriptionTypeUseTypeDescriptionTransfers;
     }
@@ -6929,9 +6925,9 @@ public class ItemControl
     public void deleteItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType, BasePK deletedBy) {
         List<ItemDescriptionTypeUseTypeDescription> itemDescriptionTypeUseTypeDescriptions = getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeForUpdate(itemDescriptionTypeUseType);
 
-        itemDescriptionTypeUseTypeDescriptions.stream().forEach((itemDescriptionTypeUseTypeDescription) -> {
-            deleteItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseTypeDescription, deletedBy);
-        });
+        itemDescriptionTypeUseTypeDescriptions.forEach((itemDescriptionTypeUseTypeDescription) -> 
+                deleteItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -7059,9 +7055,9 @@ public class ItemControl
         List<ItemDescriptionTypeUseTransfer> itemDescriptionTypeUseTransfers = new ArrayList<>(itemDescriptionTypeUses.size());
         ItemDescriptionTypeUseTransferCache itemDescriptionTypeUseTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTransferCache();
 
-        itemDescriptionTypeUses.stream().forEach((itemDescriptionTypeUse) -> {
-            itemDescriptionTypeUseTransfers.add(itemDescriptionTypeUseTransferCache.getTransfer(itemDescriptionTypeUse));
-        });
+        itemDescriptionTypeUses.forEach((itemDescriptionTypeUse) ->
+                itemDescriptionTypeUseTransfers.add(itemDescriptionTypeUseTransferCache.getTransfer(itemDescriptionTypeUse))
+        );
 
         return itemDescriptionTypeUseTransfers;
     }
@@ -7082,9 +7078,9 @@ public class ItemControl
     }
 
     public void deleteItemDescriptionTypeUses(List<ItemDescriptionTypeUse> itemDescriptionTypeUses, BasePK deletedBy) {
-        itemDescriptionTypeUses.stream().forEach((itemDescriptionTypeUse) -> {
-            deleteItemDescriptionTypeUse(itemDescriptionTypeUse, deletedBy);
-        });
+        itemDescriptionTypeUses.forEach((itemDescriptionTypeUse) -> 
+                deleteItemDescriptionTypeUse(itemDescriptionTypeUse, deletedBy)
+        );
     }
 
     public void deleteItemDescriptionTypeUsesByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
@@ -7281,9 +7277,9 @@ public class ItemControl
         List<ItemImageTypeTransfer> itemImageTypeTransfers = new ArrayList<>(itemImageTypes.size());
         ItemImageTypeTransferCache itemImageTypeTransferCache = getItemTransferCaches(userVisit).getItemImageTypeTransferCache();
 
-        itemImageTypes.stream().forEach((itemImageType) -> {
-            itemImageTypeTransfers.add(itemImageTypeTransferCache.getTransfer(itemImageType));
-        });
+        itemImageTypes.forEach((itemImageType) ->
+                itemImageTypeTransfers.add(itemImageTypeTransferCache.getTransfer(itemImageType))
+        );
 
         return itemImageTypeTransfers;
     }
@@ -7322,7 +7318,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemImageTypeChoice == null? false: defaultItemImageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemImageTypeChoice != null && defaultItemImageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemImageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7398,7 +7394,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultItemImageType = iter.next();
                 }
-                ItemImageTypeDetailValue itemImageTypeDetailValue = defaultItemImageType.getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
+                ItemImageTypeDetailValue itemImageTypeDetailValue = Objects.requireNonNull(defaultItemImageType).getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
 
                 itemImageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateItemImageTypeFromValue(itemImageTypeDetailValue, false, deletedBy);
@@ -7520,9 +7516,9 @@ public class ItemControl
         List<ItemImageTypeDescriptionTransfer> itemImageTypeDescriptionTransfers = new ArrayList<>(itemImageTypeDescriptions.size());
         ItemImageTypeDescriptionTransferCache itemImageTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getItemImageTypeDescriptionTransferCache();
 
-        itemImageTypeDescriptions.stream().forEach((itemImageTypeDescription) -> {
-            itemImageTypeDescriptionTransfers.add(itemImageTypeDescriptionTransferCache.getTransfer(itemImageTypeDescription));
-        });
+        itemImageTypeDescriptions.forEach((itemImageTypeDescription) ->
+                itemImageTypeDescriptionTransfers.add(itemImageTypeDescriptionTransferCache.getTransfer(itemImageTypeDescription))
+        );
 
         return itemImageTypeDescriptionTransfers;
     }
@@ -7556,9 +7552,9 @@ public class ItemControl
     public void deleteItemImageTypeDescriptionsByItemImageType(ItemImageType itemImageType, BasePK deletedBy) {
         List<ItemImageTypeDescription> itemImageTypeDescriptions = getItemImageTypeDescriptionsByItemImageTypeForUpdate(itemImageType);
 
-        itemImageTypeDescriptions.stream().forEach((itemImageTypeDescription) -> {
-            deleteItemImageTypeDescription(itemImageTypeDescription, deletedBy);
-        });
+        itemImageTypeDescriptions.forEach((itemImageTypeDescription) -> 
+                deleteItemImageTypeDescription(itemImageTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -7654,7 +7650,7 @@ public class ItemControl
     }
 
     private List<ItemDescription> getItemDescriptionsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemDescription> itemDescriptions = null;
+        List<ItemDescription> itemDescriptions;
 
         try {
             String query = null;
@@ -7695,7 +7691,7 @@ public class ItemControl
     }
 
     private List<ItemDescription> getItemDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, EntityPermission entityPermission) {
-        List<ItemDescription> itemDescriptions = null;
+        List<ItemDescription> itemDescriptions;
 
         try {
             String query = null;
@@ -7850,9 +7846,9 @@ public class ItemControl
         List<ItemDescriptionTransfer> itemDescriptionTransfers = new ArrayList<>(itemDescriptions.size());
         ItemDescriptionTransferCache itemDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTransferCache();
         
-        itemDescriptions.stream().forEach((itemDescription) -> {
-            itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription));
-        });
+        itemDescriptions.forEach((itemDescription) ->
+                itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription))
+        );
         
         return itemDescriptionTransfers;
     }
@@ -7915,9 +7911,9 @@ public class ItemControl
     }
     
     public void deleteItemDescriptions(List<ItemDescription> itemDescriptions, BasePK deletedBy) {
-        itemDescriptions.stream().forEach((itemDescription) -> {
-            deleteItemDescription(itemDescription, deletedBy);
-        });
+        itemDescriptions.forEach((itemDescription) -> 
+                deleteItemDescription(itemDescription, deletedBy)
+        );
     }
 
     public void deleteItemDescriptionsByItemDescriptionType(ItemDescriptionType itemDescriptionType, BasePK deletedBy) {
@@ -8394,7 +8390,7 @@ public class ItemControl
     }
     
     private List<ItemVolume> getItemVolumesByItem(Item item, EntityPermission entityPermission) {
-        List<ItemVolume> itemVolumes = null;
+        List<ItemVolume> itemVolumes;
         
         try {
             String query = null;
@@ -8468,9 +8464,9 @@ public class ItemControl
         List<ItemVolumeTransfer> itemVolumeTransfers = new ArrayList<>(itemVolumes.size());
         ItemVolumeTransferCache itemVolumeTransferCache = getItemTransferCaches(userVisit).getItemVolumeTransferCache();
         
-        itemVolumes.stream().forEach((itemVolume) -> {
-            itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(itemVolume));
-        });
+        itemVolumes.forEach((itemVolume) ->
+                itemVolumeTransfers.add(itemVolumeTransferCache.getTransfer(itemVolume))
+        );
         
         return itemVolumeTransfers;
     }
@@ -8484,9 +8480,9 @@ public class ItemControl
     public void deleteItemVolumesByItem(Item item, BasePK deletedBy) {
         List<ItemVolume> itemVolumes = getItemVolumesByItemForUpdate(item);
         
-        itemVolumes.stream().forEach((itemVolume) -> {
-            deleteItemVolume(itemVolume, deletedBy);
-        });
+        itemVolumes.forEach((itemVolume) -> 
+                deleteItemVolume(itemVolume, deletedBy)
+        );
     }
     
     public void deleteItemVolumeByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -8558,7 +8554,7 @@ public class ItemControl
     }
     
     private List<ItemWeight> getItemWeightsByItem(Item item, EntityPermission entityPermission) {
-        List<ItemWeight> itemWeights = null;
+        List<ItemWeight> itemWeights;
         
         try {
             String query = null;
@@ -8630,9 +8626,9 @@ public class ItemControl
         List<ItemWeightTransfer> itemWeightTransfers = new ArrayList<>(itemWeights.size());
         ItemWeightTransferCache itemWeightTransferCache = getItemTransferCaches(userVisit).getItemWeightTransferCache();
         
-        itemWeights.stream().forEach((itemWeight) -> {
-            itemWeightTransfers.add(itemWeightTransferCache.getTransfer(itemWeight));
-        });
+        itemWeights.forEach((itemWeight) ->
+                itemWeightTransfers.add(itemWeightTransferCache.getTransfer(itemWeight))
+        );
         
         return itemWeightTransfers;
     }
@@ -8646,9 +8642,9 @@ public class ItemControl
     public void deleteItemWeightsByItem(Item item, BasePK deletedBy) {
         List<ItemWeight> itemWeights = getItemWeightsByItemForUpdate(item);
         
-        itemWeights.stream().forEach((itemWeight) -> {
-            deleteItemWeight(itemWeight, deletedBy);
-        });
+        itemWeights.forEach((itemWeight) -> 
+                deleteItemWeight(itemWeight, deletedBy)
+        );
     }
     
     public void deleteItemWeightByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
@@ -8837,9 +8833,9 @@ public class ItemControl
         List<RelatedItemTypeTransfer> relatedItemTypeTransfers = new ArrayList<>(relatedItemTypes.size());
         RelatedItemTypeTransferCache relatedItemTypeTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeTransferCache();
 
-        relatedItemTypes.stream().forEach((relatedItemType) -> {
-            relatedItemTypeTransfers.add(relatedItemTypeTransferCache.getTransfer(relatedItemType));
-        });
+        relatedItemTypes.forEach((relatedItemType) ->
+                relatedItemTypeTransfers.add(relatedItemTypeTransferCache.getTransfer(relatedItemType))
+        );
 
         return relatedItemTypeTransfers;
     }
@@ -8878,7 +8874,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultRelatedItemTypeChoice == null? false: defaultRelatedItemTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultRelatedItemTypeChoice != null && defaultRelatedItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && relatedItemTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8951,7 +8947,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultRelatedItemType = iter.next();
                 }
-                RelatedItemTypeDetailValue relatedItemTypeDetailValue = defaultRelatedItemType.getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
+                RelatedItemTypeDetailValue relatedItemTypeDetailValue = Objects.requireNonNull(defaultRelatedItemType).getLastDetailForUpdate().getRelatedItemTypeDetailValue().clone();
 
                 relatedItemTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateRelatedItemTypeFromValue(relatedItemTypeDetailValue, false, deletedBy);
@@ -9073,9 +9069,9 @@ public class ItemControl
         List<RelatedItemTypeDescriptionTransfer> relatedItemTypeDescriptionTransfers = new ArrayList<>(relatedItemTypeDescriptions.size());
         RelatedItemTypeDescriptionTransferCache relatedItemTypeDescriptionTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeDescriptionTransferCache();
 
-        relatedItemTypeDescriptions.stream().forEach((relatedItemTypeDescription) -> {
-            relatedItemTypeDescriptionTransfers.add(relatedItemTypeDescriptionTransferCache.getTransfer(relatedItemTypeDescription));
-        });
+        relatedItemTypeDescriptions.forEach((relatedItemTypeDescription) ->
+                relatedItemTypeDescriptionTransfers.add(relatedItemTypeDescriptionTransferCache.getTransfer(relatedItemTypeDescription))
+        );
 
         return relatedItemTypeDescriptionTransfers;
     }
@@ -9109,9 +9105,9 @@ public class ItemControl
     public void deleteRelatedItemTypeDescriptionsByRelatedItemType(RelatedItemType relatedItemType, BasePK deletedBy) {
         List<RelatedItemTypeDescription> relatedItemTypeDescriptions = getRelatedItemTypeDescriptionsByRelatedItemTypeForUpdate(relatedItemType);
 
-        relatedItemTypeDescriptions.stream().forEach((relatedItemTypeDescription) -> {
-            deleteRelatedItemTypeDescription(relatedItemTypeDescription, deletedBy);
-        });
+        relatedItemTypeDescriptions.forEach((relatedItemTypeDescription) -> 
+                deleteRelatedItemTypeDescription(relatedItemTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -9399,9 +9395,9 @@ public class ItemControl
         List<RelatedItemTransfer> relatedItemTransfers = new ArrayList<>(relatedItems.size());
         RelatedItemTransferCache relatedItemTransferCache = getItemTransferCaches(userVisit).getRelatedItemTransferCache();
 
-        relatedItems.stream().forEach((relatedItem) -> {
-            relatedItemTransfers.add(relatedItemTransferCache.getTransfer(relatedItem));
-        });
+        relatedItems.forEach((relatedItem) ->
+                relatedItemTransfers.add(relatedItemTransferCache.getTransfer(relatedItem))
+        );
 
         return relatedItemTransfers;
     }
@@ -9457,9 +9453,9 @@ public class ItemControl
     }
 
     public void deleteRelatedItems(List<RelatedItem> relatedItems, BasePK deletedBy) {
-        relatedItems.stream().forEach((relatedItem) -> {
-            deleteRelatedItem(relatedItem, deletedBy);
-        });
+        relatedItems.forEach((relatedItem) -> 
+                deleteRelatedItem(relatedItem, deletedBy)
+        );
     }
 
     public void deleteRelatedItemsByFromItem(Item fromItem, BasePK deletedBy) {
@@ -9737,7 +9733,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeChoice == null? false: defaultHarmonizedTariffScheduleCodeChoice.equals(value);
+            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeChoice != null && defaultHarmonizedTariffScheduleCodeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -9754,9 +9750,9 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodeTransfers = new ArrayList<>(harmonizedTariffScheduleCodes.size());
         HarmonizedTariffScheduleCodeTransferCache harmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTransferCache();
 
-        harmonizedTariffScheduleCodes.stream().forEach((harmonizedTariffScheduleCode) -> {
-            harmonizedTariffScheduleCodeTransfers.add(harmonizedTariffScheduleCodeTransferCache.getTransfer(harmonizedTariffScheduleCode));
-        });
+        harmonizedTariffScheduleCodes.forEach((harmonizedTariffScheduleCode) ->
+                harmonizedTariffScheduleCodeTransfers.add(harmonizedTariffScheduleCodeTransferCache.getTransfer(harmonizedTariffScheduleCode))
+        );
 
         return harmonizedTariffScheduleCodeTransfers;
     }
@@ -9836,7 +9832,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCode = iter.next();
                 }
-                HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue = defaultHarmonizedTariffScheduleCode.getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
+                HarmonizedTariffScheduleCodeDetailValue harmonizedTariffScheduleCodeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCode).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeDetailValue().clone();
 
                 harmonizedTariffScheduleCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeFromValue(harmonizedTariffScheduleCodeDetailValue, false, deletedBy);
@@ -9847,9 +9843,9 @@ public class ItemControl
     }
 
     public void deleteHarmonizedTariffScheduleCodes(List<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodes, BasePK deletedBy) {
-        harmonizedTariffScheduleCodes.stream().forEach((harmonizedTariffScheduleCode) -> {
-            deleteHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, deletedBy);
-        });
+        harmonizedTariffScheduleCodes.forEach((harmonizedTariffScheduleCode) -> 
+                deleteHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode, deletedBy)
+        );
     }
 
     public void deleteHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode, BasePK deletedBy) {
@@ -10008,9 +10004,9 @@ public class ItemControl
     public void deleteHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, BasePK deletedBy) {
         List<HarmonizedTariffScheduleCodeTranslation> harmonizedTariffScheduleCodeTranslations = getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeForUpdate(harmonizedTariffScheduleCode);
 
-        harmonizedTariffScheduleCodeTranslations.stream().forEach((harmonizedTariffScheduleCodeTranslation) -> {
-            deleteHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCodeTranslation, deletedBy);
-        });
+        harmonizedTariffScheduleCodeTranslations.forEach((harmonizedTariffScheduleCodeTranslation) -> 
+                deleteHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCodeTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -10173,7 +10169,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUseTypeChoice == null? false: defaultHarmonizedTariffScheduleCodeUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUseTypeChoice != null && defaultHarmonizedTariffScheduleCodeUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -10191,9 +10187,9 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeUseTypeTransfer> harmonizedTariffScheduleCodeUseTypeTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUseTypes.size());
         HarmonizedTariffScheduleCodeUseTypeTransferCache harmonizedTariffScheduleCodeUseTypeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUseTypeTransferCache();
 
-        harmonizedTariffScheduleCodeUseTypes.stream().forEach((harmonizedTariffScheduleCodeUseType) -> {
-            harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(harmonizedTariffScheduleCodeUseType));
-        });
+        harmonizedTariffScheduleCodeUseTypes.forEach((harmonizedTariffScheduleCodeUseType) ->
+                harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(harmonizedTariffScheduleCodeUseType))
+        );
 
         return harmonizedTariffScheduleCodeUseTypeTransfers;
     }
@@ -10260,7 +10256,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCodeUseType = iter.next();
                 }
-                HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue = defaultHarmonizedTariffScheduleCodeUseType.getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue().clone();
+                HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUseType).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUseTypeDetailValue().clone();
 
                 harmonizedTariffScheduleCodeUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeUseTypeFromValue(harmonizedTariffScheduleCodeUseTypeDetailValue, false, deletedBy);
@@ -10414,9 +10410,9 @@ public class ItemControl
     public void deleteHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, BasePK deletedBy) {
         List<HarmonizedTariffScheduleCodeUseTypeDescription> harmonizedTariffScheduleCodeUseTypeDescriptions = getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeForUpdate(harmonizedTariffScheduleCodeUseType);
 
-        harmonizedTariffScheduleCodeUseTypeDescriptions.stream().forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> {
-            deleteHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseTypeDescription, deletedBy);
-        });
+        harmonizedTariffScheduleCodeUseTypeDescriptions.forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> 
+                deleteHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -10579,7 +10575,7 @@ public class ItemControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUnitChoice == null? false: defaultHarmonizedTariffScheduleCodeUnitChoice.equals(value);
+            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUnitChoice != null && defaultHarmonizedTariffScheduleCodeUnitChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeUnitDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -10597,9 +10593,9 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeUnitTransfer> harmonizedTariffScheduleCodeUnitTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUnits.size());
         HarmonizedTariffScheduleCodeUnitTransferCache harmonizedTariffScheduleCodeUnitTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUnitTransferCache();
 
-        harmonizedTariffScheduleCodeUnits.stream().forEach((harmonizedTariffScheduleCodeUnit) -> {
-            harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(harmonizedTariffScheduleCodeUnit));
-        });
+        harmonizedTariffScheduleCodeUnits.forEach((harmonizedTariffScheduleCodeUnit) ->
+                harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(harmonizedTariffScheduleCodeUnit))
+        );
 
         return harmonizedTariffScheduleCodeUnitTransfers;
     }
@@ -10666,7 +10662,7 @@ public class ItemControl
                 if(iter.hasNext()) {
                     defaultHarmonizedTariffScheduleCodeUnit = iter.next();
                 }
-                HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = defaultHarmonizedTariffScheduleCodeUnit.getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue().clone();
+                HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = Objects.requireNonNull(defaultHarmonizedTariffScheduleCodeUnit).getLastDetailForUpdate().getHarmonizedTariffScheduleCodeUnitDetailValue().clone();
 
                 harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.TRUE);
                 updateHarmonizedTariffScheduleCodeUnitFromValue(harmonizedTariffScheduleCodeUnitDetailValue, false, deletedBy);
@@ -10820,9 +10816,9 @@ public class ItemControl
     public void deleteHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit, BasePK deletedBy) {
         List<HarmonizedTariffScheduleCodeUnitDescription> harmonizedTariffScheduleCodeUnitDescriptions = getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitForUpdate(harmonizedTariffScheduleCodeUnit);
 
-        harmonizedTariffScheduleCodeUnitDescriptions.stream().forEach((harmonizedTariffScheduleCodeUnitDescription) -> {
-            deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, deletedBy);
-        });
+        harmonizedTariffScheduleCodeUnitDescriptions.forEach((harmonizedTariffScheduleCodeUnitDescription) -> 
+                deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -10976,9 +10972,9 @@ public class ItemControl
     }
 
     public void deleteHarmonizedTariffScheduleCodeUses(List<HarmonizedTariffScheduleCodeUse> harmonizedTariffScheduleCodeUses, BasePK deletedBy) {
-        harmonizedTariffScheduleCodeUses.stream().forEach((harmonizedTariffScheduleCodeUse) -> {
-            deleteHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCodeUse, deletedBy);
-        });
+        harmonizedTariffScheduleCodeUses.forEach((harmonizedTariffScheduleCodeUse) -> 
+                deleteHarmonizedTariffScheduleCodeUse(harmonizedTariffScheduleCodeUse, deletedBy)
+        );
     }
 
     public void deleteHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode, BasePK deletedBy) {
@@ -11199,9 +11195,9 @@ public class ItemControl
         List<ItemHarmonizedTariffScheduleCodeTransfer> itemHarmonizedTariffScheduleCodeTransfers = new ArrayList<>(itemHarmonizedTariffScheduleCodes.size());
         ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getItemHarmonizedTariffScheduleCodeTransferCache();
 
-        itemHarmonizedTariffScheduleCodes.stream().forEach((itemHarmonizedTariffScheduleCode) -> {
-            itemHarmonizedTariffScheduleCodeTransfers.add(itemHarmonizedTariffScheduleCodeTransferCache.getTransfer(itemHarmonizedTariffScheduleCode));
-        });
+        itemHarmonizedTariffScheduleCodes.forEach((itemHarmonizedTariffScheduleCode) ->
+                itemHarmonizedTariffScheduleCodeTransfers.add(itemHarmonizedTariffScheduleCodeTransferCache.getTransfer(itemHarmonizedTariffScheduleCode))
+        );
 
         return itemHarmonizedTariffScheduleCodeTransfers;
     }
@@ -11258,9 +11254,9 @@ public class ItemControl
     }
 
     public void deleteItemHarmonizedTariffScheduleCodes(List<ItemHarmonizedTariffScheduleCode> itemHarmonizedTariffScheduleCodes, BasePK deletedBy) {
-        itemHarmonizedTariffScheduleCodes.stream().forEach((itemHarmonizedTariffScheduleCode) -> {
-            deleteItemHarmonizedTariffScheduleCode(itemHarmonizedTariffScheduleCode, deletedBy);
-        });
+        itemHarmonizedTariffScheduleCodes.forEach((itemHarmonizedTariffScheduleCode) -> 
+                deleteItemHarmonizedTariffScheduleCode(itemHarmonizedTariffScheduleCode, deletedBy)
+        );
     }
 
     public void deleteItemHarmonizedTariffScheduleCodesByItem(Item item, BasePK deletedBy) {

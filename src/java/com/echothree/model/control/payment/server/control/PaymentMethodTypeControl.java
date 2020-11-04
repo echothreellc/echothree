@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Objects;
 
 public class PaymentMethodTypeControl
         extends BasePaymentControl {
@@ -200,9 +201,9 @@ public class PaymentMethodTypeControl
         var paymentMethodTypeTransfers = new ArrayList<PaymentMethodTypeTransfer>(paymentMethodTypes.size());
         var paymentMethodTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache();
 
-        paymentMethodTypes.stream().forEach((paymentMethodType) -> {
-            paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(paymentMethodType));
-        });
+        paymentMethodTypes.forEach((paymentMethodType) ->
+                paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(paymentMethodType))
+        );
 
         return paymentMethodTypeTransfers;
     }
@@ -313,7 +314,7 @@ public class PaymentMethodTypeControl
                 if(iter.hasNext()) {
                     defaultPaymentMethodType = iter.next();
                 }
-                var paymentMethodTypeDetailValue = defaultPaymentMethodType.getLastDetailForUpdate().getPaymentMethodTypeDetailValue().clone();
+                var paymentMethodTypeDetailValue = Objects.requireNonNull(defaultPaymentMethodType).getLastDetailForUpdate().getPaymentMethodTypeDetailValue().clone();
 
                 paymentMethodTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentMethodTypeFromValue(paymentMethodTypeDetailValue, false, deletedBy);
@@ -428,9 +429,9 @@ public class PaymentMethodTypeControl
         var paymentMethodTypeDescriptionTransfers = new ArrayList<PaymentMethodTypeDescriptionTransfer>(paymentMethodTypeDescriptions.size());
         var paymentMethodTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeDescriptionTransferCache();
 
-        paymentMethodTypeDescriptions.stream().forEach((paymentMethodTypeDescription) -> {
-            paymentMethodTypeDescriptionTransfers.add(paymentMethodTypeDescriptionTransferCache.getTransfer(paymentMethodTypeDescription));
-        });
+        paymentMethodTypeDescriptions.forEach((paymentMethodTypeDescription) ->
+                paymentMethodTypeDescriptionTransfers.add(paymentMethodTypeDescriptionTransferCache.getTransfer(paymentMethodTypeDescription))
+        );
 
         return paymentMethodTypeDescriptionTransfers;
     }

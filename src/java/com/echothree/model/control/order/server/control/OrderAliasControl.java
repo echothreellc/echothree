@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderAliasControl
         extends BaseOrderControl {
@@ -208,9 +209,9 @@ public class OrderAliasControl
         List<OrderAliasTypeTransfer> orderAliasTypeTransfers = new ArrayList<>(orderAliasTypes.size());
         OrderAliasTypeTransferCache orderAliasTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeTransferCache();
 
-        orderAliasTypes.stream().forEach((orderAliasType) -> {
-            orderAliasTypeTransfers.add(orderAliasTypeTransferCache.getOrderAliasTypeTransfer(orderAliasType));
-        });
+        orderAliasTypes.forEach((orderAliasType) ->
+                orderAliasTypeTransfers.add(orderAliasTypeTransferCache.getOrderAliasTypeTransfer(orderAliasType))
+        );
 
         return orderAliasTypeTransfers;
     }
@@ -241,7 +242,7 @@ public class OrderAliasControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderAliasTypeChoice == null? false: defaultOrderAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderAliasTypeChoice != null && defaultOrderAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -318,7 +319,7 @@ public class OrderAliasControl
                 if(iter.hasNext()) {
                     defaultOrderAliasType = iter.next();
                 }
-                OrderAliasTypeDetailValue orderAliasTypeDetailValue = defaultOrderAliasType.getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
+                OrderAliasTypeDetailValue orderAliasTypeDetailValue = Objects.requireNonNull(defaultOrderAliasType).getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
 
                 orderAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderAliasTypeFromValue(orderAliasTypeDetailValue, false, deletedBy);
@@ -329,9 +330,9 @@ public class OrderAliasControl
     }
 
     public void deleteOrderAliasTypes(List<OrderAliasType> orderAliasTypes, BasePK deletedBy) {
-        orderAliasTypes.stream().forEach((orderAliasType) -> {
-            deleteOrderAliasType(orderAliasType, deletedBy);
-        });
+        orderAliasTypes.forEach((orderAliasType) -> 
+                deleteOrderAliasType(orderAliasType, deletedBy)
+        );
     }
 
     public void deleteOrderAliasTypesByOrderType(OrderType orderType, BasePK deletedBy) {
@@ -446,9 +447,9 @@ public class OrderAliasControl
         List<OrderAliasTypeDescriptionTransfer> orderAliasTypeDescriptionTransfers = new ArrayList<>(orderAliasTypeDescriptions.size());
         OrderAliasTypeDescriptionTransferCache orderAliasTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeDescriptionTransferCache();
 
-        orderAliasTypeDescriptions.stream().forEach((orderAliasTypeDescription) -> {
-            orderAliasTypeDescriptionTransfers.add(orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription));
-        });
+        orderAliasTypeDescriptions.forEach((orderAliasTypeDescription) ->
+                orderAliasTypeDescriptionTransfers.add(orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription))
+        );
 
         return orderAliasTypeDescriptionTransfers;
     }
@@ -482,9 +483,9 @@ public class OrderAliasControl
     public void deleteOrderAliasTypeDescriptionsByOrderAliasType(OrderAliasType orderAliasType, BasePK deletedBy) {
         List<OrderAliasTypeDescription> orderAliasTypeDescriptions = getOrderAliasTypeDescriptionsByOrderAliasTypeForUpdate(orderAliasType);
 
-        orderAliasTypeDescriptions.stream().forEach((orderAliasTypeDescription) -> {
-            deleteOrderAliasTypeDescription(orderAliasTypeDescription, deletedBy);
-        });
+        orderAliasTypeDescriptions.forEach((orderAliasTypeDescription) -> 
+                deleteOrderAliasTypeDescription(orderAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -639,9 +640,9 @@ public class OrderAliasControl
         List<OrderAliasTransfer> orderAliasTransfers = new ArrayList<>(orderaliases.size());
         OrderAliasTransferCache orderAliasTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTransferCache();
 
-        orderaliases.stream().forEach((orderAlias) -> {
-            orderAliasTransfers.add(orderAliasTransferCache.getOrderAliasTransfer(orderAlias));
-        });
+        orderaliases.forEach((orderAlias) ->
+                orderAliasTransfers.add(orderAliasTransferCache.getOrderAliasTransfer(orderAlias))
+        );
 
         return orderAliasTransfers;
     }
@@ -673,17 +674,17 @@ public class OrderAliasControl
     public void deleteOrderAliasesByOrderAliasType(OrderAliasType orderAliasType, BasePK deletedBy) {
         List<OrderAlias> orderaliases = getOrderAliasesByOrderAliasTypeForUpdate(orderAliasType);
 
-        orderaliases.stream().forEach((orderAlias) -> {
-            deleteOrderAlias(orderAlias, deletedBy);
-        });
+        orderaliases.forEach((orderAlias) -> 
+                deleteOrderAlias(orderAlias, deletedBy)
+        );
     }
 
     public void deleteOrderAliasesByOrder(Order order, BasePK deletedBy) {
         List<OrderAlias> orderaliases = getOrderAliasesByOrderForUpdate(order);
 
-        orderaliases.stream().forEach((orderAlias) -> {
-            deleteOrderAlias(orderAlias, deletedBy);
-        });
+        orderaliases.forEach((orderAlias) -> 
+                deleteOrderAlias(orderAlias, deletedBy)
+        );
     }
 
 }

@@ -64,6 +64,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class TagControl
         extends BaseModelControl {
@@ -149,7 +150,7 @@ public class TagControl
     }
     
     private List<TagScope> getTagScopesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TagScope> tagScopes = null;
+        List<TagScope> tagScopes;
         
         try {
             String query = null;
@@ -289,7 +290,7 @@ public class TagControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTagScopeChoice == null? false: defaultTagScopeChoice.equals(value);
+            boolean usingDefaultChoice = defaultTagScopeChoice != null && defaultTagScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && tagScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -306,9 +307,9 @@ public class TagControl
         List<TagScopeTransfer> tagScopeTransfers = new ArrayList<>(tagScopes.size());
         TagScopeTransferCache tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
         
-        tagScopes.stream().forEach((tagScope) -> {
-            tagScopeTransfers.add(tagScopeTransferCache.getTagScopeTransfer(tagScope));
-        });
+        tagScopes.forEach((tagScope) ->
+                tagScopeTransfers.add(tagScopeTransferCache.getTagScopeTransfer(tagScope))
+        );
         
         return tagScopeTransfers;
     }
@@ -385,7 +386,7 @@ public class TagControl
                 if(iter.hasNext()) {
                     defaultTagScope = iter.next();
                 }
-                TagScopeDetailValue tagScopeDetailValue = defaultTagScope.getLastDetailForUpdate().getTagScopeDetailValue().clone();
+                TagScopeDetailValue tagScopeDetailValue = Objects.requireNonNull(defaultTagScope).getLastDetailForUpdate().getTagScopeDetailValue().clone();
                 
                 tagScopeDetailValue.setIsDefault(Boolean.TRUE);
                 updateTagScopeFromValue(tagScopeDetailValue, false, deletedBy);
@@ -458,7 +459,7 @@ public class TagControl
     }
     
     private List<TagScopeDescription> getTagScopeDescriptionsByTagScope(TagScope tagScope, EntityPermission entityPermission) {
-        List<TagScopeDescription> tagScopeDescriptions = null;
+        List<TagScopeDescription> tagScopeDescriptions;
         
         try {
             String query = null;
@@ -523,9 +524,9 @@ public class TagControl
         List<TagScopeDescriptionTransfer> tagScopeDescriptionTransfers = new ArrayList<>(tagScopeDescriptions.size());
         TagScopeDescriptionTransferCache tagScopeDescriptionTransferCache = getTagTransferCaches(userVisit).getTagScopeDescriptionTransferCache();
         
-        tagScopeDescriptions.stream().forEach((tagScopeDescription) -> {
-            tagScopeDescriptionTransfers.add(tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(tagScopeDescription));
-        });
+        tagScopeDescriptions.forEach((tagScopeDescription) ->
+                tagScopeDescriptionTransfers.add(tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(tagScopeDescription))
+        );
         
         return tagScopeDescriptionTransfers;
     }
@@ -558,9 +559,9 @@ public class TagControl
     public void deleteTagScopeDescriptionsByTagScope(TagScope tagScope, BasePK deletedBy) {
         List<TagScopeDescription> tagScopeDescriptions = getTagScopeDescriptionsByTagScopeForUpdate(tagScope);
         
-        tagScopeDescriptions.stream().forEach((tagScopeDescription) -> {
-            deleteTagScopeDescription(tagScopeDescription, deletedBy);
-        });
+        tagScopeDescriptions.forEach((tagScopeDescription) -> 
+                deleteTagScopeDescription(tagScopeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -616,7 +617,7 @@ public class TagControl
     }
     
     private List<TagScopeEntityType> getTagScopeEntityTypesByTagScope(TagScope tagScope, EntityPermission entityPermission) {
-        List<TagScopeEntityType> tagScopeEntityTypes = null;
+        List<TagScopeEntityType> tagScopeEntityTypes;
         
         try {
             String query = null;
@@ -656,7 +657,7 @@ public class TagControl
     }
     
     private List<TagScopeEntityType> getTagScopeEntityTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TagScopeEntityType> tagScopeEntityTypes = null;
+        List<TagScopeEntityType> tagScopeEntityTypes;
         
         try {
             String query = null;
@@ -703,9 +704,9 @@ public class TagControl
         List<TagScopeEntityTypeTransfer> tagScopeEntityTypeTransfers = new ArrayList<>(tagScopeEntityTypes.size());
         TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache = getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache();
         
-        tagScopeEntityTypes.stream().forEach((tagScopeEntityType) -> {
-            tagScopeEntityTypeTransfers.add(tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(tagScopeEntityType));
-        });
+        tagScopeEntityTypes.forEach((tagScopeEntityType) ->
+                tagScopeEntityTypeTransfers.add(tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(tagScopeEntityType))
+        );
         
         return tagScopeEntityTypeTransfers;
     }
@@ -725,9 +726,9 @@ public class TagControl
     }
     
     public void deleteTagScopeEntityTypes(List<TagScopeEntityType> tagScopeEntityTypes, BasePK deletedBy) {
-        tagScopeEntityTypes.stream().forEach((tagScopeEntityType) -> {
-            deleteTagScopeEntityType(tagScopeEntityType, deletedBy);
-        });
+        tagScopeEntityTypes.forEach((tagScopeEntityType) -> 
+                deleteTagScopeEntityType(tagScopeEntityType, deletedBy)
+        );
     }
     
     public void deleteTagScopeEntityTypesByTagScope(TagScope tagScope, BasePK deletedBy) {
@@ -760,7 +761,7 @@ public class TagControl
     }
     
     private List<Tag> getTags(TagScope tagScope, EntityPermission entityPermission) {
-        List<Tag> tags = null;
+        List<Tag> tags;
         
         try {
             String query = null;
@@ -799,7 +800,7 @@ public class TagControl
     
     private List<Tag> getTagsByTagScopeAndEntityInstance(TagScope tagScope, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        List<Tag> tags = null;
+        List<Tag> tags;
         
         try {
             String query = null;
@@ -906,7 +907,7 @@ public class TagControl
             
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTagChoice == null? false: defaultTagChoice.equals(value);
+            boolean usingDefaultChoice = defaultTagChoice != null && defaultTagChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -923,9 +924,9 @@ public class TagControl
         List<TagTransfer> tagTransfers = new ArrayList<>(tags.size());
         TagTransferCache tagTransferCache = getTagTransferCaches(userVisit).getTagTransferCache();
         
-        tags.stream().forEach((tag) -> {
-            tagTransfers.add(tagTransferCache.getTagTransfer(tag));
-        });
+        tags.forEach((tag) ->
+                tagTransfers.add(tagTransferCache.getTagTransfer(tag))
+        );
         
         return tagTransfers;
     }
@@ -974,9 +975,9 @@ public class TagControl
     }
     
     public void deleteTags(List<Tag> tags, BasePK deletedBy) {
-        tags.stream().forEach((tag) -> {
-            deleteTag(tag, deletedBy);
-        });
+        tags.forEach((tag) -> 
+                deleteTag(tag, deletedBy)
+        );
     }
     
     public void deleteTagsByTagScope(TagScope tagScope, BasePK deletedBy) {
@@ -1051,7 +1052,7 @@ public class TagControl
     }
     
     private List<EntityTag> getEntityTagsByTaggedEntityInstance(EntityInstance taggedEntityInstance, EntityPermission entityPermission) {
-        List<EntityTag> entityTags = null;
+        List<EntityTag> entityTags;
         
         try {
             String query = null;
@@ -1091,7 +1092,7 @@ public class TagControl
     }
     
     private List<EntityTag> getEntityTagsByTag(Tag tag, EntityPermission entityPermission) {
-        List<EntityTag> entityTags = null;
+        List<EntityTag> entityTags;
         
         try {
             String query = null;
@@ -1140,9 +1141,9 @@ public class TagControl
         List<EntityTagTransfer> entityTagTransfers = new ArrayList<>(entityTags.size());
         EntityTagTransferCache entityTagTransferCache = getTagTransferCaches(userVisit).getEntityTagTransferCache();
         
-        entityTags.stream().forEach((entityTag) -> {
-            entityTagTransfers.add(entityTagTransferCache.getEntityTagTransfer(entityTag));
-        });
+        entityTags.forEach((entityTag) ->
+                entityTagTransfers.add(entityTagTransferCache.getEntityTagTransfer(entityTag))
+        );
         
         return entityTagTransfers;
     }
@@ -1165,9 +1166,9 @@ public class TagControl
     }
     
     public void deleteEntityTags(List<EntityTag> entityTags, BasePK deletedBy) {
-        entityTags.stream().forEach((entityTag) -> {
-            deleteEntityTag(entityTag, deletedBy);
-        });
+        entityTags.forEach((entityTag) -> 
+                deleteEntityTag(entityTag, deletedBy)
+        );
     }
     
     public void deleteEntityTagsByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {

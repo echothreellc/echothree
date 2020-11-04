@@ -230,9 +230,9 @@ public class PaymentProcessorTypeActionControl
         var paymentProcessorTypeActionTransfers = new ArrayList<PaymentProcessorTypeActionTransfer>(paymentProcessorTypeActions.size());
         var paymentProcessorTypeActionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeActionTransferCache();
 
-        paymentProcessorTypeActions.stream().forEach((paymentProcessorTypeAction) -> {
-            paymentProcessorTypeActionTransfers.add(paymentProcessorTypeActionTransferCache.getTransfer(paymentProcessorTypeAction));
-        });
+        paymentProcessorTypeActions.forEach((paymentProcessorTypeAction) ->
+                paymentProcessorTypeActionTransfers.add(paymentProcessorTypeActionTransferCache.getTransfer(paymentProcessorTypeAction))
+        );
 
         return paymentProcessorTypeActionTransfers;
     }
@@ -353,7 +353,7 @@ public class PaymentProcessorTypeActionControl
                 if(iter.hasNext()) {
                     defaultPaymentProcessorTypeAction = iter.next();
                 }
-                var paymentProcessorTypeActionDetailValue = defaultPaymentProcessorTypeAction.getLastDetailForUpdate().getPaymentProcessorTypeActionDetailValue().clone();
+                var paymentProcessorTypeActionDetailValue = Objects.requireNonNull(defaultPaymentProcessorTypeAction).getLastDetailForUpdate().getPaymentProcessorTypeActionDetailValue().clone();
 
                 paymentProcessorTypeActionDetailValue.setIsDefault(Boolean.TRUE);
                 updatePaymentProcessorTypeActionFromValue(paymentProcessorTypeActionDetailValue, false, deletedBy);

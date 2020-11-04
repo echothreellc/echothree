@@ -268,6 +268,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class PartyControl
         extends BaseModelControl {
@@ -305,10 +306,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Language */
     public Language getLanguageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        LanguagePK pk = new LanguagePK(entityInstance.getEntityUniqueId());
-        Language language = LanguageFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return language;
+        var pk = new LanguagePK(entityInstance.getEntityUniqueId());
+
+        return LanguageFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Language getLanguageByEntityInstance(EntityInstance entityInstance) {
@@ -395,7 +395,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLanguageChoice == null? false: defaultLanguageChoice.equals(value);
+            boolean usingDefaultChoice = defaultLanguageChoice != null && defaultLanguageChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && language.getIsDefault())) {
                 defaultValue = value;
             }
@@ -412,9 +412,9 @@ public class PartyControl
         List<LanguageTransfer> languageTransfers = new ArrayList<>(languages.size());
         LanguageTransferCache languageTransferCache = getPartyTransferCaches(userVisit).getLanguageTransferCache();
         
-        languages.stream().forEach((language) -> {
-            languageTransfers.add(languageTransferCache.getLanguageTransfer(language));
-        });
+        languages.forEach((language) ->
+                languageTransfers.add(languageTransferCache.getLanguageTransfer(language))
+        );
         
         return languageTransfers;
     }
@@ -531,7 +531,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPartyTypeChoice == null? false: defaultPartyTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartyTypeChoice != null && defaultPartyTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -548,9 +548,9 @@ public class PartyControl
         List<PartyTypeTransfer> partyTypeTransfers = new ArrayList<>(partyTypes.size());
         PartyTypeTransferCache partyTypeTransferCache = getPartyTransferCaches(userVisit).getPartyTypeTransferCache();
         
-        partyTypes.stream().forEach((partyType) -> {
-            partyTypeTransfers.add(partyTypeTransferCache.getPartyTypeTransfer(partyType));
-        });
+        partyTypes.forEach((partyType) ->
+                partyTypeTransfers.add(partyTypeTransferCache.getPartyTypeTransfer(partyType))
+        );
         
         return partyTypeTransfers;
     }
@@ -833,7 +833,7 @@ public class PartyControl
             labels.add(label == null? "": label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPersonalTitleChoice == null? false: defaultPersonalTitleChoice.equals(value);
+            boolean usingDefaultChoice = defaultPersonalTitleChoice != null && defaultPersonalTitleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && personalTitleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -920,9 +920,9 @@ public class PartyControl
         List<PersonalTitleTransfer> personalTitleTransfers = new ArrayList<>(personalTitles.size());
         PersonalTitleTransferCache personalTitleTransferCache = getPartyTransferCaches(userVisit).getPersonalTitleTransferCache();
         
-        personalTitles.stream().forEach((personalTitle) -> {
-            personalTitleTransfers.add(personalTitleTransferCache.getPersonalTitleTransfer(personalTitle));
-        });
+        personalTitles.forEach((personalTitle) ->
+                personalTitleTransfers.add(personalTitleTransferCache.getPersonalTitleTransfer(personalTitle))
+        );
         
         return personalTitleTransfers;
     }
@@ -947,7 +947,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultPersonalTitle = iter.next();
                 }
-                PersonalTitleDetailValue personalTitleDetailValue = defaultPersonalTitle.getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
+                PersonalTitleDetailValue personalTitleDetailValue = Objects.requireNonNull(defaultPersonalTitle).getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
                 
                 personalTitleDetailValue.setIsDefault(Boolean.TRUE);
                 updatePersonalTitleFromValue(personalTitleDetailValue, false, deletedBy);
@@ -974,7 +974,7 @@ public class PartyControl
             isDefault = Boolean.TRUE;
         }
         
-        NameSuffix nameSuffix = NameSuffixFactory.getInstance().create((NameSuffixDetailPK)null, (NameSuffixDetailPK)null);
+        NameSuffix nameSuffix = NameSuffixFactory.getInstance().create();
         NameSuffixDetail nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1082,7 +1082,7 @@ public class PartyControl
             labels.add(label == null? "": label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultNameSuffixChoice == null? false: defaultNameSuffixChoice.equals(value);
+            boolean usingDefaultChoice = defaultNameSuffixChoice != null && defaultNameSuffixChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && nameSuffixDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1167,9 +1167,9 @@ public class PartyControl
         List<NameSuffixTransfer> nameSuffixTransfers = new ArrayList<>(nameSuffixes.size());
         NameSuffixTransferCache nameSuffixTransferCache = getPartyTransferCaches(userVisit).getNameSuffixTransferCache();
         
-        nameSuffixes.stream().forEach((nameSuffix) -> {
-            nameSuffixTransfers.add(nameSuffixTransferCache.getNameSuffixTransfer(nameSuffix));
-        });
+        nameSuffixes.forEach((nameSuffix) ->
+                nameSuffixTransfers.add(nameSuffixTransferCache.getNameSuffixTransfer(nameSuffix))
+        );
         
         return nameSuffixTransfers;
     }
@@ -1194,7 +1194,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultNameSuffix = iter.next();
                 }
-                NameSuffixDetailValue nameSuffixDetailValue = defaultNameSuffix.getLastDetailForUpdate().getNameSuffixDetailValue().clone();
+                NameSuffixDetailValue nameSuffixDetailValue = Objects.requireNonNull(defaultNameSuffix).getLastDetailForUpdate().getNameSuffixDetailValue().clone();
                 
                 nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
                 updateNameSuffixFromValue(nameSuffixDetailValue, false, deletedBy);
@@ -1211,7 +1211,7 @@ public class PartyControl
     public TimeZone createTimeZone(String javaTimeZoneName, String unixTimeZoneName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         
-        TimeZone timeZone = TimeZoneFactory.getInstance().create((TimeZoneDetailPK)null, (TimeZoneDetailPK)null);
+        TimeZone timeZone = TimeZoneFactory.getInstance().create();
         TimeZoneDetail timeZoneDetail = TimeZoneDetailFactory.getInstance().create(timeZone, javaTimeZoneName,
                 unixTimeZoneName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1227,7 +1227,7 @@ public class PartyControl
     }
     
     public List<TimeZone> getTimeZones() {
-        List<TimeZone> timeZones = null;
+        List<TimeZone> timeZones;
         
         try {
             PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
@@ -1287,10 +1287,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.TimeZone */
     public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        TimeZonePK pk = new TimeZonePK(entityInstance.getEntityUniqueId());
-        TimeZone timeZone = TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return timeZone;
+        var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
+
+        return TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
@@ -1324,7 +1323,7 @@ public class PartyControl
             labels.add(getBestTimeZoneDescription(timeZone, language));
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTimeZoneChoice == null? false: defaultTimeZoneChoice.equals(value);
+            boolean usingDefaultChoice = defaultTimeZoneChoice != null && defaultTimeZoneChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && timeZoneDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1341,9 +1340,9 @@ public class PartyControl
         List<TimeZoneTransfer> timeZoneTransfers = new ArrayList<>(timeZones.size());
         TimeZoneTransferCache timeZoneTransferCache = getPartyTransferCaches(userVisit).getTimeZoneTransferCache();
         
-        timeZones.stream().forEach((timeZone) -> {
-            timeZoneTransfers.add(timeZoneTransferCache.getTimeZoneTransfer(timeZone));
-        });
+        timeZones.forEach((timeZone) ->
+                timeZoneTransfers.add(timeZoneTransferCache.getTimeZoneTransfer(timeZone))
+        );
         
         return timeZoneTransfers;
     }
@@ -1366,7 +1365,7 @@ public class PartyControl
     }
     
     private List<TimeZoneDescription> getTimeZoneDescriptionsByTimeZone(TimeZone timeZone, EntityPermission entityPermission) {
-        List<TimeZoneDescription> timeZoneDescriptions = null;
+        List<TimeZoneDescription> timeZoneDescriptions;
         
         try {
             String query = null;
@@ -1477,9 +1476,9 @@ public class PartyControl
         List<TimeZoneDescriptionTransfer> timeZoneDescriptionTransfers = new ArrayList<>(timeZoneDescriptions.size());
         TimeZoneDescriptionTransferCache timeZoneDescriptionTransferCache = getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache();
         
-        timeZoneDescriptions.stream().forEach((timeZoneDescription) -> {
-            timeZoneDescriptionTransfers.add(timeZoneDescriptionTransferCache.getTimeZoneDescriptionTransfer(timeZoneDescription));
-        });
+        timeZoneDescriptions.forEach((timeZoneDescription) ->
+                timeZoneDescriptionTransfers.add(timeZoneDescriptionTransferCache.getTimeZoneDescriptionTransfer(timeZoneDescription))
+        );
         
         return timeZoneDescriptionTransfers;
     }
@@ -1512,9 +1511,9 @@ public class PartyControl
     public void deleteTimeZoneDescriptionsByTimeZone(TimeZone timeZone, BasePK deletedBy) {
         List<TimeZoneDescription> timeZoneDescriptions = getTimeZoneDescriptionsByTimeZoneForUpdate(timeZone);
         
-        timeZoneDescriptions.stream().forEach((timeZoneDescription) -> {
-            deleteTimeZoneDescription(timeZoneDescription, deletedBy);
-        });
+        timeZoneDescriptions.forEach((timeZoneDescription) -> 
+                deleteTimeZoneDescription(timeZoneDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1548,7 +1547,7 @@ public class PartyControl
     }
     
     public List<DateTimeFormat> getDateTimeFormats() {
-        List<DateTimeFormat> dateTimeFormats = null;
+        List<DateTimeFormat> dateTimeFormats;
         
         try {
             PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
@@ -1608,10 +1607,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.DateTimeFormat */
     public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        DateTimeFormatPK pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
-        DateTimeFormat dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return dateTimeFormat;
+        var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
+
+        return DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
@@ -1645,7 +1643,7 @@ public class PartyControl
             labels.add(getBestDateTimeFormatDescription(dateTimeFormat, language));
             values.add(value);
             
-            boolean usingDefaultChoice = defaultDateTimeFormatChoice == null? false: defaultDateTimeFormatChoice.equals(value);
+            boolean usingDefaultChoice = defaultDateTimeFormatChoice != null && defaultDateTimeFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && dateTimeFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1662,9 +1660,9 @@ public class PartyControl
         List<DateTimeFormatTransfer> dateTimeFormatTransfers = new ArrayList<>(dateTimeFormats.size());
         DateTimeFormatTransferCache dateTimeFormatTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache();
         
-        dateTimeFormats.stream().forEach((dateTimeFormat) -> {
-            dateTimeFormatTransfers.add(dateTimeFormatTransferCache.getDateTimeFormatTransfer(dateTimeFormat));
-        });
+        dateTimeFormats.forEach((dateTimeFormat) ->
+                dateTimeFormatTransfers.add(dateTimeFormatTransferCache.getDateTimeFormatTransfer(dateTimeFormat))
+        );
         
         return dateTimeFormatTransfers;
     }
@@ -1688,7 +1686,7 @@ public class PartyControl
     }
     
     private List<DateTimeFormatDescription> getDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
-        List<DateTimeFormatDescription> dateTimeFormatDescriptions = null;
+        List<DateTimeFormatDescription> dateTimeFormatDescriptions;
         
         try {
             String query = null;
@@ -1799,9 +1797,9 @@ public class PartyControl
         List<DateTimeFormatDescriptionTransfer> dateTimeFormatDescriptionTransfers = new ArrayList<>(dateTimeFormatDescriptions.size());
         DateTimeFormatDescriptionTransferCache dateTimeFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache();
         
-        dateTimeFormatDescriptions.stream().forEach((dateTimeFormatDescription) -> {
-            dateTimeFormatDescriptionTransfers.add(dateTimeFormatDescriptionTransferCache.getDateTimeFormatDescriptionTransfer(dateTimeFormatDescription));
-        });
+        dateTimeFormatDescriptions.forEach((dateTimeFormatDescription) ->
+                dateTimeFormatDescriptionTransfers.add(dateTimeFormatDescriptionTransferCache.getDateTimeFormatDescriptionTransfer(dateTimeFormatDescription))
+        );
         
         return dateTimeFormatDescriptionTransfers;
     }
@@ -1835,9 +1833,9 @@ public class PartyControl
     public void deleteDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat, BasePK deletedBy) {
         List<DateTimeFormatDescription> dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormatForUpdate(dateTimeFormat);
         
-        dateTimeFormatDescriptions.stream().forEach((dateTimeFormatDescription) -> {
-            deleteDateTimeFormatDescription(dateTimeFormatDescription, deletedBy);
-        });
+        dateTimeFormatDescriptions.forEach((dateTimeFormatDescription) -> 
+                deleteDateTimeFormatDescription(dateTimeFormatDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1846,7 +1844,7 @@ public class PartyControl
     
     public Party createParty(String partyName, PartyType partyType, Language preferredLanguage, Currency preferredCurrency,
             TimeZone preferredTimeZone, DateTimeFormat preferredDateTimeFormat, BasePK createdBy) {
-        Party party = PartyFactory.getInstance().create((PartyDetailPK)null, (PartyDetailPK)null);
+        Party party = PartyFactory.getInstance().create();
         
         if(createdBy == null) {
             createdBy = party.getPrimaryKey();
@@ -1977,7 +1975,7 @@ public class PartyControl
     }
 
     public List<Party> getPartiesByPartyType(PartyType partyType) {
-        List<Party> parties = null;
+        List<Party> parties;
         
         try {
             PreparedStatement ps = PartyFactory.getInstance().prepareStatement(
@@ -2070,10 +2068,9 @@ public class PartyControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Party */
     public Party getPartyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        PartyPK pk = new PartyPK(entityInstance.getEntityUniqueId());
-        Party party = PartyFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return party;
+        var pk = new PartyPK(entityInstance.getEntityUniqueId());
+
+        return PartyFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Party getPartyByEntityInstance(EntityInstance entityInstance) {
@@ -2459,9 +2456,9 @@ public class PartyControl
         List<PartyAliasTransfer> partyAliasTransfers = new ArrayList<>(partyaliases.size());
         PartyAliasTransferCache partyAliasTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTransferCache();
 
-        partyaliases.stream().forEach((partyAlias) -> {
-            partyAliasTransfers.add(partyAliasTransferCache.getPartyAliasTransfer(partyAlias));
-        });
+        partyaliases.forEach((partyAlias) ->
+                partyAliasTransfers.add(partyAliasTransferCache.getPartyAliasTransfer(partyAlias))
+        );
 
         return partyAliasTransfers;
     }
@@ -2493,17 +2490,17 @@ public class PartyControl
     public void deletePartyAliasesByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
         List<PartyAlias> partyaliases = getPartyAliasesByPartyAliasTypeForUpdate(partyAliasType);
 
-        partyaliases.stream().forEach((partyAlias) -> {
-            deletePartyAlias(partyAlias, deletedBy);
-        });
+        partyaliases.forEach((partyAlias) -> 
+                deletePartyAlias(partyAlias, deletedBy)
+        );
     }
 
     public void deletePartyAliasesByParty(Party party, BasePK deletedBy) {
         List<PartyAlias> partyaliases = getPartyAliasesByPartyForUpdate(party);
 
-        partyaliases.stream().forEach((partyAlias) -> {
-            deletePartyAlias(partyAlias, deletedBy);
-        });
+        partyaliases.forEach((partyAlias) -> 
+                deletePartyAlias(partyAlias, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2712,9 +2709,9 @@ public class PartyControl
         List<PartyAliasTypeTransfer> partyAliasTypeTransfers = new ArrayList<>(partyAliasTypes.size());
         PartyAliasTypeTransferCache partyAliasTypeTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache();
 
-        partyAliasTypes.stream().forEach((partyAliasType) -> {
-            partyAliasTypeTransfers.add(partyAliasTypeTransferCache.getPartyAliasTypeTransfer(partyAliasType));
-        });
+        partyAliasTypes.forEach((partyAliasType) ->
+                partyAliasTypeTransfers.add(partyAliasTypeTransferCache.getPartyAliasTypeTransfer(partyAliasType))
+        );
 
         return partyAliasTypeTransfers;
     }
@@ -2745,7 +2742,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPartyAliasTypeChoice == null? false: defaultPartyAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartyAliasTypeChoice != null && defaultPartyAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2822,7 +2819,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultPartyAliasType = iter.next();
                 }
-                PartyAliasTypeDetailValue partyAliasTypeDetailValue = defaultPartyAliasType.getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
+                PartyAliasTypeDetailValue partyAliasTypeDetailValue = Objects.requireNonNull(defaultPartyAliasType).getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
 
                 partyAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, false, deletedBy);
@@ -2833,9 +2830,9 @@ public class PartyControl
     }
 
     public void deletePartyAliasTypes(List<PartyAliasType> partyAliasTypes, BasePK deletedBy) {
-        partyAliasTypes.stream().forEach((partyAliasType) -> {
-            deletePartyAliasType(partyAliasType, deletedBy);
-        });
+        partyAliasTypes.forEach((partyAliasType) -> 
+                deletePartyAliasType(partyAliasType, deletedBy)
+        );
     }
 
     public void deletePartyAliasTypesByPartyType(PartyType partyType, BasePK deletedBy) {
@@ -2950,9 +2947,9 @@ public class PartyControl
         List<PartyAliasTypeDescriptionTransfer> partyAliasTypeDescriptionTransfers = new ArrayList<>(partyAliasTypeDescriptions.size());
         PartyAliasTypeDescriptionTransferCache partyAliasTypeDescriptionTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache();
 
-        partyAliasTypeDescriptions.stream().forEach((partyAliasTypeDescription) -> {
-            partyAliasTypeDescriptionTransfers.add(partyAliasTypeDescriptionTransferCache.getPartyAliasTypeDescriptionTransfer(partyAliasTypeDescription));
-        });
+        partyAliasTypeDescriptions.forEach((partyAliasTypeDescription) ->
+                partyAliasTypeDescriptionTransfers.add(partyAliasTypeDescriptionTransferCache.getPartyAliasTypeDescriptionTransfer(partyAliasTypeDescription))
+        );
 
         return partyAliasTypeDescriptionTransfers;
     }
@@ -2986,9 +2983,9 @@ public class PartyControl
     public void deletePartyAliasTypeDescriptionsByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
         List<PartyAliasTypeDescription> partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasTypeForUpdate(partyAliasType);
 
-        partyAliasTypeDescriptions.stream().forEach((partyAliasTypeDescription) -> {
-            deletePartyAliasTypeDescription(partyAliasTypeDescription, deletedBy);
-        });
+        partyAliasTypeDescriptions.forEach((partyAliasTypeDescription) -> 
+                deletePartyAliasTypeDescription(partyAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -3323,7 +3320,7 @@ public class PartyControl
     }
     
     private List<PartyCompany> getCompanies(EntityPermission entityPermission) {
-        List<PartyCompany> partyCompanies = null;
+        List<PartyCompany> partyCompanies;
         
         try {
             String query = null;
@@ -3386,7 +3383,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCompanyChoice == null? false: defaultCompanyChoice.equals(value);
+            boolean usingDefaultChoice = defaultCompanyChoice != null && defaultCompanyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyCompany.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3399,9 +3396,9 @@ public class PartyControl
         List<CompanyTransfer> companyTransfers = new ArrayList<>(partyCompanies.size());
         CompanyTransferCache companyTransferCache = getPartyTransferCaches(userVisit).getCompanyTransferCache();
         
-        partyCompanies.stream().forEach((partyCompany) -> {
-            companyTransfers.add(companyTransferCache.getCompanyTransfer(partyCompany));
-        });
+        partyCompanies.forEach((partyCompany) ->
+                companyTransfers.add(companyTransferCache.getCompanyTransfer(partyCompany))
+        );
         
         return companyTransfers;
     }
@@ -3622,7 +3619,7 @@ public class PartyControl
     }
     
     private List<PartyDivision> getDivisionsByCompany(Party companyParty, EntityPermission entityPermission) {
-        List<PartyDivision> partyDivisions = null;
+        List<PartyDivision> partyDivisions;
         
         try {
             String query = null;
@@ -3688,7 +3685,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultDivisionChoice == null? false: defaultDivisionChoice.equals(value);
+            boolean usingDefaultChoice = defaultDivisionChoice != null && defaultDivisionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyDivision.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3701,9 +3698,9 @@ public class PartyControl
         List<DivisionTransfer> divisionTransfers = new ArrayList<>(partyDivisions.size());
         DivisionTransferCache divisionTransferCache = getPartyTransferCaches(userVisit).getDivisionTransferCache();
         
-        partyDivisions.stream().forEach((partyDivision) -> {
-            divisionTransfers.add(divisionTransferCache.getDivisionTransfer(partyDivision));
-        });
+        partyDivisions.forEach((partyDivision) ->
+                divisionTransfers.add(divisionTransferCache.getDivisionTransfer(partyDivision))
+        );
         
         return divisionTransfers;
     }
@@ -3926,7 +3923,7 @@ public class PartyControl
     }
     
     private List<PartyDepartment> getDepartmentsByDivision(Party divisionParty, EntityPermission entityPermission) {
-        List<PartyDepartment> partyDepartments = null;
+        List<PartyDepartment> partyDepartments;
         
         try {
             String query = null;
@@ -3991,7 +3988,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultDepartmentChoice == null? false: defaultDepartmentChoice.equals(value);
+            boolean usingDefaultChoice = defaultDepartmentChoice != null && defaultDepartmentChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyDepartment.getIsDefault())) {
                 defaultValue = value;
             }
@@ -4004,9 +4001,9 @@ public class PartyControl
         List<DepartmentTransfer> departmentTransfers = new ArrayList<>(partyDepartments.size());
         DepartmentTransferCache departmentTransferCache = getPartyTransferCaches(userVisit).getDepartmentTransferCache();
         
-        partyDepartments.stream().forEach((partyDepartment) -> {
-            departmentTransfers.add(departmentTransferCache.getDepartmentTransfer(partyDepartment));
-        });
+        partyDepartments.forEach((partyDepartment) ->
+                departmentTransfers.add(departmentTransferCache.getDepartmentTransfer(partyDepartment))
+        );
         
         return departmentTransfers;
     }
@@ -4382,9 +4379,9 @@ public class PartyControl
         List<PartyRelationshipTransfer> partyRelationshipTransfers = new ArrayList<>(partyRelationships.size());
         PartyRelationshipTransferCache partyRelationshipTransferCache = getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache();
         
-        partyRelationships.stream().forEach((partyRelationship) -> {
-            partyRelationshipTransfers.add(partyRelationshipTransferCache.getPartyRelationshipTransfer(partyRelationship));
-        });
+        partyRelationships.forEach((partyRelationship) ->
+                partyRelationshipTransfers.add(partyRelationshipTransferCache.getPartyRelationshipTransfer(partyRelationship))
+        );
         
         return partyRelationshipTransfers;
     }
@@ -4417,9 +4414,9 @@ public class PartyControl
     }
     
     public void deletePartyRelationships(List<PartyRelationship> partyRelationships, BasePK deletedBy) {
-        partyRelationships.stream().forEach((partyRelationship) -> {
-            deletePartyRelationship(partyRelationship, deletedBy);
-        });
+        partyRelationships.forEach((partyRelationship) -> 
+                deletePartyRelationship(partyRelationship, deletedBy)
+        );
     }
     
     public void deletePartyRelationshipsByParty(Party party, BasePK deletedBy) {
@@ -4937,7 +4934,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGenderChoice == null? false: defaultGenderChoice.equals(value);
+            boolean usingDefaultChoice = defaultGenderChoice != null && defaultGenderChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && genderDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -4955,9 +4952,9 @@ public class PartyControl
         List<GenderTransfer> genderTransfers = new ArrayList<>(genders.size());
         GenderTransferCache genderTransferCache = getPartyTransferCaches(userVisit).getGenderTransferCache();
         
-        genders.stream().forEach((gender) -> {
-            genderTransfers.add(genderTransferCache.getGenderTransfer(gender));
-        });
+        genders.forEach((gender) ->
+                genderTransfers.add(genderTransferCache.getGenderTransfer(gender))
+        );
         
         return genderTransfers;
     }
@@ -5023,7 +5020,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultGender = iter.next();
                 }
-                GenderDetailValue genderDetailValue = defaultGender.getLastDetailForUpdate().getGenderDetailValue().clone();
+                GenderDetailValue genderDetailValue = Objects.requireNonNull(defaultGender).getLastDetailForUpdate().getGenderDetailValue().clone();
                 
                 genderDetailValue.setIsDefault(Boolean.TRUE);
                 updateGenderFromValue(genderDetailValue, false, deletedBy);
@@ -5094,7 +5091,7 @@ public class PartyControl
     }
     
     private List<GenderDescription> getGenderDescriptionsByGender(Gender gender, EntityPermission entityPermission) {
-        List<GenderDescription> genderDescriptions = null;
+        List<GenderDescription> genderDescriptions;
         
         try {
             String query = null;
@@ -5158,9 +5155,9 @@ public class PartyControl
         List<GenderDescriptionTransfer> genderDescriptionTransfers = new ArrayList<>(genderDescriptions.size());
         GenderDescriptionTransferCache genderDescriptionTransferCache = getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache();
         
-        genderDescriptions.stream().forEach((genderDescription) -> {
-            genderDescriptionTransfers.add(genderDescriptionTransferCache.getGenderDescriptionTransfer(genderDescription));
-        });
+        genderDescriptions.forEach((genderDescription) ->
+                genderDescriptionTransfers.add(genderDescriptionTransferCache.getGenderDescriptionTransfer(genderDescription))
+        );
         
         return genderDescriptionTransfers;
     }
@@ -5194,9 +5191,9 @@ public class PartyControl
     public void deleteGenderDescriptionsByGender(Gender gender, BasePK deletedBy) {
         List<GenderDescription> genderDescriptions = getGenderDescriptionsByGenderForUpdate(gender);
         
-        genderDescriptions.stream().forEach((genderDescription) -> {
-            deleteGenderDescription(genderDescription, deletedBy);
-        });
+        genderDescriptions.forEach((genderDescription) -> 
+                deleteGenderDescription(genderDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -5359,7 +5356,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMoodChoice == null? false: defaultMoodChoice.equals(value);
+            boolean usingDefaultChoice = defaultMoodChoice != null && defaultMoodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && moodDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5377,9 +5374,9 @@ public class PartyControl
         List<MoodTransfer> moodTransfers = new ArrayList<>(moods.size());
         MoodTransferCache moodTransferCache = getPartyTransferCaches(userVisit).getMoodTransferCache();
         
-        moods.stream().forEach((mood) -> {
-            moodTransfers.add(moodTransferCache.getMoodTransfer(mood));
-        });
+        moods.forEach((mood) ->
+                moodTransfers.add(moodTransferCache.getMoodTransfer(mood))
+        );
         
         return moodTransfers;
     }
@@ -5446,7 +5443,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultMood = iter.next();
                 }
-                MoodDetailValue moodDetailValue = defaultMood.getLastDetailForUpdate().getMoodDetailValue().clone();
+                MoodDetailValue moodDetailValue = Objects.requireNonNull(defaultMood).getLastDetailForUpdate().getMoodDetailValue().clone();
                 
                 moodDetailValue.setIsDefault(Boolean.TRUE);
                 updateMoodFromValue(moodDetailValue, false, deletedBy);
@@ -5517,7 +5514,7 @@ public class PartyControl
     }
     
     private List<MoodDescription> getMoodDescriptionsByMood(Mood mood, EntityPermission entityPermission) {
-        List<MoodDescription> moodDescriptions = null;
+        List<MoodDescription> moodDescriptions;
         
         try {
             String query = null;
@@ -5581,9 +5578,9 @@ public class PartyControl
         List<MoodDescriptionTransfer> moodDescriptionTransfers = new ArrayList<>(moodDescriptions.size());
         MoodDescriptionTransferCache moodDescriptionTransferCache = getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache();
         
-        moodDescriptions.stream().forEach((moodDescription) -> {
-            moodDescriptionTransfers.add(moodDescriptionTransferCache.getMoodDescriptionTransfer(moodDescription));
-        });
+        moodDescriptions.forEach((moodDescription) ->
+                moodDescriptionTransfers.add(moodDescriptionTransferCache.getMoodDescriptionTransfer(moodDescription))
+        );
         
         return moodDescriptionTransfers;
     }
@@ -5617,9 +5614,9 @@ public class PartyControl
     public void deleteMoodDescriptionsByMood(Mood mood, BasePK deletedBy) {
         List<MoodDescription> moodDescriptions = getMoodDescriptionsByMoodForUpdate(mood);
         
-        moodDescriptions.stream().forEach((moodDescription) -> {
-            deleteMoodDescription(moodDescription, deletedBy);
-        });
+        moodDescriptions.forEach((moodDescription) -> 
+                deleteMoodDescription(moodDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -5824,7 +5821,7 @@ public class PartyControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultBirthdayFormatChoice == null? false: defaultBirthdayFormatChoice.equals(value);
+            boolean usingDefaultChoice = defaultBirthdayFormatChoice != null && defaultBirthdayFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && birthdayFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5841,9 +5838,9 @@ public class PartyControl
         List<BirthdayFormatTransfer> birthdayFormatTransfers = new ArrayList<>(birthdayFormats.size());
         BirthdayFormatTransferCache birthdayFormatTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache();
 
-        birthdayFormats.stream().forEach((birthdayFormat) -> {
-            birthdayFormatTransfers.add(birthdayFormatTransferCache.getBirthdayFormatTransfer(birthdayFormat));
-        });
+        birthdayFormats.forEach((birthdayFormat) ->
+                birthdayFormatTransfers.add(birthdayFormatTransferCache.getBirthdayFormatTransfer(birthdayFormat))
+        );
 
         return birthdayFormatTransfers;
     }
@@ -5918,7 +5915,7 @@ public class PartyControl
                 if(iter.hasNext()) {
                     defaultBirthdayFormat = iter.next();
                 }
-                BirthdayFormatDetailValue birthdayFormatDetailValue = defaultBirthdayFormat.getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
+                BirthdayFormatDetailValue birthdayFormatDetailValue = Objects.requireNonNull(defaultBirthdayFormat).getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
 
                 birthdayFormatDetailValue.setIsDefault(Boolean.TRUE);
                 updateBirthdayFormatFromValue(birthdayFormatDetailValue, false, deletedBy);
@@ -5991,7 +5988,7 @@ public class PartyControl
     }
 
     private List<BirthdayFormatDescription> getBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, EntityPermission entityPermission) {
-        List<BirthdayFormatDescription> birthdayFormatDescriptions = null;
+        List<BirthdayFormatDescription> birthdayFormatDescriptions;
 
         try {
             String query = null;
@@ -6056,9 +6053,9 @@ public class PartyControl
         List<BirthdayFormatDescriptionTransfer> birthdayFormatDescriptionTransfers = new ArrayList<>(birthdayFormatDescriptions.size());
         BirthdayFormatDescriptionTransferCache birthdayFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache();
 
-        birthdayFormatDescriptions.stream().forEach((birthdayFormatDescription) -> {
-            birthdayFormatDescriptionTransfers.add(birthdayFormatDescriptionTransferCache.getBirthdayFormatDescriptionTransfer(birthdayFormatDescription));
-        });
+        birthdayFormatDescriptions.forEach((birthdayFormatDescription) ->
+                birthdayFormatDescriptionTransfers.add(birthdayFormatDescriptionTransferCache.getBirthdayFormatDescriptionTransfer(birthdayFormatDescription))
+        );
 
         return birthdayFormatDescriptionTransfers;
     }
@@ -6091,9 +6088,9 @@ public class PartyControl
     public void deleteBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
         List<BirthdayFormatDescription> birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormatForUpdate(birthdayFormat);
 
-        birthdayFormatDescriptions.stream().forEach((birthdayFormatDescription) -> {
-            deleteBirthdayFormatDescription(birthdayFormatDescription, deletedBy);
-        });
+        birthdayFormatDescriptions.forEach((birthdayFormatDescription) -> 
+                deleteBirthdayFormatDescription(birthdayFormatDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

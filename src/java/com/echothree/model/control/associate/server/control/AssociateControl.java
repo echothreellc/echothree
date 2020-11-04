@@ -83,6 +83,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class AssociateControl
         extends BaseModelControl {
@@ -271,7 +272,7 @@ public class AssociateControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociateProgramChoice == null? false: defaultAssociateProgramChoice.equals(value);
+            boolean usingDefaultChoice = defaultAssociateProgramChoice != null && defaultAssociateProgramChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && associateProgramDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -289,9 +290,9 @@ public class AssociateControl
         List<AssociateProgramTransfer> associateProgramTransfers = new ArrayList<>(associatePrograms.size());
         AssociateProgramTransferCache associateProgramTransferCache = getAssociateTransferCaches(userVisit).getAssociateProgramTransferCache();
         
-        associatePrograms.stream().forEach((associateProgram) -> {
-            associateProgramTransfers.add(associateProgramTransferCache.getTransfer(associateProgram));
-        });
+        associatePrograms.forEach((associateProgram) ->
+                associateProgramTransfers.add(associateProgramTransferCache.getTransfer(associateProgram))
+        );
         
         return associateProgramTransfers;
     }
@@ -365,7 +366,7 @@ public class AssociateControl
                 if(iter.hasNext()) {
                     defaultAssociateProgram = iter.next();
                 }
-                AssociateProgramDetailValue associateProgramDetailValue = defaultAssociateProgram.getLastDetailForUpdate().getAssociateProgramDetailValue().clone();
+                AssociateProgramDetailValue associateProgramDetailValue = Objects.requireNonNull(defaultAssociateProgram).getLastDetailForUpdate().getAssociateProgramDetailValue().clone();
                 
                 associateProgramDetailValue.setIsDefault(Boolean.TRUE);
                 updateAssociateProgramFromValue(associateProgramDetailValue, false, deletedBy);
@@ -437,7 +438,7 @@ public class AssociateControl
     }
     
     private List<AssociateProgramDescription> getAssociateProgramDescriptionsByAssociateProgram(AssociateProgram associateProgram, EntityPermission entityPermission) {
-        List<AssociateProgramDescription> associateProgramDescriptions = null;
+        List<AssociateProgramDescription> associateProgramDescriptions;
         
         try {
             String query = null;
@@ -501,9 +502,9 @@ public class AssociateControl
         List<AssociateProgramDescriptionTransfer> associateProgramDescriptionTransfers = new ArrayList<>(associateProgramDescriptions.size());
         AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache = getAssociateTransferCaches(userVisit).getAssociateProgramDescriptionTransferCache();
         
-        associateProgramDescriptions.stream().forEach((associateProgramDescription) -> {
-            associateProgramDescriptionTransfers.add(associateProgramDescriptionTransferCache.getTransfer(associateProgramDescription));
-        });
+        associateProgramDescriptions.forEach((associateProgramDescription) ->
+                associateProgramDescriptionTransfers.add(associateProgramDescriptionTransferCache.getTransfer(associateProgramDescription))
+        );
         
         return associateProgramDescriptionTransfers;
     }
@@ -537,9 +538,9 @@ public class AssociateControl
     public void deleteAssociateProgramDescriptionsByAssociateProgram(AssociateProgram associateProgram, BasePK deletedBy) {
         List<AssociateProgramDescription> associateProgramDescriptions = getAssociateProgramDescriptionsByAssociateProgramForUpdate(associateProgram);
         
-        associateProgramDescriptions.stream().forEach((associateProgramDescription) -> {
-            deleteAssociateProgramDescription(associateProgramDescription, deletedBy);
-        });
+        associateProgramDescriptions.forEach((associateProgramDescription) -> 
+                deleteAssociateProgramDescription(associateProgramDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -611,7 +612,7 @@ public class AssociateControl
     }
     
     private List<Associate> getAssociates(AssociateProgram associateProgram, EntityPermission entityPermission) {
-        List<Associate> associates = null;
+        List<Associate> associates;
         
         try {
             String query = null;
@@ -674,7 +675,7 @@ public class AssociateControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociateChoice == null? false: defaultAssociateChoice.equals(value);
+            boolean usingDefaultChoice = defaultAssociateChoice != null && defaultAssociateChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -691,9 +692,9 @@ public class AssociateControl
         List<AssociateTransfer> associateTransfers = new ArrayList<>(associates.size());
         AssociateTransferCache associateTransferCache = getAssociateTransferCaches(userVisit).getAssociateTransferCache();
         
-        associates.stream().forEach((associate) -> {
-            associateTransfers.add(associateTransferCache.getTransfer(associate));
-        });
+        associates.forEach((associate) ->
+                associateTransfers.add(associateTransferCache.getTransfer(associate))
+        );
         
         return associateTransfers;
     }
@@ -741,9 +742,9 @@ public class AssociateControl
     }
     
     public void deleteAssociates(List<Associate> associates, BasePK deletedBy) {
-        associates.stream().forEach((associate) -> {
-            deleteAssociate(associate, deletedBy);
-        });
+        associates.forEach((associate) -> 
+                deleteAssociate(associate, deletedBy)
+        );
     }
     
     public void deleteAssociatesByAssociateProgram(AssociateProgram associateProgram, BasePK deletedBy) {
@@ -877,7 +878,7 @@ public class AssociateControl
     }
     
     private List<AssociatePartyContactMechanism> getAssociatePartyContactMechanismsByAssociate(Associate associate, EntityPermission entityPermission) {
-        List<AssociatePartyContactMechanism> associatePartyContactMechanisms = null;
+        List<AssociatePartyContactMechanism> associatePartyContactMechanisms;
         
         try {
             String query = null;
@@ -917,7 +918,7 @@ public class AssociateControl
     }
     
     private List<AssociatePartyContactMechanism> getAssociatePartyContactMechanismsByPartyContactMechanism(PartyContactMechanism partyContactMechanism, EntityPermission entityPermission) {
-        List<AssociatePartyContactMechanism> associatePartyContactMechanisms = null;
+        List<AssociatePartyContactMechanism> associatePartyContactMechanisms;
         
         try {
             String query = null;
@@ -982,7 +983,7 @@ public class AssociateControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociatePartyContactMechanismChoice == null? false: defaultAssociatePartyContactMechanismChoice.equals(value);
+            boolean usingDefaultChoice = defaultAssociatePartyContactMechanismChoice != null && defaultAssociatePartyContactMechanismChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && associatePartyContactMechanismDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -999,9 +1000,9 @@ public class AssociateControl
         List<AssociatePartyContactMechanismTransfer> associatePartyContactMechanismTransfers = new ArrayList<>(associatePartyContactMechanisms.size());
         AssociatePartyContactMechanismTransferCache associatePartyContactMechanismTransferCache = getAssociateTransferCaches(userVisit).getAssociatePartyContactMechanismTransferCache();
         
-        associatePartyContactMechanisms.stream().forEach((associatePartyContactMechanism) -> {
-            associatePartyContactMechanismTransfers.add(associatePartyContactMechanismTransferCache.getTransfer(associatePartyContactMechanism));
-        });
+        associatePartyContactMechanisms.forEach((associatePartyContactMechanism) ->
+                associatePartyContactMechanismTransfers.add(associatePartyContactMechanismTransferCache.getTransfer(associatePartyContactMechanism))
+        );
         
         return associatePartyContactMechanismTransfers;
     }
@@ -1081,7 +1082,7 @@ public class AssociateControl
                 if(iter.hasNext()) {
                     defaultAssociatePartyContactMechanism = iter.next();
                 }
-                AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue = defaultAssociatePartyContactMechanism.getLastDetailForUpdate().getAssociatePartyContactMechanismDetailValue().clone();
+                AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue = Objects.requireNonNull(defaultAssociatePartyContactMechanism).getLastDetailForUpdate().getAssociatePartyContactMechanismDetailValue().clone();
                 
                 associatePartyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
                 updateAssociatePartyContactMechanismFromValue(associatePartyContactMechanismDetailValue, false, deletedBy);
@@ -1092,9 +1093,9 @@ public class AssociateControl
     }
     
     public void deleteAssociatePartyContactMechanisms(List<AssociatePartyContactMechanism> associatePartyContactMechanisms, BasePK deletedBy) {
-        associatePartyContactMechanisms.stream().forEach((associatePartyContactMechanism) -> {
-            deleteAssociatePartyContactMechanism(associatePartyContactMechanism, deletedBy);
-        });
+        associatePartyContactMechanisms.forEach((associatePartyContactMechanism) -> 
+                deleteAssociatePartyContactMechanism(associatePartyContactMechanism, deletedBy)
+        );
     }
     
     public void deleteAssociatePartyContactMechanismsByAssociate(Associate associate, BasePK deletedBy) {
@@ -1187,7 +1188,7 @@ public class AssociateControl
     }
     
     private List<AssociateReferral> getAssociateReferralsByAssociate(Associate associate, EntityPermission entityPermission) {
-        List<AssociateReferral> associateReferrals = null;
+        List<AssociateReferral> associateReferrals;
         
         try {
             String query = null;
@@ -1228,7 +1229,7 @@ public class AssociateControl
     
     private List<AssociateReferral> getAssociateReferralsByAssociatePartyContactMechanism(AssociatePartyContactMechanism associatePartyContactMechanism,
             EntityPermission entityPermission) {
-        List<AssociateReferral> associateReferrals = null;
+        List<AssociateReferral> associateReferrals;
         
         try {
             String query = null;
@@ -1269,7 +1270,7 @@ public class AssociateControl
     
     private List<AssociateReferral> getAssociateReferralsByTargetEntityInstance(EntityInstance targetEntityInstance,
             EntityPermission entityPermission) {
-        List<AssociateReferral> associateReferrals = null;
+        List<AssociateReferral> associateReferrals;
         
         try {
             String query = null;
@@ -1316,9 +1317,9 @@ public class AssociateControl
         List<AssociateReferralTransfer> associateReferralTransfers = new ArrayList<>(associateReferrals.size());
         AssociateReferralTransferCache associateReferralTransferCache = getAssociateTransferCaches(userVisit).getAssociateReferralTransferCache();
         
-        associateReferrals.stream().forEach((associateReferral) -> {
-            associateReferralTransfers.add(associateReferralTransferCache.getTransfer(associateReferral));
-        });
+        associateReferrals.forEach((associateReferral) ->
+                associateReferralTransfers.add(associateReferralTransferCache.getTransfer(associateReferral))
+        );
         
         return associateReferralTransfers;
     }
@@ -1364,9 +1365,9 @@ public class AssociateControl
     }
     
     public void deleteAssociateReferrals(List<AssociateReferral> associateReferrals, BasePK deletedBy) {
-        associateReferrals.stream().forEach((associateReferral) -> {
-            deleteAssociateReferral(associateReferral, deletedBy);
-        });
+        associateReferrals.forEach((associateReferral) -> 
+                deleteAssociateReferral(associateReferral, deletedBy)
+        );
     }
     
     public void deleteAssociateReferralsByAssociate(Associate associate, BasePK deletedBy) {

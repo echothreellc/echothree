@@ -117,6 +117,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class VendorControl
@@ -311,7 +312,7 @@ public class VendorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultVendorTypeChoice == null? false: defaultVendorTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultVendorTypeChoice != null && defaultVendorTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && vendorTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -419,7 +420,7 @@ public class VendorControl
                 if(iter.hasNext()) {
                     defaultVendorType = iter.next();
                 }
-                VendorTypeDetailValue vendorTypeDetailValue = defaultVendorType.getLastDetailForUpdate().getVendorTypeDetailValue().clone();
+                VendorTypeDetailValue vendorTypeDetailValue = Objects.requireNonNull(defaultVendorType).getLastDetailForUpdate().getVendorTypeDetailValue().clone();
                 
                 vendorTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateVendorTypeFromValue(vendorTypeDetailValue, false, deletedBy);
@@ -493,7 +494,7 @@ public class VendorControl
     }
     
     private List<VendorTypeDescription> getVendorTypeDescriptionsByVendorType(VendorType vendorType, EntityPermission entityPermission) {
-        List<VendorTypeDescription> vendorTypeDescriptions = null;
+        List<VendorTypeDescription> vendorTypeDescriptions;
         
         try {
             String query = null;
@@ -600,9 +601,9 @@ public class VendorControl
     public void deleteVendorTypeDescriptionsByVendorType(VendorType vendorType, BasePK deletedBy) {
         List<VendorTypeDescription> vendorTypeDescriptions = getVendorTypeDescriptionsByVendorTypeForUpdate(vendorType);
         
-        vendorTypeDescriptions.stream().forEach((vendorTypeDescription) -> {
-            deleteVendorTypeDescription(vendorTypeDescription, deletedBy);
-        });
+        vendorTypeDescriptions.forEach((vendorTypeDescription) -> 
+                deleteVendorTypeDescription(vendorTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -704,7 +705,7 @@ public class VendorControl
     }
     
     private List<Vendor> getVendorsByDefaultItemAliasType(ItemAliasType defaultItemAliasType, EntityPermission entityPermission) {
-        List<Vendor> vendors = null;
+        List<Vendor> vendors;
         
         try {
             String query = null;
@@ -947,7 +948,7 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByItem(Item item, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems = null;
+        List<VendorItem> vendorItems;
         
         try {
             String query = null;
@@ -988,7 +989,7 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByVendorParty(Party vendorParty, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems = null;
+        List<VendorItem> vendorItems;
         
         try {
             String query = null;
@@ -1028,7 +1029,7 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByVendorItemName(String vendorItemName, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems = null;
+        List<VendorItem> vendorItems;
         
         try {
             String query = null;
@@ -1115,9 +1116,9 @@ public class VendorControl
         List<VendorItemTransfer> vendorItemTransfers = new ArrayList<>(vendorItems.size());
         VendorItemTransferCache vendorItemTransferCache = getVendorTransferCaches(userVisit).getVendorItemTransferCache();
         
-        vendorItems.stream().forEach((vendorItem) -> {
-            vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(vendorItem));
-        });
+        vendorItems.forEach((vendorItem) ->
+                vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(vendorItem))
+        );
         
         return vendorItemTransfers;
     }
@@ -1171,9 +1172,9 @@ public class VendorControl
     }
     
     public void deleteVendorItems(List<VendorItem> vendorItems, BasePK deletedBy) {
-        vendorItems.stream().forEach((vendorItem) -> {
-            deleteVendorItem(vendorItem, deletedBy);
-        });
+        vendorItems.forEach((vendorItem) -> 
+                deleteVendorItem(vendorItem, deletedBy)
+        );
     }
     
     public void deleteVendorItemsByItem(Item item, BasePK deletedBy) {
@@ -1253,7 +1254,7 @@ public class VendorControl
     }
     
     private List<VendorItemCost> getVendorItemCostsByVendorItem(VendorItem vendorItem, EntityPermission entityPermission) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             String query = null;
@@ -1297,7 +1298,7 @@ public class VendorControl
     }
     
     public List<VendorItemCost> getVendorItemCostsByInventoryConditionForUpdate(InventoryCondition inventoryCondition) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
@@ -1318,7 +1319,7 @@ public class VendorControl
     }
     
     public List<VendorItemCost> getVendorItemCostsByUnitOfMeasureTypeForUpdate(UnitOfMeasureType unitOfMeasureType) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
@@ -1339,7 +1340,7 @@ public class VendorControl
     }
     
     public List<VendorItemCost> getVendorItemCostsByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<VendorItemCost> vendorItemCosts = null;
+        List<VendorItemCost> vendorItemCosts;
         
         try {
             PreparedStatement ps = VendorItemCostFactory.getInstance().prepareStatement(
@@ -1407,9 +1408,9 @@ public class VendorControl
     }
     
     public void deleteVendorItemCosts(List<VendorItemCost> vendorItemCosts, BasePK deletedBy) {
-        vendorItemCosts.stream().forEach((vendorItemCost) -> {
-            deleteVendorItemCost(vendorItemCost, deletedBy);
-        });
+        vendorItemCosts.forEach((vendorItemCost) -> 
+                deleteVendorItemCost(vendorItemCost, deletedBy)
+        );
     }
     
     public void deleteVendorItemCostsByVendorItem(VendorItem vendorItem, BasePK deletedBy) {
@@ -1610,9 +1611,9 @@ public class VendorControl
         List<ItemPurchasingCategoryTransfer> itemPurchasingCategoryTransfers = new ArrayList<>(itemPurchasingCategories.size());
         ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
         
-        itemPurchasingCategories.stream().forEach((itemPurchasingCategory) -> {
-            itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategory));
-        });
+        itemPurchasingCategories.forEach((itemPurchasingCategory) ->
+                itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategory))
+        );
         
         return itemPurchasingCategoryTransfers;
     }
@@ -1643,7 +1644,7 @@ public class VendorControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemPurchasingCategoryChoice == null? false: defaultItemPurchasingCategoryChoice.equals(value);
+            boolean usingDefaultChoice = defaultItemPurchasingCategoryChoice != null && defaultItemPurchasingCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemPurchasingCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1743,7 +1744,7 @@ public class VendorControl
                     if(iter.hasNext()) {
                         defaultItemPurchasingCategory = iter.next();
                     }
-                    ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = defaultItemPurchasingCategory.getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
+                    ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = Objects.requireNonNull(defaultItemPurchasingCategory).getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
 
                     itemPurchasingCategoryDetailValue.setIsDefault(Boolean.TRUE);
                     updateItemPurchasingCategoryFromValue(itemPurchasingCategoryDetailValue, false, deletedBy);
@@ -1759,9 +1760,7 @@ public class VendorControl
     }
 
     private void deleteItemPurchasingCategories(List<ItemPurchasingCategory> itemPurchasingCategories, boolean checkDefault, BasePK deletedBy) {
-        itemPurchasingCategories.stream().forEach((itemPurchasingCategory) -> {
-            deleteItemPurchasingCategory(itemPurchasingCategory, checkDefault, deletedBy);
-        });
+        itemPurchasingCategories.forEach((itemPurchasingCategory) -> deleteItemPurchasingCategory(itemPurchasingCategory, checkDefault, deletedBy));
     }
 
     public void deleteItemPurchasingCategories(List<ItemPurchasingCategory> itemPurchasingCategories, BasePK deletedBy) {
@@ -1833,7 +1832,7 @@ public class VendorControl
     }
     
     private List<ItemPurchasingCategoryDescription> getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, EntityPermission entityPermission) {
-        List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions = null;
+        List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions;
         
         try {
             String query = null;
@@ -1898,9 +1897,9 @@ public class VendorControl
         List<ItemPurchasingCategoryDescriptionTransfer> itemPurchasingCategoryDescriptionTransfers = new ArrayList<>(itemPurchasingCategoryDescriptions.size());
         ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache();
         
-        itemPurchasingCategoryDescriptions.stream().forEach((itemPurchasingCategoryDescription) -> {
-            itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription));
-        });
+        itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) ->
+                itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription))
+        );
         
         return itemPurchasingCategoryDescriptionTransfers;
     }
@@ -1933,9 +1932,9 @@ public class VendorControl
     public void deleteItemPurchasingCategoryDescriptionsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, BasePK deletedBy) {
         List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategoryForUpdate(itemPurchasingCategory);
         
-        itemPurchasingCategoryDescriptions.stream().forEach((itemPurchasingCategoryDescription) -> {
-            deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, deletedBy);
-        });
+        itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) -> 
+                deleteItemPurchasingCategoryDescription(itemPurchasingCategoryDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

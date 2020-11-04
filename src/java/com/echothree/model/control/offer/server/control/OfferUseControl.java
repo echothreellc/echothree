@@ -283,9 +283,9 @@ public class OfferUseControl
         List<OfferUseTransfer> offerUseTransfers = new ArrayList<>(offerUses.size());
         OfferUseTransferCache offerUseTransferCache = getOfferTransferCaches(userVisit).getOfferUseTransferCache();
 
-        offerUses.stream().forEach((offerUse) -> {
-            offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(offerUse));
-        });
+        offerUses.forEach((offerUse) ->
+                offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(offerUse))
+        );
 
         return offerUseTransfers;
     }
@@ -336,9 +336,9 @@ public class OfferUseControl
     }
 
     public void deleteOfferUses(List<OfferUse> offerUses, BasePK deletedBy) {
-        offerUses.stream().forEach((offerUse) -> {
-            deleteOfferUse(offerUse, deletedBy);
-        });
+        offerUses.forEach((offerUse) -> 
+                deleteOfferUse(offerUse, deletedBy)
+        );
     }
 
     public void deleteOfferUsesByOffer(Offer offer, BasePK deletedBy) {

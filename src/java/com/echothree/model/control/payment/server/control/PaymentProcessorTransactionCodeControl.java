@@ -157,9 +157,9 @@ public class PaymentProcessorTransactionCodeControl
         var paymentProcessorTransactionCodeTransfers = new ArrayList<PaymentProcessorTransactionCodeTransfer>(paymentProcessorTransactionCodes.size());
         var paymentProcessorTransactionCodeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransactionCodeTransferCache();
 
-        paymentProcessorTransactionCodes.stream().forEach((paymentProcessorTransactionCode) -> {
-            paymentProcessorTransactionCodeTransfers.add(paymentProcessorTransactionCodeTransferCache.getTransfer(paymentProcessorTransactionCode));
-        });
+        paymentProcessorTransactionCodes.forEach((paymentProcessorTransactionCode) ->
+                paymentProcessorTransactionCodeTransfers.add(paymentProcessorTransactionCodeTransferCache.getTransfer(paymentProcessorTransactionCode))
+        );
 
         return paymentProcessorTransactionCodeTransfers;
     }

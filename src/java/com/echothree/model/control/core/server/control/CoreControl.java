@@ -615,6 +615,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class CoreControl
@@ -663,9 +664,8 @@ public class CoreControl
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ComponentVendor */
     public ComponentVendor getComponentVendorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ComponentVendorPK(entityInstance.getEntityUniqueId());
-        var componentVendor = ComponentVendorFactory.getInstance().getEntityFromPK(entityPermission, pk);
 
-        return componentVendor;
+        return ComponentVendorFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public ComponentVendor getComponentVendorByEntityInstance(EntityInstance entityInstance) {
@@ -721,7 +721,7 @@ public class CoreControl
         return getComponentVendorDetailValueForUpdate(getComponentVendorByNameForUpdate(componentVendorName));
     }
     
-    private Map<String, ComponentVendor> componentVendorCache = new HashMap<>();
+    private final Map<String, ComponentVendor> componentVendorCache = new HashMap<>();
     
     public ComponentVendor getComponentVendorByNameFromCache(String componentVendorName) {
         ComponentVendor componentVendor = componentVendorCache.get(componentVendorName);
@@ -755,9 +755,9 @@ public class CoreControl
         var componentVendorTransfers = new ArrayList<ComponentVendorTransfer>(componentVendors.size());
         var componentVendorTransferCache = getCoreTransferCaches(userVisit).getComponentVendorTransferCache();
 
-        componentVendors.stream().forEach((componentVendor) -> {
-            componentVendorTransfers.add(componentVendorTransferCache.getComponentVendorTransfer(componentVendor));
-        });
+        componentVendors.forEach((componentVendor) ->
+                componentVendorTransfers.add(componentVendorTransferCache.getComponentVendorTransfer(componentVendor))
+        );
 
         return componentVendorTransfers;
     }
@@ -824,9 +824,8 @@ public class CoreControl
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityType */
     public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityTypePK(entityInstance.getEntityUniqueId());
-        var entityType = EntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
 
-        return entityType;
+        return EntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance) {
@@ -900,16 +899,11 @@ public class CoreControl
         return getEntityTypeDetailValueForUpdate(getEntityTypeByNameForUpdate(componentVendor, entityTypeName));
     }
     
-    private Map<ComponentVendor, Map<String, EntityType>> entityTypeCache = new HashMap<>();
+    private final Map<ComponentVendor, Map<String, EntityType>> entityTypeCache = new HashMap<>();
     
     public EntityType getEntityTypeByNameFromCache(ComponentVendor componentVendor, String entityTypeName) {
-        Map<String, EntityType> cacheByCompnentVendor = entityTypeCache.get(componentVendor);
-        
-        if(cacheByCompnentVendor == null) {
-            cacheByCompnentVendor = new HashMap<>();
-            entityTypeCache.put(componentVendor, cacheByCompnentVendor);
-        }
-        
+        Map<String, EntityType> cacheByCompnentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
+
         EntityType entityType = cacheByCompnentVendor.get(entityTypeName);
         
         if(entityType == null) {
@@ -924,7 +918,7 @@ public class CoreControl
     }
     
     private List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
-        List<EntityType> entityTypes = null;
+        List<EntityType> entityTypes;
         
         try {
             String query = null;
@@ -983,9 +977,9 @@ public class CoreControl
         List<EntityTypeTransfer> entityTypeTransfers = new ArrayList<>(entityTypes.size());
         EntityTypeTransferCache entityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityTypeTransferCache();
         
-        entityTypes.stream().forEach((entityType) -> {
-            entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(entityType));
-        });
+        entityTypes.forEach((entityType) ->
+                entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(entityType))
+        );
         
         return entityTypeTransfers;
     }
@@ -1057,9 +1051,9 @@ public class CoreControl
     public void deleteEntityTypesByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
         List<EntityType> entityTypes = getEntityTypesByComponentVendorForUpdate(componentVendor);
         
-        entityTypes.stream().forEach((entityType) -> {
-            deleteEntityType(entityType, deletedBy);
-        });
+        entityTypes.forEach((entityType) -> 
+                deleteEntityType(entityType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1126,7 +1120,7 @@ public class CoreControl
     
     private List<EntityTypeDescription> getEntityTypeDescriptionsByEntityType(EntityType entityType,
             EntityPermission entityPermission) {
-        List<EntityTypeDescription> entityTypeDescriptions = null;
+        List<EntityTypeDescription> entityTypeDescriptions;
         
         try {
             String query = null;
@@ -1191,9 +1185,9 @@ public class CoreControl
         List<EntityTypeDescriptionTransfer> entityTypeDescriptionTransfers = new ArrayList<>(entityTypeDescriptions.size());
         EntityTypeDescriptionTransferCache entityTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityTypeDescriptionTransferCache();
         
-        entityTypeDescriptions.stream().forEach((entityTypeDescription) -> {
-            entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(entityTypeDescription));
-        });
+        entityTypeDescriptions.forEach((entityTypeDescription) ->
+                entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(entityTypeDescription))
+        );
         
         return entityTypeDescriptionTransfers;
     }
@@ -1226,9 +1220,9 @@ public class CoreControl
     public void deleteEntityTypeDescriptionsByEntityType(EntityType entityType, BasePK deletedBy) {
         List<EntityTypeDescription> entityTypeDescriptions = getEntityTypeDescriptionsByEntityTypeForUpdate(entityType);
         
-        entityTypeDescriptions.stream().forEach((entityTypeDescription) -> {
-            deleteEntityTypeDescription(entityTypeDescription, deletedBy);
-        });
+        entityTypeDescriptions.forEach((entityTypeDescription) -> 
+                deleteEntityTypeDescription(entityTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1299,16 +1293,11 @@ public class CoreControl
         return getCommandDetailValueForUpdate(getCommandByNameForUpdate(componentVendor, commandName));
     }
     
-    private Map<ComponentVendor, Map<String, Command>> commandCache = new HashMap<>();
+    private final Map<ComponentVendor, Map<String, Command>> commandCache = new HashMap<>();
     
     public Command getCommandByNameFromCache(ComponentVendor componentVendor, String commandName) {
-        Map<String, Command> cacheByCompnentVendor = commandCache.get(componentVendor);
-        
-        if(cacheByCompnentVendor == null) {
-            cacheByCompnentVendor = new HashMap<>();
-            commandCache.put(componentVendor, cacheByCompnentVendor);
-        }
-        
+        Map<String, Command> cacheByCompnentVendor = commandCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
+
         Command command = cacheByCompnentVendor.get(commandName);
         
         if(command == null) {
@@ -1323,7 +1312,7 @@ public class CoreControl
     }
     
     private List<Command> getCommandsByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
-        List<Command> commands = null;
+        List<Command> commands;
         
         try {
             String query = null;
@@ -1380,9 +1369,9 @@ public class CoreControl
         List<CommandTransfer> commandTransfers = new ArrayList<>(commands.size());
         CommandTransferCache commandTransferCache = getCoreTransferCaches(userVisit).getCommandTransferCache();
         
-        commands.stream().forEach((command) -> {
-            commandTransfers.add(commandTransferCache.getCommandTransfer(command));
-        });
+        commands.forEach((command) ->
+                commandTransfers.add(commandTransferCache.getCommandTransfer(command))
+        );
         
         return commandTransfers;
     }
@@ -1433,9 +1422,9 @@ public class CoreControl
     public void deleteCommandsByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
         List<Command> commands = getCommandsByComponentVendorForUpdate(componentVendor);
         
-        commands.stream().forEach((command) -> {
-            deleteCommand(command, deletedBy);
-        });
+        commands.forEach((command) -> 
+                deleteCommand(command, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1502,7 +1491,7 @@ public class CoreControl
     
     private List<CommandDescription> getCommandDescriptionsByCommand(Command command,
             EntityPermission entityPermission) {
-        List<CommandDescription> commandDescriptions = null;
+        List<CommandDescription> commandDescriptions;
         
         try {
             String query = null;
@@ -1567,9 +1556,9 @@ public class CoreControl
         List<CommandDescriptionTransfer> commandDescriptionTransfers = new ArrayList<>(commandDescriptions.size());
         CommandDescriptionTransferCache commandDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandDescriptionTransferCache();
         
-        commandDescriptions.stream().forEach((commandDescription) -> {
-            commandDescriptionTransfers.add(commandDescriptionTransferCache.getCommandDescriptionTransfer(commandDescription));
-        });
+        commandDescriptions.forEach((commandDescription) ->
+                commandDescriptionTransfers.add(commandDescriptionTransferCache.getCommandDescriptionTransfer(commandDescription))
+        );
         
         return commandDescriptionTransfers;
     }
@@ -1602,9 +1591,9 @@ public class CoreControl
     public void deleteCommandDescriptionsByCommand(Command command, BasePK deletedBy) {
         List<CommandDescription> commandDescriptions = getCommandDescriptionsByCommandForUpdate(command);
         
-        commandDescriptions.stream().forEach((commandDescription) -> {
-            deleteCommandDescription(commandDescription, deletedBy);
-        });
+        commandDescriptions.forEach((commandDescription) -> 
+                deleteCommandDescription(commandDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1769,7 +1758,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCommandMessageTypeChoice == null? false: defaultCommandMessageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCommandMessageTypeChoice != null && defaultCommandMessageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && commandMessageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1787,9 +1776,9 @@ public class CoreControl
         List<CommandMessageTypeTransfer> commandMessageTypeTransfers = new ArrayList<>(commandMessageTypes.size());
         CommandMessageTypeTransferCache commandMessageTypeTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeTransferCache();
         
-        commandMessageTypes.stream().forEach((commandMessageType) -> {
-            commandMessageTypeTransfers.add(commandMessageTypeTransferCache.getCommandMessageTypeTransfer(commandMessageType));
-        });
+        commandMessageTypes.forEach((commandMessageType) ->
+                commandMessageTypeTransfers.add(commandMessageTypeTransferCache.getCommandMessageTypeTransfer(commandMessageType))
+        );
         
         return commandMessageTypeTransfers;
     }
@@ -1858,7 +1847,7 @@ public class CoreControl
                 if(iter.hasNext()) {
                     defaultCommandMessageType = iter.next();
                 }
-                CommandMessageTypeDetailValue commandMessageTypeDetailValue = defaultCommandMessageType.getLastDetailForUpdate().getCommandMessageTypeDetailValue().clone();
+                CommandMessageTypeDetailValue commandMessageTypeDetailValue = Objects.requireNonNull(defaultCommandMessageType).getLastDetailForUpdate().getCommandMessageTypeDetailValue().clone();
                 
                 commandMessageTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCommandMessageTypeFromValue(commandMessageTypeDetailValue, false, deletedBy);
@@ -1934,7 +1923,7 @@ public class CoreControl
     
     private List<CommandMessageTypeDescription> getCommandMessageTypeDescriptionsByCommandMessageType(CommandMessageType commandMessageType,
             EntityPermission entityPermission) {
-        List<CommandMessageTypeDescription> commandMessageTypeDescriptions = null;
+        List<CommandMessageTypeDescription> commandMessageTypeDescriptions;
         
         try {
             String query = null;
@@ -1996,10 +1985,10 @@ public class CoreControl
     public List<CommandMessageTypeDescriptionTransfer> getCommandMessageTypeDescriptionTransfers(UserVisit userVisit, CommandMessageType commandMessageType) {
         List<CommandMessageTypeDescription> commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageType(commandMessageType);
         List<CommandMessageTypeDescriptionTransfer> commandMessageTypeDescriptionTransfers = new ArrayList<>(commandMessageTypeDescriptions.size());
-            CommandMessageTypeDescriptionTransferCache commandMessageTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache();
-        
-            commandMessageTypeDescriptions.stream().forEach((commandMessageTypeDescription) -> {
-                commandMessageTypeDescriptionTransfers.add(commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription));
+        CommandMessageTypeDescriptionTransferCache commandMessageTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache();
+    
+        commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) -> {
+            commandMessageTypeDescriptionTransfers.add(commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription));
         });
         
         return commandMessageTypeDescriptionTransfers;
@@ -2035,9 +2024,9 @@ public class CoreControl
     public void deleteCommandMessageTypeDescriptionsByCommandMessageType(CommandMessageType commandMessageType, BasePK deletedBy) {
         List<CommandMessageTypeDescription> commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageTypeForUpdate(commandMessageType);
         
-        commandMessageTypeDescriptions.stream().forEach((commandMessageTypeDescription) -> {
-            deleteCommandMessageTypeDescription(commandMessageTypeDescription, deletedBy);
-        });
+        commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) -> 
+                deleteCommandMessageTypeDescription(commandMessageTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2110,7 +2099,7 @@ public class CoreControl
     }
     
     private List<CommandMessage> getCommandMessagesByCommandMessageType(CommandMessageType commandMessageType, EntityPermission entityPermission) {
-        List<CommandMessage> commandMessages = null;
+        List<CommandMessage> commandMessages;
         
         try {
             String query = null;
@@ -2157,9 +2146,9 @@ public class CoreControl
         List<CommandMessageTransfer> commandMessageTransfers = new ArrayList<>(commandMessages.size());
         CommandMessageTransferCache commandMessageTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTransferCache();
         
-        commandMessages.stream().forEach((commandMessage) -> {
-            commandMessageTransfers.add(commandMessageTransferCache.getCommandMessageTransfer(commandMessage));
-        });
+        commandMessages.forEach((commandMessage) ->
+                commandMessageTransfers.add(commandMessageTransferCache.getCommandMessageTransfer(commandMessage))
+        );
         
         return commandMessageTransfers;
     }
@@ -2203,9 +2192,9 @@ public class CoreControl
     }
     
     public void deleteCommandMessages(List<CommandMessage> commandMessages, BasePK deletedBy) {
-        commandMessages.stream().forEach((commandMessage) -> {
-            deleteCommandMessage(commandMessage, deletedBy);
-        });
+        commandMessages.forEach((commandMessage) -> 
+                deleteCommandMessage(commandMessage, deletedBy)
+        );
     }
     
     public void deleteCommandMessagesByCommandMessageType(CommandMessageType commandMessageType, BasePK deletedBy) {
@@ -2226,7 +2215,7 @@ public class CoreControl
     }
     
     private List<CommandMessageTranslation> getCommandMessageTranslationsByCommandMessage(CommandMessage commandMessage, EntityPermission entityPermission) {
-        List<CommandMessageTranslation> commandMessageTranslations = null;
+        List<CommandMessageTranslation> commandMessageTranslations;
         
         try {
             String query = null;
@@ -2328,9 +2317,9 @@ public class CoreControl
         List<CommandMessageTranslationTransfer> commandMessageTranslationTransfers = new ArrayList<>(commandMessageTranslations.size());
         CommandMessageTranslationTransferCache commandMessageTranslationTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache();
         
-        commandMessageTranslations.stream().forEach((commandMessageTranslation) -> {
-            commandMessageTranslationTransfers.add(commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(commandMessageTranslation));
-        });
+        commandMessageTranslations.forEach((commandMessageTranslation) ->
+                commandMessageTranslationTransfers.add(commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(commandMessageTranslation))
+        );
         
         return commandMessageTranslationTransfers;
     }
@@ -2369,9 +2358,9 @@ public class CoreControl
     }
     
     public void deleteCommandMessageTranslations(List<CommandMessageTranslation> commandMessageTranslations, BasePK deletedBy) {
-        commandMessageTranslations.stream().forEach((commandMessageTranslation) -> {
-            deleteCommandMessageTranslation(commandMessageTranslation, deletedBy);
-        });
+        commandMessageTranslations.forEach((commandMessageTranslation) -> 
+                deleteCommandMessageTranslation(commandMessageTranslation, deletedBy)
+        );
     }
     
     public void deleteCommandMessageTranslationsByCommandMessage(CommandMessage commandMessage, BasePK deletedBy) {
@@ -2416,7 +2405,7 @@ public class CoreControl
     }
 
     public List<EntityInstance> getEntityInstancesByEntityType(EntityType entityType) {
-        List<EntityInstance> entityInstances = null;
+        List<EntityInstance> entityInstances;
         
         try {
             PreparedStatement ps = EntityInstanceFactory.getInstance().prepareStatement(
@@ -2674,7 +2663,7 @@ public class CoreControl
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
         var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
 
-        entityInstances.stream().forEach((entityInstance) -> {
+        entityInstances.forEach((entityInstance) -> {
             entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance, includeEntityAppearance, includeNames,
                     includeKey, includeGuid, includeUlid));
         });
@@ -2839,7 +2828,7 @@ public class CoreControl
         // If an EntityInstance is in a role for a ChainInstance, then that ChainInstance should be deleted. Because an individual
         // EntityInstance may be in more than one role, the list of ChainInstances needs to be deduplicated.
         Set<ChainInstance> chainInstances = new HashSet<>();
-        chainControl.getChainInstanceEntityRolesByEntityInstanceForUpdate(entityInstance).stream().forEach((chainInstanceEntityRole) -> {
+        chainControl.getChainInstanceEntityRolesByEntityInstanceForUpdate(entityInstance).forEach((chainInstanceEntityRole) -> {
             chainInstances.add(chainInstanceEntityRole.getChainInstanceForUpdate());
         });
         chainControl.deleteChainInstances(chainInstances, deletedBy);
@@ -2991,10 +2980,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttributeType */
     public EntityAttributeType getEntityAttributeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityAttributeTypePK pk = new EntityAttributeTypePK(entityInstance.getEntityUniqueId());
-        EntityAttributeType entityAttributeType = EntityAttributeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityAttributeType;
+        var pk = new EntityAttributeTypePK(entityInstance.getEntityUniqueId());
+
+        return EntityAttributeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttributeType getEntityAttributeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -3069,7 +3057,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityAttributeTypeChoice == null? false: defaultEntityAttributeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityAttributeTypeChoice != null && defaultEntityAttributeTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -3191,7 +3179,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeWithLimit(EntityType entityType, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -3228,7 +3216,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeCreatedAfterWithLimit(EntityType entityType, Long createdTime, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -3266,7 +3254,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeModifiedAfterWithLimit(EntityType entityType, Long modifiedTime, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -3304,7 +3292,7 @@ public class CoreControl
     }
     
     public List<EntityTime> getEntityTimesByEntityTypeDeletedAfterWithLimit(EntityType entityType, Long deletedTime, Integer limit) {
-        List<EntityTime> entityTimes = null;
+        List<EntityTime> entityTimes;
         
         try {
             int intLimit = limit;
@@ -3343,7 +3331,7 @@ public class CoreControl
                     WorkflowStep_EVENT_GROUP_STATUS_ACTIVE);
 
             if(workflowStep != null) {
-                List<EventGroup> eventGroups = null;
+                List<EventGroup> eventGroups;
 
                 try {
                     PreparedStatement ps = EventGroupFactory.getInstance().prepareStatement(
@@ -3504,9 +3492,9 @@ public class CoreControl
         List<EventGroupTransfer> eventGroupTransfers = new ArrayList<>(eventGroups.size());
         EventGroupTransferCache eventGroupTransferCache = getCoreTransferCaches(userVisit).getEventGroupTransferCache();
         
-        eventGroups.stream().forEach((eventGroup) -> {
-            eventGroupTransfers.add(eventGroupTransferCache.getEventGroupTransfer(eventGroup));
-        });
+        eventGroups.forEach((eventGroup) ->
+                eventGroupTransfers.add(eventGroupTransferCache.getEventGroupTransfer(eventGroup))
+        );
         
         return eventGroupTransfers;
     }
@@ -3693,9 +3681,9 @@ public class CoreControl
         List<EventTransfer> eventTransfers = new ArrayList<>(events.size());
         EventTransferCache eventTransferCache = getCoreTransferCaches(userVisit).getEventTransferCache();
         
-        events.stream().forEach((event) -> {
-            eventTransfers.add(eventTransferCache.getEventTransfer(event));
-        });
+        events.forEach((event) ->
+                eventTransfers.add(eventTransferCache.getEventTransfer(event))
+        );
         
         return eventTransfers;
     }
@@ -3906,9 +3894,9 @@ public class CoreControl
         List<CacheEntryTransfer> cacheEntryTransfers = new ArrayList<>(cacheEntries.size());
         CacheEntryTransferCache cacheEntryTransferCache = getCoreTransferCaches(userVisit).getCacheEntryTransferCache();
 
-        cacheEntries.stream().forEach((cacheEntry) -> {
-            cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(cacheEntry));
-        });
+        cacheEntries.forEach((cacheEntry) ->
+                cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(cacheEntry))
+        );
 
         return cacheEntryTransfers;
     }
@@ -3922,7 +3910,7 @@ public class CoreControl
     }
     
     public void removeCacheEntries(List<CacheEntry> cacheEntries) {
-        cacheEntries.stream().forEach((cacheEntry) -> {
+        cacheEntries.forEach((cacheEntry) -> {
             removeCacheEntry(cacheEntry);
         });
     }
@@ -4119,9 +4107,9 @@ public class CoreControl
         List<CacheEntryDependencyTransfer> cacheEntryDependencyTransfers = new ArrayList<>(cacheEntries.size());
         CacheEntryDependencyTransferCache cacheEntryDependencyTransferCache = getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache();
 
-        cacheEntries.stream().forEach((cacheEntryDependency) -> {
-            cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(cacheEntryDependency));
-        });
+        cacheEntries.forEach((cacheEntryDependency) ->
+                cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(cacheEntryDependency))
+        );
 
         return cacheEntryDependencyTransfers;
     }
@@ -4165,10 +4153,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttributeGroup */
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityAttributeGroupPK pk = new EntityAttributeGroupPK(entityInstance.getEntityUniqueId());
-        EntityAttributeGroup entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityAttributeGroup;
+        var pk = new EntityAttributeGroupPK(entityInstance.getEntityUniqueId());
+
+        return EntityAttributeGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstance(EntityInstance entityInstance) {
@@ -4208,7 +4195,7 @@ public class CoreControl
     }
     
     private List<EntityAttributeGroup> getEntityAttributeGroupsByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<EntityAttributeGroup> entityAttributeGroups = null;
+        List<EntityAttributeGroup> entityAttributeGroups;
         
         try {
             String query = null;
@@ -4353,7 +4340,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityAttributeGroupChoice == null? false: defaultEntityAttributeGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityAttributeGroupChoice != null && defaultEntityAttributeGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityAttributeGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -4370,7 +4357,7 @@ public class CoreControl
         List<EntityAttributeGroupTransfer> entityAttributeGroupTransfers = new ArrayList<>(entityAttributeGroups.size());
         EntityAttributeGroupTransferCache entityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache();
         
-        entityAttributeGroups.stream().forEach((entityAttributeGroup) -> {
+        entityAttributeGroups.forEach((entityAttributeGroup) -> {
             entityAttributeGroupTransfers.add(entityAttributeGroupTransferCache.getEntityAttributeGroupTransfer(entityAttributeGroup, entityInstance));
         });
         
@@ -4449,7 +4436,7 @@ public class CoreControl
                 if(iter.hasNext()) {
                     defaultEntityAttributeGroup = iter.next();
                 }
-                EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = defaultEntityAttributeGroup.getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
+                EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = Objects.requireNonNull(defaultEntityAttributeGroup).getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
                 
                 entityAttributeGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, false, deletedBy);
@@ -4522,7 +4509,7 @@ public class CoreControl
     }
     
     private List<EntityAttributeGroupDescription> getEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, EntityPermission entityPermission) {
-        List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions = null;
+        List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions;
         
         try {
             String query = null;
@@ -4587,7 +4574,7 @@ public class CoreControl
         List<EntityAttributeGroupDescriptionTransfer> entityAttributeGroupDescriptionTransfers = new ArrayList<>(entityAttributeGroupDescriptions.size());
         EntityAttributeGroupDescriptionTransferCache entityAttributeGroupDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupDescriptionTransferCache();
         
-        entityAttributeGroupDescriptions.stream().forEach((entityAttributeGroupDescription) -> {
+        entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) -> {
             entityAttributeGroupDescriptionTransfers.add(entityAttributeGroupDescriptionTransferCache.getEntityAttributeGroupDescriptionTransfer(entityAttributeGroupDescription, entityInstance));
         });
         
@@ -4622,9 +4609,9 @@ public class CoreControl
     public void deleteEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
         List<EntityAttributeGroupDescription> entityAttributeGroupDescriptions = getEntityAttributeGroupDescriptionsByEntityAttributeGroupForUpdate(entityAttributeGroup);
         
-        entityAttributeGroupDescriptions.stream().forEach((entityAttributeGroupDescription) -> {
-            deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, deletedBy);
-        });
+        entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) -> 
+                deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4651,10 +4638,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttribute */
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityAttributePK pk = new EntityAttributePK(entityInstance.getEntityUniqueId());
-        EntityAttribute entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityAttribute;
+        var pk = new EntityAttributePK(entityInstance.getEntityUniqueId());
+
+        return EntityAttributeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance) {
@@ -4718,7 +4704,7 @@ public class CoreControl
     }
     
     private List<EntityAttribute> getEntityAttributesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes = null;
+        List<EntityAttribute> entityAttributes;
         
         try {
             String query = null;
@@ -4759,7 +4745,7 @@ public class CoreControl
     
     private List<EntityAttribute> getEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType,
             EntityAttributeType entityAttributeType, EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes = null;
+        List<EntityAttribute> entityAttributes;
         
         try {
             String query = null;
@@ -4803,7 +4789,7 @@ public class CoreControl
     
     private List<EntityAttribute> getEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType,
             EntityPermission entityPermission) {
-        List<EntityAttribute> entityAttributes = null;
+        List<EntityAttribute> entityAttributes;
         
         try {
             String query = null;
@@ -4854,7 +4840,7 @@ public class CoreControl
         List<EntityAttributeTransfer> entityAttributeTransfers = new ArrayList<>(entityAttributes.size());
         EntityAttributeTransferCache entityAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeTransferCache();
         
-        entityAttributes.stream().forEach((entityAttribute) -> {
+        entityAttributes.forEach((entityAttribute) -> {
             entityAttributeTransfers.add(entityAttributeTransferCache.getEntityAttributeTransfer(entityAttribute, entityInstance));
         });
         
@@ -5028,9 +5014,9 @@ public class CoreControl
     }
     
     public void deleteEntityAttributes(List<EntityAttribute> entityAttributes, BasePK deletedBy) {
-        entityAttributes.stream().forEach((entityAttribute) -> {
-            deleteEntityAttribute(entityAttribute, deletedBy);
-        });
+        entityAttributes.forEach((entityAttribute) -> 
+                deleteEntityAttribute(entityAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityAttributesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -5101,7 +5087,7 @@ public class CoreControl
     
     private List<EntityAttributeDescription> getEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
-        List<EntityAttributeDescription> entityAttributeDescriptions = null;
+        List<EntityAttributeDescription> entityAttributeDescriptions;
         
         try {
             String query = null;
@@ -5166,7 +5152,7 @@ public class CoreControl
         List<EntityAttributeDescriptionTransfer> entityAttributeDescriptionTransfers = new ArrayList<>(entityAttributeDescriptions.size());
         EntityAttributeDescriptionTransferCache entityAttributeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeDescriptionTransferCache();
         
-        entityAttributeDescriptions.stream().forEach((entityAttributeDescription) -> {
+        entityAttributeDescriptions.forEach((entityAttributeDescription) -> {
             entityAttributeDescriptionTransfers.add(entityAttributeDescriptionTransferCache.getEntityAttributeDescriptionTransfer(entityAttributeDescription, entityInstance));
         });
         
@@ -5201,9 +5187,9 @@ public class CoreControl
     public void deleteEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityAttributeDescription> entityAttributeDescriptions = getEntityAttributeDescriptionsByEntityAttributeForUpdate(entityAttribute);
         
-        entityAttributeDescriptions.stream().forEach((entityAttributeDescription) -> {
-            deleteEntityAttributeDescription(entityAttributeDescription, deletedBy);
-        });
+        entityAttributeDescriptions.forEach((entityAttributeDescription) -> 
+                deleteEntityAttributeDescription(entityAttributeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -5799,7 +5785,7 @@ public class CoreControl
     
     private List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = null;
+        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups;
         
         try {
             String query = null;
@@ -5840,7 +5826,7 @@ public class CoreControl
     
     private List<EntityAttributeEntityAttributeGroup> getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup,
             EntityPermission entityPermission) {
-        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = null;
+        List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups;
         
         try {
             String query = null;
@@ -5888,7 +5874,7 @@ public class CoreControl
         List<EntityAttributeEntityAttributeGroupTransfer> entityAttributeEntityAttributeGroupTransfers = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
         EntityAttributeEntityAttributeGroupTransferCache entityAttributeEntityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityAttributeGroupTransferCache();
         
-        entityAttributeEntityAttributeGroups.stream().forEach((entityAttributeEntityAttributeGroup) -> {
+        entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> {
             entityAttributeEntityAttributeGroupTransfers.add(entityAttributeEntityAttributeGroupTransferCache.getEntityAttributeEntityAttributeGroupTransfer(entityAttributeEntityAttributeGroup, entityInstance));
         });
         
@@ -5933,17 +5919,17 @@ public class CoreControl
     public void deleteEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeForUpdate(entityAttribute);
         
-        entityAttributeEntityAttributeGroups.stream().forEach((entityAttributeEntityAttributeGroup) -> {
-            deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy);
-        });
+        entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> 
+                deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy)
+        );
     }
     
     public void deleteEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
         List<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups = getEntityAttributeEntityAttributeGroupsByEntityAttributeGroupForUpdate(entityAttributeGroup);
         
-        entityAttributeEntityAttributeGroups.stream().forEach((entityAttributeEntityAttributeGroup) -> {
-            deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy);
-        });
+        entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> 
+                deleteEntityAttributeEntityAttributeGroup(entityAttributeEntityAttributeGroup, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -5981,10 +5967,9 @@ public class CoreControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityListItem */
     public EntityListItem getEntityListItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        EntityListItemPK pk = new EntityListItemPK(entityInstance.getEntityUniqueId());
-        EntityListItem entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entityListItem;
+        var pk = new EntityListItemPK(entityInstance.getEntityUniqueId());
+
+        return EntityListItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public EntityListItem getEntityListItemByEntityInstance(EntityInstance entityInstance) {
@@ -6098,7 +6083,7 @@ public class CoreControl
     }
     
     private List<EntityListItem> getEntityListItems(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityListItem> entityListItems = null;
+        List<EntityListItem> entityListItems;
         
         try {
             String query = null;
@@ -6152,7 +6137,7 @@ public class CoreControl
         List<EntityListItemTransfer> entityListItemTransfers = new ArrayList<>(entityListItems.size());
         EntityListItemTransferCache entityListItemTransferCache = getCoreTransferCaches(userVisit).getEntityListItemTransferCache();
 
-        entityListItems.stream().forEach((entityListItem) -> {
+        entityListItems.forEach((entityListItem) -> {
             entityListItemTransfers.add(entityListItemTransferCache.getEntityListItemTransfer(entityListItem, entityInstance));
         });
 
@@ -6235,7 +6220,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityListItemChoice == null? false: defaultEntityListItemChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityListItemChoice != null && defaultEntityListItemChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityListItemDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6272,7 +6257,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEntityListItem = iter.next();
                     }
-                    EntityListItemDetailValue entityListItemDetailValue = defaultEntityListItem.getLastDetailForUpdate().getEntityListItemDetailValue().clone();
+                    EntityListItemDetailValue entityListItemDetailValue = Objects.requireNonNull(defaultEntityListItem).getLastDetailForUpdate().getEntityListItemDetailValue().clone();
 
                     entityListItemDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityListItemFromValue(entityListItemDetailValue, false, deletedBy);
@@ -6290,7 +6275,7 @@ public class CoreControl
     public void deleteEntityListItemsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityListItem> entityListItems = getEntityListItemsForUpdate(entityAttribute);
         
-        entityListItems.stream().forEach((entityListItem) -> {
+        entityListItems.forEach((entityListItem) -> {
             deleteEntityListItem(entityListItem, false, deletedBy);
         });
     }
@@ -6356,7 +6341,7 @@ public class CoreControl
     }
     
     private List<EntityListItemDescription> getEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityListItemDescription> entityListItemDescriptions = null;
+        List<EntityListItemDescription> entityListItemDescriptions;
         
         try {
             String query = null;
@@ -6420,7 +6405,7 @@ public class CoreControl
         List<EntityListItemDescriptionTransfer> entityListItemDescriptionTransfers = new ArrayList<>(entityListItemDescriptions.size());
         EntityListItemDescriptionTransferCache entityListItemDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityListItemDescriptionTransferCache();
         
-        entityListItemDescriptions.stream().forEach((entityListItemDescription) -> {
+        entityListItemDescriptions.forEach((entityListItemDescription) -> {
             entityListItemDescriptionTransfers.add(entityListItemDescriptionTransferCache.getEntityListItemDescriptionTransfer(entityListItemDescription, entityInstance));
         });
         
@@ -6454,9 +6439,9 @@ public class CoreControl
     public void deleteEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
         List<EntityListItemDescription> entityListItemDescriptions = getEntityListItemDescriptionsByEntityListItemForUpdate(entityListItem);
         
-        entityListItemDescriptions.stream().forEach((entityListItemDescription) -> {
-            deleteEntityListItemDescription(entityListItemDescription, deletedBy);
-        });
+        entityListItemDescriptions.forEach((entityListItemDescription) -> 
+                deleteEntityListItemDescription(entityListItemDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -6592,7 +6577,7 @@ public class CoreControl
     }
     
     private List<EntityIntegerRange> getEntityIntegerRanges(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityIntegerRange> entityIntegerRanges = null;
+        List<EntityIntegerRange> entityIntegerRanges;
         
         try {
             String query = null;
@@ -6646,7 +6631,7 @@ public class CoreControl
         List<EntityIntegerRangeTransfer> entityIntegerRangeTransfers = new ArrayList<>(entityIntegerRanges.size());
         EntityIntegerRangeTransferCache entityIntegerRangeTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache();
 
-        entityIntegerRanges.stream().forEach((entityIntegerRange) -> {
+        entityIntegerRanges.forEach((entityIntegerRange) -> {
             entityIntegerRangeTransfers.add(entityIntegerRangeTransferCache.getEntityIntegerRangeTransfer(entityIntegerRange, entityInstance));
         });
 
@@ -6730,7 +6715,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityIntegerRangeChoice == null? false: defaultEntityIntegerRangeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityIntegerRangeChoice != null && defaultEntityIntegerRangeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityIntegerRangeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6760,7 +6745,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEntityIntegerRange = iter.next();
                     }
-                    EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = defaultEntityIntegerRange.getLastDetailForUpdate().getEntityIntegerRangeDetailValue().clone();
+                    EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = Objects.requireNonNull(defaultEntityIntegerRange).getLastDetailForUpdate().getEntityIntegerRangeDetailValue().clone();
 
                     entityIntegerRangeDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityIntegerRangeFromValue(entityIntegerRangeDetailValue, false, deletedBy);
@@ -6778,7 +6763,7 @@ public class CoreControl
     public void deleteEntityIntegerRangesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityIntegerRange> entityIntegerRanges = getEntityIntegerRangesForUpdate(entityAttribute);
         
-        entityIntegerRanges.stream().forEach((entityIntegerRange) -> {
+        entityIntegerRanges.forEach((entityIntegerRange) -> {
             deleteEntityIntegerRange(entityIntegerRange, false, deletedBy);
         });
     }
@@ -6844,7 +6829,7 @@ public class CoreControl
     }
     
     private List<EntityIntegerRangeDescription> getEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange, EntityPermission entityPermission) {
-        List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions = null;
+        List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions;
         
         try {
             String query = null;
@@ -6908,7 +6893,7 @@ public class CoreControl
         List<EntityIntegerRangeDescriptionTransfer> entityIntegerRangeDescriptionTransfers = new ArrayList<>(entityIntegerRangeDescriptions.size());
         EntityIntegerRangeDescriptionTransferCache entityIntegerRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeDescriptionTransferCache();
         
-        entityIntegerRangeDescriptions.stream().forEach((entityIntegerRangeDescription) -> {
+        entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) -> {
             entityIntegerRangeDescriptionTransfers.add(entityIntegerRangeDescriptionTransferCache.getEntityIntegerRangeDescriptionTransfer(entityIntegerRangeDescription, entityInstance));
         });
         
@@ -6942,9 +6927,9 @@ public class CoreControl
     public void deleteEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange, BasePK deletedBy) {
         List<EntityIntegerRangeDescription> entityIntegerRangeDescriptions = getEntityIntegerRangeDescriptionsByEntityIntegerRangeForUpdate(entityIntegerRange);
         
-        entityIntegerRangeDescriptions.stream().forEach((entityIntegerRangeDescription) -> {
-            deleteEntityIntegerRangeDescription(entityIntegerRangeDescription, deletedBy);
-        });
+        entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) -> 
+                deleteEntityIntegerRangeDescription(entityIntegerRangeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -7080,7 +7065,7 @@ public class CoreControl
     }
     
     private List<EntityLongRange> getEntityLongRanges(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        List<EntityLongRange> entityLongRanges = null;
+        List<EntityLongRange> entityLongRanges;
         
         try {
             String query = null;
@@ -7134,7 +7119,7 @@ public class CoreControl
         List<EntityLongRangeTransfer> entityLongRangeTransfers = new ArrayList<>(entityLongRanges.size());
         EntityLongRangeTransferCache entityLongRangeTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache();
 
-        entityLongRanges.stream().forEach((entityLongRange) -> {
+        entityLongRanges.forEach((entityLongRange) -> {
             entityLongRangeTransfers.add(entityLongRangeTransferCache.getEntityLongRangeTransfer(entityLongRange, entityInstance));
         });
 
@@ -7218,7 +7203,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityLongRangeChoice == null? false: defaultEntityLongRangeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEntityLongRangeChoice != null && defaultEntityLongRangeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityLongRangeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7248,7 +7233,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEntityLongRange = iter.next();
                     }
-                    EntityLongRangeDetailValue entityLongRangeDetailValue = defaultEntityLongRange.getLastDetailForUpdate().getEntityLongRangeDetailValue().clone();
+                    EntityLongRangeDetailValue entityLongRangeDetailValue = Objects.requireNonNull(defaultEntityLongRange).getLastDetailForUpdate().getEntityLongRangeDetailValue().clone();
 
                     entityLongRangeDetailValue.setIsDefault(Boolean.TRUE);
                     updateEntityLongRangeFromValue(entityLongRangeDetailValue, false, deletedBy);
@@ -7266,7 +7251,7 @@ public class CoreControl
     public void deleteEntityLongRangesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityLongRange> entityLongRanges = getEntityLongRangesForUpdate(entityAttribute);
         
-        entityLongRanges.stream().forEach((entityLongRange) -> {
+        entityLongRanges.forEach((entityLongRange) -> {
             deleteEntityLongRange(entityLongRange, false, deletedBy);
         });
     }
@@ -7332,7 +7317,7 @@ public class CoreControl
     }
     
     private List<EntityLongRangeDescription> getEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange, EntityPermission entityPermission) {
-        List<EntityLongRangeDescription> entityLongRangeDescriptions = null;
+        List<EntityLongRangeDescription> entityLongRangeDescriptions;
         
         try {
             String query = null;
@@ -7396,7 +7381,7 @@ public class CoreControl
         List<EntityLongRangeDescriptionTransfer> entityLongRangeDescriptionTransfers = new ArrayList<>(entityLongRangeDescriptions.size());
         EntityLongRangeDescriptionTransferCache entityLongRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeDescriptionTransferCache();
         
-        entityLongRangeDescriptions.stream().forEach((entityLongRangeDescription) -> {
+        entityLongRangeDescriptions.forEach((entityLongRangeDescription) -> {
             entityLongRangeDescriptionTransfers.add(entityLongRangeDescriptionTransferCache.getEntityLongRangeDescriptionTransfer(entityLongRangeDescription, entityInstance));
         });
         
@@ -7430,9 +7415,9 @@ public class CoreControl
     public void deleteEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange, BasePK deletedBy) {
         List<EntityLongRangeDescription> entityLongRangeDescriptions = getEntityLongRangeDescriptionsByEntityLongRangeForUpdate(entityLongRange);
         
-        entityLongRangeDescriptions.stream().forEach((entityLongRangeDescription) -> {
-            deleteEntityLongRangeDescription(entityLongRangeDescription, deletedBy);
-        });
+        entityLongRangeDescriptions.forEach((entityLongRangeDescription) -> 
+                deleteEntityLongRangeDescription(entityLongRangeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -7567,7 +7552,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMimeTypeUsageTypeChoice == null? false: defaultMimeTypeUsageTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultMimeTypeUsageTypeChoice != null && defaultMimeTypeUsageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeUsageType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7584,9 +7569,9 @@ public class CoreControl
         List<MimeTypeUsageTypeTransfer> mimeTypeUsageTypeTransfers = new ArrayList<>(mimeTypeUsageTypes.size());
         MimeTypeUsageTypeTransferCache mimeTypeUsageTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTypeTransferCache();
 
-        mimeTypeUsageTypes.stream().forEach((mimeTypeUsageType) -> {
-            mimeTypeUsageTypeTransfers.add(mimeTypeUsageTypeTransferCache.getMimeTypeUsageTypeTransfer(mimeTypeUsageType));
-        });
+        mimeTypeUsageTypes.forEach((mimeTypeUsageType) ->
+                mimeTypeUsageTypeTransfers.add(mimeTypeUsageTypeTransferCache.getMimeTypeUsageTypeTransfer(mimeTypeUsageType))
+        );
 
         return mimeTypeUsageTypeTransfers;
     }
@@ -7862,9 +7847,9 @@ public class CoreControl
         List<MimeTypeTransfer> mimeTypeTransfers = new ArrayList<>(mimeTypes.size());
         MimeTypeTransferCache mimeTypeTransferCache = getCoreTransferCaches(userVisit).getMimeTypeTransferCache();
 
-        mimeTypes.stream().forEach((mimeType) -> {
-            mimeTypeTransfers.add(mimeTypeTransferCache.getMimeTypeTransfer(mimeType));
-        });
+        mimeTypes.forEach((mimeType) ->
+                mimeTypeTransfers.add(mimeTypeTransferCache.getMimeTypeTransfer(mimeType))
+        );
 
         return mimeTypeTransfers;
     }
@@ -7908,7 +7893,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultMimeTypeChoice == null? false: defaultMimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7943,7 +7928,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultMimeTypeChoice == null? false: defaultMimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8016,7 +8001,7 @@ public class CoreControl
                 if(iter.hasNext()) {
                     defaultMimeType = iter.next();
                 }
-                MimeTypeDetailValue mimeTypeDetailValue = defaultMimeType.getLastDetailForUpdate().getMimeTypeDetailValue().clone();
+                MimeTypeDetailValue mimeTypeDetailValue = Objects.requireNonNull(defaultMimeType).getLastDetailForUpdate().getMimeTypeDetailValue().clone();
 
                 mimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateMimeTypeFromValue(mimeTypeDetailValue, false, deletedBy);
@@ -8138,9 +8123,9 @@ public class CoreControl
         List<MimeTypeDescriptionTransfer> mimeTypeDescriptionTransfers = new ArrayList<>(mimeTypeDescriptions.size());
         MimeTypeDescriptionTransferCache mimeTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeDescriptionTransferCache();
 
-        mimeTypeDescriptions.stream().forEach((mimeTypeDescription) -> {
-            mimeTypeDescriptionTransfers.add(mimeTypeDescriptionTransferCache.getMimeTypeDescriptionTransfer(mimeTypeDescription));
-        });
+        mimeTypeDescriptions.forEach((mimeTypeDescription) ->
+                mimeTypeDescriptionTransfers.add(mimeTypeDescriptionTransferCache.getMimeTypeDescriptionTransfer(mimeTypeDescription))
+        );
 
         return mimeTypeDescriptionTransfers;
     }
@@ -8174,9 +8159,9 @@ public class CoreControl
     public void deleteMimeTypeDescriptionsByMimeType(MimeType mimeType, BasePK deletedBy) {
         List<MimeTypeDescription> mimeTypeDescriptions = getMimeTypeDescriptionsByMimeTypeForUpdate(mimeType);
 
-        mimeTypeDescriptions.stream().forEach((mimeTypeDescription) -> {
-            deleteMimeTypeDescription(mimeTypeDescription, deletedBy);
-        });
+        mimeTypeDescriptions.forEach((mimeTypeDescription) -> 
+                deleteMimeTypeDescription(mimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -8208,7 +8193,7 @@ public class CoreControl
     }
     
     public List<MimeTypeUsage> getMimeTypeUsagesByMimeType(MimeType mimeType) {
-        List<MimeTypeUsage> mimeTypeUsages = null;
+        List<MimeTypeUsage> mimeTypeUsages;
         
         try {
             PreparedStatement ps = MimeTypeUsageFactory.getInstance().prepareStatement(
@@ -8236,9 +8221,9 @@ public class CoreControl
         List<MimeTypeUsageTransfer> mimeTypeUsageTransfers = new ArrayList<>(mimeTypeUsages.size());
         MimeTypeUsageTransferCache mimeTypeUsageTransferCache = getCoreTransferCaches(userVisit).getMimeTypeUsageTransferCache();
         
-        mimeTypeUsages.stream().forEach((mimeTypeUsage) -> {
-            mimeTypeUsageTransfers.add(mimeTypeUsageTransferCache.getMimeTypeUsageTransfer(mimeTypeUsage));
-        });
+        mimeTypeUsages.forEach((mimeTypeUsage) ->
+                mimeTypeUsageTransfers.add(mimeTypeUsageTransferCache.getMimeTypeUsageTransfer(mimeTypeUsage))
+        );
         
         return mimeTypeUsageTransfers;
     }
@@ -8321,9 +8306,9 @@ public class CoreControl
         List<MimeTypeFileExtensionTransfer> mimeTypeFileExtensionTransfers = new ArrayList<>(mimeTypeFileExtensions.size());
         MimeTypeFileExtensionTransferCache mimeTypeFileExtensionTransferCache = getCoreTransferCaches(userVisit).getMimeTypeFileExtensionTransferCache();
         
-        mimeTypeFileExtensions.stream().forEach((mimeTypeFileExtension) -> {
-            mimeTypeFileExtensionTransfers.add(mimeTypeFileExtensionTransferCache.getMimeTypeFileExtensionTransfer(mimeTypeFileExtension));
-        });
+        mimeTypeFileExtensions.forEach((mimeTypeFileExtension) ->
+                mimeTypeFileExtensionTransfers.add(mimeTypeFileExtensionTransferCache.getMimeTypeFileExtensionTransfer(mimeTypeFileExtension))
+        );
         
         return mimeTypeFileExtensionTransfers;
     }
@@ -8483,9 +8468,9 @@ public class CoreControl
         List<ProtocolTransfer> protocolTransfers = new ArrayList<>(protocols.size());
         ProtocolTransferCache protocolTransferCache = getCoreTransferCaches(userVisit).getProtocolTransferCache();
 
-        protocols.stream().forEach((protocol) -> {
-            protocolTransfers.add(protocolTransferCache.getProtocolTransfer(protocol));
-        });
+        protocols.forEach((protocol) ->
+                protocolTransfers.add(protocolTransferCache.getProtocolTransfer(protocol))
+        );
 
         return protocolTransfers;
     }
@@ -8515,7 +8500,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultProtocolChoice == null? false: defaultProtocolChoice.equals(value);
+            boolean usingDefaultChoice = defaultProtocolChoice != null && defaultProtocolChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && protocolDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8590,7 +8575,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultProtocol = iter.next();
                     }
-                    ProtocolDetailValue protocolDetailValue = defaultProtocol.getLastDetailForUpdate().getProtocolDetailValue().clone();
+                    ProtocolDetailValue protocolDetailValue = Objects.requireNonNull(defaultProtocol).getLastDetailForUpdate().getProtocolDetailValue().clone();
 
                     protocolDetailValue.setIsDefault(Boolean.TRUE);
                     updateProtocolFromValue(protocolDetailValue, false, deletedBy);
@@ -8606,9 +8591,7 @@ public class CoreControl
     }
 
     private void deleteProtocols(List<Protocol> protocols, boolean checkDefault, BasePK deletedBy) {
-        protocols.stream().forEach((protocol) -> {
-            deleteProtocol(protocol, checkDefault, deletedBy);
-        });
+        protocols.forEach((protocol) -> deleteProtocol(protocol, checkDefault, deletedBy));
     }
 
     public void deleteProtocols(List<Protocol> protocols, BasePK deletedBy) {
@@ -8723,9 +8706,9 @@ public class CoreControl
         List<ProtocolDescriptionTransfer> protocolDescriptionTransfers = new ArrayList<>(protocolDescriptions.size());
         ProtocolDescriptionTransferCache protocolDescriptionTransferCache = getCoreTransferCaches(userVisit).getProtocolDescriptionTransferCache();
 
-        protocolDescriptions.stream().forEach((protocolDescription) -> {
-            protocolDescriptionTransfers.add(protocolDescriptionTransferCache.getProtocolDescriptionTransfer(protocolDescription));
-        });
+        protocolDescriptions.forEach((protocolDescription) ->
+                protocolDescriptionTransfers.add(protocolDescriptionTransferCache.getProtocolDescriptionTransfer(protocolDescription))
+        );
 
         return protocolDescriptionTransfers;
     }
@@ -8759,9 +8742,9 @@ public class CoreControl
     public void deleteProtocolDescriptionsByProtocol(Protocol protocol, BasePK deletedBy) {
         List<ProtocolDescription> protocolDescriptions = getProtocolDescriptionsByProtocolForUpdate(protocol);
 
-        protocolDescriptions.stream().forEach((protocolDescription) -> {
-            deleteProtocolDescription(protocolDescription, deletedBy);
-        });
+        protocolDescriptions.forEach((protocolDescription) -> 
+                deleteProtocolDescription(protocolDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -8944,9 +8927,9 @@ public class CoreControl
         List<ServiceTransfer> serviceTransfers = new ArrayList<>(services.size());
         ServiceTransferCache serviceTransferCache = getCoreTransferCaches(userVisit).getServiceTransferCache();
 
-        services.stream().forEach((service) -> {
-            serviceTransfers.add(serviceTransferCache.getServiceTransfer(service));
-        });
+        services.forEach((service) ->
+                serviceTransfers.add(serviceTransferCache.getServiceTransfer(service))
+        );
 
         return serviceTransfers;
     }
@@ -8976,7 +8959,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultServiceChoice == null? false: defaultServiceChoice.equals(value);
+            boolean usingDefaultChoice = defaultServiceChoice != null && defaultServiceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && serviceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -9053,7 +9036,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultService = iter.next();
                     }
-                    ServiceDetailValue serviceDetailValue = defaultService.getLastDetailForUpdate().getServiceDetailValue().clone();
+                    ServiceDetailValue serviceDetailValue = Objects.requireNonNull(defaultService).getLastDetailForUpdate().getServiceDetailValue().clone();
 
                     serviceDetailValue.setIsDefault(Boolean.TRUE);
                     updateServiceFromValue(serviceDetailValue, false, deletedBy);
@@ -9069,9 +9052,7 @@ public class CoreControl
     }
 
     private void deleteServices(List<Service> services, boolean checkDefault, BasePK deletedBy) {
-        services.stream().forEach((service) -> {
-            deleteService(service, checkDefault, deletedBy);
-        });
+        services.forEach((service) -> deleteService(service, checkDefault, deletedBy));
     }
 
     public void deleteServices(List<Service> services, BasePK deletedBy) {
@@ -9190,9 +9171,9 @@ public class CoreControl
         List<ServiceDescriptionTransfer> serviceDescriptionTransfers = new ArrayList<>(serviceDescriptions.size());
         ServiceDescriptionTransferCache serviceDescriptionTransferCache = getCoreTransferCaches(userVisit).getServiceDescriptionTransferCache();
 
-        serviceDescriptions.stream().forEach((serviceDescription) -> {
-            serviceDescriptionTransfers.add(serviceDescriptionTransferCache.getServiceDescriptionTransfer(serviceDescription));
-        });
+        serviceDescriptions.forEach((serviceDescription) ->
+                serviceDescriptionTransfers.add(serviceDescriptionTransferCache.getServiceDescriptionTransfer(serviceDescription))
+        );
 
         return serviceDescriptionTransfers;
     }
@@ -9226,9 +9207,9 @@ public class CoreControl
     public void deleteServiceDescriptionsByService(Service service, BasePK deletedBy) {
         List<ServiceDescription> serviceDescriptions = getServiceDescriptionsByServiceForUpdate(service);
 
-        serviceDescriptions.stream().forEach((serviceDescription) -> {
-            deleteServiceDescription(serviceDescription, deletedBy);
-        });
+        serviceDescriptions.forEach((serviceDescription) -> 
+                deleteServiceDescription(serviceDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -9377,9 +9358,9 @@ public class CoreControl
         List<ServerTransfer> serverTransfers = new ArrayList<>(servers.size());
         ServerTransferCache serverTransferCache = getCoreTransferCaches(userVisit).getServerTransferCache();
 
-        servers.stream().forEach((server) -> {
-            serverTransfers.add(serverTransferCache.getServerTransfer(server));
-        });
+        servers.forEach((server) ->
+                serverTransfers.add(serverTransferCache.getServerTransfer(server))
+        );
 
         return serverTransfers;
     }
@@ -9409,7 +9390,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultServerChoice == null? false: defaultServerChoice.equals(value);
+            boolean usingDefaultChoice = defaultServerChoice != null && defaultServerChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && serverDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -9484,7 +9465,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultServer = iter.next();
                     }
-                    ServerDetailValue serverDetailValue = defaultServer.getLastDetailForUpdate().getServerDetailValue().clone();
+                    ServerDetailValue serverDetailValue = Objects.requireNonNull(defaultServer).getLastDetailForUpdate().getServerDetailValue().clone();
 
                     serverDetailValue.setIsDefault(Boolean.TRUE);
                     updateServerFromValue(serverDetailValue, false, deletedBy);
@@ -9500,9 +9481,7 @@ public class CoreControl
     }
 
     private void deleteServers(List<Server> servers, boolean checkDefault, BasePK deletedBy) {
-        servers.stream().forEach((server) -> {
-            deleteServer(server, checkDefault, deletedBy);
-        });
+        servers.forEach((server) -> deleteServer(server, checkDefault, deletedBy));
     }
 
     public void deleteServers(List<Server> servers, BasePK deletedBy) {
@@ -9617,9 +9596,9 @@ public class CoreControl
         List<ServerDescriptionTransfer> serverDescriptionTransfers = new ArrayList<>(serverDescriptions.size());
         ServerDescriptionTransferCache serverDescriptionTransferCache = getCoreTransferCaches(userVisit).getServerDescriptionTransferCache();
 
-        serverDescriptions.stream().forEach((serverDescription) -> {
-            serverDescriptionTransfers.add(serverDescriptionTransferCache.getServerDescriptionTransfer(serverDescription));
-        });
+        serverDescriptions.forEach((serverDescription) ->
+                serverDescriptionTransfers.add(serverDescriptionTransferCache.getServerDescriptionTransfer(serverDescription))
+        );
 
         return serverDescriptionTransfers;
     }
@@ -9653,9 +9632,9 @@ public class CoreControl
     public void deleteServerDescriptionsByServer(Server server, BasePK deletedBy) {
         List<ServerDescription> serverDescriptions = getServerDescriptionsByServerForUpdate(server);
 
-        serverDescriptions.stream().forEach((serverDescription) -> {
-            deleteServerDescription(serverDescription, deletedBy);
-        });
+        serverDescriptions.forEach((serverDescription) -> 
+                deleteServerDescription(serverDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -9781,9 +9760,9 @@ public class CoreControl
         List<ServerServiceTransfer> serverServiceTransfers = new ArrayList<>(serverServices.size());
         ServerServiceTransferCache serverServiceTransferCache = getCoreTransferCaches(userVisit).getServerServiceTransferCache();
 
-        serverServices.stream().forEach((serverService) -> {
-            serverServiceTransfers.add(serverServiceTransferCache.getServerServiceTransfer(serverService));
-        });
+        serverServices.forEach((serverService) ->
+                serverServiceTransfers.add(serverServiceTransferCache.getServerServiceTransfer(serverService))
+        );
 
         return serverServiceTransfers;
     }
@@ -9800,9 +9779,9 @@ public class CoreControl
     }
 
     public void deleteServerServices(List<ServerService> serverServices, BasePK deletedBy) {
-        serverServices.stream().forEach((serverService) -> {
-            deleteServerService(serverService, deletedBy);
-        });
+        serverServices.forEach((serverService) -> 
+                deleteServerService(serverService, deletedBy)
+        );
     }
 
     public void deleteServerServicesByServer(Server server, BasePK deletedBy) {
@@ -9956,9 +9935,9 @@ public class CoreControl
     }
     
     public void deleteEntityBooleanAttributes(List<EntityBooleanAttribute> entityBooleanAttributes, BasePK deletedBy) {
-        entityBooleanAttributes.stream().forEach((entityBooleanAttribute) -> {
-            deleteEntityBooleanAttribute(entityBooleanAttribute, deletedBy);
-        });
+        entityBooleanAttributes.forEach((entityBooleanAttribute) -> 
+                deleteEntityBooleanAttribute(entityBooleanAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityBooleanAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10109,9 +10088,9 @@ public class CoreControl
     }
     
     public void deleteEntityDateAttributes(List<EntityDateAttribute> entityDateAttributes, BasePK deletedBy) {
-        entityDateAttributes.stream().forEach((entityDateAttribute) -> {
-            deleteEntityDateAttribute(entityDateAttribute, deletedBy);
-        });
+        entityDateAttributes.forEach((entityDateAttribute) -> 
+                deleteEntityDateAttribute(entityDateAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityDateAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10263,9 +10242,9 @@ public class CoreControl
     }
     
     public void deleteEntityIntegerAttributes(List<EntityIntegerAttribute> entityIntegerAttributes, BasePK deletedBy) {
-        entityIntegerAttributes.stream().forEach((entityIntegerAttribute) -> {
-            deleteEntityIntegerAttribute(entityIntegerAttribute, deletedBy);
-        });
+        entityIntegerAttributes.forEach((entityIntegerAttribute) -> 
+                deleteEntityIntegerAttribute(entityIntegerAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityIntegerAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10339,7 +10318,7 @@ public class CoreControl
     }
     
     private List<EntityListItemAttribute> getEntityListItemAttributesByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityListItemAttribute> entityListItemAttributes = null;
+        List<EntityListItemAttribute> entityListItemAttributes;
         
         try {
             String query = null;
@@ -10379,7 +10358,7 @@ public class CoreControl
     }
     
     public List<EntityListItemAttribute> getEntityListItemAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityListItemAttribute> entityListItemAttributes = null;
+        List<EntityListItemAttribute> entityListItemAttributes;
         
         try {
             PreparedStatement ps = EntityListItemAttributeFactory.getInstance().prepareStatement(
@@ -10437,9 +10416,9 @@ public class CoreControl
     }
     
     public void deleteEntityListItemAttributes(List<EntityListItemAttribute> entityListItemAttributes, BasePK deletedBy) {
-        entityListItemAttributes.stream().forEach((entityListItemAttribute) -> {
-            deleteEntityListItemAttribute(entityListItemAttribute, deletedBy);
-        });
+        entityListItemAttributes.forEach((entityListItemAttribute) -> 
+                deleteEntityListItemAttribute(entityListItemAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityListItemAttributesByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
@@ -10592,9 +10571,9 @@ public class CoreControl
     }
     
     public void deleteEntityLongAttributes(List<EntityLongAttribute> entityLongAttributes, BasePK deletedBy) {
-        entityLongAttributes.stream().forEach((entityLongAttribute) -> {
-            deleteEntityLongAttribute(entityLongAttribute, deletedBy);
-        });
+        entityLongAttributes.forEach((entityLongAttribute) -> 
+                deleteEntityLongAttribute(entityLongAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityLongAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10620,7 +10599,7 @@ public class CoreControl
     }
     
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = null;
+        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
             PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
@@ -10690,7 +10669,7 @@ public class CoreControl
     }
     
     private List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributesByEntityListItem(EntityListItem entityListItem, EntityPermission entityPermission) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = null;
+        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
             String query = null;
@@ -10730,7 +10709,7 @@ public class CoreControl
     }
     
     public List<EntityMultipleListItemAttribute> getEntityMultipleListItemAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = null;
+        List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
             PreparedStatement ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
@@ -10759,7 +10738,7 @@ public class CoreControl
         List<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributeTransfers = new ArrayList<>(entityMultipleListItemAttributes.size());
         EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache();
         
-        entityMultipleListItemAttributes.stream().forEach((entityMultipleListItemAttribute) -> {
+        entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> {
             entityMultipleListItemAttributeTransfers.add(entityMultipleListItemAttributeTransferCache.getEntityMultipleListItemAttributeTransfer(entityMultipleListItemAttribute, entityInstance));
         });
         
@@ -10785,9 +10764,9 @@ public class CoreControl
     }
     
     public void deleteEntityMultipleListItemAttributes(List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes, BasePK deletedBy) {
-        entityMultipleListItemAttributes.stream().forEach((entityMultipleListItemAttribute) -> {
-            deleteEntityMultipleListItemAttribute(entityMultipleListItemAttribute, deletedBy);
-        });
+        entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> 
+                deleteEntityMultipleListItemAttribute(entityMultipleListItemAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityMultipleListItemAttributesByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
@@ -10861,7 +10840,7 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityNameAttribute> entityNameAttributes = null;
+        List<EntityNameAttribute> entityNameAttributes;
         
         try {
             PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
@@ -10882,7 +10861,7 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityNameAttribute> entityNameAttributes = null;
+        List<EntityNameAttribute> entityNameAttributes;
         
         try {
             PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
@@ -10940,9 +10919,9 @@ public class CoreControl
     }
     
     public void deleteEntityNameAttributes(List<EntityNameAttribute> entityNameAttributes, BasePK deletedBy) {
-        entityNameAttributes.stream().forEach((entityNameAttribute) -> {
-            deleteEntityNameAttribute(entityNameAttribute, deletedBy);
-        });
+        entityNameAttributes.forEach((entityNameAttribute) -> 
+                deleteEntityNameAttribute(entityNameAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityNameAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -10954,7 +10933,7 @@ public class CoreControl
     }
     
     public List<EntityNameAttribute> getEntityNameAttributesByName(EntityAttribute entityAttribute, String nameAttribute) {
-        List<EntityNameAttribute> entityNameAttributes = null;
+        List<EntityNameAttribute> entityNameAttributes;
         
         try {
             PreparedStatement ps = EntityNameAttributeFactory.getInstance().prepareStatement(
@@ -11048,7 +11027,7 @@ public class CoreControl
     }
     
     public List<EntityStringAttribute> getEntityStringAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityStringAttribute> entityStringAttributes = null;
+        List<EntityStringAttribute> entityStringAttributes;
         
         try {
             PreparedStatement ps = EntityStringAttributeFactory.getInstance().prepareStatement(
@@ -11069,7 +11048,7 @@ public class CoreControl
     }
     
     public List<EntityStringAttribute> getEntityStringAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityStringAttribute> entityStringAttributes = null;
+        List<EntityStringAttribute> entityStringAttributes;
         
         try {
             PreparedStatement ps = EntityStringAttributeFactory.getInstance().prepareStatement(
@@ -11128,9 +11107,9 @@ public class CoreControl
     }
     
     public void deleteEntityStringAttributes(List<EntityStringAttribute> entityStringAttributes, BasePK deletedBy) {
-        entityStringAttributes.stream().forEach((entityStringAttribute) -> {
-            deleteEntityStringAttribute(entityStringAttribute, deletedBy);
-        });
+        entityStringAttributes.forEach((entityStringAttribute) -> 
+                deleteEntityStringAttribute(entityStringAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityStringAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11284,9 +11263,9 @@ public class CoreControl
     }
     
     public void deleteEntityGeoPointAttributes(List<EntityGeoPointAttribute> entityGeoPointAttributes, BasePK deletedBy) {
-        entityGeoPointAttributes.stream().forEach((entityGeoPointAttribute) -> {
-            deleteEntityGeoPointAttribute(entityGeoPointAttribute, deletedBy);
-        });
+        entityGeoPointAttributes.forEach((entityGeoPointAttribute) -> 
+                deleteEntityGeoPointAttribute(entityGeoPointAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityGeoPointAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11358,7 +11337,7 @@ public class CoreControl
     }
     
     public List<EntityTimeAttribute> getEntityTimeAttributesByEntityAttributeForUpdate(EntityAttribute entityAttribute) {
-        List<EntityTimeAttribute> entityTimeAttributes = null;
+        List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
             PreparedStatement ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
@@ -11379,7 +11358,7 @@ public class CoreControl
     }
     
     public List<EntityTimeAttribute> getEntityTimeAttributesByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        List<EntityTimeAttribute> entityTimeAttributes = null;
+        List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
             PreparedStatement ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
@@ -11437,9 +11416,9 @@ public class CoreControl
     }
     
     public void deleteEntityTimeAttributes(List<EntityTimeAttribute> entityTimeAttributes, BasePK deletedBy) {
-        entityTimeAttributes.stream().forEach((entityTimeAttribute) -> {
-            deleteEntityTimeAttribute(entityTimeAttribute, deletedBy);
-        });
+        entityTimeAttributes.forEach((entityTimeAttribute) -> 
+                deleteEntityTimeAttribute(entityTimeAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityTimeAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11606,9 +11585,9 @@ public class CoreControl
     }
     
     public void deleteEntityBlobAttributes(List<EntityBlobAttribute> entityBlobAttributes, BasePK deletedBy) {
-        entityBlobAttributes.stream().forEach((entityBlobAttribute) -> {
-            deleteEntityBlobAttribute(entityBlobAttribute, deletedBy);
-        });
+        entityBlobAttributes.forEach((entityBlobAttribute) -> 
+                deleteEntityBlobAttribute(entityBlobAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityBlobAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11775,9 +11754,9 @@ public class CoreControl
     }
     
     public void deleteEntityClobAttributes(List<EntityClobAttribute> entityClobAttributes, BasePK deletedBy) {
-        entityClobAttributes.stream().forEach((entityClobAttribute) -> {
-            deleteEntityClobAttribute(entityClobAttribute, deletedBy);
-        });
+        entityClobAttributes.forEach((entityClobAttribute) -> 
+                deleteEntityClobAttribute(entityClobAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityClobAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -11928,7 +11907,7 @@ public class CoreControl
         List<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypeTransfers = new ArrayList<>(entityAttributeEntityTypes.size());
         EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache();
 
-        entityAttributeEntityTypes.stream().forEach((entityAttributeEntityType) -> {
+        entityAttributeEntityTypes.forEach((entityAttributeEntityType) -> {
             entityAttributeEntityTypeTransfers.add(entityAttributeEntityTypeTransferCache.getEntityAttributeEntityTypeTransfer(entityAttributeEntityType, entityInstance));
         });
 
@@ -11950,9 +11929,9 @@ public class CoreControl
     }
     
     public void deleteEntityAttributeEntityTypes(List<EntityAttributeEntityType> entityAttributeEntityTypes, BasePK deletedBy) {
-        entityAttributeEntityTypes.stream().forEach((entityAttributeEntityType) -> {
-            deleteEntityAttributeEntityType(entityAttributeEntityType, deletedBy);
-        });
+        entityAttributeEntityTypes.forEach((entityAttributeEntityType) -> 
+                deleteEntityAttributeEntityType(entityAttributeEntityType, deletedBy)
+        );
     }
     
     public void deleteEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -12127,9 +12106,9 @@ public class CoreControl
     }
     
     public void deleteEntityEntityAttributes(List<EntityEntityAttribute> entityEntityAttributes, BasePK deletedBy) {
-        entityEntityAttributes.stream().forEach((entityEntityAttribute) -> {
-            deleteEntityEntityAttribute(entityEntityAttribute, deletedBy);
-        });
+        entityEntityAttributes.forEach((entityEntityAttribute) -> 
+                deleteEntityEntityAttribute(entityEntityAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityEntityAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -12156,7 +12135,7 @@ public class CoreControl
     }
     
     public List<EntityCollectionAttribute> getEntityCollectionAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        List<EntityCollectionAttribute> entityCollectionAttributes = null;
+        List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
             PreparedStatement ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
@@ -12298,7 +12277,7 @@ public class CoreControl
         List<EntityCollectionAttributeTransfer> entityCollectionAttributeTransfers = new ArrayList<>(entityCollectionAttributes.size());
         EntityCollectionAttributeTransferCache entityCollectionAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache();
         
-        entityCollectionAttributes.stream().forEach((entityCollectionAttribute) -> {
+        entityCollectionAttributes.forEach((entityCollectionAttribute) -> {
             entityCollectionAttributeTransfers.add(entityCollectionAttributeTransferCache.getEntityCollectionAttributeTransfer(entityCollectionAttribute, entityInstance));
         });
         
@@ -12324,9 +12303,9 @@ public class CoreControl
     }
     
     public void deleteEntityCollectionAttributes(List<EntityCollectionAttribute> entityCollectionAttributes, BasePK deletedBy) {
-        entityCollectionAttributes.stream().forEach((entityCollectionAttribute) -> {
-            deleteEntityCollectionAttribute(entityCollectionAttribute, deletedBy);
-        });
+        entityCollectionAttributes.forEach((entityCollectionAttribute) -> 
+                deleteEntityCollectionAttribute(entityCollectionAttribute, deletedBy)
+        );
     }
     
     public void deleteEntityCollectionAttributesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -12540,9 +12519,9 @@ public class CoreControl
         List<BaseEncryptionKeyTransfer> baseEncryptionKeyTransfers = new ArrayList<>(baseEncryptionKeys.size());
         BaseEncryptionKeyTransferCache baseEncryptionKeyTransferCache = getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache();
         
-        baseEncryptionKeys.stream().forEach((baseEncryptionKey) -> {
-            baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(baseEncryptionKey));
-        });
+        baseEncryptionKeys.forEach((baseEncryptionKey) ->
+                baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(baseEncryptionKey))
+        );
         
         return baseEncryptionKeyTransfers;
     }
@@ -12713,7 +12692,7 @@ public class CoreControl
     }
     
     private List<EventSubscriber> getEventSubscribersByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<EventSubscriber> eventSubscribers = null;
+        List<EventSubscriber> eventSubscribers;
         
         try {
             String query = null;
@@ -12779,9 +12758,9 @@ public class CoreControl
     }
     
     public void deleteEventSubscribers(List<EventSubscriber> eventSubscribers, BasePK deletedBy) {
-        eventSubscribers.stream().forEach((eventSubscriber) -> {
-            deleteEventSubscriber(eventSubscriber, deletedBy);
-        });
+        eventSubscribers.forEach((eventSubscriber) -> 
+                deleteEventSubscriber(eventSubscriber, deletedBy)
+        );
     }
     
     public void deleteEventSubscribersByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
@@ -12798,7 +12777,7 @@ public class CoreControl
     
     private List<QueuedSubscriberEvent> getQueuedSubscriberEventsByEventSubscriber(EventSubscriber eventSubscriber,
             EntityPermission entityPermission) {
-        List<QueuedSubscriberEvent> queuedSubscriberEvents = null;
+        List<QueuedSubscriberEvent> queuedSubscriberEvents;
         
         try {
             String query = null;
@@ -12841,7 +12820,7 @@ public class CoreControl
     }
     
     public void removeQueuedSubscriberEvents(List<QueuedSubscriberEvent> queuedSubscriberEvents) {
-        queuedSubscriberEvents.stream().forEach((queuedSubscriberEvent) -> {
+        queuedSubscriberEvents.forEach((queuedSubscriberEvent) -> {
             removeQueuedSubscriberEvent(queuedSubscriberEvent);
         });
     }
@@ -12865,7 +12844,7 @@ public class CoreControl
     }
     
     private List<EventSubscriberEventType> getEventSubscriberEventTypes(EventType eventType, EntityPermission entityPermission) {
-        List<EventSubscriberEventType> eventSubscriberEventTypes = null;
+        List<EventSubscriberEventType> eventSubscriberEventTypes;
         
         try {
             String query = null;
@@ -12920,7 +12899,7 @@ public class CoreControl
     
     private List<EventSubscriberEntityType> getEventSubscriberEntityTypes(EntityType entityType, EventType eventType, 
             EntityPermission entityPermission) {
-        List<EventSubscriberEntityType> eventSubscriberEntityTypes = null;
+        List<EventSubscriberEntityType> eventSubscriberEntityTypes;
         
         try {
             String query = null;
@@ -12976,7 +12955,7 @@ public class CoreControl
     
     private List<EventSubscriberEntityInstance> getEventSubscriberEntityInstances(EntityInstance entityInstance, 
             EventType eventType, EntityPermission entityPermission) {
-        List<EventSubscriberEntityInstance> eventSubscriberEntityInstances = null;
+        List<EventSubscriberEntityInstance> eventSubscriberEntityInstances;
         
         try {
             String query = null;
@@ -13220,7 +13199,7 @@ public class CoreControl
     }
 
     private List<PartyEntityType> getPartyEntityTypesByParty(Party party, EntityPermission entityPermission) {
-        List<PartyEntityType> partyEntityTypes = null;
+        List<PartyEntityType> partyEntityTypes;
 
         try {
             String query = null;
@@ -13269,9 +13248,9 @@ public class CoreControl
         List<PartyEntityTypeTransfer> partyEntityTypeTransfers = new ArrayList<>(partyEntityTypes.size());
         PartyEntityTypeTransferCache partyEntityTypeTransferCache = getCoreTransferCaches(userVisit).getPartyEntityTypeTransferCache();
 
-        partyEntityTypes.stream().forEach((partyEntityType) -> {
-            partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType));
-        });
+        partyEntityTypes.forEach((partyEntityType) ->
+                partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType))
+        );
 
         return partyEntityTypeTransfers;
     }
@@ -13300,7 +13279,7 @@ public class CoreControl
     }
 
     public void deletePartyEntityTypesByParty(Party party, BasePK deletedBy) {
-        getPartyEntityTypesByPartyForUpdate(party).stream().forEach((partyEntityType) -> {
+        getPartyEntityTypesByPartyForUpdate(party).forEach((partyEntityType) -> {
             deletePartyEntityType(partyEntityType, deletedBy);
         });
     }
@@ -13339,10 +13318,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Application */
     public Application getApplicationByEntityInstance(EntityInstance entityInstance) {
-        ApplicationPK pk = new ApplicationPK(entityInstance.getEntityUniqueId());
-        Application application = ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var pk = new ApplicationPK(entityInstance.getEntityUniqueId());
 
-        return application;
+        return ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     private static final Map<EntityPermission, String> getApplicationByNameQueries;
@@ -13459,9 +13437,9 @@ public class CoreControl
         List<ApplicationTransfer> applicationTransfers = new ArrayList<>(applications.size());
         ApplicationTransferCache applicationTransferCache = getCoreTransferCaches(userVisit).getApplicationTransferCache();
 
-        applications.stream().forEach((application) -> {
-            applicationTransfers.add(applicationTransferCache.getApplicationTransfer(application));
-        });
+        applications.forEach((application) ->
+                applicationTransfers.add(applicationTransferCache.getApplicationTransfer(application))
+        );
 
         return applicationTransfers;
     }
@@ -13491,7 +13469,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationChoice == null? false: defaultApplicationChoice.equals(value);
+            boolean usingDefaultChoice = defaultApplicationChoice != null && defaultApplicationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -13567,7 +13545,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultApplication = iter.next();
                     }
-                    ApplicationDetailValue applicationDetailValue = defaultApplication.getLastDetailForUpdate().getApplicationDetailValue().clone();
+                    ApplicationDetailValue applicationDetailValue = Objects.requireNonNull(defaultApplication).getLastDetailForUpdate().getApplicationDetailValue().clone();
 
                     applicationDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationFromValue(applicationDetailValue, false, deletedBy);
@@ -13583,9 +13561,7 @@ public class CoreControl
     }
 
     private void deleteApplications(List<Application> applications, boolean checkDefault, BasePK deletedBy) {
-        applications.stream().forEach((application) -> {
-            deleteApplication(application, checkDefault, deletedBy);
-        });
+        applications.forEach((application) -> deleteApplication(application, checkDefault, deletedBy));
     }
 
     public void deleteApplications(List<Application> applications, BasePK deletedBy) {
@@ -13700,9 +13676,9 @@ public class CoreControl
         List<ApplicationDescriptionTransfer> applicationDescriptionTransfers = new ArrayList<>(applicationDescriptions.size());
         ApplicationDescriptionTransferCache applicationDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationDescriptionTransferCache();
 
-        applicationDescriptions.stream().forEach((applicationDescription) -> {
-            applicationDescriptionTransfers.add(applicationDescriptionTransferCache.getApplicationDescriptionTransfer(applicationDescription));
-        });
+        applicationDescriptions.forEach((applicationDescription) ->
+                applicationDescriptionTransfers.add(applicationDescriptionTransferCache.getApplicationDescriptionTransfer(applicationDescription))
+        );
 
         return applicationDescriptionTransfers;
     }
@@ -13736,9 +13712,9 @@ public class CoreControl
     public void deleteApplicationDescriptionsByApplication(Application application, BasePK deletedBy) {
         List<ApplicationDescription> applicationDescriptions = getApplicationDescriptionsByApplicationForUpdate(application);
 
-        applicationDescriptions.stream().forEach((applicationDescription) -> {
-            deleteApplicationDescription(applicationDescription, deletedBy);
-        });
+        applicationDescriptions.forEach((applicationDescription) -> 
+                deleteApplicationDescription(applicationDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -13888,9 +13864,9 @@ public class CoreControl
         List<EditorTransfer> editorTransfers = new ArrayList<>(editors.size());
         EditorTransferCache editorTransferCache = getCoreTransferCaches(userVisit).getEditorTransferCache();
 
-        editors.stream().forEach((editor) -> {
-            editorTransfers.add(editorTransferCache.getEditorTransfer(editor));
-        });
+        editors.forEach((editor) ->
+                editorTransfers.add(editorTransferCache.getEditorTransfer(editor))
+        );
 
         return editorTransfers;
     }
@@ -13920,7 +13896,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultEditorChoice == null? false: defaultEditorChoice.equals(value);
+            boolean usingDefaultChoice = defaultEditorChoice != null && defaultEditorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && editorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -14002,7 +13978,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultEditor = iter.next();
                     }
-                    EditorDetailValue editorDetailValue = defaultEditor.getLastDetailForUpdate().getEditorDetailValue().clone();
+                    EditorDetailValue editorDetailValue = Objects.requireNonNull(defaultEditor).getLastDetailForUpdate().getEditorDetailValue().clone();
 
                     editorDetailValue.setIsDefault(Boolean.TRUE);
                     updateEditorFromValue(editorDetailValue, false, deletedBy);
@@ -14018,9 +13994,7 @@ public class CoreControl
     }
 
     private void deleteEditors(List<Editor> editors, boolean checkDefault, BasePK deletedBy) {
-        editors.stream().forEach((editor) -> {
-            deleteEditor(editor, checkDefault, deletedBy);
-        });
+        editors.forEach((editor) -> deleteEditor(editor, checkDefault, deletedBy));
     }
 
     public void deleteEditors(List<Editor> editors, BasePK deletedBy) {
@@ -14135,9 +14109,9 @@ public class CoreControl
         List<EditorDescriptionTransfer> editorDescriptionTransfers = new ArrayList<>(editorDescriptions.size());
         EditorDescriptionTransferCache editorDescriptionTransferCache = getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache();
 
-        editorDescriptions.stream().forEach((editorDescription) -> {
-            editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(editorDescription));
-        });
+        editorDescriptions.forEach((editorDescription) ->
+                editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(editorDescription))
+        );
 
         return editorDescriptionTransfers;
     }
@@ -14171,9 +14145,9 @@ public class CoreControl
     public void deleteEditorDescriptionsByEditor(Editor editor, BasePK deletedBy) {
         List<EditorDescription> editorDescriptions = getEditorDescriptionsByEditorForUpdate(editor);
 
-        editorDescriptions.stream().forEach((editorDescription) -> {
-            deleteEditorDescription(editorDescription, deletedBy);
-        });
+        editorDescriptions.forEach((editorDescription) -> 
+                deleteEditorDescription(editorDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -14358,9 +14332,9 @@ public class CoreControl
         List<ApplicationEditorTransfer> applicationEditorTransfers = new ArrayList<>(applicationEditors.size());
         ApplicationEditorTransferCache applicationEditorTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorTransferCache();
 
-        applicationEditors.stream().forEach((applicationEditor) -> {
-            applicationEditorTransfers.add(applicationEditorTransferCache.getApplicationEditorTransfer(applicationEditor));
-        });
+        applicationEditors.forEach((applicationEditor) ->
+                applicationEditorTransfers.add(applicationEditorTransferCache.getApplicationEditorTransfer(applicationEditor))
+        );
 
         return applicationEditorTransfers;
     }
@@ -14400,7 +14374,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationEditorChoice == null? false: defaultApplicationEditorChoice.equals(value);
+            boolean usingDefaultChoice = defaultApplicationEditorChoice != null && defaultApplicationEditorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationEditorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -14478,7 +14452,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultApplicationEditor = iter.next();
                     }
-                    ApplicationEditorDetailValue applicationEditorDetailValue = defaultApplicationEditor.getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
+                    ApplicationEditorDetailValue applicationEditorDetailValue = Objects.requireNonNull(defaultApplicationEditor).getLastDetailForUpdate().getApplicationEditorDetailValue().clone();
 
                     applicationEditorDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationEditorFromValue(applicationEditorDetailValue, false, deletedBy);
@@ -14494,9 +14468,7 @@ public class CoreControl
     }
 
     private void deleteApplicationEditors(List<ApplicationEditor> applicationEditors, boolean checkDefault, BasePK deletedBy) {
-        applicationEditors.stream().forEach((applicationEditor) -> {
-            deleteApplicationEditor(applicationEditor, checkDefault, deletedBy);
-        });
+        applicationEditors.forEach((applicationEditor) -> deleteApplicationEditor(applicationEditor, checkDefault, deletedBy));
     }
 
     public void deleteApplicationEditors(List<ApplicationEditor> applicationEditors, BasePK deletedBy) {
@@ -14695,9 +14667,9 @@ public class CoreControl
         List<ApplicationEditorUseTransfer> applicationEditorUseTransfers = new ArrayList<>(applicationEditorUses.size());
         ApplicationEditorUseTransferCache applicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseTransferCache();
 
-        applicationEditorUses.stream().forEach((applicationEditorUse) -> {
-            applicationEditorUseTransfers.add(applicationEditorUseTransferCache.getApplicationEditorUseTransfer(applicationEditorUse));
-        });
+        applicationEditorUses.forEach((applicationEditorUse) ->
+                applicationEditorUseTransfers.add(applicationEditorUseTransferCache.getApplicationEditorUseTransfer(applicationEditorUse))
+        );
 
         return applicationEditorUseTransfers;
     }
@@ -14736,7 +14708,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationEditorUseChoice == null? false: defaultApplicationEditorUseChoice.equals(value);
+            boolean usingDefaultChoice = defaultApplicationEditorUseChoice != null && defaultApplicationEditorUseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationEditorUseDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -14817,7 +14789,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultApplicationEditorUse = iter.next();
                     }
-                    ApplicationEditorUseDetailValue applicationEditorUseDetailValue = defaultApplicationEditorUse.getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
+                    ApplicationEditorUseDetailValue applicationEditorUseDetailValue = Objects.requireNonNull(defaultApplicationEditorUse).getLastDetailForUpdate().getApplicationEditorUseDetailValue().clone();
 
                     applicationEditorUseDetailValue.setIsDefault(Boolean.TRUE);
                     updateApplicationEditorUseFromValue(applicationEditorUseDetailValue, false, deletedBy);
@@ -14833,9 +14805,7 @@ public class CoreControl
     }
 
     private void deleteApplicationEditorUses(List<ApplicationEditorUse> applicationEditorUses, boolean checkDefault, BasePK deletedBy) {
-        applicationEditorUses.stream().forEach((applicationEditorUse) -> {
-            deleteApplicationEditorUse(applicationEditorUse, checkDefault, deletedBy);
-        });
+        applicationEditorUses.forEach((applicationEditorUse) -> deleteApplicationEditorUse(applicationEditorUse, checkDefault, deletedBy));
     }
 
     public void deleteApplicationEditorUses(List<ApplicationEditorUse> applicationEditorUses, BasePK deletedBy) {
@@ -14959,9 +14929,9 @@ public class CoreControl
         List<ApplicationEditorUseDescriptionTransfer> applicationEditorUseDescriptionTransfers = new ArrayList<>(applicationEditorUseDescriptions.size());
         ApplicationEditorUseDescriptionTransferCache applicationEditorUseDescriptionTransferCache = getCoreTransferCaches(userVisit).getApplicationEditorUseDescriptionTransferCache();
 
-        applicationEditorUseDescriptions.stream().forEach((applicationEditorUseDescription) -> {
-            applicationEditorUseDescriptionTransfers.add(applicationEditorUseDescriptionTransferCache.getApplicationEditorUseDescriptionTransfer(applicationEditorUseDescription));
-        });
+        applicationEditorUseDescriptions.forEach((applicationEditorUseDescription) ->
+                applicationEditorUseDescriptionTransfers.add(applicationEditorUseDescriptionTransferCache.getApplicationEditorUseDescriptionTransfer(applicationEditorUseDescription))
+        );
 
         return applicationEditorUseDescriptionTransfers;
     }
@@ -14995,9 +14965,9 @@ public class CoreControl
     public void deleteApplicationEditorUseDescriptionsByApplicationEditorUse(ApplicationEditorUse applicationEditorUse, BasePK deletedBy) {
         List<ApplicationEditorUseDescription> applicationEditorUseDescriptions = getApplicationEditorUseDescriptionsByApplicationEditorUseForUpdate(applicationEditorUse);
 
-        applicationEditorUseDescriptions.stream().forEach((applicationEditorUseDescription) -> {
-            deleteApplicationEditorUseDescription(applicationEditorUseDescription, deletedBy);
-        });
+        applicationEditorUseDescriptions.forEach((applicationEditorUseDescription) -> 
+                deleteApplicationEditorUseDescription(applicationEditorUseDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -15171,9 +15141,9 @@ public class CoreControl
         List<PartyApplicationEditorUseTransfer> partyApplicationEditorUseTransfers = new ArrayList<>(partyApplicationEditorUses.size());
         PartyApplicationEditorUseTransferCache partyApplicationEditorUseTransferCache = getCoreTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache();
 
-        partyApplicationEditorUses.stream().forEach((partyApplicationEditorUse) -> {
-            partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(partyApplicationEditorUse));
-        });
+        partyApplicationEditorUses.forEach((partyApplicationEditorUse) ->
+                partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(partyApplicationEditorUse))
+        );
 
         return partyApplicationEditorUseTransfers;
     }
@@ -15227,9 +15197,9 @@ public class CoreControl
     }
 
     public void deletePartyApplicationEditorUses(List<PartyApplicationEditorUse> partyApplicationEditorUses, BasePK deletedBy) {
-        partyApplicationEditorUses.stream().forEach((partyApplicationEditorUse) -> {
-            deletePartyApplicationEditorUse(partyApplicationEditorUse, deletedBy);
-        });
+        partyApplicationEditorUses.forEach((partyApplicationEditorUse) -> 
+                deletePartyApplicationEditorUse(partyApplicationEditorUse, deletedBy)
+        );
     }
 
     public void deletePartyApplicationEditorUsesByParty(Party party, BasePK deletedBy) {
@@ -15278,10 +15248,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Color */
     public Color getColorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        ColorPK pk = new ColorPK(entityInstance.getEntityUniqueId());
-        Color entity = ColorFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new ColorPK(entityInstance.getEntityUniqueId());
+
+        return ColorFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Color getColorByEntityInstance(EntityInstance entityInstance) {
@@ -15405,9 +15374,9 @@ public class CoreControl
         List<ColorTransfer> transfers = new ArrayList<>(entities.size());
         ColorTransferCache transferCache = getCoreTransferCaches(userVisit).getColorTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getColorTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getColorTransfer(entity))
+        );
         
         return transfers;
     }
@@ -15441,7 +15410,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultColorChoice == null? false: defaultColorChoice.equals(value);
+            boolean usingDefaultChoice = defaultColorChoice != null && defaultColorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && colorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -15519,7 +15488,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultColor = iter.next();
                     }
-                    ColorDetailValue colorDetailValue = defaultColor.getLastDetailForUpdate().getColorDetailValue().clone();
+                    ColorDetailValue colorDetailValue = Objects.requireNonNull(defaultColor).getLastDetailForUpdate().getColorDetailValue().clone();
 
                     colorDetailValue.setIsDefault(Boolean.TRUE);
                     updateColorFromValue(colorDetailValue, false, deletedBy);
@@ -15535,9 +15504,7 @@ public class CoreControl
     }
 
     private void deleteColors(List<Color> colors, boolean checkDefault, BasePK deletedBy) {
-        colors.stream().forEach((color) -> {
-            deleteColor(color, checkDefault, deletedBy);
-        });
+        colors.forEach((color) -> deleteColor(color, checkDefault, deletedBy));
     }
 
     public void deleteColors(List<Color> colors, BasePK deletedBy) {
@@ -15652,9 +15619,9 @@ public class CoreControl
         List<ColorDescriptionTransfer> colorDescriptionTransfers = new ArrayList<>(colorDescriptions.size());
         ColorDescriptionTransferCache colorDescriptionTransferCache = getCoreTransferCaches(userVisit).getColorDescriptionTransferCache();
 
-        colorDescriptions.stream().forEach((colorDescription) -> {
-            colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription));
-        });
+        colorDescriptions.forEach((colorDescription) ->
+                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription))
+        );
 
         return colorDescriptionTransfers;
     }
@@ -15688,9 +15655,9 @@ public class CoreControl
     public void deleteColorDescriptionsByColor(Color color, BasePK deletedBy) {
         List<ColorDescription> colorDescriptions = getColorDescriptionsByColorForUpdate(color);
 
-        colorDescriptions.stream().forEach((colorDescription) -> {
-            deleteColorDescription(colorDescription, deletedBy);
-        });
+        colorDescriptions.forEach((colorDescription) -> 
+                deleteColorDescription(colorDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -15727,10 +15694,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.FontStyle */
     public FontStyle getFontStyleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        FontStylePK pk = new FontStylePK(entityInstance.getEntityUniqueId());
-        FontStyle entity = FontStyleFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new FontStylePK(entityInstance.getEntityUniqueId());
+
+        return FontStyleFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public FontStyle getFontStyleByEntityInstance(EntityInstance entityInstance) {
@@ -15854,9 +15820,9 @@ public class CoreControl
         List<FontStyleTransfer> transfers = new ArrayList<>(entities.size());
         FontStyleTransferCache transferCache = getCoreTransferCaches(userVisit).getFontStyleTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getFontStyleTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getFontStyleTransfer(entity))
+        );
         
         return transfers;
     }
@@ -15890,7 +15856,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFontStyleChoice == null? false: defaultFontStyleChoice.equals(value);
+            boolean usingDefaultChoice = defaultFontStyleChoice != null && defaultFontStyleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && fontStyleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -15965,7 +15931,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultFontStyle = iter.next();
                     }
-                    FontStyleDetailValue fontStyleDetailValue = defaultFontStyle.getLastDetailForUpdate().getFontStyleDetailValue().clone();
+                    FontStyleDetailValue fontStyleDetailValue = Objects.requireNonNull(defaultFontStyle).getLastDetailForUpdate().getFontStyleDetailValue().clone();
 
                     fontStyleDetailValue.setIsDefault(Boolean.TRUE);
                     updateFontStyleFromValue(fontStyleDetailValue, false, deletedBy);
@@ -15981,9 +15947,7 @@ public class CoreControl
     }
 
     private void deleteFontStyles(List<FontStyle> fontStyles, boolean checkDefault, BasePK deletedBy) {
-        fontStyles.stream().forEach((fontStyle) -> {
-            deleteFontStyle(fontStyle, checkDefault, deletedBy);
-        });
+        fontStyles.forEach((fontStyle) -> deleteFontStyle(fontStyle, checkDefault, deletedBy));
     }
 
     public void deleteFontStyles(List<FontStyle> fontStyles, BasePK deletedBy) {
@@ -16098,9 +16062,9 @@ public class CoreControl
         List<FontStyleDescriptionTransfer> fontStyleDescriptionTransfers = new ArrayList<>(fontStyleDescriptions.size());
         FontStyleDescriptionTransferCache fontStyleDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontStyleDescriptionTransferCache();
 
-        fontStyleDescriptions.stream().forEach((fontStyleDescription) -> {
-            fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(fontStyleDescription));
-        });
+        fontStyleDescriptions.forEach((fontStyleDescription) ->
+                fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(fontStyleDescription))
+        );
 
         return fontStyleDescriptionTransfers;
     }
@@ -16134,9 +16098,9 @@ public class CoreControl
     public void deleteFontStyleDescriptionsByFontStyle(FontStyle fontStyle, BasePK deletedBy) {
         List<FontStyleDescription> fontStyleDescriptions = getFontStyleDescriptionsByFontStyleForUpdate(fontStyle);
 
-        fontStyleDescriptions.stream().forEach((fontStyleDescription) -> {
-            deleteFontStyleDescription(fontStyleDescription, deletedBy);
-        });
+        fontStyleDescriptions.forEach((fontStyleDescription) -> 
+                deleteFontStyleDescription(fontStyleDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -16173,10 +16137,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.FontWeight */
     public FontWeight getFontWeightByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        FontWeightPK pk = new FontWeightPK(entityInstance.getEntityUniqueId());
-        FontWeight entity = FontWeightFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new FontWeightPK(entityInstance.getEntityUniqueId());
+
+        return FontWeightFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public FontWeight getFontWeightByEntityInstance(EntityInstance entityInstance) {
@@ -16300,9 +16263,9 @@ public class CoreControl
         List<FontWeightTransfer> transfers = new ArrayList<>(entities.size());
         FontWeightTransferCache transferCache = getCoreTransferCaches(userVisit).getFontWeightTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getFontWeightTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getFontWeightTransfer(entity))
+        );
         
         return transfers;
     }
@@ -16336,7 +16299,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFontWeightChoice == null? false: defaultFontWeightChoice.equals(value);
+            boolean usingDefaultChoice = defaultFontWeightChoice != null && defaultFontWeightChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && fontWeightDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -16411,7 +16374,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultFontWeight = iter.next();
                     }
-                    FontWeightDetailValue fontWeightDetailValue = defaultFontWeight.getLastDetailForUpdate().getFontWeightDetailValue().clone();
+                    FontWeightDetailValue fontWeightDetailValue = Objects.requireNonNull(defaultFontWeight).getLastDetailForUpdate().getFontWeightDetailValue().clone();
 
                     fontWeightDetailValue.setIsDefault(Boolean.TRUE);
                     updateFontWeightFromValue(fontWeightDetailValue, false, deletedBy);
@@ -16427,9 +16390,7 @@ public class CoreControl
     }
 
     private void deleteFontWeights(List<FontWeight> fontWeights, boolean checkDefault, BasePK deletedBy) {
-        fontWeights.stream().forEach((fontWeight) -> {
-            deleteFontWeight(fontWeight, checkDefault, deletedBy);
-        });
+        fontWeights.forEach((fontWeight) -> deleteFontWeight(fontWeight, checkDefault, deletedBy));
     }
 
     public void deleteFontWeights(List<FontWeight> fontWeights, BasePK deletedBy) {
@@ -16544,9 +16505,9 @@ public class CoreControl
         List<FontWeightDescriptionTransfer> fontWeightDescriptionTransfers = new ArrayList<>(fontWeightDescriptions.size());
         FontWeightDescriptionTransferCache fontWeightDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontWeightDescriptionTransferCache();
 
-        fontWeightDescriptions.stream().forEach((fontWeightDescription) -> {
-            fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(fontWeightDescription));
-        });
+        fontWeightDescriptions.forEach((fontWeightDescription) ->
+                fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(fontWeightDescription))
+        );
 
         return fontWeightDescriptionTransfers;
     }
@@ -16580,9 +16541,9 @@ public class CoreControl
     public void deleteFontWeightDescriptionsByFontWeight(FontWeight fontWeight, BasePK deletedBy) {
         List<FontWeightDescription> fontWeightDescriptions = getFontWeightDescriptionsByFontWeightForUpdate(fontWeight);
 
-        fontWeightDescriptions.stream().forEach((fontWeightDescription) -> {
-            deleteFontWeightDescription(fontWeightDescription, deletedBy);
-        });
+        fontWeightDescriptions.forEach((fontWeightDescription) -> 
+                deleteFontWeightDescription(fontWeightDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -16619,10 +16580,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.TextDecoration */
     public TextDecoration getTextDecorationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        TextDecorationPK pk = new TextDecorationPK(entityInstance.getEntityUniqueId());
-        TextDecoration entity = TextDecorationFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new TextDecorationPK(entityInstance.getEntityUniqueId());
+
+        return TextDecorationFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public TextDecoration getTextDecorationByEntityInstance(EntityInstance entityInstance) {
@@ -16746,9 +16706,9 @@ public class CoreControl
         List<TextDecorationTransfer> transfers = new ArrayList<>(entities.size());
         TextDecorationTransferCache transferCache = getCoreTransferCaches(userVisit).getTextDecorationTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getTextDecorationTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getTextDecorationTransfer(entity))
+        );
         
         return transfers;
     }
@@ -16782,7 +16742,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTextDecorationChoice == null? false: defaultTextDecorationChoice.equals(value);
+            boolean usingDefaultChoice = defaultTextDecorationChoice != null && defaultTextDecorationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && textDecorationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -16857,7 +16817,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultTextDecoration = iter.next();
                     }
-                    TextDecorationDetailValue textDecorationDetailValue = defaultTextDecoration.getLastDetailForUpdate().getTextDecorationDetailValue().clone();
+                    TextDecorationDetailValue textDecorationDetailValue = Objects.requireNonNull(defaultTextDecoration).getLastDetailForUpdate().getTextDecorationDetailValue().clone();
 
                     textDecorationDetailValue.setIsDefault(Boolean.TRUE);
                     updateTextDecorationFromValue(textDecorationDetailValue, false, deletedBy);
@@ -16873,9 +16833,7 @@ public class CoreControl
     }
 
     private void deleteTextDecorations(List<TextDecoration> textDecorations, boolean checkDefault, BasePK deletedBy) {
-        textDecorations.stream().forEach((textDecoration) -> {
-            deleteTextDecoration(textDecoration, checkDefault, deletedBy);
-        });
+        textDecorations.forEach((textDecoration) -> deleteTextDecoration(textDecoration, checkDefault, deletedBy));
     }
 
     public void deleteTextDecorations(List<TextDecoration> textDecorations, BasePK deletedBy) {
@@ -16990,9 +16948,9 @@ public class CoreControl
         List<TextDecorationDescriptionTransfer> textDecorationDescriptionTransfers = new ArrayList<>(textDecorationDescriptions.size());
         TextDecorationDescriptionTransferCache textDecorationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextDecorationDescriptionTransferCache();
 
-        textDecorationDescriptions.stream().forEach((textDecorationDescription) -> {
-            textDecorationDescriptionTransfers.add(textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(textDecorationDescription));
-        });
+        textDecorationDescriptions.forEach((textDecorationDescription) ->
+                textDecorationDescriptionTransfers.add(textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(textDecorationDescription))
+        );
 
         return textDecorationDescriptionTransfers;
     }
@@ -17026,9 +16984,9 @@ public class CoreControl
     public void deleteTextDecorationDescriptionsByTextDecoration(TextDecoration textDecoration, BasePK deletedBy) {
         List<TextDecorationDescription> textDecorationDescriptions = getTextDecorationDescriptionsByTextDecorationForUpdate(textDecoration);
 
-        textDecorationDescriptions.stream().forEach((textDecorationDescription) -> {
-            deleteTextDecorationDescription(textDecorationDescription, deletedBy);
-        });
+        textDecorationDescriptions.forEach((textDecorationDescription) -> 
+                deleteTextDecorationDescription(textDecorationDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -17065,10 +17023,9 @@ public class CoreControl
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.TextTransformation */
     public TextTransformation getTextTransformationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        TextTransformationPK pk = new TextTransformationPK(entityInstance.getEntityUniqueId());
-        TextTransformation entity = TextTransformationFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return entity;
+        var pk = new TextTransformationPK(entityInstance.getEntityUniqueId());
+
+        return TextTransformationFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public TextTransformation getTextTransformationByEntityInstance(EntityInstance entityInstance) {
@@ -17192,9 +17149,9 @@ public class CoreControl
         List<TextTransformationTransfer> transfers = new ArrayList<>(entities.size());
         TextTransformationTransferCache transferCache = getCoreTransferCaches(userVisit).getTextTransformationTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(transferCache.getTextTransformationTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(transferCache.getTextTransformationTransfer(entity))
+        );
         
         return transfers;
     }
@@ -17228,7 +17185,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTextTransformationChoice == null? false: defaultTextTransformationChoice.equals(value);
+            boolean usingDefaultChoice = defaultTextTransformationChoice != null && defaultTextTransformationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && textTransformationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -17303,7 +17260,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultTextTransformation = iter.next();
                     }
-                    TextTransformationDetailValue textTransformationDetailValue = defaultTextTransformation.getLastDetailForUpdate().getTextTransformationDetailValue().clone();
+                    TextTransformationDetailValue textTransformationDetailValue = Objects.requireNonNull(defaultTextTransformation).getLastDetailForUpdate().getTextTransformationDetailValue().clone();
 
                     textTransformationDetailValue.setIsDefault(Boolean.TRUE);
                     updateTextTransformationFromValue(textTransformationDetailValue, false, deletedBy);
@@ -17319,9 +17276,7 @@ public class CoreControl
     }
 
     private void deleteTextTransformations(List<TextTransformation> textTransformations, boolean checkDefault, BasePK deletedBy) {
-        textTransformations.stream().forEach((textTransformation) -> {
-            deleteTextTransformation(textTransformation, checkDefault, deletedBy);
-        });
+        textTransformations.forEach((textTransformation) -> deleteTextTransformation(textTransformation, checkDefault, deletedBy));
     }
 
     public void deleteTextTransformations(List<TextTransformation> textTransformations, BasePK deletedBy) {
@@ -17436,9 +17391,9 @@ public class CoreControl
         List<TextTransformationDescriptionTransfer> textTransformationDescriptionTransfers = new ArrayList<>(textTransformationDescriptions.size());
         TextTransformationDescriptionTransferCache textTransformationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextTransformationDescriptionTransferCache();
 
-        textTransformationDescriptions.stream().forEach((textTransformationDescription) -> {
-            textTransformationDescriptionTransfers.add(textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(textTransformationDescription));
-        });
+        textTransformationDescriptions.forEach((textTransformationDescription) ->
+                textTransformationDescriptionTransfers.add(textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(textTransformationDescription))
+        );
 
         return textTransformationDescriptionTransfers;
     }
@@ -17472,9 +17427,9 @@ public class CoreControl
     public void deleteTextTransformationDescriptionsByTextTransformation(TextTransformation textTransformation, BasePK deletedBy) {
         List<TextTransformationDescription> textTransformationDescriptions = getTextTransformationDescriptionsByTextTransformationForUpdate(textTransformation);
 
-        textTransformationDescriptions.stream().forEach((textTransformationDescription) -> {
-            deleteTextTransformationDescription(textTransformationDescription, deletedBy);
-        });
+        textTransformationDescriptions.forEach((textTransformationDescription) -> 
+                deleteTextTransformationDescription(textTransformationDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -17767,9 +17722,9 @@ public class CoreControl
         List<AppearanceTransfer> appearanceTransfers = new ArrayList<>(appearances.size());
         AppearanceTransferCache appearanceTransferCache = getCoreTransferCaches(userVisit).getAppearanceTransferCache();
 
-        appearances.stream().forEach((appearance) -> {
-            appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(appearance));
-        });
+        appearances.forEach((appearance) ->
+                appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(appearance))
+        );
 
         return appearanceTransfers;
     }
@@ -17803,7 +17758,7 @@ public class CoreControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultAppearanceChoice == null? false: defaultAppearanceChoice.equals(value);
+            boolean usingDefaultChoice = defaultAppearanceChoice != null && defaultAppearanceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && appearanceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -17883,7 +17838,7 @@ public class CoreControl
                     if(iter.hasNext()) {
                         defaultAppearance = iter.next();
                     }
-                    AppearanceDetailValue appearanceDetailValue = defaultAppearance.getLastDetailForUpdate().getAppearanceDetailValue().clone();
+                    AppearanceDetailValue appearanceDetailValue = Objects.requireNonNull(defaultAppearance).getLastDetailForUpdate().getAppearanceDetailValue().clone();
 
                     appearanceDetailValue.setIsDefault(Boolean.TRUE);
                     updateAppearanceFromValue(appearanceDetailValue, false, deletedBy);
@@ -17899,9 +17854,7 @@ public class CoreControl
     }
 
     private void deleteAppearances(List<Appearance> appearances, boolean checkDefault, BasePK deletedBy) {
-        appearances.stream().forEach((appearance) -> {
-            deleteAppearance(appearance, checkDefault, deletedBy);
-        });
+        appearances.forEach((appearance) -> deleteAppearance(appearance, checkDefault, deletedBy));
     }
 
     public void deleteAppearances(List<Appearance> appearances, BasePK deletedBy) {
@@ -18037,9 +17990,9 @@ public class CoreControl
         List<AppearanceDescriptionTransfer> appearanceDescriptionTransfers = new ArrayList<>(appearanceDescriptions.size());
         AppearanceDescriptionTransferCache appearanceDescriptionTransferCache = getCoreTransferCaches(userVisit).getAppearanceDescriptionTransferCache();
 
-        appearanceDescriptions.stream().forEach((appearanceDescription) -> {
-            appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(appearanceDescription));
-        });
+        appearanceDescriptions.forEach((appearanceDescription) ->
+                appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(appearanceDescription))
+        );
 
         return appearanceDescriptionTransfers;
     }
@@ -18073,9 +18026,9 @@ public class CoreControl
     public void deleteAppearanceDescriptionsByAppearance(Appearance appearance, BasePK deletedBy) {
         List<AppearanceDescription> appearanceDescriptions = getAppearanceDescriptionsByAppearanceForUpdate(appearance);
 
-        appearanceDescriptions.stream().forEach((appearanceDescription) -> {
-            deleteAppearanceDescription(appearanceDescription, deletedBy);
-        });
+        appearanceDescriptions.forEach((appearanceDescription) -> 
+                deleteAppearanceDescription(appearanceDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -18201,9 +18154,9 @@ public class CoreControl
         List<AppearanceTextDecorationTransfer> appearanceTextDecorationTransfers = new ArrayList<>(appearanceTextDecorations.size());
         AppearanceTextDecorationTransferCache appearanceTextDecorationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache();
 
-        appearanceTextDecorations.stream().forEach((appearanceTextDecoration) -> {
-            appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(appearanceTextDecoration));
-        });
+        appearanceTextDecorations.forEach((appearanceTextDecoration) ->
+                appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(appearanceTextDecoration))
+        );
 
         return appearanceTextDecorationTransfers;
     }
@@ -18223,9 +18176,9 @@ public class CoreControl
     }
 
     public void deleteAppearanceTextDecorationsByAppearance(List<AppearanceTextDecoration> appearanceTextDecorations, BasePK deletedBy) {
-        appearanceTextDecorations.stream().forEach((appearanceTextDecoration) -> {
-            deleteAppearanceTextDecoration(appearanceTextDecoration, deletedBy);
-        });
+        appearanceTextDecorations.forEach((appearanceTextDecoration) -> 
+                deleteAppearanceTextDecoration(appearanceTextDecoration, deletedBy)
+        );
     }
 
     public void deleteAppearanceTextDecorationsByAppearance(Appearance appearance, BasePK deletedBy) {
@@ -18359,9 +18312,9 @@ public class CoreControl
         List<AppearanceTextTransformationTransfer> appearanceTextTransformationTransfers = new ArrayList<>(appearanceTextTransformations.size());
         AppearanceTextTransformationTransferCache appearanceTextTransformationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache();
 
-        appearanceTextTransformations.stream().forEach((appearanceTextTransformation) -> {
-            appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(appearanceTextTransformation));
-        });
+        appearanceTextTransformations.forEach((appearanceTextTransformation) ->
+                appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(appearanceTextTransformation))
+        );
 
         return appearanceTextTransformationTransfers;
     }
@@ -18381,9 +18334,9 @@ public class CoreControl
     }
 
     public void deleteAppearanceTextTransformationsByAppearance(List<AppearanceTextTransformation> appearanceTextTransformations, BasePK deletedBy) {
-        appearanceTextTransformations.stream().forEach((appearanceTextTransformation) -> {
-            deleteAppearanceTextTransformation(appearanceTextTransformation, deletedBy);
-        });
+        appearanceTextTransformations.forEach((appearanceTextTransformation) -> 
+                deleteAppearanceTextTransformation(appearanceTextTransformation, deletedBy)
+        );
     }
 
     public void deleteAppearanceTextTransformationsByAppearance(Appearance appearance, BasePK deletedBy) {
@@ -18488,9 +18441,9 @@ public class CoreControl
         List<EntityAppearanceTransfer> entityAppearanceTransfers = new ArrayList<>(entityAppearances.size());
         EntityAppearanceTransferCache entityAppearanceTransferCache = getCoreTransferCaches(userVisit).getEntityAppearanceTransferCache();
 
-        entityAppearances.stream().forEach((entityAppearance) -> {
-            entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(entityAppearance));
-        });
+        entityAppearances.forEach((entityAppearance) ->
+                entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(entityAppearance))
+        );
 
         return entityAppearanceTransfers;
     }
@@ -18521,9 +18474,9 @@ public class CoreControl
     public void deleteEntityAppearancesByAppearance(Appearance appearance, BasePK deletedBy) {
         List<EntityAppearance> entityAppearances = getEntityAppearancesByAppearanceForUpdate(appearance);
 
-        entityAppearances.stream().forEach((entityAppearance) -> {
-            deleteEntityAppearance(entityAppearance, deletedBy);
-        });
+        entityAppearances.forEach((entityAppearance) -> 
+                deleteEntityAppearance(entityAppearance, deletedBy)
+        );
     }
 
 }

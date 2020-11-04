@@ -140,6 +140,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ContactListControl
         extends BaseModelControl {
@@ -417,7 +418,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListTypeChoice == null? false: defaultContactListTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListTypeChoice != null && defaultContactListTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -435,9 +436,9 @@ public class ContactListControl
         List<ContactListTypeTransfer> contactListTypeTransfers = new ArrayList<>(contactListTypes.size());
         ContactListTypeTransferCache contactListTypeTransferCache = getContactListTransferCaches(userVisit).getContactListTypeTransferCache();
 
-        contactListTypes.stream().forEach((contactListType) -> {
-            contactListTypeTransfers.add(contactListTypeTransferCache.getContactListTypeTransfer(contactListType));
-        });
+        contactListTypes.forEach((contactListType) ->
+                contactListTypeTransfers.add(contactListTypeTransferCache.getContactListTypeTransfer(contactListType))
+        );
 
         return contactListTypeTransfers;
     }
@@ -508,7 +509,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactListType = iter.next();
                 }
-                ContactListTypeDetailValue contactListTypeDetailValue = defaultContactListType.getLastDetailForUpdate().getContactListTypeDetailValue().clone();
+                ContactListTypeDetailValue contactListTypeDetailValue = Objects.requireNonNull(defaultContactListType).getLastDetailForUpdate().getContactListTypeDetailValue().clone();
 
                 contactListTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListTypeFromValue(contactListTypeDetailValue, false, deletedBy);
@@ -519,9 +520,9 @@ public class ContactListControl
     }
 
     public void deleteContactListTypes(List<ContactListType> contactListTypes, BasePK deletedBy) {
-        contactListTypes.stream().forEach((contactListType) -> {
-            deleteContactListType(contactListType, deletedBy);
-        });
+        contactListTypes.forEach((contactListType) -> 
+                deleteContactListType(contactListType, deletedBy)
+        );
     }
 
     public void deleteContactListTypesByConfirmationRequestChain(Chain confirmationRequestChain, BasePK deletedBy) {
@@ -686,9 +687,9 @@ public class ContactListControl
     public void deleteContactListTypeDescriptionsByContactListType(ContactListType contactListType, BasePK deletedBy) {
         List<ContactListTypeDescription> contactListTypeDescriptions = getContactListTypeDescriptionsByContactListTypeForUpdate(contactListType);
 
-        contactListTypeDescriptions.stream().forEach((contactListTypeDescription) -> {
-            deleteContactListTypeDescription(contactListTypeDescription, deletedBy);
-        });
+        contactListTypeDescriptions.forEach((contactListTypeDescription) -> 
+                deleteContactListTypeDescription(contactListTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -850,7 +851,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListGroupChoice == null? false: defaultContactListGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListGroupChoice != null && defaultContactListGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -868,9 +869,9 @@ public class ContactListControl
         List<ContactListGroupTransfer> contactListGroupTransfers = new ArrayList<>(contactListGroups.size());
         ContactListGroupTransferCache contactListGroupTransferCache = getContactListTransferCaches(userVisit).getContactListGroupTransferCache();
 
-        contactListGroups.stream().forEach((contactListGroup) -> {
-            contactListGroupTransfers.add(contactListGroupTransferCache.getContactListGroupTransfer(contactListGroup));
-        });
+        contactListGroups.forEach((contactListGroup) ->
+                contactListGroupTransfers.add(contactListGroupTransferCache.getContactListGroupTransfer(contactListGroup))
+        );
 
         return contactListGroupTransfers;
     }
@@ -940,7 +941,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactListGroup = iter.next();
                 }
-                ContactListGroupDetailValue contactListGroupDetailValue = defaultContactListGroup.getLastDetailForUpdate().getContactListGroupDetailValue().clone();
+                ContactListGroupDetailValue contactListGroupDetailValue = Objects.requireNonNull(defaultContactListGroup).getLastDetailForUpdate().getContactListGroupDetailValue().clone();
 
                 contactListGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListGroupFromValue(contactListGroupDetailValue, false, deletedBy);
@@ -1094,9 +1095,9 @@ public class ContactListControl
     public void deleteContactListGroupDescriptionsByContactListGroup(ContactListGroup contactListGroup, BasePK deletedBy) {
         List<ContactListGroupDescription> contactListGroupDescriptions = getContactListGroupDescriptionsByContactListGroupForUpdate(contactListGroup);
 
-        contactListGroupDescriptions.stream().forEach((contactListGroupDescription) -> {
-            deleteContactListGroupDescription(contactListGroupDescription, deletedBy);
-        });
+        contactListGroupDescriptions.forEach((contactListGroupDescription) -> 
+                deleteContactListGroupDescription(contactListGroupDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1258,7 +1259,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListFrequencyChoice == null? false: defaultContactListFrequencyChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListFrequencyChoice != null && defaultContactListFrequencyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListFrequencyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1276,9 +1277,9 @@ public class ContactListControl
         List<ContactListFrequencyTransfer> contactListFrequencyTransfers = new ArrayList<>(contactListFrequencies.size());
         ContactListFrequencyTransferCache contactListFrequencyTransferCache = getContactListTransferCaches(userVisit).getContactListFrequencyTransferCache();
 
-        contactListFrequencies.stream().forEach((contactListFrequency) -> {
-            contactListFrequencyTransfers.add(contactListFrequencyTransferCache.getContactListFrequencyTransfer(contactListFrequency));
-        });
+        contactListFrequencies.forEach((contactListFrequency) ->
+                contactListFrequencyTransfers.add(contactListFrequencyTransferCache.getContactListFrequencyTransfer(contactListFrequency))
+        );
 
         return contactListFrequencyTransfers;
     }
@@ -1345,7 +1346,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactListFrequency = iter.next();
                 }
-                ContactListFrequencyDetailValue contactListFrequencyDetailValue = defaultContactListFrequency.getLastDetailForUpdate().getContactListFrequencyDetailValue().clone();
+                ContactListFrequencyDetailValue contactListFrequencyDetailValue = Objects.requireNonNull(defaultContactListFrequency).getLastDetailForUpdate().getContactListFrequencyDetailValue().clone();
 
                 contactListFrequencyDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListFrequencyFromValue(contactListFrequencyDetailValue, false, deletedBy);
@@ -1499,9 +1500,9 @@ public class ContactListControl
     public void deleteContactListFrequencyDescriptionsByContactListFrequency(ContactListFrequency contactListFrequency, BasePK deletedBy) {
         List<ContactListFrequencyDescription> contactListFrequencyDescriptions = getContactListFrequencyDescriptionsByContactListFrequencyForUpdate(contactListFrequency);
 
-        contactListFrequencyDescriptions.stream().forEach((contactListFrequencyDescription) -> {
-            deleteContactListFrequencyDescription(contactListFrequencyDescription, deletedBy);
-        });
+        contactListFrequencyDescriptions.forEach((contactListFrequencyDescription) -> 
+                deleteContactListFrequencyDescription(contactListFrequencyDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1796,7 +1797,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListChoice == null? false: defaultContactListChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListChoice != null && defaultContactListChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1814,9 +1815,9 @@ public class ContactListControl
         List<ContactListTransfer> contactListTransfers = new ArrayList<>(contactLists.size());
         ContactListTransferCache contactListTransferCache = getContactListTransferCaches(userVisit).getContactListTransferCache();
 
-        contactLists.stream().forEach((contactList) -> {
-            contactListTransfers.add(contactListTransferCache.getContactListTransfer(contactList));
-        });
+        contactLists.forEach((contactList) ->
+                contactListTransfers.add(contactListTransferCache.getContactListTransfer(contactList))
+        );
 
         return contactListTransfers;
     }
@@ -1893,7 +1894,7 @@ public class ContactListControl
                 if(iter.hasNext()) {
                     defaultContactList = iter.next();
                 }
-                ContactListDetailValue contactListDetailValue = defaultContactList.getLastDetailForUpdate().getContactListDetailValue().clone();
+                ContactListDetailValue contactListDetailValue = Objects.requireNonNull(defaultContactList).getLastDetailForUpdate().getContactListDetailValue().clone();
 
                 contactListDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactListFromValue(contactListDetailValue, false, deletedBy);
@@ -1904,9 +1905,9 @@ public class ContactListControl
     }
 
     public void deleteContactLists(List<ContactList> contactLists, BasePK deletedBy) {
-        contactLists.stream().forEach((contactList) -> {
-            deleteContactList(contactList, deletedBy);
-        });
+        contactLists.forEach((contactList) -> 
+                deleteContactList(contactList, deletedBy)
+        );
     }
 
     public void deleteContactListsByContactListGroup(ContactListGroup contactListGroup, BasePK deletedBy) {
@@ -2069,9 +2070,9 @@ public class ContactListControl
     public void deleteContactListDescriptionsByContactList(ContactList contactList, BasePK deletedBy) {
         List<ContactListDescription> contactListDescriptions = getContactListDescriptionsByContactListForUpdate(contactList);
 
-        contactListDescriptions.stream().forEach((contactListDescription) -> {
-            deleteContactListDescription(contactListDescription, deletedBy);
-        });
+        contactListDescriptions.forEach((contactListDescription) -> 
+                deleteContactListDescription(contactListDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2234,9 +2235,9 @@ public class ContactListControl
         List<PartyContactListTransfer> partyContactListTransfers = new ArrayList<>(partyContactLists.size());
         PartyContactListTransferCache partyContactListTransferCache = getContactListTransferCaches(userVisit).getPartyContactListTransferCache();
         
-        partyContactLists.stream().forEach((partyContactList) -> {
-            partyContactListTransfers.add(partyContactListTransferCache.getPartyContactListTransfer(partyContactList));
-        });
+        partyContactLists.forEach((partyContactList) ->
+                partyContactListTransfers.add(partyContactListTransferCache.getPartyContactListTransfer(partyContactList))
+        );
         
         return partyContactListTransfers;
     }
@@ -2334,17 +2335,17 @@ public class ContactListControl
     public void deletePartyContactListsByParty(Party party, BasePK deletedBy) {
         List<PartyContactList> partyContactLists = getPartyContactListsByPartyForUpdate(party);
         
-        partyContactLists.stream().forEach((partyContactList) -> {
-            deletePartyContactList(partyContactList, deletedBy);
-        });
+        partyContactLists.forEach((partyContactList) -> 
+                deletePartyContactList(partyContactList, deletedBy)
+        );
     }
     
     public void deletePartyContactListsByContactList(ContactList contactList, BasePK deletedBy) {
         List<PartyContactList> partyContactLists = getPartyContactListsByContactListForUpdate(contactList);
         
-        partyContactLists.stream().forEach((partyContactList) -> {
-            deletePartyContactList(partyContactList, deletedBy);
-        });
+        partyContactLists.forEach((partyContactList) -> 
+                deletePartyContactList(partyContactList, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2467,9 +2468,9 @@ public class ContactListControl
         List<PartyTypeContactListGroupTransfer> partyTypeContactListGroupTransfers = new ArrayList<>(partyTypeContactListGroups.size());
         PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListGroupTransferCache();
         
-        partyTypeContactListGroups.stream().forEach((partyTypeContactListGroup) -> {
-            partyTypeContactListGroupTransfers.add(partyTypeContactListGroupTransferCache.getPartyTypeContactListGroupTransfer(partyTypeContactListGroup));
-        });
+        partyTypeContactListGroups.forEach((partyTypeContactListGroup) ->
+                partyTypeContactListGroupTransfers.add(partyTypeContactListGroupTransferCache.getPartyTypeContactListGroupTransfer(partyTypeContactListGroup))
+        );
         
         return partyTypeContactListGroupTransfers;
     }
@@ -2513,9 +2514,9 @@ public class ContactListControl
     }
     
     public void deletePartyTypeContactListGroups(List<PartyTypeContactListGroup> partyTypeContactListGroups, BasePK deletedBy) {
-        partyTypeContactListGroups.stream().forEach((partyTypeContactListGroup) -> {
-            deletePartyTypeContactListGroup(partyTypeContactListGroup, deletedBy);
-        });
+        partyTypeContactListGroups.forEach((partyTypeContactListGroup) -> 
+                deletePartyTypeContactListGroup(partyTypeContactListGroup, deletedBy)
+        );
     }
     
     public void deletePartyTypeContactListGroupsByPartyType(PartyType partyType, BasePK deletedBy) {
@@ -2645,9 +2646,9 @@ public class ContactListControl
         List<PartyTypeContactListTransfer> partyTypeContactListTransfers = new ArrayList<>(partyTypeContactLists.size());
         PartyTypeContactListTransferCache partyTypeContactListTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListTransferCache();
         
-        partyTypeContactLists.stream().forEach((partyTypeContactList) -> {
-            partyTypeContactListTransfers.add(partyTypeContactListTransferCache.getPartyTypeContactListTransfer(partyTypeContactList));
-        });
+        partyTypeContactLists.forEach((partyTypeContactList) ->
+                partyTypeContactListTransfers.add(partyTypeContactListTransferCache.getPartyTypeContactListTransfer(partyTypeContactList))
+        );
         
         return partyTypeContactListTransfers;
     }
@@ -2691,9 +2692,9 @@ public class ContactListControl
     }
     
     public void deletePartyTypeContactLists(List<PartyTypeContactList> partyTypeContactLists, BasePK deletedBy) {
-        partyTypeContactLists.stream().forEach((partyTypeContactList) -> {
-            deletePartyTypeContactList(partyTypeContactList, deletedBy);
-        });
+        partyTypeContactLists.forEach((partyTypeContactList) -> 
+                deletePartyTypeContactList(partyTypeContactList, deletedBy)
+        );
     }
     
     public void deletePartyTypeContactListsByPartyType(PartyType partyType, BasePK deletedBy) {
@@ -2824,9 +2825,9 @@ public class ContactListControl
         List<CustomerTypeContactListGroupTransfer> customerTypeContactListGroupTransfers = new ArrayList<>(customerTypeContactListGroups.size());
         CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListGroupTransferCache();
 
-        customerTypeContactListGroups.stream().forEach((customerTypeContactListGroup) -> {
-            customerTypeContactListGroupTransfers.add(customerTypeContactListGroupTransferCache.getCustomerTypeContactListGroupTransfer(customerTypeContactListGroup));
-        });
+        customerTypeContactListGroups.forEach((customerTypeContactListGroup) ->
+                customerTypeContactListGroupTransfers.add(customerTypeContactListGroupTransferCache.getCustomerTypeContactListGroupTransfer(customerTypeContactListGroup))
+        );
 
         return customerTypeContactListGroupTransfers;
     }
@@ -2870,9 +2871,9 @@ public class ContactListControl
     }
 
     public void deleteCustomerTypeContactListGroups(List<CustomerTypeContactListGroup> customerTypeContactListGroups, BasePK deletedBy) {
-        customerTypeContactListGroups.stream().forEach((customerTypeContactListGroup) -> {
-            deleteCustomerTypeContactListGroup(customerTypeContactListGroup, deletedBy);
-        });
+        customerTypeContactListGroups.forEach((customerTypeContactListGroup) -> 
+                deleteCustomerTypeContactListGroup(customerTypeContactListGroup, deletedBy)
+        );
     }
 
     public void deleteCustomerTypeContactListGroupsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -3002,9 +3003,9 @@ public class ContactListControl
         List<CustomerTypeContactListTransfer> customerTypeContactListTransfers = new ArrayList<>(customerTypeContactLists.size());
         CustomerTypeContactListTransferCache customerTypeContactListTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListTransferCache();
 
-        customerTypeContactLists.stream().forEach((customerTypeContactList) -> {
-            customerTypeContactListTransfers.add(customerTypeContactListTransferCache.getCustomerTypeContactListTransfer(customerTypeContactList));
-        });
+        customerTypeContactLists.forEach((customerTypeContactList) ->
+                customerTypeContactListTransfers.add(customerTypeContactListTransferCache.getCustomerTypeContactListTransfer(customerTypeContactList))
+        );
 
         return customerTypeContactListTransfers;
     }
@@ -3048,9 +3049,9 @@ public class ContactListControl
     }
 
     public void deleteCustomerTypeContactLists(List<CustomerTypeContactList> customerTypeContactLists, BasePK deletedBy) {
-        customerTypeContactLists.stream().forEach((customerTypeContactList) -> {
-            deleteCustomerTypeContactList(customerTypeContactList, deletedBy);
-        });
+        customerTypeContactLists.forEach((customerTypeContactList) -> 
+                deleteCustomerTypeContactList(customerTypeContactList, deletedBy)
+        );
     }
 
     public void deleteCustomerTypeContactListsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -3243,9 +3244,9 @@ public class ContactListControl
         List<ContactListContactMechanismPurposeTransfer> contactListContactMechanismPurposeTransfers = new ArrayList<>(contactListContactMechanismPurposes.size());
         ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache = getContactListTransferCaches(userVisit).getContactListContactMechanismPurposeTransferCache();
 
-        contactListContactMechanismPurposes.stream().forEach((contactListContactMechanismPurpose) -> {
-            contactListContactMechanismPurposeTransfers.add(contactListContactMechanismPurposeTransferCache.getContactListContactMechanismPurposeTransfer(contactListContactMechanismPurpose));
-        });
+        contactListContactMechanismPurposes.forEach((contactListContactMechanismPurpose) ->
+                contactListContactMechanismPurposeTransfers.add(contactListContactMechanismPurposeTransferCache.getContactListContactMechanismPurposeTransfer(contactListContactMechanismPurpose))
+        );
 
         return contactListContactMechanismPurposeTransfers;
     }
@@ -3286,7 +3287,7 @@ public class ContactListControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice == null? false: defaultContactListContactMechanismPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice != null && defaultContactListContactMechanismPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListContactMechanismPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3363,7 +3364,7 @@ public class ContactListControl
                     if(iter.hasNext()) {
                         defaultContactListContactMechanismPurpose = iter.next();
                     }
-                    ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = defaultContactListContactMechanismPurpose.getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
+                    ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultContactListContactMechanismPurpose).getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
 
                     contactListContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
                     updateContactListContactMechanismPurposeFromValue(contactListContactMechanismPurposeDetailValue, false, deletedBy);
@@ -3379,9 +3380,7 @@ public class ContactListControl
     }
 
     private void deleteContactListContactMechanismPurposes(List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes, boolean checkDefault, BasePK deletedBy) {
-        contactListContactMechanismPurposes.stream().forEach((contactListContactMechanismPurpose) -> {
-            deleteContactListContactMechanismPurpose(contactListContactMechanismPurpose, checkDefault, deletedBy);
-        });
+        contactListContactMechanismPurposes.forEach((contactListContactMechanismPurpose) -> deleteContactListContactMechanismPurpose(contactListContactMechanismPurpose, checkDefault, deletedBy));
     }
 
     public void deleteContactListContactMechanismPurposes(List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes, BasePK deletedBy) {

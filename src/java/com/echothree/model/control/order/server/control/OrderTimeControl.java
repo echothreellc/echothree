@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OrderTimeControl
         extends BaseOrderControl {
@@ -218,9 +219,9 @@ public class OrderTimeControl
         List<OrderTimeTypeTransfer> orderTimeTypeTransfers = new ArrayList<>(orderTimeTypes.size());
         OrderTimeTypeTransferCache orderTimeTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache();
 
-        orderTimeTypes.stream().forEach((orderTimeType) -> {
-            orderTimeTypeTransfers.add(orderTimeTypeTransferCache.getOrderTimeTypeTransfer(orderTimeType));
-        });
+        orderTimeTypes.forEach((orderTimeType) ->
+                orderTimeTypeTransfers.add(orderTimeTypeTransferCache.getOrderTimeTypeTransfer(orderTimeType))
+        );
 
         return orderTimeTypeTransfers;
     }
@@ -251,7 +252,7 @@ public class OrderTimeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderTimeTypeChoice == null? false: defaultOrderTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderTimeTypeChoice != null && defaultOrderTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -327,7 +328,7 @@ public class OrderTimeControl
                 if(iter.hasNext()) {
                     defaultOrderTimeType = iter.next();
                 }
-                OrderTimeTypeDetailValue orderTimeTypeDetailValue = defaultOrderTimeType.getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
+                OrderTimeTypeDetailValue orderTimeTypeDetailValue = Objects.requireNonNull(defaultOrderTimeType).getLastDetailForUpdate().getOrderTimeTypeDetailValue().clone();
 
                 orderTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, false, deletedBy);
@@ -445,9 +446,9 @@ public class OrderTimeControl
         List<OrderTimeTypeDescriptionTransfer> orderTimeTypeDescriptionTransfers = new ArrayList<>(orderTimeTypeDescriptions.size());
         OrderTimeTypeDescriptionTransferCache orderTimeTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeDescriptionTransferCache();
 
-        orderTimeTypeDescriptions.stream().forEach((orderTimeTypeDescription) -> {
-            orderTimeTypeDescriptionTransfers.add(orderTimeTypeDescriptionTransferCache.getOrderTimeTypeDescriptionTransfer(orderTimeTypeDescription));
-        });
+        orderTimeTypeDescriptions.forEach((orderTimeTypeDescription) ->
+                orderTimeTypeDescriptionTransfers.add(orderTimeTypeDescriptionTransferCache.getOrderTimeTypeDescriptionTransfer(orderTimeTypeDescription))
+        );
 
         return orderTimeTypeDescriptionTransfers;
     }
@@ -481,9 +482,9 @@ public class OrderTimeControl
     public void deleteOrderTimeTypeDescriptionsByOrderTimeType(OrderTimeType orderTimeType, BasePK deletedBy) {
         List<OrderTimeTypeDescription> orderTimeTypeDescriptions = getOrderTimeTypeDescriptionsByOrderTimeTypeForUpdate(orderTimeType);
 
-        orderTimeTypeDescriptions.stream().forEach((orderTimeTypeDescription) -> {
-            deleteOrderTimeTypeDescription(orderTimeTypeDescription, deletedBy);
-        });
+        orderTimeTypeDescriptions.forEach((orderTimeTypeDescription) -> 
+                deleteOrderTimeTypeDescription(orderTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -629,9 +630,9 @@ public class OrderTimeControl
         List<OrderTimeTransfer> orderTimeTransfers = new ArrayList<>(orderTimes.size());
         OrderTimeTransferCache orderTimeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTransferCache();
 
-        orderTimes.stream().forEach((orderTime) -> {
-            orderTimeTransfers.add(orderTimeTransferCache.getOrderTimeTransfer(orderTime));
-        });
+        orderTimes.forEach((orderTime) ->
+                orderTimeTransfers.add(orderTimeTransferCache.getOrderTimeTransfer(orderTime))
+        );
 
         return orderTimeTransfers;
     }
@@ -670,9 +671,9 @@ public class OrderTimeControl
     }
 
     public void deleteOrderTimes(List<OrderTime> orderTimes, BasePK deletedBy) {
-        orderTimes.stream().forEach((orderTime) -> {
-            deleteOrderTime(orderTime, deletedBy);
-        });
+        orderTimes.forEach((orderTime) -> 
+                deleteOrderTime(orderTime, deletedBy)
+        );
     }
 
     public void deleteOrderTimesByOrder(Order order, BasePK deletedBy) {
@@ -829,9 +830,9 @@ public class OrderTimeControl
         List<OrderLineTimeTransfer> orderLineTimeTransfers = new ArrayList<>(orderLineTimes.size());
         OrderLineTimeTransferCache orderLineTimeTransferCache = getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache();
 
-        orderLineTimes.stream().forEach((orderLineTime) -> {
-            orderLineTimeTransfers.add(orderLineTimeTransferCache.getOrderLineTimeTransfer(orderLineTime));
-        });
+        orderLineTimes.forEach((orderLineTime) ->
+                orderLineTimeTransfers.add(orderLineTimeTransferCache.getOrderLineTimeTransfer(orderLineTime))
+        );
 
         return orderLineTimeTransfers;
     }
@@ -870,9 +871,9 @@ public class OrderTimeControl
     }
 
     public void deleteOrderLineTimes(List<OrderLineTime> orderLineTimes, BasePK deletedBy) {
-        orderLineTimes.stream().forEach((orderLineTime) -> {
-            deleteOrderLineTime(orderLineTime, deletedBy);
-        });
+        orderLineTimes.forEach((orderLineTime) -> 
+                deleteOrderLineTime(orderLineTime, deletedBy)
+        );
     }
 
     public void deleteOrderLineTimesByOrder(OrderLine orderLine, BasePK deletedBy) {

@@ -183,6 +183,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class EmployeeControl
         extends BaseModelControl {
@@ -351,9 +352,9 @@ public class EmployeeControl
         List<ResponsibilityTypeTransfer> responsibilityTypeTransfers = new ArrayList<>(responsibilityTypes.size());
         ResponsibilityTypeTransferCache responsibilityTypeTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeTransferCache();
         
-        responsibilityTypes.stream().forEach((responsibilityType) -> {
-            responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(responsibilityType));
-        });
+        responsibilityTypes.forEach((responsibilityType) ->
+                responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(responsibilityType))
+        );
         
         return responsibilityTypeTransfers;
     }
@@ -384,7 +385,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultResponsibilityTypeChoice == null? false: defaultResponsibilityTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultResponsibilityTypeChoice != null && defaultResponsibilityTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && responsibilityTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -457,7 +458,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultResponsibilityType = (ResponsibilityType)iter.next();
                 }
-                ResponsibilityTypeDetailValue responsibilityTypeDetailValue = defaultResponsibilityType.getLastDetailForUpdate().getResponsibilityTypeDetailValue().clone();
+                ResponsibilityTypeDetailValue responsibilityTypeDetailValue = Objects.requireNonNull(defaultResponsibilityType).getLastDetailForUpdate().getResponsibilityTypeDetailValue().clone();
                 
                 responsibilityTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateResponsibilityTypeFromValue(responsibilityTypeDetailValue, false, deletedBy);
@@ -530,7 +531,7 @@ public class EmployeeControl
     }
     
     private List<ResponsibilityTypeDescription> getResponsibilityTypeDescriptionsByResponsibilityType(ResponsibilityType responsibilityType, EntityPermission entityPermission) {
-        List<ResponsibilityTypeDescription> responsibilityTypeDescriptions = null;
+        List<ResponsibilityTypeDescription> responsibilityTypeDescriptions;
         
         try {
             String query = null;
@@ -594,9 +595,9 @@ public class EmployeeControl
         List<ResponsibilityTypeDescriptionTransfer> responsibilityTypeDescriptionTransfers = new ArrayList<>(responsibilityTypeDescriptions.size());
         ResponsibilityTypeDescriptionTransferCache responsibilityTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeDescriptionTransferCache();
         
-        responsibilityTypeDescriptions.stream().forEach((responsibilityTypeDescription) -> {
-            responsibilityTypeDescriptionTransfers.add(responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(responsibilityTypeDescription));
-        });
+        responsibilityTypeDescriptions.forEach((responsibilityTypeDescription) ->
+                responsibilityTypeDescriptionTransfers.add(responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(responsibilityTypeDescription))
+        );
         
         return responsibilityTypeDescriptionTransfers;
     }
@@ -629,9 +630,9 @@ public class EmployeeControl
     public void deleteResponsibilityTypeDescriptionsByResponsibilityType(ResponsibilityType responsibilityType, BasePK deletedBy) {
         List<ResponsibilityTypeDescription> responsibilityTypeDescriptions = getResponsibilityTypeDescriptionsByResponsibilityTypeForUpdate(responsibilityType);
         
-        responsibilityTypeDescriptions.stream().forEach((responsibilityTypeDescription) -> {
-            deleteResponsibilityTypeDescription(responsibilityTypeDescription, deletedBy);
-        });
+        responsibilityTypeDescriptions.forEach((responsibilityTypeDescription) -> 
+                deleteResponsibilityTypeDescription(responsibilityTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -779,9 +780,9 @@ public class EmployeeControl
         List<SkillTypeTransfer> skillTypeTransfers = new ArrayList<>(skillTypes.size());
         SkillTypeTransferCache skillTypeTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeTransferCache();
         
-        skillTypes.stream().forEach((skillType) -> {
-            skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(skillType));
-        });
+        skillTypes.forEach((skillType) ->
+                skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(skillType))
+        );
         
         return skillTypeTransfers;
     }
@@ -811,7 +812,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSkillTypeChoice == null? false: defaultSkillTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSkillTypeChoice != null && defaultSkillTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && skillTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -884,7 +885,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultSkillType = (SkillType)iter.next();
                 }
-                SkillTypeDetailValue skillTypeDetailValue = defaultSkillType.getLastDetailForUpdate().getSkillTypeDetailValue().clone();
+                SkillTypeDetailValue skillTypeDetailValue = Objects.requireNonNull(defaultSkillType).getLastDetailForUpdate().getSkillTypeDetailValue().clone();
                 
                 skillTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSkillTypeFromValue(skillTypeDetailValue, false, deletedBy);
@@ -957,7 +958,7 @@ public class EmployeeControl
     }
     
     private List<SkillTypeDescription> getSkillTypeDescriptionsBySkillType(SkillType skillType, EntityPermission entityPermission) {
-        List<SkillTypeDescription> skillTypeDescriptions = null;
+        List<SkillTypeDescription> skillTypeDescriptions;
         
         try {
             String query = null;
@@ -1021,9 +1022,9 @@ public class EmployeeControl
         List<SkillTypeDescriptionTransfer> skillTypeDescriptionTransfers = new ArrayList<>(skillTypeDescriptions.size());
         SkillTypeDescriptionTransferCache skillTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeDescriptionTransferCache();
         
-        skillTypeDescriptions.stream().forEach((skillTypeDescription) -> {
-            skillTypeDescriptionTransfers.add(skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(skillTypeDescription));
-        });
+        skillTypeDescriptions.forEach((skillTypeDescription) ->
+                skillTypeDescriptionTransfers.add(skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(skillTypeDescription))
+        );
         
         return skillTypeDescriptionTransfers;
     }
@@ -1056,9 +1057,9 @@ public class EmployeeControl
     public void deleteSkillTypeDescriptionsBySkillType(SkillType skillType, BasePK deletedBy) {
         List<SkillTypeDescription> skillTypeDescriptions = getSkillTypeDescriptionsBySkillTypeForUpdate(skillType);
         
-        skillTypeDescriptions.stream().forEach((skillTypeDescription) -> {
-            deleteSkillTypeDescription(skillTypeDescription, deletedBy);
-        });
+        skillTypeDescriptions.forEach((skillTypeDescription) -> 
+                deleteSkillTypeDescription(skillTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1207,9 +1208,9 @@ public class EmployeeControl
         List<LeaveTypeTransfer> leaveTypeTransfers = new ArrayList<>(leaveTypes.size());
         LeaveTypeTransferCache leaveTypeTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeTransferCache();
 
-        leaveTypes.stream().forEach((leaveType) -> {
-            leaveTypeTransfers.add(leaveTypeTransferCache.getLeaveTypeTransfer(leaveType));
-        });
+        leaveTypes.forEach((leaveType) ->
+                leaveTypeTransfers.add(leaveTypeTransferCache.getLeaveTypeTransfer(leaveType))
+        );
 
         return leaveTypeTransfers;
     }
@@ -1243,7 +1244,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLeaveTypeChoice == null? false: defaultLeaveTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLeaveTypeChoice != null && defaultLeaveTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && leaveTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1315,7 +1316,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultLeaveType = iter.next();
                 }
-                LeaveTypeDetailValue leaveTypeDetailValue = defaultLeaveType.getLastDetailForUpdate().getLeaveTypeDetailValue().clone();
+                LeaveTypeDetailValue leaveTypeDetailValue = Objects.requireNonNull(defaultLeaveType).getLastDetailForUpdate().getLeaveTypeDetailValue().clone();
 
                 leaveTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateLeaveTypeFromValue(leaveTypeDetailValue, false, deletedBy);
@@ -1437,9 +1438,9 @@ public class EmployeeControl
         List<LeaveTypeDescriptionTransfer> leaveTypeDescriptionTransfers = new ArrayList<>(leaveTypeDescriptions.size());
         LeaveTypeDescriptionTransferCache leaveTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeDescriptionTransferCache();
 
-        leaveTypeDescriptions.stream().forEach((leaveTypeDescription) -> {
-            leaveTypeDescriptionTransfers.add(leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(leaveTypeDescription));
-        });
+        leaveTypeDescriptions.forEach((leaveTypeDescription) ->
+                leaveTypeDescriptionTransfers.add(leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(leaveTypeDescription))
+        );
 
         return leaveTypeDescriptionTransfers;
     }
@@ -1473,9 +1474,9 @@ public class EmployeeControl
     public void deleteLeaveTypeDescriptionsByLeaveType(LeaveType leaveType, BasePK deletedBy) {
         List<LeaveTypeDescription> leaveTypeDescriptions = getLeaveTypeDescriptionsByLeaveTypeForUpdate(leaveType);
 
-        leaveTypeDescriptions.stream().forEach((leaveTypeDescription) -> {
-            deleteLeaveTypeDescription(leaveTypeDescription, deletedBy);
-        });
+        leaveTypeDescriptions.forEach((leaveTypeDescription) -> 
+                deleteLeaveTypeDescription(leaveTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1624,9 +1625,9 @@ public class EmployeeControl
         List<LeaveReasonTransfer> leaveReasonTransfers = new ArrayList<>(leaveReasons.size());
         LeaveReasonTransferCache leaveReasonTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonTransferCache();
 
-        leaveReasons.stream().forEach((leaveReason) -> {
-            leaveReasonTransfers.add(leaveReasonTransferCache.getLeaveReasonTransfer(leaveReason));
-        });
+        leaveReasons.forEach((leaveReason) ->
+                leaveReasonTransfers.add(leaveReasonTransferCache.getLeaveReasonTransfer(leaveReason))
+        );
 
         return leaveReasonTransfers;
     }
@@ -1660,7 +1661,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLeaveReasonChoice == null? false: defaultLeaveReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultLeaveReasonChoice != null && defaultLeaveReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && leaveReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1732,7 +1733,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultLeaveReason = iter.next();
                 }
-                LeaveReasonDetailValue leaveReasonDetailValue = defaultLeaveReason.getLastDetailForUpdate().getLeaveReasonDetailValue().clone();
+                LeaveReasonDetailValue leaveReasonDetailValue = Objects.requireNonNull(defaultLeaveReason).getLastDetailForUpdate().getLeaveReasonDetailValue().clone();
 
                 leaveReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateLeaveReasonFromValue(leaveReasonDetailValue, false, deletedBy);
@@ -1854,9 +1855,9 @@ public class EmployeeControl
         List<LeaveReasonDescriptionTransfer> leaveReasonDescriptionTransfers = new ArrayList<>(leaveReasonDescriptions.size());
         LeaveReasonDescriptionTransferCache leaveReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonDescriptionTransferCache();
 
-        leaveReasonDescriptions.stream().forEach((leaveReasonDescription) -> {
-            leaveReasonDescriptionTransfers.add(leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(leaveReasonDescription));
-        });
+        leaveReasonDescriptions.forEach((leaveReasonDescription) ->
+                leaveReasonDescriptionTransfers.add(leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(leaveReasonDescription))
+        );
 
         return leaveReasonDescriptionTransfers;
     }
@@ -1890,9 +1891,9 @@ public class EmployeeControl
     public void deleteLeaveReasonDescriptionsByLeaveReason(LeaveReason leaveReason, BasePK deletedBy) {
         List<LeaveReasonDescription> leaveReasonDescriptions = getLeaveReasonDescriptionsByLeaveReasonForUpdate(leaveReason);
 
-        leaveReasonDescriptions.stream().forEach((leaveReasonDescription) -> {
-            deleteLeaveReasonDescription(leaveReasonDescription, deletedBy);
-        });
+        leaveReasonDescriptions.forEach((leaveReasonDescription) -> 
+                deleteLeaveReasonDescription(leaveReasonDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2171,9 +2172,9 @@ public class EmployeeControl
         List<LeaveTransfer> leaveTransfers = new ArrayList<>(leaves.size());
         LeaveTransferCache leaveTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTransferCache();
 
-        leaves.stream().forEach((leave) -> {
-            leaveTransfers.add(leaveTransferCache.getLeaveTransfer(leave));
-        });
+        leaves.forEach((leave) ->
+                leaveTransfers.add(leaveTransferCache.getLeaveTransfer(leave))
+        );
 
         return leaveTransfers;
     }
@@ -2224,9 +2225,9 @@ public class EmployeeControl
     }
 
     public void deleteLeaves(List<Leave> leaves, BasePK deletedBy) {
-        leaves.stream().forEach((leave) -> {
-            deleteLeave(leave, deletedBy);
-        });
+        leaves.forEach((leave) -> 
+                deleteLeave(leave, deletedBy)
+        );
     }
 
     public void deleteLeavesByParty(Party party, BasePK deletedBy) {
@@ -2386,9 +2387,9 @@ public class EmployeeControl
         List<TerminationReasonTransfer> terminationReasonTransfers = new ArrayList<>(terminationReasons.size());
         TerminationReasonTransferCache terminationReasonTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonTransferCache();
         
-        terminationReasons.stream().forEach((terminationReason) -> {
-            terminationReasonTransfers.add(terminationReasonTransferCache.getTerminationReasonTransfer(terminationReason));
-        });
+        terminationReasons.forEach((terminationReason) ->
+                terminationReasonTransfers.add(terminationReasonTransferCache.getTerminationReasonTransfer(terminationReason))
+        );
         
         return terminationReasonTransfers;
     }
@@ -2419,7 +2420,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTerminationReasonChoice == null? false: defaultTerminationReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultTerminationReasonChoice != null && defaultTerminationReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && terminationReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2492,7 +2493,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultTerminationReason = (TerminationReason)iter.next();
                 }
-                TerminationReasonDetailValue terminationReasonDetailValue = defaultTerminationReason.getLastDetailForUpdate().getTerminationReasonDetailValue().clone();
+                TerminationReasonDetailValue terminationReasonDetailValue = Objects.requireNonNull(defaultTerminationReason).getLastDetailForUpdate().getTerminationReasonDetailValue().clone();
                 
                 terminationReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateTerminationReasonFromValue(terminationReasonDetailValue, false, deletedBy);
@@ -2565,7 +2566,7 @@ public class EmployeeControl
     }
     
     private List<TerminationReasonDescription> getTerminationReasonDescriptionsByTerminationReason(TerminationReason terminationReason, EntityPermission entityPermission) {
-        List<TerminationReasonDescription> terminationReasonDescriptions = null;
+        List<TerminationReasonDescription> terminationReasonDescriptions;
         
         try {
             String query = null;
@@ -2629,9 +2630,9 @@ public class EmployeeControl
         List<TerminationReasonDescriptionTransfer> terminationReasonDescriptionTransfers = new ArrayList<>(terminationReasonDescriptions.size());
         TerminationReasonDescriptionTransferCache terminationReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonDescriptionTransferCache();
         
-        terminationReasonDescriptions.stream().forEach((terminationReasonDescription) -> {
-            terminationReasonDescriptionTransfers.add(terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(terminationReasonDescription));
-        });
+        terminationReasonDescriptions.forEach((terminationReasonDescription) ->
+                terminationReasonDescriptionTransfers.add(terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(terminationReasonDescription))
+        );
         
         return terminationReasonDescriptionTransfers;
     }
@@ -2664,9 +2665,9 @@ public class EmployeeControl
     public void deleteTerminationReasonDescriptionsByTerminationReason(TerminationReason terminationReason, BasePK deletedBy) {
         List<TerminationReasonDescription> terminationReasonDescriptions = getTerminationReasonDescriptionsByTerminationReasonForUpdate(terminationReason);
         
-        terminationReasonDescriptions.stream().forEach((terminationReasonDescription) -> {
-            deleteTerminationReasonDescription(terminationReasonDescription, deletedBy);
-        });
+        terminationReasonDescriptions.forEach((terminationReasonDescription) -> 
+                deleteTerminationReasonDescription(terminationReasonDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2814,9 +2815,9 @@ public class EmployeeControl
         List<TerminationTypeTransfer> terminationTypeTransfers = new ArrayList<>(terminationTypes.size());
         TerminationTypeTransferCache terminationTypeTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeTransferCache();
         
-        terminationTypes.stream().forEach((terminationType) -> {
-            terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(terminationType));
-        });
+        terminationTypes.forEach((terminationType) ->
+                terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(terminationType))
+        );
         
         return terminationTypeTransfers;
     }
@@ -2847,7 +2848,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTerminationTypeChoice == null? false: defaultTerminationTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultTerminationTypeChoice != null && defaultTerminationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && terminationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2920,7 +2921,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultTerminationType = (TerminationType)iter.next();
                 }
-                TerminationTypeDetailValue terminationTypeDetailValue = defaultTerminationType.getLastDetailForUpdate().getTerminationTypeDetailValue().clone();
+                TerminationTypeDetailValue terminationTypeDetailValue = Objects.requireNonNull(defaultTerminationType).getLastDetailForUpdate().getTerminationTypeDetailValue().clone();
                 
                 terminationTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateTerminationTypeFromValue(terminationTypeDetailValue, false, deletedBy);
@@ -2993,7 +2994,7 @@ public class EmployeeControl
     }
     
     private List<TerminationTypeDescription> getTerminationTypeDescriptionsByTerminationType(TerminationType terminationType, EntityPermission entityPermission) {
-        List<TerminationTypeDescription> terminationTypeDescriptions = null;
+        List<TerminationTypeDescription> terminationTypeDescriptions;
         
         try {
             String query = null;
@@ -3057,9 +3058,9 @@ public class EmployeeControl
         List<TerminationTypeDescriptionTransfer> terminationTypeDescriptionTransfers = new ArrayList<>(terminationTypeDescriptions.size());
         TerminationTypeDescriptionTransferCache terminationTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeDescriptionTransferCache();
         
-        terminationTypeDescriptions.stream().forEach((terminationTypeDescription) -> {
-            terminationTypeDescriptionTransfers.add(terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(terminationTypeDescription));
-        });
+        terminationTypeDescriptions.forEach((terminationTypeDescription) ->
+                terminationTypeDescriptionTransfers.add(terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(terminationTypeDescription))
+        );
         
         return terminationTypeDescriptionTransfers;
     }
@@ -3092,9 +3093,9 @@ public class EmployeeControl
     public void deleteTerminationTypeDescriptionsByTerminationType(TerminationType terminationType, BasePK deletedBy) {
         List<TerminationTypeDescription> terminationTypeDescriptions = getTerminationTypeDescriptionsByTerminationTypeForUpdate(terminationType);
         
-        terminationTypeDescriptions.stream().forEach((terminationTypeDescription) -> {
-            deleteTerminationTypeDescription(terminationTypeDescription, deletedBy);
-        });
+        terminationTypeDescriptions.forEach((terminationTypeDescription) -> 
+                deleteTerminationTypeDescription(terminationTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3338,9 +3339,9 @@ public class EmployeeControl
         List<EmploymentTransfer> employmentTransfers = new ArrayList<>(employments.size());
         EmploymentTransferCache employmentTransferCache = getEmployeeTransferCaches(userVisit).getEmploymentTransferCache();
 
-        employments.stream().forEach((employment) -> {
-            employmentTransfers.add(employmentTransferCache.getEmploymentTransfer(employment));
-        });
+        employments.forEach((employment) ->
+                employmentTransfers.add(employmentTransferCache.getEmploymentTransfer(employment))
+        );
 
         return employmentTransfers;
     }
@@ -3390,9 +3391,9 @@ public class EmployeeControl
     }
 
     public void deleteEmployments(List<Employment> employments, BasePK deletedBy) {
-        employments.stream().forEach((employment) -> {
-            deleteEmployment(employment, deletedBy);
-        });
+        employments.forEach((employment) -> 
+                deleteEmployment(employment, deletedBy)
+        );
     }
 
     public void deleteEmploymentsByParty(Party party, BasePK deletedBy) {
@@ -3569,7 +3570,7 @@ public class EmployeeControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEmployeeTypeChoice == null? false: defaultEmployeeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultEmployeeTypeChoice != null && defaultEmployeeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && employeeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3662,7 +3663,7 @@ public class EmployeeControl
                 if(iter.hasNext()) {
                     defaultEmployeeType = iter.next();
                 }
-                EmployeeTypeDetailValue employeeTypeDetailValue = defaultEmployeeType.getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
+                EmployeeTypeDetailValue employeeTypeDetailValue = Objects.requireNonNull(defaultEmployeeType).getLastDetailForUpdate().getEmployeeTypeDetailValue().clone();
                 
                 employeeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateEmployeeTypeFromValue(employeeTypeDetailValue, false, deletedBy);
@@ -3736,7 +3737,7 @@ public class EmployeeControl
     }
     
     private List<EmployeeTypeDescription> getEmployeeTypeDescriptionsByEmployeeType(EmployeeType employeeType, EntityPermission entityPermission) {
-        List<EmployeeTypeDescription> employeeTypeDescriptions = null;
+        List<EmployeeTypeDescription> employeeTypeDescriptions;
         
         try {
             String query = null;
@@ -3842,9 +3843,9 @@ public class EmployeeControl
     public void deleteEmployeeTypeDescriptionsByEmployeeType(EmployeeType employeeType, BasePK deletedBy) {
         List<EmployeeTypeDescription> employeeTypeDescriptions = getEmployeeTypeDescriptionsByEmployeeTypeForUpdate(employeeType);
         
-        employeeTypeDescriptions.stream().forEach((employeeTypeDescription) -> {
-            deleteEmployeeTypeDescription(employeeTypeDescription, deletedBy);
-        });
+        employeeTypeDescriptions.forEach((employeeTypeDescription) -> 
+                deleteEmployeeTypeDescription(employeeTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3861,7 +3862,7 @@ public class EmployeeControl
     }
     
     public List<PartyEmployee> getPartyEmployees() {
-        List<PartyEmployee> partyEmployees = null;
+        List<PartyEmployee> partyEmployees;
         
         try {
             PreparedStatement ps = PartyEmployeeFactory.getInstance().prepareStatement(
@@ -4139,7 +4140,7 @@ public class EmployeeControl
     }
     
     private List<PartyResponsibility> getPartyResponsibilitiesByParty(Party party, EntityPermission entityPermission) {
-        List<PartyResponsibility> partyResponsibilities = null;
+        List<PartyResponsibility> partyResponsibilities;
         
         try {
             String query = null;
@@ -4179,7 +4180,7 @@ public class EmployeeControl
     }
     
     private List<PartyResponsibility> getPartyResponsibilitiesByResponsibilityType(ResponsibilityType responsibilityType, EntityPermission entityPermission) {
-        List<PartyResponsibility> partyResponsibilities = null;
+        List<PartyResponsibility> partyResponsibilities;
         
         try {
             String query = null;
@@ -4232,9 +4233,9 @@ public class EmployeeControl
         List<PartyResponsibilityTransfer> partyResponsibilityTransfers = new ArrayList<>(partyResponsibilities.size());
         PartyResponsibilityTransferCache partyResponsibilityTransferCache = getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache();
         
-        partyResponsibilities.stream().forEach((partyResponsibility) -> {
-            partyResponsibilityTransfers.add(partyResponsibilityTransferCache.getPartyResponsibilityTransfer(partyResponsibility));
-        });
+        partyResponsibilities.forEach((partyResponsibility) ->
+                partyResponsibilityTransfers.add(partyResponsibilityTransferCache.getPartyResponsibilityTransfer(partyResponsibility))
+        );
         
         return partyResponsibilityTransfers;
     }
@@ -4256,17 +4257,17 @@ public class EmployeeControl
     public void deletePartyResponsibilityByParty(Party party, BasePK deletedBy) {
         List<PartyResponsibility> partyResponsibilities = getPartyResponsibilitiesByPartyForUpdate(party);
         
-        partyResponsibilities.stream().forEach((partyResponsibility) -> {
-            deletePartyResponsibility(partyResponsibility, deletedBy);
-        });
+        partyResponsibilities.forEach((partyResponsibility) -> 
+                deletePartyResponsibility(partyResponsibility, deletedBy)
+        );
     }
     
     public void deletePartyResponsibilitiesByResponsibilityType(ResponsibilityType responsibilityType, BasePK deletedBy) {
         List<PartyResponsibility> partyResponsibilities = getPartyResponsibilitiesByResponsibilityTypeForUpdate(responsibilityType);
         
-        partyResponsibilities.stream().forEach((partyResponsibility) -> {
-            deletePartyResponsibility(partyResponsibility, deletedBy);
-        });
+        partyResponsibilities.forEach((partyResponsibility) -> 
+                deletePartyResponsibility(partyResponsibility, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4330,7 +4331,7 @@ public class EmployeeControl
     }
     
     private List<PartySkill> getPartySkillsByParty(Party party, EntityPermission entityPermission) {
-        List<PartySkill> partySkills = null;
+        List<PartySkill> partySkills;
         
         try {
             String query = null;
@@ -4370,7 +4371,7 @@ public class EmployeeControl
     }
     
     private List<PartySkill> getPartySkillsBySkillType(SkillType skillType, EntityPermission entityPermission) {
-        List<PartySkill> partySkills = null;
+        List<PartySkill> partySkills;
         
         try {
             String query = null;
@@ -4423,9 +4424,9 @@ public class EmployeeControl
         List<PartySkillTransfer> partySkillTransfers = new ArrayList<>(partySkills.size());
         PartySkillTransferCache partySkillTransferCache = getEmployeeTransferCaches(userVisit).getPartySkillTransferCache();
         
-        partySkills.stream().forEach((partySkill) -> {
-            partySkillTransfers.add(partySkillTransferCache.getPartySkillTransfer(partySkill));
-        });
+        partySkills.forEach((partySkill) ->
+                partySkillTransfers.add(partySkillTransferCache.getPartySkillTransfer(partySkill))
+        );
         
         return partySkillTransfers;
     }
@@ -4447,17 +4448,17 @@ public class EmployeeControl
     public void deletePartySkillByParty(Party party, BasePK deletedBy) {
         List<PartySkill> partySkills = getPartySkillsByPartyForUpdate(party);
         
-        partySkills.stream().forEach((partySkill) -> {
-            deletePartySkill(partySkill, deletedBy);
-        });
+        partySkills.forEach((partySkill) -> 
+                deletePartySkill(partySkill, deletedBy)
+        );
     }
     
     public void deletePartySkillsBySkillType(SkillType skillType, BasePK deletedBy) {
         List<PartySkill> partySkills = getPartySkillsBySkillTypeForUpdate(skillType);
         
-        partySkills.stream().forEach((partySkill) -> {
-            deletePartySkill(partySkill, deletedBy);
-        });
+        partySkills.forEach((partySkill) -> 
+                deletePartySkill(partySkill, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

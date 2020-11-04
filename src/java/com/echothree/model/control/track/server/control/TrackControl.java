@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TrackControl
         extends BaseModelControl {
@@ -321,9 +322,9 @@ public class TrackControl
         List<TrackTransfer> trackTransfers = new ArrayList<>(tracks.size());
         TrackTransferCache trackTransferCache = getTrackTransferCaches(userVisit).getTrackTransferCache();
 
-        tracks.stream().forEach((track) -> {
-            trackTransfers.add(trackTransferCache.getTrackTransfer(track));
-        });
+        tracks.forEach((track) ->
+                trackTransfers.add(trackTransferCache.getTrackTransfer(track))
+        );
 
         return trackTransfers;
     }
@@ -353,7 +354,7 @@ public class TrackControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTrackChoice == null? false: defaultTrackChoice.equals(value);
+            boolean usingDefaultChoice = defaultTrackChoice != null && defaultTrackChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && trackDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -430,7 +431,7 @@ public class TrackControl
                     if(iter.hasNext()) {
                         defaultTrack = iter.next();
                     }
-                    TrackDetailValue trackDetailValue = defaultTrack.getLastDetailForUpdate().getTrackDetailValue().clone();
+                    TrackDetailValue trackDetailValue = Objects.requireNonNull(defaultTrack).getLastDetailForUpdate().getTrackDetailValue().clone();
 
                     trackDetailValue.setIsDefault(Boolean.TRUE);
                     updateTrackFromValue(trackDetailValue, false, deletedBy);
@@ -446,9 +447,7 @@ public class TrackControl
     }
 
     private void deleteTracks(List<Track> tracks, boolean checkDefault, BasePK deletedBy) {
-        tracks.stream().forEach((track) -> {
-            deleteTrack(track, checkDefault, deletedBy);
-        });
+        tracks.forEach((track) -> deleteTrack(track, checkDefault, deletedBy));
     }
 
     public void deleteTracks(List<Track> tracks, BasePK deletedBy) {
@@ -563,9 +562,9 @@ public class TrackControl
         List<TrackDescriptionTransfer> trackDescriptionTransfers = new ArrayList<>(trackDescriptions.size());
         TrackDescriptionTransferCache trackDescriptionTransferCache = getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache();
 
-        trackDescriptions.stream().forEach((trackDescription) -> {
-            trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(trackDescription));
-        });
+        trackDescriptions.forEach((trackDescription) ->
+                trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(trackDescription))
+        );
 
         return trackDescriptionTransfers;
     }
@@ -599,9 +598,9 @@ public class TrackControl
     public void deleteTrackDescriptionsByTrack(Track track, BasePK deletedBy) {
         List<TrackDescription> trackDescriptions = getTrackDescriptionsByTrackForUpdate(track);
 
-        trackDescriptions.stream().forEach((trackDescription) -> {
-            deleteTrackDescription(trackDescription, deletedBy);
-        });
+        trackDescriptions.forEach((trackDescription) -> 
+                deleteTrackDescription(trackDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -724,9 +723,9 @@ public class TrackControl
         var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
         var userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
 
-        userVisitTracks.stream().forEach((userVisitTrack) -> {
-            userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisitTrack));
-        });
+        userVisitTracks.forEach((userVisitTrack) ->
+                userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisitTrack))
+        );
 
         return userVisitTrackTransfers;
     }

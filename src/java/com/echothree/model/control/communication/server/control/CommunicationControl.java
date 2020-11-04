@@ -103,6 +103,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class CommunicationControl
         extends BaseModelControl {
@@ -271,9 +272,9 @@ public class CommunicationControl
         List<CommunicationEventPurposeTransfer> communicationEventPurposeTransfers = new ArrayList<>(communicationEventPurposes.size());
         CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeTransferCache();
         
-        communicationEventPurposes.stream().forEach((communicationEventPurpose) -> {
-            communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(communicationEventPurpose));
-        });
+        communicationEventPurposes.forEach((communicationEventPurpose) ->
+                communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(communicationEventPurpose))
+        );
         
         return communicationEventPurposeTransfers;
     }
@@ -304,7 +305,7 @@ public class CommunicationControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCommunicationEventPurposeChoice == null? false: defaultCommunicationEventPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCommunicationEventPurposeChoice != null && defaultCommunicationEventPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && communicationEventPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -376,7 +377,7 @@ public class CommunicationControl
                 if(iter.hasNext()) {
                     defaultCommunicationEventPurpose = (CommunicationEventPurpose)iter.next();
                 }
-                CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = defaultCommunicationEventPurpose.getLastDetailForUpdate().getCommunicationEventPurposeDetailValue().clone();
+                CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = Objects.requireNonNull(defaultCommunicationEventPurpose).getLastDetailForUpdate().getCommunicationEventPurposeDetailValue().clone();
                 
                 communicationEventPurposeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCommunicationEventPurposeFromValue(communicationEventPurposeDetailValue, false, deletedBy);
@@ -449,7 +450,7 @@ public class CommunicationControl
     }
     
     private List<CommunicationEventPurposeDescription> getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose, EntityPermission entityPermission) {
-        List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions = null;
+        List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions;
         
         try {
             String query = null;
@@ -513,9 +514,9 @@ public class CommunicationControl
         List<CommunicationEventPurposeDescriptionTransfer> communicationEventPurposeDescriptionTransfers = new ArrayList<>(communicationEventPurposeDescriptions.size());
         CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeDescriptionTransferCache();
         
-        communicationEventPurposeDescriptions.stream().forEach((communicationEventPurposeDescription) -> {
-            communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription));
-        });
+        communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) ->
+                communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription))
+        );
         
         return communicationEventPurposeDescriptionTransfers;
     }
@@ -548,9 +549,9 @@ public class CommunicationControl
     public void deleteCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose, BasePK deletedBy) {
         List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurposeForUpdate(communicationEventPurpose);
         
-        communicationEventPurposeDescriptions.stream().forEach((communicationEventPurposeDescription) -> {
-            deleteCommunicationEventPurposeDescription(communicationEventPurposeDescription, deletedBy);
-        });
+        communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) -> 
+                deleteCommunicationEventPurposeDescription(communicationEventPurposeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -781,7 +782,7 @@ public class CommunicationControl
     }
 
     private List<CommunicationEvent> getCommunicationEventsByParty(Party party, EntityPermission entityPermission) {
-        List<CommunicationEvent> communicationEvents = null;
+        List<CommunicationEvent> communicationEvents;
         
         try {
             String query = null;
@@ -884,9 +885,9 @@ public class CommunicationControl
         List<CommunicationEventTransfer> communicationEventTransfers = new ArrayList<>(communicationEvents.size());
         CommunicationEventTransferCache communicationEventTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache();
         
-        communicationEvents.stream().forEach((communicationEvent) -> {
-            communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(communicationEvent));
-        });
+        communicationEvents.forEach((communicationEvent) ->
+                communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(communicationEvent))
+        );
         
         return communicationEventTransfers;
     }
@@ -961,7 +962,7 @@ public class CommunicationControl
     
     private List<CommunicationEventRole> getCommunicationEventRolesByCommunicationEvent(CommunicationEvent communicationEvent,
             EntityPermission entityPermission) {
-        List<CommunicationEventRole> communicationEventRoles = null;
+        List<CommunicationEventRole> communicationEventRoles;
         
         try {
             String query = null;
@@ -1004,7 +1005,7 @@ public class CommunicationControl
     
     private List<CommunicationEventRole> getCommunicationEventRolesByPartyAndCommunicationEventRoleType(Party party,
             CommunicationEventRoleType communicationEventRoleType, EntityPermission entityPermission) {
-        List<CommunicationEventRole> communicationEventRoles = null;
+        List<CommunicationEventRole> communicationEventRoles;
         
         try {
             String query = null;
@@ -1251,7 +1252,7 @@ public class CommunicationControl
     
     private List<CommunicationSource> getCommunicationSourcesByCommunicationSourceType(CommunicationSourceType communicationSourceType,
             EntityPermission entityPermission) {
-        List<CommunicationSource> communicationSources = null;
+        List<CommunicationSource> communicationSources;
         
         try {
             String query = null;
@@ -1296,9 +1297,9 @@ public class CommunicationControl
         List<CommunicationSourceTransfer> communicationSourceTransfers = new ArrayList<>(communicationSources.size());
         CommunicationSourceTransferCache communicationSourceTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache();
         
-        communicationSources.stream().forEach((communicationSource) -> {
-            communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(communicationSource));
-        });
+        communicationSources.forEach((communicationSource) ->
+                communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(communicationSource))
+        );
         
         return communicationSourceTransfers;
     }
@@ -1411,7 +1412,7 @@ public class CommunicationControl
     }
     
     private List<CommunicationSourceDescription> getCommunicationSourceDescriptionsByCommunicationSource(CommunicationSource communicationSource, EntityPermission entityPermission) {
-        List<CommunicationSourceDescription> communicationSourceDescriptions = null;
+        List<CommunicationSourceDescription> communicationSourceDescriptions;
         
         try {
             String query = null;
@@ -1475,9 +1476,9 @@ public class CommunicationControl
         List<CommunicationSourceDescriptionTransfer> communicationSourceDescriptionTransfers = new ArrayList<>(communicationSourceDescriptions.size());
         CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceDescriptionTransferCache();
         
-        communicationSourceDescriptions.stream().forEach((communicationSourceDescription) -> {
-            communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(communicationSourceDescription));
-        });
+        communicationSourceDescriptions.forEach((communicationSourceDescription) ->
+                communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(communicationSourceDescription))
+        );
         
         return communicationSourceDescriptionTransfers;
     }
@@ -1510,9 +1511,9 @@ public class CommunicationControl
     public void deleteCommunicationSourceDescriptionsByCommunicationSource(CommunicationSource communicationSource, BasePK deletedBy) {
         List<CommunicationSourceDescription> communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSourceForUpdate(communicationSource);
         
-        communicationSourceDescriptions.stream().forEach((communicationSourceDescription) -> {
-            deleteCommunicationSourceDescription(communicationSourceDescription, deletedBy);
-        });
+        communicationSourceDescriptions.forEach((communicationSourceDescription) -> 
+                deleteCommunicationSourceDescription(communicationSourceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

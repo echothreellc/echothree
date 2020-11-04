@@ -201,7 +201,7 @@ public class ShippingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultShippingMethodChoice == null? false: defaultShippingMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -237,7 +237,7 @@ public class ShippingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultShippingMethodChoice == null? false: defaultShippingMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTypeShippingMethod.getIsDefault())) {
                 defaultValue = value;
             }
@@ -255,9 +255,9 @@ public class ShippingControl
         List<ShippingMethodTransfer> shippingMethodTransfers = new ArrayList<>(carrierPartyPriorities.size());
         ShippingMethodTransferCache shippingMethodTransferCache = getShippingTransferCaches(userVisit).getShippingMethodTransferCache();
         
-        carrierPartyPriorities.stream().forEach((shippingMethod) -> {
-            shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod));
-        });
+        carrierPartyPriorities.forEach((shippingMethod) ->
+                shippingMethodTransfers.add(shippingMethodTransferCache.getShippingMethodTransfer(shippingMethod))
+        );
         
         return shippingMethodTransfers;
     }
@@ -367,7 +367,7 @@ public class ShippingControl
     }
     
     private List<ShippingMethodDescription> getShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShippingMethodDescription> shippingMethodDescriptions = null;
+        List<ShippingMethodDescription> shippingMethodDescriptions;
         
         try {
             String query = null;
@@ -431,9 +431,9 @@ public class ShippingControl
         List<ShippingMethodDescriptionTransfer> shippingMethodDescriptionTransfers = new ArrayList<>(shippingMethodDescriptions.size());
         ShippingMethodDescriptionTransferCache shippingMethodDescriptionTransferCache = getShippingTransferCaches(userVisit).getShippingMethodDescriptionTransferCache();
         
-        shippingMethodDescriptions.stream().forEach((shippingMethodDescription) -> {
-            shippingMethodDescriptionTransfers.add(shippingMethodDescriptionTransferCache.getShippingMethodDescriptionTransfer(shippingMethodDescription));
-        });
+        shippingMethodDescriptions.forEach((shippingMethodDescription) ->
+                shippingMethodDescriptionTransfers.add(shippingMethodDescriptionTransferCache.getShippingMethodDescriptionTransfer(shippingMethodDescription))
+        );
         
         return shippingMethodDescriptionTransfers;
     }
@@ -468,9 +468,9 @@ public class ShippingControl
     public void deleteShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
         List<ShippingMethodDescription> shippingMethodDescriptions = getShippingMethodDescriptionsByShippingMethodForUpdate(shippingMethod);
         
-        shippingMethodDescriptions.stream().forEach((shippingMethodDescription) -> {
-            deleteShippingMethodDescription(shippingMethodDescription, deletedBy);
-        });
+        shippingMethodDescriptions.forEach((shippingMethodDescription) -> 
+                deleteShippingMethodDescription(shippingMethodDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -537,7 +537,7 @@ public class ShippingControl
     }
     
     private List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShippingMethodCarrierService> shippingMethodCarrierServices = null;
+        List<ShippingMethodCarrierService> shippingMethodCarrierServices;
         
         try {
             String query = null;
@@ -577,7 +577,7 @@ public class ShippingControl
     }
     
     private List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<ShippingMethodCarrierService> shippingMethodCarrierServices = null;
+        List<ShippingMethodCarrierService> shippingMethodCarrierServices;
         
         try {
             String query = null;
@@ -626,9 +626,9 @@ public class ShippingControl
         List<ShippingMethodCarrierServiceTransfer> shippingMethodCarrierServiceTransfers = new ArrayList<>(shippingMethodCarrierServices.size());
         ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache = getShippingTransferCaches(userVisit).getShippingMethodCarrierServiceTransferCache();
         
-        shippingMethodCarrierServices.stream().forEach((shippingMethodCarrierService) -> {
-            shippingMethodCarrierServiceTransfers.add(shippingMethodCarrierServiceTransferCache.getShippingMethodCarrierServiceTransfer(shippingMethodCarrierService));
-        });
+        shippingMethodCarrierServices.forEach((shippingMethodCarrierService) ->
+                shippingMethodCarrierServiceTransfers.add(shippingMethodCarrierServiceTransferCache.getShippingMethodCarrierServiceTransfer(shippingMethodCarrierService))
+        );
         
         return shippingMethodCarrierServiceTransfers;
     }
@@ -651,9 +651,9 @@ public class ShippingControl
     }
     
     public void deleteShippingMethodCarrierServices(List<ShippingMethodCarrierService> shippingMethodCarrierServices, BasePK deletedBy) {
-        shippingMethodCarrierServices.stream().forEach((shippingMethodCarrierService) -> {
-            deleteShippingMethodCarrierService(shippingMethodCarrierService, deletedBy);
-        });
+        shippingMethodCarrierServices.forEach((shippingMethodCarrierService) -> 
+                deleteShippingMethodCarrierService(shippingMethodCarrierService, deletedBy)
+        );
     }
     
     public void deleteShippingMethodCarrierServicesByShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {

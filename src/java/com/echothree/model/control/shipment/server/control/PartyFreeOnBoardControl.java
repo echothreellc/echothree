@@ -186,9 +186,9 @@ public class PartyFreeOnBoardControl
     public void deletePartyFreeOnBoardsByFreeOnBoard(FreeOnBoard freeOnBoard, BasePK deletedBy) {
         List<PartyFreeOnBoard> partyFreeOnBoards = getPartyFreeOnBoardsByFreeOnBoardForUpdate(freeOnBoard);
 
-        partyFreeOnBoards.stream().forEach((partyFreeOnBoard) -> {
-            deletePartyFreeOnBoard(partyFreeOnBoard, deletedBy);
-        });
+        partyFreeOnBoards.forEach((partyFreeOnBoard) -> 
+                deletePartyFreeOnBoard(partyFreeOnBoard, deletedBy)
+        );
     }
 
 }

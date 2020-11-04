@@ -103,6 +103,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CarrierControl
         extends BaseModelControl {
@@ -303,9 +304,9 @@ public class CarrierControl
         List<CarrierTypeTransfer> carrierTypeTransfers = new ArrayList<>(carrierTypes.size());
         CarrierTypeTransferCache carrierTypeTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache();
 
-        carrierTypes.stream().forEach((carrierType) -> {
-            carrierTypeTransfers.add(carrierTypeTransferCache.getCarrierTypeTransfer(carrierType));
-        });
+        carrierTypes.forEach((carrierType) ->
+                carrierTypeTransfers.add(carrierTypeTransferCache.getCarrierTypeTransfer(carrierType))
+        );
 
         return carrierTypeTransfers;
     }
@@ -344,7 +345,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCarrierTypeChoice == null? false: defaultCarrierTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierTypeChoice != null && defaultCarrierTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -417,7 +418,7 @@ public class CarrierControl
                 if(iter.hasNext()) {
                     defaultCarrierType = iter.next();
                 }
-                CarrierTypeDetailValue carrierTypeDetailValue = defaultCarrierType.getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
+                CarrierTypeDetailValue carrierTypeDetailValue = Objects.requireNonNull(defaultCarrierType).getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
 
                 carrierTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCarrierTypeFromValue(carrierTypeDetailValue, false, deletedBy);
@@ -539,9 +540,9 @@ public class CarrierControl
         List<CarrierTypeDescriptionTransfer> carrierTypeDescriptionTransfers = new ArrayList<>(carrierTypeDescriptions.size());
         CarrierTypeDescriptionTransferCache carrierTypeDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeDescriptionTransferCache();
 
-        carrierTypeDescriptions.stream().forEach((carrierTypeDescription) -> {
-            carrierTypeDescriptionTransfers.add(carrierTypeDescriptionTransferCache.getCarrierTypeDescriptionTransfer(carrierTypeDescription));
-        });
+        carrierTypeDescriptions.forEach((carrierTypeDescription) ->
+                carrierTypeDescriptionTransfers.add(carrierTypeDescriptionTransferCache.getCarrierTypeDescriptionTransfer(carrierTypeDescription))
+        );
 
         return carrierTypeDescriptionTransfers;
     }
@@ -575,9 +576,9 @@ public class CarrierControl
     public void deleteCarrierTypeDescriptionsByCarrierType(CarrierType carrierType, BasePK deletedBy) {
         List<CarrierTypeDescription> carrierTypeDescriptions = getCarrierTypeDescriptionsByCarrierTypeForUpdate(carrierType);
 
-        carrierTypeDescriptions.stream().forEach((carrierTypeDescription) -> {
-            deleteCarrierTypeDescription(carrierTypeDescription, deletedBy);
-        });
+        carrierTypeDescriptions.forEach((carrierTypeDescription) -> 
+                deleteCarrierTypeDescription(carrierTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -732,7 +733,7 @@ public class CarrierControl
     }
     
     private List<Carrier> getCarriers(EntityPermission entityPermission) {
-        List<Carrier> carriers = null;
+        List<Carrier> carriers;
         
         try {
             String query = null;
@@ -813,7 +814,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCarrierChoice == null? false: defaultCarrierChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierChoice != null && defaultCarrierChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrier.getIsDefault())) {
                 defaultValue = value;
             }
@@ -936,7 +937,7 @@ public class CarrierControl
     }
     
     private List<CarrierService> getCarrierServices(Party carrierParty, EntityPermission entityPermission) {
-        List<CarrierService> carrierPartyPriorities = null;
+        List<CarrierService> carrierPartyPriorities;
         
         try {
             String query = null;
@@ -1089,7 +1090,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCarrierServiceChoice == null? false: defaultCarrierServiceChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierServiceChoice != null && defaultCarrierServiceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierServiceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1107,9 +1108,9 @@ public class CarrierControl
         List<CarrierServiceTransfer> carrierServiceTransfers = new ArrayList<>(carrierPartyPriorities.size());
         CarrierServiceTransferCache carrierServiceTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceTransferCache();
         
-        carrierPartyPriorities.stream().forEach((carrierService) -> {
-            carrierServiceTransfers.add(carrierServiceTransferCache.getCarrierServiceTransfer(carrierService));
-        });
+        carrierPartyPriorities.forEach((carrierService) ->
+                carrierServiceTransfers.add(carrierServiceTransferCache.getCarrierServiceTransfer(carrierService))
+        );
         
         return carrierServiceTransfers;
     }
@@ -1190,7 +1191,7 @@ public class CarrierControl
                         defaultCarrierService = iter.next();
                     }
                     
-                    CarrierServiceDetailValue carrierServiceDetailValue = defaultCarrierService.getLastDetailForUpdate().getCarrierServiceDetailValue().clone();
+                    CarrierServiceDetailValue carrierServiceDetailValue = Objects.requireNonNull(defaultCarrierService).getLastDetailForUpdate().getCarrierServiceDetailValue().clone();
                     
                     carrierServiceDetailValue.setIsDefault(Boolean.TRUE);
                     updateCarrierServiceFromValue(carrierServiceDetailValue, false, deletedBy);
@@ -1276,7 +1277,7 @@ public class CarrierControl
     }
     
     private List<CarrierServiceDescription> getCarrierServiceDescriptionsByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<CarrierServiceDescription> carrierServiceDescriptions = null;
+        List<CarrierServiceDescription> carrierServiceDescriptions;
         
         try {
             String query = null;
@@ -1340,9 +1341,9 @@ public class CarrierControl
         List<CarrierServiceDescriptionTransfer> carrierServiceDescriptionTransfers = new ArrayList<>(carrierServiceDescriptions.size());
         CarrierServiceDescriptionTransferCache carrierServiceDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceDescriptionTransferCache();
         
-        carrierServiceDescriptions.stream().forEach((carrierServiceDescription) -> {
-            carrierServiceDescriptionTransfers.add(carrierServiceDescriptionTransferCache.getCarrierServiceDescriptionTransfer(carrierServiceDescription));
-        });
+        carrierServiceDescriptions.forEach((carrierServiceDescription) ->
+                carrierServiceDescriptionTransfers.add(carrierServiceDescriptionTransferCache.getCarrierServiceDescriptionTransfer(carrierServiceDescription))
+        );
         
         return carrierServiceDescriptionTransfers;
     }
@@ -1377,9 +1378,9 @@ public class CarrierControl
     public void deleteCarrierServiceDescriptionsByCarrierService(CarrierService carrierService, BasePK deletedBy) {
         List<CarrierServiceDescription> carrierServiceDescriptions = getCarrierServiceDescriptionsByCarrierServiceForUpdate(carrierService);
         
-        carrierServiceDescriptions.stream().forEach((carrierServiceDescription) -> {
-            deleteCarrierServiceDescription(carrierServiceDescription, deletedBy);
-        });
+        carrierServiceDescriptions.forEach((carrierServiceDescription) -> 
+                deleteCarrierServiceDescription(carrierServiceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1420,7 +1421,7 @@ public class CarrierControl
     }
     
     private List<CarrierOption> getCarrierOptions(Party carrierParty, EntityPermission entityPermission) {
-        List<CarrierOption> carrierPartyPriorities = null;
+        List<CarrierOption> carrierPartyPriorities;
         
         try {
             String query = null;
@@ -1573,7 +1574,7 @@ public class CarrierControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCarrierOptionChoice == null? false: defaultCarrierOptionChoice.equals(value);
+            boolean usingDefaultChoice = defaultCarrierOptionChoice != null && defaultCarrierOptionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierOptionDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1591,9 +1592,9 @@ public class CarrierControl
         List<CarrierOptionTransfer> carrierOptionTransfers = new ArrayList<>(carrierPartyPriorities.size());
         CarrierOptionTransferCache carrierOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionTransferCache();
         
-        carrierPartyPriorities.stream().forEach((carrierOption) -> {
-            carrierOptionTransfers.add(carrierOptionTransferCache.getCarrierOptionTransfer(carrierOption));
-        });
+        carrierPartyPriorities.forEach((carrierOption) ->
+                carrierOptionTransfers.add(carrierOptionTransferCache.getCarrierOptionTransfer(carrierOption))
+        );
         
         return carrierOptionTransfers;
     }
@@ -1681,7 +1682,7 @@ public class CarrierControl
                         defaultCarrierOption = iter.next();
                     }
                     
-                    CarrierOptionDetailValue carrierOptionDetailValue = defaultCarrierOption.getLastDetailForUpdate().getCarrierOptionDetailValue().clone();
+                    CarrierOptionDetailValue carrierOptionDetailValue = Objects.requireNonNull(defaultCarrierOption).getLastDetailForUpdate().getCarrierOptionDetailValue().clone();
                     
                     carrierOptionDetailValue.setIsDefault(Boolean.TRUE);
                     updateCarrierOptionFromValue(carrierOptionDetailValue, false, deletedBy);
@@ -1767,7 +1768,7 @@ public class CarrierControl
     }
     
     private List<CarrierOptionDescription> getCarrierOptionDescriptionsByCarrierOption(CarrierOption carrierOption, EntityPermission entityPermission) {
-        List<CarrierOptionDescription> carrierOptionDescriptions = null;
+        List<CarrierOptionDescription> carrierOptionDescriptions;
         
         try {
             String query = null;
@@ -1831,9 +1832,9 @@ public class CarrierControl
         List<CarrierOptionDescriptionTransfer> carrierOptionDescriptionTransfers = new ArrayList<>(carrierOptionDescriptions.size());
         CarrierOptionDescriptionTransferCache carrierOptionDescriptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierOptionDescriptionTransferCache();
         
-        carrierOptionDescriptions.stream().forEach((carrierOptionDescription) -> {
-            carrierOptionDescriptionTransfers.add(carrierOptionDescriptionTransferCache.getCarrierOptionDescriptionTransfer(carrierOptionDescription));
-        });
+        carrierOptionDescriptions.forEach((carrierOptionDescription) ->
+                carrierOptionDescriptionTransfers.add(carrierOptionDescriptionTransferCache.getCarrierOptionDescriptionTransfer(carrierOptionDescription))
+        );
         
         return carrierOptionDescriptionTransfers;
     }
@@ -1868,9 +1869,9 @@ public class CarrierControl
     public void deleteCarrierOptionDescriptionsByCarrierOption(CarrierOption carrierOption, BasePK deletedBy) {
         List<CarrierOptionDescription> carrierOptionDescriptions = getCarrierOptionDescriptionsByCarrierOptionForUpdate(carrierOption);
         
-        carrierOptionDescriptions.stream().forEach((carrierOptionDescription) -> {
-            deleteCarrierOptionDescription(carrierOptionDescription, deletedBy);
-        });
+        carrierOptionDescriptions.forEach((carrierOptionDescription) -> 
+                deleteCarrierOptionDescription(carrierOptionDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1941,7 +1942,7 @@ public class CarrierControl
     }
     
     private List<CarrierServiceOption> getCarrierServiceOptionsByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<CarrierServiceOption> carrierServiceOptions = null;
+        List<CarrierServiceOption> carrierServiceOptions;
         
         try {
             String query = null;
@@ -1981,7 +1982,7 @@ public class CarrierControl
     }
     
     private List<CarrierServiceOption> getCarrierServiceOptionsByCarrierOption(CarrierOption carrierOption, EntityPermission entityPermission) {
-        List<CarrierServiceOption> carrierServiceOptions = null;
+        List<CarrierServiceOption> carrierServiceOptions;
         
         try {
             String query = null;
@@ -2028,9 +2029,9 @@ public class CarrierControl
         List<CarrierServiceOptionTransfer> carrierServiceOptionTransfers = new ArrayList<>(carrierServiceOptions.size());
         CarrierServiceOptionTransferCache carrierServiceOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache();
         
-        carrierServiceOptions.stream().forEach((carrierServiceOption) -> {
-            carrierServiceOptionTransfers.add(carrierServiceOptionTransferCache.getCarrierServiceOptionTransfer(carrierServiceOption));
-        });
+        carrierServiceOptions.forEach((carrierServiceOption) ->
+                carrierServiceOptionTransfers.add(carrierServiceOptionTransferCache.getCarrierServiceOptionTransfer(carrierServiceOption))
+        );
         
         return carrierServiceOptionTransfers;
     }
@@ -2082,9 +2083,9 @@ public class CarrierControl
     }
     
     public void deleteCarrierServiceOptions(List<CarrierServiceOption> carrierServiceOptions, BasePK deletedBy) {
-        carrierServiceOptions.stream().forEach((carrierServiceOption) -> {
-            deleteCarrierServiceOption(carrierServiceOption, deletedBy);
-        });
+        carrierServiceOptions.forEach((carrierServiceOption) -> 
+                deleteCarrierServiceOption(carrierServiceOption, deletedBy)
+        );
     }
     
     public void deleteCarrierServiceOptionsByCarrierService(CarrierService carrierService, BasePK deletedBy) {
@@ -2155,7 +2156,7 @@ public class CarrierControl
     }
     
     private List<PartyCarrier> getPartyCarriersByParty(Party party, EntityPermission entityPermission) {
-        List<PartyCarrier> partyCarriers = null;
+        List<PartyCarrier> partyCarriers;
         
         try {
             String query = null;
@@ -2195,7 +2196,7 @@ public class CarrierControl
     }
     
     private List<PartyCarrier> getPartyCarriersByCarrierParty(Party carrierParty, EntityPermission entityPermission) {
-        List<PartyCarrier> partyCarriers = null;
+        List<PartyCarrier> partyCarriers;
         
         try {
             String query = null;
@@ -2245,9 +2246,9 @@ public class CarrierControl
         List<PartyCarrierTransfer> partyCarrierTransfers = new ArrayList<>(partyCarriers.size());
         PartyCarrierTransferCache partyCarrierTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierTransferCache();
 
-        partyCarriers.stream().forEach((partyCarrier) -> {
-            partyCarrierTransfers.add(partyCarrierTransferCache.getPartyCarrierTransfer(partyCarrier));
-        });
+        partyCarriers.forEach((partyCarrier) ->
+                partyCarrierTransfers.add(partyCarrierTransferCache.getPartyCarrierTransfer(partyCarrier))
+        );
 
         return partyCarrierTransfers;
     }
@@ -2267,9 +2268,9 @@ public class CarrierControl
     }
     
     public void deletePartyCarriers(List<PartyCarrier> partyCarriers, BasePK deletedBy) {
-        partyCarriers.stream().forEach((partyCarrier) -> {
-            deletePartyCarrier(partyCarrier, deletedBy);
-        });
+        partyCarriers.forEach((partyCarrier) -> 
+                deletePartyCarrier(partyCarrier, deletedBy)
+        );
     }
     
     public void deletePartyCarriersByParty(Party party, BasePK deletedBy) {
@@ -2419,9 +2420,9 @@ public class CarrierControl
         List<PartyCarrierAccountTransfer> partyCarrierAccountTransfers = new ArrayList<>(partyCarrierAccounts.size());
         PartyCarrierAccountTransferCache partyCarrierAccountTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache();
 
-        partyCarrierAccounts.stream().forEach((partyCarrierAccount) -> {
-            partyCarrierAccountTransfers.add(partyCarrierAccountTransferCache.getPartyCarrierAccountTransfer(partyCarrierAccount));
-        });
+        partyCarrierAccounts.forEach((partyCarrierAccount) ->
+                partyCarrierAccountTransfers.add(partyCarrierAccountTransferCache.getPartyCarrierAccountTransfer(partyCarrierAccount))
+        );
 
         return partyCarrierAccountTransfers;
     }
@@ -2470,9 +2471,9 @@ public class CarrierControl
     }
 
     public void deletePartyCarrierAccounts(List<PartyCarrierAccount> partyCarrierAccounts, BasePK deletedBy) {
-        partyCarrierAccounts.stream().forEach((partyCarrierAccount) -> {
-            deletePartyCarrierAccount(partyCarrierAccount, deletedBy);
-        });
+        partyCarrierAccounts.forEach((partyCarrierAccount) -> 
+                deletePartyCarrierAccount(partyCarrierAccount, deletedBy)
+        );
     }
 
     public void deletePartyCarrierAccountsByParty(Party party, BasePK deletedBy) {

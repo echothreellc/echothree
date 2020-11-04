@@ -143,6 +143,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class UserControl
@@ -567,9 +568,9 @@ public class UserControl
         List<UserVisitGroupTransfer> userVisitGroupTransfers = new ArrayList<>(userVisitGroups.size());
         UserVisitGroupTransferCache userVisitGroupTransferCache = getUserTransferCaches(userVisit).getUserVisitGroupTransferCache();
         
-        userVisitGroups.stream().forEach((userVisitGroup) -> {
-            userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisitGroup));
-        });
+        userVisitGroups.forEach((userVisitGroup) ->
+                userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisitGroup))
+        );
         
         return userVisitGroupTransfers;
     }
@@ -1364,10 +1365,9 @@ public class UserControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.RecoveryQuestion */
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        RecoveryQuestionPK pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
-        RecoveryQuestion recoveryQuestion = RecoveryQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return recoveryQuestion;
+        var pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
+
+        return RecoveryQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance) {
@@ -1399,7 +1399,7 @@ public class UserControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultRecoveryQuestionChoice == null? false: defaultRecoveryQuestionChoice.equals(value);
+            boolean usingDefaultChoice = defaultRecoveryQuestionChoice != null && defaultRecoveryQuestionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && recoveryQuestionDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -1415,9 +1415,9 @@ public class UserControl
         List<RecoveryQuestionTransfer> recoveryQuestionTransfers = new ArrayList<>(recoveryQuestions.size());
         RecoveryQuestionTransferCache recoveryQuestionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionTransferCache();
         
-        recoveryQuestions.stream().forEach((recoveryQuestion) -> {
-            recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(recoveryQuestion));
-        });
+        recoveryQuestions.forEach((recoveryQuestion) ->
+                recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(recoveryQuestion))
+        );
         
         return recoveryQuestionTransfers;
     }
@@ -1490,7 +1490,7 @@ public class UserControl
                 if(iter.hasNext()) {
                     defaultRecoveryQuestion = iter.next();
                 }
-                RecoveryQuestionDetailValue recoveryQuestionDetailValue = defaultRecoveryQuestion.getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
+                RecoveryQuestionDetailValue recoveryQuestionDetailValue = Objects.requireNonNull(defaultRecoveryQuestion).getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
                 
                 recoveryQuestionDetailValue.setIsDefault(Boolean.TRUE);
                 updateRecoveryQuestionFromValue(recoveryQuestionDetailValue, false, deletedBy);
@@ -1569,7 +1569,7 @@ public class UserControl
     
     private List<RecoveryQuestionDescription> getRecoveryQuestionDescriptionsByRecoveryQuestion(RecoveryQuestion recoveryQuestion,
             EntityPermission entityPermission) {
-        List<RecoveryQuestionDescription> recoveryQuestionDescriptions = null;
+        List<RecoveryQuestionDescription> recoveryQuestionDescriptions;
         
         try {
             String query = null;
@@ -1633,9 +1633,9 @@ public class UserControl
         List<RecoveryQuestionDescriptionTransfer> recoveryQuestionDescriptionTransfers = new ArrayList<>(recoveryQuestionDescriptions.size());
         RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionDescriptionTransferCache();
         
-        recoveryQuestionDescriptions.stream().forEach((recoveryQuestionDescription) -> {
-            recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription));
-        });
+        recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) ->
+                recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription))
+        );
         
         return recoveryQuestionDescriptionTransfers;
     }
@@ -1670,9 +1670,9 @@ public class UserControl
     public void deleteRecoveryQuestionDescriptionsByRecoveryQuestion(RecoveryQuestion recoveryQuestion, BasePK deletedBy) {
         List<RecoveryQuestionDescription> recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestionForUpdate(recoveryQuestion);
         
-        recoveryQuestionDescriptions.stream().forEach((recoveryQuestionDescription) -> {
-            deleteRecoveryQuestionDescription(recoveryQuestionDescription, deletedBy);
-        });
+        recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) -> 
+                deleteRecoveryQuestionDescription(recoveryQuestionDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1830,9 +1830,9 @@ public class UserControl
     }
     
     public void deleteRecoveryAnswers(List<RecoveryAnswer> recoveryAnswers, BasePK deletedBy) {
-        recoveryAnswers.stream().forEach((recoveryAnswer) -> {
-            deleteRecoveryAnswer(recoveryAnswer, deletedBy);
-        });
+        recoveryAnswers.forEach((recoveryAnswer) -> 
+                deleteRecoveryAnswer(recoveryAnswer, deletedBy)
+        );
     }
     
     public void deleteRecoveryAnswersByRecoveryQuestion(RecoveryQuestion recoveryQuestion, BasePK deletedBy) {
@@ -2099,9 +2099,9 @@ public class UserControl
         List<UserLoginPasswordTransfer> userLoginPasswordTransfers = new ArrayList<>(userLoginPasswords.size());
         UserLoginPasswordTransferCache userLoginPasswordTransferCache = getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache();
 
-        userLoginPasswords.stream().forEach((userLoginPassword) -> {
-            userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userLoginPassword));
-        });
+        userLoginPasswords.forEach((userLoginPassword) ->
+                userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userLoginPassword))
+        );
 
         return userLoginPasswordTransfers;
     }
@@ -2125,9 +2125,9 @@ public class UserControl
     }
     
     public void deleteUserLoginPasswords(List<UserLoginPassword> userLoginPasswords, BasePK deletedBy) {
-        userLoginPasswords.stream().forEach((userLoginPassword) -> {
-            deleteUserLoginPassword(userLoginPassword, deletedBy);
-        });
+        userLoginPasswords.forEach((userLoginPassword) -> 
+                deleteUserLoginPassword(userLoginPassword, deletedBy)
+        );
     }
     
     public void deleteUserLoginPasswordsByParty(Party party, BasePK deletedBy) {
@@ -2202,7 +2202,7 @@ public class UserControl
     
     private List<UserLoginPasswordString> getUserLoginPasswordStringHistory(UserLoginPassword userLoginPassword, long limit,
             EntityPermission entityPermission) {
-        List<UserLoginPasswordString> userLoginPasswordStrings = null;
+        List<UserLoginPasswordString> userLoginPasswordStrings;
         
         try {
             PreparedStatement ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(

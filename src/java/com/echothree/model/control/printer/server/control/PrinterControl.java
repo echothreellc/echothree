@@ -108,6 +108,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class PrinterControl
         extends BaseModelControl {
@@ -277,9 +278,9 @@ public class PrinterControl
         List<PrinterGroupTransfer> printerGroupTransfers = new ArrayList<>(printerGroups.size());
         PrinterGroupTransferCache printerGroupTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache();
 
-        printerGroups.stream().forEach((printerGroup) -> {
-            printerGroupTransfers.add(printerGroupTransferCache.getPrinterGroupTransfer(printerGroup));
-        });
+        printerGroups.forEach((printerGroup) ->
+                printerGroupTransfers.add(printerGroupTransferCache.getPrinterGroupTransfer(printerGroup))
+        );
 
         return printerGroupTransfers;
     }
@@ -313,7 +314,7 @@ public class PrinterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPrinterGroupChoice == null? false: defaultPrinterGroupChoice.equals(value);
+            boolean usingDefaultChoice = defaultPrinterGroupChoice != null && defaultPrinterGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && printerGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -418,7 +419,7 @@ public class PrinterControl
                 if(iter.hasNext()) {
                     defaultPrinterGroup = iter.next();
                 }
-                PrinterGroupDetailValue printerGroupDetailValue = defaultPrinterGroup.getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
+                PrinterGroupDetailValue printerGroupDetailValue = Objects.requireNonNull(defaultPrinterGroup).getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
 
                 printerGroupDetailValue.setIsDefault(Boolean.TRUE);
                 updatePrinterGroupFromValue(printerGroupDetailValue, false, deletedBy);
@@ -540,9 +541,9 @@ public class PrinterControl
         List<PrinterGroupDescriptionTransfer> printerGroupDescriptionTransfers = new ArrayList<>(printerGroupDescriptions.size());
         PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupDescriptionTransferCache();
 
-        printerGroupDescriptions.stream().forEach((printerGroupDescription) -> {
-            printerGroupDescriptionTransfers.add(printerGroupDescriptionTransferCache.getPrinterGroupDescriptionTransfer(printerGroupDescription));
-        });
+        printerGroupDescriptions.forEach((printerGroupDescription) ->
+                printerGroupDescriptionTransfers.add(printerGroupDescriptionTransferCache.getPrinterGroupDescriptionTransfer(printerGroupDescription))
+        );
 
         return printerGroupDescriptionTransfers;
     }
@@ -576,9 +577,9 @@ public class PrinterControl
     public void deletePrinterGroupDescriptionsByPrinterGroup(PrinterGroup printerGroup, BasePK deletedBy) {
         List<PrinterGroupDescription> printerGroupDescriptions = getPrinterGroupDescriptionsByPrinterGroupForUpdate(printerGroup);
 
-        printerGroupDescriptions.stream().forEach((printerGroupDescription) -> {
-            deletePrinterGroupDescription(printerGroupDescription, deletedBy);
-        });
+        printerGroupDescriptions.forEach((printerGroupDescription) -> 
+                deletePrinterGroupDescription(printerGroupDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -757,9 +758,9 @@ public class PrinterControl
         List<PrinterTransfer> printerTransfers = new ArrayList<>(printers.size());
         PrinterTransferCache printerTransferCache = getPrinterTransferCaches(userVisit).getPrinterTransferCache();
 
-        printers.stream().forEach((printer) -> {
-            printerTransfers.add(printerTransferCache.getPrinterTransfer(printer));
-        });
+        printers.forEach((printer) ->
+                printerTransfers.add(printerTransferCache.getPrinterTransfer(printer))
+        );
 
         return printerTransfers;
     }
@@ -835,9 +836,9 @@ public class PrinterControl
     }
 
     public void deletePrinters(List<Printer> printers, BasePK deletedBy) {
-        printers.stream().forEach((printer) -> {
-            deletePrinter(printer, deletedBy);
-        });
+        printers.forEach((printer) -> 
+                deletePrinter(printer, deletedBy)
+        );
     }
 
     public void deletePrintersByPrinterGroup(PrinterGroup printerGroup, BasePK deletedBy) {
@@ -955,9 +956,9 @@ public class PrinterControl
         List<PrinterDescriptionTransfer> printerDescriptionTransfers = new ArrayList<>(printerDescriptions.size());
         PrinterDescriptionTransferCache printerDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterDescriptionTransferCache();
 
-        printerDescriptions.stream().forEach((printerDescription) -> {
-            printerDescriptionTransfers.add(printerDescriptionTransferCache.getPrinterDescriptionTransfer(printerDescription));
-        });
+        printerDescriptions.forEach((printerDescription) ->
+                printerDescriptionTransfers.add(printerDescriptionTransferCache.getPrinterDescriptionTransfer(printerDescription))
+        );
 
         return printerDescriptionTransfers;
     }
@@ -990,9 +991,9 @@ public class PrinterControl
     public void deletePrinterDescriptionsByPrinter(Printer printer, BasePK deletedBy) {
         List<PrinterDescription> printerDescriptions = getPrinterDescriptionsByPrinterForUpdate(printer);
 
-        printerDescriptions.stream().forEach((printerDescription) -> {
-            deletePrinterDescription(printerDescription, deletedBy);
-        });
+        printerDescriptions.forEach((printerDescription) -> 
+                deletePrinterDescription(printerDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1251,9 +1252,9 @@ public class PrinterControl
         List<PrinterGroupJobTransfer> printerGroupJobTransfers = new ArrayList<>(printerGroupJobs.size());
         PrinterGroupJobTransferCache printerGroupJobTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache();
 
-        printerGroupJobs.stream().forEach((printerGroupJob) -> {
-            printerGroupJobTransfers.add(printerGroupJobTransferCache.getPrinterGroupJobTransfer(printerGroupJob));
-        });
+        printerGroupJobs.forEach((printerGroupJob) ->
+                printerGroupJobTransfers.add(printerGroupJobTransferCache.getPrinterGroupJobTransfer(printerGroupJob))
+        );
 
         return printerGroupJobTransfers;
     }
@@ -1354,9 +1355,9 @@ public class PrinterControl
     }
 
     public void deletePrinterGroupJobs(List<PrinterGroupJob> printerGroupJobs, BasePK deletedBy) {
-        printerGroupJobs.stream().forEach((printerGroupJob) -> {
-            deletePrinterGroupJob(printerGroupJob, deletedBy);
-        });
+        printerGroupJobs.forEach((printerGroupJob) -> 
+                deletePrinterGroupJob(printerGroupJob, deletedBy)
+        );
     }
 
     public void deletePrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup, BasePK deletedBy) {
@@ -1528,9 +1529,9 @@ public class PrinterControl
         List<PrinterGroupUseTypeTransfer> printerGroupUseTypeTransfers = new ArrayList<>(printerGroupUseTypes.size());
         PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache();
 
-        printerGroupUseTypes.stream().forEach((printerGroupUseType) -> {
-            printerGroupUseTypeTransfers.add(printerGroupUseTypeTransferCache.getPrinterGroupUseTypeTransfer(printerGroupUseType));
-        });
+        printerGroupUseTypes.forEach((printerGroupUseType) ->
+                printerGroupUseTypeTransfers.add(printerGroupUseTypeTransferCache.getPrinterGroupUseTypeTransfer(printerGroupUseType))
+        );
 
         return printerGroupUseTypeTransfers;
     }
@@ -1564,7 +1565,7 @@ public class PrinterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPrinterGroupUseTypeChoice == null? false: defaultPrinterGroupUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPrinterGroupUseTypeChoice != null && defaultPrinterGroupUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && printerGroupUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1637,7 +1638,7 @@ public class PrinterControl
                 if(iter.hasNext()) {
                     defaultPrinterGroupUseType = iter.next();
                 }
-                PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = defaultPrinterGroupUseType.getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
+                PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = Objects.requireNonNull(defaultPrinterGroupUseType).getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
 
                 printerGroupUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePrinterGroupUseTypeFromValue(printerGroupUseTypeDetailValue, false, deletedBy);
@@ -1759,9 +1760,9 @@ public class PrinterControl
         List<PrinterGroupUseTypeDescriptionTransfer> printerGroupUseTypeDescriptionTransfers = new ArrayList<>(printerGroupUseTypeDescriptions.size());
         PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeDescriptionTransferCache();
 
-        printerGroupUseTypeDescriptions.stream().forEach((printerGroupUseTypeDescription) -> {
-            printerGroupUseTypeDescriptionTransfers.add(printerGroupUseTypeDescriptionTransferCache.getPrinterGroupUseTypeDescriptionTransfer(printerGroupUseTypeDescription));
-        });
+        printerGroupUseTypeDescriptions.forEach((printerGroupUseTypeDescription) ->
+                printerGroupUseTypeDescriptionTransfers.add(printerGroupUseTypeDescriptionTransferCache.getPrinterGroupUseTypeDescriptionTransfer(printerGroupUseTypeDescription))
+        );
 
         return printerGroupUseTypeDescriptionTransfers;
     }
@@ -1795,9 +1796,9 @@ public class PrinterControl
     public void deletePrinterGroupUseTypeDescriptionsByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType, BasePK deletedBy) {
         List<PrinterGroupUseTypeDescription> printerGroupUseTypeDescriptions = getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeForUpdate(printerGroupUseType);
 
-        printerGroupUseTypeDescriptions.stream().forEach((printerGroupUseTypeDescription) -> {
-            deletePrinterGroupUseTypeDescription(printerGroupUseTypeDescription, deletedBy);
-        });
+        printerGroupUseTypeDescriptions.forEach((printerGroupUseTypeDescription) -> 
+                deletePrinterGroupUseTypeDescription(printerGroupUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1972,9 +1973,9 @@ public class PrinterControl
         List<PartyPrinterGroupUseTransfer> partyPrinterGroupUseTransfers = new ArrayList<>(partyPrinterGroupUses.size());
         PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache = getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache();
 
-        partyPrinterGroupUses.stream().forEach((partyPrinterGroupUse) -> {
-            partyPrinterGroupUseTransfers.add(partyPrinterGroupUseTransferCache.getPartyPrinterGroupUseTransfer(partyPrinterGroupUse));
-        });
+        partyPrinterGroupUses.forEach((partyPrinterGroupUse) ->
+                partyPrinterGroupUseTransfers.add(partyPrinterGroupUseTransferCache.getPartyPrinterGroupUseTransfer(partyPrinterGroupUse))
+        );
 
         return partyPrinterGroupUseTransfers;
     }
@@ -2009,9 +2010,9 @@ public class PrinterControl
     }
 
     public void deletePartyPrinterGroupUses(List<PartyPrinterGroupUse> partyPrinterGroupUses, BasePK deletedBy) {
-        partyPrinterGroupUses.stream().forEach((partyPrinterGroupUse) -> {
-            deletePartyPrinterGroupUse(partyPrinterGroupUse, deletedBy);
-        });
+        partyPrinterGroupUses.forEach((partyPrinterGroupUse) -> 
+                deletePartyPrinterGroupUse(partyPrinterGroupUse, deletedBy)
+        );
     }
 
     public void deletePartyPrinterGroupUsesByParty(Party party, BasePK deletedBy) {

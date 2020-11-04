@@ -67,6 +67,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class PartyPaymentMethodControl
         extends BasePaymentControl {
@@ -264,9 +265,9 @@ public class PartyPaymentMethodControl
         List<PartyPaymentMethodTransfer> partyPaymentMethodTransfers = new ArrayList<>(partyPaymentMethods.size());
         PartyPaymentMethodTransferCache partyPaymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache();
 
-        partyPaymentMethods.stream().forEach((partyPaymentMethod) -> {
-            partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(partyPaymentMethod));
-        });
+        partyPaymentMethods.forEach((partyPaymentMethod) ->
+                partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(partyPaymentMethod))
+        );
 
         return partyPaymentMethodTransfers;
     }
@@ -301,7 +302,7 @@ public class PartyPaymentMethodControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPartyPaymentMethodChoice == null? false: defaultPartyPaymentMethodChoice.equals(value);
+            boolean usingDefaultChoice = defaultPartyPaymentMethodChoice != null && defaultPartyPaymentMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyPaymentMethodDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -391,7 +392,7 @@ public class PartyPaymentMethodControl
                 if(iter.hasNext()) {
                     defaultPartyPaymentMethod = iter.next();
                 }
-                var partyPaymentMethodDetailValue = defaultPartyPaymentMethod.getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
+                var partyPaymentMethodDetailValue = Objects.requireNonNull(defaultPartyPaymentMethod).getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
 
                 partyPaymentMethodDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, false, deletedBy);
@@ -402,9 +403,9 @@ public class PartyPaymentMethodControl
     }
 
     public void deletePartyPaymentMethods(List<PartyPaymentMethod> partyPaymentMethods, BasePK deletedBy) {
-        partyPaymentMethods.stream().forEach((partyPaymentMethod) -> {
-            deletePartyPaymentMethod(partyPaymentMethod, deletedBy);
-        });
+        partyPaymentMethods.forEach((partyPaymentMethod) -> 
+                deletePartyPaymentMethod(partyPaymentMethod, deletedBy)
+        );
     }
 
     public void deletePartyPaymentMethodsByPaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
@@ -509,7 +510,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards = null;
+        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards;
         
         try {
             String query = null;
@@ -553,7 +554,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(PartyContactMechanism issuerPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards = null;
+        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards;
         
         try {
             String query = null;
@@ -662,9 +663,9 @@ public class PartyPaymentMethodControl
     }
     
     public void deletePartyPaymentMethodCreditCards(List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards, BasePK deletedBy) {
-        partyPaymentMethodCreditCards.stream().forEach((partyPaymentMethodCreditCard) -> {
-            deletePartyPaymentMethodCreditCard(partyPaymentMethodCreditCard, deletedBy);
-        });
+        partyPaymentMethodCreditCards.forEach((partyPaymentMethodCreditCard) -> 
+                deletePartyPaymentMethodCreditCard(partyPaymentMethodCreditCard, deletedBy)
+        );
     }
     
     public void deletePartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism, BasePK deletedBy) {
@@ -853,7 +854,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyPaymentMethod(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms = null;
+        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms;
         
         try {
             String query = null;
@@ -893,7 +894,7 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyContactMechanismPurpose(PartyContactMechanismPurpose partyContactMechanismPurpose,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms = null;
+        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms;
         
         try {
             String query = null;
@@ -941,9 +942,9 @@ public class PartyPaymentMethodControl
         List<PartyPaymentMethodContactMechanismTransfer> partyPaymentMethodContactMechanismTransfers = new ArrayList<>(partyPaymentMethodContactMechanisms.size());
         PartyPaymentMethodContactMechanismTransferCache partyPaymentMethodContactMechanismTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache();
         
-        partyPaymentMethodContactMechanisms.stream().forEach((partyPaymentMethodContactMechanism) -> {
-            partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(partyPaymentMethodContactMechanism));
-        });
+        partyPaymentMethodContactMechanisms.forEach((partyPaymentMethodContactMechanism) ->
+                partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(partyPaymentMethodContactMechanism))
+        );
         
         return partyPaymentMethodContactMechanismTransfers;
     }

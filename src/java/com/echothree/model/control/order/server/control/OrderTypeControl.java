@@ -49,6 +49,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class OrderTypeControl
@@ -241,9 +242,9 @@ public class OrderTypeControl
         List<OrderTypeTransfer> orderTypeTransfers = new ArrayList<>(orderTypes.size());
         OrderTypeTransferCache orderTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTypeTransferCache();
 
-        orderTypes.stream().forEach((orderType) -> {
-            orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(orderType));
-        });
+        orderTypes.forEach((orderType) ->
+                orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(orderType))
+        );
 
         return orderTypeTransfers;
     }
@@ -274,7 +275,7 @@ public class OrderTypeControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderTypeChoice == null? false: defaultOrderTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultOrderTypeChoice != null && defaultOrderTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -378,7 +379,7 @@ public class OrderTypeControl
                     if(iter.hasNext()) {
                         defaultOrderType = iter.next();
                     }
-                    OrderTypeDetailValue orderTypeDetailValue = defaultOrderType.getLastDetailForUpdate().getOrderTypeDetailValue().clone();
+                    OrderTypeDetailValue orderTypeDetailValue = Objects.requireNonNull(defaultOrderType).getLastDetailForUpdate().getOrderTypeDetailValue().clone();
 
                     orderTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateOrderTypeFromValue(orderTypeDetailValue, false, deletedBy);
@@ -394,9 +395,7 @@ public class OrderTypeControl
     }
 
     private void deleteOrderTypes(List<OrderType> orderTypes, boolean checkDefault, BasePK deletedBy) {
-        orderTypes.stream().forEach((orderType) -> {
-            deleteOrderType(orderType, checkDefault, deletedBy);
-        });
+        orderTypes.forEach((orderType) -> deleteOrderType(orderType, checkDefault, deletedBy));
     }
 
     public void deleteOrderTypes(List<OrderType> orderTypes, BasePK deletedBy) {
@@ -515,9 +514,9 @@ public class OrderTypeControl
         List<OrderTypeDescriptionTransfer> orderTypeDescriptionTransfers = new ArrayList<>(orderTypeDescriptions.size());
         OrderTypeDescriptionTransferCache orderTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTypeDescriptionTransferCache();
 
-        orderTypeDescriptions.stream().forEach((orderTypeDescription) -> {
-            orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(orderTypeDescription));
-        });
+        orderTypeDescriptions.forEach((orderTypeDescription) ->
+                orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(orderTypeDescription))
+        );
 
         return orderTypeDescriptionTransfers;
     }
@@ -551,9 +550,9 @@ public class OrderTypeControl
     public void deleteOrderTypeDescriptionsByOrderType(OrderType orderType, BasePK deletedBy) {
         List<OrderTypeDescription> orderTypeDescriptions = getOrderTypeDescriptionsByOrderTypeForUpdate(orderType);
 
-        orderTypeDescriptions.stream().forEach((orderTypeDescription) -> {
-            deleteOrderTypeDescription(orderTypeDescription, deletedBy);
-        });
+        orderTypeDescriptions.forEach((orderTypeDescription) -> 
+                deleteOrderTypeDescription(orderTypeDescription, deletedBy)
+        );
     }
 
 }

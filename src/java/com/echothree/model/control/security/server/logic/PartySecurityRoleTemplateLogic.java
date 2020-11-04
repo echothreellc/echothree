@@ -87,9 +87,9 @@ public class PartySecurityRoleTemplateLogic {
     }
     
     public void deletePartySecurityRoleTemplateRoles(final List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles, final BasePK deletedBy) {
-        partySecurityRoleTemplateRoles.stream().forEach((partySecurityRoleTemplateRole) -> {
-            deletePartySecurityRoleTemplateRole(partySecurityRoleTemplateRole, deletedBy);
-        });
+        partySecurityRoleTemplateRoles.forEach((partySecurityRoleTemplateRole) -> 
+                deletePartySecurityRoleTemplateRole(partySecurityRoleTemplateRole, deletedBy)
+        );
     }
 
     public void deletePartySecurityRoleTemplateRoleByPartySecurityRoleTemplate(final PartySecurityRoleTemplate partySecurityRoleTemplate, final BasePK deletedBy) {
@@ -231,9 +231,9 @@ public class PartySecurityRoleTemplateLogic {
 
     public void deletePartySecurityRoleTemplateTrainingClasses(final List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses,
             final BasePK deletedBy) {
-        partySecurityRoleTemplateTrainingClasses.stream().forEach((partySecurityRoleTemplateTrainingClass) -> {
-            deletePartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateTrainingClass, deletedBy);
-        });
+        partySecurityRoleTemplateTrainingClasses.forEach((partySecurityRoleTemplateTrainingClass) -> 
+                deletePartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateTrainingClass, deletedBy)
+        );
     }
 
     public void deletePartySecurityRoleTemplateTrainingClassByPartySecurityRoleTemplate(final PartySecurityRoleTemplate partySecurityRoleTemplate,

@@ -71,6 +71,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class RatingControl
         extends BaseModelControl {
@@ -117,7 +118,7 @@ public class RatingControl
     }
     
     private List<RatingType> getRatingTypes(EntityType entityType, EntityPermission entityPermission) {
-        List<RatingType> ratingTypes = null;
+        List<RatingType> ratingTypes;
         
         try {
             String query = null;
@@ -211,9 +212,9 @@ public class RatingControl
         List<RatingTypeTransfer> ratingTypeTransfers = new ArrayList<>(ratingTypes.size());
         RatingTypeTransferCache ratingTypeTransferCache = getRatingTransferCaches(userVisit).getRatingTypeTransferCache();
         
-        ratingTypes.stream().forEach((ratingType) -> {
-            ratingTypeTransfers.add(ratingTypeTransferCache.getRatingTypeTransfer(ratingType));
-        });
+        ratingTypes.forEach((ratingType) ->
+                ratingTypeTransfers.add(ratingTypeTransferCache.getRatingTypeTransfer(ratingType))
+        );
         
         return ratingTypeTransfers;
     }
@@ -256,9 +257,9 @@ public class RatingControl
     }
     
     public void deleteRatingTypes(List<RatingType> ratingTypes, BasePK deletedBy) {
-        ratingTypes.stream().forEach((ratingType) -> {
-            deleteRatingType(ratingType, deletedBy);
-        });
+        ratingTypes.forEach((ratingType) -> 
+                deleteRatingType(ratingType, deletedBy)
+        );
     }
     
     public void deleteRatingTypesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -327,7 +328,7 @@ public class RatingControl
     }
     
     private List<RatingTypeDescription> getRatingTypeDescriptionsByRatingType(RatingType ratingType, EntityPermission entityPermission) {
-        List<RatingTypeDescription> ratingTypeDescriptions = null;
+        List<RatingTypeDescription> ratingTypeDescriptions;
         
         try {
             String query = null;
@@ -391,9 +392,9 @@ public class RatingControl
         List<RatingTypeDescriptionTransfer> ratingTypeDescriptionTransfers = new ArrayList<>(ratingTypeDescriptions.size());
         RatingTypeDescriptionTransferCache ratingTypeDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeDescriptionTransferCache();
         
-        ratingTypeDescriptions.stream().forEach((ratingTypeDescription) -> {
-            ratingTypeDescriptionTransfers.add(ratingTypeDescriptionTransferCache.getRatingTypeDescriptionTransfer(ratingTypeDescription));
-        });
+        ratingTypeDescriptions.forEach((ratingTypeDescription) ->
+                ratingTypeDescriptionTransfers.add(ratingTypeDescriptionTransferCache.getRatingTypeDescriptionTransfer(ratingTypeDescription))
+        );
         
         return ratingTypeDescriptionTransfers;
     }
@@ -425,9 +426,9 @@ public class RatingControl
     public void deleteRatingTypeDescriptionsByRatingType(RatingType ratingType, BasePK deletedBy) {
         List<RatingTypeDescription> ratingTypeDescriptions = getRatingTypeDescriptionsByRatingTypeForUpdate(ratingType);
         
-        ratingTypeDescriptions.stream().forEach((ratingTypeDescription) -> {
-            deleteRatingTypeDescription(ratingTypeDescription, deletedBy);
-        });
+        ratingTypeDescriptions.forEach((ratingTypeDescription) -> 
+                deleteRatingTypeDescription(ratingTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -558,7 +559,7 @@ public class RatingControl
     }
     
     private List<RatingTypeListItem> getRatingTypeListItems(RatingType ratingType, EntityPermission entityPermission) {
-        List<RatingTypeListItem> ratingTypeListItems = null;
+        List<RatingTypeListItem> ratingTypeListItems;
         
         try {
             String query = null;
@@ -606,9 +607,9 @@ public class RatingControl
         List<RatingTypeListItemTransfer> ratingTypeListItemTransfers = new ArrayList<>(ratingTypeListItems.size());
         RatingTypeListItemTransferCache ratingTypeListItemTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemTransferCache();
         
-        ratingTypeListItems.stream().forEach((ratingTypeListItem) -> {
-            ratingTypeListItemTransfers.add(ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItem));
-        });
+        ratingTypeListItems.forEach((ratingTypeListItem) ->
+                ratingTypeListItemTransfers.add(ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(ratingTypeListItem))
+        );
         
         return ratingTypeListItemTransfers;
     }
@@ -685,7 +686,7 @@ public class RatingControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultRatingTypeListItemChoice == null? false: defaultRatingTypeListItemChoice.equals(value);
+            boolean usingDefaultChoice = defaultRatingTypeListItemChoice != null && defaultRatingTypeListItemChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && ratingTypeListItemDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -714,7 +715,7 @@ public class RatingControl
                 if(iter.hasNext()) {
                     defaultRatingTypeListItem = iter.next();
                 }
-                RatingTypeListItemDetailValue ratingTypeListItemDetailValue = defaultRatingTypeListItem.getLastDetailForUpdate().getRatingTypeListItemDetailValue().clone();
+                RatingTypeListItemDetailValue ratingTypeListItemDetailValue = Objects.requireNonNull(defaultRatingTypeListItem).getLastDetailForUpdate().getRatingTypeListItemDetailValue().clone();
                 
                 ratingTypeListItemDetailValue.setIsDefault(Boolean.TRUE);
                 updateRatingTypeListItemFromValue(ratingTypeListItemDetailValue, false, deletedBy);
@@ -725,9 +726,9 @@ public class RatingControl
     }
     
     public void deleteRatingTypeListItems(List<RatingTypeListItem> ratingTypeListItems, BasePK deletedBy) {
-        ratingTypeListItems.stream().forEach((ratingTypeListItem) -> {
-            deleteRatingTypeListItem(ratingTypeListItem, deletedBy);
-        });
+        ratingTypeListItems.forEach((ratingTypeListItem) -> 
+                deleteRatingTypeListItem(ratingTypeListItem, deletedBy)
+        );
     }
     
     public void deleteRatingTypeListItemsByRatingType(RatingType ratingType, BasePK deletedBy) {
@@ -796,7 +797,7 @@ public class RatingControl
     }
     
     private List<RatingTypeListItemDescription> getRatingTypeListItemDescriptionsByRatingTypeListItem(RatingTypeListItem ratingTypeListItem, EntityPermission entityPermission) {
-        List<RatingTypeListItemDescription> ratingTypeListItemDescriptions = null;
+        List<RatingTypeListItemDescription> ratingTypeListItemDescriptions;
         
         try {
             String query = null;
@@ -860,9 +861,9 @@ public class RatingControl
         List<RatingTypeListItemDescriptionTransfer> ratingTypeListItemDescriptionTransfers = new ArrayList<>(ratingTypeListItemDescriptions.size());
         RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache = getRatingTransferCaches(userVisit).getRatingTypeListItemDescriptionTransferCache();
         
-        ratingTypeListItemDescriptions.stream().forEach((ratingTypeListItemDescription) -> {
-            ratingTypeListItemDescriptionTransfers.add(ratingTypeListItemDescriptionTransferCache.getRatingTypeListItemDescriptionTransfer(ratingTypeListItemDescription));
-        });
+        ratingTypeListItemDescriptions.forEach((ratingTypeListItemDescription) ->
+                ratingTypeListItemDescriptionTransfers.add(ratingTypeListItemDescriptionTransferCache.getRatingTypeListItemDescriptionTransfer(ratingTypeListItemDescription))
+        );
         
         return ratingTypeListItemDescriptionTransfers;
     }
@@ -894,9 +895,9 @@ public class RatingControl
     public void deleteRatingTypeListItemDescriptionsByRatingTypeListItem(RatingTypeListItem ratingTypeListItem, BasePK deletedBy) {
         List<RatingTypeListItemDescription> ratingTypeListItemDescriptions = getRatingTypeListItemDescriptionsByRatingTypeListItemForUpdate(ratingTypeListItem);
         
-        ratingTypeListItemDescriptions.stream().forEach((ratingTypeListItemDescription) -> {
-            deleteRatingTypeListItemDescription(ratingTypeListItemDescription, deletedBy);
-        });
+        ratingTypeListItemDescriptions.forEach((ratingTypeListItemDescription) -> 
+                deleteRatingTypeListItemDescription(ratingTypeListItemDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1014,7 +1015,7 @@ public class RatingControl
     }
     
     private List<Rating> getRatingsByRatedEntityInstance(EntityInstance ratedEntityInstance, EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;
@@ -1052,7 +1053,7 @@ public class RatingControl
     }
     
     private List<Rating> getRatingsByRatedByEntityInstance(EntityInstance ratedByEntityInstance, EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;
@@ -1089,7 +1090,7 @@ public class RatingControl
     }
     
     private List<Rating> getRatingsByRatingTypeListItem(RatingTypeListItem ratingTypeListItem, EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;
@@ -1127,7 +1128,7 @@ public class RatingControl
     
     private List<Rating> getRatingsByRatedEntityInstanceAndRatingType(EntityInstance ratedEntityInstance, RatingType ratingType,
             EntityPermission entityPermission) {
-        List<Rating> ratings = null;
+        List<Rating> ratings;
         
         try {
             String query = null;
@@ -1178,9 +1179,9 @@ public class RatingControl
         List<RatingTransfer> ratingTransfers = new ArrayList<>(ratings.size());
         RatingTransferCache ratingTransferCache = getRatingTransferCaches(userVisit).getRatingTransferCache();
         
-        ratings.stream().forEach((rating) -> {
-            ratingTransfers.add(ratingTransferCache.getRatingTransfer(rating));
-        });
+        ratings.forEach((rating) ->
+                ratingTransfers.add(ratingTransferCache.getRatingTransfer(rating))
+        );
         
         return ratingTransfers;
     }
@@ -1231,9 +1232,9 @@ public class RatingControl
     }
     
     public void deleteRatings(List<Rating> ratings, BasePK deletedBy) {
-        ratings.stream().forEach((rating) -> {
-            deleteRating(rating, deletedBy);
-        });
+        ratings.forEach((rating) -> 
+                deleteRating(rating, deletedBy)
+        );
     }
     
     public void deleteRatingsByRatedEntityInstance(EntityInstance ratedEntityInstance, BasePK deletedBy) {

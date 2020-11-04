@@ -134,6 +134,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -172,9 +173,9 @@ public class GeoControl
         var countryTransfers = new ArrayList<CountryTransfer>(geoCodes.size());
         var countryTransferCache = getGeoTransferCaches(userVisit).getCountryTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            countryTransfers.add(countryTransferCache.getCountryTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                countryTransfers.add(countryTransferCache.getCountryTransfer(geoCode))
+        );
         
         return countryTransfers;
     }
@@ -193,9 +194,9 @@ public class GeoControl
         var stateTransfers = new ArrayList<StateTransfer>(geoCodes.size());
         var stateTransferCache = getGeoTransferCaches(userVisit).getStateTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            stateTransfers.add(stateTransferCache.getStateTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                stateTransfers.add(stateTransferCache.getStateTransfer(geoCode))
+        );
         
         return stateTransfers;
     }
@@ -225,9 +226,9 @@ public class GeoControl
         var countyTransfers = new ArrayList<CountyTransfer>(geoCodes.size());
         var countyTransferCache = getGeoTransferCaches(userVisit).getCountyTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            countyTransfers.add(countyTransferCache.getCountyTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                countyTransfers.add(countyTransferCache.getCountyTransfer(geoCode))
+        );
         
         return countyTransfers;
     }
@@ -274,9 +275,9 @@ public class GeoControl
         var cityTransfers = new ArrayList<CityTransfer>(geoCodes.size());
         var cityTransferCache = getGeoTransferCaches(userVisit).getCityTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            cityTransfers.add(cityTransferCache.getCityTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                cityTransfers.add(cityTransferCache.getCityTransfer(geoCode))
+        );
         
         return cityTransfers;
     }
@@ -323,9 +324,9 @@ public class GeoControl
         var postalCodeTransfers = new ArrayList<PostalCodeTransfer>(geoCodes.size());
         var postalCodeTransferCache = getGeoTransferCaches(userVisit).getPostalCodeTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            postalCodeTransfers.add(postalCodeTransferCache.getPostalCodeTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                postalCodeTransfers.add(postalCodeTransferCache.getPostalCodeTransfer(geoCode))
+        );
         
         return postalCodeTransfers;
     }
@@ -377,7 +378,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCountryChoice == null? false: defaultCountryChoice.equals(value);
+            boolean usingDefaultChoice = defaultCountryChoice != null && defaultCountryChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -567,9 +568,9 @@ public class GeoControl
         List<GeoCodeTypeTransfer> geoCodeTypeTransfers = new ArrayList<>(geoCodeTypes.size());
         GeoCodeTypeTransferCache geoCodeTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTypeTransferCache();
         
-        geoCodeTypes.stream().forEach((geoCodeType) -> {
-            geoCodeTypeTransfers.add(geoCodeTypeTransferCache.getGeoCodeTypeTransfer(geoCodeType));
-        });
+        geoCodeTypes.forEach((geoCodeType) ->
+                geoCodeTypeTransfers.add(geoCodeTypeTransferCache.getGeoCodeTypeTransfer(geoCodeType))
+        );
         
         return geoCodeTypeTransfers;
     }
@@ -600,7 +601,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeTypeChoice == null? false: defaultGeoCodeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGeoCodeTypeChoice != null && defaultGeoCodeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -700,7 +701,7 @@ public class GeoControl
                     if(iter.hasNext()) {
                         defaultGeoCodeType = iter.next();
                     }
-                    GeoCodeTypeDetailValue geoCodeTypeDetailValue = defaultGeoCodeType.getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
+                    GeoCodeTypeDetailValue geoCodeTypeDetailValue = Objects.requireNonNull(defaultGeoCodeType).getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
 
                     geoCodeTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateGeoCodeTypeFromValue(geoCodeTypeDetailValue, false, deletedBy);
@@ -716,9 +717,7 @@ public class GeoControl
     }
 
     private void deleteGeoCodeTypes(List<GeoCodeType> geoCodeTypes, boolean checkDefault, BasePK deletedBy) {
-        geoCodeTypes.stream().forEach((geoCodeType) -> {
-            deleteGeoCodeType(geoCodeType, checkDefault, deletedBy);
-        });
+        geoCodeTypes.forEach((geoCodeType) -> deleteGeoCodeType(geoCodeType, checkDefault, deletedBy));
     }
 
     public void deleteGeoCodeTypes(List<GeoCodeType> geoCodeTypes, BasePK deletedBy) {
@@ -791,7 +790,7 @@ public class GeoControl
     
     
     private List<GeoCodeTypeDescription> getGeoCodeTypeDescriptionsByGeoCodeType(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeTypeDescription> geoCodeTypeDescriptions = null;
+        List<GeoCodeTypeDescription> geoCodeTypeDescriptions;
         
         try {
             String query = null;
@@ -888,9 +887,9 @@ public class GeoControl
     public void deleteGeoCodeTypeDescriptionsByGeoCodeType(GeoCodeType geoCodeType, BasePK deletedBy) {
         List<GeoCodeTypeDescription> geoCodeTypeDescriptions = getGeoCodeTypeDescriptionsByGeoCodeTypeForUpdate(geoCodeType);
         
-        geoCodeTypeDescriptions.stream().forEach((geoCodeTypeDescription) -> {
-            deleteGeoCodeTypeDescription(geoCodeTypeDescription, deletedBy);
-        });
+        geoCodeTypeDescriptions.forEach((geoCodeTypeDescription) -> 
+                deleteGeoCodeTypeDescription(geoCodeTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1040,9 +1039,9 @@ public class GeoControl
         List<GeoCodeScopeTransfer> geoCodeScopeTransfers = new ArrayList<>(geoCodeScopes.size());
         GeoCodeScopeTransferCache geoCodeScopeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeScopeTransferCache();
         
-        geoCodeScopes.stream().forEach((geoCodeScope) -> {
-            geoCodeScopeTransfers.add(geoCodeScopeTransferCache.getGeoCodeScopeTransfer(geoCodeScope));
-        });
+        geoCodeScopes.forEach((geoCodeScope) ->
+                geoCodeScopeTransfers.add(geoCodeScopeTransferCache.getGeoCodeScopeTransfer(geoCodeScope))
+        );
         
         return geoCodeScopeTransfers;
     }
@@ -1073,7 +1072,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeScopeChoice == null? false: defaultGeoCodeScopeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGeoCodeScopeChoice != null && defaultGeoCodeScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1147,7 +1146,7 @@ public class GeoControl
                 if(iter.hasNext()) {
                     defaultGeoCodeScope = iter.next();
                 }
-                GeoCodeScopeDetailValue geoCodeScopeDetailValue = defaultGeoCodeScope.getLastDetailForUpdate().getGeoCodeScopeDetailValue().clone();
+                GeoCodeScopeDetailValue geoCodeScopeDetailValue = Objects.requireNonNull(defaultGeoCodeScope).getLastDetailForUpdate().getGeoCodeScopeDetailValue().clone();
                 
                 geoCodeScopeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeScopeFromValue(geoCodeScopeDetailValue, false, deletedBy);
@@ -1219,7 +1218,7 @@ public class GeoControl
     
     
     private List<GeoCodeScopeDescription> getGeoCodeScopeDescriptionsByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        List<GeoCodeScopeDescription> geoCodeScopeDescriptions = null;
+        List<GeoCodeScopeDescription> geoCodeScopeDescriptions;
         
         try {
             String query = null;
@@ -1316,9 +1315,9 @@ public class GeoControl
     public void deleteGeoCodeScopeDescriptionsByGeoCodeScope(GeoCodeScope geoCodeScope, BasePK deletedBy) {
         List<GeoCodeScopeDescription> geoCodeScopeDescriptions = getGeoCodeScopeDescriptionsByGeoCodeScopeForUpdate(geoCodeScope);
         
-        geoCodeScopeDescriptions.stream().forEach((geoCodeScopeDescription) -> {
-            deleteGeoCodeScopeDescription(geoCodeScopeDescription, deletedBy);
-        });
+        geoCodeScopeDescriptions.forEach((geoCodeScopeDescription) -> 
+                deleteGeoCodeScopeDescription(geoCodeScopeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1448,7 +1447,7 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasType> getGeoCodeAliasTypes(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeAliasType> geoCodeAliasTypes = null;
+        List<GeoCodeAliasType> geoCodeAliasTypes;
         
         try {
             String query = null;
@@ -1486,7 +1485,7 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasType> getGeoCodeAliasTypesExceptDefault(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeAliasType> geoCodeAliasTypes = null;
+        List<GeoCodeAliasType> geoCodeAliasTypes;
         
         try {
             String query = null;
@@ -1534,9 +1533,9 @@ public class GeoControl
         List<GeoCodeAliasTypeTransfer> geoCodeAliasTypeTransfers = new ArrayList<>(geoCodeAliasTypes.size());
         GeoCodeAliasTypeTransferCache geoCodeAliasTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTypeTransferCache();
         
-        geoCodeAliasTypes.stream().forEach((geoCodeAliasType) -> {
-            geoCodeAliasTypeTransfers.add(geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(geoCodeAliasType));
-        });
+        geoCodeAliasTypes.forEach((geoCodeAliasType) ->
+                geoCodeAliasTypeTransfers.add(geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(geoCodeAliasType))
+        );
         
         return geoCodeAliasTypeTransfers;
     }
@@ -1567,7 +1566,7 @@ public class GeoControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeAliasTypeChoice == null? false: defaultGeoCodeAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultGeoCodeAliasTypeChoice != null && defaultGeoCodeAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1645,7 +1644,7 @@ public class GeoControl
                 if(iter.hasNext()) {
                     defaultGeoCodeAliasType = iter.next();
                 }
-                GeoCodeAliasTypeDetailValue geoCodeAliasTypeDetailValue = defaultGeoCodeAliasType.getLastDetailForUpdate().getGeoCodeAliasTypeDetailValue().clone();
+                GeoCodeAliasTypeDetailValue geoCodeAliasTypeDetailValue = Objects.requireNonNull(defaultGeoCodeAliasType).getLastDetailForUpdate().getGeoCodeAliasTypeDetailValue().clone();
                 
                 geoCodeAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeAliasTypeFromValue(geoCodeAliasTypeDetailValue, false, deletedBy);
@@ -1716,7 +1715,7 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasTypeDescription> getGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, EntityPermission entityPermission) {
-        List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions = null;
+        List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions;
         
         try {
             String query = null;
@@ -1813,9 +1812,9 @@ public class GeoControl
     public void deleteGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, BasePK deletedBy) {
         List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions = getGeoCodeAliasTypeDescriptionsByGeoCodeAliasTypeForUpdate(geoCodeAliasType);
         
-        geoCodeAliasTypeDescriptions.stream().forEach((geoCodeAliasTypeDescription) -> {
-            deleteGeoCodeAliasTypeDescription(geoCodeAliasTypeDescription, deletedBy);
-        });
+        geoCodeAliasTypeDescriptions.forEach((geoCodeAliasTypeDescription) -> 
+                deleteGeoCodeAliasTypeDescription(geoCodeAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1938,7 +1937,7 @@ public class GeoControl
     }
     
     private List<GeoCode> getGeoCodesByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        List<GeoCode> geoCode = null;
+        List<GeoCode> geoCode;
         
         try {
             String query = null;
@@ -1983,9 +1982,9 @@ public class GeoControl
         List<GeoCodeTransfer> geoCodeTransfers = new ArrayList<>(geoCodes.size());
         GeoCodeTransferCache geoCodeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTransferCache();
         
-        geoCodes.stream().forEach((geoCode) -> {
-            geoCodeTransfers.add(geoCodeTransferCache.getGeoCodeTransfer(geoCode));
-        });
+        geoCodes.forEach((geoCode) ->
+                geoCodeTransfers.add(geoCodeTransferCache.getGeoCodeTransfer(geoCode))
+        );
         
         return geoCodeTransfers;
     }
@@ -2076,7 +2075,7 @@ public class GeoControl
                 if(iter.hasNext()) {
                     defaultGeoCode = iter.next();
                 }
-                GeoCodeDetailValue geoCodeDetailValue = defaultGeoCode.getLastDetailForUpdate().getGeoCodeDetailValue().clone();
+                GeoCodeDetailValue geoCodeDetailValue = Objects.requireNonNull(defaultGeoCode).getLastDetailForUpdate().getGeoCodeDetailValue().clone();
 
                 geoCodeDetailValue.setIsDefault(Boolean.TRUE);
                 updateGeoCodeFromValue(geoCodeDetailValue, false, deletedBy);
@@ -2148,7 +2147,7 @@ public class GeoControl
     
     
     private List<GeoCodeDescription> getGeoCodeDescriptionsByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeDescription> geoCodeDescriptions = null;
+        List<GeoCodeDescription> geoCodeDescriptions;
         
         try {
             String query = null;
@@ -2245,9 +2244,9 @@ public class GeoControl
     public void deleteGeoCodeDescriptionsByGeoCode(GeoCode geoCode, BasePK deletedBy) {
         List<GeoCodeDescription> geoCodeDescriptions = getGeoCodeDescriptionsByGeoCodeForUpdate(geoCode);
         
-        geoCodeDescriptions.stream().forEach((geoCodeDescription) -> {
-            deleteGeoCodeDescription(geoCodeDescription, deletedBy);
-        });
+        geoCodeDescriptions.forEach((geoCodeDescription) -> 
+                deleteGeoCodeDescription(geoCodeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2435,9 +2434,9 @@ public class GeoControl
         List<GeoCodeAliasTransfer> geoCodeAliasTransfers = new ArrayList<>(geoCodeAliases.size());
         GeoCodeAliasTransferCache geoCodeAliasTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTransferCache();
         
-        geoCodeAliases.stream().forEach((geoCodeAlias) -> {
-            geoCodeAliasTransfers.add(geoCodeAliasTransferCache.getGeoCodeAliasTransfer(geoCodeAlias));
-        });
+        geoCodeAliases.forEach((geoCodeAlias) ->
+                geoCodeAliasTransfers.add(geoCodeAliasTransferCache.getGeoCodeAliasTransfer(geoCodeAlias))
+        );
         
         return geoCodeAliasTransfers;
     }
@@ -2473,9 +2472,9 @@ public class GeoControl
     }
 
     public void deleteGeoCodeAliases(List<GeoCodeAlias> geoCodeAliases, BasePK deletedBy) {
-        geoCodeAliases.stream().forEach((geoCodeAlias) -> {
-            deleteGeoCodeAlias(geoCodeAlias, deletedBy);
-        });
+        geoCodeAliases.forEach((geoCodeAlias) -> 
+                deleteGeoCodeAlias(geoCodeAlias, deletedBy)
+        );
     }
 
     public void deleteGeoCodeAliasesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -2571,7 +2570,7 @@ public class GeoControl
     }
 
     public List<GeoCodeRelationship> getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(GeoCode fromGeoCode, GeoCodeType geoCodeType) {
-        List<GeoCodeRelationship> geoCodeRelationships = null;
+        List<GeoCodeRelationship> geoCodeRelationships;
         
         try {
             PreparedStatement ps = GeoCodeRelationshipFactory.getInstance().prepareStatement(
@@ -2633,9 +2632,9 @@ public class GeoControl
     }
 
     public void deleteGeoCodeRelationships(List<GeoCodeRelationship> geoCodeRelationships, BasePK deletedBy) {
-        geoCodeRelationships.stream().forEach((geoCodeRelationship) -> {
-            deleteGeoCodeRelationship(geoCodeRelationship, deletedBy);
-        });
+        geoCodeRelationships.forEach((geoCodeRelationship) -> 
+                deleteGeoCodeRelationship(geoCodeRelationship, deletedBy)
+        );
     }
 
     public void deleteGeoCodeRelationshipsByFromGeoCode(GeoCode fromGeoCode, BasePK deletedBy) {
@@ -2769,7 +2768,7 @@ public class GeoControl
     }
     
     private List<GeoCodeLanguage> getGeoCodeLanguagesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeLanguage> geoCodeLanguages = null;
+        List<GeoCodeLanguage> geoCodeLanguages;
         
         try {
             String query = null;
@@ -2809,7 +2808,7 @@ public class GeoControl
     }
     
     private List<GeoCodeLanguage> getGeoCodeLanguagesByLanguage(Language language, EntityPermission entityPermission) {
-        List<GeoCodeLanguage> geoCodeLanguages = null;
+        List<GeoCodeLanguage> geoCodeLanguages;
         
         try {
             String query = null;
@@ -2852,9 +2851,9 @@ public class GeoControl
         List<GeoCodeLanguageTransfer> geoCodeLanguageTransfers = new ArrayList<>(geoCodeLanguages.size());
         GeoCodeLanguageTransferCache geoCodeLanguageTransferCache = getGeoTransferCaches(userVisit).getGeoCodeLanguageTransferCache();
         
-        geoCodeLanguages.stream().forEach((geoCodeLanguage) -> {
-            geoCodeLanguageTransfers.add(geoCodeLanguageTransferCache.getGeoCodeLanguageTransfer(geoCodeLanguage));
-        });
+        geoCodeLanguages.forEach((geoCodeLanguage) ->
+                geoCodeLanguageTransfers.add(geoCodeLanguageTransferCache.getGeoCodeLanguageTransfer(geoCodeLanguage))
+        );
         
         return geoCodeLanguageTransfers;
     }
@@ -2938,9 +2937,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeLanguages(List<GeoCodeLanguage> geoCodeLanguages, BasePK deletedBy) {
-        geoCodeLanguages.stream().forEach((geoCodeLanguage) -> {
-            deleteGeoCodeLanguage(geoCodeLanguage, deletedBy);
-        });
+        geoCodeLanguages.forEach((geoCodeLanguage) -> 
+                deleteGeoCodeLanguage(geoCodeLanguage, deletedBy)
+        );
     }
     
     public void deleteGeoCodeLanguagesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -3069,7 +3068,7 @@ public class GeoControl
     }
     
     private List<GeoCodeCurrency> getGeoCodeCurrenciesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeCurrency> geoCodeCurrencies = null;
+        List<GeoCodeCurrency> geoCodeCurrencies;
         
         try {
             String query = null;
@@ -3109,7 +3108,7 @@ public class GeoControl
     }
     
     private List<GeoCodeCurrency> getGeoCodeCurrenciesByCurrency(Currency currency, EntityPermission entityPermission) {
-        List<GeoCodeCurrency> geoCodeCurrencies = null;
+        List<GeoCodeCurrency> geoCodeCurrencies;
         
         try {
             String query = null;
@@ -3152,9 +3151,9 @@ public class GeoControl
         List<GeoCodeCurrencyTransfer> geoCodeCurrencyTransfers = new ArrayList<>(geoCodeCurrencies.size());
         GeoCodeCurrencyTransferCache geoCodeCurrencyTransferCache = getGeoTransferCaches(userVisit).getGeoCodeCurrencyTransferCache();
         
-        geoCodeCurrencies.stream().forEach((geoCodeCurrency) -> {
-            geoCodeCurrencyTransfers.add(geoCodeCurrencyTransferCache.getGeoCodeCurrencyTransfer(geoCodeCurrency));
-        });
+        geoCodeCurrencies.forEach((geoCodeCurrency) ->
+                geoCodeCurrencyTransfers.add(geoCodeCurrencyTransferCache.getGeoCodeCurrencyTransfer(geoCodeCurrency))
+        );
         
         return geoCodeCurrencyTransfers;
     }
@@ -3238,9 +3237,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeCurrencies(List<GeoCodeCurrency> geoCodeCurrencies, BasePK deletedBy) {
-        geoCodeCurrencies.stream().forEach((geoCodeCurrency) -> {
-            deleteGeoCodeCurrency(geoCodeCurrency, deletedBy);
-        });
+        geoCodeCurrencies.forEach((geoCodeCurrency) -> 
+                deleteGeoCodeCurrency(geoCodeCurrency, deletedBy)
+        );
     }
     
     public void deleteGeoCodeCurrenciesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -3369,7 +3368,7 @@ public class GeoControl
     }
     
     private List<GeoCodeTimeZone> getGeoCodeTimeZonesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeTimeZone> geoCodeTimeZones = null;
+        List<GeoCodeTimeZone> geoCodeTimeZones;
         
         try {
             String query = null;
@@ -3409,7 +3408,7 @@ public class GeoControl
     }
     
     private List<GeoCodeTimeZone> getGeoCodeTimeZonesByTimeZone(TimeZone timeZone, EntityPermission entityPermission) {
-        List<GeoCodeTimeZone> geoCodeTimeZones = null;
+        List<GeoCodeTimeZone> geoCodeTimeZones;
         
         try {
             String query = null;
@@ -3452,9 +3451,9 @@ public class GeoControl
         List<GeoCodeTimeZoneTransfer> geoCodeTimeZoneTransfers = new ArrayList<>(geoCodeTimeZones.size());
         GeoCodeTimeZoneTransferCache geoCodeTimeZoneTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTimeZoneTransferCache();
         
-        geoCodeTimeZones.stream().forEach((geoCodeTimeZone) -> {
-            geoCodeTimeZoneTransfers.add(geoCodeTimeZoneTransferCache.getGeoCodeTimeZoneTransfer(geoCodeTimeZone));
-        });
+        geoCodeTimeZones.forEach((geoCodeTimeZone) ->
+                geoCodeTimeZoneTransfers.add(geoCodeTimeZoneTransferCache.getGeoCodeTimeZoneTransfer(geoCodeTimeZone))
+        );
         
         return geoCodeTimeZoneTransfers;
     }
@@ -3538,9 +3537,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeTimeZones(List<GeoCodeTimeZone> geoCodeTimeZones, BasePK deletedBy) {
-        geoCodeTimeZones.stream().forEach((geoCodeTimeZone) -> {
-            deleteGeoCodeTimeZone(geoCodeTimeZone, deletedBy);
-        });
+        geoCodeTimeZones.forEach((geoCodeTimeZone) -> 
+                deleteGeoCodeTimeZone(geoCodeTimeZone, deletedBy)
+        );
     }
     
     public void deleteGeoCodeTimeZonesByGeoCode(GeoCode geoCode, BasePK deletedBy) {
@@ -3669,7 +3668,7 @@ public class GeoControl
     }
     
     private List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats = null;
+        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats;
         
         try {
             String query = null;
@@ -3709,7 +3708,7 @@ public class GeoControl
     }
     
     private List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByDateTimeFormat(DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
-        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats = null;
+        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats;
         
         try {
             String query = null;
@@ -3752,9 +3751,9 @@ public class GeoControl
         List<GeoCodeDateTimeFormatTransfer> geoCodeDateTimeFormatTransfers = new ArrayList<>(geoCodeDateTimeFormats.size());
         GeoCodeDateTimeFormatTransferCache geoCodeDateTimeFormatTransferCache = getGeoTransferCaches(userVisit).getGeoCodeDateTimeFormatTransferCache();
         
-        geoCodeDateTimeFormats.stream().forEach((geoCodeDateTimeFormat) -> {
-            geoCodeDateTimeFormatTransfers.add(geoCodeDateTimeFormatTransferCache.getGeoCodeDateTimeFormatTransfer(geoCodeDateTimeFormat));
-        });
+        geoCodeDateTimeFormats.forEach((geoCodeDateTimeFormat) ->
+                geoCodeDateTimeFormatTransfers.add(geoCodeDateTimeFormatTransferCache.getGeoCodeDateTimeFormatTransfer(geoCodeDateTimeFormat))
+        );
         
         return geoCodeDateTimeFormatTransfers;
     }
@@ -3841,9 +3840,9 @@ public class GeoControl
     }
     
     public void deleteGeoCodeDateTimeFormats(List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats, BasePK deletedBy) {
-        geoCodeDateTimeFormats.stream().forEach((geoCodeDateTimeFormat) -> {
-            deleteGeoCodeDateTimeFormat(geoCodeDateTimeFormat, deletedBy);
-        });
+        geoCodeDateTimeFormats.forEach((geoCodeDateTimeFormat) -> 
+                deleteGeoCodeDateTimeFormat(geoCodeDateTimeFormat, deletedBy)
+        );
     }
     
     public void deleteGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode, BasePK deletedBy) {

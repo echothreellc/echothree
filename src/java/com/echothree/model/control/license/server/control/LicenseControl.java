@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LicenseControl
         extends BaseModelControl {
@@ -222,9 +223,9 @@ public class LicenseControl
         List<LicenseTypeTransfer> licenseTypeTransfers = new ArrayList<>(licenseTypes.size());
         LicenseTypeTransferCache licenseTypeTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache();
 
-        licenseTypes.stream().forEach((licenseType) -> {
-            licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(licenseType));
-        });
+        licenseTypes.forEach((licenseType) ->
+                licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(licenseType))
+        );
 
         return licenseTypeTransfers;
     }
@@ -254,7 +255,7 @@ public class LicenseControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLicenseTypeChoice == null? false: defaultLicenseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultLicenseTypeChoice != null && defaultLicenseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && licenseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -328,7 +329,7 @@ public class LicenseControl
                     if(iter.hasNext()) {
                         defaultLicenseType = iter.next();
                     }
-                    LicenseTypeDetailValue licenseTypeDetailValue = defaultLicenseType.getLastDetailForUpdate().getLicenseTypeDetailValue().clone();
+                    LicenseTypeDetailValue licenseTypeDetailValue = Objects.requireNonNull(defaultLicenseType).getLastDetailForUpdate().getLicenseTypeDetailValue().clone();
 
                     licenseTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateLicenseTypeFromValue(licenseTypeDetailValue, false, deletedBy);
@@ -344,9 +345,7 @@ public class LicenseControl
     }
 
     private void deleteLicenseTypes(List<LicenseType> licenseTypes, boolean checkDefault, BasePK deletedBy) {
-        licenseTypes.stream().forEach((licenseType) -> {
-            deleteLicenseType(licenseType, checkDefault, deletedBy);
-        });
+        licenseTypes.forEach((licenseType) -> deleteLicenseType(licenseType, checkDefault, deletedBy));
     }
 
     public void deleteLicenseTypes(List<LicenseType> licenseTypes, BasePK deletedBy) {
@@ -461,9 +460,9 @@ public class LicenseControl
         List<LicenseTypeDescriptionTransfer> licenseTypeDescriptionTransfers = new ArrayList<>(licenseTypeDescriptions.size());
         LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache();
 
-        licenseTypeDescriptions.stream().forEach((licenseTypeDescription) -> {
-            licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(licenseTypeDescription));
-        });
+        licenseTypeDescriptions.forEach((licenseTypeDescription) ->
+                licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(licenseTypeDescription))
+        );
 
         return licenseTypeDescriptionTransfers;
     }
@@ -497,9 +496,9 @@ public class LicenseControl
     public void deleteLicenseTypeDescriptionsByLicenseType(LicenseType licenseType, BasePK deletedBy) {
         List<LicenseTypeDescription> licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseTypeForUpdate(licenseType);
 
-        licenseTypeDescriptions.stream().forEach((licenseTypeDescription) -> {
-            deleteLicenseTypeDescription(licenseTypeDescription, deletedBy);
-        });
+        licenseTypeDescriptions.forEach((licenseTypeDescription) -> 
+                deleteLicenseTypeDescription(licenseTypeDescription, deletedBy)
+        );
     }
 
 }

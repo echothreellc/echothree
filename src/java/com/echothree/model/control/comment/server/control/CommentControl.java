@@ -144,7 +144,7 @@ public class CommentControl
     }
     
     private List<CommentType> getCommentTypes(EntityType entityType, EntityPermission entityPermission) {
-        List<CommentType> commentTypes = null;
+        List<CommentType> commentTypes;
         
         try {
             String query = null;
@@ -238,9 +238,9 @@ public class CommentControl
         List<CommentTypeTransfer> commentTypeTransfers = new ArrayList<>(commentTypes.size());
         CommentTypeTransferCache commentTypeTransferCache = getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
         
-        commentTypes.stream().forEach((commentType) -> {
-            commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(commentType));
-        });
+        commentTypes.forEach((commentType) ->
+                commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(commentType))
+        );
         
         return commentTypeTransfers;
     }
@@ -287,9 +287,9 @@ public class CommentControl
     }
     
     public void deleteCommentTypes(List<CommentType> commentTypes, BasePK deletedBy) {
-        commentTypes.stream().forEach((commentType) -> {
-            deleteCommentType(commentType, deletedBy);
-        });
+        commentTypes.forEach((commentType) -> 
+                deleteCommentType(commentType, deletedBy)
+        );
     }
     
     public void deleteCommentTypesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -358,7 +358,7 @@ public class CommentControl
     }
     
     private List<CommentTypeDescription> getCommentTypeDescriptionsByCommentType(CommentType commentType, EntityPermission entityPermission) {
-        List<CommentTypeDescription> commentTypeDescriptions = null;
+        List<CommentTypeDescription> commentTypeDescriptions;
         
         try {
             String query = null;
@@ -422,9 +422,9 @@ public class CommentControl
         List<CommentTypeDescriptionTransfer> commentTypeDescriptionTransfers = new ArrayList<>(commentTypeDescriptions.size());
         CommentTypeDescriptionTransferCache commentTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentTypeDescriptionTransferCache();
         
-        commentTypeDescriptions.stream().forEach((commentTypeDescription) -> {
-            commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(commentTypeDescription));
-        });
+        commentTypeDescriptions.forEach((commentTypeDescription) ->
+                commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(commentTypeDescription))
+        );
         
         return commentTypeDescriptionTransfers;
     }
@@ -456,9 +456,9 @@ public class CommentControl
     public void deleteCommentTypeDescriptionsByCommentType(CommentType commentType, BasePK deletedBy) {
         List<CommentTypeDescription> commentTypeDescriptions = getCommentTypeDescriptionsByCommentTypeForUpdate(commentType);
         
-        commentTypeDescriptions.stream().forEach((commentTypeDescription) -> {
-            deleteCommentTypeDescription(commentTypeDescription, deletedBy);
-        });
+        commentTypeDescriptions.forEach((commentTypeDescription) -> 
+                deleteCommentTypeDescription(commentTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -485,7 +485,7 @@ public class CommentControl
     }
     
     private List<CommentUsageType> getCommentUsageTypes(CommentType commentType, EntityPermission entityPermission) {
-        List<CommentUsageType> commentUsageTypes = null;
+        List<CommentUsageType> commentUsageTypes;
         
         try {
             String query = null;
@@ -582,9 +582,9 @@ public class CommentControl
         List<CommentUsageTypeTransfer> commentUsageTypeTransfers = new ArrayList<>(commentUsageTypes.size());
         CommentUsageTypeTransferCache commentUsageTypeTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
         
-        commentUsageTypes.stream().forEach((commentUsageType) -> {
-            commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageType));
-        });
+        commentUsageTypes.forEach((commentUsageType) ->
+                commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageType))
+        );
         
         return commentUsageTypeTransfers;
     }
@@ -627,9 +627,9 @@ public class CommentControl
     }
     
     public void deleteCommentUsageTypes(List<CommentUsageType> commentUsageTypes, BasePK deletedBy) {
-        commentUsageTypes.stream().forEach((commentUsageType) -> {
-            deleteCommentUsageType(commentUsageType, deletedBy);
-        });
+        commentUsageTypes.forEach((commentUsageType) -> 
+                deleteCommentUsageType(commentUsageType, deletedBy)
+        );
     }
     
     public void deleteCommentUsageTypesByCommentType(CommentType commentType, BasePK deletedBy) {
@@ -700,7 +700,7 @@ public class CommentControl
     
     private List<CommentUsageTypeDescription> getCommentUsageTypeDescriptionsByCommentUsageType(CommentUsageType commentUsageType,
             EntityPermission entityPermission) {
-        List<CommentUsageTypeDescription> commentUsageTypeDescriptions = null;
+        List<CommentUsageTypeDescription> commentUsageTypeDescriptions;
         
         try {
             String query = null;
@@ -765,9 +765,9 @@ public class CommentControl
         List<CommentUsageTypeDescriptionTransfer> commentUsageTypeDescriptionTransfers = new ArrayList<>(commentUsageTypeDescriptions.size());
         CommentUsageTypeDescriptionTransferCache commentUsageTypeDescriptionTransferCache = getCommentTransferCaches(userVisit).getCommentUsageTypeDescriptionTransferCache();
         
-        commentUsageTypeDescriptions.stream().forEach((commentUsageTypeDescription) -> {
-            commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(commentUsageTypeDescription));
-        });
+        commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) ->
+                commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(commentUsageTypeDescription))
+        );
         
         return commentUsageTypeDescriptionTransfers;
     }
@@ -801,9 +801,9 @@ public class CommentControl
     public void deleteCommentUsageTypeDescriptionsByCommentUsageType(CommentUsageType commentUsageType, BasePK deletedBy) {
         List<CommentUsageTypeDescription> commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageTypeForUpdate(commentUsageType);
         
-        commentUsageTypeDescriptions.stream().forEach((commentUsageTypeDescription) -> {
-            deleteCommentUsageTypeDescription(commentUsageTypeDescription, deletedBy);
-        });
+        commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) -> 
+                deleteCommentUsageTypeDescription(commentUsageTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -879,7 +879,7 @@ public class CommentControl
     }
     
     private List<Comment> getCommentsByCommentedEntityInstance(EntityInstance commentedEntityInstance, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -916,7 +916,7 @@ public class CommentControl
     }
     
     private List<Comment> getCommentsByCommentedByEntityInstance(EntityInstance commentedByEntityInstance, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -953,7 +953,7 @@ public class CommentControl
     }
     
     private List<Comment> getCommentsByCommentType(CommentType commentType, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -991,7 +991,7 @@ public class CommentControl
     
     public List<Comment> getCommentsByCommentedEntityInstanceAndCommentType(EntityInstance commentedEntityInstance,
             CommentType commentType, EntityPermission entityPermission) {
-        List<Comment> comments = null;
+        List<Comment> comments;
         
         try {
             String query = null;
@@ -1040,9 +1040,9 @@ public class CommentControl
         List<CommentTransfer> commentTransfers = new ArrayList<>(comments.size());
         CommentTransferCache commentTransferCache = getCommentTransferCaches(userVisit).getCommentTransferCache();
         
-        comments.stream().forEach((comment) -> {
-            commentTransfers.add(commentTransferCache.getCommentTransfer(comment));
-        });
+        comments.forEach((comment) ->
+                commentTransfers.add(commentTransferCache.getCommentTransfer(comment))
+        );
         
         return commentTransfers;
     }
@@ -1172,9 +1172,9 @@ public class CommentControl
     }
     
     public void deleteComments(List<Comment> comments, BasePK deletedBy) {
-        comments.stream().forEach((comment) -> {
-            deleteComment(comment, deletedBy);
-        });
+        comments.forEach((comment) -> 
+                deleteComment(comment, deletedBy)
+        );
     }
     
     public void deleteCommentsByCommentedEntityInstance(EntityInstance ratedEntityInstance, BasePK deletedBy) {
@@ -1504,7 +1504,7 @@ public class CommentControl
     }
     
     private List<CommentUsage> getCommentUsagesByComment(Comment comment, EntityPermission entityPermission) {
-        List<CommentUsage> comments = null;
+        List<CommentUsage> comments;
         
         try {
             String query = null;
@@ -1545,7 +1545,7 @@ public class CommentControl
     }
     
     private List<CommentUsage> getCommentUsagesByCommentUsageType(CommentUsageType commentUsageType, EntityPermission entityPermission) {
-        List<CommentUsage> comments = null;
+        List<CommentUsage> comments;
         
         try {
             String query = null;
@@ -1594,9 +1594,9 @@ public class CommentControl
         List<CommentUsageTransfer> transfers = new ArrayList<>(entities.size());
         CommentUsageTransferCache cache = getCommentTransferCaches(userVisit).getCommentUsageTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(cache.getCommentUsageTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(cache.getCommentUsageTransfer(entity))
+        );
         
         return transfers;
     }
@@ -1610,9 +1610,9 @@ public class CommentControl
     }
     
     public void deleteCommentUsages(List<CommentUsage> commentUsages, BasePK deletedBy) {
-        commentUsages.stream().forEach((commentUsage) -> {
-            deleteCommentUsage(commentUsage, deletedBy);
-        });
+        commentUsages.forEach((commentUsage) -> 
+                deleteCommentUsage(commentUsage, deletedBy)
+        );
     }
     
     public void deleteCommentUsagesByComment(Comment comment, BasePK deletedBy) {

@@ -290,7 +290,7 @@ public class OfferNameElementControl
     
     private List<OfferNameElementDescription> getOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement,
             EntityPermission entityPermission) {
-        List<OfferNameElementDescription> offerNameElementDescriptions = null;
+        List<OfferNameElementDescription> offerNameElementDescriptions;
         
         try {
             String query = null;
@@ -355,9 +355,9 @@ public class OfferNameElementControl
         List<OfferNameElementDescriptionTransfer> offerNameElementDescriptionTransfers = new ArrayList<>(offerNameElementDescriptions.size());
         OfferNameElementDescriptionTransferCache offerNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache();
         
-        offerNameElementDescriptions.stream().forEach((offerNameElementDescription) -> {
-            offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(offerNameElementDescription));
-        });
+        offerNameElementDescriptions.forEach((offerNameElementDescription) ->
+                offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(offerNameElementDescription))
+        );
         
         return offerNameElementDescriptionTransfers;
     }
@@ -392,9 +392,9 @@ public class OfferNameElementControl
     public void deleteOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement, BasePK deletedBy) {
         List<OfferNameElementDescription> offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElementForUpdate(offerNameElement);
         
-        offerNameElementDescriptions.stream().forEach((offerNameElementDescription) -> {
-            deleteOfferNameElementDescription(offerNameElementDescription, deletedBy);
-        });
+        offerNameElementDescriptions.forEach((offerNameElementDescription) -> 
+                deleteOfferNameElementDescription(offerNameElementDescription, deletedBy)
+        );
     }
     
 }

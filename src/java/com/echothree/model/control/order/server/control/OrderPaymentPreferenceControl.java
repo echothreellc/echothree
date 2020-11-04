@@ -264,9 +264,9 @@ public class OrderPaymentPreferenceControl
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
         OrderPaymentPreferenceTransferCache orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
 
-        orderPaymentPreferences.stream().forEach((orderPaymentPreference) -> {
-            orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference));
-        });
+        orderPaymentPreferences.forEach((orderPaymentPreference) ->
+                orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference))
+        );
 
         return orderPaymentPreferenceTransfers;
     }
@@ -323,9 +323,9 @@ public class OrderPaymentPreferenceControl
     }
 
     public void deleteOrderPaymentPreferencesByOrder(List<OrderPaymentPreference> orderPaymentPreferences, BasePK deletedBy) {
-        orderPaymentPreferences.stream().forEach((orderPaymentPreference) -> {
-            deleteOrderPaymentPreference(orderPaymentPreference, deletedBy);
-        });
+        orderPaymentPreferences.forEach((orderPaymentPreference) -> 
+                deleteOrderPaymentPreference(orderPaymentPreference, deletedBy)
+        );
     }
 
     public void deleteOrderPaymentPreferencesByOrder(Order order, BasePK deletedBy) {

@@ -81,6 +81,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TaxControl
         extends BaseModelControl {
@@ -296,7 +297,7 @@ public class TaxControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTaxClassificationChoice == null? false: defaultTaxClassificationChoice.equals(value);
+            boolean usingDefaultChoice = defaultTaxClassificationChoice != null && defaultTaxClassificationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && taxClassificationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -313,9 +314,9 @@ public class TaxControl
         List<TaxClassificationTransfer> taxClassificationTransfers = new ArrayList<>(taxClassifications.size());
         TaxClassificationTransferCache taxClassificationTransferCache = getTaxTransferCaches(userVisit).getTaxClassificationTransferCache();
 
-        taxClassifications.stream().forEach((taxClassification) -> {
-            taxClassificationTransfers.add(taxClassificationTransferCache.getTransfer(taxClassification));
-        });
+        taxClassifications.forEach((taxClassification) ->
+                taxClassificationTransfers.add(taxClassificationTransferCache.getTransfer(taxClassification))
+        );
 
         return taxClassificationTransfers;
     }
@@ -391,7 +392,7 @@ public class TaxControl
                 if(iter.hasNext()) {
                     defaultTaxClassification = iter.next();
                 }
-                TaxClassificationDetailValue taxClassificationDetailValue = defaultTaxClassification.getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
+                TaxClassificationDetailValue taxClassificationDetailValue = Objects.requireNonNull(defaultTaxClassification).getLastDetailForUpdate().getTaxClassificationDetailValue().clone();
 
                 taxClassificationDetailValue.setIsDefault(Boolean.TRUE);
                 updateTaxClassificationFromValue(taxClassificationDetailValue, false, deletedBy);
@@ -402,9 +403,9 @@ public class TaxControl
     }
 
     public void deleteTaxClassifications(List<TaxClassification> taxClassifications, BasePK deletedBy) {
-        taxClassifications.stream().forEach((taxClassification) -> {
-            deleteTaxClassification(taxClassification, deletedBy);
-        });
+        taxClassifications.forEach((taxClassification) -> 
+                deleteTaxClassification(taxClassification, deletedBy)
+        );
     }
 
     public void deleteTaxClassificationsByCountryGeoCode(GeoCode countryGeoCode, BasePK deletedBy) {
@@ -550,9 +551,9 @@ public class TaxControl
     public void deleteTaxClassificationTranslationsByTaxClassification(TaxClassification taxClassification, BasePK deletedBy) {
         List<TaxClassificationTranslation> taxClassificationTranslations = getTaxClassificationTranslationsByTaxClassificationForUpdate(taxClassification);
 
-        taxClassificationTranslations.stream().forEach((taxClassificationTranslation) -> {
-            deleteTaxClassificationTranslation(taxClassificationTranslation, deletedBy);
-        });
+        taxClassificationTranslations.forEach((taxClassificationTranslation) -> 
+                deleteTaxClassificationTranslation(taxClassificationTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -722,9 +723,9 @@ public class TaxControl
         List<ItemTaxClassificationTransfer> itemTaxClassificationTransfers = new ArrayList<>(itemTaxClassifications.size());
         ItemTaxClassificationTransferCache itemTaxClassificationTransferCache = getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache();
 
-        itemTaxClassifications.stream().forEach((itemTaxClassification) -> {
-            itemTaxClassificationTransfers.add(itemTaxClassificationTransferCache.getTransfer(itemTaxClassification));
-        });
+        itemTaxClassifications.forEach((itemTaxClassification) ->
+                itemTaxClassificationTransfers.add(itemTaxClassificationTransferCache.getTransfer(itemTaxClassification))
+        );
 
         return itemTaxClassificationTransfers;
     }
@@ -776,9 +777,9 @@ public class TaxControl
     }
 
     public void deleteItemTaxClassifications(List<ItemTaxClassification> itemTaxClassifications, BasePK deletedBy) {
-        itemTaxClassifications.stream().forEach((itemTaxClassification) -> {
-            deleteItemTaxClassification(itemTaxClassification, deletedBy);
-        });
+        itemTaxClassifications.forEach((itemTaxClassification) -> 
+                deleteItemTaxClassification(itemTaxClassification, deletedBy)
+        );
     }
 
     public void deleteItemTaxClassificationsByItem(Item item, BasePK deletedBy) {
@@ -941,9 +942,9 @@ public class TaxControl
         List<TaxTransfer> taxTransfers = new ArrayList<>(taxes.size());
         TaxTransferCache taxTransferCache = getTaxTransferCaches(userVisit).getTaxTransferCache();
         
-        taxes.stream().forEach((tax) -> {
-            taxTransfers.add(taxTransferCache.getTransfer(tax));
-        });
+        taxes.forEach((tax) ->
+                taxTransfers.add(taxTransferCache.getTransfer(tax))
+        );
         
         return taxTransfers;
     }
@@ -1019,7 +1020,7 @@ public class TaxControl
                 if(iter.hasNext()) {
                     defaultTax = iter.next();
                 }
-                TaxDetailValue taxDetailValue = defaultTax.getLastDetailForUpdate().getTaxDetailValue().clone();
+                TaxDetailValue taxDetailValue = Objects.requireNonNull(defaultTax).getLastDetailForUpdate().getTaxDetailValue().clone();
                 
                 taxDetailValue.setIsDefault(Boolean.TRUE);
                 updateTaxFromValue(taxDetailValue, false, deletedBy);
@@ -1090,7 +1091,7 @@ public class TaxControl
     }
     
     private List<TaxDescription> getTaxDescriptionsByTax(Tax tax, EntityPermission entityPermission) {
-        List<TaxDescription> taxDescriptions = null;
+        List<TaxDescription> taxDescriptions;
         
         try {
             String query = null;
@@ -1193,9 +1194,9 @@ public class TaxControl
     public void deleteTaxDescriptionsByTax(Tax tax, BasePK deletedBy) {
         List<TaxDescription> taxDescriptions = getTaxDescriptionsByTaxForUpdate(tax);
         
-        taxDescriptions.stream().forEach((taxDescription) -> {
-            deleteTaxDescription(taxDescription, deletedBy);
-        });
+        taxDescriptions.forEach((taxDescription) -> 
+                deleteTaxDescription(taxDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1260,7 +1261,7 @@ public class TaxControl
     }
     
     private List<GeoCodeTax> getGeoCodeTaxesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeTax> geoCodeTaxes = null;
+        List<GeoCodeTax> geoCodeTaxes;
         
         try {
             String query = null;
@@ -1301,7 +1302,7 @@ public class TaxControl
     }
     
     private List<GeoCodeTax> getGeoCodeTaxesByTax(Tax tax, EntityPermission entityPermission) {
-        List<GeoCodeTax> geoCodeTaxes = null;
+        List<GeoCodeTax> geoCodeTaxes;
         
         try {
             String query = null;
@@ -1371,9 +1372,9 @@ public class TaxControl
     }
     
     private void deleteGeoCodeTaxes(List<GeoCodeTax> geoCodeTaxes, BasePK deletedBy) {
-        geoCodeTaxes.stream().forEach((geoCodeTax) -> {
-            deleteGeoCodeTax(geoCodeTax, deletedBy);
-        });
+        geoCodeTaxes.forEach((geoCodeTax) -> 
+                deleteGeoCodeTax(geoCodeTax, deletedBy)
+        );
     }
     
     public void deleteGeoCodeTaxesByGeoCode(GeoCode geoCode, BasePK deletedBy) {

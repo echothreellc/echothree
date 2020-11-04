@@ -100,6 +100,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CustomerControl
         extends BaseModelControl {
@@ -303,7 +304,7 @@ public class CustomerControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCustomerTypeChoice == null? false: defaultCustomerTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCustomerTypeChoice != null && defaultCustomerTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && customerTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -425,7 +426,7 @@ public class CustomerControl
                 if(iter.hasNext()) {
                     defaultCustomerType = iter.next();
                 }
-                CustomerTypeDetailValue customerTypeDetailValue = defaultCustomerType.getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
+                CustomerTypeDetailValue customerTypeDetailValue = Objects.requireNonNull(defaultCustomerType).getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
                 
                 customerTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCustomerTypeFromValue(customerTypeDetailValue, false, deletedBy);
@@ -498,7 +499,7 @@ public class CustomerControl
     }
     
     private List<CustomerTypeDescription> getCustomerTypeDescriptionsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<CustomerTypeDescription> customerTypeDescriptions = null;
+        List<CustomerTypeDescription> customerTypeDescriptions;
         
         try {
             String query = null;
@@ -602,9 +603,9 @@ public class CustomerControl
     public void deleteCustomerTypeDescriptionsByCustomerType(CustomerType customerType, BasePK deletedBy) {
         List<CustomerTypeDescription> customerTypeDescriptions = getCustomerTypeDescriptionsByCustomerTypeForUpdate(customerType);
         
-        customerTypeDescriptions.stream().forEach((customerTypeDescription) -> {
-            deleteCustomerTypeDescription(customerTypeDescription, deletedBy);
-        });
+        customerTypeDescriptions.forEach((customerTypeDescription) -> 
+                deleteCustomerTypeDescription(customerTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1109,9 +1110,9 @@ public class CustomerControl
     }
     
     public void deleteCustomerTypePaymentMethods(List<CustomerTypePaymentMethod> customerTypePaymentMethods, BasePK deletedBy) {
-        customerTypePaymentMethods.stream().forEach((customerTypePaymentMethod) -> {
-            deleteCustomerTypePaymentMethod(customerTypePaymentMethod, deletedBy);
-        });
+        customerTypePaymentMethods.forEach((customerTypePaymentMethod) -> 
+                deleteCustomerTypePaymentMethod(customerTypePaymentMethod, deletedBy)
+        );
     }
     
     public void deleteCustomerTypePaymentMethodsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -1403,9 +1404,9 @@ public class CustomerControl
     }
     
     public void deleteCustomerTypeShippingMethods(List<CustomerTypeShippingMethod> customerTypeShippingMethods, BasePK deletedBy) {
-        customerTypeShippingMethods.stream().forEach((customerTypeShippingMethod) -> {
-            deleteCustomerTypeShippingMethod(customerTypeShippingMethod, deletedBy);
-        });
+        customerTypeShippingMethods.forEach((customerTypeShippingMethod) -> 
+                deleteCustomerTypeShippingMethod(customerTypeShippingMethod, deletedBy)
+        );
     }
     
     public void deleteCustomerTypeShippingMethodsByCustomerType(CustomerType customerType, BasePK deletedBy) {

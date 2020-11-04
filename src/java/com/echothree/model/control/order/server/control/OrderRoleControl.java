@@ -278,9 +278,9 @@ public class OrderRoleControl
     }
 
     public void deleteOrderRoles(List<OrderRole> orderRoles, BasePK deletedBy) {
-        orderRoles.stream().forEach((orderRole) -> {
-            deleteOrderRole(orderRole, deletedBy);
-        });
+        orderRoles.forEach((orderRole) -> 
+                deleteOrderRole(orderRole, deletedBy)
+        );
     }
 
     public void deleteOrderRolesByOrder(Order order, BasePK deletedBy) {

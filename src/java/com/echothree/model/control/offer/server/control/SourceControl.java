@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class SourceControl
         extends BaseOfferControl {
@@ -265,7 +266,7 @@ public class SourceControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSourceChoice == null? false: defaultSourceChoice.equals(value);
+            boolean usingDefaultChoice = defaultSourceChoice != null && defaultSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sourceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -367,7 +368,7 @@ public class SourceControl
                 if(iter.hasNext()) {
                     defaultSource = iter.next();
                 }
-                SourceDetailValue sourceDetailValue = defaultSource.getLastDetailForUpdate().getSourceDetailValue().clone();
+                SourceDetailValue sourceDetailValue = Objects.requireNonNull(defaultSource).getLastDetailForUpdate().getSourceDetailValue().clone();
 
                 sourceDetailValue.setIsDefault(Boolean.TRUE);
                 updateSourceFromValue(sourceDetailValue, false, deletedBy);
@@ -379,9 +380,9 @@ public class SourceControl
     }
 
     public void deleteSources(List<Source> sources, BasePK deletedBy) {
-        sources.stream().forEach((source) -> {
-            deleteSource(source, deletedBy);
-        });
+        sources.forEach((source) -> 
+                deleteSource(source, deletedBy)
+        );
     }
 
     public void deleteSourcesByOfferUse(OfferUse offerUse, BasePK deletedBy) {

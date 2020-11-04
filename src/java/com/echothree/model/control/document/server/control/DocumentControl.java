@@ -109,6 +109,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class DocumentControl
@@ -314,9 +315,9 @@ public class DocumentControl
         List<DocumentTypeTransfer> documentTypeTransfers = new ArrayList<>(documentTypes.size());
         DocumentTypeTransferCache documentTypeTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeTransferCache();
         
-        documentTypes.stream().forEach((documentType) -> {
-            documentTypeTransfers.add(documentTypeTransferCache.getDocumentTypeTransfer(documentType));
-        });
+        documentTypes.forEach((documentType) ->
+                documentTypeTransfers.add(documentTypeTransferCache.getDocumentTypeTransfer(documentType))
+        );
         
         return documentTypeTransfers;
     }
@@ -448,7 +449,7 @@ public class DocumentControl
                     if(iter.hasNext()) {
                         defaultDocumentType = iter.next();
                     }
-                    DocumentTypeDetailValue documentTypeDetailValue = defaultDocumentType.getLastDetailForUpdate().getDocumentTypeDetailValue().clone();
+                    DocumentTypeDetailValue documentTypeDetailValue = Objects.requireNonNull(defaultDocumentType).getLastDetailForUpdate().getDocumentTypeDetailValue().clone();
 
                     documentTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateDocumentTypeFromValue(documentTypeDetailValue, false, deletedBy);
@@ -464,9 +465,7 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypes(List<DocumentType> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteDocumentType(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteDocumentType(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteDocumentTypes(List<DocumentType> itemDescriptionTypes, BasePK deletedBy) {
@@ -586,9 +585,9 @@ public class DocumentControl
         List<DocumentTypeDescriptionTransfer> documentTypeDescriptionTransfers = new ArrayList<>(documentTypeDescriptions.size());
         DocumentTypeDescriptionTransferCache documentTypeDescriptionTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeDescriptionTransferCache();
         
-        documentTypeDescriptions.stream().forEach((documentTypeDescription) -> {
-            documentTypeDescriptionTransfers.add(documentTypeDescriptionTransferCache.getDocumentTypeDescriptionTransfer(documentTypeDescription));
-        });
+        documentTypeDescriptions.forEach((documentTypeDescription) ->
+                documentTypeDescriptionTransfers.add(documentTypeDescriptionTransferCache.getDocumentTypeDescriptionTransfer(documentTypeDescription))
+        );
         
         return documentTypeDescriptionTransfers;
     }
@@ -622,9 +621,9 @@ public class DocumentControl
     public void deleteDocumentTypeDescriptionsByDocumentType(DocumentType documentType, BasePK deletedBy) {
         List<DocumentTypeDescription> documentTypeDescriptions = getDocumentTypeDescriptionsByDocumentTypeForUpdate(documentType);
         
-        documentTypeDescriptions.stream().forEach((documentTypeDescription) -> {
-            deleteDocumentTypeDescription(documentTypeDescription, deletedBy);
-        });
+        documentTypeDescriptions.forEach((documentTypeDescription) -> 
+                deleteDocumentTypeDescription(documentTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -774,9 +773,9 @@ public class DocumentControl
         List<DocumentTypeUsageTypeTransfer> documentTypeUsageTypeTransfers = new ArrayList<>(documentTypeUsageTypes.size());
         DocumentTypeUsageTypeTransferCache documentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeTransferCache();
 
-        documentTypeUsageTypes.stream().forEach((documentTypeUsageType) -> {
-            documentTypeUsageTypeTransfers.add(documentTypeUsageTypeTransferCache.getDocumentTypeUsageTypeTransfer(documentTypeUsageType));
-        });
+        documentTypeUsageTypes.forEach((documentTypeUsageType) ->
+                documentTypeUsageTypeTransfers.add(documentTypeUsageTypeTransferCache.getDocumentTypeUsageTypeTransfer(documentTypeUsageType))
+        );
 
         return documentTypeUsageTypeTransfers;
     }
@@ -882,7 +881,7 @@ public class DocumentControl
                     if(iter.hasNext()) {
                         defaultDocumentTypeUsageType = iter.next();
                     }
-                    DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = defaultDocumentTypeUsageType.getLastDetailForUpdate().getDocumentTypeUsageTypeDetailValue().clone();
+                    DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = Objects.requireNonNull(defaultDocumentTypeUsageType).getLastDetailForUpdate().getDocumentTypeUsageTypeDetailValue().clone();
 
                     documentTypeUsageTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateDocumentTypeUsageTypeFromValue(documentTypeUsageTypeDetailValue, false, deletedBy);
@@ -898,9 +897,7 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypeUsageTypes(List<DocumentTypeUsageType> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteDocumentTypeUsageType(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteDocumentTypeUsageType(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteDocumentTypeUsageTypes(List<DocumentTypeUsageType> itemDescriptionTypes, BasePK deletedBy) {
@@ -1016,9 +1013,9 @@ public class DocumentControl
         List<DocumentTypeUsageTypeDescriptionTransfer> documentTypeUsageTypeDescriptionTransfers = new ArrayList<>(documentTypeUsageTypeDescriptions.size());
         DocumentTypeUsageTypeDescriptionTransferCache documentTypeUsageTypeDescriptionTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTypeDescriptionTransferCache();
 
-        documentTypeUsageTypeDescriptions.stream().forEach((documentTypeUsageTypeDescription) -> {
-            documentTypeUsageTypeDescriptionTransfers.add(documentTypeUsageTypeDescriptionTransferCache.getDocumentTypeUsageTypeDescriptionTransfer(documentTypeUsageTypeDescription));
-        });
+        documentTypeUsageTypeDescriptions.forEach((documentTypeUsageTypeDescription) ->
+                documentTypeUsageTypeDescriptionTransfers.add(documentTypeUsageTypeDescriptionTransferCache.getDocumentTypeUsageTypeDescriptionTransfer(documentTypeUsageTypeDescription))
+        );
 
         return documentTypeUsageTypeDescriptionTransfers;
     }
@@ -1052,9 +1049,9 @@ public class DocumentControl
     public void deleteDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageType(DocumentTypeUsageType documentTypeUsageType, BasePK deletedBy) {
         List<DocumentTypeUsageTypeDescription> documentTypeUsageTypeDescriptions = getDocumentTypeUsageTypeDescriptionsByDocumentTypeUsageTypeForUpdate(documentTypeUsageType);
 
-        documentTypeUsageTypeDescriptions.stream().forEach((documentTypeUsageTypeDescription) -> {
-            deleteDocumentTypeUsageTypeDescription(documentTypeUsageTypeDescription, deletedBy);
-        });
+        documentTypeUsageTypeDescriptions.forEach((documentTypeUsageTypeDescription) -> 
+                deleteDocumentTypeUsageTypeDescription(documentTypeUsageTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1229,9 +1226,9 @@ public class DocumentControl
         List<DocumentTypeUsageTransfer> documentTypeUsageTransfers = new ArrayList<>(documentTypeUsages.size());
         DocumentTypeUsageTransferCache documentTypeUsageTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache();
 
-        documentTypeUsages.stream().forEach((documentTypeUsage) -> {
-            documentTypeUsageTransfers.add(documentTypeUsageTransferCache.getDocumentTypeUsageTransfer(documentTypeUsage));
-        });
+        documentTypeUsages.forEach((documentTypeUsage) ->
+                documentTypeUsageTransfers.add(documentTypeUsageTransferCache.getDocumentTypeUsageTransfer(documentTypeUsage))
+        );
 
         return documentTypeUsageTransfers;
     }
@@ -1320,9 +1317,7 @@ public class DocumentControl
     }
 
     private void deleteDocumentTypeUsages(List<DocumentTypeUsage> documentTypeUsages, boolean checkDefault, BasePK deletedBy) {
-        documentTypeUsages.stream().forEach((documentTypeUsage) -> {
-            deleteDocumentTypeUsage(documentTypeUsage, checkDefault, deletedBy);
-        });
+        documentTypeUsages.forEach((documentTypeUsage) -> deleteDocumentTypeUsage(documentTypeUsage, checkDefault, deletedBy));
     }
 
     public void deleteDocumentTypeUsages(List<DocumentTypeUsage> itemDescriptionTypes, BasePK deletedBy) {
@@ -1500,9 +1495,9 @@ public class DocumentControl
     }
 
     public void deleteDocuments(List<Document> documents, BasePK deletedBy) {
-        documents.stream().forEach((document) -> {
-            deleteDocument(document, deletedBy);
-        });
+        documents.forEach((document) -> 
+                deleteDocument(document, deletedBy)
+        );
     }
 
     public void deleteDocumentsByDocumentType(DocumentType documentType, BasePK deletedBy) {
@@ -1772,7 +1767,7 @@ public class DocumentControl
     }
     
     private List<DocumentDescription> getDocumentDescriptionsByDocument(Document document, EntityPermission entityPermission) {
-        List<DocumentDescription> documentDescriptions = null;
+        List<DocumentDescription> documentDescriptions;
         
         try {
             String query = null;
@@ -1874,9 +1869,9 @@ public class DocumentControl
     public void deleteDocumentDescriptionsByDocument(Document document, BasePK deletedBy) {
         List<DocumentDescription> documentDescriptions = getDocumentDescriptionsByDocumentForUpdate(document);
         
-        documentDescriptions.stream().forEach((documentDescription) -> {
-            deleteDocumentDescription(documentDescription, deletedBy);
-        });
+        documentDescriptions.forEach((documentDescription) -> 
+                deleteDocumentDescription(documentDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2051,9 +2046,9 @@ public class DocumentControl
         List<PartyTypeDocumentTypeUsageTypeTransfer> partyTypeDocumentTypeUsageTypeTransfers = new ArrayList<>(partyTypeDocumentTypeUsageTypes.size());
         PartyTypeDocumentTypeUsageTypeTransferCache partyTypeDocumentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache();
 
-        partyTypeDocumentTypeUsageTypes.stream().forEach((partyTypeDocumentTypeUsageType) -> {
-            partyTypeDocumentTypeUsageTypeTransfers.add(partyTypeDocumentTypeUsageTypeTransferCache.getPartyTypeDocumentTypeUsageTypeTransfer(partyTypeDocumentTypeUsageType));
-        });
+        partyTypeDocumentTypeUsageTypes.forEach((partyTypeDocumentTypeUsageType) ->
+                partyTypeDocumentTypeUsageTypeTransfers.add(partyTypeDocumentTypeUsageTypeTransferCache.getPartyTypeDocumentTypeUsageTypeTransfer(partyTypeDocumentTypeUsageType))
+        );
 
         return partyTypeDocumentTypeUsageTypeTransfers;
     }
@@ -2141,9 +2136,7 @@ public class DocumentControl
     }
 
     private void deletePartyTypeDocumentTypeUsageTypes(List<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes, boolean checkDefault, BasePK deletedBy) {
-        partyTypeDocumentTypeUsageTypes.stream().forEach((partyTypeDocumentTypeUsageType) -> {
-            deletePartyTypeDocumentTypeUsageType(partyTypeDocumentTypeUsageType, checkDefault, deletedBy);
-        });
+        partyTypeDocumentTypeUsageTypes.forEach((partyTypeDocumentTypeUsageType) -> deletePartyTypeDocumentTypeUsageType(partyTypeDocumentTypeUsageType, checkDefault, deletedBy));
     }
 
     public void deletePartyTypeDocumentTypeUsageTypes(List<PartyTypeDocumentTypeUsageType> itemDescriptionTypes, BasePK deletedBy) {
@@ -2377,9 +2370,9 @@ public class DocumentControl
         List<PartyDocumentTransfer> partyDocumentTransfers = new ArrayList<>(partyDocuments.size());
         PartyDocumentTransferCache partyDocumentTransferCache = getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache();
 
-        partyDocuments.stream().forEach((partyDocument) -> {
-            partyDocumentTransfers.add(partyDocumentTransferCache.getPartyDocumentTransfer(partyDocument));
-        });
+        partyDocuments.forEach((partyDocument) ->
+                partyDocumentTransfers.add(partyDocumentTransferCache.getPartyDocumentTransfer(partyDocument))
+        );
 
         return partyDocumentTransfers;
     }
@@ -2504,9 +2497,7 @@ public class DocumentControl
     }
 
     private void deletePartyDocuments(List<PartyDocument> partyDocuments, boolean checkDefault, BasePK deletedBy) {
-        partyDocuments.stream().forEach((partyDocument) -> {
-            deletePartyDocument(partyDocument, checkDefault, deletedBy);
-        });
+        partyDocuments.forEach((partyDocument) -> deletePartyDocument(partyDocument, checkDefault, deletedBy));
     }
 
     public void deletePartyDocuments(List<PartyDocument> itemDescriptionTypes, BasePK deletedBy) {

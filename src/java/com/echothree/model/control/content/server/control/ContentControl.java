@@ -211,6 +211,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class ContentControl
@@ -249,10 +250,9 @@ public class ContentControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentPageAreaType */
     public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        ContentPageAreaTypePK pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
-        ContentPageAreaType contentPageAreaType = ContentPageAreaTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return contentPageAreaType;
+        var pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
+
+        return ContentPageAreaTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
     
     public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance) {
@@ -329,9 +329,9 @@ public class ContentControl
         List<ContentPageAreaTypeTransfer> contentPageAreaTypeTransfers = new ArrayList<>(contentPageAreaTypes.size());
         ContentPageAreaTypeTransferCache contentPageAreaTypeTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache();
         
-        contentPageAreaTypes.stream().forEach((contentPageAreaType) -> {
-            contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(contentPageAreaType));
-        });
+        contentPageAreaTypes.forEach((contentPageAreaType) ->
+                contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(contentPageAreaType))
+        );
         
         return contentPageAreaTypeTransfers;
     }
@@ -458,10 +458,9 @@ public class ContentControl
     
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentPageLayout */
     public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        ContentPageLayoutPK pk = new ContentPageLayoutPK(entityInstance.getEntityUniqueId());
-        ContentPageLayout contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(entityPermission, pk);
-        
-        return contentPageLayout;
+        var pk = new ContentPageLayoutPK(entityInstance.getEntityUniqueId());
+
+        return ContentPageLayoutFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance) {
@@ -583,9 +582,9 @@ public class ContentControl
         List<ContentPageLayoutTransfer> contentPageLayoutTransfers = new ArrayList<>(contentPageLayouts.size());
         ContentPageLayoutTransferCache contentPageLayoutTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
         
-        contentPageLayouts.stream().forEach((contentPageLayout) -> {
-            contentPageLayoutTransfers.add(contentPageLayoutTransferCache.getTransfer(contentPageLayout));
-        });
+        contentPageLayouts.forEach((contentPageLayout) ->
+                contentPageLayoutTransfers.add(contentPageLayoutTransferCache.getTransfer(contentPageLayout))
+        );
         
         return contentPageLayoutTransfers;
     }
@@ -693,7 +692,7 @@ public class ContentControl
                 if(iter.hasNext()) {
                     defaultContentPageLayout = iter.next();
                 }
-                ContentPageLayoutDetailValue contentPageLayoutDetailValue = defaultContentPageLayout.getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
+                ContentPageLayoutDetailValue contentPageLayoutDetailValue = Objects.requireNonNull(defaultContentPageLayout).getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
                 
                 contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentPageLayoutFromValue(contentPageLayoutDetailValue, false, deletedBy);
@@ -764,7 +763,7 @@ public class ContentControl
     }
     
     private List<ContentPageLayoutDescription> getContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, EntityPermission entityPermission) {
-        List<ContentPageLayoutDescription> contentPageLayoutDescriptions = null;
+        List<ContentPageLayoutDescription> contentPageLayoutDescriptions;
         
         try {
             String query = null;
@@ -828,9 +827,9 @@ public class ContentControl
         List<ContentPageLayoutDescriptionTransfer> contentPageLayoutDescriptionTransfers = new ArrayList<>(contentPageLayoutDescriptions.size());
         ContentPageLayoutDescriptionTransferCache contentPageLayoutDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutDescriptionTransferCache();
         
-        contentPageLayoutDescriptions.stream().forEach((contentPageLayoutDescription) -> {
-            contentPageLayoutDescriptionTransfers.add(contentPageLayoutDescriptionTransferCache.getTransfer(contentPageLayoutDescription));
-        });
+        contentPageLayoutDescriptions.forEach((contentPageLayoutDescription) ->
+                contentPageLayoutDescriptionTransfers.add(contentPageLayoutDescriptionTransferCache.getTransfer(contentPageLayoutDescription))
+        );
         
         return contentPageLayoutDescriptionTransfers;
     }
@@ -863,9 +862,9 @@ public class ContentControl
     public void deleteContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
         List<ContentPageLayoutDescription> contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayoutForUpdate(contentPageLayout);
         
-        contentPageLayoutDescriptions.stream().forEach((contentPageLayoutDescription) -> {
-            deleteContentPageLayoutDescription(contentPageLayoutDescription, deletedBy);
-        });
+        contentPageLayoutDescriptions.forEach((contentPageLayoutDescription) -> 
+                deleteContentPageLayoutDescription(contentPageLayoutDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -905,7 +904,7 @@ public class ContentControl
     }
     
     public List<ContentPageLayoutArea> getContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
-        List<ContentPageLayoutArea> contentPageLayoutAreas = null;
+        List<ContentPageLayoutArea> contentPageLayoutAreas;
         
         try {
             PreparedStatement ps = ContentPageLayoutAreaFactory.getInstance().prepareStatement(
@@ -928,9 +927,9 @@ public class ContentControl
         List<ContentPageLayoutAreaTransfer> contentPageLayoutAreaTransfers = new ArrayList<>(contentPageLayoutAreas.size());
         ContentPageLayoutAreaTransferCache contentPageLayoutAreaTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutAreaTransferCache();
         
-        contentPageLayoutAreas.stream().forEach((contentPageLayoutArea) -> {
-            contentPageLayoutAreaTransfers.add(contentPageLayoutAreaTransferCache.getContentPageLayoutAreaTransfer(contentPageLayoutArea));
-        });
+        contentPageLayoutAreas.forEach((contentPageLayoutArea) ->
+                contentPageLayoutAreaTransfers.add(contentPageLayoutAreaTransferCache.getContentPageLayoutAreaTransfer(contentPageLayoutArea))
+        );
         
         return contentPageLayoutAreaTransfers;
     }
@@ -1017,7 +1016,7 @@ public class ContentControl
     }
 
     public List<ContentCollection> getContentCollections() {
-        List<ContentCollection> contentCollections = null;
+        List<ContentCollection> contentCollections;
         
         try {
             PreparedStatement ps = ContentCollectionFactory.getInstance().prepareStatement(
@@ -1096,7 +1095,7 @@ public class ContentControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentCollectionChoice == null? false: defaultContentCollectionChoice.equals(value);
+            boolean usingDefaultChoice = defaultContentCollectionChoice != null && defaultContentCollectionChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -1112,9 +1111,9 @@ public class ContentControl
         List<ContentCollectionTransfer> contentCollectionTransfers = new ArrayList<>(contentCollections.size());
         ContentCollectionTransferCache contentCollectionTransferCache = getContentTransferCaches(userVisit).getContentCollectionTransferCache();
         
-        contentCollections.stream().forEach((contentCollection) -> {
-            contentCollectionTransfers.add(contentCollectionTransferCache.getContentCollectionTransfer(contentCollection));
-        });
+        contentCollections.forEach((contentCollection) ->
+                contentCollectionTransfers.add(contentCollectionTransferCache.getContentCollectionTransfer(contentCollection))
+        );
         
         return contentCollectionTransfers;
     }
@@ -1221,7 +1220,7 @@ public class ContentControl
     }
     
     private List<ContentCollectionDescription> getContentCollectionDescriptionsByContentCollection(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentCollectionDescription> contentCollectionDescriptions = null;
+        List<ContentCollectionDescription> contentCollectionDescriptions;
         
         try {
             String query = null;
@@ -1320,9 +1319,9 @@ public class ContentControl
     public void deleteContentCollectionDescriptionsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
         List<ContentCollectionDescription> contentCollectionDescriptions = getContentCollectionDescriptionsByContentCollectionForUpdate(contentCollection);
         
-        contentCollectionDescriptions.stream().forEach((contentCollectionDescription) -> {
-            deleteContentCollectionDescription(contentCollectionDescription, deletedBy);
-        });
+        contentCollectionDescriptions.forEach((contentCollectionDescription) -> 
+                deleteContentCollectionDescription(contentCollectionDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1373,7 +1372,7 @@ public class ContentControl
     }
 
     private List<ContentSection> getContentSections(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentSection> contentSections = null;
+        List<ContentSection> contentSections;
         
         try {
             String query = null;
@@ -1414,7 +1413,7 @@ public class ContentControl
     }
     
     private List<ContentSection> getContentSectionsByParentContentSection(ContentSection parentContentSection, EntityPermission entityPermission) {
-        List<ContentSection> contentSections = null;
+        List<ContentSection> contentSections;
         
         try {
             String query = null;
@@ -1565,7 +1564,7 @@ public class ContentControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultContentSectionChoice == null? false: defaultContentSectionChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultContentSectionChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && contentSectionDetail.getIsDefault())) {
                     defaultValue = value;
                 }
@@ -1583,9 +1582,9 @@ public class ContentControl
         List<ContentSectionTransfer> contentSectionTransfers = new ArrayList<>(contentSections.size());
         ContentSectionTransferCache contentSectionTransferCache = getContentTransferCaches(userVisit).getContentSectionTransferCache();
         
-        contentSections.stream().forEach((contentSection) -> {
-            contentSectionTransfers.add(contentSectionTransferCache.getContentSectionTransfer(contentSection));
-        });
+        contentSections.forEach((contentSection) ->
+                contentSectionTransfers.add(contentSectionTransferCache.getContentSectionTransfer(contentSection))
+        );
         
         return contentSectionTransfers;
     }
@@ -1703,7 +1702,7 @@ public class ContentControl
                         break;
                     }
                 }
-                ContentSectionDetailValue contentSectionDetailValue = defaultContentSection.getLastDetailForUpdate().getContentSectionDetailValue().clone();
+                ContentSectionDetailValue contentSectionDetailValue = Objects.requireNonNull(defaultContentSection).getLastDetailForUpdate().getContentSectionDetailValue().clone();
                 
                 contentSectionDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentSectionFromValue(contentSectionDetailValue, false, deletedBy);
@@ -1787,7 +1786,7 @@ public class ContentControl
     }
     
     private List<ContentSectionDescription> getContentSectionDescriptionsByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
-        List<ContentSectionDescription> contentSectionDescriptions = null;
+        List<ContentSectionDescription> contentSectionDescriptions;
         
         try {
             String query = null;
@@ -1852,9 +1851,9 @@ public class ContentControl
         List<ContentSectionDescriptionTransfer> contentSectionDescriptionTransfers = new ArrayList<>(contentSectionDescriptions.size());
         ContentSectionDescriptionTransferCache contentSectionDescriptionTransferCache = getContentTransferCaches(userVisit).getContentSectionDescriptionTransferCache();
             
-        contentSectionDescriptions.stream().forEach((contentSectionDescription) -> {
-            contentSectionDescriptionTransfers.add(contentSectionDescriptionTransferCache.getContentSectionDescriptionTransfer(contentSectionDescription));
-        });
+        contentSectionDescriptions.forEach((contentSectionDescription) ->
+                contentSectionDescriptionTransfers.add(contentSectionDescriptionTransferCache.getContentSectionDescriptionTransfer(contentSectionDescription))
+        );
         
         return contentSectionDescriptionTransfers;
     }
@@ -2104,9 +2103,9 @@ public class ContentControl
         List<ContentPageTransfer> contentPageTransfers = new ArrayList<>(contentPages.size());
         ContentPageTransferCache contentPageTransferCache = getContentTransferCaches(userVisit).getContentPageTransferCache();
             
-        contentPages.stream().forEach((contentPage) -> {
-            contentPageTransfers.add(contentPageTransferCache.getContentPageTransfer(contentPage));
-        });
+        contentPages.forEach((contentPage) ->
+                contentPageTransfers.add(contentPageTransferCache.getContentPageTransfer(contentPage))
+        );
         
         return contentPageTransfers;
     }
@@ -2184,7 +2183,7 @@ public class ContentControl
             
             if(!contentPages.isEmpty()) {
                 defaultContentPage = contentPages.iterator().next();
-                ContentPageDetailValue contentPageDetailValue = defaultContentPage.getLastDetailForUpdate().getContentPageDetailValue().clone();
+                ContentPageDetailValue contentPageDetailValue = Objects.requireNonNull(defaultContentPage).getLastDetailForUpdate().getContentPageDetailValue().clone();
                 
                 contentPageDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentPageFromValue(contentPageDetailValue, false, deletedBy);
@@ -2267,7 +2266,7 @@ public class ContentControl
     }
     
     private List<ContentPageDescription> getContentPageDescriptionsByContentPage(ContentPage contentPage, EntityPermission entityPermission) {
-        List<ContentPageDescription> contentPageDescriptions = null;
+        List<ContentPageDescription> contentPageDescriptions;
         
         try {
             String query = null;
@@ -2332,9 +2331,9 @@ public class ContentControl
         List<ContentPageDescriptionTransfer> contentPageDescriptionTransfers = new ArrayList<>(contentPageDescriptions.size());
         ContentPageDescriptionTransferCache contentPageDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageDescriptionTransferCache();
         
-        contentPageDescriptions.stream().forEach((contentPageDescription) -> {
-            contentPageDescriptionTransfers.add(contentPageDescriptionTransferCache.getContentPageDescriptionTransfer(contentPageDescription));
-        });
+        contentPageDescriptions.forEach((contentPageDescription) ->
+                contentPageDescriptionTransfers.add(contentPageDescriptionTransferCache.getContentPageDescriptionTransfer(contentPageDescription))
+        );
         
         return contentPageDescriptionTransfers;
     }
@@ -2390,7 +2389,7 @@ public class ContentControl
     }
     
     private List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage, EntityPermission entityPermission) {
-        List<ContentPageArea> contentPageAreas = null;
+        List<ContentPageArea> contentPageAreas;
         
         try {
             String query = null;
@@ -2743,7 +2742,7 @@ public class ContentControl
     }
 
     private List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentCatalog> contentCatalogs = null;
+        List<ContentCatalog> contentCatalogs;
         
         try {
             String query = null;
@@ -2888,7 +2887,7 @@ public class ContentControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentCatalogChoice == null? false: defaultContentCatalogChoice.equals(value);
+            boolean usingDefaultChoice = defaultContentCatalogChoice != null && defaultContentCatalogChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contentCatalogDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -2904,9 +2903,9 @@ public class ContentControl
         List<ContentCatalogTransfer> contentCatalogTransfers = new ArrayList<>(contentCatalogs.size());
         ContentCatalogTransferCache contentCatalogTransferCache = getContentTransferCaches(userVisit).getContentCatalogTransferCache();
 
-        contentCatalogs.stream().forEach((contentCatalog) -> {
-            contentCatalogTransfers.add(contentCatalogTransferCache.getContentCatalogTransfer(contentCatalog));
-        });
+        contentCatalogs.forEach((contentCatalog) ->
+                contentCatalogTransfers.add(contentCatalogTransferCache.getContentCatalogTransfer(contentCatalog))
+        );
         
         return contentCatalogTransfers;
     }
@@ -2982,7 +2981,7 @@ public class ContentControl
             
             if(!contentCatalogs.isEmpty()) {
                 defaultContentCatalog = contentCatalogs.iterator().next();
-                ContentCatalogDetailValue contentCatalogDetailValue = defaultContentCatalog.getLastDetailForUpdate().getContentCatalogDetailValue().clone();
+                ContentCatalogDetailValue contentCatalogDetailValue = Objects.requireNonNull(defaultContentCatalog).getLastDetailForUpdate().getContentCatalogDetailValue().clone();
                 
                 contentCatalogDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentCatalogFromValue(contentCatalogDetailValue, false, deletedBy);
@@ -3060,7 +3059,7 @@ public class ContentControl
     }
     
     private List<ContentCatalogDescription> getContentCatalogDescriptionsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCatalogDescription> contentCatalogDescriptions = null;
+        List<ContentCatalogDescription> contentCatalogDescriptions;
         
         try {
             String query = null;
@@ -3125,9 +3124,9 @@ public class ContentControl
         List<ContentCatalogDescriptionTransfer> contentCatalogDescriptionTransfers = new ArrayList<>(contentCatalogDescriptions.size());
         ContentCatalogDescriptionTransferCache contentCatalogDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCatalogDescriptionTransferCache();
 
-        contentCatalogDescriptions.stream().forEach((contentCatalogDescription) -> {
-            contentCatalogDescriptionTransfers.add(contentCatalogDescriptionTransferCache.getContentCatalogDescriptionTransfer(contentCatalogDescription));
-        });
+        contentCatalogDescriptions.forEach((contentCatalogDescription) ->
+                contentCatalogDescriptionTransfers.add(contentCatalogDescriptionTransferCache.getContentCatalogDescriptionTransfer(contentCatalogDescription))
+        );
         
         return contentCatalogDescriptionTransfers;
     }
@@ -3274,7 +3273,7 @@ public class ContentControl
     }
 
     private List<ContentCatalogItem> getContentCatalogItemsByItem(Item item, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems = null;
+        List<ContentCatalogItem> contentCatalogItems;
         
         try {
             String query = null;
@@ -3321,7 +3320,7 @@ public class ContentControl
     }
     
     private List<ContentCatalogItem> getContentCatalogItemsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems = null;
+        List<ContentCatalogItem> contentCatalogItems;
         
         try {
             String query = null;
@@ -3368,7 +3367,7 @@ public class ContentControl
     }
     
     private List<ContentCatalogItem> getContentCatalogItemsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems = null;
+        List<ContentCatalogItem> contentCatalogItems;
         
         try {
             String query = null;
@@ -3465,9 +3464,9 @@ public class ContentControl
         List<ContentCatalogItemTransfer> contentCatalogItemTransfers = new ArrayList<>(contentCatalogItems.size());
         ContentCatalogItemTransferCache contentCatalogItemTransferCache = getContentTransferCaches(userVisit).getContentCatalogItemTransferCache();
 
-        contentCatalogItems.stream().forEach((contentCatalogItem) -> {
-            contentCatalogItemTransfers.add(contentCatalogItemTransferCache.getContentCatalogItemTransfer(contentCatalogItem));
-        });
+        contentCatalogItems.forEach((contentCatalogItem) ->
+                contentCatalogItemTransfers.add(contentCatalogItemTransferCache.getContentCatalogItemTransfer(contentCatalogItem))
+        );
 
         return contentCatalogItemTransfers;
     }
@@ -3507,9 +3506,9 @@ public class ContentControl
     }
     
     public void deleteContentCatalogItems(List<ContentCatalogItem> contentCatalogItems, BasePK deletedBy) {
-        contentCatalogItems.stream().forEach((contentCatalogItem) -> {
-            deleteContentCatalogItem(contentCatalogItem, deletedBy);
-        });
+        contentCatalogItems.forEach((contentCatalogItem) -> 
+                deleteContentCatalogItem(contentCatalogItem, deletedBy)
+        );
     }
     
     public void deleteContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
@@ -3790,7 +3789,7 @@ public class ContentControl
     }
 
     private List<ContentCategory> getContentCategories(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCategory> contentCategories = null;
+        List<ContentCategory> contentCategories;
         
         try {
             String query = null;
@@ -4048,7 +4047,7 @@ public class ContentControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultContentCategoryChoice == null? false: defaultContentCategoryChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultContentCategoryChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && contentCategoryDetail.getIsDefault())) {
                     defaultValue = value;
                 }
@@ -4062,9 +4061,9 @@ public class ContentControl
         List<ContentCategoryTransfer> contentCategoryTransfers = new ArrayList<>(contentCategories.size());
         ContentCategoryTransferCache contentCategoryTransferCache = getContentTransferCaches(userVisit).getContentCategoryTransferCache();
 
-        contentCategories.stream().forEach((contentCategory) -> {
-            contentCategoryTransfers.add(contentCategoryTransferCache.getContentCategoryTransfer(contentCategory));
-        });
+        contentCategories.forEach((contentCategory) ->
+                contentCategoryTransfers.add(contentCategoryTransferCache.getContentCategoryTransfer(contentCategory))
+        );
         
         return contentCategoryTransfers;
     }
@@ -4190,7 +4189,7 @@ public class ContentControl
                     if(!defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
                         break;
                 }
-                ContentCategoryDetailValue contentCategoryDetailValue = defaultContentCategory.getLastDetailForUpdate().getContentCategoryDetailValue().clone();
+                ContentCategoryDetailValue contentCategoryDetailValue = Objects.requireNonNull(defaultContentCategory).getLastDetailForUpdate().getContentCategoryDetailValue().clone();
                 
                 contentCategoryDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentCategoryFromValue(contentCategoryDetailValue, false, deletedBy);
@@ -4275,7 +4274,7 @@ public class ContentControl
     }
     
     private List<ContentCategoryDescription> getContentCategoryDescriptionsByContentCategory(ContentCategory contentCategory, EntityPermission entityPermission) {
-        List<ContentCategoryDescription> contentCategoryDescriptions = null;
+        List<ContentCategoryDescription> contentCategoryDescriptions;
         
         try {
             String query = null;
@@ -4340,9 +4339,9 @@ public class ContentControl
         List<ContentCategoryDescriptionTransfer> contentCategoryDescriptionTransfers = new ArrayList<>(contentCategoryDescriptions.size());
         ContentCategoryDescriptionTransferCache contentCategoryDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCategoryDescriptionTransferCache();
 
-        contentCategoryDescriptions.stream().forEach((contentCategoryDescription) -> {
-            contentCategoryDescriptionTransfers.add(contentCategoryDescriptionTransferCache.getContentCategoryDescriptionTransfer(contentCategoryDescription));
-        });
+        contentCategoryDescriptions.forEach((contentCategoryDescription) ->
+                contentCategoryDescriptionTransfers.add(contentCategoryDescriptionTransferCache.getContentCategoryDescriptionTransfer(contentCategoryDescription))
+        );
         
         return contentCategoryDescriptionTransfers;
     }
@@ -4506,7 +4505,7 @@ public class ContentControl
     }
     
     private List<ContentCategoryItem> getContentCategoryItemsByContentCategory(ContentCategory contentCategory, EntityPermission entityPermission) {
-        List<ContentCategoryItem> contentCategoryItems = null;
+        List<ContentCategoryItem> contentCategoryItems;
         
         try {
             String query = null;
@@ -4553,7 +4552,7 @@ public class ContentControl
     }
     
     private List<ContentCategoryItem> getContentCategoryItemsByContentCatalogItem(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        List<ContentCategoryItem> contentCategoryItems = null;
+        List<ContentCategoryItem> contentCategoryItems;
         
         try {
             String query = null;
@@ -4601,9 +4600,9 @@ public class ContentControl
         List<ContentCategoryItemTransfer> contentCategoryItemTransfers = new ArrayList<>(contentCategoryItems.size());
         ContentCategoryItemTransferCache contentCategoryItemTransferCache = getContentTransferCaches(userVisit).getContentCategoryItemTransferCache();
         
-        contentCategoryItems.stream().forEach((contentCategoryItem) -> {
-            contentCategoryItemTransfers.add(contentCategoryItemTransferCache.getContentCategoryItemTransfer(contentCategoryItem));
-        });
+        contentCategoryItems.forEach((contentCategoryItem) ->
+                contentCategoryItemTransfers.add(contentCategoryItemTransferCache.getContentCategoryItemTransfer(contentCategoryItem))
+        );
         
         return contentCategoryItemTransfers;
     }
@@ -4740,7 +4739,7 @@ public class ContentControl
     }
     
     private List<ContentForum> getContentForums(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentForum> contentForums = null;
+        List<ContentForum> contentForums;
         
         try {
             String query = null;
@@ -4874,9 +4873,9 @@ public class ContentControl
         List<ContentForumTransfer> contentForumTransfers = new ArrayList<>(contentForums.size());
         ContentForumTransferCache contentForumTransferCache = getContentTransferCaches(userVisit).getContentForumTransferCache();
 
-        contentForums.stream().forEach((contentForum) -> {
-            contentForumTransfers.add(contentForumTransferCache.getContentForumTransfer(contentForum));
-        });
+        contentForums.forEach((contentForum) ->
+                contentForumTransfers.add(contentForumTransferCache.getContentForumTransfer(contentForum))
+        );
         
         return contentForumTransfers;
     }
@@ -4948,7 +4947,7 @@ public class ContentControl
                     defaultContentForum = iter.next();
                     break;
                 }
-                ContentForumDetailValue contentForumDetailValue = defaultContentForum.getLastDetailForUpdate().getContentForumDetailValue().clone();
+                ContentForumDetailValue contentForumDetailValue = Objects.requireNonNull(defaultContentForum).getLastDetailForUpdate().getContentForumDetailValue().clone();
                 
                 contentForumDetailValue.setIsDefault(Boolean.TRUE);
                 updateContentForumFromValue(contentForumDetailValue, false, deletedBy);
@@ -4993,7 +4992,7 @@ public class ContentControl
     }
 
     private List<ContentWebAddress> getContentWebAddresses(EntityPermission entityPermission) {
-        List<ContentWebAddress> contentWebAddresses = null;
+        List<ContentWebAddress> contentWebAddresses;
         
         try {
             String query = null;
@@ -5078,7 +5077,7 @@ public class ContentControl
     }
     
     private List<ContentWebAddress> getContentWebAddressesByContentCollection(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentWebAddress> contentWebAddresses = null;
+        List<ContentWebAddress> contentWebAddresses;
         
         try {
             String query = null;
@@ -5130,7 +5129,7 @@ public class ContentControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentWebAddressChoice == null? false: defaultContentWebAddressChoice.equals(value);
+            boolean usingDefaultChoice = defaultContentWebAddressChoice != null && defaultContentWebAddressChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -5142,9 +5141,9 @@ public class ContentControl
         List<ContentWebAddressTransfer> contentWebAddressTransfers = new ArrayList<>(contentWebAddresses.size());
         ContentWebAddressTransferCache contentWebAddressTransferCache = getContentTransferCaches(userVisit).getContentWebAddressTransferCache();
 
-        contentWebAddresses.stream().forEach((contentWebAddress) -> {
-            contentWebAddressTransfers.add(contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddress));
-        });
+        contentWebAddresses.forEach((contentWebAddress) ->
+                contentWebAddressTransfers.add(contentWebAddressTransferCache.getContentWebAddressTransfer(contentWebAddress))
+        );
         
         return contentWebAddressTransfers;
     }
@@ -5257,7 +5256,7 @@ public class ContentControl
     }
     
     private List<ContentWebAddressDescription> getContentWebAddressDescriptionsByContentWebAddress(ContentWebAddress contentWebAddress, EntityPermission entityPermission) {
-        List<ContentWebAddressDescription> contentWebAddressDescriptions = null;
+        List<ContentWebAddressDescription> contentWebAddressDescriptions;
         
         try {
             String query = null;
@@ -5322,9 +5321,9 @@ public class ContentControl
         List<ContentWebAddressDescriptionTransfer> contentWebAddressDescriptionTransfers = new ArrayList<>(contentWebAddressDescriptions.size());
         ContentWebAddressDescriptionTransferCache contentWebAddressDescriptionTransferCache = getContentTransferCaches(userVisit).getContentWebAddressDescriptionTransferCache();
 
-        contentWebAddressDescriptions.stream().forEach((contentWebAddressDescription) -> {
-            contentWebAddressDescriptionTransfers.add(contentWebAddressDescriptionTransferCache.getContentWebAddressDescriptionTransfer(contentWebAddressDescription));
-        });
+        contentWebAddressDescriptions.forEach((contentWebAddressDescription) ->
+                contentWebAddressDescriptionTransfers.add(contentWebAddressDescriptionTransferCache.getContentWebAddressDescriptionTransfer(contentWebAddressDescription))
+        );
         
         return contentWebAddressDescriptionTransfers;
     }
@@ -5413,7 +5412,7 @@ public class ContentControl
     }
     
     private List<ContentWebAddressServer> getContentWebAddressServersByContentWebAddress(ContentWebAddress contentWebAddress, EntityPermission entityPermission) {
-        List<ContentWebAddressServer> contentWebAddressServers = null;
+        List<ContentWebAddressServer> contentWebAddressServers;
         
         try {
             String query = null;

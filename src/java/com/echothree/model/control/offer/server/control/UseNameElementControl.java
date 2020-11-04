@@ -181,9 +181,9 @@ public class UseNameElementControl
         List<UseNameElementTransfer> useNameElementTransfers = new ArrayList<>(useNameElements.size());
         UseNameElementTransferCache useNameElementTransferCache = getOfferTransferCaches(userVisit).getUseNameElementTransferCache();
 
-        useNameElements.stream().forEach((useNameElement) -> {
-            useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(useNameElement));
-        });
+        useNameElements.forEach((useNameElement) ->
+                useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(useNameElement))
+        );
 
         return useNameElementTransfers;
     }
@@ -292,7 +292,7 @@ public class UseNameElementControl
     }
 
     private List<UseNameElementDescription> getUseNameElementDescriptionsByUseNameElement(UseNameElement useNameElement, EntityPermission entityPermission) {
-        List<UseNameElementDescription> useNameElementDescriptions = null;
+        List<UseNameElementDescription> useNameElementDescriptions;
 
         try {
             String query = null;
@@ -358,9 +358,9 @@ public class UseNameElementControl
         List<UseNameElementDescriptionTransfer> useNameElementDescriptionTransfers = new ArrayList<>(useNameElementDescriptions.size());
         UseNameElementDescriptionTransferCache useNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache();
 
-        useNameElementDescriptions.stream().forEach((useNameElementDescription) -> {
-            useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(useNameElementDescription));
-        });
+        useNameElementDescriptions.forEach((useNameElementDescription) ->
+                useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(useNameElementDescription))
+        );
 
         return useNameElementDescriptionTransfers;
     }
@@ -396,9 +396,9 @@ public class UseNameElementControl
     public void deleteUseNameElementDescriptionsByUseNameElement(UseNameElement useNameElement, BasePK deletedBy) {
         List<UseNameElementDescription> useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElementForUpdate(useNameElement);
 
-        useNameElementDescriptions.stream().forEach((useNameElementDescription) -> {
-            deleteUseNameElementDescription(useNameElementDescription, deletedBy);
-        });
+        useNameElementDescriptions.forEach((useNameElementDescription) -> 
+                deleteUseNameElementDescription(useNameElementDescription, deletedBy)
+        );
     }
 
 }

@@ -179,9 +179,9 @@ public class JobControl
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
         JobTransferCache jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
         
-        jobs.stream().forEach((job) -> {
-            jobTransfers.add(jobTransferCache.getJobTransfer(job));
-        });
+        jobs.forEach((job) ->
+                jobTransfers.add(jobTransferCache.getJobTransfer(job))
+        );
         
         return jobTransfers;
     }
@@ -318,7 +318,7 @@ public class JobControl
     }
     
     private List<JobDescription> getJobDescriptionsByJob(Job job, EntityPermission entityPermission) {
-        List<JobDescription> jobDescriptions = null;
+        List<JobDescription> jobDescriptions;
         
         try {
             String query = null;
@@ -417,9 +417,9 @@ public class JobControl
     public void deleteJobDescriptionsByJob(Job job, BasePK deletedBy) {
         List<JobDescription> jobDescriptions = getJobDescriptionsByJobForUpdate(job);
         
-        jobDescriptions.stream().forEach((jobDescription) -> {
-            deleteJobDescription(jobDescription, deletedBy);
-        });
+        jobDescriptions.forEach((jobDescription) -> 
+                deleteJobDescription(jobDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

@@ -104,6 +104,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class ShipmentControl
@@ -297,9 +298,9 @@ public class ShipmentControl
         List<ShipmentTypeTransfer> shipmentTypeTransfers = new ArrayList<>(shipmentTypes.size());
         ShipmentTypeTransferCache shipmentTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeTransferCache();
 
-        shipmentTypes.stream().forEach((shipmentType) -> {
-            shipmentTypeTransfers.add(shipmentTypeTransferCache.getTransfer(shipmentType));
-        });
+        shipmentTypes.forEach((shipmentType) ->
+                shipmentTypeTransfers.add(shipmentTypeTransferCache.getTransfer(shipmentType))
+        );
 
         return shipmentTypeTransfers;
     }
@@ -330,7 +331,7 @@ public class ShipmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentTypeChoice == null? false: defaultShipmentTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultShipmentTypeChoice != null && defaultShipmentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -436,7 +437,7 @@ public class ShipmentControl
                     if(iter.hasNext()) {
                         defaultShipmentType = iter.next();
                     }
-                    ShipmentTypeDetailValue shipmentTypeDetailValue = defaultShipmentType.getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
+                    ShipmentTypeDetailValue shipmentTypeDetailValue = Objects.requireNonNull(defaultShipmentType).getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
 
                     shipmentTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateShipmentTypeFromValue(shipmentTypeDetailValue, false, deletedBy);
@@ -452,9 +453,7 @@ public class ShipmentControl
     }
 
     private void deleteShipmentTypes(List<ShipmentType> shipmentTypes, boolean checkDefault, BasePK deletedBy) {
-        shipmentTypes.stream().forEach((shipmentType) -> {
-            deleteShipmentType(shipmentType, checkDefault, deletedBy);
-        });
+        shipmentTypes.forEach((shipmentType) -> deleteShipmentType(shipmentType, checkDefault, deletedBy));
     }
 
     public void deleteShipmentTypes(List<ShipmentType> shipmentTypes, BasePK deletedBy) {
@@ -573,9 +572,9 @@ public class ShipmentControl
         List<ShipmentTypeDescriptionTransfer> shipmentTypeDescriptionTransfers = new ArrayList<>(shipmentTypeDescriptions.size());
         ShipmentTypeDescriptionTransferCache shipmentTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeDescriptionTransferCache();
 
-        shipmentTypeDescriptions.stream().forEach((shipmentTypeDescription) -> {
-            shipmentTypeDescriptionTransfers.add(shipmentTypeDescriptionTransferCache.getTransfer(shipmentTypeDescription));
-        });
+        shipmentTypeDescriptions.forEach((shipmentTypeDescription) ->
+                shipmentTypeDescriptionTransfers.add(shipmentTypeDescriptionTransferCache.getTransfer(shipmentTypeDescription))
+        );
 
         return shipmentTypeDescriptionTransfers;
     }
@@ -609,9 +608,9 @@ public class ShipmentControl
     public void deleteShipmentTypeDescriptionsByShipmentType(ShipmentType shipmentType, BasePK deletedBy) {
         List<ShipmentTypeDescription> shipmentTypeDescriptions = getShipmentTypeDescriptionsByShipmentTypeForUpdate(shipmentType);
 
-        shipmentTypeDescriptions.stream().forEach((shipmentTypeDescription) -> {
-            deleteShipmentTypeDescription(shipmentTypeDescription, deletedBy);
-        });
+        shipmentTypeDescriptions.forEach((shipmentTypeDescription) -> 
+                deleteShipmentTypeDescription(shipmentTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -765,9 +764,9 @@ public class ShipmentControl
         List<ShipmentTimeTypeTransfer> shipmentTimeTypeTransfers = new ArrayList<>(shipmentTimeTypes.size());
         ShipmentTimeTypeTransferCache shipmentTimeTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeTransferCache();
 
-        shipmentTimeTypes.stream().forEach((shipmentTimeType) -> {
-            shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(shipmentTimeType));
-        });
+        shipmentTimeTypes.forEach((shipmentTimeType) ->
+                shipmentTimeTypeTransfers.add(shipmentTimeTypeTransferCache.getTransfer(shipmentTimeType))
+        );
 
         return shipmentTimeTypeTransfers;
     }
@@ -798,7 +797,7 @@ public class ShipmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentTimeTypeChoice == null? false: defaultShipmentTimeTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultShipmentTimeTypeChoice != null && defaultShipmentTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -874,7 +873,7 @@ public class ShipmentControl
                 if(iter.hasNext()) {
                     defaultShipmentTimeType = iter.next();
                 }
-                ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = defaultShipmentTimeType.getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
+                ShipmentTimeTypeDetailValue shipmentTimeTypeDetailValue = Objects.requireNonNull(defaultShipmentTimeType).getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
 
                 shipmentTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateShipmentTimeTypeFromValue(shipmentTimeTypeDetailValue, false, deletedBy);
@@ -992,9 +991,9 @@ public class ShipmentControl
         List<ShipmentTimeTypeDescriptionTransfer> shipmentTimeTypeDescriptionTransfers = new ArrayList<>(shipmentTimeTypeDescriptions.size());
         ShipmentTimeTypeDescriptionTransferCache shipmentTimeTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTypeDescriptionTransferCache();
 
-        shipmentTimeTypeDescriptions.stream().forEach((shipmentTimeTypeDescription) -> {
-            shipmentTimeTypeDescriptionTransfers.add(shipmentTimeTypeDescriptionTransferCache.getTransfer(shipmentTimeTypeDescription));
-        });
+        shipmentTimeTypeDescriptions.forEach((shipmentTimeTypeDescription) ->
+                shipmentTimeTypeDescriptionTransfers.add(shipmentTimeTypeDescriptionTransferCache.getTransfer(shipmentTimeTypeDescription))
+        );
 
         return shipmentTimeTypeDescriptionTransfers;
     }
@@ -1028,9 +1027,9 @@ public class ShipmentControl
     public void deleteShipmentTimeTypeDescriptionsByShipmentTimeType(ShipmentTimeType shipmentTimeType, BasePK deletedBy) {
         List<ShipmentTimeTypeDescription> shipmentTimeTypeDescriptions = getShipmentTimeTypeDescriptionsByShipmentTimeTypeForUpdate(shipmentTimeType);
 
-        shipmentTimeTypeDescriptions.stream().forEach((shipmentTimeTypeDescription) -> {
-            deleteShipmentTimeTypeDescription(shipmentTimeTypeDescription, deletedBy);
-        });
+        shipmentTimeTypeDescriptions.forEach((shipmentTimeTypeDescription) -> 
+                deleteShipmentTimeTypeDescription(shipmentTimeTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1149,7 +1148,7 @@ public class ShipmentControl
     }
     
     private List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShipmentType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = null;
+        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods;
         
         try {
             String query = null;
@@ -1189,7 +1188,7 @@ public class ShipmentControl
     }
     
     private List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = null;
+        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods;
         
         try {
             String query = null;
@@ -1233,9 +1232,9 @@ public class ShipmentControl
         List<ShipmentTypeShippingMethodTransfer> shipmentTypeShippingMethodTransfers = new ArrayList<>(shipmentTypeShippingMethods.size());
         ShipmentTypeShippingMethodTransferCache shipmentTypeShippingMethodTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeShippingMethodTransferCache();
         
-        shipmentTypeShippingMethods.stream().forEach((shipmentTypeShippingMethod) -> {
-            shipmentTypeShippingMethodTransfers.add(shipmentTypeShippingMethodTransferCache.getTransfer(shipmentTypeShippingMethod));
-        });
+        shipmentTypeShippingMethods.forEach((shipmentTypeShippingMethod) ->
+                shipmentTypeShippingMethodTransfers.add(shipmentTypeShippingMethodTransferCache.getTransfer(shipmentTypeShippingMethod))
+        );
         
         return shipmentTypeShippingMethodTransfers;
     }
@@ -1319,9 +1318,9 @@ public class ShipmentControl
     }
     
     public void deleteShipmentTypeShippingMethods(List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods, BasePK deletedBy) {
-        shipmentTypeShippingMethods.stream().forEach((shipmentTypeShippingMethod) -> {
-            deleteShipmentTypeShippingMethod(shipmentTypeShippingMethod, deletedBy);
-        });
+        shipmentTypeShippingMethods.forEach((shipmentTypeShippingMethod) -> 
+                deleteShipmentTypeShippingMethod(shipmentTypeShippingMethod, deletedBy)
+        );
     }
     
     public void deleteShipmentTypeShippingMethodsByShipmentType(ShipmentType shipmentType, BasePK deletedBy) {
@@ -1467,9 +1466,9 @@ public class ShipmentControl
         List<ShipmentTimeTransfer> shipmentTimeTransfers = new ArrayList<>(shipmentTimes.size());
         ShipmentTimeTransferCache shipmentTimeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache();
 
-        shipmentTimes.stream().forEach((shipmentTime) -> {
-            shipmentTimeTransfers.add(shipmentTimeTransferCache.getTransfer(shipmentTime));
-        });
+        shipmentTimes.forEach((shipmentTime) ->
+                shipmentTimeTransfers.add(shipmentTimeTransferCache.getTransfer(shipmentTime))
+        );
 
         return shipmentTimeTransfers;
     }
@@ -1508,9 +1507,9 @@ public class ShipmentControl
     }
 
     public void deleteShipmentTimes(List<ShipmentTime> shipmentTimes, BasePK deletedBy) {
-        shipmentTimes.stream().forEach((shipmentTime) -> {
-            deleteShipmentTime(shipmentTime, deletedBy);
-        });
+        shipmentTimes.forEach((shipmentTime) -> 
+                deleteShipmentTime(shipmentTime, deletedBy)
+        );
     }
 
     public void deleteShipmentTimesByShipment(Shipment shipment, BasePK deletedBy) {
@@ -1669,9 +1668,9 @@ public class ShipmentControl
         List<ShipmentAliasTypeTransfer> shipmentAliasTypeTransfers = new ArrayList<>(shipmentAliasTypes.size());
         ShipmentAliasTypeTransferCache shipmentAliasTypeTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeTransferCache();
 
-        shipmentAliasTypes.stream().forEach((shipmentAliasType) -> {
-            shipmentAliasTypeTransfers.add(shipmentAliasTypeTransferCache.getTransfer(shipmentAliasType));
-        });
+        shipmentAliasTypes.forEach((shipmentAliasType) ->
+                shipmentAliasTypeTransfers.add(shipmentAliasTypeTransferCache.getTransfer(shipmentAliasType))
+        );
 
         return shipmentAliasTypeTransfers;
     }
@@ -1702,7 +1701,7 @@ public class ShipmentControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentAliasTypeChoice == null? false: defaultShipmentAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultShipmentAliasTypeChoice != null && defaultShipmentAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1779,7 +1778,7 @@ public class ShipmentControl
                 if(iter.hasNext()) {
                     defaultShipmentAliasType = iter.next();
                 }
-                ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue = defaultShipmentAliasType.getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
+                ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue = Objects.requireNonNull(defaultShipmentAliasType).getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
 
                 shipmentAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateShipmentAliasTypeFromValue(shipmentAliasTypeDetailValue, false, deletedBy);
@@ -1790,9 +1789,9 @@ public class ShipmentControl
     }
 
     public void deleteShipmentAliasTypes(List<ShipmentAliasType> shipmentAliasTypes, BasePK deletedBy) {
-        shipmentAliasTypes.stream().forEach((shipmentAliasType) -> {
-            deleteShipmentAliasType(shipmentAliasType, deletedBy);
-        });
+        shipmentAliasTypes.forEach((shipmentAliasType) -> 
+                deleteShipmentAliasType(shipmentAliasType, deletedBy)
+        );
     }
 
     public void deleteShipmentAliasTypesByShipmentType(ShipmentType shipmentType, BasePK deletedBy) {
@@ -1907,9 +1906,9 @@ public class ShipmentControl
         List<ShipmentAliasTypeDescriptionTransfer> shipmentAliasTypeDescriptionTransfers = new ArrayList<>(shipmentAliasTypeDescriptions.size());
         ShipmentAliasTypeDescriptionTransferCache shipmentAliasTypeDescriptionTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTypeDescriptionTransferCache();
 
-        shipmentAliasTypeDescriptions.stream().forEach((shipmentAliasTypeDescription) -> {
-            shipmentAliasTypeDescriptionTransfers.add(shipmentAliasTypeDescriptionTransferCache.getTransfer(shipmentAliasTypeDescription));
-        });
+        shipmentAliasTypeDescriptions.forEach((shipmentAliasTypeDescription) ->
+                shipmentAliasTypeDescriptionTransfers.add(shipmentAliasTypeDescriptionTransferCache.getTransfer(shipmentAliasTypeDescription))
+        );
 
         return shipmentAliasTypeDescriptionTransfers;
     }
@@ -1943,9 +1942,9 @@ public class ShipmentControl
     public void deleteShipmentAliasTypeDescriptionsByShipmentAliasType(ShipmentAliasType shipmentAliasType, BasePK deletedBy) {
         List<ShipmentAliasTypeDescription> shipmentAliasTypeDescriptions = getShipmentAliasTypeDescriptionsByShipmentAliasTypeForUpdate(shipmentAliasType);
 
-        shipmentAliasTypeDescriptions.stream().forEach((shipmentAliasTypeDescription) -> {
-            deleteShipmentAliasTypeDescription(shipmentAliasTypeDescription, deletedBy);
-        });
+        shipmentAliasTypeDescriptions.forEach((shipmentAliasTypeDescription) -> 
+                deleteShipmentAliasTypeDescription(shipmentAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -2100,9 +2099,9 @@ public class ShipmentControl
         List<ShipmentAliasTransfer> shipmentAliasTransfers = new ArrayList<>(shipmentaliases.size());
         ShipmentAliasTransferCache shipmentAliasTransferCache = getShipmentTransferCaches(userVisit).getShipmentAliasTransferCache();
 
-        shipmentaliases.stream().forEach((shipmentAlias) -> {
-            shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(shipmentAlias));
-        });
+        shipmentaliases.forEach((shipmentAlias) ->
+                shipmentAliasTransfers.add(shipmentAliasTransferCache.getTransfer(shipmentAlias))
+        );
 
         return shipmentAliasTransfers;
     }
@@ -2134,17 +2133,17 @@ public class ShipmentControl
     public void deleteShipmentAliasesByShipmentAliasType(ShipmentAliasType shipmentAliasType, BasePK deletedBy) {
         List<ShipmentAlias> shipmentaliases = getShipmentAliasesByShipmentAliasTypeForUpdate(shipmentAliasType);
 
-        shipmentaliases.stream().forEach((shipmentAlias) -> {
-            deleteShipmentAlias(shipmentAlias, deletedBy);
-        });
+        shipmentaliases.forEach((shipmentAlias) -> 
+                deleteShipmentAlias(shipmentAlias, deletedBy)
+        );
     }
 
     public void deleteShipmentAliasesByShipment(Shipment shipment, BasePK deletedBy) {
         List<ShipmentAlias> shipmentaliases = getShipmentAliasesByShipmentForUpdate(shipment);
 
-        shipmentaliases.stream().forEach((shipmentAlias) -> {
-            deleteShipmentAlias(shipmentAlias, deletedBy);
-        });
+        shipmentaliases.forEach((shipmentAlias) -> 
+                deleteShipmentAlias(shipmentAlias, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

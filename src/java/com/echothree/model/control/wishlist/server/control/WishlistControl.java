@@ -87,6 +87,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class WishlistControl
         extends BaseModelControl {
@@ -272,7 +273,7 @@ public class WishlistControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWishlistTypeChoice == null? false: defaultWishlistTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWishlistTypeChoice != null && defaultWishlistTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && wishlistTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -290,9 +291,9 @@ public class WishlistControl
         List<WishlistTypeTransfer> wishlistTypeTransfers = new ArrayList<>(wishlistTypes.size());
         WishlistTypeTransferCache wishlistTypeTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeTransferCache();
         
-        wishlistTypes.stream().forEach((wishlistType) -> {
-            wishlistTypeTransfers.add(wishlistTypeTransferCache.getWishlistTypeTransfer(wishlistType));
-        });
+        wishlistTypes.forEach((wishlistType) ->
+                wishlistTypeTransfers.add(wishlistTypeTransferCache.getWishlistTypeTransfer(wishlistType))
+        );
         
         return wishlistTypeTransfers;
     }
@@ -365,7 +366,7 @@ public class WishlistControl
                 if(iter.hasNext()) {
                     defaultWishlistType = iter.next();
                 }
-                WishlistTypeDetailValue wishlistTypeDetailValue = defaultWishlistType.getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
+                WishlistTypeDetailValue wishlistTypeDetailValue = Objects.requireNonNull(defaultWishlistType).getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
                 
                 wishlistTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateWishlistTypeFromValue(wishlistTypeDetailValue, false, deletedBy);
@@ -438,7 +439,7 @@ public class WishlistControl
     }
     
     private List<WishlistTypeDescription> getWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<WishlistTypeDescription> wishlistTypeDescriptions = null;
+        List<WishlistTypeDescription> wishlistTypeDescriptions;
         
         try {
             String query = null;
@@ -503,9 +504,9 @@ public class WishlistControl
         List<WishlistTypeDescriptionTransfer> wishlistTypeDescriptionTransfers = new ArrayList<>(wishlistTypeDescriptions.size());
         WishlistTypeDescriptionTransferCache wishlistTypeDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeDescriptionTransferCache();
         
-        wishlistTypeDescriptions.stream().forEach((wishlistTypeDescription) -> {
-            wishlistTypeDescriptionTransfers.add(wishlistTypeDescriptionTransferCache.getWishlistTypeDescriptionTransfer(wishlistTypeDescription));
-        });
+        wishlistTypeDescriptions.forEach((wishlistTypeDescription) ->
+                wishlistTypeDescriptionTransfers.add(wishlistTypeDescriptionTransferCache.getWishlistTypeDescriptionTransfer(wishlistTypeDescription))
+        );
         
         return wishlistTypeDescriptionTransfers;
     }
@@ -538,9 +539,9 @@ public class WishlistControl
     public void deleteWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
         List<WishlistTypeDescription> wishlistTypeDescriptions = getWishlistTypeDescriptionsByWishlistTypeForUpdate(wishlistType);
         
-        wishlistTypeDescriptions.stream().forEach((wishlistTypeDescription) -> {
-            deleteWishlistTypeDescription(wishlistTypeDescription, deletedBy);
-        });
+        wishlistTypeDescriptions.forEach((wishlistTypeDescription) -> 
+                deleteWishlistTypeDescription(wishlistTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -579,7 +580,7 @@ public class WishlistControl
     }
     
     private List<WishlistTypePriority> getWishlistTypePriorities(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<WishlistTypePriority> wishlistTypePriorities = null;
+        List<WishlistTypePriority> wishlistTypePriorities;
         
         try {
             String query = null;
@@ -732,7 +733,7 @@ public class WishlistControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWishlistTypePriorityChoice == null? false: defaultWishlistTypePriorityChoice.equals(value);
+            boolean usingDefaultChoice = defaultWishlistTypePriorityChoice != null && defaultWishlistTypePriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && wishlistTypePriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -750,9 +751,9 @@ public class WishlistControl
         List<WishlistTypePriorityTransfer> wishlistTypePriorityTransfers = new ArrayList<>(wishlistTypePriorities.size());
         WishlistTypePriorityTransferCache wishlistTypePriorityTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypePriorityTransferCache();
         
-        wishlistTypePriorities.stream().forEach((wishlistTypePriority) -> {
-            wishlistTypePriorityTransfers.add(wishlistTypePriorityTransferCache.getWishlistTypePriorityTransfer(wishlistTypePriority));
-        });
+        wishlistTypePriorities.forEach((wishlistTypePriority) ->
+                wishlistTypePriorityTransfers.add(wishlistTypePriorityTransferCache.getWishlistTypePriorityTransfer(wishlistTypePriority))
+        );
         
         return wishlistTypePriorityTransfers;
     }
@@ -824,7 +825,7 @@ public class WishlistControl
                 if(iter.hasNext()) {
                     defaultWishlistTypePriority = iter.next();
                 }
-                WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue = defaultWishlistTypePriority.getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
+                WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue = Objects.requireNonNull(defaultWishlistTypePriority).getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
                 
                 wishlistTypePriorityDetailValue.setIsDefault(Boolean.TRUE);
                 updateWishlistTypePriorityFromValue(wishlistTypePriorityDetailValue, false, deletedBy);
@@ -837,9 +838,9 @@ public class WishlistControl
     public void deleteWishlistTypePrioritiesByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
         List<WishlistTypePriority> wishlistTypePriorities = getWishlistTypePrioritiesForUpdate(wishlistType);
         
-        wishlistTypePriorities.stream().forEach((wishlistTypePriority) -> {
-            deleteWishlistTypePriority(wishlistTypePriority, deletedBy);
-        });
+        wishlistTypePriorities.forEach((wishlistTypePriority) -> 
+                deleteWishlistTypePriority(wishlistTypePriority, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -904,7 +905,7 @@ public class WishlistControl
     }
     
     private List<WishlistTypePriorityDescription> getWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, EntityPermission entityPermission) {
-        List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions = null;
+        List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions;
         
         try {
             String query = null;
@@ -969,9 +970,9 @@ public class WishlistControl
         List<WishlistTypePriorityDescriptionTransfer> wishlistTypePriorityDescriptionTransfers = new ArrayList<>(wishlistTypePriorityDescriptions.size());
         WishlistTypePriorityDescriptionTransferCache wishlistTypePriorityDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypePriorityDescriptionTransferCache();
         
-        wishlistTypePriorityDescriptions.stream().forEach((wishlistTypePriorityDescription) -> {
-            wishlistTypePriorityDescriptionTransfers.add(wishlistTypePriorityDescriptionTransferCache.getWishlistTypePriorityDescriptionTransfer(wishlistTypePriorityDescription));
-        });
+        wishlistTypePriorityDescriptions.forEach((wishlistTypePriorityDescription) ->
+                wishlistTypePriorityDescriptionTransfers.add(wishlistTypePriorityDescriptionTransferCache.getWishlistTypePriorityDescriptionTransfer(wishlistTypePriorityDescription))
+        );
         
         return wishlistTypePriorityDescriptionTransfers;
     }
@@ -1004,9 +1005,9 @@ public class WishlistControl
     public void deleteWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
         List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions = getWishlistTypePriorityDescriptionsByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
-        wishlistTypePriorityDescriptions.stream().forEach((wishlistTypePriorityDescription) -> {
-            deleteWishlistTypePriorityDescription(wishlistTypePriorityDescription, deletedBy);
-        });
+        wishlistTypePriorityDescriptions.forEach((wishlistTypePriorityDescription) -> 
+                deleteWishlistTypePriorityDescription(wishlistTypePriorityDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1085,7 +1086,7 @@ public class WishlistControl
     }
     
     private List<Wishlist> getWishlistsByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<Wishlist> wishlists = null;
+        List<Wishlist> wishlists;
         
         try {
             String query = null;
@@ -1193,7 +1194,7 @@ public class WishlistControl
 
     private List<WishlistLine> getWishlistLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority,
             EntityPermission entityPermission) {
-        List<WishlistLine> wishlistLines = null;
+        List<WishlistLine> wishlistLines;
         
         try {
             String query = null;
@@ -1378,7 +1379,7 @@ public class WishlistControl
     }
     
     private List<Order> getWishlists(Party companyParty, Party party, EntityPermission entityPermission) {
-        List<Order> orders = null;
+        List<Order> orders;
         
         try {
             String query = null;
@@ -1443,7 +1444,7 @@ public class WishlistControl
     }
     
     private List<Order> getOrdersByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<Order> orders = null;
+        List<Order> orders;
         
         try {
             String query = null;
@@ -1487,9 +1488,9 @@ public class WishlistControl
         List<WishlistTransfer> wishlistTransfers = new ArrayList<>(orders.size());
         WishlistTransferCache wishlistTransferCache = getWishlistTransferCaches(userVisit).getWishlistTransferCache();
         
-        orders.stream().forEach((order) -> {
-            wishlistTransfers.add(wishlistTransferCache.getWishlistTransfer(order));
-        });
+        orders.forEach((order) ->
+                wishlistTransfers.add(wishlistTransferCache.getWishlistTransfer(order))
+        );
         
         return wishlistTransfers;
     }
@@ -1595,7 +1596,7 @@ public class WishlistControl
     }
     
     private List<OrderLine> getWishlistLinesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -1632,7 +1633,7 @@ public class WishlistControl
     }
     
     private List<OrderLine> getWishlistLinesByItem(Item item, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -1670,7 +1671,7 @@ public class WishlistControl
     
     private List<OrderLine> getOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority,
             EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -1717,9 +1718,9 @@ public class WishlistControl
         List<WishlistLineTransfer> wishlistLineTransfers = new ArrayList<>(orderLines.size());
         WishlistLineTransferCache wishlistLineTransferCache = getWishlistTransferCaches(userVisit).getWishlistLineTransferCache();
         
-        orderLines.stream().forEach((orderLine) -> {
-            wishlistLineTransfers.add(wishlistLineTransferCache.getWishlistLineTransfer(orderLine));
-        });
+        orderLines.forEach((orderLine) ->
+                wishlistLineTransfers.add(wishlistLineTransferCache.getWishlistLineTransfer(orderLine))
+        );
         
         return wishlistLineTransfers;
     }

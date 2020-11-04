@@ -172,6 +172,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class WorkflowControl
         extends BaseModelControl {
@@ -268,9 +269,9 @@ public class WorkflowControl
         List<WorkflowTypeTransfer> workflowTypeTransfers = new ArrayList<>(workflowTypes.size());
         WorkflowTypeTransferCache workflowTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowTypeTransferCache();
         
-        workflowTypes.stream().forEach((workflowType) -> {
-            workflowTypeTransfers.add(workflowTypeTransferCache.getWorkflowTypeTransfer(workflowType));
-        });
+        workflowTypes.forEach((workflowType) ->
+                workflowTypeTransfers.add(workflowTypeTransferCache.getWorkflowTypeTransfer(workflowType))
+        );
         
         return workflowTypeTransfers;
     }
@@ -303,7 +304,7 @@ public class WorkflowControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowTypeChoice == null? false: defaultWorkflowTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkflowTypeChoice != null && defaultWorkflowTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -430,9 +431,9 @@ public class WorkflowControl
         List<WorkflowStepTypeTransfer> workflowStepTypeTransfers = new ArrayList<>(workflowStepTypes.size());
         WorkflowStepTypeTransferCache workflowStepTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTypeTransferCache();
         
-        workflowStepTypes.stream().forEach((workflowStepType) -> {
-            workflowStepTypeTransfers.add(workflowStepTypeTransferCache.getWorkflowStepTypeTransfer(workflowStepType));
-        });
+        workflowStepTypes.forEach((workflowStepType) ->
+                workflowStepTypeTransfers.add(workflowStepTypeTransferCache.getWorkflowStepTypeTransfer(workflowStepType))
+        );
         
         return workflowStepTypeTransfers;
     }
@@ -465,7 +466,7 @@ public class WorkflowControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowStepTypeChoice == null? false: defaultWorkflowStepTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkflowStepTypeChoice != null && defaultWorkflowStepTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowStepType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -620,9 +621,9 @@ public class WorkflowControl
         List<WorkflowTransfer> workflowTransfers = new ArrayList<>(workflows.size());
         WorkflowTransferCache workflowTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowTransferCache();
         
-        workflows.stream().forEach((workflow) -> {
-            workflowTransfers.add(workflowTransferCache.getWorkflowTransfer(workflow));
-        });
+        workflows.forEach((workflow) ->
+                workflowTransfers.add(workflowTransferCache.getWorkflowTransfer(workflow))
+        );
         
         return workflowTransfers;
     }
@@ -783,9 +784,9 @@ public class WorkflowControl
         List<WorkflowDescriptionTransfer> workflowDescriptionTransfers = new ArrayList<>(workflowDescriptions.size());
         WorkflowDescriptionTransferCache workflowDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDescriptionTransferCache();
         
-        workflowDescriptions.stream().forEach((workflowDescription) -> {
-            workflowDescriptionTransfers.add(workflowDescriptionTransferCache.getWorkflowDescriptionTransfer(workflowDescription));
-        });
+        workflowDescriptions.forEach((workflowDescription) ->
+                workflowDescriptionTransfers.add(workflowDescriptionTransferCache.getWorkflowDescriptionTransfer(workflowDescription))
+        );
         
         return workflowDescriptionTransfers;
     }
@@ -818,9 +819,9 @@ public class WorkflowControl
     public void deleteWorkflowDescriptionsByWorkflow(Workflow workflow, BasePK deletedBy) {
         List<WorkflowDescription> workflowDescriptions = getWorkflowDescriptionsByWorkflowForUpdate(workflow);
         
-        workflowDescriptions.stream().forEach((workflowDescription) -> {
-            deleteWorkflowDescription(workflowDescription, deletedBy);
-        });
+        workflowDescriptions.forEach((workflowDescription) -> 
+                deleteWorkflowDescription(workflowDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -982,7 +983,7 @@ public class WorkflowControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowStepChoice == null? false: defaultWorkflowStepChoice.equals(value);
+            boolean usingDefaultChoice = defaultWorkflowStepChoice != null && defaultWorkflowStepChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowStepDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -1011,9 +1012,9 @@ public class WorkflowControl
         List<WorkflowStepTransfer> workflowStepTransfers = new ArrayList<>(workflowSteps.size());
         WorkflowStepTransferCache workflowStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepTransferCache();
         
-        workflowSteps.stream().forEach((workflowStep) -> {
-            workflowStepTransfers.add(workflowStepTransferCache.getWorkflowStepTransfer(workflowStep));
-        });
+        workflowSteps.forEach((workflowStep) ->
+                workflowStepTransfers.add(workflowStepTransferCache.getWorkflowStepTransfer(workflowStep))
+        );
         
         return workflowStepTransfers;
     }
@@ -1095,7 +1096,7 @@ public class WorkflowControl
                     if(iter.hasNext()) {
                         defaultWorkflowStep = iter.next();
                     }
-                    WorkflowStepDetailValue workflowStepDetailValue = defaultWorkflowStep.getLastDetailForUpdate().getWorkflowStepDetailValue().clone();
+                    WorkflowStepDetailValue workflowStepDetailValue = Objects.requireNonNull(defaultWorkflowStep).getLastDetailForUpdate().getWorkflowStepDetailValue().clone();
 
                     workflowStepDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowStepFromValue(workflowStepDetailValue, false, deletedBy);
@@ -1111,9 +1112,7 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowSteps(List<WorkflowStep> workflowSteps, boolean checkDefault, BasePK deletedBy) {
-        workflowSteps.stream().forEach((workflowStep) -> {
-            deleteWorkflowStep(workflowStep, checkDefault, deletedBy);
-        });
+        workflowSteps.forEach((workflowStep) -> deleteWorkflowStep(workflowStep, checkDefault, deletedBy));
     }
     
     public void deleteWorkflowStepsByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -1182,7 +1181,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowStepDescription> getWorkflowStepDescriptionsByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkflowStepDescription> workflowStepDescriptions = null;
+        List<WorkflowStepDescription> workflowStepDescriptions;
         
         try {
             String query = null;
@@ -1246,9 +1245,9 @@ public class WorkflowControl
         List<WorkflowStepDescriptionTransfer> workflowStepDescriptionTransfers = new ArrayList<>(workflowStepDescriptions.size());
         WorkflowStepDescriptionTransferCache workflowStepDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowStepDescriptionTransferCache();
         
-        workflowStepDescriptions.stream().forEach((workflowStepDescription) -> {
-            workflowStepDescriptionTransfers.add(workflowStepDescriptionTransferCache.getWorkflowStepDescriptionTransfer(workflowStepDescription));
-        });
+        workflowStepDescriptions.forEach((workflowStepDescription) ->
+                workflowStepDescriptionTransfers.add(workflowStepDescriptionTransferCache.getWorkflowStepDescriptionTransfer(workflowStepDescription))
+        );
         
         return workflowStepDescriptionTransfers;
     }
@@ -1281,9 +1280,9 @@ public class WorkflowControl
     public void deleteWorkflowStepDescriptionsByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
         List<WorkflowStepDescription> workflowStepDescriptions = getWorkflowStepDescriptionsByWorkflowStepForUpdate(workflowStep);
         
-        workflowStepDescriptions.stream().forEach((workflowStepDescription) -> {
-            deleteWorkflowStepDescription(workflowStepDescription, deletedBy);
-        });
+        workflowStepDescriptions.forEach((workflowStepDescription) -> 
+                deleteWorkflowStepDescription(workflowStepDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1401,9 +1400,9 @@ public class WorkflowControl
         List<WorkflowEntityTypeTransfer> workflowEntityTypeTransfers = new ArrayList<>(workflowEntityTypes.size());
         WorkflowEntityTypeTransferCache workflowEntityTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntityTypeTransferCache();
 
-        workflowEntityTypes.stream().forEach((workflowEntityType) -> {
-            workflowEntityTypeTransfers.add(workflowEntityTypeTransferCache.getWorkflowEntityTypeTransfer(workflowEntityType));
-        });
+        workflowEntityTypes.forEach((workflowEntityType) ->
+                workflowEntityTypeTransfers.add(workflowEntityTypeTransferCache.getWorkflowEntityTypeTransfer(workflowEntityType))
+        );
 
         return workflowEntityTypeTransfers;
     }
@@ -1423,9 +1422,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntityTypes(List<WorkflowEntityType> workflowEntityTypes, BasePK deletedBy) {
-        workflowEntityTypes.stream().forEach((workflowEntityType) -> {
-            deleteWorkflowEntityType(workflowEntityType, deletedBy);
-        });
+        workflowEntityTypes.forEach((workflowEntityType) -> 
+                deleteWorkflowEntityType(workflowEntityType, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntityTypesByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -1630,7 +1629,7 @@ public class WorkflowControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultWorkflowEntranceChoice == null? false: defaultWorkflowEntranceChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultWorkflowEntranceChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && workflowEntranceDetail.getIsDefault())) {
                     defaultValue = value;
                 }
@@ -1660,9 +1659,9 @@ public class WorkflowControl
         List<WorkflowEntranceTransfer> workflowEntranceTransfers = new ArrayList<>(workflowEntrances.size());
         WorkflowEntranceTransferCache workflowEntranceTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceTransferCache();
         
-        workflowEntrances.stream().forEach((workflowEntrance) -> {
-            workflowEntranceTransfers.add(workflowEntranceTransferCache.getWorkflowEntranceTransfer(workflowEntrance));
-        });
+        workflowEntrances.forEach((workflowEntrance) ->
+                workflowEntranceTransfers.add(workflowEntranceTransferCache.getWorkflowEntranceTransfer(workflowEntrance))
+        );
         
         return workflowEntranceTransfers;
     }
@@ -1741,7 +1740,7 @@ public class WorkflowControl
                     if(iter.hasNext()) {
                         defaultWorkflowEntrance = iter.next();
                     }
-                    WorkflowEntranceDetailValue workflowEntranceDetailValue = defaultWorkflowEntrance.getLastDetailForUpdate().getWorkflowEntranceDetailValue().clone();
+                    WorkflowEntranceDetailValue workflowEntranceDetailValue = Objects.requireNonNull(defaultWorkflowEntrance).getLastDetailForUpdate().getWorkflowEntranceDetailValue().clone();
 
                     workflowEntranceDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowEntranceFromValue(workflowEntranceDetailValue, false, deletedBy);
@@ -1757,9 +1756,7 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowEntrances(List<WorkflowEntrance> workflowEntrances, boolean checkDefault, BasePK deletedBy) {
-        workflowEntrances.stream().forEach((workflowEntrance) -> {
-            deleteWorkflowEntrance(workflowEntrance, checkDefault, deletedBy);
-        });
+        workflowEntrances.forEach((workflowEntrance) -> deleteWorkflowEntrance(workflowEntrance, checkDefault, deletedBy));
     }
     
     public void deleteWorkflowEntrancesByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -1828,7 +1825,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntranceDescription> getWorkflowEntranceDescriptionsByWorkflowEntrance(WorkflowEntrance workflowEntrance, EntityPermission entityPermission) {
-        List<WorkflowEntranceDescription> workflowEntranceDescriptions = null;
+        List<WorkflowEntranceDescription> workflowEntranceDescriptions;
         
         try {
             String query = null;
@@ -1892,9 +1889,9 @@ public class WorkflowControl
         List<WorkflowEntranceDescriptionTransfer> workflowEntranceDescriptionTransfers = new ArrayList<>(workflowEntranceDescriptions.size());
         WorkflowEntranceDescriptionTransferCache workflowEntranceDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceDescriptionTransferCache();
         
-        workflowEntranceDescriptions.stream().forEach((workflowEntranceDescription) -> {
-            workflowEntranceDescriptionTransfers.add(workflowEntranceDescriptionTransferCache.getWorkflowEntranceDescriptionTransfer(workflowEntranceDescription));
-        });
+        workflowEntranceDescriptions.forEach((workflowEntranceDescription) ->
+                workflowEntranceDescriptionTransfers.add(workflowEntranceDescriptionTransferCache.getWorkflowEntranceDescriptionTransfer(workflowEntranceDescription))
+        );
         
         return workflowEntranceDescriptionTransfers;
     }
@@ -1927,9 +1924,9 @@ public class WorkflowControl
     public void deleteWorkflowEntranceDescriptionsByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
         List<WorkflowEntranceDescription> workflowEntranceDescriptions = getWorkflowEntranceDescriptionsByWorkflowEntranceForUpdate(workflowEntrance);
         
-        workflowEntranceDescriptions.stream().forEach((workflowEntranceDescription) -> {
-            deleteWorkflowEntranceDescription(workflowEntranceDescription, deletedBy);
-        });
+        workflowEntranceDescriptions.forEach((workflowEntranceDescription) -> 
+                deleteWorkflowEntranceDescription(workflowEntranceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1947,7 +1944,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntranceSelector> getWorkflowEntranceSelectorsBySelectorForUpdate(Selector selector, EntityPermission entityPermission) {
-        List<WorkflowEntranceSelector> workflowEntranceSelectors = null;
+        List<WorkflowEntranceSelector> workflowEntranceSelectors;
         
         try {
             String query = null;
@@ -1989,7 +1986,7 @@ public class WorkflowControl
     
     private List<WorkflowEntranceSelector> getWorkflowEntranceSelectorsByWorkflowEntrance(WorkflowEntrance workflowEntrance,
             EntityPermission entityPermission) {
-        List<WorkflowEntranceSelector> workflowEntranceSelectors = null;
+        List<WorkflowEntranceSelector> workflowEntranceSelectors;
         
         try {
             String query = null;
@@ -2030,7 +2027,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntranceSelector> getWorkflowEntranceSelectorsByWorkflow(Workflow workflow, EntityPermission entityPermission) {
-        List<WorkflowEntranceSelector> workflowEntranceSelectors = null;
+        List<WorkflowEntranceSelector> workflowEntranceSelectors;
         
         try {
             String query = null;
@@ -2121,9 +2118,9 @@ public class WorkflowControl
         List<WorkflowEntranceSelectorTransfer> workflowEntranceSelectorTransfers = new ArrayList<>(workflowEntranceSelectors.size());
         WorkflowEntranceSelectorTransferCache workflowEntranceSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSelectorTransferCache();
         
-        workflowEntranceSelectors.stream().forEach((workflowEntranceSelector) -> {
-            workflowEntranceSelectorTransfers.add(workflowEntranceSelectorTransferCache.getWorkflowEntranceSelectorTransfer(workflowEntranceSelector));
-        });
+        workflowEntranceSelectors.forEach((workflowEntranceSelector) ->
+                workflowEntranceSelectorTransfers.add(workflowEntranceSelectorTransferCache.getWorkflowEntranceSelectorTransfer(workflowEntranceSelector))
+        );
         
         return workflowEntranceSelectorTransfers;
     }
@@ -2140,9 +2137,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSelectors(List<WorkflowEntranceSelector> workflowEntranceSelectors, BasePK deletedBy) {
-        workflowEntranceSelectors.stream().forEach((workflowEntranceSelector) -> {
-            deleteWorkflowEntranceSelector(workflowEntranceSelector, deletedBy);
-        });
+        workflowEntranceSelectors.forEach((workflowEntranceSelector) -> 
+                deleteWorkflowEntranceSelector(workflowEntranceSelector, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntranceSelectorsByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
@@ -2169,7 +2166,7 @@ public class WorkflowControl
     
     private List<WorkflowEntrancePartyType> getWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance,
             EntityPermission entityPermission) {
-        List<WorkflowEntrancePartyType> workflowEntrancePartyTypes = null;
+        List<WorkflowEntrancePartyType> workflowEntrancePartyTypes;
         
         try {
             String query = null;
@@ -2264,9 +2261,9 @@ public class WorkflowControl
         List<WorkflowEntrancePartyTypeTransfer> workflowEntrancePartyTypeTransfers = new ArrayList<>(workflowEntrancePartyTypes.size());
         WorkflowEntrancePartyTypeTransferCache workflowEntrancePartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntrancePartyTypeTransferCache();
         
-        workflowEntrancePartyTypes.stream().forEach((workflowEntrancePartyType) -> {
-            workflowEntrancePartyTypeTransfers.add(workflowEntrancePartyTypeTransferCache.getWorkflowEntrancePartyTypeTransfer(workflowEntrancePartyType));
-        });
+        workflowEntrancePartyTypes.forEach((workflowEntrancePartyType) ->
+                workflowEntrancePartyTypeTransfers.add(workflowEntrancePartyTypeTransferCache.getWorkflowEntrancePartyTypeTransfer(workflowEntrancePartyType))
+        );
         
         return workflowEntrancePartyTypeTransfers;
     }
@@ -2285,9 +2282,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntrancePartyTypes(List<WorkflowEntrancePartyType> workflowEntrancePartyTypes, BasePK deletedBy) {
-        workflowEntrancePartyTypes.stream().forEach((workflowEntrancePartyType) -> {
-            deleteWorkflowEntrancePartyType(workflowEntrancePartyType, deletedBy);
-        });
+        workflowEntrancePartyTypes.forEach((workflowEntrancePartyType) -> 
+                deleteWorkflowEntrancePartyType(workflowEntrancePartyType, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
@@ -2310,7 +2307,7 @@ public class WorkflowControl
     
     private List<WorkflowEntranceSecurityRole> getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType,
             EntityPermission entityPermission) {
-        List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles = null;
+        List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles;
         
         try {
             String query = null;
@@ -2398,9 +2395,9 @@ public class WorkflowControl
         List<WorkflowEntranceSecurityRoleTransfer> workflowEntranceSecurityRoleTransfers = new ArrayList<>(workflowEntranceSecurityRoles.size());
         WorkflowEntranceSecurityRoleTransferCache workflowEntranceSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceSecurityRoleTransferCache();
         
-        workflowEntranceSecurityRoles.stream().forEach((workflowEntranceSecurityRole) -> {
-            workflowEntranceSecurityRoleTransfers.add(workflowEntranceSecurityRoleTransferCache.getWorkflowEntranceSecurityRoleTransfer(workflowEntranceSecurityRole));
-        });
+        workflowEntranceSecurityRoles.forEach((workflowEntranceSecurityRole) ->
+                workflowEntranceSecurityRoleTransfers.add(workflowEntranceSecurityRoleTransferCache.getWorkflowEntranceSecurityRoleTransfer(workflowEntranceSecurityRole))
+        );
         
         return workflowEntranceSecurityRoleTransfers;
     }
@@ -2417,9 +2414,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSecurityRoles(List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles, BasePK deletedBy) {
-        workflowEntranceSecurityRoles.stream().forEach((workflowEntranceSecurityRole) -> {
-            deleteWorkflowEntranceSecurityRole(workflowEntranceSecurityRole, deletedBy);
-        });
+        workflowEntranceSecurityRoles.forEach((workflowEntranceSecurityRole) -> 
+                deleteWorkflowEntranceSecurityRole(workflowEntranceSecurityRole, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType, BasePK deletedBy) {
@@ -2558,9 +2555,9 @@ public class WorkflowControl
         List<WorkflowEntranceStepTransfer> workflowEntranceStepTransfers = new ArrayList<>(workflowEntranceSteps.size());
         WorkflowEntranceStepTransferCache workflowEntranceStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowEntranceStepTransferCache();
         
-        workflowEntranceSteps.stream().forEach((workflowEntranceStep) -> {
-            workflowEntranceStepTransfers.add(workflowEntranceStepTransferCache.getWorkflowEntranceStepTransfer(workflowEntranceStep));
-        });
+        workflowEntranceSteps.forEach((workflowEntranceStep) ->
+                workflowEntranceStepTransfers.add(workflowEntranceStepTransferCache.getWorkflowEntranceStepTransfer(workflowEntranceStep))
+        );
         
         return workflowEntranceStepTransfers;
     }
@@ -2576,9 +2573,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSteps(List<WorkflowEntranceStep> workflowEntranceSteps, BasePK deletedBy) {
-        workflowEntranceSteps.stream().forEach((workflowEntranceStep) -> {
-            deleteWorkflowEntranceStep(workflowEntranceStep, deletedBy);
-        });
+        workflowEntranceSteps.forEach((workflowEntranceStep) -> 
+                deleteWorkflowEntranceStep(workflowEntranceStep, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance, BasePK deletedBy) {
@@ -2745,7 +2742,7 @@ public class WorkflowControl
                 labels.add(label == null? value: label);
                 values.add(value);
 
-                boolean usingDefaultChoice = defaultWorkflowDestinationChoice == null? false: defaultWorkflowDestinationChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultWorkflowDestinationChoice, value);
                 if(usingDefaultChoice || (defaultValue == null && workflowDestinationDetail.getIsDefault())) {
                     defaultValue = value;
                 }
@@ -2775,9 +2772,9 @@ public class WorkflowControl
         List<WorkflowDestinationTransfer> workflowDestinationTransfers = new ArrayList<>(workflowDestinations.size());
         WorkflowDestinationTransferCache workflowDestinationTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationTransferCache();
         
-        workflowDestinations.stream().forEach((workflowDestination) -> {
-            workflowDestinationTransfers.add(workflowDestinationTransferCache.getWorkflowDestinationTransfer(workflowDestination));
-        });
+        workflowDestinations.forEach((workflowDestination) ->
+                workflowDestinationTransfers.add(workflowDestinationTransferCache.getWorkflowDestinationTransfer(workflowDestination))
+        );
         
         return workflowDestinationTransfers;
     }
@@ -2864,7 +2861,7 @@ public class WorkflowControl
                     if(iter.hasNext()) {
                         defaultWorkflowDestination = iter.next();
                     }
-                    WorkflowDestinationDetailValue workflowDestinationDetailValue = defaultWorkflowDestination.getLastDetailForUpdate().getWorkflowDestinationDetailValue().clone();
+                    WorkflowDestinationDetailValue workflowDestinationDetailValue = Objects.requireNonNull(defaultWorkflowDestination).getLastDetailForUpdate().getWorkflowDestinationDetailValue().clone();
 
                     workflowDestinationDetailValue.setIsDefault(Boolean.TRUE);
                     updateWorkflowDestinationFromValue(workflowDestinationDetailValue, false, deletedBy);
@@ -2880,9 +2877,7 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowDestinations(List<WorkflowDestination> workflowDestinations, boolean checkDefault, BasePK deletedBy) {
-        workflowDestinations.stream().forEach((workflowDestination) -> {
-            deleteWorkflowDestination(workflowDestination, checkDefault, deletedBy);
-        });
+        workflowDestinations.forEach((workflowDestination) -> deleteWorkflowDestination(workflowDestination, checkDefault, deletedBy));
     }
     
     public void deleteWorkflowDestinationsByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
@@ -2950,7 +2945,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowDestinationDescription> getWorkflowDestinationDescriptionsByWorkflowDestination(WorkflowDestination workflowDestination, EntityPermission entityPermission) {
-        List<WorkflowDestinationDescription> workflowDestinationDescriptions = null;
+        List<WorkflowDestinationDescription> workflowDestinationDescriptions;
         
         try {
             String query = null;
@@ -3014,9 +3009,9 @@ public class WorkflowControl
         List<WorkflowDestinationDescriptionTransfer> workflowDestinationDescriptionTransfers = new ArrayList<>(workflowDestinationDescriptions.size());
         WorkflowDestinationDescriptionTransferCache workflowDestinationDescriptionTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationDescriptionTransferCache();
         
-        workflowDestinationDescriptions.stream().forEach((workflowDestinationDescription) -> {
-            workflowDestinationDescriptionTransfers.add(workflowDestinationDescriptionTransferCache.getWorkflowDestinationDescriptionTransfer(workflowDestinationDescription));
-        });
+        workflowDestinationDescriptions.forEach((workflowDestinationDescription) ->
+                workflowDestinationDescriptionTransfers.add(workflowDestinationDescriptionTransferCache.getWorkflowDestinationDescriptionTransfer(workflowDestinationDescription))
+        );
         
         return workflowDestinationDescriptionTransfers;
     }
@@ -3049,9 +3044,9 @@ public class WorkflowControl
     public void deleteWorkflowDestinationDescriptionsByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
         List<WorkflowDestinationDescription> workflowDestinationDescriptions = getWorkflowDestinationDescriptionsByWorkflowDestinationForUpdate(workflowDestination);
         
-        workflowDestinationDescriptions.stream().forEach((workflowDestinationDescription) -> {
-            deleteWorkflowDestinationDescription(workflowDestinationDescription, deletedBy);
-        });
+        workflowDestinationDescriptions.forEach((workflowDestinationDescription) -> 
+                deleteWorkflowDestinationDescription(workflowDestinationDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3069,7 +3064,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowDestinationSelector> getWorkflowDestinationSelectorsBySelector(Selector selector, EntityPermission entityPermission) {
-        List<WorkflowDestinationSelector> workflowDestinationSelectors = null;
+        List<WorkflowDestinationSelector> workflowDestinationSelectors;
         
         try {
             String query = null;
@@ -3111,7 +3106,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowDestinationSelector> getWorkflowDestinationSelectorsByWorkflowDestination(WorkflowDestination workflowDestination, EntityPermission entityPermission) {
-        List<WorkflowDestinationSelector> workflowDestinationSelectors = null;
+        List<WorkflowDestinationSelector> workflowDestinationSelectors;
         
         try {
             String query = null;
@@ -3198,9 +3193,9 @@ public class WorkflowControl
         List<WorkflowDestinationSelectorTransfer> workflowDestinationSelectorTransfers = new ArrayList<>(workflowDestinationSelectors.size());
         WorkflowDestinationSelectorTransferCache workflowDestinationSelectorTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSelectorTransferCache();
         
-        workflowDestinationSelectors.stream().forEach((workflowDestinationSelector) -> {
-            workflowDestinationSelectorTransfers.add(workflowDestinationSelectorTransferCache.getWorkflowDestinationSelectorTransfer(workflowDestinationSelector));
-        });
+        workflowDestinationSelectors.forEach((workflowDestinationSelector) ->
+                workflowDestinationSelectorTransfers.add(workflowDestinationSelectorTransferCache.getWorkflowDestinationSelectorTransfer(workflowDestinationSelector))
+        );
         
         return workflowDestinationSelectorTransfers;
     }
@@ -3221,9 +3216,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSelectors(List<WorkflowDestinationSelector> workflowDestinationSelectors, BasePK deletedBy) {
-        workflowDestinationSelectors.stream().forEach((workflowDestinationSelector) -> {
-            deleteWorkflowDestinationSelector(workflowDestinationSelector, deletedBy);
-        });
+        workflowDestinationSelectors.forEach((workflowDestinationSelector) -> 
+                deleteWorkflowDestinationSelector(workflowDestinationSelector, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationSelectorsByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
@@ -3250,7 +3245,7 @@ public class WorkflowControl
     
     private List<WorkflowDestinationPartyType> getWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination,
             EntityPermission entityPermission) {
-        List<WorkflowDestinationPartyType> workflowDestinationPartyTypes = null;
+        List<WorkflowDestinationPartyType> workflowDestinationPartyTypes;
         
         try {
             String query = null;
@@ -3345,9 +3340,9 @@ public class WorkflowControl
         List<WorkflowDestinationPartyTypeTransfer> workflowDestinationPartyTypeTransfers = new ArrayList<>(workflowDestinationPartyTypes.size());
         WorkflowDestinationPartyTypeTransferCache workflowDestinationPartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationPartyTypeTransferCache();
         
-        workflowDestinationPartyTypes.stream().forEach((workflowDestinationPartyType) -> {
-            workflowDestinationPartyTypeTransfers.add(workflowDestinationPartyTypeTransferCache.getWorkflowDestinationPartyTypeTransfer(workflowDestinationPartyType));
-        });
+        workflowDestinationPartyTypes.forEach((workflowDestinationPartyType) ->
+                workflowDestinationPartyTypeTransfers.add(workflowDestinationPartyTypeTransferCache.getWorkflowDestinationPartyTypeTransfer(workflowDestinationPartyType))
+        );
         
         return workflowDestinationPartyTypeTransfers;
     }
@@ -3366,9 +3361,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationPartyTypes(List<WorkflowDestinationPartyType> workflowDestinationPartyTypes, BasePK deletedBy) {
-        workflowDestinationPartyTypes.stream().forEach((workflowDestinationPartyType) -> {
-            deleteWorkflowDestinationPartyType(workflowDestinationPartyType, deletedBy);
-        });
+        workflowDestinationPartyTypes.forEach((workflowDestinationPartyType) -> 
+                deleteWorkflowDestinationPartyType(workflowDestinationPartyType, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
@@ -3391,7 +3386,7 @@ public class WorkflowControl
     
     private List<WorkflowDestinationSecurityRole> getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(WorkflowDestinationPartyType workflowDestinationPartyType,
             EntityPermission entityPermission) {
-        List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles = null;
+        List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles;
         
         try {
             String query = null;
@@ -3479,9 +3474,9 @@ public class WorkflowControl
         List<WorkflowDestinationSecurityRoleTransfer> workflowDestinationSecurityRoleTransfers = new ArrayList<>(workflowDestinationSecurityRoles.size());
         WorkflowDestinationSecurityRoleTransferCache workflowDestinationSecurityRoleTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationSecurityRoleTransferCache();
         
-        workflowDestinationSecurityRoles.stream().forEach((workflowDestinationSecurityRole) -> {
-            workflowDestinationSecurityRoleTransfers.add(workflowDestinationSecurityRoleTransferCache.getWorkflowDestinationSecurityRoleTransfer(workflowDestinationSecurityRole));
-        });
+        workflowDestinationSecurityRoles.forEach((workflowDestinationSecurityRole) ->
+                workflowDestinationSecurityRoleTransfers.add(workflowDestinationSecurityRoleTransferCache.getWorkflowDestinationSecurityRoleTransfer(workflowDestinationSecurityRole))
+        );
         
         return workflowDestinationSecurityRoleTransfers;
     }
@@ -3498,9 +3493,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSecurityRoles(List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles, BasePK deletedBy) {
-        workflowDestinationSecurityRoles.stream().forEach((workflowDestinationSecurityRole) -> {
-            deleteWorkflowDestinationSecurityRole(workflowDestinationSecurityRole, deletedBy);
-        });
+        workflowDestinationSecurityRoles.forEach((workflowDestinationSecurityRole) -> 
+                deleteWorkflowDestinationSecurityRole(workflowDestinationSecurityRole, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(WorkflowDestinationPartyType workflowDestinationPartyType, BasePK deletedBy) {
@@ -3631,9 +3626,9 @@ public class WorkflowControl
         List<WorkflowDestinationStepTransfer> workflowDestinationStepTransfers = new ArrayList<>(workflowDestinationSteps.size());
         WorkflowDestinationStepTransferCache workflowDestinationStepTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationStepTransferCache();
         
-        workflowDestinationSteps.stream().forEach((workflowDestinationStep) -> {
-            workflowDestinationStepTransfers.add(workflowDestinationStepTransferCache.getWorkflowDestinationStepTransfer(workflowDestinationStep));
-        });
+        workflowDestinationSteps.forEach((workflowDestinationStep) ->
+                workflowDestinationStepTransfers.add(workflowDestinationStepTransferCache.getWorkflowDestinationStepTransfer(workflowDestinationStep))
+        );
         
         return workflowDestinationStepTransfers;
     }
@@ -3649,9 +3644,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSteps(List<WorkflowDestinationStep> workflowDestinationSteps, BasePK deletedBy) {
-        workflowDestinationSteps.stream().forEach((workflowDestinationStep) -> {
-            deleteWorkflowDestinationStep(workflowDestinationStep, deletedBy);
-        });
+        workflowDestinationSteps.forEach((workflowDestinationStep) -> 
+                deleteWorkflowDestinationStep(workflowDestinationStep, deletedBy)
+        );
     }
     
     public void deleteWorkflowDestinationStepsByWorkflowDestination(WorkflowDestination workflowDestination, BasePK deletedBy) {
@@ -3678,7 +3673,7 @@ public class WorkflowControl
     
     private List<WorkflowSelectorKind> getWorkflowSelectorKindsByWorkflow(Workflow workflow,
             EntityPermission entityPermission) {
-        List<WorkflowSelectorKind> workflowSelectorKinds = null;
+        List<WorkflowSelectorKind> workflowSelectorKinds;
         
         try {
             String query = null;
@@ -3720,7 +3715,7 @@ public class WorkflowControl
     
     private List<WorkflowSelectorKind> getWorkflowSelectorKindsBySelectorKindForUpdate(SelectorKind selectorKind,
             EntityPermission entityPermission) {
-        List<WorkflowSelectorKind> workflowSelectorKinds = null;
+        List<WorkflowSelectorKind> workflowSelectorKinds;
         
         try {
             String query = null;
@@ -3806,9 +3801,9 @@ public class WorkflowControl
         List<WorkflowSelectorKindTransfer> workflowSelectorKindTransfers = new ArrayList<>(workflowSelectorKinds.size());
         WorkflowSelectorKindTransferCache workflowSelectorKindTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowSelectorKindTransferCache();
         
-        workflowSelectorKinds.stream().forEach((workflowSelectorKind) -> {
-            workflowSelectorKindTransfers.add(workflowSelectorKindTransferCache.getWorkflowSelectorKindTransfer(workflowSelectorKind));
-        });
+        workflowSelectorKinds.forEach((workflowSelectorKind) ->
+                workflowSelectorKindTransfers.add(workflowSelectorKindTransferCache.getWorkflowSelectorKindTransfer(workflowSelectorKind))
+        );
         
         return workflowSelectorKindTransfers;
     }
@@ -3828,9 +3823,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowSelectorKinds(List<WorkflowSelectorKind> workflowSelectorKinds, BasePK deletedBy) {
-        workflowSelectorKinds.stream().forEach((workflowSelectorKind) -> {
-            deleteWorkflowSelectorKind(workflowSelectorKind, deletedBy);
-        });
+        workflowSelectorKinds.forEach((workflowSelectorKind) -> 
+                deleteWorkflowSelectorKind(workflowSelectorKind, deletedBy)
+        );
     }
     
     public void deleteWorkflowSelectorKindsByWorkflow(Workflow workflow, BasePK deletedBy) {
@@ -3853,7 +3848,7 @@ public class WorkflowControl
     
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope,
             EntityPermission entityPermission) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             String query = null;
@@ -3894,7 +3889,7 @@ public class WorkflowControl
     }
     
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByEntityInstance(Workflow workflow, EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             String query = null;
@@ -3947,7 +3942,7 @@ public class WorkflowControl
     
     public WorkflowEntityStatus getWorkflowEntityStatusByEntityInstance(Workflow workflow, EntityInstance entityInstance) {
         List<WorkflowEntityStatus> workflowEntityStatuses = getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
-        WorkflowEntityStatus workflowEntityStatus = null;
+        WorkflowEntityStatus workflowEntityStatus;
         
         if(workflowEntityStatuses.size() > 1) {
             throw new IllegalStateException();
@@ -3963,7 +3958,7 @@ public class WorkflowControl
     }
     
     private WorkflowEntityStatus getWorkflowEntityStatus(List<WorkflowEntityStatus> workflowEntityStatuses) {
-        WorkflowEntityStatus workflowEntityStatus = null;
+        WorkflowEntityStatus workflowEntityStatus;
         
         if(workflowEntityStatuses.size() != 1) {
             throw new IllegalStateException();
@@ -3983,7 +3978,7 @@ public class WorkflowControl
     }
     
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             String query = null;
@@ -4024,7 +4019,7 @@ public class WorkflowControl
     }
     
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflow(Workflow workflow) {
-        List<WorkflowEntityStatus> workflowEntityStatuses = null;
+        List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
             PreparedStatement ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(
@@ -4128,9 +4123,9 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntityStatuses(List<WorkflowEntityStatus> workflowEntityStatuses, BasePK deletedBy) {
-        workflowEntityStatuses.stream().forEach((workflowEntityStatus) -> {
-            deleteWorkflowEntityStatus(workflowEntityStatus, deletedBy);
-        });
+        workflowEntityStatuses.forEach((workflowEntityStatus) -> 
+                deleteWorkflowEntityStatus(workflowEntityStatus, deletedBy)
+        );
     }
     
     public void deleteWorkflowEntityStatusesByEntityInstance(Workflow workflow, EntityInstance entityInstance, BasePK deletedBy) {

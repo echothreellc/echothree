@@ -153,7 +153,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementType> getWorkRequirementTypes(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkRequirementType> workRequirementTypes = null;
+        List<WorkRequirementType> workRequirementTypes;
         
         try {
             String query = null;
@@ -191,7 +191,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementType> getWorkRequirementTypesByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkRequirementType> workRequirementTypes = null;
+        List<WorkRequirementType> workRequirementTypes;
         
         try {
             String query = null;
@@ -287,9 +287,9 @@ public class WorkRequirementControl
         List<WorkRequirementTypeTransfer> workRequirementTypeTransfers = new ArrayList<>(workRequirementTypes.size());
         WorkRequirementTypeTransferCache workRequirementTypeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeTransferCache();
         
-        workRequirementTypes.stream().forEach((workRequirementType) -> {
-            workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(workRequirementType));
-        });
+        workRequirementTypes.forEach((workRequirementType) ->
+                workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(workRequirementType))
+        );
         
         return workRequirementTypeTransfers;
     }
@@ -339,17 +339,17 @@ public class WorkRequirementControl
     public void deleteWorkRequirementTypesByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
         List<WorkRequirementType> workRequirementTypes = getWorkRequirementTypesForUpdate(workEffortType);
         
-        workRequirementTypes.stream().forEach((workRequirementType) -> {
-            deleteWorkRequirementType(workRequirementType, deletedBy);
-        });
+        workRequirementTypes.forEach((workRequirementType) -> 
+                deleteWorkRequirementType(workRequirementType, deletedBy)
+        );
     }
     
     public void deleteWorkRequirementTypesByWorkflowStep(WorkflowStep workflowStep, BasePK deletedBy) {
         List<WorkRequirementType> workRequirementTypes = getWorkRequirementTypesByWorkflowStepForUpdate(workflowStep);
         
-        workRequirementTypes.stream().forEach((workRequirementType) -> {
-            deleteWorkRequirementType(workRequirementType, deletedBy);
-        });
+        workRequirementTypes.forEach((workRequirementType) -> 
+                deleteWorkRequirementType(workRequirementType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -415,7 +415,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementTypeDescription> getWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType, EntityPermission entityPermission) {
-        List<WorkRequirementTypeDescription> workRequirementTypeDescriptions = null;
+        List<WorkRequirementTypeDescription> workRequirementTypeDescriptions;
         
         try {
             String query = null;
@@ -479,9 +479,9 @@ public class WorkRequirementControl
         List<WorkRequirementTypeDescriptionTransfer> workRequirementTypeDescriptionTransfers = new ArrayList<>(workRequirementTypeDescriptions.size());
         WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeDescriptionTransferCache();
         
-        workRequirementTypeDescriptions.stream().forEach((workRequirementTypeDescription) -> {
-            workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription));
-        });
+        workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) ->
+                workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription))
+        );
         
         return workRequirementTypeDescriptionTransfers;
     }
@@ -514,9 +514,9 @@ public class WorkRequirementControl
     public void deleteWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
         List<WorkRequirementTypeDescription> workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementTypeForUpdate(workRequirementType);
         
-        workRequirementTypeDescriptions.stream().forEach((workRequirementTypeDescription) -> {
-            deleteWorkRequirementTypeDescription(workRequirementTypeDescription, deletedBy);
-        });
+        workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) -> 
+                deleteWorkRequirementTypeDescription(workRequirementTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -584,7 +584,7 @@ public class WorkRequirementControl
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkEffortScopeAndWorkflowStep(WorkEffortScope workEffortScope,
             WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes = null;
+        List<WorkRequirementScope> workRequirementScopes;
         
         try {
             String query = null;
@@ -631,7 +631,7 @@ public class WorkRequirementControl
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType,
             EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes = null;
+        List<WorkRequirementScope> workRequirementScopes;
         
         try {
             String query = null;
@@ -670,7 +670,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes = null;
+        List<WorkRequirementScope> workRequirementScopes;
         
         try {
             String query = null;
@@ -720,9 +720,9 @@ public class WorkRequirementControl
         List<WorkRequirementScopeTransfer> workRequirementScopeTransfers = new ArrayList<>(workRequirementScopes.size());
         WorkRequirementScopeTransferCache workRequirementScopeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache();
         
-        workRequirementScopes.stream().forEach((workRequirementScope) -> {
-            workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(workRequirementScope));
-        });
+        workRequirementScopes.forEach((workRequirementScope) ->
+                workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(workRequirementScope))
+        );
         
         return workRequirementScopeTransfers;
     }
@@ -779,17 +779,17 @@ public class WorkRequirementControl
     public void deleteWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
         List<WorkRequirementScope> workRequirementScopes = getWorkRequirementScopesByWorkRequirementTypeForUpdate(workRequirementType);
         
-        workRequirementScopes.stream().forEach((workRequirementScope) -> {
-            deleteWorkRequirementScope(workRequirementScope, deletedBy);
-        });
+        workRequirementScopes.forEach((workRequirementScope) -> 
+                deleteWorkRequirementScope(workRequirementScope, deletedBy)
+        );
     }
     
     public void deleteWorkRequirementScopesByWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {
         List<WorkRequirementScope> workRequirementScopes = getWorkRequirementScopesByWorkEffortScopeForUpdate(workEffortScope);
         
-        workRequirementScopes.stream().forEach((workRequirementScope) -> {
-            deleteWorkRequirementScope(workRequirementScope, deletedBy);
-        });
+        workRequirementScopes.forEach((workRequirementScope) -> 
+                deleteWorkRequirementScope(workRequirementScope, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -818,7 +818,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirement> getWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope, EntityPermission entityPermission) {
-        List<WorkRequirement> workRequirements = null;
+        List<WorkRequirement> workRequirements;
         
         try {
             String query = null;
@@ -856,7 +856,7 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirement> getWorkRequirementsByWorkEffort(WorkEffort workEffort, EntityPermission entityPermission) {
-        List<WorkRequirement> workRequirements = null;
+        List<WorkRequirement> workRequirements;
         
         try {
             String query = null;
@@ -983,9 +983,9 @@ public class WorkRequirementControl
         List<WorkRequirementTransfer> workRequirementTransfers = new ArrayList<>(workRequirements.size());
         WorkRequirementTransferCache workRequirementTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache();
         
-        workRequirements.stream().forEach((workRequirement) -> {
-            workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(workRequirement));
-        });
+        workRequirements.forEach((workRequirement) ->
+                workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(workRequirement))
+        );
         
         return workRequirementTransfers;
     }
@@ -1041,17 +1041,17 @@ public class WorkRequirementControl
     public void deleteWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope, BasePK deletedBy) {
         List<WorkRequirement> workRequirements = getWorkRequirementsByWorkRequirementScopeForUpdate(workRequirementScope);
         
-        workRequirements.stream().forEach((workRequirement) -> {
-            deleteWorkRequirement(workRequirement, deletedBy);
-        });
+        workRequirements.forEach((workRequirement) -> 
+                deleteWorkRequirement(workRequirement, deletedBy)
+        );
     }
     
     public void deleteWorkRequirementsByWorkEffort(WorkEffort workEffort, BasePK deletedBy) {
         List<WorkRequirement> workRequirements = getWorkRequirementsByWorkEffortForUpdate(workEffort);
         
-        workRequirements.stream().forEach((workRequirement) -> {
-            deleteWorkRequirement(workRequirement, deletedBy);
-        });
+        workRequirements.forEach((workRequirement) -> 
+                deleteWorkRequirement(workRequirement, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1289,9 +1289,9 @@ public class WorkRequirementControl
         List<WorkAssignmentTransfer> workAssignmentTransfers = new ArrayList<>(workAssignments.size());
         WorkAssignmentTransferCache workAssignmentTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache();
 
-        workAssignments.stream().forEach((workAssignment) -> {
-            workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(workAssignment));
-        });
+        workAssignments.forEach((workAssignment) ->
+                workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(workAssignment))
+        );
 
         return workAssignmentTransfers;
     }
@@ -1340,9 +1340,9 @@ public class WorkRequirementControl
     }
 
     public void deleteWorkAssignments(List<WorkAssignment> workAssignments, BasePK deletedBy) {
-        workAssignments.stream().forEach((workAssignment) -> {
-            deleteWorkAssignment(workAssignment, deletedBy);
-        });
+        workAssignments.forEach((workAssignment) -> 
+                deleteWorkAssignment(workAssignment, deletedBy)
+        );
     }
 
     public void deleteWorkAssignmentsByWorkRequirement(WorkRequirement workRequirement, BasePK deletedBy) {
@@ -1540,9 +1540,9 @@ public class WorkRequirementControl
         List<WorkTimeTransfer> workTimeTransfers = new ArrayList<>(workTimes.size());
         WorkTimeTransferCache workTimeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache();
 
-        workTimes.stream().forEach((workTime) -> {
-            workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(workTime));
-        });
+        workTimes.forEach((workTime) ->
+                workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(workTime))
+        );
 
         return workTimeTransfers;
     }
@@ -1589,9 +1589,9 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkTimes(List<WorkTime> workTimes, BasePK deletedBy) {
-        workTimes.stream().forEach((workTime) -> {
-            deleteWorkTime(workTime, deletedBy);
-        });
+        workTimes.forEach((workTime) -> 
+                deleteWorkTime(workTime, deletedBy)
+        );
     }
     
     public void deleteWorkTimesByWorkRequirement(WorkRequirement workRequirement, BasePK deletedBy) {

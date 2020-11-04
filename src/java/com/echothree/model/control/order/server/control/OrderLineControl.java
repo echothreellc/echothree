@@ -187,7 +187,7 @@ public class OrderLineControl
     }
     
     private List<OrderLine> getOrderLinesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -225,7 +225,7 @@ public class OrderLineControl
     }
     
     private List<OrderLine> getOrderLinesByOrderShipmentGroup(OrderShipmentGroup orderShipmentGroup, EntityPermission entityPermission) {
-        List<OrderLine> orderLines = null;
+        List<OrderLine> orderLines;
         
         try {
             String query = null;
@@ -312,9 +312,9 @@ public class OrderLineControl
     }
     
     public void deleteOrderLinesByOrder(List<OrderLine> orderLines, BasePK deletedBy) {
-        orderLines.stream().forEach((orderLine) -> {
-            deleteOrderLine(orderLine, deletedBy);
-        });
+        orderLines.forEach((orderLine) -> 
+                deleteOrderLine(orderLine, deletedBy)
+        );
     }
     
     public void deleteOrderLinesByOrder(Order order, BasePK deletedBy) {

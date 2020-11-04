@@ -160,6 +160,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class FilterControl
         extends BaseModelControl {
@@ -365,7 +366,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFilterKindChoice == null? false: defaultFilterKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterKindChoice != null && defaultFilterKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -382,9 +383,9 @@ public class FilterControl
         List<FilterKindTransfer> filterKindTransfers = new ArrayList<>(filterKinds.size());
         FilterKindTransferCache filterKindTransferCache = getFilterTransferCaches(userVisit).getFilterKindTransferCache();
 
-        filterKinds.stream().forEach((filterKind) -> {
-            filterKindTransfers.add(filterKindTransferCache.getFilterKindTransfer(filterKind));
-        });
+        filterKinds.forEach((filterKind) ->
+                filterKindTransfers.add(filterKindTransferCache.getFilterKindTransfer(filterKind))
+        );
 
         return filterKindTransfers;
     }
@@ -454,7 +455,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilterKind = iter.next();
                 }
-                FilterKindDetailValue filterKindDetailValue = defaultFilterKind.getLastDetailForUpdate().getFilterKindDetailValue().clone();
+                FilterKindDetailValue filterKindDetailValue = Objects.requireNonNull(defaultFilterKind).getLastDetailForUpdate().getFilterKindDetailValue().clone();
 
                 filterKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterKindFromValue(filterKindDetailValue, false, deletedBy);
@@ -608,9 +609,9 @@ public class FilterControl
     public void deleteFilterKindDescriptionsByFilterKind(FilterKind filterKind, BasePK deletedBy) {
         List<FilterKindDescription> filterKindDescriptions = getFilterKindDescriptionsByFilterKindForUpdate(filterKind);
 
-        filterKindDescriptions.stream().forEach((filterKindDescription) -> {
-            deleteFilterKindDescription(filterKindDescription, deletedBy);
-        });
+        filterKindDescriptions.forEach((filterKindDescription) -> 
+                deleteFilterKindDescription(filterKindDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -778,7 +779,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFilterTypeChoice == null? false: defaultFilterTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterTypeChoice != null && defaultFilterTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -796,9 +797,9 @@ public class FilterControl
         List<FilterTypeTransfer> filterTypeTransfers = new ArrayList<>(filterTypes.size());
         FilterTypeTransferCache filterTypeTransferCache = getFilterTransferCaches(userVisit).getFilterTypeTransferCache();
 
-        filterTypes.stream().forEach((filterType) -> {
-            filterTypeTransfers.add(filterTypeTransferCache.getFilterTypeTransfer(filterType));
-        });
+        filterTypes.forEach((filterType) ->
+                filterTypeTransfers.add(filterTypeTransferCache.getFilterTypeTransfer(filterType))
+        );
 
         return filterTypeTransfers;
     }
@@ -869,7 +870,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilterType = iter.next();
                 }
-                FilterTypeDetailValue filterTypeDetailValue = defaultFilterType.getLastDetailForUpdate().getFilterTypeDetailValue().clone();
+                FilterTypeDetailValue filterTypeDetailValue = Objects.requireNonNull(defaultFilterType).getLastDetailForUpdate().getFilterTypeDetailValue().clone();
 
                 filterTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterTypeFromValue(filterTypeDetailValue, false, deletedBy);
@@ -882,9 +883,9 @@ public class FilterControl
     public void deleteFilterTypesByFilterKind(FilterKind filterKind, BasePK deletedBy) {
         List<FilterType> filterTypes = getFilterTypesForUpdate(filterKind);
 
-        filterTypes.stream().forEach((filterType) -> {
-            deleteFilterType(filterType, deletedBy);
-        });
+        filterTypes.forEach((filterType) -> 
+                deleteFilterType(filterType, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1031,9 +1032,9 @@ public class FilterControl
     public void deleteFilterTypeDescriptionsByFilterType(FilterType filterType, BasePK deletedBy) {
         List<FilterTypeDescription> filterTypeDescriptions = getFilterTypeDescriptionsByFilterTypeForUpdate(filterType);
 
-        filterTypeDescriptions.stream().forEach((filterTypeDescription) -> {
-            deleteFilterTypeDescription(filterTypeDescription, deletedBy);
-        });
+        filterTypeDescriptions.forEach((filterTypeDescription) -> 
+                deleteFilterTypeDescription(filterTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1309,7 +1310,7 @@ public class FilterControl
     }
     
     private List<FilterAdjustment> getFilterAdjustmentsByFilterKind(FilterKind filterKind, EntityPermission entityPermission) {
-        List<FilterAdjustment> filterAdjustments = null;
+        List<FilterAdjustment> filterAdjustments;
         
         try {
             String query = null;
@@ -1446,9 +1447,9 @@ public class FilterControl
         List<FilterAdjustmentTransfer> filterAdjustmentTransfers = new ArrayList<>(filterAdjustments.size());
         FilterAdjustmentTransferCache filterAdjustmentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
         
-        filterAdjustments.stream().forEach((filterAdjustment) -> {
-            filterAdjustmentTransfers.add(filterAdjustmentTransferCache.getFilterAdjustmentTransfer(filterAdjustment));
-        });
+        filterAdjustments.forEach((filterAdjustment) ->
+                filterAdjustmentTransfers.add(filterAdjustmentTransferCache.getFilterAdjustmentTransfer(filterAdjustment))
+        );
         
         return filterAdjustmentTransfers;
     }
@@ -1477,7 +1478,7 @@ public class FilterControl
                 labels.add(label == null? value: label);
                 values.add(value);
                 
-                boolean usingDefaultChoice = defaultFilterAdjustmentChoice == null? false: defaultFilterAdjustmentChoice.equals(value);
+                var usingDefaultChoice = Objects.equals(defaultFilterAdjustmentChoice, value);
                 if(usingDefaultChoice || defaultValue == null)
                     defaultValue = value;
             }
@@ -1558,7 +1559,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilterAdjustment = iter.next();
                 }
-                FilterAdjustmentDetailValue filterAdjustmentDetailValue = defaultFilterAdjustment.getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
+                FilterAdjustmentDetailValue filterAdjustmentDetailValue = Objects.requireNonNull(defaultFilterAdjustment).getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
                 
                 filterAdjustmentDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, false, deletedBy);
@@ -1585,7 +1586,7 @@ public class FilterControl
     
     private List<FilterAdjustmentAmount> getFilterAdjustmentAmounts(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentAmount> filterAdjustmentAmounts = null;
+        List<FilterAdjustmentAmount> filterAdjustmentAmounts;
         
         try {
             String query = null;
@@ -1696,9 +1697,9 @@ public class FilterControl
         List<FilterAdjustmentAmountTransfer> filterAdjustmentAmountTransfers = new ArrayList<>(filterAdjustmentAmounts.size());
         FilterAdjustmentAmountTransferCache filterAdjustmentAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache();
         
-        filterAdjustmentAmounts.stream().forEach((filterAdjustmentAmount) -> {
-            filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getFilterAdjustmentAmountTransfer(filterAdjustmentAmount));
-        });
+        filterAdjustmentAmounts.forEach((filterAdjustmentAmount) ->
+                filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getFilterAdjustmentAmountTransfer(filterAdjustmentAmount))
+        );
         
         return filterAdjustmentAmountTransfers;
     }
@@ -1734,9 +1735,9 @@ public class FilterControl
     public void deleteFilterAdjustmentAmountsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentAmount> filterAdjustmentAmounts = getFilterAdjustmentAmountsForUpdate(filterAdjustment);
         
-        filterAdjustmentAmounts.stream().forEach((deleteFilterAdjustmentAmount) -> {
-            deleteFilterAdjustmentAmount(deleteFilterAdjustmentAmount, deletedBy);
-        });
+        filterAdjustmentAmounts.forEach((deleteFilterAdjustmentAmount) -> 
+                deleteFilterAdjustmentAmount(deleteFilterAdjustmentAmount, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1756,7 +1757,7 @@ public class FilterControl
     
     private List<FilterAdjustmentFixedAmount> getFilterAdjustmentFixedAmounts(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts = null;
+        List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts;
         
         try {
             String query = null;
@@ -1870,9 +1871,9 @@ public class FilterControl
         List<FilterAdjustmentFixedAmountTransfer> filterAdjustmentFixedAmountTransfers = new ArrayList<>(filterAdjustmentFixedAmounts.size());
         FilterAdjustmentFixedAmountTransferCache filterAdjustmentFixedAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentFixedAmountTransferCache();
         
-        filterAdjustmentFixedAmounts.stream().forEach((filterAdjustmentFixedAmount) -> {
-            filterAdjustmentFixedAmountTransfers.add(filterAdjustmentFixedAmountTransferCache.getFilterAdjustmentFixedAmountTransfer(filterAdjustmentFixedAmount));
-        });
+        filterAdjustmentFixedAmounts.forEach((filterAdjustmentFixedAmount) ->
+                filterAdjustmentFixedAmountTransfers.add(filterAdjustmentFixedAmountTransferCache.getFilterAdjustmentFixedAmountTransfer(filterAdjustmentFixedAmount))
+        );
         
         return filterAdjustmentFixedAmountTransfers;
     }
@@ -1909,9 +1910,9 @@ public class FilterControl
     public void deleteFilterAdjustmentFixedAmountsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts = getFilterAdjustmentFixedAmountsForUpdate(filterAdjustment);
         
-        filterAdjustmentFixedAmounts.stream().forEach((filterAdjustmentFixedAmount) -> {
-            deleteFilterAdjustmentFixedAmount(filterAdjustmentFixedAmount, deletedBy);
-        });
+        filterAdjustmentFixedAmounts.forEach((filterAdjustmentFixedAmount) -> 
+                deleteFilterAdjustmentFixedAmount(filterAdjustmentFixedAmount, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1931,7 +1932,7 @@ public class FilterControl
     
     private List<FilterAdjustmentPercent> getFilterAdjustmentPercents(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentPercent> filterAdjustmentPercents = null;
+        List<FilterAdjustmentPercent> filterAdjustmentPercents;
         
         try {
             String query = null;
@@ -2044,9 +2045,9 @@ public class FilterControl
         List<FilterAdjustmentPercentTransfer> filterAdjustmentPercentTransfers = new ArrayList<>(filterAdjustmentPercents.size());
         FilterAdjustmentPercentTransferCache filterAdjustmentPercentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentPercentTransferCache();
         
-        filterAdjustmentPercents.stream().forEach((filterAdjustmentPercent) -> {
-            filterAdjustmentPercentTransfers.add(filterAdjustmentPercentTransferCache.getFilterAdjustmentPercentTransfer(filterAdjustmentPercent));
-        });
+        filterAdjustmentPercents.forEach((filterAdjustmentPercent) ->
+                filterAdjustmentPercentTransfers.add(filterAdjustmentPercentTransferCache.getFilterAdjustmentPercentTransfer(filterAdjustmentPercent))
+        );
         
         return filterAdjustmentPercentTransfers;
     }
@@ -2082,9 +2083,9 @@ public class FilterControl
     public void deleteFilterAdjustmentPercentsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentPercent> filterAdjustmentPercents = getFilterAdjustmentPercentsForUpdate(filterAdjustment);
         
-        filterAdjustmentPercents.stream().forEach((filterAdjustmentPercent) -> {
-            deleteFilterAdjustmentPercent(filterAdjustmentPercent, deletedBy);
-        });
+        filterAdjustmentPercents.forEach((filterAdjustmentPercent) -> 
+                deleteFilterAdjustmentPercent(filterAdjustmentPercent, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2159,7 +2160,7 @@ public class FilterControl
     
     private List<FilterAdjustmentDescription> getFilterAdjustmentDescriptions(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
-        List<FilterAdjustmentDescription> filterAdjustmentDescriptions = null;
+        List<FilterAdjustmentDescription> filterAdjustmentDescriptions;
         
         try {
             String query = null;
@@ -2225,9 +2226,9 @@ public class FilterControl
         List<FilterAdjustmentDescriptionTransfer> filterAdjustmentDescriptionTransfers = new ArrayList<>(filterAdjustmentDescriptions.size());
         FilterAdjustmentDescriptionTransferCache filterAdjustmentDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentDescriptionTransferCache();
         
-        filterAdjustmentDescriptions.stream().forEach((filterAdjustmentDescription) -> {
-            filterAdjustmentDescriptionTransfers.add(filterAdjustmentDescriptionTransferCache.getFilterAdjustmentDescriptionTransfer(filterAdjustmentDescription));
-        });
+        filterAdjustmentDescriptions.forEach((filterAdjustmentDescription) ->
+                filterAdjustmentDescriptionTransfers.add(filterAdjustmentDescriptionTransferCache.getFilterAdjustmentDescriptionTransfer(filterAdjustmentDescription))
+        );
         
         return filterAdjustmentDescriptionTransfers;
     }
@@ -2263,9 +2264,9 @@ public class FilterControl
     public void deleteFilterAdjustmentDescriptionsByFilterAdjustment(FilterAdjustment filterAdjustment, BasePK deletedBy) {
         List<FilterAdjustmentDescription> filterAdjustmentDescriptions = getFilterAdjustmentDescriptionsForUpdate(filterAdjustment);
         
-        filterAdjustmentDescriptions.stream().forEach((filterAdjustmentDescription) -> {
-            deleteFilterAdjustmentDescription(filterAdjustmentDescription, deletedBy);
-        });
+        filterAdjustmentDescriptions.forEach((filterAdjustmentDescription) -> 
+                deleteFilterAdjustmentDescription(filterAdjustmentDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2302,7 +2303,7 @@ public class FilterControl
     }
     
     private List<Filter> getFilters(FilterType filterType, EntityPermission entityPermission) {
-        List<Filter> filters = null;
+        List<Filter> filters;
         
         try {
             PreparedStatement ps = FilterFactory.getInstance().prepareStatement(
@@ -2440,7 +2441,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterChoice == null? false: defaultFilterChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterChoice != null && defaultFilterChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2457,9 +2458,9 @@ public class FilterControl
         List<FilterTransfer> filterTransfers = new ArrayList<>(filters.size());
         FilterTransferCache filterTransferCache = getFilterTransferCaches(userVisit).getFilterTransferCache();
         
-        filters.stream().forEach((filter) -> {
-            filterTransfers.add(filterTransferCache.getFilterTransfer(filter));
-        });
+        filters.forEach((filter) ->
+                filterTransfers.add(filterTransferCache.getFilterTransfer(filter))
+        );
         
         return filterTransfers;
     }
@@ -2553,7 +2554,7 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilter = iter.next();
                 }
-                FilterDetailValue filterDetailValue = defaultFilter.getLastDetailForUpdate().getFilterDetailValue().clone();
+                FilterDetailValue filterDetailValue = Objects.requireNonNull(defaultFilter).getLastDetailForUpdate().getFilterDetailValue().clone();
                 
                 filterDetailValue.setIsDefault(Boolean.TRUE);
                 updateFilterFromValue(filterDetailValue, false, deletedBy);
@@ -2625,7 +2626,7 @@ public class FilterControl
     }
     
     private List<FilterDescription> getFilterDescriptions(Filter filter, EntityPermission entityPermission) {
-        List<FilterDescription> filterDescriptions = null;
+        List<FilterDescription> filterDescriptions;
         
         try {
             String query = null;
@@ -2689,9 +2690,9 @@ public class FilterControl
         List<FilterDescriptionTransfer> filterDescriptionTransfers = new ArrayList<>(filterDescriptions.size());
         FilterDescriptionTransferCache filterDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterDescriptionTransferCache();
         
-        filterDescriptions.stream().forEach((filterDescription) -> {
-            filterDescriptionTransfers.add(filterDescriptionTransferCache.getFilterDescriptionTransfer(filterDescription));
-        });
+        filterDescriptions.forEach((filterDescription) ->
+                filterDescriptionTransfers.add(filterDescriptionTransferCache.getFilterDescriptionTransfer(filterDescription))
+        );
         
         return filterDescriptionTransfers;
     }
@@ -2723,9 +2724,9 @@ public class FilterControl
     public void deleteFilterDescriptionsByFilter(Filter filter, BasePK deletedBy) {
         List<FilterDescription> filterDescriptions = getFilterDescriptionsForUpdate(filter);
         
-        filterDescriptions.stream().forEach((filterDescription) -> {
-            deleteFilterDescription(filterDescription, deletedBy);
-        });
+        filterDescriptions.forEach((filterDescription) -> 
+                deleteFilterDescription(filterDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2797,7 +2798,7 @@ public class FilterControl
     }
     
     private List<FilterStep> getFilterStepsByFilter(Filter filter, EntityPermission entityPermission) {
-        List<FilterStep> filterSteps = null;
+        List<FilterStep> filterSteps;
         
         try {
             String query = null;
@@ -2859,7 +2860,7 @@ public class FilterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterStepChoice == null? false: defaultFilterStepChoice.equals(value);
+            boolean usingDefaultChoice = defaultFilterStepChoice != null && defaultFilterStepChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -2872,9 +2873,9 @@ public class FilterControl
         List<FilterStepTransfer> filterStepTransfers = new ArrayList<>(filterSteps.size());
         FilterStepTransferCache filterStepTransferCache = getFilterTransferCaches(userVisit).getFilterStepTransferCache();
         
-        filterSteps.stream().forEach((filterStep) -> {
-            filterStepTransfers.add(filterStepTransferCache.getFilterStepTransfer(filterStep));
-        });
+        filterSteps.forEach((filterStep) ->
+                filterStepTransfers.add(filterStepTransferCache.getFilterStepTransfer(filterStep))
+        );
         
         return filterStepTransfers;
     }
@@ -2930,9 +2931,9 @@ public class FilterControl
     public void deleteFilterStepsByFilter(Filter filter, BasePK deletedBy) {
         List<FilterStep> filterSteps = getFilterStepsByFilterForUpdate(filter);
         
-        filterSteps.stream().forEach((filterStep) -> {
-            deleteFilterStep(filterStep, deletedBy);
-        });
+        filterSteps.forEach((filterStep) -> 
+                deleteFilterStep(filterStep, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3000,7 +3001,7 @@ public class FilterControl
     }
     
     private List<FilterStepDescription> getFilterStepDescriptions(FilterStep filterStep, EntityPermission entityPermission) {
-        List<FilterStepDescription> filterStepDescriptions = null;
+        List<FilterStepDescription> filterStepDescriptions;
         
         try {
             String query = null;
@@ -3064,9 +3065,9 @@ public class FilterControl
         List<FilterStepDescriptionTransfer> filterStepDescriptionTransfers = new ArrayList<>(filterStepDescriptions.size());
         FilterStepDescriptionTransferCache filterStepDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepDescriptionTransferCache();
         
-        filterStepDescriptions.stream().forEach((filterStepDescription) -> {
-            filterStepDescriptionTransfers.add(filterStepDescriptionTransferCache.getFilterStepDescriptionTransfer(filterStepDescription));
-        });
+        filterStepDescriptions.forEach((filterStepDescription) ->
+                filterStepDescriptionTransfers.add(filterStepDescriptionTransferCache.getFilterStepDescriptionTransfer(filterStepDescription))
+        );
         
         return filterStepDescriptionTransfers;
     }
@@ -3102,9 +3103,9 @@ public class FilterControl
     public void deleteFilterStepDescriptionsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
         List<FilterStepDescription> filterStepDescriptions = getFilterStepDescriptionsForUpdate(filterStep);
         
-        filterStepDescriptions.stream().forEach((filterStepDescription) -> {
-            deleteFilterStepDescription(filterStepDescription, deletedBy);
-        });
+        filterStepDescriptions.forEach((filterStepDescription) -> 
+                deleteFilterStepDescription(filterStepDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3160,7 +3161,7 @@ public class FilterControl
     }
     
     private List<FilterEntranceStep> getFilterEntranceStepsByFilter(Filter filter, EntityPermission entityPermission) {
-        List<FilterEntranceStep> filterEntranceSteps = null;
+        List<FilterEntranceStep> filterEntranceSteps;
         
         try {
             String query = null;
@@ -3203,7 +3204,7 @@ public class FilterControl
     }
     
     private List<FilterEntranceStep> getFilterEntranceStepsByFilterStep(FilterStep filterStep, EntityPermission entityPermission) {
-        List<FilterEntranceStep> filterEntranceSteps = null;
+        List<FilterEntranceStep> filterEntranceSteps;
         
         try {
             String query = null;
@@ -3249,9 +3250,9 @@ public class FilterControl
         List<FilterEntranceStepTransfer> filterEntranceStepTransfers = new ArrayList<>(filterEntranceSteps.size());
         FilterEntranceStepTransferCache filterEntranceStepTransferCache = getFilterTransferCaches(userVisit).getFilterEntranceStepTransferCache();
         
-        filterEntranceSteps.stream().forEach((filterEntranceStep) -> {
-            filterEntranceStepTransfers.add(filterEntranceStepTransferCache.getFilterEntranceStepTransfer(filterEntranceStep));
-        });
+        filterEntranceSteps.forEach((filterEntranceStep) ->
+                filterEntranceStepTransfers.add(filterEntranceStepTransferCache.getFilterEntranceStepTransfer(filterEntranceStep))
+        );
         
         return filterEntranceStepTransfers;
     }
@@ -3274,9 +3275,9 @@ public class FilterControl
     public void deleteFilterEntranceStepsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
         List<FilterEntranceStep> filterEntranceSteps = getFilterEntranceStepsByFilterStepForUpdate(filterStep);
         
-        filterEntranceSteps.stream().forEach((filterEntranceStep) -> {
-            deleteFilterEntranceStep(filterEntranceStep, deletedBy);
-        });
+        filterEntranceSteps.forEach((filterEntranceStep) -> 
+                deleteFilterEntranceStep(filterEntranceStep, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3334,7 +3335,7 @@ public class FilterControl
     }
     
     private List<FilterStepDestination> getFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep, EntityPermission entityPermission) {
-        List<FilterStepDestination> filterStepDestinations = null;
+        List<FilterStepDestination> filterStepDestinations;
         
         try {
             String query = null;
@@ -3377,7 +3378,7 @@ public class FilterControl
     }
     
     private List<FilterStepDestination> getFilterStepDestinationsByToFilterStep(FilterStep toFilterStep, EntityPermission entityPermission) {
-        List<FilterStepDestination> filterStepDestinations = null;
+        List<FilterStepDestination> filterStepDestinations;
         
         try {
             String query = null;
@@ -3439,9 +3440,9 @@ public class FilterControl
         List<FilterStepDestinationTransfer> filterStepDestinationTransfers = new ArrayList<>(filterStepDestinations.size());
         FilterStepDestinationTransferCache filterStepDestinationTransferCache = getFilterTransferCaches(userVisit).getFilterStepDestinationTransferCache();
         
-        filterStepDestinations.stream().forEach((filterStepDestination) -> {
-            filterStepDestinationTransfers.add(filterStepDestinationTransferCache.getFilterStepDestinationTransfer(filterStepDestination));
-        });
+        filterStepDestinations.forEach((filterStepDestination) ->
+                filterStepDestinationTransfers.add(filterStepDestinationTransferCache.getFilterStepDestinationTransfer(filterStepDestination))
+        );
         
         return filterStepDestinationTransfers;
     }
@@ -3471,17 +3472,17 @@ public class FilterControl
     public void deleteFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep, BasePK deletedBy) {
         List<FilterStepDestination> filterStepDestinations = getFilterStepDestinationsByFromFilterStepForUpdate(fromFilterStep);
         
-        filterStepDestinations.stream().forEach((filterStepDestination) -> {
-            deleteFilterStepDestination(filterStepDestination, deletedBy);
-        });
+        filterStepDestinations.forEach((filterStepDestination) -> 
+                deleteFilterStepDestination(filterStepDestination, deletedBy)
+        );
     }
     
     public void deleteFilterStepDestinationsByToFilterStep(FilterStep toFilterStep, BasePK deletedBy) {
         List<FilterStepDestination> filterStepDestinations = getFilterStepDestinationsByToFilterStepForUpdate(toFilterStep);
         
-        filterStepDestinations.stream().forEach((filterStepDestination) -> {
-            deleteFilterStepDestination(filterStepDestination, deletedBy);
-        });
+        filterStepDestinations.forEach((filterStepDestination) -> 
+                deleteFilterStepDestination(filterStepDestination, deletedBy)
+        );
     }
     
     public void deleteFilterStepDestinationsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
@@ -3560,7 +3561,7 @@ public class FilterControl
     }
     
     private List<FilterStepElement> getFilterStepElementsByFilterStep(FilterStep filterStep, EntityPermission entityPermission) {
-        List<FilterStepElement> filterStepElements = null;
+        List<FilterStepElement> filterStepElements;
         
         try {
             String query = null;
@@ -3601,9 +3602,9 @@ public class FilterControl
         List<FilterStepElementTransfer> filterStepElementTransfers = new ArrayList<>(filterStepElements.size());
         FilterStepElementTransferCache filterStepElementTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementTransferCache();
         
-        filterStepElements.stream().forEach((filterStepElement) -> {
-            filterStepElementTransfers.add(filterStepElementTransferCache.getFilterStepElementTransfer(filterStepElement));
-        });
+        filterStepElements.forEach((filterStepElement) ->
+                filterStepElementTransfers.add(filterStepElementTransferCache.getFilterStepElementTransfer(filterStepElement))
+        );
         
         return filterStepElementTransfers;
     }
@@ -3675,9 +3676,9 @@ public class FilterControl
     public void deleteFilterStepElementsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
         List<FilterStepElement> filterStepElements = getFilterStepElementsByFilterStepForUpdate(filterStep);
         
-        filterStepElements.stream().forEach((filterStepElement) -> {
-            deleteFilterStepElement(filterStepElement, deletedBy);
-        });
+        filterStepElements.forEach((filterStepElement) -> 
+                deleteFilterStepElement(filterStepElement, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3747,7 +3748,7 @@ public class FilterControl
     }
     
     private List<FilterStepElementDescription> getFilterStepElementDescriptions(FilterStepElement filterStepElement, EntityPermission entityPermission) {
-        List<FilterStepElementDescription> filterStepElementDescriptions = null;
+        List<FilterStepElementDescription> filterStepElementDescriptions;
         
         try {
             String query = null;
@@ -3811,9 +3812,9 @@ public class FilterControl
         List<FilterStepElementDescriptionTransfer> filterStepElementDescriptionTransfers = new ArrayList<>(filterStepElementDescriptions.size());
         FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementDescriptionTransferCache();
         
-        filterStepElementDescriptions.stream().forEach((filterStepElementDescription) -> {
-            filterStepElementDescriptionTransfers.add(filterStepElementDescriptionTransferCache.getFilterStepElementDescriptionTransfer(filterStepElementDescription));
-        });
+        filterStepElementDescriptions.forEach((filterStepElementDescription) ->
+                filterStepElementDescriptionTransfers.add(filterStepElementDescriptionTransferCache.getFilterStepElementDescriptionTransfer(filterStepElementDescription))
+        );
         
         return filterStepElementDescriptionTransfers;
     }
@@ -3846,9 +3847,9 @@ public class FilterControl
     public void deleteFilterStepElementDescriptionsByFilterStepElement(FilterStepElement filterStepElement, BasePK deletedBy) {
         List<FilterStepElementDescription> filterStepElementDescriptions = getFilterStepElementDescriptionsForUpdate(filterStepElement);
         
-        filterStepElementDescriptions.stream().forEach((filterStepElementDescription) -> {
-            deleteFilterStepElementDescription(filterStepElementDescription, deletedBy);
-        });
+        filterStepElementDescriptions.forEach((filterStepElementDescription) -> 
+                deleteFilterStepElementDescription(filterStepElementDescription, deletedBy)
+        );
     }
     
 }

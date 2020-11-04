@@ -194,6 +194,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ContactControl
         extends BaseModelControl {
@@ -274,7 +275,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContactMechanismTypeChoice == null? false: defaultContactMechanismTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactMechanismTypeChoice != null && defaultContactMechanismTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactMechanismType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -292,9 +293,9 @@ public class ContactControl
         List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(entities.size());
         ContactMechanismTypeTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismTypeTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(cache.getContactMechanismTypeTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(cache.getContactMechanismTypeTransfer(entity))
+        );
         
         return transfers;
     }
@@ -532,9 +533,9 @@ public class ContactControl
         List<ContactMechanismAliasTypeTransfer> contactMechanismAliasTypeTransfers = new ArrayList<>(contactMechanismAliasTypes.size());
         ContactMechanismAliasTypeTransferCache contactMechanismAliasTypeTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache();
 
-        contactMechanismAliasTypes.stream().forEach((contactMechanismAliasType) -> {
-            contactMechanismAliasTypeTransfers.add(contactMechanismAliasTypeTransferCache.getContactMechanismAliasTypeTransfer(contactMechanismAliasType));
-        });
+        contactMechanismAliasTypes.forEach((contactMechanismAliasType) ->
+                contactMechanismAliasTypeTransfers.add(contactMechanismAliasTypeTransferCache.getContactMechanismAliasTypeTransfer(contactMechanismAliasType))
+        );
 
         return contactMechanismAliasTypeTransfers;
     }
@@ -573,7 +574,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactMechanismAliasTypeChoice == null? false: defaultContactMechanismAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactMechanismAliasTypeChoice != null && defaultContactMechanismAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactMechanismAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -647,7 +648,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultContactMechanismAliasType = iter.next();
                 }
-                ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = defaultContactMechanismAliasType.getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
+                ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = Objects.requireNonNull(defaultContactMechanismAliasType).getLastDetailForUpdate().getContactMechanismAliasTypeDetailValue().clone();
 
                 contactMechanismAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateContactMechanismAliasTypeFromValue(contactMechanismAliasTypeDetailValue, false, deletedBy);
@@ -769,9 +770,9 @@ public class ContactControl
         List<ContactMechanismAliasTypeDescriptionTransfer> contactMechanismAliasTypeDescriptionTransfers = new ArrayList<>(contactMechanismAliasTypeDescriptions.size());
         ContactMechanismAliasTypeDescriptionTransferCache contactMechanismAliasTypeDescriptionTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeDescriptionTransferCache();
 
-        contactMechanismAliasTypeDescriptions.stream().forEach((contactMechanismAliasTypeDescription) -> {
-            contactMechanismAliasTypeDescriptionTransfers.add(contactMechanismAliasTypeDescriptionTransferCache.getContactMechanismAliasTypeDescriptionTransfer(contactMechanismAliasTypeDescription));
-        });
+        contactMechanismAliasTypeDescriptions.forEach((contactMechanismAliasTypeDescription) ->
+                contactMechanismAliasTypeDescriptionTransfers.add(contactMechanismAliasTypeDescriptionTransferCache.getContactMechanismAliasTypeDescriptionTransfer(contactMechanismAliasTypeDescription))
+        );
 
         return contactMechanismAliasTypeDescriptionTransfers;
     }
@@ -805,9 +806,9 @@ public class ContactControl
     public void deleteContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(ContactMechanismAliasType contactMechanismAliasType, BasePK deletedBy) {
         List<ContactMechanismAliasTypeDescription> contactMechanismAliasTypeDescriptions = getContactMechanismAliasTypeDescriptionsByContactMechanismAliasTypeForUpdate(contactMechanismAliasType);
 
-        contactMechanismAliasTypeDescriptions.stream().forEach((contactMechanismAliasTypeDescription) -> {
-            deleteContactMechanismAliasTypeDescription(contactMechanismAliasTypeDescription, deletedBy);
-        });
+        contactMechanismAliasTypeDescriptions.forEach((contactMechanismAliasTypeDescription) -> 
+                deleteContactMechanismAliasTypeDescription(contactMechanismAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -849,7 +850,7 @@ public class ContactControl
     }
     
     public List<ContactMechanismPurpose> getContactMechanismPurposesByContactMechanismType(ContactMechanismType contactMechanismType) {
-        List<ContactMechanismPurpose> contactMechanismPurposes = null;
+        List<ContactMechanismPurpose> contactMechanismPurposes;
         
         try {
             PreparedStatement ps = ContactMechanismPurposeFactory.getInstance().prepareStatement(
@@ -921,7 +922,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContactMechanismPurposeChoice == null? false: defaultContactMechanismPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactMechanismPurposeChoice != null && defaultContactMechanismPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactMechanismPurpose.getIsDefault())) {
                 defaultValue = value;
             }
@@ -958,7 +959,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice == null? false: defaultContactListContactMechanismPurposeChoice.equals(value);
+            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice != null && defaultContactListContactMechanismPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListContactMechanismPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -975,9 +976,9 @@ public class ContactControl
         List<ContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
         ContactMechanismPurposeTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(cache.getContactMechanismPurposeTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(cache.getContactMechanismPurposeTransfer(entity))
+        );
         
         return transfers;
     }
@@ -1475,9 +1476,9 @@ public class ContactControl
         List<ContactMechanismAliasTransfer> transfers = new ArrayList<>(entities.size());
         ContactMechanismAliasTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismAliasTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(cache.getContactMechanismAliasTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(cache.getContactMechanismAliasTransfer(entity))
+        );
         
         return transfers;
     }
@@ -1489,9 +1490,9 @@ public class ContactControl
     }
     
     public void deleteContactMechanismAliases(List<ContactMechanismAlias> contactMechanismAliases, BasePK deletedBy) {
-        contactMechanismAliases.stream().forEach((contactMechanismAlias) -> {
-            deleteContactMechanismAlias(contactMechanismAlias, deletedBy);
-        });
+        contactMechanismAliases.forEach((contactMechanismAlias) -> 
+                deleteContactMechanismAlias(contactMechanismAlias, deletedBy)
+        );
     }
 
     public void deleteContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
@@ -2376,7 +2377,7 @@ public class ContactControl
     }
     
     private List<PartyContactMechanism> getPartyContactMechanismsByParty(Party party, EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism = null;
+        List<PartyContactMechanism> partyContactMechanism;
         
         try {
             String query = null;
@@ -2417,7 +2418,7 @@ public class ContactControl
     
     private List<PartyContactMechanism> getPartyContactMechanismsByPartyAndContactMechanismType(Party party,
             ContactMechanismType contactMechanismType, EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism = null;
+        List<PartyContactMechanism> partyContactMechanism;
         
         try {
             String query = null;
@@ -2461,7 +2462,7 @@ public class ContactControl
     
     private List<PartyContactMechanism> getPartyContactMechanismsByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanism> partyContactMechanism = null;
+        List<PartyContactMechanism> partyContactMechanism;
         
         try {
             String query = null;
@@ -2588,9 +2589,9 @@ public class ContactControl
         List<PartyContactMechanismTransfer> transfers = new ArrayList<>(entities.size());
         PartyContactMechanismTransferCache cache = getContactTransferCaches(userVisit).getPartyContactMechanismTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(cache.getPartyContactMechanismTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(cache.getPartyContactMechanismTransfer(entity))
+        );
         
         return transfers;
     }
@@ -2681,7 +2682,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultPartyContactMechanism = iter.next();
                 }
-                PartyContactMechanismDetailValue partyContactMechanismDetailValue = defaultPartyContactMechanism.getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
+                PartyContactMechanismDetailValue partyContactMechanismDetailValue = Objects.requireNonNull(defaultPartyContactMechanism).getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
                 
                 partyContactMechanismDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, false, deletedBy);
@@ -2694,17 +2695,17 @@ public class ContactControl
     public void deletePartyContactMechanismsByParty(Party party, BasePK deletedBy) {
         List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByPartyForUpdate(party);
         
-        partyContactMechanisms.stream().forEach((partyContactMechanism) -> {
-            deletePartyContactMechanism(partyContactMechanism, deletedBy);
-        });
+        partyContactMechanisms.forEach((partyContactMechanism) -> 
+                deletePartyContactMechanism(partyContactMechanism, deletedBy)
+        );
     }
     
     public void deletePartyContactMechanismsByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
         List<PartyContactMechanism> partyContactMechanisms = getPartyContactMechanismsByContactMechanismForUpdate(contactMechanism);
         
-        partyContactMechanisms.stream().forEach((partyContactMechanism) -> {
-            deletePartyContactMechanism(partyContactMechanism, deletedBy);
-        });
+        partyContactMechanisms.forEach((partyContactMechanism) -> 
+                deletePartyContactMechanism(partyContactMechanism, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2760,7 +2761,7 @@ public class ContactControl
     }
     
     public List<PartyContactMechanism> getPartyContactMechanismsByEmailAddress(String emailAddress) {
-        List<PartyContactMechanism> partyContactMechanisms = null;
+        List<PartyContactMechanism> partyContactMechanisms;
         
         try {
             PreparedStatement ps = PartyContactMechanismFactory.getInstance().prepareStatement(
@@ -2800,7 +2801,7 @@ public class ContactControl
     
     private List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByParty(Party party,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases = null;
+        List<PartyContactMechanismAlias> partyContactMechanismAliases;
         
         try {
             String query = null;
@@ -2840,7 +2841,7 @@ public class ContactControl
     
     private List<PartyContactMechanismAlias> getPartyContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismAlias> partyContactMechanismAliases = null;
+        List<PartyContactMechanismAlias> partyContactMechanismAliases;
         
         try {
             String query = null;
@@ -2939,17 +2940,17 @@ public class ContactControl
     public void deletePartyContactMechanismAliasesByParty(Party party, BasePK deletedBy) {
         List<PartyContactMechanismAlias> partyContactMechanismAliases = getPartyContactMechanismAliasesByParty(party);
         
-        partyContactMechanismAliases.stream().forEach((partyContactMechanismAlias) -> {
-            deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy);
-        });
+        partyContactMechanismAliases.forEach((partyContactMechanismAlias) -> 
+                deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy)
+        );
     }
     
     public void deletePartyContactMechanismAliasesByContactMechanism(ContactMechanism contactMechanism, BasePK deletedBy) {
         List<PartyContactMechanismAlias> partyContactMechanismAliases = getPartyContactMechanismAliasesByContactMechanismForUpdate(contactMechanism);
         
-        partyContactMechanismAliases.stream().forEach((partyContactMechanismAlias) -> {
-            deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy);
-        });
+        partyContactMechanismAliases.forEach((partyContactMechanismAlias) -> 
+                deletePartyContactMechanismAlias(partyContactMechanismAlias, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3101,7 +3102,7 @@ public class ContactControl
     
     private List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByContactMechanismPurposeAndParty(ContactMechanismPurpose contactMechanismPurpose,
             Party party, EntityPermission entityPermission) {
-        List<PartyContactMechanismPurpose> partyContactMechanismPurposes = null;
+        List<PartyContactMechanismPurpose> partyContactMechanismPurposes;
         
         try {
             PreparedStatement ps = PartyContactMechanismPurposeFactory.getInstance().prepareStatement(
@@ -3140,7 +3141,7 @@ public class ContactControl
     
     private List<PartyContactMechanismPurpose> getPartyContactMechanismPurposesByPartyContactMechanism(PartyContactMechanism partyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyContactMechanismPurpose> partyContactMechanismAliases = null;
+        List<PartyContactMechanismPurpose> partyContactMechanismAliases;
         
         try {
             String query = null;
@@ -3189,9 +3190,9 @@ public class ContactControl
         List<PartyContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
         PartyContactMechanismPurposeTransferCache cache = getContactTransferCaches(userVisit).getPartyContactMechanismPurposeTransferCache();
         
-        entities.stream().forEach((entity) -> {
-            transfers.add(cache.getPartyContactMechanismPurposeTransfer(entity));
-        });
+        entities.forEach((entity) ->
+                transfers.add(cache.getPartyContactMechanismPurposeTransfer(entity))
+        );
         
         return transfers;
     }
@@ -3261,7 +3262,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultPartyContactMechanismPurpose = iter.next();
                 }
-                PartyContactMechanismPurposeDetailValue partyContactMechanismPurposeDetailValue = defaultPartyContactMechanismPurpose.getLastDetailForUpdate().getPartyContactMechanismPurposeDetailValue().clone();
+                PartyContactMechanismPurposeDetailValue partyContactMechanismPurposeDetailValue = Objects.requireNonNull(defaultPartyContactMechanismPurpose).getLastDetailForUpdate().getPartyContactMechanismPurposeDetailValue().clone();
                 
                 partyContactMechanismPurposeDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyContactMechanismPurposeFromValue(partyContactMechanismPurposeDetailValue, false, deletedBy);
@@ -3275,9 +3276,9 @@ public class ContactControl
             BasePK deletedBy) {
         List<PartyContactMechanismPurpose> partyContactMechanismPurposes = getPartyContactMechanismPurposesByPartyContactMechanismForUpdate(partyContactMechanism);
         
-        partyContactMechanismPurposes.stream().forEach((partyContactMechanismPurpose) -> {
-            deletePartyContactMechanismPurpose(partyContactMechanismPurpose, deletedBy);
-        });
+        partyContactMechanismPurposes.forEach((partyContactMechanismPurpose) -> 
+                deletePartyContactMechanismPurpose(partyContactMechanismPurpose, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -3426,9 +3427,9 @@ public class ContactControl
         List<PartyContactMechanismRelationshipTransfer> partyContactMechanismRelationshipTransfers = new ArrayList<>(partyContactMechanismRelationships.size());
         PartyContactMechanismRelationshipTransferCache partyContactMechanismRelationshipTransferCache = getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache();
         
-        partyContactMechanismRelationships.stream().forEach((partyContactMechanismRelationship) -> {
-            partyContactMechanismRelationshipTransfers.add(partyContactMechanismRelationshipTransferCache.getPartyContactMechanismRelationshipTransfer(partyContactMechanismRelationship));
-        });
+        partyContactMechanismRelationships.forEach((partyContactMechanismRelationship) ->
+                partyContactMechanismRelationshipTransfers.add(partyContactMechanismRelationshipTransferCache.getPartyContactMechanismRelationshipTransfer(partyContactMechanismRelationship))
+        );
         
         return partyContactMechanismRelationshipTransfers;
     }
@@ -3449,9 +3450,9 @@ public class ContactControl
     }
 
     public void deletePartyContactMechanismRelationships(List<PartyContactMechanismRelationship> partyContactMechanismRelationships, BasePK deletedBy) {
-        partyContactMechanismRelationships.stream().forEach((partyContactMechanismRelationship) -> {
-            deletePartyContactMechanismRelationship(partyContactMechanismRelationship, deletedBy);
-        });
+        partyContactMechanismRelationships.forEach((partyContactMechanismRelationship) -> 
+                deletePartyContactMechanismRelationship(partyContactMechanismRelationship, deletedBy)
+        );
     }
 
     public void deletePartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism, BasePK deletedBy) {
@@ -3524,7 +3525,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPostalAddressElementTypeChoice == null? false: defaultPostalAddressElementTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultPostalAddressElementTypeChoice != null && defaultPostalAddressElementTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && postalAddressElementType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3747,7 +3748,7 @@ public class ContactControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPostalAddressFormatChoice == null? false: defaultPostalAddressFormatChoice.equals(value);
+            boolean usingDefaultChoice = defaultPostalAddressFormatChoice != null && defaultPostalAddressFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && postalAddressFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3765,9 +3766,9 @@ public class ContactControl
         List<PostalAddressFormatTransfer> postalAddressFormatTransfers = new ArrayList<>(postalAddressFormats.size());
         PostalAddressFormatTransferCache postalAddressFormatTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatTransferCache();
         
-        postalAddressFormats.stream().forEach((postalAddressFormat) -> {
-            postalAddressFormatTransfers.add(postalAddressFormatTransferCache.getPostalAddressFormatTransfer(postalAddressFormat));
-        });
+        postalAddressFormats.forEach((postalAddressFormat) ->
+                postalAddressFormatTransfers.add(postalAddressFormatTransferCache.getPostalAddressFormatTransfer(postalAddressFormat))
+        );
         
         return postalAddressFormatTransfers;
     }
@@ -3836,7 +3837,7 @@ public class ContactControl
                 if(iter.hasNext()) {
                     defaultPostalAddressFormat = iter.next();
                 }
-                PostalAddressFormatDetailValue postalAddressFormatDetailValue = defaultPostalAddressFormat.getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
+                PostalAddressFormatDetailValue postalAddressFormatDetailValue = Objects.requireNonNull(defaultPostalAddressFormat).getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
                 
                 postalAddressFormatDetailValue.setIsDefault(Boolean.TRUE);
                 updatePostalAddressFormatFromValue(postalAddressFormatDetailValue, false, deletedBy);
@@ -3908,7 +3909,7 @@ public class ContactControl
     }
     
     private List<PostalAddressFormatDescription> getPostalAddressFormatDescriptionsByPostalAddressFormat(PostalAddressFormat postalAddressFormat, EntityPermission entityPermission) {
-        List<PostalAddressFormatDescription> postalAddressFormatDescriptions = null;
+        List<PostalAddressFormatDescription> postalAddressFormatDescriptions;
         
         try {
             String query = null;
@@ -3972,9 +3973,9 @@ public class ContactControl
         List<PostalAddressFormatDescriptionTransfer> postalAddressFormatDescriptionTransfers = new ArrayList<>(postalAddressFormatDescriptions.size());
         PostalAddressFormatDescriptionTransferCache postalAddressFormatDescriptionTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatDescriptionTransferCache();
         
-        postalAddressFormatDescriptions.stream().forEach((postalAddressFormatDescription) -> {
-            postalAddressFormatDescriptionTransfers.add(postalAddressFormatDescriptionTransferCache.getPostalAddressFormatDescriptionTransfer(postalAddressFormatDescription));
-        });
+        postalAddressFormatDescriptions.forEach((postalAddressFormatDescription) ->
+                postalAddressFormatDescriptionTransfers.add(postalAddressFormatDescriptionTransferCache.getPostalAddressFormatDescriptionTransfer(postalAddressFormatDescription))
+        );
         
         return postalAddressFormatDescriptionTransfers;
     }
@@ -4007,9 +4008,9 @@ public class ContactControl
     public void deletePostalAddressFormatDescriptionsByPostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
         List<PostalAddressFormatDescription> postalAddressFormatDescriptions = getPostalAddressFormatDescriptionsByPostalAddressFormatForUpdate(postalAddressFormat);
         
-        postalAddressFormatDescriptions.stream().forEach((postalAddressFormatDescription) -> {
-            deletePostalAddressFormatDescription(postalAddressFormatDescription, deletedBy);
-        });
+        postalAddressFormatDescriptions.forEach((postalAddressFormatDescription) -> 
+                deletePostalAddressFormatDescription(postalAddressFormatDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4087,7 +4088,7 @@ public class ContactControl
     
     private List<PostalAddressLine> getPostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat,
             EntityPermission entityPermission) {
-        List<PostalAddressLine> postalAddressLines = null;
+        List<PostalAddressLine> postalAddressLines;
         
         try {
             String query = null;
@@ -4135,9 +4136,9 @@ public class ContactControl
         List<PostalAddressLineTransfer> postalAddressLineTransfers = new ArrayList<>(postalAddressLines.size());
         PostalAddressLineTransferCache postalAddressLineTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineTransferCache();
         
-        postalAddressLines.stream().forEach((postalAddressLine) -> {
-            postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(postalAddressLine));
-        });
+        postalAddressLines.forEach((postalAddressLine) ->
+                postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(postalAddressLine))
+        );
         
         return postalAddressLineTransfers;
     }
@@ -4185,9 +4186,9 @@ public class ContactControl
     public void deletePostalAddressLinesByPostalAddressFormat(PostalAddressFormat postalAddressFormat, BasePK deletedBy) {
         List<PostalAddressLine> postalAddressLines = getPostalAddressLinesByPostalAddressFormatForUpdate(postalAddressFormat);
         
-        postalAddressLines.stream().forEach((postalAddressLine) -> {
-            deletePostalAddressLine(postalAddressLine, deletedBy);
-        });
+        postalAddressLines.forEach((postalAddressLine) -> 
+                deletePostalAddressLine(postalAddressLine, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -4252,7 +4253,7 @@ public class ContactControl
     
     private List<PostalAddressLineElement> getPostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine,
             EntityPermission entityPermission) {
-        List<PostalAddressLineElement> postalAddressLineElements = null;
+        List<PostalAddressLineElement> postalAddressLineElements;
         
         try {
             PreparedStatement ps = PostalAddressLineElementFactory.getInstance().prepareStatement(
@@ -4290,9 +4291,9 @@ public class ContactControl
         List<PostalAddressLineElementTransfer> postalAddressLineElementTransfers = new ArrayList<>(postalAddressLineElements.size());
         PostalAddressLineElementTransferCache postalAddressLineElementTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineElementTransferCache();
         
-        postalAddressLineElements.stream().forEach((postalAddressLineElement) -> {
-            postalAddressLineElementTransfers.add(postalAddressLineElementTransferCache.getPostalAddressLineElementTransfer(postalAddressLineElement));
-        });
+        postalAddressLineElements.forEach((postalAddressLineElement) ->
+                postalAddressLineElementTransfers.add(postalAddressLineElementTransferCache.getPostalAddressLineElementTransfer(postalAddressLineElement))
+        );
         
         return postalAddressLineElementTransfers;
     }
@@ -4330,9 +4331,9 @@ public class ContactControl
     public void deletePostalAddressLineElementsByPostalAddressLine(PostalAddressLine postalAddressLine, BasePK deletedBy) {
         List<PostalAddressLineElement> postalAddressLineElements = getPostalAddressLineElementsByPostalAddressLineForUpdate(postalAddressLine);
         
-        postalAddressLineElements.stream().forEach((postalAddressLineElement) -> {
-            deletePostalAddressLineElement(postalAddressLineElement, deletedBy);
-        });
+        postalAddressLineElements.forEach((postalAddressLineElement) -> 
+                deletePostalAddressLineElement(postalAddressLineElement, deletedBy)
+        );
     }
     
 }

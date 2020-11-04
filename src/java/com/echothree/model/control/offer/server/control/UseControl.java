@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class UseControl
         extends BaseOfferControl {
@@ -305,7 +306,7 @@ public class UseControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultUseChoice == null? false: defaultUseChoice.equals(value);
+            boolean usingDefaultChoice = defaultUseChoice != null && defaultUseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && useDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -381,7 +382,7 @@ public class UseControl
                 if(iter.hasNext()) {
                     defaultUse = iter.next();
                 }
-                UseDetailValue useDetailValue = defaultUse.getLastDetailForUpdate().getUseDetailValue().clone();
+                UseDetailValue useDetailValue = Objects.requireNonNull(defaultUse).getLastDetailForUpdate().getUseDetailValue().clone();
 
                 useDetailValue.setIsDefault(Boolean.TRUE);
                 updateUseFromValue(useDetailValue, false, deletedBy);
@@ -392,9 +393,9 @@ public class UseControl
     }
 
     public void deleteUses(List<Use> uses, BasePK deletedBy) {
-        uses.stream().forEach((use) -> {
-            deleteUse(use, deletedBy);
-        });
+        uses.forEach((use) -> 
+                deleteUse(use, deletedBy)
+        );
     }
 
     public void deleteUsesByUseType(UseType useType, BasePK deletedBy) {
@@ -463,7 +464,7 @@ public class UseControl
     }
 
     private List<UseDescription> getUseDescriptionsByUse(Use use, EntityPermission entityPermission) {
-        List<UseDescription> useDescriptions = null;
+        List<UseDescription> useDescriptions;
 
         try {
             String query = null;
@@ -562,9 +563,9 @@ public class UseControl
     public void deleteUseDescriptionsByUse(Use use, BasePK deletedBy) {
         List<UseDescription> useDescriptions = getUseDescriptionsByUseForUpdate(use);
 
-        useDescriptions.stream().forEach((useDescription) -> {
-            deleteUseDescription(useDescription, deletedBy);
-        });
+        useDescriptions.forEach((useDescription) -> 
+                deleteUseDescription(useDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------

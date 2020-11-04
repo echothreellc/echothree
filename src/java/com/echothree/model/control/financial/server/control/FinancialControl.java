@@ -121,6 +121,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class FinancialControl
@@ -220,9 +221,9 @@ public class FinancialControl
         List<FinancialAccountRoleTypeTransfer> financialAccountRoleTypeTransfers = new ArrayList<>(financialAccountRoleTypes.size());
         FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTypeTransferCache();
         
-        financialAccountRoleTypes.stream().forEach((financialAccountRoleType) -> {
-            financialAccountRoleTypeTransfers.add(financialAccountRoleTypeTransferCache.getFinancialAccountRoleTypeTransfer(financialAccountRoleType));
-        });
+        financialAccountRoleTypes.forEach((financialAccountRoleType) ->
+                financialAccountRoleTypeTransfers.add(financialAccountRoleTypeTransferCache.getFinancialAccountRoleTypeTransfer(financialAccountRoleType))
+        );
 
             return financialAccountRoleTypeTransfers;
     }
@@ -469,9 +470,9 @@ public class FinancialControl
         List<FinancialAccountTypeTransfer> financialAccountTypeTransfers = new ArrayList<>(financialAccountTypes.size());
         FinancialAccountTypeTransferCache financialAccountTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeTransferCache();
         
-        financialAccountTypes.stream().forEach((financialAccountType) -> {
-            financialAccountTypeTransfers.add(financialAccountTypeTransferCache.getFinancialAccountTypeTransfer(financialAccountType));
-        });
+        financialAccountTypes.forEach((financialAccountType) ->
+                financialAccountTypeTransfers.add(financialAccountTypeTransferCache.getFinancialAccountTypeTransfer(financialAccountType))
+        );
         
         return financialAccountTypeTransfers;
     }
@@ -502,7 +503,7 @@ public class FinancialControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountTypeChoice == null? false: defaultFinancialAccountTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFinancialAccountTypeChoice != null && defaultFinancialAccountTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -609,7 +610,7 @@ public class FinancialControl
                     if(iter.hasNext()) {
                         defaultFinancialAccountType = iter.next();
                     }
-                    FinancialAccountTypeDetailValue financialAccountTypeDetailValue = defaultFinancialAccountType.getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
+                    FinancialAccountTypeDetailValue financialAccountTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountType).getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
 
                     financialAccountTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateFinancialAccountTypeFromValue(financialAccountTypeDetailValue, false, deletedBy);
@@ -625,9 +626,7 @@ public class FinancialControl
     }
 
     private void deleteFinancialAccountTypes(List<FinancialAccountType> financialAccountTypes, boolean checkDefault, BasePK deletedBy) {
-        financialAccountTypes.stream().forEach((financialAccountType) -> {
-            deleteFinancialAccountType(financialAccountType, checkDefault, deletedBy);
-        });
+        financialAccountTypes.forEach((financialAccountType) -> deleteFinancialAccountType(financialAccountType, checkDefault, deletedBy));
     }
 
     public void deleteFinancialAccountTypes(List<FinancialAccountType> financialAccountTypes, BasePK deletedBy) {
@@ -746,9 +745,9 @@ public class FinancialControl
         List<FinancialAccountTypeDescriptionTransfer> financialAccountTypeDescriptionTransfers = new ArrayList<>(financialAccountTypeDescriptions.size());
         FinancialAccountTypeDescriptionTransferCache financialAccountTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTypeDescriptionTransferCache();
         
-        financialAccountTypeDescriptions.stream().forEach((financialAccountTypeDescription) -> {
-            financialAccountTypeDescriptionTransfers.add(financialAccountTypeDescriptionTransferCache.getFinancialAccountTypeDescriptionTransfer(financialAccountTypeDescription));
-        });
+        financialAccountTypeDescriptions.forEach((financialAccountTypeDescription) ->
+                financialAccountTypeDescriptionTransfers.add(financialAccountTypeDescriptionTransferCache.getFinancialAccountTypeDescriptionTransfer(financialAccountTypeDescription))
+        );
         
         return financialAccountTypeDescriptionTransfers;
     }
@@ -782,9 +781,9 @@ public class FinancialControl
     public void deleteFinancialAccountTypeDescriptionsByFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
         List<FinancialAccountTypeDescription> financialAccountTypeDescriptions = getFinancialAccountTypeDescriptionsByFinancialAccountTypeForUpdate(financialAccountType);
         
-        financialAccountTypeDescriptions.stream().forEach((financialAccountTypeDescription) -> {
-            deleteFinancialAccountTypeDescription(financialAccountTypeDescription, deletedBy);
-        });
+        financialAccountTypeDescriptions.forEach((financialAccountTypeDescription) -> 
+                deleteFinancialAccountTypeDescription(financialAccountTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -983,9 +982,9 @@ public class FinancialControl
         List<FinancialAccountTransactionTypeTransfer> financialAccountTransactionTypeTransfers = new ArrayList<>(financialAccountTransactionTypes.size());
         FinancialAccountTransactionTypeTransferCache financialAccountTransactionTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeTransferCache();
         
-        financialAccountTransactionTypes.stream().forEach((financialAccountTransactionType) -> {
-            financialAccountTransactionTypeTransfers.add(financialAccountTransactionTypeTransferCache.getFinancialAccountTransactionTypeTransfer(financialAccountTransactionType));
-        });
+        financialAccountTransactionTypes.forEach((financialAccountTransactionType) ->
+                financialAccountTransactionTypeTransfers.add(financialAccountTransactionTypeTransferCache.getFinancialAccountTransactionTypeTransfer(financialAccountTransactionType))
+        );
         
         return financialAccountTransactionTypeTransfers;
     }
@@ -1016,7 +1015,7 @@ public class FinancialControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountTransactionTypeChoice == null? false: defaultFinancialAccountTransactionTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFinancialAccountTransactionTypeChoice != null && defaultFinancialAccountTransactionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountTransactionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1122,7 +1121,7 @@ public class FinancialControl
                     if(iter.hasNext()) {
                         defaultFinancialAccountTransactionType = iter.next();
                     }
-                    FinancialAccountTransactionTypeDetailValue financialAccountTransactionTypeDetailValue = defaultFinancialAccountTransactionType.getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
+                    FinancialAccountTransactionTypeDetailValue financialAccountTransactionTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountTransactionType).getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
 
                     financialAccountTransactionTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateFinancialAccountTransactionTypeFromValue(financialAccountTransactionTypeDetailValue, false, deletedBy);
@@ -1138,9 +1137,7 @@ public class FinancialControl
     }
 
     private void deleteFinancialAccountTransactionTypes(List<FinancialAccountTransactionType> financialAccountTransactionTypes, boolean checkDefault, BasePK deletedBy) {
-        financialAccountTransactionTypes.stream().forEach((financialAccountTransactionType) -> {
-            deleteFinancialAccountTransactionType(financialAccountTransactionType, checkDefault, deletedBy);
-        });
+        financialAccountTransactionTypes.forEach((financialAccountTransactionType) -> deleteFinancialAccountTransactionType(financialAccountTransactionType, checkDefault, deletedBy));
     }
 
     public void deleteFinancialAccountTransactionTypes(List<FinancialAccountTransactionType> financialAccountTransactionTypes, BasePK deletedBy) {
@@ -1267,9 +1264,9 @@ public class FinancialControl
         List<FinancialAccountTransactionTypeDescriptionTransfer> financialAccountTransactionTypeDescriptionTransfers = new ArrayList<>(financialAccountTransactionTypeDescriptions.size());
         FinancialAccountTransactionTypeDescriptionTransferCache financialAccountTransactionTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTypeDescriptionTransferCache();
         
-        financialAccountTransactionTypeDescriptions.stream().forEach((financialAccountTransactionTypeDescription) -> {
-            financialAccountTransactionTypeDescriptionTransfers.add(financialAccountTransactionTypeDescriptionTransferCache.getFinancialAccountTransactionTypeDescriptionTransfer(financialAccountTransactionTypeDescription));
-        });
+        financialAccountTransactionTypeDescriptions.forEach((financialAccountTransactionTypeDescription) ->
+                financialAccountTransactionTypeDescriptionTransfers.add(financialAccountTransactionTypeDescriptionTransferCache.getFinancialAccountTransactionTypeDescriptionTransfer(financialAccountTransactionTypeDescription))
+        );
         
         return financialAccountTransactionTypeDescriptionTransfers;
     }
@@ -1303,9 +1300,9 @@ public class FinancialControl
     public void deleteFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType, BasePK deletedBy) {
         List<FinancialAccountTransactionTypeDescription> financialAccountTransactionTypeDescriptions = getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeForUpdate(financialAccountTransactionType);
         
-        financialAccountTransactionTypeDescriptions.stream().forEach((financialAccountTransactionTypeDescription) -> {
-            deleteFinancialAccountTransactionTypeDescription(financialAccountTransactionTypeDescription, deletedBy);
-        });
+        financialAccountTransactionTypeDescriptions.forEach((financialAccountTransactionTypeDescription) -> 
+                deleteFinancialAccountTransactionTypeDescription(financialAccountTransactionTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1458,9 +1455,9 @@ public class FinancialControl
         List<FinancialAccountAliasTypeTransfer> financialAccountAliasTypeTransfers = new ArrayList<>(financialAccountAliasTypes.size());
         FinancialAccountAliasTypeTransferCache financialAccountAliasTypeTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeTransferCache();
         
-        financialAccountAliasTypes.stream().forEach((financialAccountAliasType) -> {
-            financialAccountAliasTypeTransfers.add(financialAccountAliasTypeTransferCache.getFinancialAccountAliasTypeTransfer(financialAccountAliasType));
-        });
+        financialAccountAliasTypes.forEach((financialAccountAliasType) ->
+                financialAccountAliasTypeTransfers.add(financialAccountAliasTypeTransferCache.getFinancialAccountAliasTypeTransfer(financialAccountAliasType))
+        );
         
         return financialAccountAliasTypeTransfers;
     }
@@ -1491,7 +1488,7 @@ public class FinancialControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountAliasTypeChoice == null? false: defaultFinancialAccountAliasTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultFinancialAccountAliasTypeChoice != null && defaultFinancialAccountAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1569,7 +1566,7 @@ public class FinancialControl
                 if(iter.hasNext()) {
                     defaultFinancialAccountAliasType = iter.next();
                 }
-                FinancialAccountAliasTypeDetailValue financialAccountAliasTypeDetailValue = defaultFinancialAccountAliasType.getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
+                FinancialAccountAliasTypeDetailValue financialAccountAliasTypeDetailValue = Objects.requireNonNull(defaultFinancialAccountAliasType).getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
                 
                 financialAccountAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateFinancialAccountAliasTypeFromValue(financialAccountAliasTypeDetailValue, false, deletedBy);
@@ -1580,9 +1577,9 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountAliasTypes(List<FinancialAccountAliasType> financialAccountAliasTypes, BasePK deletedBy) {
-        financialAccountAliasTypes.stream().forEach((financialAccountAliasType) -> {
-            deleteFinancialAccountAliasType(financialAccountAliasType, deletedBy);
-        });
+        financialAccountAliasTypes.forEach((financialAccountAliasType) -> 
+                deleteFinancialAccountAliasType(financialAccountAliasType, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountAliasTypesByFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
@@ -1704,9 +1701,9 @@ public class FinancialControl
         List<FinancialAccountAliasTypeDescriptionTransfer> financialAccountAliasTypeDescriptionTransfers = new ArrayList<>(financialAccountAliasTypeDescriptions.size());
         FinancialAccountAliasTypeDescriptionTransferCache financialAccountAliasTypeDescriptionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTypeDescriptionTransferCache();
         
-        financialAccountAliasTypeDescriptions.stream().forEach((financialAccountAliasTypeDescription) -> {
-            financialAccountAliasTypeDescriptionTransfers.add(financialAccountAliasTypeDescriptionTransferCache.getFinancialAccountAliasTypeDescriptionTransfer(financialAccountAliasTypeDescription));
-        });
+        financialAccountAliasTypeDescriptions.forEach((financialAccountAliasTypeDescription) ->
+                financialAccountAliasTypeDescriptionTransfers.add(financialAccountAliasTypeDescriptionTransferCache.getFinancialAccountAliasTypeDescriptionTransfer(financialAccountAliasTypeDescription))
+        );
         
         return financialAccountAliasTypeDescriptionTransfers;
     }
@@ -1741,9 +1738,9 @@ public class FinancialControl
     public void deleteFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType, BasePK deletedBy) {
         List<FinancialAccountAliasTypeDescription> financialAccountAliasTypeDescriptions = getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
         
-        financialAccountAliasTypeDescriptions.stream().forEach((financialAccountAliasTypeDescription) -> {
-            deleteFinancialAccountAliasTypeDescription(financialAccountAliasTypeDescription, deletedBy);
-        });
+        financialAccountAliasTypeDescriptions.forEach((financialAccountAliasTypeDescription) -> 
+                deleteFinancialAccountAliasTypeDescription(financialAccountAliasTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1850,9 +1847,9 @@ public class FinancialControl
         List<FinancialAccountRoleTransfer> financialAccountRoleTransfers = new ArrayList<>(financialAccountRoles.size());
         FinancialAccountRoleTransferCache financialAccountRoleTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTransferCache();
         
-        financialAccountRoles.stream().forEach((financialAccountRole) -> {
-            financialAccountRoleTransfers.add(financialAccountRoleTransferCache.getFinancialAccountRoleTransfer(financialAccountRole));
-        });
+        financialAccountRoles.forEach((financialAccountRole) ->
+                financialAccountRoleTransfers.add(financialAccountRoleTransferCache.getFinancialAccountRoleTransfer(financialAccountRole))
+        );
         
         return financialAccountRoleTransfers;
     }
@@ -2029,9 +2026,9 @@ public class FinancialControl
         List<FinancialAccountTransfer> financialAccountTransfers = new ArrayList<>(financialAccounts.size());
         FinancialAccountTransferCache financialAccountTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransferCache();
         
-        financialAccounts.stream().forEach((financialAccount) -> {
-            financialAccountTransfers.add(financialAccountTransferCache.getFinancialAccountTransfer(financialAccount));
-        });
+        financialAccounts.forEach((financialAccount) ->
+                financialAccountTransfers.add(financialAccountTransferCache.getFinancialAccountTransfer(financialAccount))
+        );
         
         return financialAccountTransfers;
     }
@@ -2079,9 +2076,9 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccounts(List<FinancialAccount> financialAccounts, BasePK deletedBy) {
-        financialAccounts.stream().forEach((financialAccount) -> {
-            deleteFinancialAccount(financialAccount, deletedBy);
-        });
+        financialAccounts.forEach((financialAccount) -> 
+                deleteFinancialAccount(financialAccount, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountsByFinancialAccountType(FinancialAccountType financialAccountType, BasePK deletedBy) {
@@ -2266,9 +2263,9 @@ public class FinancialControl
         List<FinancialAccountAliasTransfer> financialAccountAliasTransfers = new ArrayList<>(financialaccountaliases.size());
         FinancialAccountAliasTransferCache financialAccountAliasTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountAliasTransferCache();
         
-        financialaccountaliases.stream().forEach((financialAccountAlias) -> {
-            financialAccountAliasTransfers.add(financialAccountAliasTransferCache.getFinancialAccountAliasTransfer(financialAccountAlias));
-        });
+        financialaccountaliases.forEach((financialAccountAlias) ->
+                financialAccountAliasTransfers.add(financialAccountAliasTransferCache.getFinancialAccountAliasTransfer(financialAccountAlias))
+        );
         
         return financialAccountAliasTransfers;
     }
@@ -2302,17 +2299,17 @@ public class FinancialControl
     public void deleteFinancialAccountAliasesByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType, BasePK deletedBy) {
         List<FinancialAccountAlias> financialaccountaliases = getFinancialAccountAliasesByFinancialAccountAliasTypeForUpdate(financialAccountAliasType);
         
-        financialaccountaliases.stream().forEach((financialAccountAlias) -> {
-            deleteFinancialAccountAlias(financialAccountAlias, deletedBy);
-        });
+        financialaccountaliases.forEach((financialAccountAlias) -> 
+                deleteFinancialAccountAlias(financialAccountAlias, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountAliasesByFinancialAccount(FinancialAccount financialAccount, BasePK deletedBy) {
         List<FinancialAccountAlias> financialaccountaliases = getFinancialAccountAliasesByFinancialAccountForUpdate(financialAccount);
         
-        financialaccountaliases.stream().forEach((financialAccountAlias) -> {
-            deleteFinancialAccountAlias(financialAccountAlias, deletedBy);
-        });
+        financialaccountaliases.forEach((financialAccountAlias) -> 
+                deleteFinancialAccountAlias(financialAccountAlias, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2446,9 +2443,9 @@ public class FinancialControl
         List<FinancialAccountTransactionTransfer> financialAccountTransactionTransfers = new ArrayList<>(financialAccountTransactions.size());
         FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountTransactionTransferCache();
         
-        financialAccountTransactions.stream().forEach((financialAccountTransaction) -> {
-            financialAccountTransactionTransfers.add(financialAccountTransactionTransferCache.getFinancialAccountTransactionTransfer(financialAccountTransaction));
-        });
+        financialAccountTransactions.forEach((financialAccountTransaction) ->
+                financialAccountTransactionTransfers.add(financialAccountTransactionTransferCache.getFinancialAccountTransactionTransfer(financialAccountTransaction))
+        );
         
         return financialAccountTransactionTransfers;
     }
@@ -2490,9 +2487,9 @@ public class FinancialControl
     }
     
     public void deleteFinancialAccountTransactions(List<FinancialAccountTransaction> financialAccountTransactions, BasePK deletedBy) {
-        financialAccountTransactions.stream().forEach((financialAccountTransaction) -> {
-            deleteFinancialAccountTransaction(financialAccountTransaction, deletedBy);
-        });
+        financialAccountTransactions.forEach((financialAccountTransaction) -> 
+                deleteFinancialAccountTransaction(financialAccountTransaction, deletedBy)
+        );
     }
     
     public void deleteFinancialAccountTransactionsByFinancialAccount(FinancialAccount financialAccount, BasePK deletedBy) {

@@ -81,6 +81,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ScaleControl
         extends BaseModelControl {
@@ -250,9 +251,9 @@ public class ScaleControl
         List<ScaleTypeTransfer> scaleTypeTransfers = new ArrayList<>(scaleTypes.size());
         ScaleTypeTransferCache scaleTypeTransferCache = getScaleTransferCaches(userVisit).getScaleTypeTransferCache();
 
-        scaleTypes.stream().forEach((scaleType) -> {
-            scaleTypeTransfers.add(scaleTypeTransferCache.getScaleTypeTransfer(scaleType));
-        });
+        scaleTypes.forEach((scaleType) ->
+                scaleTypeTransfers.add(scaleTypeTransferCache.getScaleTypeTransfer(scaleType))
+        );
 
         return scaleTypeTransfers;
     }
@@ -286,7 +287,7 @@ public class ScaleControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleTypeChoice == null? false: defaultScaleTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultScaleTypeChoice != null && defaultScaleTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -359,7 +360,7 @@ public class ScaleControl
                 if(iter.hasNext()) {
                     defaultScaleType = iter.next();
                 }
-                ScaleTypeDetailValue scaleTypeDetailValue = defaultScaleType.getLastDetailForUpdate().getScaleTypeDetailValue().clone();
+                ScaleTypeDetailValue scaleTypeDetailValue = Objects.requireNonNull(defaultScaleType).getLastDetailForUpdate().getScaleTypeDetailValue().clone();
 
                 scaleTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateScaleTypeFromValue(scaleTypeDetailValue, false, deletedBy);
@@ -481,9 +482,9 @@ public class ScaleControl
         List<ScaleTypeDescriptionTransfer> scaleTypeDescriptionTransfers = new ArrayList<>(scaleTypeDescriptions.size());
         ScaleTypeDescriptionTransferCache scaleTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleTypeDescriptionTransferCache();
 
-        scaleTypeDescriptions.stream().forEach((scaleTypeDescription) -> {
-            scaleTypeDescriptionTransfers.add(scaleTypeDescriptionTransferCache.getScaleTypeDescriptionTransfer(scaleTypeDescription));
-        });
+        scaleTypeDescriptions.forEach((scaleTypeDescription) ->
+                scaleTypeDescriptionTransfers.add(scaleTypeDescriptionTransferCache.getScaleTypeDescriptionTransfer(scaleTypeDescription))
+        );
 
         return scaleTypeDescriptionTransfers;
     }
@@ -517,9 +518,9 @@ public class ScaleControl
     public void deleteScaleTypeDescriptionsByScaleType(ScaleType scaleType, BasePK deletedBy) {
         List<ScaleTypeDescription> scaleTypeDescriptions = getScaleTypeDescriptionsByScaleTypeForUpdate(scaleType);
 
-        scaleTypeDescriptions.stream().forEach((scaleTypeDescription) -> {
-            deleteScaleTypeDescription(scaleTypeDescription, deletedBy);
-        });
+        scaleTypeDescriptions.forEach((scaleTypeDescription) -> 
+                deleteScaleTypeDescription(scaleTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -736,9 +737,9 @@ public class ScaleControl
         List<ScaleTransfer> scaleTransfers = new ArrayList<>(scales.size());
         ScaleTransferCache scaleTransferCache = getScaleTransferCaches(userVisit).getScaleTransferCache();
 
-        scales.stream().forEach((scale) -> {
-            scaleTransfers.add(scaleTransferCache.getScaleTransfer(scale));
-        });
+        scales.forEach((scale) ->
+                scaleTransfers.add(scaleTransferCache.getScaleTransfer(scale))
+        );
 
         return scaleTransfers;
     }
@@ -772,7 +773,7 @@ public class ScaleControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleChoice == null? false: defaultScaleChoice.equals(value);
+            boolean usingDefaultChoice = defaultScaleChoice != null && defaultScaleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -850,7 +851,7 @@ public class ScaleControl
                     if(iter.hasNext()) {
                         defaultScale = iter.next();
                     }
-                    ScaleDetailValue scaleDetailValue = defaultScale.getLastDetailForUpdate().getScaleDetailValue().clone();
+                    ScaleDetailValue scaleDetailValue = Objects.requireNonNull(defaultScale).getLastDetailForUpdate().getScaleDetailValue().clone();
 
                     scaleDetailValue.setIsDefault(Boolean.TRUE);
                     updateScaleFromValue(scaleDetailValue, false, deletedBy);
@@ -866,9 +867,7 @@ public class ScaleControl
     }
 
     private void deleteScales(List<Scale> itemDescriptionTypes, boolean checkDefault, BasePK deletedBy) {
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
-            deleteScale(itemDescriptionType, checkDefault, deletedBy);
-        });
+        itemDescriptionTypes.forEach((itemDescriptionType) -> deleteScale(itemDescriptionType, checkDefault, deletedBy));
     }
 
     public void deleteScales(List<Scale> itemDescriptionTypes, BasePK deletedBy) {
@@ -995,9 +994,9 @@ public class ScaleControl
         List<ScaleDescriptionTransfer> scaleDescriptionTransfers = new ArrayList<>(scaleDescriptions.size());
         ScaleDescriptionTransferCache scaleDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleDescriptionTransferCache();
 
-        scaleDescriptions.stream().forEach((scaleDescription) -> {
-            scaleDescriptionTransfers.add(scaleDescriptionTransferCache.getScaleDescriptionTransfer(scaleDescription));
-        });
+        scaleDescriptions.forEach((scaleDescription) ->
+                scaleDescriptionTransfers.add(scaleDescriptionTransferCache.getScaleDescriptionTransfer(scaleDescription))
+        );
 
         return scaleDescriptionTransfers;
     }
@@ -1031,9 +1030,9 @@ public class ScaleControl
     public void deleteScaleDescriptionsByScale(Scale scale, BasePK deletedBy) {
         List<ScaleDescription> scaleDescriptions = getScaleDescriptionsByScaleForUpdate(scale);
 
-        scaleDescriptions.stream().forEach((scaleDescription) -> {
-            deleteScaleDescription(scaleDescription, deletedBy);
-        });
+        scaleDescriptions.forEach((scaleDescription) -> 
+                deleteScaleDescription(scaleDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1182,9 +1181,9 @@ public class ScaleControl
         List<ScaleUseTypeTransfer> scaleUseTypeTransfers = new ArrayList<>(scaleUseTypes.size());
         ScaleUseTypeTransferCache scaleUseTypeTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache();
 
-        scaleUseTypes.stream().forEach((scaleUseType) -> {
-            scaleUseTypeTransfers.add(scaleUseTypeTransferCache.getScaleUseTypeTransfer(scaleUseType));
-        });
+        scaleUseTypes.forEach((scaleUseType) ->
+                scaleUseTypeTransfers.add(scaleUseTypeTransferCache.getScaleUseTypeTransfer(scaleUseType))
+        );
 
         return scaleUseTypeTransfers;
     }
@@ -1218,7 +1217,7 @@ public class ScaleControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleUseTypeChoice == null? false: defaultScaleUseTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultScaleUseTypeChoice != null && defaultScaleUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1291,7 +1290,7 @@ public class ScaleControl
                 if(iter.hasNext()) {
                     defaultScaleUseType = iter.next();
                 }
-                ScaleUseTypeDetailValue scaleUseTypeDetailValue = defaultScaleUseType.getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
+                ScaleUseTypeDetailValue scaleUseTypeDetailValue = Objects.requireNonNull(defaultScaleUseType).getLastDetailForUpdate().getScaleUseTypeDetailValue().clone();
 
                 scaleUseTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateScaleUseTypeFromValue(scaleUseTypeDetailValue, false, deletedBy);
@@ -1413,9 +1412,9 @@ public class ScaleControl
         List<ScaleUseTypeDescriptionTransfer> scaleUseTypeDescriptionTransfers = new ArrayList<>(scaleUseTypeDescriptions.size());
         ScaleUseTypeDescriptionTransferCache scaleUseTypeDescriptionTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeDescriptionTransferCache();
 
-        scaleUseTypeDescriptions.stream().forEach((scaleUseTypeDescription) -> {
-            scaleUseTypeDescriptionTransfers.add(scaleUseTypeDescriptionTransferCache.getScaleUseTypeDescriptionTransfer(scaleUseTypeDescription));
-        });
+        scaleUseTypeDescriptions.forEach((scaleUseTypeDescription) ->
+                scaleUseTypeDescriptionTransfers.add(scaleUseTypeDescriptionTransferCache.getScaleUseTypeDescriptionTransfer(scaleUseTypeDescription))
+        );
 
         return scaleUseTypeDescriptionTransfers;
     }
@@ -1449,9 +1448,9 @@ public class ScaleControl
     public void deleteScaleUseTypeDescriptionsByScaleUseType(ScaleUseType scaleUseType, BasePK deletedBy) {
         List<ScaleUseTypeDescription> scaleUseTypeDescriptions = getScaleUseTypeDescriptionsByScaleUseTypeForUpdate(scaleUseType);
 
-        scaleUseTypeDescriptions.stream().forEach((scaleUseTypeDescription) -> {
-            deleteScaleUseTypeDescription(scaleUseTypeDescription, deletedBy);
-        });
+        scaleUseTypeDescriptions.forEach((scaleUseTypeDescription) -> 
+                deleteScaleUseTypeDescription(scaleUseTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1626,9 +1625,9 @@ public class ScaleControl
         List<PartyScaleUseTransfer> partyScaleUseTransfers = new ArrayList<>(partyScaleUses.size());
         PartyScaleUseTransferCache partyScaleUseTransferCache = getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache();
 
-        partyScaleUses.stream().forEach((partyScaleUse) -> {
-            partyScaleUseTransfers.add(partyScaleUseTransferCache.getPartyScaleUseTransfer(partyScaleUse));
-        });
+        partyScaleUses.forEach((partyScaleUse) ->
+                partyScaleUseTransfers.add(partyScaleUseTransferCache.getPartyScaleUseTransfer(partyScaleUse))
+        );
 
         return partyScaleUseTransfers;
     }
@@ -1663,9 +1662,9 @@ public class ScaleControl
     }
 
     public void deletePartyScaleUses(List<PartyScaleUse> partyScaleUses, BasePK deletedBy) {
-        partyScaleUses.stream().forEach((partyScaleUse) -> {
-            deletePartyScaleUse(partyScaleUse, deletedBy);
-        });
+        partyScaleUses.forEach((partyScaleUse) -> 
+                deletePartyScaleUse(partyScaleUse, deletedBy)
+        );
     }
 
     public void deletePartyScaleUsesByParty(Party party, BasePK deletedBy) {

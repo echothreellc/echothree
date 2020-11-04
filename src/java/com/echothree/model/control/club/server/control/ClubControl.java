@@ -64,6 +64,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class ClubControl
         extends BaseModelControl {
@@ -271,9 +272,9 @@ public class ClubControl
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
         ClubTransferCache clubTransferCache = getClubTransferCaches(userVisit).getClubTransferCache();
         
-        clubs.stream().forEach((club) -> {
-            clubTransfers.add(clubTransferCache.getClubTransfer(club));
-        });
+        clubs.forEach((club) ->
+                clubTransfers.add(clubTransferCache.getClubTransfer(club))
+        );
         
         return clubTransfers;
     }
@@ -344,7 +345,7 @@ public class ClubControl
                 if(iter.hasNext()) {
                     defaultClub = iter.next();
                 }
-                ClubDetailValue clubDetailValue = defaultClub.getLastDetailForUpdate().getClubDetailValue().clone();
+                ClubDetailValue clubDetailValue = Objects.requireNonNull(defaultClub).getLastDetailForUpdate().getClubDetailValue().clone();
                 
                 clubDetailValue.setIsDefault(Boolean.TRUE);
                 updateClubFromValue(clubDetailValue, false, deletedBy);
@@ -426,7 +427,7 @@ public class ClubControl
     
     private List<ClubDescription> getClubDescriptionsByClub(Club club,
             EntityPermission entityPermission) {
-        List<ClubDescription> clubDescriptions = null;
+        List<ClubDescription> clubDescriptions;
         
         try {
             String query = null;
@@ -492,9 +493,9 @@ public class ClubControl
         List<ClubDescriptionTransfer> clubDescriptionTransfers = new ArrayList<>(clubDescriptions.size());
         ClubDescriptionTransferCache clubDescriptionTransferCache = getClubTransferCaches(userVisit).getClubDescriptionTransferCache();
         
-        clubDescriptions.stream().forEach((clubDescription) -> {
-            clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(clubDescription));
-        });
+        clubDescriptions.forEach((clubDescription) ->
+                clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(clubDescription))
+        );
         
         return clubDescriptionTransfers;
     }
@@ -528,9 +529,9 @@ public class ClubControl
     public void deleteClubDescriptionsByClub(Club club, BasePK deletedBy) {
         List<ClubDescription> clubDescriptions = getClubDescriptionsByClubForUpdate(club);
         
-        clubDescriptions.stream().forEach((clubDescription) -> {
-            deleteClubDescription(clubDescription, deletedBy);
-        });
+        clubDescriptions.forEach((clubDescription) -> 
+                deleteClubDescription(clubDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -589,7 +590,7 @@ public class ClubControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultClubItemTypeChoice == null? false: defaultClubItemTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultClubItemTypeChoice != null && defaultClubItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && clubItemType.getIsDefault()))
                 defaultValue = value;
         }
@@ -606,9 +607,9 @@ public class ClubControl
         List<ClubItemTypeTransfer> clubItemTypeTransfers = new ArrayList<>(clubItemTypes.size());
         ClubItemTypeTransferCache clubItemTypeTransferCache = getClubTransferCaches(userVisit).getClubItemTypeTransferCache();
         
-        clubItemTypes.stream().forEach((clubItemType) -> {
-            clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(clubItemType));
-        });
+        clubItemTypes.forEach((clubItemType) ->
+                clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(clubItemType))
+        );
         
         return clubItemTypeTransfers;
     }
@@ -714,7 +715,7 @@ public class ClubControl
     }
     
     private List<ClubItem> getClubItemsByClub(Club club, EntityPermission entityPermission) {
-        List<ClubItem> clubItems = null;
+        List<ClubItem> clubItems;
         
         try {
             String query = null;
@@ -755,7 +756,7 @@ public class ClubControl
     }
     
     private List<ClubItem> getClubItemsByItem(Item item, EntityPermission entityPermission) {
-        List<ClubItem> clubItems = null;
+        List<ClubItem> clubItems;
         
         try {
             String query = null;
@@ -803,9 +804,9 @@ public class ClubControl
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
         ClubItemTransferCache clubItemTransferCache = getClubTransferCaches(userVisit).getClubItemTransferCache();
         
-        clubItems.stream().forEach((clubItem) -> {
-            clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(clubItem));
-        });
+        clubItems.forEach((clubItem) ->
+                clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(clubItem))
+        );
         
         return clubItemTransfers;
     }
@@ -846,9 +847,9 @@ public class ClubControl
     }
     
     private void deleteClubItems(List<ClubItem> clubItems, BasePK deletedBy) {
-        clubItems.stream().forEach((clubItem) -> {
-            deleteClubItem(clubItem, deletedBy);
-        });
+        clubItems.forEach((clubItem) -> 
+                deleteClubItem(clubItem, deletedBy)
+        );
     }
     
     public void deleteClubItemsByClub(Club club, BasePK deletedBy) {

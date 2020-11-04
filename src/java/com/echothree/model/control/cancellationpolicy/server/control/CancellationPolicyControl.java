@@ -110,6 +110,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CancellationPolicyControl
         extends BaseModelControl {
@@ -276,9 +277,9 @@ public class CancellationPolicyControl
         List<PartyCancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
         PartyCancellationPolicyTransferCache cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getPartyCancellationPolicyTransferCache();
 
-        cancellationPolicies.stream().forEach((cancellationPolicy) -> {
-            cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getPartyCancellationPolicyTransfer(cancellationPolicy));
-        });
+        cancellationPolicies.forEach((cancellationPolicy) ->
+                cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getPartyCancellationPolicyTransfer(cancellationPolicy))
+        );
 
         return cancellationPolicyTransfers;
     }
@@ -303,9 +304,9 @@ public class CancellationPolicyControl
     }
     
     public void deletePartyCancellationPoliciesByParty(List<PartyCancellationPolicy> partyCancellationPolicies, BasePK deletedBy) {
-        partyCancellationPolicies.stream().forEach((partyCancellationPolicy) -> {
-            deletePartyCancellationPolicy(partyCancellationPolicy, deletedBy);
-        });
+        partyCancellationPolicies.forEach((partyCancellationPolicy) -> 
+                deletePartyCancellationPolicy(partyCancellationPolicy, deletedBy)
+        );
     }
 
     public void deletePartyCancellationPoliciesByParty(Party party, BasePK deletedBy) {
@@ -479,7 +480,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationKindChoice == null? false: defaultCancellationKindChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationKindChoice != null && defaultCancellationKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -497,9 +498,9 @@ public class CancellationPolicyControl
         List<CancellationKindTransfer> cancellationKindTransfers = new ArrayList<>(cancellationKinds.size());
         CancellationKindTransferCache cancellationKindTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationKindTransferCache();
         
-        cancellationKinds.stream().forEach((cancellationKind) -> {
-            cancellationKindTransfers.add(cancellationKindTransferCache.getCancellationKindTransfer(cancellationKind));
-        });
+        cancellationKinds.forEach((cancellationKind) ->
+                cancellationKindTransfers.add(cancellationKindTransferCache.getCancellationKindTransfer(cancellationKind))
+        );
         
         return cancellationKindTransfers;
     }
@@ -566,7 +567,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationKind = iter.next();
                 }
-                CancellationKindDetailValue cancellationKindDetailValue = defaultCancellationKind.getLastDetailForUpdate().getCancellationKindDetailValue().clone();
+                CancellationKindDetailValue cancellationKindDetailValue = Objects.requireNonNull(defaultCancellationKind).getLastDetailForUpdate().getCancellationKindDetailValue().clone();
                 
                 cancellationKindDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationKindFromValue(cancellationKindDetailValue, false, deletedBy);
@@ -638,7 +639,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationKindDescription> getCancellationKindDescriptionsByCancellationKind(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationKindDescription> cancellationKindDescriptions = null;
+        List<CancellationKindDescription> cancellationKindDescriptions;
         
         try {
             String query = null;
@@ -737,9 +738,9 @@ public class CancellationPolicyControl
     public void deleteCancellationKindDescriptionsByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationKindDescription> cancellationKindDescriptions = getCancellationKindDescriptionsByCancellationKindForUpdate(cancellationKind);
         
-        cancellationKindDescriptions.stream().forEach((cancellationKindDescription) -> {
-            deleteCancellationKindDescription(cancellationKindDescription, deletedBy);
-        });
+        cancellationKindDescriptions.forEach((cancellationKindDescription) -> 
+                deleteCancellationKindDescription(cancellationKindDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -778,7 +779,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicy> getCancellationPolicies(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationPolicy> cancellationPolicies = null;
+        List<CancellationPolicy> cancellationPolicies;
         
         try {
             String query = null;
@@ -934,7 +935,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationPolicyChoice == null? false: defaultCancellationPolicyChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationPolicyChoice != null && defaultCancellationPolicyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationPolicyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -952,9 +953,9 @@ public class CancellationPolicyControl
         List<CancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
         CancellationPolicyTransferCache cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTransferCache();
         
-        cancellationPolicies.stream().forEach((cancellationPolicy) -> {
-            cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getCancellationPolicyTransfer(cancellationPolicy));
-        });
+        cancellationPolicies.forEach((cancellationPolicy) ->
+                cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getCancellationPolicyTransfer(cancellationPolicy))
+        );
         
         return cancellationPolicyTransfers;
     }
@@ -1027,7 +1028,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationPolicy = iter.next();
                 }
-                CancellationPolicyDetailValue cancellationPolicyDetailValue = defaultCancellationPolicy.getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
+                CancellationPolicyDetailValue cancellationPolicyDetailValue = Objects.requireNonNull(defaultCancellationPolicy).getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
                 
                 cancellationPolicyDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationPolicyFromValue(cancellationPolicyDetailValue, false, deletedBy);
@@ -1040,9 +1041,9 @@ public class CancellationPolicyControl
     public void deleteCancellationPoliciesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationPolicy> cancellationPolicies = getCancellationPoliciesForUpdate(cancellationKind);
         
-        cancellationPolicies.stream().forEach((cancellationPolicy) -> {
-            deleteCancellationPolicy(cancellationPolicy, deletedBy);
-        });
+        cancellationPolicies.forEach((cancellationPolicy) -> 
+                deleteCancellationPolicy(cancellationPolicy, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1148,9 +1149,9 @@ public class CancellationPolicyControl
         List<CancellationPolicyTranslationTransfer> cancellationPolicyTranslationTransfers = new ArrayList<>(cancellationPolicyTranslations.size());
         CancellationPolicyTranslationTransferCache cancellationPolicyTranslationTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTranslationTransferCache();
 
-        cancellationPolicyTranslations.stream().forEach((cancellationPolicyTranslation) -> {
-            cancellationPolicyTranslationTransfers.add(cancellationPolicyTranslationTransferCache.getCancellationPolicyTranslationTransfer(cancellationPolicyTranslation));
-        });
+        cancellationPolicyTranslations.forEach((cancellationPolicyTranslation) ->
+                cancellationPolicyTranslationTransfers.add(cancellationPolicyTranslationTransferCache.getCancellationPolicyTranslationTransfer(cancellationPolicyTranslation))
+        );
 
         return cancellationPolicyTranslationTransfers;
     }
@@ -1186,9 +1187,9 @@ public class CancellationPolicyControl
     public void deleteCancellationPolicyTranslationsByCancellationPolicy(CancellationPolicy cancellationPolicy, BasePK deletedBy) {
         List<CancellationPolicyTranslation> cancellationPolicyTranslations = getCancellationPolicyTranslationsByCancellationPolicyForUpdate(cancellationPolicy);
 
-        cancellationPolicyTranslations.stream().forEach((cancellationPolicyTranslation) -> {
-            deleteCancellationPolicyTranslation(cancellationPolicyTranslation, deletedBy);
-        });
+        cancellationPolicyTranslations.forEach((cancellationPolicyTranslation) -> 
+                deleteCancellationPolicyTranslation(cancellationPolicyTranslation, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1307,7 +1308,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationPolicy(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        List<CancellationPolicyReason> cancellationPolicyReasons = null;
+        List<CancellationPolicyReason> cancellationPolicyReasons;
         
         try {
             String query = null;
@@ -1347,7 +1348,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationPolicyReason> cancellationPolicyReasons = null;
+        List<CancellationPolicyReason> cancellationPolicyReasons;
         
         try {
             String query = null;
@@ -1390,9 +1391,9 @@ public class CancellationPolicyControl
         List<CancellationPolicyReasonTransfer> cancellationPolicyReasonTransfers = new ArrayList<>(cancellationPolicyReasons.size());
         CancellationPolicyReasonTransferCache cancellationPolicyReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyReasonTransferCache();
         
-        cancellationPolicyReasons.stream().forEach((cancellationPolicyReason) -> {
-            cancellationPolicyReasonTransfers.add(cancellationPolicyReasonTransferCache.getCancellationPolicyReasonTransfer(cancellationPolicyReason));
-        });
+        cancellationPolicyReasons.forEach((cancellationPolicyReason) ->
+                cancellationPolicyReasonTransfers.add(cancellationPolicyReasonTransferCache.getCancellationPolicyReasonTransfer(cancellationPolicyReason))
+        );
         
         return cancellationPolicyReasonTransfers;
     }
@@ -1476,9 +1477,9 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationPolicyReasons(List<CancellationPolicyReason> cancellationPolicyReasons, BasePK deletedBy) {
-        cancellationPolicyReasons.stream().forEach((cancellationPolicyReason) -> {
-            deleteCancellationPolicyReason(cancellationPolicyReason, deletedBy);
-        });
+        cancellationPolicyReasons.forEach((cancellationPolicyReason) -> 
+                deleteCancellationPolicyReason(cancellationPolicyReason, deletedBy)
+        );
     }
     
     public void deleteCancellationPolicyReasonsByCancellationPolicy(CancellationPolicy cancellationPolicy, BasePK deletedBy) {
@@ -1525,7 +1526,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReason> getCancellationReasons(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationReason> cancellationReasons = null;
+        List<CancellationReason> cancellationReasons;
         
         try {
             String query = null;
@@ -1678,7 +1679,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationReasonChoice == null? false: defaultCancellationReasonChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationReasonChoice != null && defaultCancellationReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1696,9 +1697,9 @@ public class CancellationPolicyControl
         List<CancellationReasonTransfer> cancellationReasonTransfers = new ArrayList<>(cancellationReasons.size());
         CancellationReasonTransferCache cancellationReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTransferCache();
         
-        cancellationReasons.stream().forEach((cancellationReason) -> {
-            cancellationReasonTransfers.add(cancellationReasonTransferCache.getCancellationReasonTransfer(cancellationReason));
-        });
+        cancellationReasons.forEach((cancellationReason) ->
+                cancellationReasonTransfers.add(cancellationReasonTransferCache.getCancellationReasonTransfer(cancellationReason))
+        );
         
         return cancellationReasonTransfers;
     }
@@ -1771,7 +1772,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationReason = iter.next();
                 }
-                CancellationReasonDetailValue cancellationReasonDetailValue = defaultCancellationReason.getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
+                CancellationReasonDetailValue cancellationReasonDetailValue = Objects.requireNonNull(defaultCancellationReason).getLastDetailForUpdate().getCancellationReasonDetailValue().clone();
                 
                 cancellationReasonDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationReasonFromValue(cancellationReasonDetailValue, false, deletedBy);
@@ -1784,9 +1785,9 @@ public class CancellationPolicyControl
     public void deleteCancellationReasonsByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationReason> cancellationReasons = getCancellationReasonsForUpdate(cancellationKind);
         
-        cancellationReasons.stream().forEach((cancellationReason) -> {
-            deleteCancellationReason(cancellationReason, deletedBy);
-        });
+        cancellationReasons.forEach((cancellationReason) -> 
+                deleteCancellationReason(cancellationReason, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1851,7 +1852,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonDescription> getCancellationReasonDescriptionsByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationReasonDescription> cancellationReasonDescriptions = null;
+        List<CancellationReasonDescription> cancellationReasonDescriptions;
         
         try {
             String query = null;
@@ -1950,9 +1951,9 @@ public class CancellationPolicyControl
     public void deleteCancellationReasonDescriptionsByCancellationReason(CancellationReason cancellationReason, BasePK deletedBy) {
         List<CancellationReasonDescription> cancellationReasonDescriptions = getCancellationReasonDescriptionsByCancellationReasonForUpdate(cancellationReason);
         
-        cancellationReasonDescriptions.stream().forEach((cancellationReasonDescription) -> {
-            deleteCancellationReasonDescription(cancellationReasonDescription, deletedBy);
-        });
+        cancellationReasonDescriptions.forEach((cancellationReasonDescription) -> 
+                deleteCancellationReasonDescription(cancellationReasonDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2071,7 +2072,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonType> getCancellationReasonTypesByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationReasonType> cancellationReasonTypes = null;
+        List<CancellationReasonType> cancellationReasonTypes;
         
         try {
             String query = null;
@@ -2112,7 +2113,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonType> getCancellationReasonTypesByCancellationType(CancellationType cancellationType, EntityPermission entityPermission) {
-        List<CancellationReasonType> cancellationReasonTypes = null;
+        List<CancellationReasonType> cancellationReasonTypes;
         
         try {
             String query = null;
@@ -2155,9 +2156,9 @@ public class CancellationPolicyControl
         List<CancellationReasonTypeTransfer> cancellationReasonTypeTransfers = new ArrayList<>(cancellationReasonTypes.size());
         CancellationReasonTypeTransferCache cancellationReasonTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTypeTransferCache();
         
-        cancellationReasonTypes.stream().forEach((cancellationReasonType) -> {
-            cancellationReasonTypeTransfers.add(cancellationReasonTypeTransferCache.getCancellationReasonTypeTransfer(cancellationReasonType));
-        });
+        cancellationReasonTypes.forEach((cancellationReasonType) ->
+                cancellationReasonTypeTransfers.add(cancellationReasonTypeTransferCache.getCancellationReasonTypeTransfer(cancellationReasonType))
+        );
         
         return cancellationReasonTypeTransfers;
     }
@@ -2241,9 +2242,9 @@ public class CancellationPolicyControl
     }
     
     public void deleteCancellationReasonTypes(List<CancellationReasonType> cancellationReasonTypes, BasePK deletedBy) {
-        cancellationReasonTypes.stream().forEach((cancellationReasonType) -> {
-            deleteCancellationReasonType(cancellationReasonType, deletedBy);
-        });
+        cancellationReasonTypes.forEach((cancellationReasonType) -> 
+                deleteCancellationReasonType(cancellationReasonType, deletedBy)
+        );
     }
     
     public void deleteCancellationReasonTypesByCancellationReason(CancellationReason cancellationReason, BasePK deletedBy) {
@@ -2290,7 +2291,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationType> getCancellationTypes(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationType> cancellationTypes = null;
+        List<CancellationType> cancellationTypes;
         
         try {
             String query = null;
@@ -2443,7 +2444,7 @@ public class CancellationPolicyControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationTypeChoice == null? false: defaultCancellationTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultCancellationTypeChoice != null && defaultCancellationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2461,9 +2462,9 @@ public class CancellationPolicyControl
         List<CancellationTypeTransfer> cancellationTypeTransfers = new ArrayList<>(cancellationTypes.size());
         CancellationTypeTransferCache cancellationTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationTypeTransferCache();
         
-        cancellationTypes.stream().forEach((cancellationType) -> {
-            cancellationTypeTransfers.add(cancellationTypeTransferCache.getCancellationTypeTransfer(cancellationType));
-        });
+        cancellationTypes.forEach((cancellationType) ->
+                cancellationTypeTransfers.add(cancellationTypeTransferCache.getCancellationTypeTransfer(cancellationType))
+        );
         
         return cancellationTypeTransfers;
     }
@@ -2536,7 +2537,7 @@ public class CancellationPolicyControl
                 if(iter.hasNext()) {
                     defaultCancellationType = iter.next();
                 }
-                CancellationTypeDetailValue cancellationTypeDetailValue = defaultCancellationType.getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
+                CancellationTypeDetailValue cancellationTypeDetailValue = Objects.requireNonNull(defaultCancellationType).getLastDetailForUpdate().getCancellationTypeDetailValue().clone();
                 
                 cancellationTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateCancellationTypeFromValue(cancellationTypeDetailValue, false, deletedBy);
@@ -2549,9 +2550,9 @@ public class CancellationPolicyControl
     public void deleteCancellationTypesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
         List<CancellationType> cancellationTypes = getCancellationTypesForUpdate(cancellationKind);
         
-        cancellationTypes.stream().forEach((cancellationType) -> {
-            deleteCancellationType(cancellationType, deletedBy);
-        });
+        cancellationTypes.forEach((cancellationType) -> 
+                deleteCancellationType(cancellationType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -2616,7 +2617,7 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationTypeDescription> getCancellationTypeDescriptionsByCancellationType(CancellationType cancellationType, EntityPermission entityPermission) {
-        List<CancellationTypeDescription> cancellationTypeDescriptions = null;
+        List<CancellationTypeDescription> cancellationTypeDescriptions;
         
         try {
             String query = null;
@@ -2715,9 +2716,9 @@ public class CancellationPolicyControl
     public void deleteCancellationTypeDescriptionsByCancellationType(CancellationType cancellationType, BasePK deletedBy) {
         List<CancellationTypeDescription> cancellationTypeDescriptions = getCancellationTypeDescriptionsByCancellationTypeForUpdate(cancellationType);
         
-        cancellationTypeDescriptions.stream().forEach((cancellationTypeDescription) -> {
-            deleteCancellationTypeDescription(cancellationTypeDescription, deletedBy);
-        });
+        cancellationTypeDescriptions.forEach((cancellationTypeDescription) -> 
+                deleteCancellationTypeDescription(cancellationTypeDescription, deletedBy)
+        );
     }
     
 }

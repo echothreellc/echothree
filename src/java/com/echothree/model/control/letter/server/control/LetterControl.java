@@ -86,6 +86,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class LetterControl
         extends BaseModelControl {
@@ -250,7 +251,7 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByEmailAddressPartyContactMechanism(PartyContactMechanism emailAddressPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources = null;
+        List<LetterSource> letterSources;
         
         try {
             String query = null;
@@ -289,7 +290,7 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByPostalAddressPartyContactMechanism(PartyContactMechanism postalAddressPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources = null;
+        List<LetterSource> letterSources;
         
         try {
             String query = null;
@@ -328,7 +329,7 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByLetterSourcePartyContactMechanism(PartyContactMechanism letterSourcePartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources = null;
+        List<LetterSource> letterSources;
         
         try {
             String query = null;
@@ -374,9 +375,9 @@ public class LetterControl
         List<LetterSourceTransfer> letterSourceTransfers = new ArrayList<>(letterSources.size());
         LetterSourceTransferCache letterSourceTransferCache = getLetterTransferCaches(userVisit).getLetterSourceTransferCache();
         
-        letterSources.stream().forEach((letterSource) -> {
-            letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(letterSource));
-        });
+        letterSources.forEach((letterSource) ->
+                letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(letterSource))
+        );
         
         return letterSourceTransfers;
     }
@@ -406,7 +407,7 @@ public class LetterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLetterSourceChoice == null? false: defaultLetterSourceChoice.equals(value);
+            boolean usingDefaultChoice = defaultLetterSourceChoice != null && defaultLetterSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && letterSourceDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -482,7 +483,7 @@ public class LetterControl
                 if(iter.hasNext()) {
                     defaultLetterSource = (LetterSource)iter.next();
                 }
-                LetterSourceDetailValue letterSourceDetailValue = defaultLetterSource.getLastDetailForUpdate().getLetterSourceDetailValue().clone();
+                LetterSourceDetailValue letterSourceDetailValue = Objects.requireNonNull(defaultLetterSource).getLastDetailForUpdate().getLetterSourceDetailValue().clone();
                 
                 letterSourceDetailValue.setIsDefault(Boolean.TRUE);
                 updateLetterSourceFromValue(letterSourceDetailValue, false, deletedBy);
@@ -493,9 +494,9 @@ public class LetterControl
     }
     
     public void deleteLetterSources(List<LetterSource> letterSources, BasePK deletedBy) {
-        letterSources.stream().forEach((letterSource) -> {
-            deleteLetterSource(letterSource, deletedBy);
-        });
+        letterSources.forEach((letterSource) -> 
+                deleteLetterSource(letterSource, deletedBy)
+        );
     }
     
     public void deleteLetterSourcesByEmailAddressPartyContactMechanism(PartyContactMechanism emailAddressPartyContactMechanism, BasePK deletedBy) {
@@ -579,7 +580,7 @@ public class LetterControl
     }
     
     private List<LetterSourceDescription> getLetterSourceDescriptionsByLetterSource(LetterSource letterSource, EntityPermission entityPermission) {
-        List<LetterSourceDescription> letterSourceDescriptions = null;
+        List<LetterSourceDescription> letterSourceDescriptions;
         
         try {
             String query = null;
@@ -683,9 +684,9 @@ public class LetterControl
     public void deleteLetterSourceDescriptionsByLetterSource(LetterSource letterSource, BasePK deletedBy) {
         List<LetterSourceDescription> letterSourceDescriptions = getLetterSourceDescriptionsByLetterSourceForUpdate(letterSource);
         
-        letterSourceDescriptions.stream().forEach((letterSourceDescription) -> {
-            deleteLetterSourceDescription(letterSourceDescription, deletedBy);
-        });
+        letterSourceDescriptions.forEach((letterSourceDescription) -> 
+                deleteLetterSourceDescription(letterSourceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -809,7 +810,7 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByChainType(ChainType chainType, EntityPermission entityPermission) {
-        List<Letter> letters = null;
+        List<Letter> letters;
         
         try {
             String query = null;
@@ -847,7 +848,7 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByLetterSource(LetterSource letterSource, EntityPermission entityPermission) {
-        List<Letter> letters = null;
+        List<Letter> letters;
         
         try {
             String query = null;
@@ -885,7 +886,7 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByContactList(ContactList contactList, EntityPermission entityPermission) {
-        List<Letter> letters = null;
+        List<Letter> letters;
         
         try {
             String query = null;
@@ -930,9 +931,9 @@ public class LetterControl
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
         LetterTransferCache letterTransferCache = getLetterTransferCaches(userVisit).getLetterTransferCache();
         
-        letters.stream().forEach((letter) -> {
-            letterTransfers.add(letterTransferCache.getLetterTransfer(letter));
-        });
+        letters.forEach((letter) ->
+                letterTransfers.add(letterTransferCache.getLetterTransfer(letter))
+        );
         
         return letterTransfers;
     }
@@ -970,7 +971,7 @@ public class LetterControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLetterChoice == null? false: defaultLetterChoice.equals(value);
+            boolean usingDefaultChoice = defaultLetterChoice != null && defaultLetterChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && letterDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -1046,7 +1047,7 @@ public class LetterControl
                 if(iter.hasNext()) {
                     defaultLetter = (Letter)iter.next();
                 }
-                LetterDetailValue letterDetailValue = defaultLetter.getLastDetailForUpdate().getLetterDetailValue().clone();
+                LetterDetailValue letterDetailValue = Objects.requireNonNull(defaultLetter).getLastDetailForUpdate().getLetterDetailValue().clone();
                 
                 letterDetailValue.setIsDefault(Boolean.TRUE);
                 updateLetterFromValue(letterDetailValue, false, deletedBy);
@@ -1057,9 +1058,9 @@ public class LetterControl
     }
     
     public void deleteLetters(List<Letter> letters, BasePK deletedBy) {
-        letters.stream().forEach((letter) -> {
-            deleteLetter(letter, deletedBy);
-        });
+        letters.forEach((letter) -> 
+                deleteLetter(letter, deletedBy)
+        );
     }
     
     public void deleteLettersByLetterSource(LetterSource letterSource, BasePK deletedBy) {
@@ -1133,7 +1134,7 @@ public class LetterControl
     }
     
     private List<LetterDescription> getLetterDescriptionsByLetter(Letter letter, EntityPermission entityPermission) {
-        List<LetterDescription> letterDescriptions = null;
+        List<LetterDescription> letterDescriptions;
         
         try {
             String query = null;
@@ -1237,9 +1238,9 @@ public class LetterControl
     public void deleteLetterDescriptionsByLetter(Letter letter, BasePK deletedBy) {
         List<LetterDescription> letterDescriptions = getLetterDescriptionsByLetterForUpdate(letter);
         
-        letterDescriptions.stream().forEach((letterDescription) -> {
-            deleteLetterDescription(letterDescription, deletedBy);
-        });
+        letterDescriptions.forEach((letterDescription) -> 
+                deleteLetterDescription(letterDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1316,7 +1317,7 @@ public class LetterControl
     
     private List<LetterContactMechanismPurpose> getLetterContactMechanismPurposesByLetter(Letter letter,
             EntityPermission entityPermission) {
-        List<LetterContactMechanismPurpose> letterContactMechanismPurposes = null;
+        List<LetterContactMechanismPurpose> letterContactMechanismPurposes;
         
         try {
             String query = null;
@@ -1364,9 +1365,9 @@ public class LetterControl
         List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposeTransfers = new ArrayList<>(letterContactMechanismPurposes.size());
         LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache = getLetterTransferCaches(userVisit).getLetterContactMechanismPurposeTransferCache();
         
-        letterContactMechanismPurposes.stream().forEach((letterContactMechanismPurpose) -> {
-            letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(letterContactMechanismPurpose));
-        });
+        letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) ->
+                letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(letterContactMechanismPurpose))
+        );
         
         return letterContactMechanismPurposeTransfers;
     }
@@ -1408,9 +1409,9 @@ public class LetterControl
     public void deleteLetterContactMechanismPurposesByLetter(Letter letter, BasePK deletedBy) {
         List<LetterContactMechanismPurpose> letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetterForUpdate(letter);
         
-        letterContactMechanismPurposes.stream().forEach((letterContactMechanismPurpose) -> {
-            deleteLetterContactMechanismPurpose(letterContactMechanismPurpose, deletedBy);
-        });
+        letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) -> 
+                deleteLetterContactMechanismPurpose(letterContactMechanismPurpose, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -1503,7 +1504,7 @@ public class LetterControl
     }
     
     private List<QueuedLetter> getQueuedLettersByChainInstance(ChainInstance chainInstance, EntityPermission entityPermission) {
-        List<QueuedLetter> queuedLetters = null;
+        List<QueuedLetter> queuedLetters;
         
         try {
             String query = null;
@@ -1541,7 +1542,7 @@ public class LetterControl
     }
     
     private List<QueuedLetter> getQueuedLettersByLetter(Letter letter, EntityPermission entityPermission) {
-        List<QueuedLetter> queuedLetters = null;
+        List<QueuedLetter> queuedLetters;
         
         try {
             String query = null;
@@ -1586,9 +1587,9 @@ public class LetterControl
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
         QueuedLetterTransferCache queuedLetterTransferCache = getLetterTransferCaches(userVisit).getQueuedLetterTransferCache();
 
-        queuedLetters.stream().forEach((queuedLetter) -> {
-            queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(queuedLetter));
-        });
+        queuedLetters.forEach((queuedLetter) ->
+                queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(queuedLetter))
+        );
 
         return queuedLetterTransfers;
     }

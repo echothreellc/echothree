@@ -23,21 +23,24 @@ import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeCh
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceEncoderTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceTypeChoicesBean;
+import com.echothree.model.control.sequence.common.transfer.SequenceChecksumTypeTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceDescriptionTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceEncoderTypeTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
+import com.echothree.model.control.sequence.server.transfer.SequenceChecksumTypeTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceDescriptionTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceEncoderTypeTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCaches;
 import com.echothree.model.control.sequence.server.transfer.SequenceTypeDescriptionTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.common.pk.SequenceChecksumTypePK;
-import com.echothree.model.data.sequence.common.pk.SequenceDetailPK;
 import com.echothree.model.data.sequence.common.pk.SequenceEncoderTypePK;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
-import com.echothree.model.data.sequence.common.pk.SequenceTypeDetailPK;
 import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
@@ -74,8 +77,10 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class SequenceControl
         extends BaseModelControl {
@@ -102,6 +107,7 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Types
     // --------------------------------------------------------------------------------
+    
     public SequenceType createSequenceType(String sequenceTypeName, String prefix, String suffix,
             SequenceEncoderType sequenceEncoderType, SequenceChecksumType sequenceChecksumType, Integer chunkSize, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -117,7 +123,7 @@ public class SequenceControl
             isDefault = Boolean.TRUE;
         }
         
-        SequenceType sequenceType = SequenceTypeFactory.getInstance().create((SequenceTypeDetailPK)null, (SequenceTypeDetailPK)null);
+        SequenceType sequenceType = SequenceTypeFactory.getInstance().create();
         SequenceTypeDetail sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceType,
                 sequenceTypeName, prefix, suffix, sequenceEncoderType, sequenceChecksumType, chunkSize, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -132,7 +138,30 @@ public class SequenceControl
         
         return sequenceType;
     }
-    
+
+    public long countSequenceTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM sequencetypes, sequencetypedetails " +
+                        "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SequenceType */
+    public SequenceType getSequenceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SequenceTypePK(entityInstance.getEntityUniqueId());
+        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return sequenceType;
+    }
+
+    public SequenceType getSequenceTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSequenceTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SequenceType getSequenceTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSequenceTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<SequenceType> getSequenceTypes(EntityPermission entityPermission) {
         String query = null;
         
@@ -335,7 +364,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceTypeChoice == null? false: defaultSequenceTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceTypeChoice != null && defaultSequenceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -347,19 +376,22 @@ public class SequenceControl
     public SequenceTypeTransfer getSequenceTypeTransfer(UserVisit userVisit, SequenceType sequenceType) {
         return getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache().getSequenceTypeTransfer(sequenceType);
     }
-    
-    public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit) {
-        List<SequenceType> sequenceTypes = getSequenceTypes();
+
+    public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit, Collection<SequenceType> sequenceTypes) {
         List<SequenceTypeTransfer> sequenceTypeTransfers = new ArrayList<>(sequenceTypes.size());
         SequenceTypeTransferCache sequenceTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
-        
-        sequenceTypes.stream().forEach((sequenceType) -> {
-            sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType));
-        });
-        
+
+        sequenceTypes.forEach((sequenceType) ->
+                sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType))
+        );
+
         return sequenceTypeTransfers;
     }
-    
+
+    public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit) {
+        return getSequenceTypeTransfers(userVisit, getSequenceTypes());
+    }
+
     private void updateSequenceTypeFromValue(SequenceTypeDetailValue sequenceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         SequenceType sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(session,
@@ -429,7 +461,7 @@ public class SequenceControl
                 if(iter.hasNext()) {
                     defaultSequenceType = iter.next();
                 }
-                SequenceTypeDetailValue sequenceTypeDetailValue = defaultSequenceType.getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
+                SequenceTypeDetailValue sequenceTypeDetailValue = Objects.requireNonNull(defaultSequenceType).getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
                 
                 sequenceTypeDetailValue.setIsDefault(Boolean.TRUE);
                 updateSequenceTypeFromValue(sequenceTypeDetailValue, false, deletedBy);
@@ -442,6 +474,7 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Type Descriptions
     // --------------------------------------------------------------------------------
+    
     public SequenceTypeDescription createSequenceTypeDescription(SequenceType sequenceType, Language language, String description, BasePK createdBy) {
         SequenceTypeDescription sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
@@ -452,7 +485,7 @@ public class SequenceControl
     }
     
     private List<SequenceTypeDescription> getSequenceTypeDescriptionsBySequenceType(SequenceType sequenceType, EntityPermission entityPermission) {
-        List<SequenceTypeDescription> sequenceTypeDescriptions = null;
+        List<SequenceTypeDescription> sequenceTypeDescriptions;
         
         try {
             String query = null;
@@ -563,9 +596,9 @@ public class SequenceControl
         List<SequenceTypeDescriptionTransfer> sequenceTypeDescriptionTransfers = new ArrayList<>(sequenceTypeDescriptions.size());
         SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache();
         
-        sequenceTypeDescriptions.stream().forEach((sequenceTypeDescription) -> {
-            sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(sequenceTypeDescription));
-        });
+        sequenceTypeDescriptions.forEach((sequenceTypeDescription) ->
+                sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(sequenceTypeDescription))
+        );
         
         return sequenceTypeDescriptionTransfers;
     }
@@ -597,18 +630,24 @@ public class SequenceControl
     public void deleteSequenceTypeDescriptionsBySequenceType(SequenceType sequenceType, BasePK deletedBy) {
         List<SequenceTypeDescription> sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceTypeForUpdate(sequenceType);
         
-        sequenceTypeDescriptions.stream().forEach((sequenceTypeDescription) -> {
-            deleteSequenceTypeDescription(sequenceTypeDescription, deletedBy);
-        });
+        sequenceTypeDescriptions.forEach((sequenceTypeDescription) -> 
+                deleteSequenceTypeDescription(sequenceTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
     //   Sequence Checksum Types
     // --------------------------------------------------------------------------------
+    
     public SequenceChecksumType createSequenceChecksumType(String sequenceChecksumTypeName, Boolean isDefault, Integer sortOrder) {
         return SequenceChecksumTypeFactory.getInstance().create(sequenceChecksumTypeName, isDefault, sortOrder);
     }
-    
+
+    public long countSequenceChecksumTypes() {
+        return session.queryForLong("SELECT COUNT(*) " +
+                "FROM sequencechecksumtypes");
+    }
+
     public List<SequenceChecksumType> getSequenceChecksumTypes() {
         PreparedStatement ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -636,7 +675,26 @@ public class SequenceControl
         
         return sequenceChecksumType;
     }
-    
+
+    public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
+        return getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache().getSequenceChecksumTypeTransfer(sequenceChecksumType);
+    }
+
+    public List<SequenceChecksumTypeTransfer> getSequenceChecksumTypeTransfers(UserVisit userVisit, Collection<SequenceChecksumType> sequenceChecksumTypes) {
+        List<SequenceChecksumTypeTransfer> sequenceChecksumTypeTransfers = new ArrayList<>(sequenceChecksumTypes.size());
+        SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache();
+
+        sequenceChecksumTypes.forEach((sequenceChecksumType) ->
+                sequenceChecksumTypeTransfers.add(sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(sequenceChecksumType))
+        );
+
+        return sequenceChecksumTypeTransfers;
+    }
+
+    public List<SequenceChecksumTypeTransfer> getSequenceChecksumTypeTransfers(UserVisit userVisit) {
+        return getSequenceChecksumTypeTransfers(userVisit, getSequenceChecksumTypes());
+    }
+
     public SequenceChecksumTypeChoicesBean getSequenceChecksumTypeChoices(String defaultSequenceChecksumTypeChoice,
             Language language, boolean allowNullChoice) {
         List<SequenceChecksumType> sequenceChecksumTypes = getSequenceChecksumTypes();
@@ -661,7 +719,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceChecksumTypeChoice == null? false: defaultSequenceChecksumTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceChecksumTypeChoice != null && defaultSequenceChecksumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceChecksumType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -673,6 +731,7 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Checksum Type Descriptions
     // --------------------------------------------------------------------------------
+    
     public SequenceChecksumTypeDescription createSequenceChecksumTypeDescription(SequenceChecksumType sequenceChecksumType, Language language, String description) {
         return SequenceChecksumTypeDescriptionFactory.getInstance().create(sequenceChecksumType, language, description);
     }
@@ -717,10 +776,16 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Encoder Types
     // --------------------------------------------------------------------------------
+    
     public SequenceEncoderType createSequenceEncoderType(String sequenceEncoderTypeName, Boolean isDefault, Integer sortOrder) {
         return SequenceEncoderTypeFactory.getInstance().create(sequenceEncoderTypeName, isDefault, sortOrder);
     }
-    
+
+    public long countSequenceEncoderTypes() {
+        return session.queryForLong("SELECT COUNT(*) " +
+                "FROM sequenceencodertypes");
+    }
+
     public List<SequenceEncoderType> getSequenceEncoderTypes() {
         PreparedStatement ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -748,7 +813,26 @@ public class SequenceControl
         
         return sequenceEncoderType;
     }
-    
+
+    public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
+        return getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache().getSequenceEncoderTypeTransfer(sequenceEncoderType);
+    }
+
+    public List<SequenceEncoderTypeTransfer> getSequenceEncoderTypeTransfers(UserVisit userVisit, Collection<SequenceEncoderType> sequenceEncoderTypes) {
+        List<SequenceEncoderTypeTransfer> sequenceEncoderTypeTransfers = new ArrayList<>(sequenceEncoderTypes.size());
+        SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache();
+
+        sequenceEncoderTypes.forEach((sequenceEncoderType) ->
+                sequenceEncoderTypeTransfers.add(sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(sequenceEncoderType))
+        );
+
+        return sequenceEncoderTypeTransfers;
+    }
+
+    public List<SequenceEncoderTypeTransfer> getSequenceEncoderTypeTransfers(UserVisit userVisit) {
+        return getSequenceEncoderTypeTransfers(userVisit, getSequenceEncoderTypes());
+    }
+
     public SequenceEncoderTypeChoicesBean getSequenceEncoderTypeChoices(String defaultSequenceEncoderTypeChoice, Language language,
             boolean allowNullChoice) {
         List<SequenceEncoderType> sequenceEncoderTypes = getSequenceEncoderTypes();
@@ -773,7 +857,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceEncoderTypeChoice == null? false: defaultSequenceEncoderTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceEncoderTypeChoice != null && defaultSequenceEncoderTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceEncoderType.getIsDefault()))
                 defaultValue = value;
         }
@@ -784,6 +868,7 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Encoder Type Descriptions
     // --------------------------------------------------------------------------------
+
     public SequenceEncoderTypeDescription createSequenceEncoderTypeDescription(SequenceEncoderType sequenceEncoderType, Language language, String description) {
         return SequenceEncoderTypeDescriptionFactory.getInstance().create(sequenceEncoderType, language, description);
     }
@@ -828,6 +913,7 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequences
     // --------------------------------------------------------------------------------
+    
     public Sequence createSequence(SequenceType sequenceType, String sequenceName, String mask, Integer chunkSize, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         Sequence defaultSequence = getDefaultSequence(sequenceType);
@@ -842,7 +928,7 @@ public class SequenceControl
             isDefault = Boolean.TRUE;
         }
         
-        Sequence sequence = SequenceFactory.getInstance().create((SequenceDetailPK)null, (SequenceDetailPK)null);
+        Sequence sequence = SequenceFactory.getInstance().create();
         SequenceDetail sequenceDetail = SequenceDetailFactory.getInstance().create(sequence, sequenceType, sequenceName,
                 mask, chunkSize, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -856,9 +942,31 @@ public class SequenceControl
         
         return sequence;
     }
-    
+
+    public long countSequences() {
+        return session.queryForLong("SELECT COUNT(*) " +
+                "FROM sequences, sequencedetails " +
+                "WHERE sq_activedetailid = sqdt_sequencedetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Sequence */
+    public Sequence getSequenceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SequencePK(entityInstance.getEntityUniqueId());
+        var sequence = SequenceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return sequence;
+    }
+
+    public Sequence getSequenceByEntityInstance(EntityInstance entityInstance) {
+        return getSequenceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Sequence getSequenceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSequenceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<Sequence> getSequencesBySequenceType(SequenceType sequenceType, EntityPermission entityPermission) {
-        List<Sequence> sequences = null;
+        List<Sequence> sequences;
         
         try {
             String query = null;
@@ -1020,7 +1128,7 @@ public class SequenceControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceChoice == null? false: defaultSequenceChoice.equals(value);
+            boolean usingDefaultChoice = defaultSequenceChoice != null && defaultSequenceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1038,9 +1146,9 @@ public class SequenceControl
         List<SequenceTransfer> sequenceTransfers = new ArrayList<>(sequences.size());
         SequenceTransferCache sequenceTransferCache = getSequenceTransferCaches(userVisit).getSequenceTransferCache();
         
-        sequences.stream().forEach((sequence) -> {
-            sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence));
-        });
+        sequences.forEach((sequence) ->
+                sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence))
+        );
         
         return sequenceTransfers;
     }
@@ -1120,7 +1228,7 @@ public class SequenceControl
                 if(iter.hasNext()) {
                     defaultSequence = iter.next();
                 }
-                SequenceDetailValue sequenceDetailValue = defaultSequence.getLastDetailForUpdate().getSequenceDetailValue().clone();
+                SequenceDetailValue sequenceDetailValue = Objects.requireNonNull(defaultSequence).getLastDetailForUpdate().getSequenceDetailValue().clone();
                 
                 sequenceDetailValue.setIsDefault(Boolean.TRUE);
                 updateSequenceFromValue(sequenceDetailValue, false, deletedBy);
@@ -1133,14 +1241,15 @@ public class SequenceControl
     public void deleteSequencesBySequenceType(SequenceType sequenceType, BasePK deletedBy) {
         List<Sequence> sequences = getSequencesBySequenceTypeForUpdate(sequenceType);
         
-        sequences.stream().forEach((sequence) -> {
-            deleteSequence(sequence, deletedBy);
-        });
+        sequences.forEach((sequence) -> 
+                deleteSequence(sequence, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
     //   Sequence Descriptions
     // --------------------------------------------------------------------------------
+
     public SequenceDescription createSequenceDescription(Sequence sequence, Language language, String description, BasePK createdBy) {
         SequenceDescription sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -1151,7 +1260,7 @@ public class SequenceControl
     }
     
     private List<SequenceDescription> getSequenceDescriptionsBySequence(Sequence sequence, EntityPermission entityPermission) {
-        List<SequenceDescription> sequenceDescriptions = null;
+        List<SequenceDescription> sequenceDescriptions;
         
         try {
             String query = null;
@@ -1262,9 +1371,9 @@ public class SequenceControl
         List<SequenceDescriptionTransfer> sequenceDescriptionTransfers = new ArrayList<>(sequenceDescriptions.size());
         SequenceDescriptionTransferCache sequenceDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache();
         
-        sequenceDescriptions.stream().forEach((sequenceDescription) -> {
-            sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(sequenceDescription));
-        });
+        sequenceDescriptions.forEach((sequenceDescription) ->
+                sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(sequenceDescription))
+        );
         
         return sequenceDescriptionTransfers;
     }
@@ -1295,14 +1404,15 @@ public class SequenceControl
     public void deleteSequenceDescriptionsBySequence(Sequence sequence, BasePK deletedBy) {
         List<SequenceDescription> sequenceDescriptions = getSequenceDescriptionsBySequenceForUpdate(sequence);
         
-        sequenceDescriptions.stream().forEach((sequenceDescription) -> {
-            deleteSequenceDescription(sequenceDescription, deletedBy);
-        });
+        sequenceDescriptions.forEach((sequenceDescription) -> 
+                deleteSequenceDescription(sequenceDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
     //   Sequence Values
     // --------------------------------------------------------------------------------
+
     public SequenceValue createSequenceValue(Sequence sequence, String value) {
         return SequenceValueFactory.getInstance().create(sequence, value);
     }

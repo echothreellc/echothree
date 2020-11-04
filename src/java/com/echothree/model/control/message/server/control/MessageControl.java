@@ -85,6 +85,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class MessageControl
         extends BaseModelControl {
@@ -131,7 +132,7 @@ public class MessageControl
     }
     
     private List<MessageType> getMessageTypes(EntityType entityType, EntityPermission entityPermission) {
-        List<MessageType> messageTypes = null;
+        List<MessageType> messageTypes;
         
         try {
             String query = null;
@@ -225,9 +226,9 @@ public class MessageControl
         List<MessageTypeTransfer> messageTypeTransfers = new ArrayList<>(messageTypes.size());
         MessageTypeTransferCache messageTypeTransferCache = getMessageTransferCaches(userVisit).getMessageTypeTransferCache();
         
-        messageTypes.stream().forEach((messageType) -> {
-            messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(messageType));
-        });
+        messageTypes.forEach((messageType) ->
+                messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(messageType))
+        );
         
         return messageTypeTransfers;
     }
@@ -269,9 +270,9 @@ public class MessageControl
     }
     
     public void deleteMessageTypes(List<MessageType> messageTypes, BasePK deletedBy) {
-        messageTypes.stream().forEach((messageType) -> {
-            deleteMessageType(messageType, deletedBy);
-        });
+        messageTypes.forEach((messageType) -> 
+                deleteMessageType(messageType, deletedBy)
+        );
     }
     
     public void deleteMessageTypesByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -340,7 +341,7 @@ public class MessageControl
     }
     
     private List<MessageTypeDescription> getMessageTypeDescriptionsByMessageType(MessageType messageType, EntityPermission entityPermission) {
-        List<MessageTypeDescription> messageTypeDescriptions = null;
+        List<MessageTypeDescription> messageTypeDescriptions;
         
         try {
             String query = null;
@@ -404,9 +405,9 @@ public class MessageControl
         List<MessageTypeDescriptionTransfer> messageTypeDescriptionTransfers = new ArrayList<>(messageTypeDescriptions.size());
         MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageTypeDescriptionTransferCache();
         
-        messageTypeDescriptions.stream().forEach((messageTypeDescription) -> {
-            messageTypeDescriptionTransfers.add(messageTypeDescriptionTransferCache.getMessageTypeDescriptionTransfer(messageTypeDescription));
-        });
+        messageTypeDescriptions.forEach((messageTypeDescription) ->
+                messageTypeDescriptionTransfers.add(messageTypeDescriptionTransferCache.getMessageTypeDescriptionTransfer(messageTypeDescription))
+        );
         
         return messageTypeDescriptionTransfers;
     }
@@ -440,9 +441,9 @@ public class MessageControl
     public void deleteMessageTypeDescriptionsByMessageType(MessageType messageType, BasePK deletedBy) {
         List<MessageTypeDescription> messageTypeDescriptions = getMessageTypeDescriptionsByMessageTypeForUpdate(messageType);
         
-        messageTypeDescriptions.stream().forEach((messageTypeDescription) -> {
-            deleteMessageTypeDescription(messageTypeDescription, deletedBy);
-        });
+        messageTypeDescriptions.forEach((messageTypeDescription) -> 
+                deleteMessageTypeDescription(messageTypeDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -480,7 +481,7 @@ public class MessageControl
     }
     
     private List<Message> getMessagesByMessageType(MessageType messageType, EntityPermission entityPermission) {
-        List<Message> messages = null;
+        List<Message> messages;
         
         try {
             String query = null;
@@ -633,7 +634,7 @@ public class MessageControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMessageChoice == null? false: defaultMessageChoice.equals(value);
+            boolean usingDefaultChoice = defaultMessageChoice != null && defaultMessageChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && messageDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -651,9 +652,9 @@ public class MessageControl
         List<MessageTransfer> messageTransfers = new ArrayList<>(messages.size());
         MessageTransferCache messageTransferCache = getMessageTransferCaches(userVisit).getMessageTransferCache();
         
-        messages.stream().forEach((message) -> {
-            messageTransfers.add(messageTransferCache.getMessageTransfer(message));
-        });
+        messages.forEach((message) ->
+                messageTransfers.add(messageTransferCache.getMessageTransfer(message))
+        );
         
         return messageTransfers;
     }
@@ -729,7 +730,7 @@ public class MessageControl
                 if(iter.hasNext()) {
                     defaultMessage = iter.next();
                 }
-                MessageDetailValue messageDetailValue = defaultMessage.getLastDetailForUpdate().getMessageDetailValue().clone();
+                MessageDetailValue messageDetailValue = Objects.requireNonNull(defaultMessage).getLastDetailForUpdate().getMessageDetailValue().clone();
                 
                 messageDetailValue.setIsDefault(Boolean.TRUE);
                 updateMessageFromValue(messageDetailValue, false, deletedBy);
@@ -740,9 +741,9 @@ public class MessageControl
     }
     
     public void deleteMessages(List<Message> messages, BasePK deletedBy) {
-        messages.stream().forEach((message) -> {
-            deleteMessage(message, deletedBy);
-        });
+        messages.forEach((message) -> 
+                deleteMessage(message, deletedBy)
+        );
     }
     
     public void deleteMessagesByMessageType(MessageType messageType, BasePK deletedBy) {
@@ -810,7 +811,7 @@ public class MessageControl
     }
     
     private List<MessageDescription> getMessageDescriptionsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageDescription> messageDescriptions = null;
+        List<MessageDescription> messageDescriptions;
         
         try {
             String query = null;
@@ -874,9 +875,9 @@ public class MessageControl
         List<MessageDescriptionTransfer> messageDescriptionTransfers = new ArrayList<>(messageDescriptions.size());
         MessageDescriptionTransferCache messageDescriptionTransferCache = getMessageTransferCaches(userVisit).getMessageDescriptionTransferCache();
         
-        messageDescriptions.stream().forEach((messageDescription) -> {
-            messageDescriptionTransfers.add(messageDescriptionTransferCache.getMessageDescriptionTransfer(messageDescription));
-        });
+        messageDescriptions.forEach((messageDescription) ->
+                messageDescriptionTransfers.add(messageDescriptionTransferCache.getMessageDescriptionTransfer(messageDescription))
+        );
         
         return messageDescriptionTransfers;
     }
@@ -908,9 +909,9 @@ public class MessageControl
     public void deleteMessageDescriptionsByMessage(Message message, BasePK deletedBy) {
         List<MessageDescription> messageDescriptions = getMessageDescriptionsByMessageForUpdate(message);
         
-        messageDescriptions.stream().forEach((messageDescription) -> {
-            deleteMessageDescription(messageDescription, deletedBy);
-        });
+        messageDescriptions.forEach((messageDescription) -> 
+                deleteMessageDescription(messageDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -927,7 +928,7 @@ public class MessageControl
     }
     
     private List<MessageString> getMessageStringsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageString> messageStrings = null;
+        List<MessageString> messageStrings;
         
         try {
             String query = null;
@@ -1019,9 +1020,9 @@ public class MessageControl
         List<MessageStringTransfer> messageStringTransfers = new ArrayList<>(messageStrings.size());
         MessageStringTransferCache messageStringTransferCache = getMessageTransferCaches(userVisit).getMessageStringTransferCache();
         
-        messageStrings.stream().forEach((messageString) -> {
-            messageStringTransfers.add(messageStringTransferCache.getMessageStringTransfer(messageString));
-        });
+        messageStrings.forEach((messageString) ->
+                messageStringTransfers.add(messageStringTransferCache.getMessageStringTransfer(messageString))
+        );
         
         return messageStringTransfers;
     }
@@ -1056,9 +1057,9 @@ public class MessageControl
     }
     
     public void deleteMessageStrings(List<MessageString> messageStrings, BasePK deletedBy) {
-        messageStrings.stream().forEach((messageString) -> {
-            deleteMessageString(messageString, deletedBy);
-        });
+        messageStrings.forEach((messageString) -> 
+                deleteMessageString(messageString, deletedBy)
+        );
     }
     
     public void deleteMessageStringsByMessage(Message message, BasePK deletedBy) {
@@ -1079,7 +1080,7 @@ public class MessageControl
     }
     
     private List<MessageBlob> getMessageBlobsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageBlob> messageBlobs = null;
+        List<MessageBlob> messageBlobs;
         
         try {
             String query = null;
@@ -1171,9 +1172,9 @@ public class MessageControl
         List<MessageBlobTransfer> messageBlobTransfers = new ArrayList<>(messageBlobs.size());
         MessageBlobTransferCache messageBlobTransferCache = getMessageTransferCaches(userVisit).getMessageBlobTransferCache();
         
-        messageBlobs.stream().forEach((messageBlob) -> {
-            messageBlobTransfers.add(messageBlobTransferCache.getMessageBlobTransfer(messageBlob));
-        });
+        messageBlobs.forEach((messageBlob) ->
+                messageBlobTransfers.add(messageBlobTransferCache.getMessageBlobTransfer(messageBlob))
+        );
         
         return messageBlobTransfers;
     }
@@ -1209,9 +1210,9 @@ public class MessageControl
     }
     
     public void deleteMessageBlobs(List<MessageBlob> messageBlobs, BasePK deletedBy) {
-        messageBlobs.stream().forEach((messageBlob) -> {
-            deleteMessageBlob(messageBlob, deletedBy);
-        });
+        messageBlobs.forEach((messageBlob) -> 
+                deleteMessageBlob(messageBlob, deletedBy)
+        );
     }
     
     public void deleteMessageBlobsByMessage(Message message, BasePK deletedBy) {
@@ -1232,7 +1233,7 @@ public class MessageControl
     }
     
     private List<MessageClob> getMessageClobsByMessage(Message message, EntityPermission entityPermission) {
-        List<MessageClob> messageClobs = null;
+        List<MessageClob> messageClobs;
         
         try {
             String query = null;
@@ -1324,9 +1325,9 @@ public class MessageControl
         List<MessageClobTransfer> messageClobTransfers = new ArrayList<>(messageClobs.size());
         MessageClobTransferCache messageClobTransferCache = getMessageTransferCaches(userVisit).getMessageClobTransferCache();
         
-        messageClobs.stream().forEach((messageClob) -> {
-            messageClobTransfers.add(messageClobTransferCache.getMessageClobTransfer(messageClob));
-        });
+        messageClobs.forEach((messageClob) ->
+                messageClobTransfers.add(messageClobTransferCache.getMessageClobTransfer(messageClob))
+        );
         
         return messageClobTransfers;
     }
@@ -1362,9 +1363,9 @@ public class MessageControl
     }
     
     public void deleteMessageClobs(List<MessageClob> messageClobs, BasePK deletedBy) {
-        messageClobs.stream().forEach((messageClob) -> {
-            deleteMessageClob(messageClob, deletedBy);
-        });
+        messageClobs.forEach((messageClob) -> 
+                deleteMessageClob(messageClob, deletedBy)
+        );
     }
     
     public void deleteMessageClobsByMessage(Message message, BasePK deletedBy) {
@@ -1424,7 +1425,7 @@ public class MessageControl
     }
     
     private List<EntityMessage> getEntityMessagesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        List<EntityMessage> entityMessages = null;
+        List<EntityMessage> entityMessages;
         
         try {
             String query = null;
@@ -1464,7 +1465,7 @@ public class MessageControl
     }
     
     private List<EntityMessage> getEntityMessagesByMessage(Message message, EntityPermission entityPermission) {
-        List<EntityMessage> entityMessages = null;
+        List<EntityMessage> entityMessages;
         
         try {
             String query = null;
@@ -1510,9 +1511,9 @@ public class MessageControl
         List<EntityMessageTransfer> entityMessageTransfers = new ArrayList<>(entityMessages.size());
         EntityMessageTransferCache entityMessageTransferCache = getMessageTransferCaches(userVisit).getEntityMessageTransferCache();
         
-        entityMessages.stream().forEach((entityMessage) -> {
-            entityMessageTransfers.add(entityMessageTransferCache.getEntityMessageTransfer(entityMessage));
-        });
+        entityMessages.forEach((entityMessage) ->
+                entityMessageTransfers.add(entityMessageTransferCache.getEntityMessageTransfer(entityMessage))
+        );
         
         return entityMessageTransfers;
     }
@@ -1533,9 +1534,9 @@ public class MessageControl
     }
     
     public void deleteEntityMessages(List<EntityMessage> entityMessages, BasePK deletedBy) {
-        entityMessages.stream().forEach((entityMessage) -> {
-            deleteEntityMessage(entityMessage, deletedBy);
-        });
+        entityMessages.forEach((entityMessage) -> 
+                deleteEntityMessage(entityMessage, deletedBy)
+        );
     }
     
     public void deleteEntityMessagesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {

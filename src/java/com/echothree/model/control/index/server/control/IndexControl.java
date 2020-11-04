@@ -78,6 +78,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class IndexControl
         extends BaseModelControl {
@@ -298,9 +299,9 @@ public class IndexControl
         List<IndexTypeTransfer> indexTypeTransfers = new ArrayList<>(indexTypes.size());
         IndexTypeTransferCache indexTypeTransferCache = getIndexTransferCaches(userVisit).getIndexTypeTransferCache();
 
-        indexTypes.stream().forEach((indexType) -> {
-            indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(indexType));
-        });
+        indexTypes.forEach((indexType) ->
+                indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(indexType))
+        );
 
         return indexTypeTransfers;
     }
@@ -338,7 +339,7 @@ public class IndexControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexTypeChoice == null? false: defaultIndexTypeChoice.equals(value);
+            boolean usingDefaultChoice = defaultIndexTypeChoice != null && defaultIndexTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -415,7 +416,7 @@ public class IndexControl
                     if(iter.hasNext()) {
                         defaultIndexType = iter.next();
                     }
-                    IndexTypeDetailValue indexTypeDetailValue = defaultIndexType.getLastDetailForUpdate().getIndexTypeDetailValue().clone();
+                    IndexTypeDetailValue indexTypeDetailValue = Objects.requireNonNull(defaultIndexType).getLastDetailForUpdate().getIndexTypeDetailValue().clone();
 
                     indexTypeDetailValue.setIsDefault(Boolean.TRUE);
                     updateIndexTypeFromValue(indexTypeDetailValue, false, deletedBy);
@@ -431,9 +432,7 @@ public class IndexControl
     }
 
     private void deleteIndexTypes(List<IndexType> indexTypes, boolean checkDefault, BasePK deletedBy) {
-        indexTypes.stream().forEach((indexType) -> {
-            deleteIndexType(indexType, checkDefault, deletedBy);
-        });
+        indexTypes.forEach((indexType) -> deleteIndexType(indexType, checkDefault, deletedBy));
     }
 
     public void deleteIndexTypes(List<IndexType> indexTypes, BasePK deletedBy) {
@@ -552,9 +551,9 @@ public class IndexControl
         List<IndexTypeDescriptionTransfer> indexTypeDescriptionTransfers = new ArrayList<>(indexTypeDescriptions.size());
         IndexTypeDescriptionTransferCache indexTypeDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexTypeDescriptionTransferCache();
 
-        indexTypeDescriptions.stream().forEach((indexTypeDescription) -> {
-            indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(indexTypeDescription));
-        });
+        indexTypeDescriptions.forEach((indexTypeDescription) ->
+                indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(indexTypeDescription))
+        );
 
         return indexTypeDescriptionTransfers;
     }
@@ -588,9 +587,9 @@ public class IndexControl
     public void deleteIndexTypeDescriptionsByIndexType(IndexType indexType, BasePK deletedBy) {
         List<IndexTypeDescription> indexTypeDescriptions = getIndexTypeDescriptionsByIndexTypeForUpdate(indexType);
 
-        indexTypeDescriptions.stream().forEach((indexTypeDescription) -> {
-            deleteIndexTypeDescription(indexTypeDescription, deletedBy);
-        });
+        indexTypeDescriptions.forEach((indexTypeDescription) -> 
+                deleteIndexTypeDescription(indexTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -757,7 +756,7 @@ public class IndexControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexFieldChoice == null? false: defaultIndexFieldChoice.equals(value);
+            boolean usingDefaultChoice = defaultIndexFieldChoice != null && defaultIndexFieldChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexFieldDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -775,9 +774,9 @@ public class IndexControl
         List<IndexFieldTransfer> indexFieldTransfers = new ArrayList<>(indexFields.size());
         IndexFieldTransferCache indexFieldTransferCache = getIndexTransferCaches(userVisit).getIndexFieldTransferCache();
 
-        indexFields.stream().forEach((indexField) -> {
-            indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(indexField));
-        });
+        indexFields.forEach((indexField) ->
+                indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(indexField))
+        );
 
         return indexFieldTransfers;
     }
@@ -851,7 +850,7 @@ public class IndexControl
                 if(iter.hasNext()) {
                     defaultIndexField = iter.next();
                 }
-                IndexFieldDetailValue indexFieldDetailValue = defaultIndexField.getLastDetailForUpdate().getIndexFieldDetailValue().clone();
+                IndexFieldDetailValue indexFieldDetailValue = Objects.requireNonNull(defaultIndexField).getLastDetailForUpdate().getIndexFieldDetailValue().clone();
 
                 indexFieldDetailValue.setIsDefault(Boolean.TRUE);
                 updateIndexFieldFromValue(indexFieldDetailValue, false, deletedBy);
@@ -864,9 +863,9 @@ public class IndexControl
     public void deleteIndexFieldsByIndexType(IndexType indexType, BasePK deletedBy) {
         List<IndexField> indexFields = getIndexFieldsForUpdate(indexType);
 
-        indexFields.stream().forEach((indexField) -> {
-            deleteIndexField(indexField, deletedBy);
-        });
+        indexFields.forEach((indexField) -> 
+                deleteIndexField(indexField, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1013,9 +1012,9 @@ public class IndexControl
     public void deleteIndexFieldDescriptionsByIndexField(IndexField indexField, BasePK deletedBy) {
         List<IndexFieldDescription> indexFieldDescriptions = getIndexFieldDescriptionsByIndexFieldForUpdate(indexField);
 
-        indexFieldDescriptions.stream().forEach((indexFieldDescription) -> {
-            deleteIndexFieldDescription(indexFieldDescription, deletedBy);
-        });
+        indexFieldDescriptions.forEach((indexFieldDescription) -> 
+                deleteIndexFieldDescription(indexFieldDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -1294,9 +1293,9 @@ public class IndexControl
         List<IndexTransfer> indexTransfers = new ArrayList<>(indexes.size());
         IndexTransferCache indexTransferCache = getIndexTransferCaches(userVisit).getIndexTransferCache();
 
-        indexes.stream().forEach((index) -> {
-            indexTransfers.add(indexTransferCache.getIndexTransfer(index));
-        });
+        indexes.forEach((index) ->
+                indexTransfers.add(indexTransferCache.getIndexTransfer(index))
+        );
 
         return indexTransfers;
     }
@@ -1326,7 +1325,7 @@ public class IndexControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexChoice == null? false: defaultIndexChoice.equals(value);
+            boolean usingDefaultChoice = defaultIndexChoice != null && defaultIndexChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1406,7 +1405,7 @@ public class IndexControl
                     if(iter.hasNext()) {
                         defaultIndex = iter.next();
                     }
-                    IndexDetailValue indexDetailValue = defaultIndex.getLastDetailForUpdate().getIndexDetailValue().clone();
+                    IndexDetailValue indexDetailValue = Objects.requireNonNull(defaultIndex).getLastDetailForUpdate().getIndexDetailValue().clone();
 
                     indexDetailValue.setIsDefault(Boolean.TRUE);
                     updateIndexFromValue(indexDetailValue, false, deletedBy);
@@ -1422,9 +1421,7 @@ public class IndexControl
     }
 
     private void deleteIndexes(List<Index> indexes, boolean checkDefault, BasePK deletedBy) {
-        indexes.stream().forEach((index) -> {
-            deleteIndex(index, checkDefault, deletedBy);
-        });
+        indexes.forEach((index) -> deleteIndex(index, checkDefault, deletedBy));
     }
 
     public void deleteIndexes(List<Index> indexes, BasePK deletedBy) {
@@ -1543,9 +1540,9 @@ public class IndexControl
         List<IndexDescriptionTransfer> indexDescriptionTransfers = new ArrayList<>(indexDescriptions.size());
         IndexDescriptionTransferCache indexDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexDescriptionTransferCache();
 
-        indexDescriptions.stream().forEach((indexDescription) -> {
-            indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(indexDescription));
-        });
+        indexDescriptions.forEach((indexDescription) ->
+                indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(indexDescription))
+        );
 
         return indexDescriptionTransfers;
     }
@@ -1579,9 +1576,9 @@ public class IndexControl
     public void deleteIndexDescriptionsByIndex(Index index, BasePK deletedBy) {
         List<IndexDescription> indexDescriptions = getIndexDescriptionsByIndexForUpdate(index);
 
-        indexDescriptions.stream().forEach((indexDescription) -> {
-            deleteIndexDescription(indexDescription, deletedBy);
-        });
+        indexDescriptions.forEach((indexDescription) -> 
+                deleteIndexDescription(indexDescription, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------

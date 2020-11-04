@@ -75,6 +75,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class OfferControl
         extends BaseOfferControl {
@@ -218,7 +219,7 @@ public class OfferControl
     }
     
     public List<Offer> getOffersByOfferItemSelector(Selector offerItemSelector) {
-        List<Offer> offers = null;
+        List<Offer> offers;
         
         try {
             PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
@@ -325,7 +326,7 @@ public class OfferControl
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOfferChoice == null? false: defaultOfferChoice.equals(value);
+            boolean usingDefaultChoice = defaultOfferChoice != null && defaultOfferChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && offerDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -411,7 +412,7 @@ public class OfferControl
                 if(iter.hasNext()) {
                     defaultOffer = iter.next();
                 }
-                OfferDetailValue offerDetailValue = defaultOffer.getLastDetailForUpdate().getOfferDetailValue().clone();
+                OfferDetailValue offerDetailValue = Objects.requireNonNull(defaultOffer).getLastDetailForUpdate().getOfferDetailValue().clone();
                 
                 offerDetailValue.setIsDefault(Boolean.TRUE);
                 updateOfferFromValue(offerDetailValue, false, deletedBy);
@@ -483,7 +484,7 @@ public class OfferControl
     }
     
     private List<OfferDescription> getOfferDescriptionsByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferDescription> offerDescriptions = null;
+        List<OfferDescription> offerDescriptions;
         
         try {
             String query = null;
@@ -583,9 +584,9 @@ public class OfferControl
     public void deleteOfferDescriptionsByOffer(Offer offer, BasePK deletedBy) {
         List<OfferDescription> offerDescriptions = getOfferDescriptionsByOfferForUpdate(offer);
         
-        offerDescriptions.stream().forEach((offerDescription) -> {
-            deleteOfferDescription(offerDescription, deletedBy);
-        });
+        offerDescriptions.forEach((offerDescription) -> 
+                deleteOfferDescription(offerDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
@@ -827,9 +828,9 @@ public class OfferControl
         List<OfferCustomerTypeTransfer> offerCustomerTypeTransfers = new ArrayList<>(offerCustomerTypes.size());
         OfferCustomerTypeTransferCache offerCustomerTypeTransferCache = getOfferTransferCaches(userVisit).getOfferCustomerTypeTransferCache();
 
-        offerCustomerTypes.stream().forEach((offerCustomerType) -> {
-            offerCustomerTypeTransfers.add(offerCustomerTypeTransferCache.getOfferCustomerTypeTransfer(offerCustomerType));
-        });
+        offerCustomerTypes.forEach((offerCustomerType) ->
+                offerCustomerTypeTransfers.add(offerCustomerTypeTransferCache.getOfferCustomerTypeTransfer(offerCustomerType))
+        );
 
         return offerCustomerTypeTransfers;
     }
@@ -913,9 +914,9 @@ public class OfferControl
     }
 
     public void deleteOfferCustomerTypes(List<OfferCustomerType> offerCustomerTypes, BasePK deletedBy) {
-        offerCustomerTypes.stream().forEach((offerCustomerType) -> {
-            deleteOfferCustomerType(offerCustomerType, deletedBy);
-        });
+        offerCustomerTypes.forEach((offerCustomerType) -> 
+                deleteOfferCustomerType(offerCustomerType, deletedBy)
+        );
     }
 
     public void deleteOfferCustomerTypesByOffer(Offer offer, BasePK deletedBy) {
@@ -988,7 +989,7 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes = null;
+        List<OfferChainType> offerChainTypes;
         
         try {
             String query = null;
@@ -1029,7 +1030,7 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByChainType(ChainType chainType, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes = null;
+        List<OfferChainType> offerChainTypes;
         
         try {
             String query = null;
@@ -1069,7 +1070,7 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByChain(Chain chain, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes = null;
+        List<OfferChainType> offerChainTypes;
         
         try {
             String query = null;
@@ -1116,9 +1117,9 @@ public class OfferControl
         List<OfferChainTypeTransfer> offerChainTypeTransfers = new ArrayList<>(offerChainTypes.size());
         OfferChainTypeTransferCache offerChainTypeTransferCache = getOfferTransferCaches(userVisit).getOfferChainTypeTransferCache();
         
-        offerChainTypes.stream().forEach((offerChainType) -> {
-            offerChainTypeTransfers.add(offerChainTypeTransferCache.getOfferChainTypeTransfer(offerChainType));
-        });
+        offerChainTypes.forEach((offerChainType) ->
+                offerChainTypeTransfers.add(offerChainTypeTransferCache.getOfferChainTypeTransfer(offerChainType))
+        );
         
         return offerChainTypeTransfers;
     }
@@ -1159,9 +1160,9 @@ public class OfferControl
     }
     
     public void deleteOfferChainTypes(List<OfferChainType> offerChainTypes, BasePK deletedBy) {
-        offerChainTypes.stream().forEach((offerChainType) -> {
-            deleteOfferChainType(offerChainType, deletedBy);
-        });
+        offerChainTypes.forEach((offerChainType) -> 
+                deleteOfferChainType(offerChainType, deletedBy)
+        );
     }
     
     public void deleteOfferChainTypesByOffer(Offer offer, BasePK deletedBy) {
