@@ -17,6 +17,7 @@
 package com.echothree.model.control.sequence.server.graphql;
 
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceEncoderTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceTypeCommand;
@@ -41,9 +42,9 @@ public final class SequenceSecurityUtils {
 //        return env.<GraphQlContext>getContext().hasAccess(GetSequenceCommand.class);
 //    }
 
-//    public boolean getHasSequenceChecksumTypeAccess(final DataFetchingEnvironment env) {
-//        return env.<GraphQlContext>getContext().hasAccess(GetSequenceChecksumTypeCommand.class);
-//    }
+    public boolean getHasSequenceChecksumTypeAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetSequenceChecksumTypeCommand.class);
+    }
 
     public boolean getHasSequenceEncoderTypeAccess(final DataFetchingEnvironment env) {
         return env.<GraphQlContext>getContext().hasAccess(GetSequenceEncoderTypeCommand.class);

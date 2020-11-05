@@ -129,6 +129,8 @@ import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
 import com.echothree.control.user.sequence.common.SequenceUtil;
+import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypeCommand;
+import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypesCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceEncoderTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceEncoderTypesCommand;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
@@ -200,6 +202,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeOb
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceChecksumTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
@@ -262,6 +265,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
+import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -284,6 +288,52 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("sequenceChecksumType")
+    public static SequenceChecksumTypeObject sequenceChecksumType(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceChecksumTypeName") final String sequenceChecksumTypeName) {
+        SequenceChecksumType sequenceChecksumType;
+
+        try {
+            var commandForm = SequenceUtil.getHome().getGetSequenceChecksumTypeForm();
+
+            commandForm.setSequenceChecksumTypeName(sequenceChecksumTypeName);
+
+            sequenceChecksumType = new GetSequenceChecksumTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return sequenceChecksumType == null ? null : new SequenceChecksumTypeObject(sequenceChecksumType);
+    }
+
+    @GraphQLField
+    @GraphQLName("sequenceChecksumTypes")
+    public static Collection<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
+        Collection<SequenceChecksumType> sequenceChecksumTypes;
+        Collection<SequenceChecksumTypeObject> sequenceChecksumTypeObjects;
+
+        try {
+            var commandForm = SequenceUtil.getHome().getGetSequenceChecksumTypesForm();
+
+            sequenceChecksumTypes = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(sequenceChecksumTypes == null) {
+            sequenceChecksumTypeObjects = emptyList();
+        } else {
+            sequenceChecksumTypeObjects = new ArrayList<>(sequenceChecksumTypes.size());
+
+            sequenceChecksumTypes.stream()
+                    .map(SequenceChecksumTypeObject::new)
+                    .forEachOrdered(sequenceChecksumTypeObjects::add);
+        }
+
+        return sequenceChecksumTypeObjects;
+    }
 
     @GraphQLField
     @GraphQLName("sequenceEncoderType")
