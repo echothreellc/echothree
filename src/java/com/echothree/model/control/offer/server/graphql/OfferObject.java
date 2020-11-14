@@ -53,7 +53,7 @@ public class OfferObject
     }
     
     @GraphQLField
-    @GraphQLDescription("offer type name")
+    @GraphQLDescription("offer name")
     @GraphQLNonNull
     public String getOfferName() {
         return getOfferDetail().getOfferName();
