@@ -17,18 +17,16 @@
 package com.echothree.control.user.sequence.server.command;
 
 import com.echothree.control.user.sequence.common.form.CreateSequenceTypeForm;
+import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
-import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -72,32 +70,33 @@ public class CreateSequenceTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SequenceResultFactory.getCreateSequenceTypeResult();
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType == null) {
-            String prefix = form.getPrefix();
+            var prefix = form.getPrefix();
             
             sequenceType = prefix == null ? null : sequenceControl.getSequenceTypeByPrefix(prefix);
 
             if(sequenceType == null) {
-                String suffix = form.getSuffix();
+                var suffix = form.getSuffix();
                 
                 sequenceType = suffix == null ? null : sequenceControl.getSequenceTypeBySuffix(suffix);
 
                 if(sequenceType == null) {
-                    String sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
-                    SequenceEncoderType sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
+                    var sequenceEncoderTypeName = form.getSequenceEncoderTypeName();
+                    var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
 
                     if(sequenceEncoderType != null) {
-                        String sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
-                        SequenceChecksumType sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
+                        var sequenceChecksumTypeName = form.getSequenceChecksumTypeName();
+                        var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
 
                         if(sequenceChecksumType != null) {
                             var partyPK = getPartyPK();
-                            String rawChunkSize = form.getChunkSize();
-                            Integer chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
+                            var rawChunkSize = form.getChunkSize();
+                            var chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
                             var isDefault = Boolean.valueOf(form.getIsDefault());
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();
@@ -123,7 +122,12 @@ public class CreateSequenceTypeCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateSequenceTypeName.name(), sequenceTypeName);
         }
-        
+
+        if(sequenceType != null && !hasExecutionErrors()) {
+            result.setSequenceTypeName(sequenceType.getLastDetail().getSequenceTypeName());
+            result.setEntityRef(sequenceType.getPrimaryKey().getEntityRef());
+        }
+
         return null;
     }
     
