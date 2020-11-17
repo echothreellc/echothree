@@ -76,8 +76,6 @@ public class GetSequenceCommand
             String sequenceName = form.getSequenceName();
             Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
             
-            result.setSequenceType(sequenceControl.getSequenceTypeTransfer(getUserVisit(), sequenceType));
-            
             if(sequence != null) {
                 result.setSequence(sequenceControl.getSequenceTransfer(getUserVisit(), sequence));
                 
