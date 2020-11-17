@@ -24,6 +24,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.sequence.server.factory.SequenceFactory;
+import com.echothree.model.data.sequence.server.factory.SequenceTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,6 +72,10 @@ public class GetSequencesCommand
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
         if(sequenceType != null) {
+            if(session.hasLimit(SequenceFactory.class)) {
+                result.setSequenceCount(sequenceControl.countSequencesBySequenceType(sequenceType));
+            }
+
             result.setSequenceType(sequenceControl.getSequenceTypeTransfer(getUserVisit(), sequenceType));
             result.setSequences(sequenceControl.getSequenceTransfersBySequenceType(getUserVisit(), sequenceType));
         } else {

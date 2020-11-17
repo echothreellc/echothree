@@ -26,7 +26,10 @@ public interface GetSequencesResult
     
     SequenceTypeTransfer getSequenceType();
     void setSequenceType(SequenceTypeTransfer sequenceType);
-    
+
+    Long getSequenceCount();
+    void setSequenceCount(Long sequenceCount);
+
     List<SequenceTransfer> getSequences();
     void setSequences(List<SequenceTransfer> sequences);
     
