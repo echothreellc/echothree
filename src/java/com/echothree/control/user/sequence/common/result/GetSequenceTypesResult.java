@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSequenceTypesResult
         extends BaseResult {
-    
+
+    Long getSequenceTypeCount();
+    void setSequenceTypeCount(Long sequenceTypeCount);
+
     List<SequenceTypeTransfer> getSequenceTypes();
     void setSequenceTypes(List<SequenceTypeTransfer> sequenceTypes);
     

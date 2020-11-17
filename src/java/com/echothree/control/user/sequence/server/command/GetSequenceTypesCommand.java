@@ -17,27 +17,29 @@
 package com.echothree.control.user.sequence.server.command;
 
 import com.echothree.control.user.sequence.common.form.GetSequenceTypesForm;
-import com.echothree.control.user.sequence.common.result.GetSequenceTypesResult;
 import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.sequence.server.factory.SequenceTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetSequenceTypesCommand
-        extends BaseSimpleCommand<GetSequenceTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<SequenceType, GetSequenceTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -45,27 +47,38 @@ public class GetSequenceTypesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SequenceType.name(), SecurityRoles.List.name())
-                    )))
-                )));
+                        new SecurityRoleDefinition(SecurityRoleGroups.SequenceType.name(), SecurityRoles.List.name())
+                )))
+        )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        ));
     }
-    
+
     /** Creates a new instance of GetSequenceTypesCommand */
     public GetSequenceTypesCommand(UserVisitPK userVisitPK, GetSequenceTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
-    @Override
-    protected BaseResult execute() {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        GetSequenceTypesResult result = SequenceResultFactory.getGetSequenceTypesResult();
 
-        result.setSequenceTypes(sequenceControl.getSequenceTypeTransfers(getUserVisit()));
-        
+    @Override
+    protected Collection<SequenceType> getEntities() {
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+
+        return sequenceControl.getSequenceTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<SequenceType> entities) {
+        var result = SequenceResultFactory.getGetSequenceTypesResult();
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+
+        if(session.hasLimit(SequenceTypeFactory.class)) {
+            result.setSequenceTypeCount(sequenceControl.countSequenceTypes());
+        }
+
+        result.setSequenceTypes(sequenceControl.getSequenceTypeTransfers(getUserVisit(), entities));
+
         return result;
     }
-    
+
 }

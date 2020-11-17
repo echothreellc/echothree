@@ -190,7 +190,7 @@ public class SequenceControl
         return getSequenceTypes(EntityPermission.READ_WRITE);
     }
     
-    private SequenceType getDefaultSequenceType(EntityPermission entityPermission) {
+    public SequenceType getDefaultSequenceType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -220,8 +220,8 @@ public class SequenceControl
     public SequenceTypeDetailValue getDefaultSequenceTypeDetailValueForUpdate() {
         return getDefaultSequenceTypeForUpdate().getLastDetailForUpdate().getSequenceTypeDetailValue().clone();
     }
-    
-    private SequenceType getSequenceTypeByName(String sequenceTypeName, EntityPermission entityPermission) {
+
+    public SequenceType getSequenceTypeByName(String sequenceTypeName, EntityPermission entityPermission) {
         SequenceType sequenceType;
         
         try {

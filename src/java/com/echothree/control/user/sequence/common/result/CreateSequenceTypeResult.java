@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.sequence.common.form;
+package com.echothree.control.user.sequence.common.result;
 
-import com.echothree.control.user.sequence.common.spec.SequenceTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.sequence.common.spec.SequenceTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface GetSequenceTypeForm
-        extends SequenceTypeUniversalSpec {
+public interface CreateSequenceTypeResult
+        extends SequenceTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond SequenceTypeUniversalSpec
+    // Nothing additional beyond SequenceTypeSpec, EntityRefSpec, BaseResult
     
 }
