@@ -78,7 +78,7 @@ public class SequenceLogic
                     sequence = sequenceControl.createSequence(sequenceType, sequenceName, mask, chunkSize, isDefault, sortOrder, createdBy);
 
                     if(value == null) {
-                        char maskChars[] = mask.toCharArray();
+                        char[] maskChars = mask.toCharArray();
                         int maskLength = mask.length();
                         StringBuilder valueBuilder = new StringBuilder(maskLength);
 
@@ -86,18 +86,13 @@ public class SequenceLogic
                             char maskChar = maskChars[index];
 
                             switch(maskChar) {
-                                case '9': {
+                                case '9':
+                                case 'Z':
                                     valueBuilder.append('0');
-                                }
-                                break;
-                                case 'A': {
+                                    break;
+                                case 'A':
                                     valueBuilder.append('A');
-                                }
-                                break;
-                                case 'Z': {
-                                    valueBuilder.append('0');
-                                }
-                                break;
+                                    break;
                             }
                         }
 
@@ -120,7 +115,7 @@ public class SequenceLogic
         
         return sequence;
     }
-    
+
     public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
@@ -132,5 +127,5 @@ public class SequenceLogic
 
         return sequence;
     }
-    
+
 }
