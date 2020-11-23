@@ -1,5 +1,13 @@
 # Changelog
 
+## 2020-11-15-01
+
+* GraphQL Objects and Mutations for Sequence Types [171](https://gitlab.echothree.com/echothree/echothree/-/issues/171)
+* GraphQL Objects for Sequence Encoder Types [173](https://gitlab.echothree.com/echothree/echothree/-/issues/173)
+* GraphQL Objects for Sequence Checksum Types [174](https://gitlab.echothree.com/echothree/echothree/-/issues/174)
+* Guava 30.0-jre Upgrade [177](https://gitlab.echothree.com/echothree/echothree/-/issues/177)
+* Apache Lucene 8.7.0 Upgrade [178](https://gitlab.echothree.com/echothree/echothree/-/issues/178)
+
 ## 2020-11-01-01
 
 * GraphQL Objects and Mutations for Offer Uses [133](https://gitlab.echothree.com/echothree/echothree/-/issues/133)
