@@ -79,9 +79,7 @@ public class Session {
     
     public static final long MAX_TIME = Long.MAX_VALUE;
     public static final Long MAX_TIME_LONG = Long.MAX_VALUE;
-    public static final long RANGE_TIME = Long.MAX_VALUE - 1;
-    public static final Long RANGE_TIME_LONG = Long.MAX_VALUE - 1;
-    
+
     public long START_TIME;
     public Long START_TIME_LONG;
     
