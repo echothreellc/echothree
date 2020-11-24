@@ -56,7 +56,7 @@ public class GetWorkRequirementScopesCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         GetWorkRequirementScopesResult result = WorkRequirementResultFactory.getGetWorkRequirementScopesResult();
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
@@ -70,7 +70,7 @@ public class GetWorkRequirementScopesCommand
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortType));
             
             if(parameterCount == 1) {
-                var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+                var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
                 
                 if(workEffortScopeName != null) {
                     WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);

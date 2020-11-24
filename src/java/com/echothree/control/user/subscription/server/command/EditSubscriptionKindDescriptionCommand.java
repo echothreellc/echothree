@@ -87,13 +87,13 @@ public class EditSubscriptionKindDescriptionCommand
 
     @Override
     public SubscriptionKindDescription getEntity(EditSubscriptionKindDescriptionResult result) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKindDescription subscriptionKindDescription = null;
         String subscriptionKindName = spec.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
 
         if(subscriptionKind != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSubscriptionKindDescriptionCommand
 
     @Override
     public void fillInResult(EditSubscriptionKindDescriptionResult result, SubscriptionKindDescription subscriptionKindDescription) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
 
         result.setSubscriptionKindDescription(subscriptionControl.getSubscriptionKindDescriptionTransfer(getUserVisit(), subscriptionKindDescription));
     }
@@ -136,7 +136,7 @@ public class EditSubscriptionKindDescriptionCommand
 
     @Override
     public void doUpdate(SubscriptionKindDescription subscriptionKindDescription) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKindDescriptionValue subscriptionKindDescriptionValue = subscriptionControl.getSubscriptionKindDescriptionValue(subscriptionKindDescription);
 
         subscriptionKindDescriptionValue.setDescription(edit.getDescription());

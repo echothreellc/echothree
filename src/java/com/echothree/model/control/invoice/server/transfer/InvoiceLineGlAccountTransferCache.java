@@ -34,7 +34,7 @@ public class InvoiceLineGlAccountTransferCache
     public InvoiceLineGlAccountTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
         super(userVisit, invoiceControl);
 
-        accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        accountingControl = Session.getModelController(AccountingControl.class);
     }
 
     public InvoiceLineGlAccountTransfer getInvoiceLineGlAccountTransfer(InvoiceLineGlAccount invoiceLineGlAccount) {

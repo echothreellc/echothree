@@ -93,7 +93,7 @@ public class GetUserLoginCommand
             } else if(partyName != null) {
                 party = PartyLogic.getInstance().getPartyByName(this, partyName);
             } else {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.Party.name());
 

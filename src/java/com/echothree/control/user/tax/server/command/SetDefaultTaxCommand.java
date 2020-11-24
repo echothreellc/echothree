@@ -48,7 +48,7 @@ public class SetDefaultTaxCommand
     
     @Override
     protected BaseResult execute() {
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
         String taxName = form.getTaxName();
         TaxDetailValue taxDetailValue = taxControl.getTaxDetailValueByNameForUpdate(taxName);
         

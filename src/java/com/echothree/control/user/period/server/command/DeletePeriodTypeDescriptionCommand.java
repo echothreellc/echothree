@@ -68,7 +68,7 @@ public class DeletePeriodTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         String periodKindName = form.getPeriodKindName();
         PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
         
@@ -77,7 +77,7 @@ public class DeletePeriodTypeDescriptionCommand
             PeriodType periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
             
             if(periodType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

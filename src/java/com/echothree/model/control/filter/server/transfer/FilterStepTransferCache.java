@@ -41,7 +41,7 @@ public class FilterStepTransferCache
     public FilterStepTransferCache(UserVisit userVisit, FilterControl filterControl) {
         super(userVisit, filterControl);
         
-        selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        selectorControl = Session.getModelController(SelectorControl.class);
         
         Set<String> options = session.getOptions();
         if(options != null) {

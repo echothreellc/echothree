@@ -104,14 +104,14 @@ public class EditUseNameElementCommand
     
     @Override
     public void fillInResult(EditUseNameElementResult result, UseNameElement useNameElement) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         
         result.setUseNameElement(useNameElementControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
     }
     
     @Override
     public void doLock(UseNameElementEdit edit, UseNameElement useNameElement) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
         UseNameElementDetail useNameElementDetail = useNameElement.getLastDetail();
         
@@ -127,7 +127,7 @@ public class EditUseNameElementCommand
         
     @Override
     public void canUpdate(UseNameElement useNameElement) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         String useNameElementName = edit.getUseNameElementName();
         UseNameElement duplicateUseNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
 
@@ -138,7 +138,7 @@ public class EditUseNameElementCommand
     
     @Override
     public void doUpdate(UseNameElement useNameElement) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var partyPK = getPartyPK();
         UseNameElementDetailValue useNameElementDetailValue = useNameElementControl.getUseNameElementDetailValueForUpdate(useNameElement);
         UseNameElementDescription useNameElementDescription = useNameElementControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());

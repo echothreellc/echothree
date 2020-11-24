@@ -64,7 +64,7 @@ public class GetShipmentTimeTypesCommand
 
     @Override
     protected BaseResult execute() {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         GetShipmentTimeTypesResult result = ShipmentResultFactory.getGetShipmentTimeTypesResult();
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);

@@ -63,7 +63,7 @@ public class GetUseChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         GetUseChoicesResult result = OfferResultFactory.getGetUseChoicesResult();
         String defaultUseChoice = form.getDefaultUseChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

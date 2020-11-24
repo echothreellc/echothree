@@ -2034,7 +2034,7 @@ public class ItemControl
     }
     
     public void deleteItemUnitOfMeasureType(ItemUnitOfMeasureType itemUnitOfMeasureType, BasePK deletedBy) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         Item item = itemUnitOfMeasureType.getItem();
         UnitOfMeasureType unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
         
@@ -2646,7 +2646,7 @@ public class ItemControl
     }
     
     public void deleteItemAliasType(ItemAliasType itemAliasType, BasePK deletedBy) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         
         List<Vendor> vendors = vendorControl.getVendorsByDefaultItemAliasTypeForUpdate(itemAliasType);
         vendors.stream().map((vendor) -> vendorControl.getVendorValue(vendor)).map((vendorValue) -> {
@@ -5527,7 +5527,7 @@ public class ItemControl
     }
     
     public void deleteItemPrice(ItemPrice itemPrice, BasePK deletedBy) {
-        var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+        var offerItemControl = Session.getModelController(OfferItemControl.class);
         Item item = itemPrice.getItem();
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
         
@@ -11280,7 +11280,7 @@ public class ItemControl
     // --------------------------------------------------------------------------------
 
     public List<ItemResultTransfer> getItemResultTransfers(UserVisitSearch userVisitSearch) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var itemResultTransfers = new ArrayList<ItemResultTransfer>(searchControl.countSearchResults(userVisitSearch));;
         var includeItem = false;
 
@@ -11295,7 +11295,7 @@ public class ItemControl
         }
 
         try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
 
             while(rs.next()) {
                 var item = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -11311,11 +11311,11 @@ public class ItemControl
     }
 
     public List<ItemResultObject> getItemResultObjects(UserVisitSearch userVisitSearch) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var itemResultObjects = new ArrayList<ItemResultObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
 
             while(rs.next()) {
                 var item = itemControl.getItemByPK(new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));

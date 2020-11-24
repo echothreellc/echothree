@@ -60,7 +60,7 @@ public class GetChainKindsCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         GetChainKindsResult result = ChainResultFactory.getGetChainKindsResult();
         
         result.setChainKinds(chainControl.getChainKindTransfers(getUserVisit()));

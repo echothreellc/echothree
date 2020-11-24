@@ -90,7 +90,7 @@ public class EditVendorItemCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         EditVendorItemResult result = VendorResultFactory.getEditVendorItemResult();
         String vendorName = spec.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
@@ -137,7 +137,7 @@ public class EditVendorItemCommand
                         CancellationPolicy cancellationPolicy = null;
                         
                         if(cancellationPolicyName != null) {
-                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
                             
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -148,7 +148,7 @@ public class EditVendorItemCommand
                             ReturnPolicy returnPolicy = null;
                             
                             if(returnPolicyName != null) {
-                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
                                 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);

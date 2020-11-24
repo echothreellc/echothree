@@ -60,13 +60,13 @@ public class GetPartyInventoryLevelCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         GetPartyInventoryLevelResult result = InventoryResultFactory.getGetPartyInventoryLevelResult();
         Party party = getParty(form);
         
         if(party != null) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByName(itemName);
             UserVisit userVisit = getUserVisit();
@@ -76,7 +76,7 @@ public class GetPartyInventoryLevelCommand
             } else if(form.getCompanyName() != null) {
                 result.setCompany(partyControl.getCompanyTransfer(userVisit, party));
             } else if(form.getWarehouseName() != null) {
-                var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+                var warehouseControl = Session.getModelController(WarehouseControl.class);
                 
                 result.setWarehouse(warehouseControl.getWarehouseTransfer(userVisit, party));
             }

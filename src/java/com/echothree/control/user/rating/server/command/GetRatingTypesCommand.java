@@ -66,7 +66,7 @@ public class GetRatingTypesCommand
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
-                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = Session.getModelController(RatingControl.class);
                 
                 result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
                 result.setRatingTypes(ratingControl.getRatingTypeTransfers(userVisit, entityType));

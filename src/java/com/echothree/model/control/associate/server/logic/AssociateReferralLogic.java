@@ -48,7 +48,7 @@ public class AssociateReferralLogic
         AssociateReferral associateReferral;
 
         if(associateName != null) {
-            var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+            var associateControl = Session.getModelController(AssociateControl.class);
             var associateProgramName = spec.getAssociateProgramName();
             var associateProgram = associateProgramName == null ? associateControl.getDefaultAssociateProgram() :
                 associateControl.getAssociateProgramByName(associateProgramName);
@@ -67,7 +67,7 @@ public class AssociateReferralLogic
                                 associateProgram.getLastDetail().getAssociateProgramName(),
                                 associate.getLastDetail().getAssociateName(), associatePartyContactMechanismName);
                     } else {
-                        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                        var coreControl = Session.getModelController(CoreControl.class);
 
                         associateReferral = associateControl.createAssociateReferral(associate, associatePartyContactMechanism,
                                 coreControl.getEntityInstanceByBasePK(targetPK), session.START_TIME_LONG, partyPK);

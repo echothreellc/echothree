@@ -68,13 +68,13 @@ public class GetSubscriptionKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         GetSubscriptionKindDescriptionResult result = SubscriptionResultFactory.getGetSubscriptionKindDescriptionResult();
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

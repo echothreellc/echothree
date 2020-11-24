@@ -65,7 +65,7 @@ public class CreateGlResourceTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String glResourceTypeName = form.getGlResourceTypeName();
         GlResourceType glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
         

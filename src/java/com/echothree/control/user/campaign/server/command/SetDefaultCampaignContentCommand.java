@@ -62,7 +62,7 @@ public class SetDefaultCampaignContentCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String campaignContentName = form.getCampaignContentName();
         CampaignContentDetailValue campaignContentDetailValue = campaignControl.getCampaignContentDetailValueByNameForUpdate(campaignContentName);
         

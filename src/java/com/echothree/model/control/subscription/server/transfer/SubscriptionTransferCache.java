@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class SubscriptionTransferCache
         extends BaseSubscriptionTransferCache<Subscription, SubscriptionTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of SubscriptionTransferCache */
     public SubscriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {

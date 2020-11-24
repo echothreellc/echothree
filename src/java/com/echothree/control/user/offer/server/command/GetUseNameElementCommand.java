@@ -80,7 +80,7 @@ public class GetUseNameElementCommand
     
     @Override
     protected BaseResult getTransfer(UseNameElement useNameElement) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         GetUseNameElementResult result = OfferResultFactory.getGetUseNameElementResult();
 
         if(useNameElement != null) {

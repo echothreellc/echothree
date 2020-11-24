@@ -100,8 +100,8 @@ public class UnitOfMeasureKindUseTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -111,7 +111,7 @@ public class UnitOfMeasureKindUseTypeObject
     @GraphQLDescription("unit of measure kind uses")
     public List<UnitOfMeasureKindUseObject> getUnitOfMeasureKindUses(final DataFetchingEnvironment env) {
         if(getHasUnitOfMeasureKindUsesAccess(env)) {
-            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = Session.getModelController(UomControl.class);
             List<UnitOfMeasureKindUse> entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
             List<UnitOfMeasureKindUseObject> unitOfMeasureKindUses = new ArrayList<>(entities.size());
             
@@ -129,7 +129,7 @@ public class UnitOfMeasureKindUseTypeObject
     @GraphQLDescription("unit of measure kind use count")
     public Long getUnitOfMeasureKindUseCount(final DataFetchingEnvironment env) {
         if(getHasUnitOfMeasureKindUsesAccess(env)) {
-            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = Session.getModelController(UomControl.class);
 
             return uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
         } else {

@@ -98,7 +98,7 @@ public class EditPartyInventoryLevelCommand
         Party party = null;
 
         if(partyName != null || companyName != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
 
             if(partyName != null) {
                 party = partyControl.getPartyByName(partyName);
@@ -124,7 +124,7 @@ public class EditPartyInventoryLevelCommand
                 }
             }
         } else if(warehouseName != null) {
-            var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
             Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
 
             if(warehouse != null) {
@@ -156,7 +156,7 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public PartyInventoryLevel getEntity(EditPartyInventoryLevelResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         PartyInventoryLevel partyInventoryLevel = null;
         Party party = getParty(spec);
 
@@ -178,7 +178,7 @@ public class EditPartyInventoryLevelCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                    var inventoryControl = Session.getModelController(InventoryControl.class);
                     String inventoryConditionName = spec.getInventoryConditionName();
                     InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
@@ -211,14 +211,14 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void fillInResult(EditPartyInventoryLevelResult result, PartyInventoryLevel partyInventoryLevel) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
 
         result.setPartyInventoryLevel(inventoryControl.getPartyInventoryLevelTransfer(getUserVisit(), partyInventoryLevel));
     }
 
     @Override
     public void doLock(PartyInventoryLevelEdit edit, PartyInventoryLevel partyInventoryLevel) {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
 
         minimumInventory = partyInventoryLevel.getMinimumInventory();
         Conversion minimumInventoryConversion = minimumInventory == null ? null : new Conversion(uomControl, unitOfMeasureKind, minimumInventory).convertToHighestUnitOfMeasureType();
@@ -267,7 +267,7 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void doUpdate(PartyInventoryLevel partyInventoryLevel) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         PartyInventoryLevelValue partyInventoryLevelValue = inventoryControl.getPartyInventoryLevelValue(partyInventoryLevel);
 
         partyInventoryLevelValue.setMinimumInventory(minimumInventory);

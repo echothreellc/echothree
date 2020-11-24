@@ -65,7 +65,7 @@ public class GetPartyEntityTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyEntityTypesResult result = CoreResultFactory.getGetPartyEntityTypesResult();
         String partyName = form.getPartyName();
         Party party = partyName == null? getParty(): partyControl.getPartyByName(partyName);

@@ -89,7 +89,7 @@ public class EditPartySecurityRoleTemplateCommand
     
     @Override
     public PartySecurityRoleTemplate getEntity(EditPartySecurityRoleTemplateResult result) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplate partySecurityRoleTemplate = null;
         String partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
 
@@ -115,14 +115,14 @@ public class EditPartySecurityRoleTemplateCommand
     
     @Override
     public void fillInResult(EditPartySecurityRoleTemplateResult result, PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         
         result.setPartySecurityRoleTemplate(securityControl.getPartySecurityRoleTemplateTransfer(getUserVisit(), partySecurityRoleTemplate));
     }
     
     @Override
     public void doLock(PartySecurityRoleTemplateEdit edit, PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, getPreferredLanguage());
         PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
         
@@ -137,7 +137,7 @@ public class EditPartySecurityRoleTemplateCommand
         
     @Override
     public void canUpdate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         String partySecurityRoleTemplateName = edit.getPartySecurityRoleTemplateName();
         PartySecurityRoleTemplate duplicatePartySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
 
@@ -148,7 +148,7 @@ public class EditPartySecurityRoleTemplateCommand
     
     @Override
     public void doUpdate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         var partyPK = getPartyPK();
         PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueForUpdate(partySecurityRoleTemplate);
         PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = securityControl.getPartySecurityRoleTemplateDescriptionForUpdate(partySecurityRoleTemplate, getPreferredLanguage());

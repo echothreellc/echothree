@@ -51,7 +51,7 @@ public class CreateSelectorComparisonTypeCommand
     @Override
     protected BaseResult execute() {
         String selectorComparisonTypeName = form.getSelectorComparisonTypeName();
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorComparisonType selectorComparisonType = selectorControl.getSelectorComparisonTypeByName(selectorComparisonTypeName);
         
         if(selectorComparisonType == null) {

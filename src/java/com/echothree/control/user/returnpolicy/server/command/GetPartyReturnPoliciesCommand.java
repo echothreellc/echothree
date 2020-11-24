@@ -69,7 +69,7 @@ public class GetPartyReturnPoliciesCommand
 
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         GetPartyReturnPoliciesResult result = ReturnPolicyResultFactory.getGetPartyReturnPoliciesResult();
         String partyName = form.getPartyName();
         String returnKindName = form.getReturnKindName();
@@ -78,7 +78,7 @@ public class GetPartyReturnPoliciesCommand
 
         if(parameterCount == 1) {
             if(partyName != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {

@@ -109,7 +109,7 @@ public class EditCarrierOptionCommand
 
     @Override
     public CarrierOption getEntity(EditCarrierOptionResult result) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierOption carrierOption = null;
         String carrierName = spec.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
@@ -144,7 +144,7 @@ public class EditCarrierOptionCommand
 
     @Override
     public void fillInResult(EditCarrierOptionResult result, CarrierOption carrierOption) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
 
         result.setCarrierOption(carrierControl.getCarrierOptionTransfer(getUserVisit(), carrierOption));
     }
@@ -160,7 +160,7 @@ public class EditCarrierOptionCommand
 
     @Override
     public void doLock(CarrierOptionEdit edit, CarrierOption carrierOption) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierOptionDescription carrierOptionDescription = carrierControl.getCarrierOptionDescription(carrierOption, getPreferredLanguage());
         CarrierOptionDetail carrierOptionDetail = carrierOption.getLastDetail();
 
@@ -194,12 +194,12 @@ public class EditCarrierOptionCommand
 
     @Override
     public void canUpdate(CarrierOption carrierOption) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         String carrierOptionName = edit.getCarrierOptionName();
         CarrierOption duplicateCarrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
 
         if(duplicateCarrierOption == null || carrierOption.equals(duplicateCarrierOption)) {
-            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            var selectorControl = Session.getModelController(SelectorControl.class);
             SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
 
             if(selectorKind != null) {
@@ -339,7 +339,7 @@ public class EditCarrierOptionCommand
 
     @Override
     public void doUpdate(CarrierOption carrierOption) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
         CarrierOptionDetailValue carrierOptionDetailValue = carrierControl.getCarrierOptionDetailValueForUpdate(carrierOption);
         CarrierOptionDescription carrierOptionDescription = carrierControl.getCarrierOptionDescriptionForUpdate(carrierOption, getPreferredLanguage());

@@ -89,7 +89,7 @@ public class EditCampaignCommand
 
     @Override
     public Campaign getEntity(EditCampaignResult result) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         Campaign campaign;
         String campaignName = spec.getCampaignName();
 
@@ -113,14 +113,14 @@ public class EditCampaignCommand
 
     @Override
     public void fillInResult(EditCampaignResult result, Campaign campaign) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
 
         result.setCampaign(campaignControl.getCampaignTransfer(getUserVisit(), campaign));
     }
 
     @Override
     public void doLock(CampaignEdit edit, Campaign campaign) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignDescription campaignDescription = campaignControl.getCampaignDescription(campaign, getPreferredLanguage());
         CampaignDetail campaignDetail = campaign.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditCampaignCommand
 
     @Override
     public void canUpdate(Campaign campaign) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String value = edit.getValue();
         Campaign duplicateCampaign = campaignControl.getCampaignByValue(value);
 
@@ -146,7 +146,7 @@ public class EditCampaignCommand
 
     @Override
     public void doUpdate(Campaign campaign) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
         CampaignDetailValue campaignDetailValue = campaignControl.getCampaignDetailValueForUpdate(campaign);
         CampaignDescription campaignDescription = campaignControl.getCampaignDescriptionForUpdate(campaign, getPreferredLanguage());

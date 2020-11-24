@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class CachedSelector {
     
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
     Selector selector;
     

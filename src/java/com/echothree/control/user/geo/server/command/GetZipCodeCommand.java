@@ -68,7 +68,7 @@ public class GetZipCodeCommand
     
     @Override
     protected GeoCode getEntity() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
 
         var countryGeoCodeName = form.getCountryGeoCodeName();
@@ -107,7 +107,7 @@ public class GetZipCodeCommand
         var result = GeoResultFactory.getGetZipCodeResult();
 
         if(entity != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
 
             result.setPostalCode(geoControl.getPostalCodeTransfer(getUserVisit(), entity));
         }

@@ -53,12 +53,12 @@ public class CreateCommunicationEventPurposeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = Session.getModelController(CommunicationControl.class);
         String communicationEventPurposeName = form.getCommunicationEventPurposeName();
         CommunicationEventPurpose communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
         
         if(communicationEventPurpose != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

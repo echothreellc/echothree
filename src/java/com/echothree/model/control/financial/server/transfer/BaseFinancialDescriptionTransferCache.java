@@ -32,7 +32,7 @@ public abstract class BaseFinancialDescriptionTransferCache<K extends BaseEntity
     protected BaseFinancialDescriptionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
         super(userVisit, financialControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

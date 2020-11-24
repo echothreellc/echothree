@@ -44,7 +44,7 @@ public class TermLogic
     }
     
     public Term getTermByName(final ExecutionErrorAccumulator eea, final String termName) {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         var term = termControl.getTermByName(termName);
 
         if(term == null) {
@@ -55,7 +55,7 @@ public class TermLogic
     }
     
     public PartyTerm getPartyTerm(final ExecutionErrorAccumulator eea, final Party party) {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         var partyTerm = termControl.getPartyTerm(party);
 
         if(partyTerm == null) {
@@ -66,7 +66,7 @@ public class TermLogic
     }
     
     public Term getDefaultTerm(final ExecutionErrorAccumulator eea) {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         var term = termControl.getDefaultTerm();
 
         if(term == null) {

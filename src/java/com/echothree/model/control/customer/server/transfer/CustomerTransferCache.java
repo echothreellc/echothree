@@ -82,27 +82,27 @@ import java.util.Set;
 public class CustomerTransferCache
         extends BaseCustomerTransferCache<Party, CustomerTransfer> {
 
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-    CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
-    CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-    InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
-    PartyFreeOnBoardControl partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
-    PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-    ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-    ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-    SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
-    TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
-    UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    BillingControl billingControl = Session.getModelController(BillingControl.class);
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    PartyPaymentMethodControl partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
+    PartyFreeOnBoardControl partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+    TermControl termControl = Session.getModelController(TermControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

@@ -57,7 +57,7 @@ public class GetSecurityRoleResultsCommand
     @Override
     protected BaseResult execute() {
         GetSecurityRoleResultsResult result = SearchResultFactory.getGetSecurityRoleResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SECURITY_ROLE);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetSecurityRoleResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var securityRoleControl = (SecurityRoleControl)Session.getModelController(SecurityRoleControl.class);
+                    var securityRoleControl = Session.getModelController(SecurityRoleControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setSecurityRoleResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

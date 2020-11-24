@@ -48,7 +48,7 @@ public class GetFilterAdjustmentTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         GetFilterAdjustmentTypeChoicesResult result = FilterResultFactory.getGetFilterAdjustmentTypeChoicesResult();
         String defaultFilterAdjustmentTypeChoice = form.getDefaultFilterAdjustmentTypeChoice();
         

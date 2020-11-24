@@ -25,7 +25,7 @@ public final class NameCleaner
 
     /** Creates a new instance of NameCleaner */
     public NameCleaner() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
 
         loadPersonalTitles(partyControl);
         loadNameSuffixes(partyControl);

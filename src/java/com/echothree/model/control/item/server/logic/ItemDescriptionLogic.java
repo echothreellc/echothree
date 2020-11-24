@@ -80,7 +80,7 @@ public class ItemDescriptionLogic
     }
 
     public String getIndexDefaultItemDescriptionTypeName() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescriptionType itemDescriptionType = itemControl.getIndexDefaultItemDescriptionType();
         
         return itemDescriptionType.getLastDetail().getItemDescriptionTypeName();
@@ -123,8 +123,8 @@ public class ItemDescriptionLogic
     
     // Find the first available parent ItemDescription based on the Party's preferred Language.
     public ItemDescription getBestParent(final ItemDescriptionType itemDescriptionType, final Item item, final Party party) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         Language language = party == null ? partyControl.getDefaultLanguage() : partyControl.getPreferredLanguage(party);
         
         return getBestParent(itemControl, itemDescriptionType, item, language);
@@ -133,7 +133,7 @@ public class ItemDescriptionLogic
     // Find the first available parent ItemDescription based on the Party's preferred Language.
     public ItemDescription getBestParentUsingNames(final ExecutionErrorAccumulator eea, final String itemDescriptionTypeName, final Item item,
             final Party party) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
         if(itemDescriptionType == null) {
@@ -152,7 +152,7 @@ public class ItemDescriptionLogic
             MimeType mimeType = itemDescription.getLastDetail().getMimeType();
             
             if(mimeType == null) {
-                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = Session.getModelController(ItemControl.class);
                 ItemStringDescription itemStringDescription = itemControl.getItemStringDescription(itemDescription);
 
                 stringDescription = itemStringDescription.getStringDescription();
@@ -296,7 +296,7 @@ public class ItemDescriptionLogic
     }
 
     public ItemDescription searchForItemDescription(ItemDescriptionType itemDescriptionType, Item item, Language language, BasePK createdBy) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
 
         if(isImage(itemDescriptionType)) {
@@ -482,7 +482,7 @@ public class ItemDescriptionLogic
     }
 
     public void deleteItemImageDescriptionChildren(ItemDescriptionType itemDescriptionType, Item item, Language language, BasePK deletedBy) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         List<ItemDescriptionType> childItemDescriptionTypes = itemControl.getItemDescriptionTypesByParentItemDescriptionType(itemDescriptionType);
 
         childItemDescriptionTypes.stream().forEach((childItemDescriptionType) -> {
@@ -512,7 +512,7 @@ public class ItemDescriptionLogic
     }
 
     public void deleteItemDescription(ItemDescription itemDescription, BasePK deletedBy) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         MimeTypeUsageType mimeTypeUsageType = itemDescription.getLastDetail().getItemDescriptionType().getLastDetail().getMimeTypeUsageType();
 
         itemControl.deleteItemDescription(itemDescription, deletedBy);
@@ -527,7 +527,7 @@ public class ItemDescriptionLogic
     }
     
     public void updateItemImageDescriptionTypeFromValue(ItemImageDescriptionTypeValue itemImageDescriptionTypeValue, BasePK updatedBy) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         itemControl.updateItemImageDescriptionTypeFromValue(itemImageDescriptionTypeValue, updatedBy);
 
@@ -539,7 +539,7 @@ public class ItemDescriptionLogic
     }
 
     public void updateItemImageTypeFromValue(ItemImageTypeDetailValue itemImageTypeDetailValue, BasePK updatedBy) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         itemControl.updateItemImageTypeFromValue(itemImageTypeDetailValue, updatedBy);
 

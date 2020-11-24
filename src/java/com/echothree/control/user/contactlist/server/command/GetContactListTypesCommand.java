@@ -60,7 +60,7 @@ public class GetContactListTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         GetContactListTypesResult result = ContactListResultFactory.getGetContactListTypesResult();
         
         result.setContactListTypes(contactListControl.getContactListTypeTransfers(getUserVisit()));

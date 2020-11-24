@@ -67,12 +67,12 @@ public class CreateCampaignSourceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String campaignSourceName = form.getCampaignSourceName();
         CampaignSource campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
         
         if(campaignSource != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

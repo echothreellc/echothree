@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class ChainInstanceStatusTransferCache
         extends BaseChainTransferCache<ChainInstanceStatus, ChainInstanceStatusTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of ChainInstanceStatusTransferCache */
     public ChainInstanceStatusTransferCache(UserVisit userVisit, ChainControl chainControl) {

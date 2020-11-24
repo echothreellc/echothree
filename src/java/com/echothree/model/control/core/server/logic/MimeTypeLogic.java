@@ -44,7 +44,7 @@ public class MimeTypeLogic
     }
     
     public MimeType getMimeTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeName) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
@@ -55,7 +55,7 @@ public class MimeTypeLogic
     }
     
     public MimeTypeUsageType getMimeTypeUsageTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeUsageTypeName) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
         if(mimeTypeUsageType == null) {
@@ -66,7 +66,7 @@ public class MimeTypeLogic
     }
     
     public MimeTypeUsage getMimeTypeUsage(final ExecutionErrorAccumulator eea, final MimeType mimeType, final MimeTypeUsageType mimeTypeUsageType) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
         if(mimeTypeUsage == null) {
@@ -83,7 +83,7 @@ public class MimeTypeLogic
         int parameterCount = (mimeTypeName == null? 0: 1) + (value == null? 0: 1);
         
         if(parameterCount == 2) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             
             mimeType = mimeTypeName == null? null: coreControl.getMimeTypeByName(mimeTypeName);
             

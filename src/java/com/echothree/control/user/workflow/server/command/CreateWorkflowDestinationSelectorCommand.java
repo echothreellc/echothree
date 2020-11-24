@@ -71,7 +71,7 @@ public class CreateWorkflowDestinationSelectorCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
         
@@ -87,7 +87,7 @@ public class CreateWorkflowDestinationSelectorCommand
                     WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                     
                     if(workflowDestination != null) {
-                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                        var selectorControl = Session.getModelController(SelectorControl.class);
                         String selectorName = form.getSelectorName();
                         Selector selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
                         

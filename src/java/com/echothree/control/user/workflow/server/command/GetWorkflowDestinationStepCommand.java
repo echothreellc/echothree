@@ -82,7 +82,7 @@ public class GetWorkflowDestinationStepCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationStepResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowDestinationStep(workflowControl.getWorkflowDestinationStepTransfer(getUserVisit(), entity));
         }

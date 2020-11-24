@@ -88,7 +88,7 @@ public class EditTransactionEntityRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         EditTransactionEntityRoleTypeResult result = AccountingResultFactory.getEditTransactionEntityRoleTypeResult();
         String transactionTypeName = spec.getTransactionTypeName();
         TransactionType transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);

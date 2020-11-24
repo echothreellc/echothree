@@ -65,7 +65,7 @@ public class ContentCatalogItemObject
     private ContentCatalogItemFixedPrice getContentCatalogItemFixedPrice() {
         if(contentCatalogItemFixedPrice == null) {
             if(getItemPriceTypeName().equals(ItemPriceTypes.FIXED.name())) {
-                var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+                var contentControl = Session.getModelController(ContentControl.class);
 
                 contentCatalogItemFixedPrice = contentControl.getContentCatalogItemFixedPrice(contentCatalogItem);
             }
@@ -79,7 +79,7 @@ public class ContentCatalogItemObject
     private ContentCatalogItemVariablePrice getContentCatalogItemVariablePrice() {
         if(contentCatalogItemVariablePrice == null) {
             if(getItemPriceTypeName().equals(ItemPriceTypes.VARIABLE.name())) {
-                var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+                var contentControl = Session.getModelController(ContentControl.class);
 
                 contentCatalogItemVariablePrice = contentControl.getContentCatalogItemVariablePrice(contentCatalogItem);
             }

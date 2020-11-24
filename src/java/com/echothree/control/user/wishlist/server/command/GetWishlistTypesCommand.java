@@ -47,7 +47,7 @@ public class GetWishlistTypesCommand
     @Override
     protected BaseResult execute() {
         GetWishlistTypesResult result = WishlistResultFactory.getGetWishlistTypesResult();
-        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = Session.getModelController(WishlistControl.class);
         
         result.setWishlistTypes(wishlistControl.getWishlistTypeTransfers(getUserVisit()));
         

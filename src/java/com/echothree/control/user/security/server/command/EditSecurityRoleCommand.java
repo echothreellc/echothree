@@ -93,7 +93,7 @@ public class EditSecurityRoleCommand
     
     @Override
     public SecurityRole getEntity(EditSecurityRoleResult result) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRole securityRole = null;
         String securityRoleGroupName = spec.getSecurityRoleGroupName();
         
@@ -127,14 +127,14 @@ public class EditSecurityRoleCommand
     
     @Override
     public void fillInResult(EditSecurityRoleResult result, SecurityRole securityRole) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         
         result.setSecurityRole(securityControl.getSecurityRoleTransfer(getUserVisit(), securityRole));
     }
     
     @Override
     public void doLock(SecurityRoleEdit edit, SecurityRole securityRole) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleDescription securityRoleDescription = securityControl.getSecurityRoleDescription(securityRole, getPreferredLanguage());
         SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
 
@@ -149,7 +149,7 @@ public class EditSecurityRoleCommand
     
     @Override
     public void canUpdate(SecurityRole securityRole) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         String securityRoleName = edit.getSecurityRoleName();
         SecurityRole duplicateSecurityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
@@ -160,7 +160,7 @@ public class EditSecurityRoleCommand
     
     @Override
     public void doUpdate(SecurityRole securityRole) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         var partyPK = getPartyPK();
         SecurityRoleDetailValue securityRoleDetailValue = securityControl.getSecurityRoleDetailValueForUpdate(securityRole);
         SecurityRoleDescription securityRoleDescription = securityControl.getSecurityRoleDescriptionForUpdate(securityRole, getPreferredLanguage());

@@ -64,7 +64,7 @@ public class GetFilterTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         GetFilterTypesResult result = FilterResultFactory.getGetFilterTypesResult();
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);

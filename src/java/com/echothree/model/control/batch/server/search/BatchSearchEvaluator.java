@@ -140,7 +140,7 @@ public class BatchSearchEvaluator
                 }
             }
         } else {
-            var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+            var batchControl = Session.getModelController(BatchControl.class);
             Batch batch = null;
 
             if(parameterCount == 1) {

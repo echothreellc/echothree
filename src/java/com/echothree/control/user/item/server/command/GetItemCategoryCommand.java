@@ -74,7 +74,7 @@ public class GetItemCategoryCommand
     
     @Override
     protected ItemCategory getEntity() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = null;
         String itemCategoryName = form.getItemCategoryName();
         int parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -103,7 +103,7 @@ public class GetItemCategoryCommand
     
     @Override
     protected BaseResult getTransfer(ItemCategory itemCategory) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemCategoryResult result = ItemResultFactory.getGetItemCategoryResult();
 
         if(itemCategory != null) {

@@ -84,7 +84,7 @@ public class EditCommandDescriptionCommand
             Command command = coreControl.getCommandByName(componentVendor, commandName);
 
             if(command != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

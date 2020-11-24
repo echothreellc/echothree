@@ -53,7 +53,7 @@ public class GetFilterAdjustmentAmountsCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         GetFilterAdjustmentAmountsResult result = FilterResultFactory.getGetFilterAdjustmentAmountsResult();
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);

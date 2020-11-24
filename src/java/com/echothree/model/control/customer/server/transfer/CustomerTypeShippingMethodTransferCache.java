@@ -37,7 +37,7 @@ public class CustomerTypeShippingMethodTransferCache
         CustomerTypeShippingMethodTransfer customerTypeShippingMethodTransfer = get(customerTypeShippingMethod);
         
         if(customerTypeShippingMethodTransfer == null) {
-            ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+            ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
             CustomerTypeTransfer customerType = customerControl.getCustomerTypeTransfer(userVisit, customerTypeShippingMethod.getCustomerType());
             ShippingMethodTransfer shippingMethod = shippingControl.getShippingMethodTransfer(userVisit, customerTypeShippingMethod.getShippingMethod());
             Integer defaultSelectionPriority = customerTypeShippingMethod.getDefaultSelectionPriority();

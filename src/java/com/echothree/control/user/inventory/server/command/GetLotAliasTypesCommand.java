@@ -60,7 +60,7 @@ public class GetLotAliasTypesCommand
 
     @Override
     protected BaseResult execute() {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         GetLotAliasTypesResult result = InventoryResultFactory.getGetLotAliasTypesResult();
 
         result.setLotAliasTypes(lotAliasControl.getLotAliasTypeTransfers(getUserVisit()));

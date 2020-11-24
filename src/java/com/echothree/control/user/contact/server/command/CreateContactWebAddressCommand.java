@@ -87,14 +87,14 @@ public class CreateContactWebAddressCommand
     @Override
     protected BaseResult execute() {
         CreateContactWebAddressResult result = ContactResultFactory.getCreateContactWebAddressResult();
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = Session.getModelController(ContactControl.class);
                             var coreControl = getCoreControl();
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             BasePK createdBy = getPartyPK();
             String url = form.getUrl();
             var description = form.getDescription();

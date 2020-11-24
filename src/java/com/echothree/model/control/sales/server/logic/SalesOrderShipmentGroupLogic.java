@@ -55,7 +55,7 @@ public class SalesOrderShipmentGroupLogic
      */
     public void checkCustomerTypeShippingMethod(final ExecutionErrorAccumulator eea, final CustomerType customerType,
             final ShippingMethod shippingMethod) {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
 
         if(!customerControl.getCustomerTypeShippingMethodExists(customerType, shippingMethod)
                 && customerControl.countCustomerTypeShippingMethodsByCustomerType(customerType) != 0) {

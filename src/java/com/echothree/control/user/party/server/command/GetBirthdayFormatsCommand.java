@@ -61,7 +61,7 @@ public class GetBirthdayFormatsCommand
     @Override
     protected BaseResult execute() {
         GetBirthdayFormatsResult result = PartyResultFactory.getGetBirthdayFormatsResult();
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         result.setBirthdayFormats(partyControl.getBirthdayFormatTransfers(getUserVisit()));
         

@@ -33,7 +33,7 @@ import java.util.Set;
 public class TransactionTransferCache
         extends BaseAccountingTransferCache<Transaction, TransactionTransfer> {
 
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeTransactionGlEntries;
     boolean includeTransactionEntityRoles;
     

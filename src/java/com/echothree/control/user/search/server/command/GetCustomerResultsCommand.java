@@ -72,7 +72,7 @@ public class GetCustomerResultsCommand
         UserVisitSearch userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchConstants.SearchKind_CUSTOMER, searchTypeName);
         
         if(!hasExecutionErrors()) {
-            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = Session.getModelController(CustomerControl.class);
 
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                 result.setCustomerResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

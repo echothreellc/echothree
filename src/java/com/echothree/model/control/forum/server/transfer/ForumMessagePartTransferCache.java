@@ -51,8 +51,8 @@ public class ForumMessagePartTransferCache
     public ForumMessagePartTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
         
         Set<String> options = session.getOptions();
         if(options != null) {

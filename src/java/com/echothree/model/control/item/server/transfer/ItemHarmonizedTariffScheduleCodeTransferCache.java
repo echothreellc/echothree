@@ -33,7 +33,7 @@ import java.util.Set;
 public class ItemHarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<ItemHarmonizedTariffScheduleCode, ItemHarmonizedTariffScheduleCodeTransfer> {
     
-    GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of ItemHarmonizedTariffScheduleCodeTransferCache */
     public ItemHarmonizedTariffScheduleCodeTransferCache(UserVisit userVisit, ItemControl itemControl) {

@@ -32,7 +32,7 @@ public abstract class BaseLicenseDescriptionTransferCache<K extends BaseEntity, 
     protected BaseLicenseDescriptionTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
         super(userVisit, licenseControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

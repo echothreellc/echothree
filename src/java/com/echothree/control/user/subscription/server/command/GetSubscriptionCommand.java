@@ -51,7 +51,7 @@ public class GetSubscriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         GetSubscriptionResult result = SubscriptionResultFactory.getGetSubscriptionResult();
         String subscriptionName = form.getSubscriptionName();
         Subscription subscription = subscriptionControl.getSubscriptionByName(subscriptionName);

@@ -66,8 +66,8 @@ public class GetShippingMethodChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         GetShippingMethodChoicesResult result = ShippingResultFactory.getGetShippingMethodChoicesResult();
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentTypeName == null? null: shipmentControl.getShipmentTypeByName(shipmentTypeName);

@@ -87,13 +87,13 @@ public class EditPartyTypeContactListGroupCommand
 
     @Override
     public PartyTypeContactListGroup getEntity(EditPartyTypeContactListGroupResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyTypeContactListGroup partyTypeContactListGroup = null;
         String partyTypeName = spec.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = Session.getModelController(ContactListControl.class);
             String contactListGroupName = spec.getContactListGroupName();
             ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
@@ -124,7 +124,7 @@ public class EditPartyTypeContactListGroupCommand
 
     @Override
     public void fillInResult(EditPartyTypeContactListGroupResult result, PartyTypeContactListGroup partyTypeContactListGroup) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
 
         result.setPartyTypeContactListGroup(contactListControl.getPartyTypeContactListGroupTransfer(getUserVisit(), partyTypeContactListGroup));
     }
@@ -136,7 +136,7 @@ public class EditPartyTypeContactListGroupCommand
 
     @Override
     public void doUpdate(PartyTypeContactListGroup partyTypeContactListGroup) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         PartyTypeContactListGroupValue partyTypeContactListGroupValue = contactListControl.getPartyTypeContactListGroupValue(partyTypeContactListGroup);
 
         partyTypeContactListGroupValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));

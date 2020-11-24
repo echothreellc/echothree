@@ -77,8 +77,8 @@ public class FreeOnBoardObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

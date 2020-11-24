@@ -123,14 +123,14 @@ public class EditVendorCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         String vendorName = spec.getVendorName();
         
         if(vendorName != null) {
             Vendor vendor = vendorControl.getVendorByNameForUpdate(vendorName);
             
             if(vendor != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 
                 validator.setCurrency(partyControl.getPreferredCurrency(vendor.getParty()));
             }
@@ -149,7 +149,7 @@ public class EditVendorCommand
 
     @Override
     public Party getEntity(EditVendorResult result) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         Vendor vendor;
         var vendorName = spec.getVendorName();
 
@@ -175,15 +175,15 @@ public class EditVendorCommand
 
     @Override
     public void fillInResult(EditVendorResult result, Party party) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
 
         result.setVendor(vendorControl.getVendorTransfer(getUserVisit(), party));
     }
 
     @Override
     public void doLock(VendorEdit edit, Party party) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         var vendor = vendorControl.getVendor(party);
         var amountUtils = AmountUtils.getInstance();
         var vendorPreferredCurrency = getPreferredCurrency(party);
@@ -246,8 +246,8 @@ public class EditVendorCommand
 
     @Override
     public void canUpdate(Party party) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         var vendor = vendorControl.getVendorForUpdate(party);
         var vendorName = edit.getVendorName();
         var duplicateVendor = vendorControl.getVendorByName(vendorName);
@@ -260,7 +260,7 @@ public class EditVendorCommand
                 var cancellationPolicyName = edit.getCancellationPolicyName();
 
                 if(cancellationPolicyName != null) {
-                    var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                    var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                     var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -270,14 +270,14 @@ public class EditVendorCommand
                     var returnPolicyName = edit.getReturnPolicyName();
 
                     if(returnPolicyName != null) {
-                        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                         var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
 
                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     }
 
                     if(returnPolicyName == null || returnPolicy != null) {
-                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                        var accountingControl = Session.getModelController(AccountingControl.class);
                         var apGlAccountName = edit.getApGlAccountName();
 
                         apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
@@ -286,7 +286,7 @@ public class EditVendorCommand
                             var glAccountCategoryName = apGlAccount == null ? null : apGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                var itemControl = Session.getModelController(ItemControl.class);
                                 var defaultItemAliasTypeName = edit.getDefaultItemAliasTypeName();
 
                                 defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
@@ -353,8 +353,8 @@ public class EditVendorCommand
 
     @Override
     public void doUpdate(Party party) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         var soundex = new Soundex();
         var vendor = vendorControl.getVendorForUpdate(party);
         var vendorValue = vendorControl.getVendorValue(vendor);

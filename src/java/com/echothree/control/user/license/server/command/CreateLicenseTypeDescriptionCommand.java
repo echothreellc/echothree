@@ -67,12 +67,12 @@ public class CreateLicenseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = Session.getModelController(LicenseControl.class);
         String licenseTypeName = form.getLicenseTypeName();
         LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
         
         if(licenseType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

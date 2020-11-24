@@ -66,7 +66,7 @@ public class GetShipmentAliasTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         GetShipmentAliasTypeDescriptionsResult result = ShipmentResultFactory.getGetShipmentAliasTypeDescriptionsResult();
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);

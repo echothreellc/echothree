@@ -68,13 +68,13 @@ public class GetPrinterDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         GetPrinterDescriptionResult result = PrinterResultFactory.getGetPrinterDescriptionResult();
         String printerName = form.getPrinterName();
         Printer printer = printerControl.getPrinterByName(printerName);
         
         if(printer != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -80,7 +80,7 @@ public class EditWorkflowStepDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         EditWorkflowStepDescriptionResult result = WorkflowResultFactory.getEditWorkflowStepDescriptionResult();
         String workflowName = spec.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
@@ -90,7 +90,7 @@ public class EditWorkflowStepDescriptionCommand
             WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

@@ -59,10 +59,10 @@ public class GetPartyResponsibilitiesCommand
         int parameterCount = (partyName == null? 0: 1) + (responsibilityTypeName == null? 0: 1);
         
         if(parameterCount == 1) {
-            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = Session.getModelController(EmployeeControl.class);
             
             if(partyName != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {

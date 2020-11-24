@@ -79,13 +79,13 @@ public class EditGeoCodeLanguageCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         EditGeoCodeLanguageResult result = GeoResultFactory.getEditGeoCodeLanguageResult();
         String geoCodeName = spec.getGeoCodeName();
         GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

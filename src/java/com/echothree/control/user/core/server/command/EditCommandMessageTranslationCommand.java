@@ -84,7 +84,7 @@ public class EditCommandMessageTranslationCommand
             CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
             if(commandMessage != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

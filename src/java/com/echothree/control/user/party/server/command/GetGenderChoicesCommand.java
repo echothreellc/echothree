@@ -49,7 +49,7 @@ public class GetGenderChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetGenderChoicesResult result = PartyResultFactory.getGetGenderChoicesResult();
         String defaultGenderChoice = form.getDefaultGenderChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

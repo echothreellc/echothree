@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BaseCancellationPolicyDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseCancellationPolicyTransferCache<K, V> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseCancellationPolicyDescriptionTransferCache */
     protected BaseCancellationPolicyDescriptionTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {

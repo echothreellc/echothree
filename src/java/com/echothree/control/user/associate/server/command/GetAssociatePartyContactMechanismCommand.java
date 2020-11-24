@@ -54,7 +54,7 @@ public class GetAssociatePartyContactMechanismCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = Session.getModelController(AssociateControl.class);
         GetAssociatePartyContactMechanismResult result = AssociateResultFactory.getGetAssociatePartyContactMechanismResult();
         String associateProgramName = form.getAssociateProgramName();
         AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);

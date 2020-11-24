@@ -104,14 +104,14 @@ public class EditPaymentProcessorResultCodeCommand
     
     @Override
     public void fillInResult(EditPaymentProcessorResultCodeResult result, PaymentProcessorResultCode paymentProcessorResultCode) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         
         result.setPaymentProcessorResultCode(paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfer(getUserVisit(), paymentProcessorResultCode));
     }
     
     @Override
     public void doLock(PaymentProcessorResultCodeEdit edit, PaymentProcessorResultCode paymentProcessorResultCode) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getPreferredLanguage());
         PaymentProcessorResultCodeDetail paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetail();
         
@@ -126,7 +126,7 @@ public class EditPaymentProcessorResultCodeCommand
         
     @Override
     public void canUpdate(PaymentProcessorResultCode paymentProcessorResultCode) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         String paymentProcessorResultCodeName = edit.getPaymentProcessorResultCodeName();
         PaymentProcessorResultCode duplicatePaymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
 
@@ -137,7 +137,7 @@ public class EditPaymentProcessorResultCodeCommand
     
     @Override
     public void doUpdate(PaymentProcessorResultCode paymentProcessorResultCode) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         var partyPK = getPartyPK();
         PaymentProcessorResultCodeDetailValue paymentProcessorResultCodeDetailValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDetailValueForUpdate(paymentProcessorResultCode);
         PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionForUpdate(paymentProcessorResultCode, getPreferredLanguage());

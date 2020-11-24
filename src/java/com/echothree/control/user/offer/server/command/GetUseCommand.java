@@ -83,8 +83,8 @@ public class GetUseCommand
         var result = OfferResultFactory.getGetUseResult();
         
         if(use != null) {
-            var useControl = (UseControl)Session.getModelController(UseControl.class);
-            var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+            var useControl = Session.getModelController(UseControl.class);
+            var useNameElementControl = Session.getModelController(UseNameElementControl.class);
             var userVisit = getUserVisit();
             
             result.setUse(useControl.getUseTransfer(userVisit, use));

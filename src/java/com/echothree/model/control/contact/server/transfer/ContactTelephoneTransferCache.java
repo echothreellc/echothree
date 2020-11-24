@@ -32,8 +32,8 @@ import com.echothree.util.server.persistence.Session;
 public class ContactTelephoneTransferCache
         extends BaseContactTransferCache<ContactTelephone, ContactTelephoneTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactTelephoneTransferCache */
     public ContactTelephoneTransferCache(UserVisit userVisit, ContactControl contactControl) {
@@ -44,7 +44,7 @@ public class ContactTelephoneTransferCache
         ContactTelephoneTransfer contactTelephoneTransfer = get(contactTelephone);
         
         if(contactTelephoneTransfer == null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            GeoControl geoControl = Session.getModelController(GeoControl.class);
             CountryTransfer countryGeoCode = geoControl.getCountryTransfer(userVisit, contactTelephone.getCountryGeoCode());
             String areaCode = contactTelephone.getAreaCode();
             String telephoneNumber = contactTelephone.getTelephoneNumber();

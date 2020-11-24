@@ -52,13 +52,13 @@ public class GetInventoryLocationGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         GetInventoryLocationGroupsResult result = InventoryResultFactory.getGetInventoryLocationGroupsResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
             Party warehouseParty = warehouse.getParty();
             
             result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));

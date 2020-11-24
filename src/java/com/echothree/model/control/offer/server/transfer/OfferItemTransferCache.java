@@ -34,9 +34,9 @@ import java.util.Set;
 public class OfferItemTransferCache
         extends BaseOfferTransferCache<OfferItem, OfferItemTransfer> {
     
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    OfferItemControl offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    OfferControl offerControl = Session.getModelController(OfferControl.class);
+    OfferItemControl offerItemControl = Session.getModelController(OfferItemControl.class);
 
     boolean includeOfferItemPrices;
 

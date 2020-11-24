@@ -69,7 +69,7 @@ public class CreatePicklistTimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         String picklistTypeName = form.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
@@ -78,7 +78,7 @@ public class CreatePicklistTimeTypeDescriptionCommand
             PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(picklistTimeType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -98,7 +98,7 @@ public class EditPicklistTypeCommand
 
     @Override
     public PicklistType getEntity(EditPicklistTypeResult result) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistType picklistType = null;
         String picklistTypeName = spec.getPicklistTypeName();
 
@@ -124,7 +124,7 @@ public class EditPicklistTypeCommand
 
     @Override
     public void fillInResult(EditPicklistTypeResult result, PicklistType picklistType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
 
         result.setPicklistType(picklistControl.getPicklistTypeTransfer(getUserVisit(), picklistType));
     }
@@ -136,7 +136,7 @@ public class EditPicklistTypeCommand
 
     @Override
     public void doLock(PicklistTypeEdit edit, PicklistType picklistType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistTypeDescription picklistTypeDescription = picklistControl.getPicklistTypeDescription(picklistType, getPreferredLanguage());
         PicklistTypeDetail picklistTypeDetail = picklistType.getLastDetail();
 
@@ -160,7 +160,7 @@ public class EditPicklistTypeCommand
 
     @Override
     public void canUpdate(PicklistType picklistType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         String picklistTypeName = edit.getPicklistTypeName();
         PicklistType duplicatePicklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
@@ -173,13 +173,13 @@ public class EditPicklistTypeCommand
 
             if(parentPicklistTypeName == null || parentPicklistType != null) {
                 if(picklistControl.isParentPicklistTypeSafe(picklistType, parentPicklistType)) {
-                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     String picklistSequenceTypeName = edit.getPicklistSequenceTypeName();
 
                     picklistSequenceType = sequenceControl.getSequenceTypeByName(picklistSequenceTypeName);
 
                     if(picklistSequenceTypeName == null || picklistSequenceType != null) {
-                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         String picklistWorkflowName = edit.getPicklistWorkflowName();
 
                         picklistWorkflow = picklistWorkflowName == null ? null : workflowControl.getWorkflowByName(picklistWorkflowName);
@@ -215,7 +215,7 @@ public class EditPicklistTypeCommand
 
     @Override
     public void doUpdate(PicklistType picklistType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         var partyPK = getPartyPK();
         PicklistTypeDetailValue picklistTypeDetailValue = picklistControl.getPicklistTypeDetailValueForUpdate(picklistType);
         PicklistTypeDescription picklistTypeDescription = picklistControl.getPicklistTypeDescriptionForUpdate(picklistType, getPreferredLanguage());

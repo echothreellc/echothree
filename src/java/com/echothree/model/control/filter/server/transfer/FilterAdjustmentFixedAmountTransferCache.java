@@ -42,8 +42,8 @@ public class FilterAdjustmentFixedAmountTransferCache
         FilterAdjustmentFixedAmountTransfer filterAdjustmentFixedAmountTransfer = get(filterAdjustmentFixedAmount);
         
         if(filterAdjustmentFixedAmountTransfer == null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+            UomControl uomControl = Session.getModelController(UomControl.class);
             FilterAdjustmentTransfer filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentFixedAmount.getFilterAdjustment());
             UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentFixedAmount.getUnitOfMeasureType());
             Currency currency = filterAdjustmentFixedAmount.getCurrency();

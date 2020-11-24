@@ -117,7 +117,7 @@ public class CreateCustomerTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
@@ -126,7 +126,7 @@ public class CreateCustomerTypeCommand
             Sequence customerSequence = null;
             
             if(customerSequenceName != null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
                 
                 if(sequenceType != null) {
@@ -135,7 +135,7 @@ public class CreateCustomerTypeCommand
             }
             
             if(customerSequenceName == null || customerSequence != null) {
-                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                var offerControl = Session.getModelController(OfferControl.class);
                 String defaultOfferName = form.getDefaultOfferName();
                 String defaultUseName = form.getDefaultUseName();
                 String defaultSourceName = form.getDefaultSourceName();
@@ -146,11 +146,11 @@ public class CreateCustomerTypeCommand
                     Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
                     
                     if(defaultOffer != null) {
-                        var useControl = (UseControl)Session.getModelController(UseControl.class);
+                        var useControl = Session.getModelController(UseControl.class);
                         Use defaultUse = useControl.getUseByName(defaultUseName);
                         
                         if(defaultUse != null) {
-                            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                            var offerUseControl = Session.getModelController(OfferUseControl.class);
                             defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                             
                             if(defaultOfferUse == null) {
@@ -163,7 +163,7 @@ public class CreateCustomerTypeCommand
                         addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                     }
                 } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                    var sourceControl = Session.getModelController(SourceControl.class);
                     Source source = sourceControl.getSourceByName(defaultSourceName);
                     
                     if(source != null) {
@@ -189,7 +189,7 @@ public class CreateCustomerTypeCommand
                         CancellationPolicy defaultCancellationPolicy = null;
                         
                         if(defaultCancellationPolicyName != null) {
-                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
                             
                             defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
@@ -200,14 +200,14 @@ public class CreateCustomerTypeCommand
                             ReturnPolicy defaultReturnPolicy = null;
                             
                             if(defaultReturnPolicyName != null) {
-                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
                                 
                                 defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                             }
                             
                             if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                 String defaultCustomerStatusChoice = form.getDefaultCustomerStatusChoice();
                                 WorkflowEntrance defaultCustomerStatus = null;
                                 
@@ -226,7 +226,7 @@ public class CreateCustomerTypeCommand
                                     }
                                     
                                     if(defaultCustomerCreditStatusChoice == null || defaultCustomerCreditStatus != null) {
-                                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                        var accountingControl = Session.getModelController(AccountingControl.class);
                                         String defaultArGlAccountName = form.getDefaultArGlAccountName();
                                         GlAccount defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
 

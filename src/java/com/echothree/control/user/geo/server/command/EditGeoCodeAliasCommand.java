@@ -93,7 +93,7 @@ public class EditGeoCodeAliasCommand
     
     @Override
     public GeoCodeAlias getEntity(EditGeoCodeAliasResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAlias geoCodeAlias = null;
         String geoCodeName = spec.getGeoCodeName();
 
@@ -134,7 +134,7 @@ public class EditGeoCodeAliasCommand
 
     @Override
     public void fillInResult(EditGeoCodeAliasResult result, GeoCodeAlias geoCodeAlias) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         result.setGeoCodeAlias(geoControl.getGeoCodeAliasTransfer(getUserVisit(), geoCodeAlias));
     }
@@ -146,7 +146,7 @@ public class EditGeoCodeAliasCommand
 
     @Override
     public void canUpdate(GeoCodeAlias geoCodeAlias) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScope geoCodeScope = geoCode.getLastDetail().getGeoCodeScope();
         String alias = edit.getAlias();
         GeoCodeAlias duplicateGeoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
@@ -170,7 +170,7 @@ public class EditGeoCodeAliasCommand
 
     @Override
     public void doUpdate(GeoCodeAlias geoCodeAlias) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasValue geoCodeAliasValue = geoControl.getGeoCodeAliasValue(geoCodeAlias);
 
         geoCodeAliasValue.setAlias(edit.getAlias());

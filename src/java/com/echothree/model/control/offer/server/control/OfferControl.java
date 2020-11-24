@@ -387,7 +387,7 @@ public class OfferControl
 
     /** Use the function in OfferLogic instead. */
     public void deleteOffer(Offer offer, BasePK deletedBy) {
-        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+        var offerUseControl = Session.getModelController(OfferUseControl.class);
 
         deleteOfferCustomerTypesByOffer(offer, deletedBy);
         deleteOfferChainTypesByOffer(offer, deletedBy);
@@ -1192,7 +1192,7 @@ public class OfferControl
         }
 
         try {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

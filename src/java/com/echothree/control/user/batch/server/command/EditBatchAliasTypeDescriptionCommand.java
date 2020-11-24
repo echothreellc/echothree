@@ -89,7 +89,7 @@ public class EditBatchAliasTypeDescriptionCommand
 
     @Override
     public BatchAliasTypeDescription getEntity(EditBatchAliasTypeDescriptionResult result) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         BatchAliasTypeDescription batchAliasTypeDescription = null;
         String batchTypeName = spec.getBatchTypeName();
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
@@ -99,7 +99,7 @@ public class EditBatchAliasTypeDescriptionCommand
             BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
             if(batchAliasType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditBatchAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditBatchAliasTypeDescriptionResult result, BatchAliasTypeDescription batchAliasTypeDescription) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
 
         result.setBatchAliasTypeDescription(batchControl.getBatchAliasTypeDescriptionTransfer(getUserVisit(), batchAliasTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditBatchAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(BatchAliasTypeDescription batchAliasTypeDescription) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         BatchAliasTypeDescriptionValue batchAliasTypeDescriptionValue = batchControl.getBatchAliasTypeDescriptionValue(batchAliasTypeDescription);
 
         batchAliasTypeDescriptionValue.setDescription(edit.getDescription());

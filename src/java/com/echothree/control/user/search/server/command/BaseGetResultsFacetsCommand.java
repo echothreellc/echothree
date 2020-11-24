@@ -62,7 +62,7 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
     }
     
     protected BaseResult execute(String searchKindName, BaseGetResultsFacetsResult result) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchType searchType = SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
 
         if(!hasExecutionErrors()) {

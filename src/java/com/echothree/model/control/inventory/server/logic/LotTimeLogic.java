@@ -46,7 +46,7 @@ public class LotTimeLogic {
 
     public void createOrUpdateLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType == null) {
@@ -66,7 +66,7 @@ public class LotTimeLogic {
     }
 
     public Long getLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotDetail = lot.getLastDetail();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
         Long result = null;
@@ -91,7 +91,7 @@ public class LotTimeLogic {
     }
 
     public void deleteLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final BasePK deletedBy) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var lotDetail = lot.getLastDetail();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 

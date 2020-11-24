@@ -32,7 +32,7 @@ public abstract class BaseTagDescriptionTransferCache<K extends BaseEntity, V ex
     protected BaseTagDescriptionTransferCache(UserVisit userVisit, TagControl tagControl) {
         super(userVisit, tagControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

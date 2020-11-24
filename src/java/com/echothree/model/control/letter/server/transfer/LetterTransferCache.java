@@ -32,8 +32,8 @@ import com.echothree.util.server.persistence.Session;
 public class LetterTransferCache
         extends BaseLetterTransferCache<Letter, LetterTransfer> {
     
-    ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-    ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     
     /** Creates a new instance of LetterTransferCache */
     public LetterTransferCache(UserVisit userVisit, LetterControl letterControl) {

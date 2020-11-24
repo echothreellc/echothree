@@ -54,13 +54,13 @@ public class GetInventoryLocationGroupChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         GetInventoryLocationGroupChoicesResult result = InventoryResultFactory.getGetInventoryLocationGroupChoicesResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
             String defaultInventoryLocationGroupChoice = form.getDefaultInventoryLocationGroupChoice();
             Party warehouseParty = warehouse.getParty();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -45,7 +45,7 @@ import org.apache.lucene.util.BytesRef;
 public class ForumMessageIndexer
         extends BaseIndexer<ForumMessage> {
     
-    ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     
     /** Creates a new instance of ForumMessageIndexer */
     public ForumMessageIndexer(final ExecutionErrorAccumulator eea, final Index index) {

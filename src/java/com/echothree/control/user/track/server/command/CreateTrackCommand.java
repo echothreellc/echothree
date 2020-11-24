@@ -68,7 +68,7 @@ public class CreateTrackCommand
     @Override
     protected BaseResult execute() {
         CreateTrackResult result = TrackResultFactory.getCreateTrackResult();
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         String value = form.getValue();
         Track track = trackControl.getTrackByValue(value);
         

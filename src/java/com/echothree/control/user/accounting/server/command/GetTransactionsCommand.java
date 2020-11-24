@@ -51,7 +51,7 @@ public class GetTransactionsCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetTransactionsResult result = AccountingResultFactory.getGetTransactionsResult();
         String transactionGroupName = form.getTransactionGroupName();
         TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);

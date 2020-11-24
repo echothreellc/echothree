@@ -91,7 +91,7 @@ public class EditContentCategoryDescriptionCommand
     
     @Override
     public ContentCategoryDescription getEntity(EditContentCategoryDescriptionResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCategoryDescription contentCategoryDescription = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -105,7 +105,7 @@ public class EditContentCategoryDescriptionCommand
                 ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     
@@ -144,7 +144,7 @@ public class EditContentCategoryDescriptionCommand
     
     @Override
     public void fillInResult(EditContentCategoryDescriptionResult result, ContentCategoryDescription contentCategoryDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentCategoryDescription(contentControl.getContentCategoryDescriptionTransfer(getUserVisit(), contentCategoryDescription));
     }
@@ -156,7 +156,7 @@ public class EditContentCategoryDescriptionCommand
     
     @Override
     public void doUpdate(ContentCategoryDescription contentCategoryDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCategoryDescriptionValue contentCategoryDescriptionValue = contentControl.getContentCategoryDescriptionValue(contentCategoryDescription);
         contentCategoryDescriptionValue.setDescription(edit.getDescription());
 

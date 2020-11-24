@@ -62,12 +62,12 @@ public class CreateItemAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = Session.getModelController(UomControl.class);
             String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             ItemDetail itemDetail = item.getLastDetail();
             UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();

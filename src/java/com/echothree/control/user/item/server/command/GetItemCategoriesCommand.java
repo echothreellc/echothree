@@ -68,7 +68,7 @@ public class GetItemCategoriesCommand
     
     @Override
     protected Collection<ItemCategory> getEntities() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String parentItemCategoryName = form.getParentItemCategoryName();
         Collection<ItemCategory> itemCategories = null;
         
@@ -87,7 +87,7 @@ public class GetItemCategoriesCommand
     @Override
     protected BaseResult getTransfers(Collection<ItemCategory> entities) {
         GetItemCategoriesResult result = ItemResultFactory.getGetItemCategoriesResult();
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         UserVisit userVisit = getUserVisit();
         
         result.setParentItemCategory(parentItemCategory == null ? null : itemControl.getItemCategoryTransfer(userVisit, parentItemCategory));

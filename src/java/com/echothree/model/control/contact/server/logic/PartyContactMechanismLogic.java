@@ -44,7 +44,7 @@ public class PartyContactMechanismLogic
     
     public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
             final ContactMechanism contactMechanism, final EntityPermission entityPermission) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism, entityPermission);
 
         if(partyContactMechanism == null) {

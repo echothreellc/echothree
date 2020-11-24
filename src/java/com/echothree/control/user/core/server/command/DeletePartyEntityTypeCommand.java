@@ -67,7 +67,7 @@ public class DeletePartyEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 

@@ -54,7 +54,7 @@ public class PaymentProcessorTypeActionLogic
     public PaymentProcessorTypeAction createPaymentProcessorTypeAction(final ExecutionErrorAccumulator eea,
             final PaymentProcessorType paymentProcessorType, final PaymentProcessorActionType paymentProcessorActionType,
             final Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
-        var paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl)Session.getModelController(PaymentProcessorTypeActionControl.class);
+        var paymentProcessorTypeActionControl = Session.getModelController(PaymentProcessorTypeActionControl.class);
         var paymentProcessorTypeAction = paymentProcessorTypeActionControl.getPaymentProcessorTypeAction(paymentProcessorType, paymentProcessorActionType);
 
         if(paymentProcessorTypeAction == null) {
@@ -88,7 +88,7 @@ public class PaymentProcessorTypeActionLogic
     public PaymentProcessorTypeAction getPaymentProcessorTypeAction(final ExecutionErrorAccumulator eea,
             final PaymentProcessorType paymentProcessorType, final PaymentProcessorActionType paymentProcessorActionType,
             final EntityPermission entityPermission) {
-        var paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl)Session.getModelController(PaymentProcessorTypeActionControl.class);
+        var paymentProcessorTypeActionControl = Session.getModelController(PaymentProcessorTypeActionControl.class);
         PaymentProcessorTypeAction paymentProcessorTypeAction = paymentProcessorTypeActionControl.getPaymentProcessorTypeAction(paymentProcessorType,
                 paymentProcessorActionType, entityPermission);
 
@@ -141,7 +141,7 @@ public class PaymentProcessorTypeActionLogic
     public PaymentProcessorTypeAction getPaymentProcessorTypeActionByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeActionUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorTypeAction paymentProcessorTypeAction = null;
-        var paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl)Session.getModelController(PaymentProcessorTypeActionControl.class);
+        var paymentProcessorTypeActionControl = Session.getModelController(PaymentProcessorTypeActionControl.class);
         var paymentProcessorTypeName = universalSpec.getPaymentProcessorTypeName();
         var paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
         var fullySpecifiedName = paymentProcessorTypeName != null && paymentProcessorActionTypeName != null;
@@ -208,7 +208,7 @@ public class PaymentProcessorTypeActionLogic
 
     public void deletePaymentProcessorTypeAction(final ExecutionErrorAccumulator eea, final PaymentProcessorTypeAction paymentProcessorTypeAction,
             final BasePK deletedBy) {
-        var paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl)Session.getModelController(PaymentProcessorTypeActionControl.class);
+        var paymentProcessorTypeActionControl = Session.getModelController(PaymentProcessorTypeActionControl.class);
 
         paymentProcessorTypeActionControl.deletePaymentProcessorTypeAction(paymentProcessorTypeAction, deletedBy);
     }

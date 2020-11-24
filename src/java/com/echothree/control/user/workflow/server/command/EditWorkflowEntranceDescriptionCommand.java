@@ -80,7 +80,7 @@ public class EditWorkflowEntranceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         EditWorkflowEntranceDescriptionResult result = WorkflowResultFactory.getEditWorkflowEntranceDescriptionResult();
         String workflowName = spec.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
@@ -90,7 +90,7 @@ public class EditWorkflowEntranceDescriptionCommand
             WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

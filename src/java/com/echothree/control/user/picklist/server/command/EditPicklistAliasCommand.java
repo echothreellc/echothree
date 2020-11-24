@@ -88,7 +88,7 @@ public class EditPicklistAliasCommand
     
     @Override
     public PicklistAlias getEntity(EditPicklistAliasResult result) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAlias picklistAlias = null;
         String picklistTypeName = spec.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -134,7 +134,7 @@ public class EditPicklistAliasCommand
 
     @Override
     public void fillInResult(EditPicklistAliasResult result, PicklistAlias picklistAlias) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
 
         result.setPicklistAlias(picklistControl.getPicklistAliasTransfer(getUserVisit(), picklistAlias));
     }
@@ -146,7 +146,7 @@ public class EditPicklistAliasCommand
 
     @Override
     public void canUpdate(PicklistAlias picklistAlias) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         String alias = edit.getAlias();
         PicklistAlias duplicatePicklistAlias = picklistControl.getPicklistAliasByAlias(picklistAliasType, alias);
 
@@ -160,7 +160,7 @@ public class EditPicklistAliasCommand
 
     @Override
     public void doUpdate(PicklistAlias picklistAlias) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAliasValue picklistAliasValue = picklistControl.getPicklistAliasValue(picklistAlias);
 
         picklistAliasValue.setAlias(edit.getAlias());

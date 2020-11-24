@@ -73,7 +73,7 @@ public class GetPartyScaleUseCommand
         Party party = null;
 
         if(partyName != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
 
             party = partyControl.getPartyByName(partyName);
 
@@ -85,7 +85,7 @@ public class GetPartyScaleUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+            var scaleControl = Session.getModelController(ScaleControl.class);
             String scaleUseTypeName = form.getScaleUseTypeName();
             ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 

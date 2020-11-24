@@ -47,14 +47,14 @@ public class BillingAccountLogic {
 
     public BillingAccount getBillingAccount(final ExecutionErrorAccumulator ema, final Party billFrom, PartyContactMechanism billFromPartyContactMechanism,
             final Party billTo, PartyContactMechanism billToPartyContactMechanism, final Currency currency, final String reference, final String description, final BasePK createdBy) {
-        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
+        var billingControl = Session.getModelController(BillingControl.class);
         BillingAccount billingAccount = billingControl.getBillingAccount(billFrom, billTo, currency);
 
         // If the BillingAccount was found, the billFromPartyContactMechanism and billToPartyContactMechanism parameters are ignored. They're used only
         // when a new BillingAccount needs to be created.
         if(billingAccount == null) {
             if(billFromPartyContactMechanism == null || billToPartyContactMechanism == null) {
-                var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                var contactControl = Session.getModelController(ContactControl.class);
                 ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.PHYSICAL_BILLING.name());
                 
                 if(billFromPartyContactMechanism == null) {

@@ -53,12 +53,12 @@ public class CreateScaleUseTypeDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         String scaleUseTypeName = form.getScaleUseTypeName();
         ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

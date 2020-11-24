@@ -65,7 +65,7 @@ public class GetReturnTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         GetReturnTypeChoicesResult result = ReturnPolicyResultFactory.getGetReturnTypeChoicesResult();
         String returnKindName = form.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);

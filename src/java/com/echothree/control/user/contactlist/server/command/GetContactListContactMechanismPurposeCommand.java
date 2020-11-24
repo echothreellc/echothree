@@ -79,7 +79,7 @@ public class GetContactListContactMechanismPurposeCommand
             ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
-                var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                var contactListControl = Session.getModelController(ContactListControl.class);
                 ContactListContactMechanismPurpose contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurpose != null) {

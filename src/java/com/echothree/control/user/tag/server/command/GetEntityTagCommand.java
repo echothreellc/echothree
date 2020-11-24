@@ -76,7 +76,7 @@ public class GetEntityTagCommand
         EntityInstance taggedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(taggedEntityInstance != null) {
-            var tagControl = (TagControl)Session.getModelController(TagControl.class);
+            var tagControl = Session.getModelController(TagControl.class);
             String tagScopeName = form.getTagScopeName();
             TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
             UserVisit userVisit = getUserVisit();

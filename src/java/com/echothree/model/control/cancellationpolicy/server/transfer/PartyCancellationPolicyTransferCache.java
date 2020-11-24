@@ -33,8 +33,8 @@ import com.echothree.util.server.persistence.Session;
 public class PartyCancellationPolicyTransferCache
         extends BaseCancellationPolicyTransferCache<PartyCancellationPolicy, PartyCancellationPolicyTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCancellationPolicyTransferCache */
     public PartyCancellationPolicyTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {

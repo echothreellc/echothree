@@ -89,7 +89,7 @@ public class EditTrackCommand
 
     @Override
     public Track getEntity(EditTrackResult result) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         Track track;
         String trackName = spec.getTrackName();
 
@@ -113,14 +113,14 @@ public class EditTrackCommand
 
     @Override
     public void fillInResult(EditTrackResult result, Track track) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
 
         result.setTrack(trackControl.getTrackTransfer(getUserVisit(), track));
     }
 
     @Override
     public void doLock(TrackEdit edit, Track track) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         TrackDescription trackDescription = trackControl.getTrackDescription(track, getPreferredLanguage());
         TrackDetail trackDetail = track.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditTrackCommand
 
     @Override
     public void canUpdate(Track track) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         String value = edit.getValue();
         Track duplicateTrack = trackControl.getTrackByValue(value);
 
@@ -146,7 +146,7 @@ public class EditTrackCommand
 
     @Override
     public void doUpdate(Track track) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         var partyPK = getPartyPK();
         TrackDetailValue trackDetailValue = trackControl.getTrackDetailValueForUpdate(track);
         TrackDescription trackDescription = trackControl.getTrackDescriptionForUpdate(track, getPreferredLanguage());

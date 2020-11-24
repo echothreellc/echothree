@@ -68,13 +68,13 @@ public class GetItemPurchasingCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         GetItemPurchasingCategoryDescriptionResult result = VendorResultFactory.getGetItemPurchasingCategoryDescriptionResult();
         String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
         ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
         
         if(itemPurchasingCategory != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

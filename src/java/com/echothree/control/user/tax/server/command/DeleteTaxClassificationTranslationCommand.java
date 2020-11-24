@@ -69,17 +69,17 @@ public class DeleteTaxClassificationTranslationCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         String countryName = form.getCountryName();
         GeoCode geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = Session.getModelController(TaxControl.class);
             String taxClassificationName = form.getTaxClassificationName();
             TaxClassification taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
             
             if(taxClassification != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

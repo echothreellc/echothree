@@ -78,7 +78,7 @@ public class GetWorkflowDestinationPartyTypeCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationPartyTypeResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowDestinationPartyType(workflowControl.getWorkflowDestinationPartyTypeTransfer(getUserVisit(), entity));
         }

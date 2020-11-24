@@ -47,7 +47,7 @@ public class GetForumGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         GetForumGroupsResult result = ForumResultFactory.getGetForumGroupsResult();
         
         if(session.hasLimit(ForumGroupFactory.class)) {

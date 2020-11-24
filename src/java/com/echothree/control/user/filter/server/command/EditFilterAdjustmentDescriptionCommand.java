@@ -66,7 +66,7 @@ public class EditFilterAdjustmentDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         EditFilterAdjustmentDescriptionResult result = FilterResultFactory.getEditFilterAdjustmentDescriptionResult();
         String filterKindName = spec.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
@@ -76,7 +76,7 @@ public class EditFilterAdjustmentDescriptionCommand
             FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

@@ -66,12 +66,12 @@ public class DeletePaymentMethodTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         String paymentMethodTypeName = form.getPaymentMethodTypeName();
         PaymentMethodType paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
         
         if(paymentMethodType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

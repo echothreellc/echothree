@@ -32,7 +32,7 @@ public abstract class BaseFilterDescriptionTransferCache<K extends BaseEntity, V
     protected BaseFilterDescriptionTransferCache(UserVisit userVisit, FilterControl filterControl) {
         super(userVisit, filterControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

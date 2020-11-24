@@ -69,12 +69,12 @@ public class DeleteShippingMethodCarrierServiceCommand
     
     @Override
     protected BaseResult execute() {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         String shippingMethodName = form.getShippingMethodName();
         ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
         
         if(shippingMethod != null) {
-            var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+            var carrierControl = Session.getModelController(CarrierControl.class);
             String carrierName = form.getCarrierName();
             Carrier carrier = carrierControl.getCarrierByName(carrierName);
             

@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class PartyTypePasswordStringPolicyTransferCache
         extends BasePartyTransferCache<PartyTypePasswordStringPolicy, PartyTypePasswordStringPolicyTransfer> {
     
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of PartyTypePasswordStringPolicyTransferCache */

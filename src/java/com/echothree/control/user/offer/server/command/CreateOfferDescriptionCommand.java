@@ -68,11 +68,11 @@ public class CreateOfferDescriptionCommand
     @Override
     protected BaseResult execute() {
         String offerName = form.getOfferName();
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             if(language != null) {

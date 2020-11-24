@@ -31,8 +31,8 @@ import com.echothree.util.server.persistence.Session;
 public class ItemKitMemberTransferCache
         extends BaseItemTransferCache<ItemKitMember, ItemKitMemberTransfer> {
     
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemKitMemberTransferCache */
     public ItemKitMemberTransferCache(UserVisit userVisit, ItemControl itemControl) {

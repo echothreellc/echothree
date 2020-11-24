@@ -89,7 +89,7 @@ public class EditWorkflowCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         EditWorkflowResult result = WorkflowResultFactory.getEditWorkflowResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -143,7 +143,7 @@ public class EditWorkflowCommand
                     WorkflowType workflowType = workflowControl.getWorkflowTypeByName(workflowTypeName);
 
                     if(workflowType != null) {
-                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                        var selectorControl = Session.getModelController(SelectorControl.class);
                         String selectorKindName = edit.getSelectorKindName();
                         String selectorTypeName = edit.getSelectorTypeName();
                         int parameterCount = (selectorKindName == null? 0: 1) + (selectorTypeName == null? 0: 1);
@@ -155,7 +155,7 @@ public class EditWorkflowCommand
                                 SelectorType selectorType = selectorTypeName == null? null: selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
                                 if(selectorTypeName == null || selectorType != null) {
-                                    var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+                                    var securityControl = Session.getModelController(SecurityControl.class);
                                     String securityRoleGroupName = edit.getSecurityRoleGroupName();
                                     SecurityRoleGroup securityRoleGroup = securityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 

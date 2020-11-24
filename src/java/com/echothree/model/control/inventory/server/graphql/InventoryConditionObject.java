@@ -77,8 +77,8 @@ public class InventoryConditionObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return inventoryControl.getBestInventoryConditionDescription(inventoryCondition, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

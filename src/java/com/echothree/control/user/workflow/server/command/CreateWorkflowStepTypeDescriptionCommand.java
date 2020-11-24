@@ -61,12 +61,12 @@ public class CreateWorkflowStepTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowStepTypeName = form.getWorkflowStepTypeName();
         WorkflowStepType workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
         
         if(workflowStepType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

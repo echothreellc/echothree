@@ -173,7 +173,7 @@ public class BillingControl
     // --------------------------------------------------------------------------------
     
     public BillingAccount createBillingAccount(final Party billFrom, final Currency currency, final String reference, final String description, final BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
         String billingAccountName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         

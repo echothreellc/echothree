@@ -68,13 +68,13 @@ public class GetItemImageTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemImageTypeDescriptionResult result = ItemResultFactory.getGetItemImageTypeDescriptionResult();
         String itemImageTypeName = form.getItemImageTypeName();
         ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
         
         if(itemImageType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

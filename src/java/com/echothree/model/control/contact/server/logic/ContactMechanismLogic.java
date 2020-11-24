@@ -45,7 +45,7 @@ public class ContactMechanismLogic
     
     public ContactMechanism getContactMechanismByName(final ExecutionErrorAccumulator eea, final String contactMechanismName,
             final EntityPermission entityPermission) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName, entityPermission);
 
         if(contactMechanism == null) {
@@ -65,8 +65,8 @@ public class ContactMechanismLogic
 
     public void deleteContactMechanism(final ExecutionErrorAccumulator eea, final ContactMechanism contactMechanism,
             final PartyPK deletedBy) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         boolean cannotDeleteContactMechanismInUse = false;
 
         // Check if the ContactMechanism is in-use by any PartyPaymentMethodCreditCard.

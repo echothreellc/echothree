@@ -58,7 +58,7 @@ public class CreatePostalAddressLineElementCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         String postalAddressFormatName = form.getPostalAddressFormatName();
         PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         

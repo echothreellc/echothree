@@ -68,13 +68,13 @@ public class GetRelatedItemTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetRelatedItemTypeDescriptionResult result = ItemResultFactory.getGetRelatedItemTypeDescriptionResult();
         String relatedItemTypeName = form.getRelatedItemTypeName();
         RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
         
         if(relatedItemType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

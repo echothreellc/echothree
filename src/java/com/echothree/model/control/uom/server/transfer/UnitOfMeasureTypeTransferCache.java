@@ -35,7 +35,7 @@ import java.util.Set;
 public class UnitOfMeasureTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureType, UnitOfMeasureTypeTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     
     boolean includeVolume;
     boolean includeWeight;

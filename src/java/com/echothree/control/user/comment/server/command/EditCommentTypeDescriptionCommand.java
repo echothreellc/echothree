@@ -78,12 +78,12 @@ public class EditCommentTypeDescriptionCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = Session.getModelController(CommentControl.class);
                 String commentTypeName = spec.getCommentTypeName();
                 CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 
                 if(commentType != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     

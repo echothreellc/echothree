@@ -53,7 +53,7 @@ public class FiscalPeriodLogic {
     
     private void createMonth(final PeriodKind periodKind, final Period quarterPeriod, final ZonedDateTime yearStart, final int month,
             final PartyPK createdBy) {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         int year = yearStart.getYear();
         StringBuilder periodName = new StringBuilder().append(year).append('_').append('M');
         PeriodType monthPeriodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_MONTH);
@@ -86,7 +86,7 @@ public class FiscalPeriodLogic {
     
     private void createQuarter(final PeriodKind periodKind, final Period yearPeriod, final ZonedDateTime yearStart, final int quarter,
             final PartyPK createdBy) {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         int year = yearStart.getYear();
         String periodName = new StringBuilder().append(year).append('_').append('Q').append(quarter).toString();
         PeriodType quarterPeriodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_QUARTER);
@@ -121,7 +121,7 @@ public class FiscalPeriodLogic {
     }
     
     private Period createYear(final ExecutionErrorAccumulator eea, final int year, final ZoneId zone, final PartyPK createdBy) {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         String periodName = new StringBuilder().append(year).toString();
         PeriodKind periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
         Period yearPeriod = periodControl.getPeriodByName(periodKind, periodName);
@@ -159,7 +159,7 @@ public class FiscalPeriodLogic {
     }
     
     public Period createFiscalYear(final ExecutionErrorAccumulator eea, final Integer year, final PartyPK createdBy) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyCompany defaultPartyCompany = partyControl.getDefaultPartyCompany();
         Period fiscalYear = null;
         
@@ -177,7 +177,7 @@ public class FiscalPeriodLogic {
     
     private Period getFiscalPeriodByName(final ExecutionErrorAccumulator eea, final String periodName,
             final EntityPermission entityPermission) {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         PeriodKind periodKind = periodControl.getPeriodKindByName(PeriodConstants.PeriodKind_FISCAL);
         Period period = periodControl.getPeriodByName(periodKind, periodName, entityPermission);
         

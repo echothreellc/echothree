@@ -64,13 +64,13 @@ public class GetOfferChainTypeCommand
     
     @Override
     protected OfferChainType getEntity() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         OfferChainType offerChainType = null;
         
         if(offer != null) {
-            var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+            var chainControl = Session.getModelController(ChainControl.class);
             var chainKindName = form.getChainKindName();
             var chainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -101,7 +101,7 @@ public class GetOfferChainTypeCommand
     
     @Override
     protected BaseResult getTransfer(OfferChainType offerChainType) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getGetOfferChainTypeResult();
 
         if(offerChainType != null) {

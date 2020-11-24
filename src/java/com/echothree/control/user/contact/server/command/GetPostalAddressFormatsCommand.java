@@ -46,7 +46,7 @@ public class GetPostalAddressFormatsCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         GetPostalAddressFormatsResult result = ContactResultFactory.getGetPostalAddressFormatsResult();
         
         result.setPostalAddressFormats(contactControl.getPostalAddressFormatTransfers(getUserVisit()));

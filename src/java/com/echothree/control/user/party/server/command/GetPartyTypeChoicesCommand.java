@@ -49,7 +49,7 @@ public class GetPartyTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyTypeChoicesResult result = PartyResultFactory.getGetPartyTypeChoicesResult();
         String defaultPartyTypeChoice = form.getDefaultPartyTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -64,13 +64,13 @@ public class EditPostalAddressFormatDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         EditPostalAddressFormatDescriptionResult result = ContactResultFactory.getEditPostalAddressFormatDescriptionResult();
         String postalAddressFormatName = spec.getPostalAddressFormatName();
         PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
         if(postalAddressFormat != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -48,7 +48,7 @@ public class ProcessChainInstanceStatusesCommand
 
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainInstanceStatusLogic chainInstanceStatusLogic = ChainInstanceStatusLogic.getInstance();
         BasePK processedBy = getPartyPK();
         long chainInstanceStatusesProcessed = 0;

@@ -40,10 +40,10 @@ import com.echothree.util.server.string.AmountUtils;
 public class WishlistLineTransferCache
         extends BaseWishlistTransferCache<OrderLine, WishlistLineTransfer> {
     
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of WishlistLineTransferCache */
     public WishlistLineTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {

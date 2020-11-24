@@ -36,7 +36,7 @@ import org.apache.lucene.document.Field;
 public abstract class PartyIndexer
         extends BaseIndexer<Party> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     PartyType partyType;
     String entityNameIndexField;

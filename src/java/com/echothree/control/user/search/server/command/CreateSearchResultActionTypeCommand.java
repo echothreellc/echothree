@@ -65,7 +65,7 @@ public class CreateSearchResultActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         String searchResultActionTypeName = form.getSearchResultActionTypeName();
         SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
         

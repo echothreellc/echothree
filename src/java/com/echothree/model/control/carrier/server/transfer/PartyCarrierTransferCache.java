@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class PartyCarrierTransferCache
         extends BaseCarrierTransferCache<PartyCarrier, PartyCarrierTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCarrierTransferCache */
     public PartyCarrierTransferCache(UserVisit userVisit, CarrierControl carrierControl) {

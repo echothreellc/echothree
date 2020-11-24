@@ -92,7 +92,7 @@ public class TrackControl
     // --------------------------------------------------------------------------------
 
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
         String trackName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -608,7 +608,7 @@ public class TrackControl
     // --------------------------------------------------------------------------------
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Long time, Track track) {
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         UserVisitStatus userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitTrackSequence = userVisitStatus.getUserVisitTrackSequence()+ 1;
         

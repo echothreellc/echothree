@@ -34,7 +34,7 @@ public class WorkflowSelectorKindTransferCache
     public WorkflowSelectorKindTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
         super(userVisit, workflowControl);
         
-        selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        selectorControl = Session.getModelController(SelectorControl.class);
     }
     
     public WorkflowSelectorKindTransfer getWorkflowSelectorKindTransfer(WorkflowSelectorKind workflowSelectorKind) {

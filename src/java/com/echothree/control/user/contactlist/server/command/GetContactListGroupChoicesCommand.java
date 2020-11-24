@@ -62,7 +62,7 @@ public class GetContactListGroupChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         GetContactListGroupChoicesResult result = ContactListResultFactory.getGetContactListGroupChoicesResult();
         String defaultContactListGroupChoice = form.getDefaultContactListGroupChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

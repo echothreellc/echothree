@@ -63,7 +63,7 @@ public class GetSelectorKindsCommand
 
     @Override
     protected Collection<SelectorKind> getEntities() {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
 
         return selectorControl.getSelectorKinds();
     }
@@ -71,7 +71,7 @@ public class GetSelectorKindsCommand
     @Override
     protected BaseResult getTransfers(Collection<SelectorKind> entities) {
         GetSelectorKindsResult result = SelectorResultFactory.getGetSelectorKindsResult();
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
 
         if(session.hasLimit(SelectorKindFactory.class)) {
             result.setSelectorKindCount(selectorControl.countSelectorKinds());

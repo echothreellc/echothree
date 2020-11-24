@@ -77,7 +77,7 @@ public class GetWorkflowEntrancePartyTypeCommand
         var result = WorkflowResultFactory.getGetWorkflowEntrancePartyTypeResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowEntrancePartyType(workflowControl.getWorkflowEntrancePartyTypeTransfer(getUserVisit(), entity));
         }

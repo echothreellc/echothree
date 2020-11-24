@@ -70,7 +70,7 @@ public class CreateRatingCommand
         EntityInstance ratedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(ratedEntityInstance != null) {
-            var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+            var ratingControl = Session.getModelController(RatingControl.class);
             EntityInstance ratedByEntityInstance = null;
             BasePK createdBy = getPartyPK();
             String ratedByUsername = form.getRatedByUsername();
@@ -101,7 +101,7 @@ public class CreateRatingCommand
                         RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                         
                         if(ratingTypeListItem != null) {
-                            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                            var sequenceControl = Session.getModelController(SequenceControl.class);
                             Sequence ratingSequence = ratingType.getLastDetail().getRatingSequence();
                             
                             if(ratingSequence == null) {

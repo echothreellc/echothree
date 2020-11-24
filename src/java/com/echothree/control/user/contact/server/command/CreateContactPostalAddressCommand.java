@@ -148,12 +148,12 @@ public class CreateContactPostalAddressCommand
     @Override
     protected BaseResult execute() {
         CreateContactPostalAddressResult result = ContactResultFactory.getCreateContactPostalAddressResult();
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
             String countryName = form.getCountryName();
             String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
             GeoCode countryGeoCode = geoControl.getCountryByAlias(countryAlias);
@@ -216,9 +216,9 @@ public class CreateContactPostalAddressCommand
                                         if(!geoCodeCountry.getCityGeoCodeRequired() || cityGeoCode != null) {
                                             GeoCode countyGeoCode = null;
                                             
-                                            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                                            var contactControl = Session.getModelController(ContactControl.class);
                                             var coreControl = getCoreControl();
-                                            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                            var workflowControl = Session.getModelController(WorkflowControl.class);
                                             Soundex soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
                                             String personalTitleId = form.getPersonalTitleId();

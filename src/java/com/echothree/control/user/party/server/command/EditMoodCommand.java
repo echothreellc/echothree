@@ -72,7 +72,7 @@ public class EditMoodCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         EditMoodResult result = PartyResultFactory.getEditMoodResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -113,7 +113,7 @@ public class EditMoodCommand
                 Mood duplicateMood = partyControl.getMoodByName(moodName);
                 
                 if(duplicateMood == null || mood.equals(duplicateMood)) {
-                    var iconControl = (IconControl)Session.getModelController(IconControl.class);
+                    var iconControl = Session.getModelController(IconControl.class);
                     String iconName = edit.getIconName();
                     Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
 

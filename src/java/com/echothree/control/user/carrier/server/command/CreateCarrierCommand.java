@@ -90,7 +90,7 @@ public class CreateCarrierCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CreateCarrierResult result = CarrierResultFactory.getCreateCarrierResult();
         String carrierName = form.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
@@ -100,7 +100,7 @@ public class CreateCarrierCommand
             CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
             
             if(carrierType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                 Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
                 
@@ -119,7 +119,7 @@ public class CreateCarrierCommand
                             if(preferredCurrencyIsoName == null)
                                 preferredCurrency = null;
                             else {
-                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                             }
                             
@@ -128,7 +128,7 @@ public class CreateCarrierCommand
                                 Selector geoCodeSelector = null;
 
                                 if(geoCodeSelectorName != null) {
-                                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                    var selectorControl = Session.getModelController(SelectorControl.class);
                                     SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
 
                                     if(selectorKind != null) {
@@ -151,7 +151,7 @@ public class CreateCarrierCommand
                                     Selector itemSelector = null;
 
                                     if(itemSelectorName != null) {
-                                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                        var selectorControl = Session.getModelController(SelectorControl.class);
                                         SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
 
                                         if(selectorKind != null) {

@@ -64,7 +64,7 @@ public class GetInvoiceTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
         GetInvoiceTypeDescriptionsResult result = InvoiceResultFactory.getGetInvoiceTypeDescriptionsResult();
         String invoiceTypeName = form.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);

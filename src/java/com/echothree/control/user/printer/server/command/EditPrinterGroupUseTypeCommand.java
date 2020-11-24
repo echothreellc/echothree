@@ -89,7 +89,7 @@ public class EditPrinterGroupUseTypeCommand
 
     @Override
     public PrinterGroupUseType getEntity(EditPrinterGroupUseTypeResult result) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterGroupUseType printerGroupUseType = null;
         String printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
 
@@ -115,14 +115,14 @@ public class EditPrinterGroupUseTypeCommand
 
     @Override
     public void fillInResult(EditPrinterGroupUseTypeResult result, PrinterGroupUseType printerGroupUseType) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
 
         result.setPrinterGroupUseType(printerControl.getPrinterGroupUseTypeTransfer(getUserVisit(), printerGroupUseType));
     }
 
     @Override
     public void doLock(PrinterGroupUseTypeEdit edit, PrinterGroupUseType printerGroupUseType) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterGroupUseTypeDescription printerGroupUseTypeDescription = printerControl.getPrinterGroupUseTypeDescription(printerGroupUseType, getPreferredLanguage());
         PrinterGroupUseTypeDetail printerGroupUseTypeDetail = printerGroupUseType.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditPrinterGroupUseTypeCommand
 
     @Override
     public void canUpdate(PrinterGroupUseType printerGroupUseType) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         String printerGroupUseTypeName = edit.getPrinterGroupUseTypeName();
         PrinterGroupUseType duplicatePrinterGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
@@ -148,7 +148,7 @@ public class EditPrinterGroupUseTypeCommand
 
     @Override
     public void doUpdate(PrinterGroupUseType printerGroupUseType) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         var partyPK = getPartyPK();
         PrinterGroupUseTypeDetailValue printerGroupUseTypeDetailValue = printerControl.getPrinterGroupUseTypeDetailValueForUpdate(printerGroupUseType);
         PrinterGroupUseTypeDescription printerGroupUseTypeDescription = printerControl.getPrinterGroupUseTypeDescriptionForUpdate(printerGroupUseType, getPreferredLanguage());

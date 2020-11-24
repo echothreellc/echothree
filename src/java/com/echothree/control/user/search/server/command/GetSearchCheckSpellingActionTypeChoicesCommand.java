@@ -62,7 +62,7 @@ public class GetSearchCheckSpellingActionTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         GetSearchCheckSpellingActionTypeChoicesResult result = SearchResultFactory.getGetSearchCheckSpellingActionTypeChoicesResult();
         String defaultSearchCheckSpellingActionTypeChoice = form.getDefaultSearchCheckSpellingActionTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

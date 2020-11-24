@@ -64,7 +64,7 @@ public class GetLeaveTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetLeaveTypeResult result = EmployeeResultFactory.getGetLeaveTypeResult();
         String leaveTypeName = form.getLeaveTypeName();
         LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);

@@ -72,7 +72,7 @@ public class CreatePartyPrinterGroupUseCommand
         Party party = null;
 
         if(partyName != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
 
             party = partyControl.getPartyByName(partyName);
             
@@ -84,7 +84,7 @@ public class CreatePartyPrinterGroupUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+            var printerControl = Session.getModelController(PrinterControl.class);
             String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
             PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 

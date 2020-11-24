@@ -34,7 +34,7 @@ public class PartySkillTransferCache
     public PartySkillTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
         super(userVisit, employeeControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public PartySkillTransfer getPartySkillTransfer(PartySkill partySkill) {

@@ -40,7 +40,7 @@ public class FilterStepElementTransferCache
         FilterStepElementTransfer filterStepElementTransfer = get(filterStepElement);
         
         if(filterStepElementTransfer == null) {
-            SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
             FilterStepElementDetail filterStepElementDetail = filterStepElement.getLastDetail();
             FilterStepTransfer filterStepTransfer = filterControl.getFilterStepTransfer(userVisit, filterStepElementDetail.getFilterStep());
             String filterStepElementName = filterStepElementDetail.getFilterStepElementName();

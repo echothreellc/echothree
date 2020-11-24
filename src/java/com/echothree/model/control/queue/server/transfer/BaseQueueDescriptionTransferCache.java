@@ -32,7 +32,7 @@ public abstract class BaseQueueDescriptionTransferCache<K extends BaseEntity, V 
     protected BaseQueueDescriptionTransferCache(UserVisit userVisit, QueueControl queueControl) {
         super(userVisit, queueControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

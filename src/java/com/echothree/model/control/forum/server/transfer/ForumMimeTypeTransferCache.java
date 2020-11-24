@@ -34,7 +34,7 @@ public class ForumMimeTypeTransferCache
     public ForumMimeTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {

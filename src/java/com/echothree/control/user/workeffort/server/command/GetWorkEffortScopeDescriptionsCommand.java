@@ -52,7 +52,7 @@ public class GetWorkEffortScopeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         GetWorkEffortScopeDescriptionsResult result = WorkEffortResultFactory.getGetWorkEffortScopeDescriptionsResult();
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);

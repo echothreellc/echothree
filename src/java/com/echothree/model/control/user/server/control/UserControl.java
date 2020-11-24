@@ -448,7 +448,7 @@ public class UserControl
     }
     
     public UserVisitGroup createUserVisitGroup(BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var workflowControl = getWorkflowControl();
         UserVisitGroup userVisitGroup = null;
         Workflow workflow = workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS);
@@ -622,7 +622,7 @@ public class UserControl
         UserVisitGroup userVisitGroup = getActiveUserVisitGroup();
 
         if(preferredCurrency == null) {
-            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = Session.getModelController(AccountingControl.class);
 
             preferredCurrency = accountingControl.getDefaultCurrency();
         }
@@ -799,7 +799,7 @@ public class UserControl
         }
         
         if(currency == null) {
-            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = Session.getModelController(AccountingControl.class);
             
             currency = accountingControl.getDefaultCurrency();
         }
@@ -815,7 +815,7 @@ public class UserControl
         }
         
         if(currency == null) {
-            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = Session.getModelController(AccountingControl.class);
             
             currency = accountingControl.getDefaultCurrency();
         }

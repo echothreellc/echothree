@@ -47,7 +47,7 @@ public class FinancialAccountTransferCache
     public FinancialAccountTransferCache(UserVisit userVisit, FinancialControl financialControl) {
         super(userVisit, financialControl);
         
-        accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        accountingControl = Session.getModelController(AccountingControl.class);
 
         Set<String> options = session.getOptions();
         if(options != null) {

@@ -69,7 +69,7 @@ public class DeleteItemDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
@@ -78,7 +78,7 @@ public class DeleteItemDescriptionCommand
             ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
             
             if(itemDescriptionType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

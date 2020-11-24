@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class UseDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<UseDescription, UseDescriptionTransfer> {
 
-    UseControl useControl = (UseControl)Session.getModelController(UseControl.class);
+    UseControl useControl = Session.getModelController(UseControl.class);
 
     /** Creates a new instance of UseDescriptionTransferCache */
     public UseDescriptionTransferCache(UserVisit userVisit) {

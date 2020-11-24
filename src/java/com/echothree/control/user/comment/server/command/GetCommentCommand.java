@@ -51,7 +51,7 @@ public class GetCommentCommand
     
     @Override
     protected BaseResult execute() {
-        var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+        var commentControl = Session.getModelController(CommentControl.class);
         GetCommentResult result = CommentResultFactory.getGetCommentResult();
         String commentName = form.getCommentName();
         Comment comment = commentControl.getCommentByName(commentName);

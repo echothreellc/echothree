@@ -52,14 +52,14 @@ import java.util.Set;
 public class CompanyTransferCache
         extends BasePartyTransferCache<Party, CompanyTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-    InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-    PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-    ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

@@ -82,7 +82,7 @@ public class EditReturnReasonCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         EditReturnReasonResult result = ReturnPolicyResultFactory.getEditReturnReasonResult();
         String returnKindName = spec.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);

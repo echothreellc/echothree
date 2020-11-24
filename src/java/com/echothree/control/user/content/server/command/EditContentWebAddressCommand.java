@@ -89,7 +89,7 @@ public class EditContentWebAddressCommand
     
     @Override
     public ContentWebAddress getEntity(EditContentWebAddressResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentWebAddress contentWebAddress = null;
         String contentWebAddressName = spec.getContentWebAddressName();
 
@@ -115,14 +115,14 @@ public class EditContentWebAddressCommand
     
     @Override
     public void fillInResult(EditContentWebAddressResult result, ContentWebAddress contentWebAddress) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentWebAddress(contentControl.getContentWebAddressTransfer(getUserVisit(), contentWebAddress));
     }
     
     @Override
     public void doLock(ContentWebAddressEdit edit, ContentWebAddress contentWebAddress) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentWebAddressDescription contentWebAddressDescription = contentControl.getContentWebAddressDescription(contentWebAddress, getPreferredLanguage());
         ContentWebAddressDetail contentWebAddressDetail = contentWebAddress.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditContentWebAddressCommand
     
     @Override
     public void canUpdate(ContentWebAddress contentWebAddress) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentWebAddressName = edit.getContentWebAddressName();
         ContentWebAddress duplicateContentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
 
@@ -157,7 +157,7 @@ public class EditContentWebAddressCommand
     
     @Override
     public void doUpdate(ContentWebAddress contentWebAddress) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         ContentWebAddressDetailValue contentWebAddressDetailValue = contentControl.getContentWebAddressDetailValueForUpdate(contentWebAddress);
         ContentWebAddressDescription contentWebAddressDescription = contentControl.getContentWebAddressDescriptionForUpdate(contentWebAddress, getPreferredLanguage());

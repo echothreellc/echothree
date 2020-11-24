@@ -86,7 +86,7 @@ public class GetVendorItemCostCommand
         int parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
             Vendor vendor = null;
 
             if(vendorName != null) {
@@ -96,7 +96,7 @@ public class GetVendorItemCostCommand
                     addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else if(partyName != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
@@ -116,7 +116,7 @@ public class GetVendorItemCostCommand
                 VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
 
                 if(vendorItem != null) {
-                    var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                    var inventoryControl = Session.getModelController(InventoryControl.class);
                     String inventoryConditionName = form.getInventoryConditionName();
                     InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
@@ -126,7 +126,7 @@ public class GetVendorItemCostCommand
                                 inventoryCondition);
 
                         if(inventoryConditionUse != null) {
-                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                            var uomControl = Session.getModelController(UomControl.class);
                             UnitOfMeasureKind unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
                             String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);

@@ -32,7 +32,7 @@ public abstract class BaseSelectorDescriptionTransferCache<K extends BaseEntity,
     protected BaseSelectorDescriptionTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
         super(userVisit, selectorControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

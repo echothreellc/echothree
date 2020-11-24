@@ -54,7 +54,7 @@ public class SecurityRoleGroupControl
         }
 
         try {
-            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var securityControl = Session.getModelController(SecurityControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

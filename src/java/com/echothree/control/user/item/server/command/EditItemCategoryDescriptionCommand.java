@@ -87,13 +87,13 @@ public class EditItemCategoryDescriptionCommand
 
     @Override
     public ItemCategoryDescription getEntity(EditItemCategoryDescriptionResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemCategoryDescription itemCategoryDescription = null;
         String itemCategoryName = spec.getItemCategoryName();
         ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
 
         if(itemCategory != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditItemCategoryDescriptionCommand
 
     @Override
     public void fillInResult(EditItemCategoryDescriptionResult result, ItemCategoryDescription itemCategoryDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemCategoryDescription(itemControl.getItemCategoryDescriptionTransfer(getUserVisit(), itemCategoryDescription));
     }
@@ -136,7 +136,7 @@ public class EditItemCategoryDescriptionCommand
 
     @Override
     public void doUpdate(ItemCategoryDescription itemCategoryDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemCategoryDescriptionValue itemCategoryDescriptionValue = itemControl.getItemCategoryDescriptionValue(itemCategoryDescription);
         
         itemCategoryDescriptionValue.setDescription(edit.getDescription());

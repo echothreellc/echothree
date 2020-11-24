@@ -70,7 +70,7 @@ public class GetBatchAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         GetBatchAliasTypeDescriptionResult result = BatchResultFactory.getGetBatchAliasTypeDescriptionResult();
         String batchTypeName = form.getBatchTypeName();
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
@@ -80,7 +80,7 @@ public class GetBatchAliasTypeDescriptionCommand
             BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
             if(batchAliasType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

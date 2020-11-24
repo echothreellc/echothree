@@ -77,7 +77,7 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
                 + (countryName != null  && harmonizedTariffScheduleCodeName != null && harmonizedTariffScheduleCodeUseTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
 
             if(harmonizedTariffScheduleCodeUseTypeName != null) {
                 HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
@@ -89,7 +89,7 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
                     addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUseTypeName.name(), harmonizedTariffScheduleCodeUseTypeName);
                 }
             } else {
-                var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+                var geoControl = Session.getModelController(GeoControl.class);
                 GeoCode geoCode = geoControl.getCountryByAlias(countryName);
 
                 if(geoCode != null) {

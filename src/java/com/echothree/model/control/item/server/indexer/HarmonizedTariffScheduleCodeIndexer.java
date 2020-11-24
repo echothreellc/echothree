@@ -38,7 +38,7 @@ import org.apache.lucene.util.BytesRef;
 public class HarmonizedTariffScheduleCodeIndexer
         extends BaseIndexer<HarmonizedTariffScheduleCode> {
     
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of HarmonizedTariffScheduleCodeIndexer */
     public HarmonizedTariffScheduleCodeIndexer(final ExecutionErrorAccumulator eea, final Index index) {

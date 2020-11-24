@@ -67,7 +67,7 @@ public class SetDefaultCancellationReasonTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         String cancellationKindName = form.getCancellationKindName();
         CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         

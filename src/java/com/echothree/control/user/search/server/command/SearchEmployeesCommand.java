@@ -93,7 +93,7 @@ public class SearchEmployeesCommand
         int parameterCount = (employeeName == null? 0: 1) + (partyName == null? 0: 1);
 
         if(parameterCount < 2) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var searchControl = Session.getModelController(SearchControl.class);
             SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_EMPLOYEE);
 
             if(searchKind != null) {
@@ -101,7 +101,7 @@ public class SearchEmployeesCommand
                 SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
                 if(searchType != null) {
-                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = Session.getModelController(WorkflowControl.class);
                     String employeeStatusChoice = form.getEmployeeStatusChoice();
                     WorkflowStep employeeStatusWorkflowStep = employeeStatusChoice == null ? null
                             : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS),

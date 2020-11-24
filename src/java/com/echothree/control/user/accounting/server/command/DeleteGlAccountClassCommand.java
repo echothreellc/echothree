@@ -62,7 +62,7 @@ public class DeleteGlAccountClassCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String glAccountClassName = form.getGlAccountClassName();
         GlAccountClass glAccountClass = accountingControl.getGlAccountClassByNameForUpdate(glAccountClassName);
         

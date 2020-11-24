@@ -68,17 +68,17 @@ public class DeleteOfferItemCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                var offerItemControl = Session.getModelController(OfferItemControl.class);
                 OfferItem offerItem = offerItemControl.getOfferItemForUpdate(offer, item);
                 
                 if(offerItem != null) {

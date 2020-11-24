@@ -100,7 +100,7 @@ public class EditContactListContactMechanismPurposeCommand
             ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
-                var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                var contactListControl = Session.getModelController(ContactListControl.class);
                 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
@@ -124,14 +124,14 @@ public class EditContactListContactMechanismPurposeCommand
 
     @Override
     public void fillInResult(EditContactListContactMechanismPurposeResult result, ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
 
         result.setContactListContactMechanismPurpose(contactListControl.getContactListContactMechanismPurposeTransfer(getUserVisit(), contactListContactMechanismPurpose));
     }
 
     @Override
     public void doLock(ContactListContactMechanismPurposeEdit edit, ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
 
         edit.setIsDefault(contactListContactMechanismPurposeDetail.getIsDefault().toString());
@@ -140,7 +140,7 @@ public class EditContactListContactMechanismPurposeCommand
 
     @Override
     public void doUpdate(ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactListContactMechanismPurpose);
 

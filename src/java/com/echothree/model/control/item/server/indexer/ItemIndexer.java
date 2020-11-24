@@ -53,7 +53,7 @@ import org.apache.lucene.util.BytesRef;
 public class ItemIndexer
         extends BaseIndexer<Item> {
     
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     
     List<ItemDescriptionType> itemDescriptionTypes;
     SortableDescriptionProducer sortableDescriptionProducer;

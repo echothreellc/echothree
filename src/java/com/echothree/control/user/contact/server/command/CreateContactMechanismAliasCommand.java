@@ -55,7 +55,7 @@ public class CreateContactMechanismAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         String contactMechanismName = form.getContactMechanismName();
         ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 

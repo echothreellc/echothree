@@ -78,7 +78,7 @@ public class GetWorkflowDestinationPartyTypesCommand
                 workflowStepName, workflowDestinationName);
 
         if(!this.hasExecutionErrors()) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinationPartyTypes = workflowControl.getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination);
         }
@@ -91,7 +91,7 @@ public class GetWorkflowDestinationPartyTypesCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationPartyTypesResult();
 
         if(entities != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestination));

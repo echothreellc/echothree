@@ -63,7 +63,7 @@ public class GetUnitOfMeasureTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         GetUnitOfMeasureTypeChoicesResult result = UomResultFactory.getGetUnitOfMeasureTypeChoicesResult();
         String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
@@ -101,7 +101,7 @@ public class GetUnitOfMeasureTypeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUseTypeName.name(), unitOfMeasureKindUseTypeName);
                 }
             } else if(vendorName != null) {
-                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = Session.getModelController(VendorControl.class);
                 Vendor vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {
@@ -116,7 +116,7 @@ public class GetUnitOfMeasureTypeChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else {
-                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = Session.getModelController(ItemControl.class);
                 Item item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {

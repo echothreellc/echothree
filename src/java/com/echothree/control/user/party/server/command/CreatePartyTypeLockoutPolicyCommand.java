@@ -69,7 +69,7 @@ public class CreatePartyTypeLockoutPolicyCommand
         
         if((resetFailureCountTimeParameterCount == 0 || resetFailureCountTimeParameterCount == 2) &&
                 (lockoutInactiveTimeParameterCount == 0 || lockoutInactiveTimeParameterCount == 2)) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String partyTypeName = form.getPartyTypeName();
             PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
             
@@ -78,7 +78,7 @@ public class CreatePartyTypeLockoutPolicyCommand
                     PartyTypeLockoutPolicy partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
 
                     if(partyTypeLockoutPolicy == null) {
-                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = Session.getModelController(UomControl.class);
                         UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {

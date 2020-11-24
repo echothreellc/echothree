@@ -71,7 +71,7 @@ public class CreateWorkEffortTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
@@ -89,7 +89,7 @@ public class CreateWorkEffortTypeCommand
                     Sequence workEffortSequence = null;
 
                     if(workEffortSequenceName != null) {
-                        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        var sequenceControl = Session.getModelController(SequenceControl.class);
                         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
 
                         if(sequenceType != null) {
@@ -100,7 +100,7 @@ public class CreateWorkEffortTypeCommand
                     }
 
                     if(workEffortSequenceName == null || workEffortSequence != null) {
-                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = Session.getModelController(UomControl.class);
                         UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {

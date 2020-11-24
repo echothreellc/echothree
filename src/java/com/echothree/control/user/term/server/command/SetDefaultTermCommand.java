@@ -48,7 +48,7 @@ public class SetDefaultTermCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         String termName = form.getTermName();
         TermDetailValue termDetailValue = termControl.getTermDetailValueByNameForUpdate(termName);
         

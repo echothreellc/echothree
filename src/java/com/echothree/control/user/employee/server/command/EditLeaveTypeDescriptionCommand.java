@@ -87,13 +87,13 @@ public class EditLeaveTypeDescriptionCommand
 
     @Override
     public LeaveTypeDescription getEntity(EditLeaveTypeDescriptionResult result) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveTypeDescription leaveTypeDescription = null;
         String leaveTypeName = spec.getLeaveTypeName();
         LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
         if(leaveType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditLeaveTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLeaveTypeDescriptionResult result, LeaveTypeDescription leaveTypeDescription) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
 
         result.setLeaveTypeDescription(employeeControl.getLeaveTypeDescriptionTransfer(getUserVisit(), leaveTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditLeaveTypeDescriptionCommand
 
     @Override
     public void doUpdate(LeaveTypeDescription leaveTypeDescription) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveTypeDescriptionValue leaveTypeDescriptionValue = employeeControl.getLeaveTypeDescriptionValue(leaveTypeDescription);
 
         leaveTypeDescriptionValue.setDescription(edit.getDescription());

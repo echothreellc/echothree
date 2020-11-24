@@ -67,12 +67,12 @@ public class CreateCustomerTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

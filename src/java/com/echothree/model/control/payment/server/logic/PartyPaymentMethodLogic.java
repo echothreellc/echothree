@@ -114,7 +114,7 @@ public class PartyPaymentMethodLogic
     }
 
     public void checkNameOnCard(final ExecutionErrorAccumulator ema, final PartyPaymentMethodEdit ppme, final PaymentMethodCreditCard paymentMethodCreditCard) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String personalTitleId = ppme.getPersonalTitleId();
         PersonalTitle personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
 
@@ -166,7 +166,7 @@ public class PartyPaymentMethodLogic
 
         if(strExpirationMonth != null && strExpirationYear != null) {
             if(paymentMethodCreditCard.getCheckExpirationDate()) {
-                var userControl = (UserControl)Session.getModelController(UserControl.class);
+                var userControl = Session.getModelController(UserControl.class);
                 TimeZone timeZone = userControl.getPreferredTimeZoneFromParty(party);
                 int expirationMonth = Integer.valueOf(strExpirationMonth);
                 int expirationYear = Integer.valueOf(strExpirationYear);
@@ -222,7 +222,7 @@ public class PartyPaymentMethodLogic
 
     public void checkBillingContactMechanism(final ExecutionErrorAccumulator ema, final Party party, final PartyPaymentMethodEdit ppme,
             final PaymentMethodCreditCard paymentMethodCreditCard) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         String billingContactMechanismName = ppme.getBillingContactMechanismName();
         ContactMechanism billingContactMechanism = billingContactMechanismName == null? null: contactControl.getContactMechanismByName(billingContactMechanismName);
 
@@ -243,7 +243,7 @@ public class PartyPaymentMethodLogic
 
     public void checkIssuer(final ExecutionErrorAccumulator ema, final Party party, final PartyPaymentMethodEdit ppme,
             final PaymentMethodCreditCard paymentMethodCreditCard) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         String issuerName = ppme.getIssuerName();
         String issuerContactMechanismName = ppme.getIssuerContactMechanismName();
         ContactMechanism issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
@@ -275,7 +275,7 @@ public class PartyPaymentMethodLogic
 
     public void checkCreditCard(final Session session, final ExecutionErrorAccumulator ema, final Party party, final PaymentMethod paymentMethod,
             final PartyPaymentMethodEdit ppme) {
-        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         PaymentMethodCreditCard paymentMethodCreditCard = paymentMethodControl.getPaymentMethodCreditCard(paymentMethod);
 
         if(paymentMethodCreditCard.getRequestNameOnCard()) {
@@ -343,7 +343,7 @@ public class PartyPaymentMethodLogic
 
     private PartyPaymentMethod getPartyPaymentMethodByName(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName,
             final EntityPermission entityPermission) {
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName, entityPermission);
 
         if(partyPaymentMethod == null) {
@@ -365,7 +365,7 @@ public class PartyPaymentMethodLogic
 
     public void deletePartyPaymentMethod(final ExecutionErrorAccumulator eea, final PartyPaymentMethod partyPaymentMethod,
             final PartyPK deletedBy) {
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
 
         // TODO: Check to see if this payment method is in use on any open orders,
         // or orders that currently are allowing returns to be made against them.

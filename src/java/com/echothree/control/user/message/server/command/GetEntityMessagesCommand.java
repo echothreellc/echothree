@@ -69,7 +69,7 @@ public class GetEntityMessagesCommand
         
         if(parameterCount == 1) {
             var coreControl = getCoreControl();
-            var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+            var messageControl = Session.getModelController(MessageControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(entityRef != null) {

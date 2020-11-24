@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class UserVisitTrackTransferCache
         extends BaseTrackTransferCache<UserVisitTrack, UserVisitTrackTransfer> {
 
-    UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitTrackTransferCache */
     public UserVisitTrackTransferCache(UserVisit userVisit, TrackControl trackControl) {

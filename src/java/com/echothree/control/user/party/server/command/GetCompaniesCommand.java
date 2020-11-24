@@ -47,7 +47,7 @@ public class GetCompaniesCommand
     @Override
     protected BaseResult execute() {
         GetCompaniesResult result = PartyResultFactory.getGetCompaniesResult();
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         result.setCompanies(partyControl.getCompanyTransfers(getUserVisit()));
         

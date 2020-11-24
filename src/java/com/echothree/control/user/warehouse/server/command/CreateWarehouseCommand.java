@@ -75,13 +75,13 @@ public class CreateWarehouseCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         CreateWarehouseResult result = WarehouseResultFactory.getCreateWarehouseResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse == null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
             Language preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
             
@@ -100,13 +100,13 @@ public class CreateWarehouseCommand
                         if(preferredCurrencyIsoName == null) {
                             preferredCurrency = null;
                         } else {
-                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = Session.getModelController(AccountingControl.class);
                             
                             preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                         }
                         
                         if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                            var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+                            var printerControl = Session.getModelController(PrinterControl.class);
                             String inventoryMovePrinterGroupName = form.getInventoryMovePrinterGroupName();
                             PrinterGroup inventoryMovePrinterGroup = printerControl.getPrinterGroupByName(inventoryMovePrinterGroupName);
                             

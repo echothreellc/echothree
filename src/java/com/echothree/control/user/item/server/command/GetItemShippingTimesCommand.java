@@ -52,7 +52,7 @@ public class GetItemShippingTimesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemShippingTimesResult result = ItemResultFactory.getGetItemShippingTimesResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

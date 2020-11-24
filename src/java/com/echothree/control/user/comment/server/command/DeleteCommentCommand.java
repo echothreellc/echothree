@@ -48,7 +48,7 @@ public class DeleteCommentCommand
     
     @Override
     protected BaseResult execute() {
-        var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+        var commentControl = Session.getModelController(CommentControl.class);
         String commentName = form.getCommentName();
         Comment comment = commentControl.getCommentByNameForUpdate(commentName);
         

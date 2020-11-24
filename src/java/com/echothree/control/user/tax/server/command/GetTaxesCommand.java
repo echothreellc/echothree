@@ -46,7 +46,7 @@ public class GetTaxesCommand
     
     @Override
     protected BaseResult execute() {
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
         GetTaxesResult result = TaxResultFactory.getGetTaxesResult();
         
         result.setTaxes(taxControl.getTaxTransfers(getUserVisit()));

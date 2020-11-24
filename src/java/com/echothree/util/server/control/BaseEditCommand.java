@@ -137,7 +137,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
     
     public EntityLockControl getEntityLockControl() {
         if(entityLockControl == null) {
-            entityLockControl = (EntityLockControl)Session.getModelController(EntityLockControl.class);
+            entityLockControl = Session.getModelController(EntityLockControl.class);
         }
         
         return entityLockControl;

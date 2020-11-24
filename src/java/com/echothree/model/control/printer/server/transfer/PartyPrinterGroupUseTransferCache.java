@@ -34,7 +34,7 @@ public class PartyPrinterGroupUseTransferCache
     /** Creates a new instance of PartyPrinterGroupUseTransferCache */
     public PartyPrinterGroupUseTransferCache(UserVisit userVisit, PrinterControl printerControl) {
         super(userVisit, printerControl);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(PartyPrinterGroupUse partyPrinterGroupUse) {

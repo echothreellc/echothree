@@ -74,10 +74,10 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         extends BaseLogic
         implements Closeable {
     
-    protected CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    protected IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
-    protected TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
-    protected WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    protected CoreControl coreControl = Session.getModelController(CoreControl.class);
+    protected IndexControl indexControl = Session.getModelController(IndexControl.class);
+    protected TagControl tagControl = Session.getModelController(TagControl.class);
+    protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     protected Log log = LogFactory.getLog(this.getClass());
 
     protected ExecutionErrorAccumulator eea;

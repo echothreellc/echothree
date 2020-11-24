@@ -88,7 +88,7 @@ public class EditDocumentTypeUsageCommand
 
     @Override
     public DocumentTypeUsage getEntity(EditDocumentTypeUsageResult result) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeUsage documentTypeUsage = null;
         String documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
         DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
@@ -124,7 +124,7 @@ public class EditDocumentTypeUsageCommand
 
     @Override
     public void fillInResult(EditDocumentTypeUsageResult result, DocumentTypeUsage documentTypeUsage) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
 
         result.setDocumentTypeUsage(documentControl.getDocumentTypeUsageTransfer(getUserVisit(), documentTypeUsage));
     }
@@ -138,7 +138,7 @@ public class EditDocumentTypeUsageCommand
 
     @Override
     public void doUpdate(DocumentTypeUsage documentTypeUsage) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeUsageValue documentTypeUsageValue = documentControl.getDocumentTypeUsageValueForUpdate(documentTypeUsage);
 
         documentTypeUsageValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

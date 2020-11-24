@@ -108,7 +108,7 @@ public class WorkEffortLogic {
             workEffortSequence = workEffortTypeDetail.getWorkEffortSequence();
 
             if(workEffortSequence == null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 
                 workEffortSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_EFFORT.name());
             }
@@ -175,7 +175,7 @@ public class WorkEffortLogic {
     }
 
     public WorkEffort createWorkEffort(final PreparedWorkEffort preparedWorkEffort, final EntityInstance owningEntityInstance, final BasePK createdBy) {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         String workEffortName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
         
         WorkEffort workEffort = workEffortControl.createWorkEffort(workEffortName, owningEntityInstance, preparedWorkEffort.getWorkEffortScope(),
@@ -186,7 +186,7 @@ public class WorkEffortLogic {
     }
 
     public void deleteWorkEffort(final WorkEffort workEffort, final BasePK deletedBy) {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
 
         workEffortControl.deleteWorkEffort(workEffort, deletedBy);
     }

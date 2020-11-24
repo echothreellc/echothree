@@ -69,7 +69,7 @@ public class GetCityCommand
 
     @Override
     protected GeoCode getEntity() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var createdBy = getPartyPK();
         GeoCode geoCode = null;
 
@@ -122,7 +122,7 @@ public class GetCityCommand
         var result = GeoResultFactory.getGetCityResult();
 
         if(entity != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
 
             result.setCity(geoControl.getCityTransfer(getUserVisit(), entity));
         }

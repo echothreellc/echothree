@@ -78,7 +78,7 @@ public class CreateStateCommand
     @Override
     protected BaseResult execute() {
         CreateStateResult result = GeoResultFactory.getCreateStateResult();
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
         
         String countryGeoCodeName = form.getCountryGeoCodeName();

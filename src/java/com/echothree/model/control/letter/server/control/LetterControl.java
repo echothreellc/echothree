@@ -1419,7 +1419,7 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     
     public QueuedLetter createQueuedLetter(ChainInstance chainInstance, Letter letter) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainInstanceStatus chainInstanceStatus = chainControl.getChainInstanceStatusForUpdate(chainInstance);
         Integer queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence() + 1;
 
@@ -1605,7 +1605,7 @@ public class LetterControl
         queuedLetter.remove();
 
         if(checkChainInstance) {
-            var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+            var chainControl = Session.getModelController(ChainControl.class);
 
             chainControl.deleteChainInstanceIfUnused(queuedLetter.getChainInstanceForUpdate(), removedBy);
         }

@@ -32,7 +32,7 @@ import java.util.Set;
 public class ShippingMethodTransferCache
         extends BaseShippingTransferCache<ShippingMethod, ShippingMethodTransfer> {
     
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
     boolean includeComments;
     

@@ -60,7 +60,7 @@ public class GetSearchCheckSpellingActionTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         GetSearchCheckSpellingActionTypesResult result = SearchResultFactory.getGetSearchCheckSpellingActionTypesResult();
         
         result.setSearchCheckSpellingActionTypes(searchControl.getSearchCheckSpellingActionTypeTransfers(getUserVisit()));

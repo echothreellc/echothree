@@ -276,8 +276,8 @@ public class SourceControl
     }
 
     public String getBestSourceDescription(Source source, Language language) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         SourceDetail sourceDetail = source.getLastDetail();
         String sourceName = sourceDetail.getSourceName();
         OfferUseDetail offerUseDetail = sourceDetail.getOfferUse().getLastDetail();

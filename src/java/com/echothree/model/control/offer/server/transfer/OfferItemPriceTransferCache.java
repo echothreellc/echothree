@@ -50,11 +50,11 @@ public class OfferItemPriceTransferCache
         extends BaseOfferTransferCache<OfferItemPrice, OfferItemPriceTransfer>
         implements HistoryCache<OfferItemPrice, OfferItemPriceTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    OfferItemControl offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    OfferControl offerControl = Session.getModelController(OfferControl.class);
+    OfferItemControl offerItemControl = Session.getModelController(OfferItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     TransferProperties transferProperties;
     boolean filterOfferItem;

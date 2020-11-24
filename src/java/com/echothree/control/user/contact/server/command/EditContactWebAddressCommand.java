@@ -97,13 +97,13 @@ public class EditContactWebAddressCommand
 
     @Override
     public PartyContactMechanism getEntity(EditContactWebAddressResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactMechanism partyContactMechanism = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = spec.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
@@ -143,7 +143,7 @@ public class EditContactWebAddressCommand
 
     @Override
     public void fillInResult(EditContactWebAddressResult result, PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
 
         result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
                 partyContactMechanism.getLastDetail().getContactMechanism()));
@@ -151,7 +151,7 @@ public class EditContactWebAddressCommand
 
     @Override
     public void doLock(ContactWebAddressEdit edit, PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactWebAddress = contactControl.getContactWebAddress(contactMechanism);
         var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
@@ -162,7 +162,7 @@ public class EditContactWebAddressCommand
 
     @Override
     public void doUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var updatedBy = getPartyPK();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactWebAddressValue = contactControl.getContactWebAddressValueForUpdate(contactMechanism);

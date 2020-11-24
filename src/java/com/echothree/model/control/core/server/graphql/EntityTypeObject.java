@@ -109,8 +109,8 @@ public class EntityTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return coreControl.getBestEntityTypeDescription(entityType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -120,7 +120,7 @@ public class EntityTypeObject
     @GraphQLDescription("entity instances")
     public List<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
         if(getHasEntityInstancesAccess(env)) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             var entities = coreControl.getEntityInstancesByEntityType(entityType);
             var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
@@ -134,7 +134,7 @@ public class EntityTypeObject
     @GraphQLDescription("entity instance count")
     public Long getEntityInstanceCount(final DataFetchingEnvironment env) {
         if(getHasEntityInstancesAccess(env)) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
 
             return coreControl.countEntityInstancesByEntityType(entityType);
         } else {

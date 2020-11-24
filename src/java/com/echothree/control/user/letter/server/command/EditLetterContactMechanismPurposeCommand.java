@@ -85,7 +85,7 @@ public class EditLetterContactMechanismPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         EditLetterContactMechanismPurposeResult result = LetterResultFactory.getEditLetterContactMechanismPurposeResult();
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -95,7 +95,7 @@ public class EditLetterContactMechanismPurposeCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = Session.getModelController(LetterControl.class);
                 String letterName = spec.getLetterName();
                 Letter letter = letterControl.getLetterByName(chainType, letterName);
                 
@@ -130,7 +130,7 @@ public class EditLetterContactMechanismPurposeCommand
                         LetterContactMechanismPurposeDetailValue letterContactMechanismPurposeDetailValue = letterControl.getLetterContactMechanismPurposeDetailValueForUpdate(letterContactMechanismPurpose);
                         
                         if(letterContactMechanismPurposeDetailValue != null) {
-                            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                            var contactControl = Session.getModelController(ContactControl.class);
                             String contactMechanismPurposeName = edit.getContactMechanismPurposeName();
                             ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                             

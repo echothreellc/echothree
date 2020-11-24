@@ -57,7 +57,7 @@ public abstract class BaseEvaluator
     
     protected Index index;
     
-    protected SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+    protected SearchControl searchControl = Session.getModelController(SearchControl.class);
     private CoreControl coreControl;
     private IndexControl indexControl;
     private UserControl userControl;
@@ -97,7 +97,7 @@ public abstract class BaseEvaluator
 
     protected CoreControl getCoreControl() {
         if(coreControl == null) {
-            coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            coreControl = Session.getModelController(CoreControl.class);
         }
 
         return coreControl;
@@ -105,7 +105,7 @@ public abstract class BaseEvaluator
     
     protected IndexControl getIndexControl() {
         if(indexControl == null) {
-            indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+            indexControl = Session.getModelController(IndexControl.class);
         }
 
         return indexControl;
@@ -113,7 +113,7 @@ public abstract class BaseEvaluator
     
     protected UserControl getUserControl() {
         if(userControl == null) {
-            userControl = (UserControl)Session.getModelController(UserControl.class);
+            userControl = Session.getModelController(UserControl.class);
         }
         
         return userControl;

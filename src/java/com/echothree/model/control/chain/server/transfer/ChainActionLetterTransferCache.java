@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class ChainActionLetterTransferCache
         extends BaseChainTransferCache<ChainActionLetter, ChainActionLetterTransfer> {
     
-    LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
     
     /** Creates a new instance of ChainActionLetterTransferCache */
     public ChainActionLetterTransferCache(UserVisit userVisit, ChainControl chainControl) {

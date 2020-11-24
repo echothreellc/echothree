@@ -94,7 +94,7 @@ public class EditPicklistAliasTypeCommand
 
     @Override
     public PicklistAliasType getEntity(EditPicklistAliasTypeResult result) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAliasType picklistAliasType = null;
         String picklistTypeName = spec.getPicklistTypeName();
 
@@ -128,14 +128,14 @@ public class EditPicklistAliasTypeCommand
 
     @Override
     public void fillInResult(EditPicklistAliasTypeResult result, PicklistAliasType picklistAliasType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
 
         result.setPicklistAliasType(picklistControl.getPicklistAliasTypeTransfer(getUserVisit(), picklistAliasType));
     }
 
     @Override
     public void doLock(PicklistAliasTypeEdit edit, PicklistAliasType picklistAliasType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAliasTypeDescription picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescription(picklistAliasType, getPreferredLanguage());
         PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
 
@@ -151,7 +151,7 @@ public class EditPicklistAliasTypeCommand
 
     @Override
     public void canUpdate(PicklistAliasType picklistAliasType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         String picklistAliasTypeName = edit.getPicklistAliasTypeName();
         PicklistAliasType duplicatePicklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
@@ -162,7 +162,7 @@ public class EditPicklistAliasTypeCommand
 
     @Override
     public void doUpdate(PicklistAliasType picklistAliasType) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         var partyPK = getPartyPK();
         PicklistAliasTypeDetailValue picklistAliasTypeDetailValue = picklistControl.getPicklistAliasTypeDetailValueForUpdate(picklistAliasType);
         PicklistAliasTypeDescription picklistAliasTypeDescription = picklistControl.getPicklistAliasTypeDescriptionForUpdate(picklistAliasType, getPreferredLanguage());

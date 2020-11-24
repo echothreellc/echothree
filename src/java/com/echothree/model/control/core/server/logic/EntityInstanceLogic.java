@@ -71,7 +71,7 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByEntityRef(final ExecutionErrorAccumulator eea, final String entityRef) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByEntityRef(entityRef));
         
         if(entityInstance == null) {
@@ -86,7 +86,7 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByKey(final ExecutionErrorAccumulator eea, final String key) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByKey(key));
 
         if(entityInstance == null) {
@@ -101,7 +101,7 @@ public class EntityInstanceLogic
     }
     
     public EntityInstance getEntityInstanceByGuid(final ExecutionErrorAccumulator eea, final String guid) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByGuid(guid));
 
         if(entityInstance == null) {
@@ -112,7 +112,7 @@ public class EntityInstanceLogic
     }
 
     public EntityInstance getEntityInstanceByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = checkEntityTimeForDeletion(coreControl, coreControl.getEntityInstanceByUlid(ulid));
 
         if(entityInstance == null) {

@@ -32,7 +32,7 @@ public abstract class BaseWishlistDescriptionTransferCache<K extends BaseEntity,
     protected BaseWishlistDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
         super(userVisit, wishlistControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

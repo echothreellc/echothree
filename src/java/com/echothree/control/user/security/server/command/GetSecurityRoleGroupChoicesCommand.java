@@ -62,7 +62,7 @@ public class GetSecurityRoleGroupChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         GetSecurityRoleGroupChoicesResult result = SecurityResultFactory.getGetSecurityRoleGroupChoicesResult();
         String defaultSecurityRoleGroupChoice = form.getDefaultSecurityRoleGroupChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

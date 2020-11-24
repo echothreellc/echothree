@@ -79,7 +79,7 @@ public class CustomerResultsObject {
 
         if(userVisitSearch != null) {
             GraphQlContext context = env.getContext();
-            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = Session.getModelController(CustomerControl.class);
 
             objects = customerControl.getCustomerResultObjects(userVisitSearch);
         }

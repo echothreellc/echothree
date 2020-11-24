@@ -96,7 +96,7 @@ public class EditScaleCommand
 
     @Override
     public Scale getEntity(EditScaleResult result) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         Scale scale = null;
         String scaleName = spec.getScaleName();
 
@@ -122,7 +122,7 @@ public class EditScaleCommand
 
     @Override
     public void fillInResult(EditScaleResult result, Scale scale) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
 
         result.setScale(scaleControl.getScaleTransfer(getUserVisit(), scale));
     }
@@ -131,7 +131,7 @@ public class EditScaleCommand
 
     @Override
     public void doLock(ScaleEdit edit, Scale scale) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         ScaleDescription scaleDescription = scaleControl.getScaleDescription(scale, getPreferredLanguage());
         ScaleDetail scaleDetail = scale.getLastDetail();
 
@@ -153,7 +153,7 @@ public class EditScaleCommand
 
     @Override
     public void canUpdate(Scale scale) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         String scaleName = edit.getScaleName();
         Scale duplicateScale = scaleControl.getScaleByName(scaleName);
 
@@ -193,7 +193,7 @@ public class EditScaleCommand
 
     @Override
     public void doUpdate(Scale scale) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         var partyPK = getPartyPK();
         ScaleDetailValue scaleDetailValue = scaleControl.getScaleDetailValueForUpdate(scale);
         ScaleDescription scaleDescription = scaleControl.getScaleDescriptionForUpdate(scale, getPreferredLanguage());

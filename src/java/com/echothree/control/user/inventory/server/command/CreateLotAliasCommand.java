@@ -69,12 +69,12 @@ public class CreateLotAliasCommand
 
     @Override
     protected BaseResult execute() {
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
         String lotName = form.getLotName();
         Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
-            var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+            var lotAliasControl = Session.getModelController(LotAliasControl.class);
             String lotAliasTypeName = form.getLotAliasTypeName();
             LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 

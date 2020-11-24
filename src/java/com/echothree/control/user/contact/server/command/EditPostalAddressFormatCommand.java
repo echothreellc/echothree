@@ -66,7 +66,7 @@ public class EditPostalAddressFormatCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         EditPostalAddressFormatResult result = ContactResultFactory.getEditPostalAddressFormatResult();
         
         if(editMode.equals(EditMode.LOCK)) {

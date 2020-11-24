@@ -54,13 +54,13 @@ public class GetItemShippingTimeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemShippingTimeResult result = ItemResultFactory.getGetItemShippingTimeResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = Session.getModelController(CustomerControl.class);
             String customerTypeName = form.getCustomerTypeName();
             CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 

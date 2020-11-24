@@ -64,7 +64,7 @@ public class CreateForumCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByName(forumName);
         
@@ -73,7 +73,7 @@ public class CreateForumCommand
             ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
             
             if(forumType != null) {
-                var iconControl = (IconControl)Session.getModelController(IconControl.class);
+                var iconControl = Session.getModelController(IconControl.class);
                 String iconName = form.getIconName();
                 Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
                 
@@ -94,7 +94,7 @@ public class CreateForumCommand
                         String forumMessageSequenceName = form.getForumMessageSequenceName();
                         
                         if(forumThreadSequenceName != null || forumMessageSequenceName != null) {
-                            sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                            sequenceControl = Session.getModelController(SequenceControl.class);
                             
                             if(forumThreadSequenceName != null) {
                                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());

@@ -52,12 +52,12 @@ public class DeleteTermDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         String termName = form.getTermName();
         Term term = termControl.getTermByName(termName);
         
         if(term != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

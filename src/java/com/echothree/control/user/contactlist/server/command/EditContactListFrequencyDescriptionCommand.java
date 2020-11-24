@@ -87,13 +87,13 @@ public class EditContactListFrequencyDescriptionCommand
 
     @Override
     public ContactListFrequencyDescription getEntity(EditContactListFrequencyDescriptionResult result) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListFrequencyDescription contactListFrequencyDescription = null;
         String contactListFrequencyName = spec.getContactListFrequencyName();
         ContactListFrequency contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
         if(contactListFrequency != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditContactListFrequencyDescriptionCommand
 
     @Override
     public void fillInResult(EditContactListFrequencyDescriptionResult result, ContactListFrequencyDescription contactListFrequencyDescription) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
 
         result.setContactListFrequencyDescription(contactListControl.getContactListFrequencyDescriptionTransfer(getUserVisit(), contactListFrequencyDescription));
     }
@@ -136,7 +136,7 @@ public class EditContactListFrequencyDescriptionCommand
 
     @Override
     public void doUpdate(ContactListFrequencyDescription contactListFrequencyDescription) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListFrequencyDescriptionValue contactListFrequencyDescriptionValue = contactListControl.getContactListFrequencyDescriptionValue(contactListFrequencyDescription);
 
         contactListFrequencyDescriptionValue.setDescription(edit.getDescription());

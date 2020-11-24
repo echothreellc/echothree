@@ -93,7 +93,7 @@ public class EditSelectorTypeCommand
 
     @Override
     public SelectorType getEntity(EditSelectorTypeResult result) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorType selectorType = null;
         String selectorKindName = spec.getSelectorKindName();
 
@@ -125,14 +125,14 @@ public class EditSelectorTypeCommand
 
     @Override
     public void fillInResult(EditSelectorTypeResult result, SelectorType selectorType) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
 
         result.setSelectorType(selectorControl.getSelectorTypeTransfer(getUserVisit(), selectorType));
     }
 
     @Override
     public void doLock(SelectorTypeEdit edit, SelectorType selectorType) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorTypeDescription selectorTypeDescription = selectorControl.getSelectorTypeDescription(selectorType, getPreferredLanguage());
         SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditSelectorTypeCommand
 
     @Override
     public void canUpdate(SelectorType selectorType) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
         String selectorTypeName = edit.getSelectorTypeName();
         SelectorType duplicateSelectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
@@ -159,7 +159,7 @@ public class EditSelectorTypeCommand
 
     @Override
     public void doUpdate(SelectorType selectorType) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         var partyPK = getPartyPK();
         SelectorTypeDetailValue selectorTypeDetailValue = selectorControl.getSelectorTypeDetailValueForUpdate(selectorType);
         SelectorTypeDescription selectorTypeDescription = selectorControl.getSelectorTypeDescriptionForUpdate(selectorType, getPreferredLanguage());

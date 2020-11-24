@@ -66,12 +66,12 @@ public class DeleteSecurityRoleGroupDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
         if(securityRoleGroup != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

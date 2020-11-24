@@ -36,7 +36,7 @@ import org.apache.lucene.util.BytesRef;
 public class SecurityRoleIndexer
         extends BaseIndexer<SecurityRole> {
     
-    SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
 
     /** Creates a new instance of SecurityRoleIndexer */
     public SecurityRoleIndexer(final ExecutionErrorAccumulator eea, final Index index) {

@@ -50,7 +50,7 @@ public class CreateForumRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumRoleTypeName = form.getForumRoleTypeName();
         ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
         

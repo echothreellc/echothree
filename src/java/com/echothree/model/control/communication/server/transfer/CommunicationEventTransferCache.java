@@ -33,8 +33,8 @@ import com.echothree.util.server.persistence.Session;
 public class CommunicationEventTransferCache
         extends BaseCommunicationTransferCache<CommunicationEvent, CommunicationEventTransfer> {
     
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     
     /** Creates a new instance of CommunicationEventTransferCache */
     public CommunicationEventTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {

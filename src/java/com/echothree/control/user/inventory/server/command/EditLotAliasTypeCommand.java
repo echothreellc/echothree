@@ -91,7 +91,7 @@ public class EditLotAliasTypeCommand
 
     @Override
     public LotAliasType getEntity(EditLotAliasTypeResult result) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasType lotAliasType;
         String lotAliasTypeName = spec.getLotAliasTypeName();
 
@@ -117,14 +117,14 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void fillInResult(EditLotAliasTypeResult result, LotAliasType lotAliasType) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
 
         result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
     }
 
     @Override
     public void doLock(LotAliasTypeEdit edit, LotAliasType lotAliasType) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, getPreferredLanguage());
         LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
 
@@ -140,7 +140,7 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void canUpdate(LotAliasType lotAliasType) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         String lotAliasTypeName = edit.getLotAliasTypeName();
         LotAliasType duplicateLotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
@@ -151,7 +151,7 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void doUpdate(LotAliasType lotAliasType) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         var partyPK = getPartyPK();
         LotAliasTypeDetailValue lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
         LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());

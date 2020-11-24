@@ -44,12 +44,12 @@ import java.util.Set;
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {
     
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
-    OfferNameElementControl offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    OfferControl offerControl = Session.getModelController(OfferControl.class);
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     boolean includeOfferCustomerTypes;
     boolean includeOfferNameElements;

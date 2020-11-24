@@ -63,7 +63,7 @@ public class DeletePartyTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         String partyTrainingClassName = form.getPartyTrainingClassName();
         PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByNameForUpdate(partyTrainingClassName);
 

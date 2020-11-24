@@ -82,7 +82,7 @@ public class GetContentCatalogItemCommand
         ContentCatalogItem contentCatalogItem = null;
 
         if(parameterCount == 1) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -102,18 +102,18 @@ public class GetContentCatalogItemCommand
             }
 
             if(!hasExecutionErrors()) {
-                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = Session.getModelController(ItemControl.class);
                 String itemName = form.getItemName();
                 Item item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
-                    var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                    var inventoryControl = Session.getModelController(InventoryControl.class);
                     String inventoryConditionName = form.getInventoryConditionName();
                     InventoryCondition inventoryCondition = inventoryConditionName == null ? inventoryControl.getDefaultInventoryCondition()
                             : inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
-                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = Session.getModelController(UomControl.class);
                         String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         ItemDetail itemDetail = item.getLastDetail();
                         UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -121,7 +121,7 @@ public class GetContentCatalogItemCommand
                                 : uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                         if(unitOfMeasureType != null) {
-                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = Session.getModelController(AccountingControl.class);
                             String currencyIsoName = form.getCurrencyIsoName();
                             Currency currency = currencyIsoName == null ? accountingControl.getDefaultCurrency()
                                     : accountingControl.getCurrencyByIsoName(currencyIsoName);
@@ -195,7 +195,7 @@ public class GetContentCatalogItemCommand
         GetContentCatalogItemResult result = ContentResultFactory.getGetContentCatalogItemResult();
 
         if (contentCatalogItem != null) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
 
             result.setContentCatalogItem(contentControl.getContentCatalogItemTransfer(getUserVisit(), contentCatalogItem));
         }

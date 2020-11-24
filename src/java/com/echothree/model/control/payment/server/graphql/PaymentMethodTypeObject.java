@@ -77,8 +77,8 @@ public class PaymentMethodTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

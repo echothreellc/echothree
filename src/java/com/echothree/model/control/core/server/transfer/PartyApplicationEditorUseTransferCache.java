@@ -31,7 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class PartyApplicationEditorUseTransferCache
         extends BaseCoreTransferCache<PartyApplicationEditorUse, PartyApplicationEditorUseTransfer> {
 
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyApplicationEditorUseTransferCache */
     public PartyApplicationEditorUseTransferCache(UserVisit userVisit, CoreControl coreControl) {

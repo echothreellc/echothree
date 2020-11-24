@@ -65,7 +65,7 @@ public class DeleteVendorItemCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
         

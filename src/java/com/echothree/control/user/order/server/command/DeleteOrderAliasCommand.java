@@ -66,17 +66,17 @@ public class DeleteOrderAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderControl = Session.getModelController(OrderControl.class);
             String orderName = form.getOrderName();
             Order order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
-                var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+                var orderAliasControl = Session.getModelController(OrderAliasControl.class);
                 String orderAliasTypeName = form.getOrderAliasTypeName();
                 OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 

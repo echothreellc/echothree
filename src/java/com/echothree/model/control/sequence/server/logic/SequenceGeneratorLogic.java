@@ -170,7 +170,7 @@ public class SequenceGeneratorLogic
             try {
                 result = sequenceDeque.removeFirst();
             } catch (NoSuchElementException nsee1) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var sequenceSession = SessionFactory.getInstance().getSession();
                 var sequenceValue = sequenceControl.getSequenceValueForUpdateInSession(sequenceSession, sequence);
 
@@ -308,7 +308,7 @@ public class SequenceGeneratorLogic
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceType);
 
         if(sequence == null) {
@@ -379,7 +379,7 @@ public class SequenceGeneratorLogic
     }
 
     public SequenceType identifySequenceType(final String value) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypes = sequenceControl.getSequenceTypes();
         SequenceType result = null;
 

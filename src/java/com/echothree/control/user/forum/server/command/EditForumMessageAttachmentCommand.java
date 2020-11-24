@@ -86,7 +86,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public ForumMessageAttachment getEntity(EditForumMessageAttachmentResult result) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageAttachment forumMessageAttachment = null;
         String forumMessageName = spec.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
@@ -117,7 +117,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void fillInResult(EditForumMessageAttachmentResult result, ForumMessageAttachment forumMessageAttachment) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
 
         result.setForumMessageAttachment(forumControl.getForumMessageAttachmentTransfer(getUserVisit(), forumMessageAttachment));
     }
@@ -126,7 +126,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void doLock(ForumMessageAttachmentEdit edit, ForumMessageAttachment forumMessageAttachment) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         
         mimeType = forumMessageAttachment.getLastDetail().getMimeType();
 
@@ -170,7 +170,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void doUpdate(ForumMessageAttachment forumMessageAttachment) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageAttachmentDetailValue forumMessageAttachmentDetailValue = forumControl.getForumMessageAttachmentDetailValueForUpdate(forumMessageAttachment);
         String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         PartyPK updatedBy = getPartyPK();

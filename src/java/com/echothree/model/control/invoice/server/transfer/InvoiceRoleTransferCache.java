@@ -38,8 +38,8 @@ public class InvoiceRoleTransferCache
     public InvoiceRoleTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
         super(userVisit, invoiceControl);
 
-        contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        contactControl = Session.getModelController(ContactControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
 
     public InvoiceRoleTransfer getInvoiceRoleTransfer(InvoiceRole invoiceRole) {

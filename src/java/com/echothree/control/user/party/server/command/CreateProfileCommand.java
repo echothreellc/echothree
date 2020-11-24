@@ -103,7 +103,7 @@ public class CreateProfileCommand
         int signatureParameterCount = (signatureMimeTypeName == null? 0: 1) + (signature == null? 0: 1);
         
         if((bioParameterCount == 0 || bioParameterCount == 2) && (signatureParameterCount == 0 || signatureParameterCount == 2)) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String partyTypeName = getPartyTypeName();
             String partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name())? null: form.getPartyName();
             Party party = partyName == null? null: partyControl.getPartyByName(partyName);
@@ -117,7 +117,7 @@ public class CreateProfileCommand
                 }
                 
                 if(profile == null) {
-                    var iconControl = (IconControl)Session.getModelController(IconControl.class);
+                    var iconControl = Session.getModelController(IconControl.class);
                     String iconName = form.getIconName();
                     Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
                     

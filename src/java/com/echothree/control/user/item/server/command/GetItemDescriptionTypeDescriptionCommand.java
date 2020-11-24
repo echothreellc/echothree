@@ -68,13 +68,13 @@ public class GetItemDescriptionTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemDescriptionTypeDescriptionResult result = ItemResultFactory.getGetItemDescriptionTypeDescriptionResult();
         String itemDescriptionTypeName = form.getItemDescriptionTypeName();
         ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
         if(itemDescriptionType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

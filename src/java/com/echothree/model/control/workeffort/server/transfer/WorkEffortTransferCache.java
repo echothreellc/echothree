@@ -37,10 +37,10 @@ import java.util.Set;
 public class WorkEffortTransferCache
         extends BaseWorkEffortTransferCache<WorkEffort, WorkEffortTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     boolean includeWorkRequirements;
     

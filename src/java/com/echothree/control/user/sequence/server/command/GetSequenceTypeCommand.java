@@ -79,7 +79,7 @@ public class GetSequenceTypeCommand
 
     @Override
     protected BaseResult getTransfer(SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceTypeResult();
 
         if(sequenceType != null) {

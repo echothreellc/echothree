@@ -69,18 +69,18 @@ public class EditInventoryLocationGroupCapacityCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         EditInventoryLocationGroupCapacityResult result = InventoryResultFactory.getEditInventoryLocationGroupCapacityResult();
         String warehouseName = spec.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
             String inventoryLocationGroupName = spec.getInventoryLocationGroupName();
             InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
             
             if(inventoryLocationGroup != null) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
                 UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 

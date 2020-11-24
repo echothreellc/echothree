@@ -32,7 +32,7 @@ public abstract class BasePicklistDescriptionTransferCache<K extends BaseEntity,
     protected BasePicklistDescriptionTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
         super(userVisit, picklistControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }
