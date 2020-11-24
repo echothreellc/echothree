@@ -90,7 +90,7 @@ public class CreatePurchaseInvoiceLineCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
         CreatePurchaseInvoiceLineResult result = PurchaseResultFactory.getCreatePurchaseInvoiceLineResult();
         InvoiceLine invoiceLine = null;
         String invoiceName = form.getInvoiceName();
@@ -107,7 +107,7 @@ public class CreatePurchaseInvoiceLineCommand
                 InvoiceLineType invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceTypeName);
                 
                 if(invoiceLineType != null) {
-                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = Session.getModelController(AccountingControl.class);
                     String glAccountName = form.getGlAccountName();
                     GlAccount glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
                     

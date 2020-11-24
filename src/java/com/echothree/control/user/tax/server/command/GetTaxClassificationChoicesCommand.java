@@ -66,13 +66,13 @@ public class GetTaxClassificationChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GetTaxClassificationChoicesResult result = TaxResultFactory.getGetTaxClassificationChoicesResult();
         String countryName = form.getCountryName();
         GeoCode geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = Session.getModelController(TaxControl.class);
             String defaultTaxClassificationChoice = form.getDefaultTaxClassificationChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             

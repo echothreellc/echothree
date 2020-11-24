@@ -69,7 +69,7 @@ public class CreateItemCategoryCommand
     @Override
     protected BaseResult execute() {
         CreateItemCategoryResult result = ItemResultFactory.getCreateItemCategoryResult();
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String itemCategoryName = form.getItemCategoryName();
         ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
         

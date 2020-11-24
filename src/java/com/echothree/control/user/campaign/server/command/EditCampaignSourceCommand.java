@@ -89,7 +89,7 @@ public class EditCampaignSourceCommand
 
     @Override
     public CampaignSource getEntity(EditCampaignSourceResult result) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignSource campaignSource;
         String campaignSourceName = spec.getCampaignSourceName();
 
@@ -113,14 +113,14 @@ public class EditCampaignSourceCommand
 
     @Override
     public void fillInResult(EditCampaignSourceResult result, CampaignSource campaignSource) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
 
         result.setCampaignSource(campaignControl.getCampaignSourceTransfer(getUserVisit(), campaignSource));
     }
 
     @Override
     public void doLock(CampaignSourceEdit edit, CampaignSource campaignSource) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignSourceDescription campaignSourceDescription = campaignControl.getCampaignSourceDescription(campaignSource, getPreferredLanguage());
         CampaignSourceDetail campaignSourceDetail = campaignSource.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditCampaignSourceCommand
 
     @Override
     public void canUpdate(CampaignSource campaignSource) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String value = edit.getValue();
         CampaignSource duplicateCampaignSource = campaignControl.getCampaignSourceByValue(value);
 
@@ -146,7 +146,7 @@ public class EditCampaignSourceCommand
 
     @Override
     public void doUpdate(CampaignSource campaignSource) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
         CampaignSourceDetailValue campaignSourceDetailValue = campaignControl.getCampaignSourceDetailValueForUpdate(campaignSource);
         CampaignSourceDescription campaignSourceDescription = campaignControl.getCampaignSourceDescriptionForUpdate(campaignSource, getPreferredLanguage());

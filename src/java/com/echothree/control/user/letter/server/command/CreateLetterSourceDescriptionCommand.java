@@ -67,12 +67,12 @@ public class CreateLetterSourceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = Session.getModelController(LetterControl.class);
         String letterSourceName = form.getLetterSourceName();
         LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
         if(letterSource != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

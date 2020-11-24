@@ -46,11 +46,11 @@ import java.util.Set;
 public class UserVisitTransferCache
         extends BaseUserTransferCache<UserVisit, UserVisitTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
-    CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     boolean includeUserVisitCampaigns;
     

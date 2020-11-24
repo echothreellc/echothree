@@ -73,7 +73,7 @@ public class GetContentPageDescriptionCommand
     @Override
     protected BaseResult execute() {
         GetContentPageDescriptionResult result = ContentResultFactory.getGetContentPageDescriptionResult();
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -86,7 +86,7 @@ public class GetContentPageDescriptionCommand
                 ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     String languageIsoName = form.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     

@@ -64,7 +64,7 @@ public class GetTagScopeCommand
     
     @Override
     protected BaseResult execute() {
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
         GetTagScopeResult result = TagResultFactory.getGetTagScopeResult();
         String tagScopeName = form.getTagScopeName();
         TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);

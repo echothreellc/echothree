@@ -296,7 +296,7 @@ public class PaymentProcessorTypeCodeControl
     }
 
     public void deletePaymentProcessorTypeCode(final PaymentProcessorTypeCode paymentProcessorTypeCode, final BasePK deletedBy) {
-        var paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+        var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
 
         paymentProcessorTransactionCodeControl.deletePaymentProcessorTransactionCodesByPaymentProcessorTypeCode(paymentProcessorTypeCode, deletedBy);
         deletePaymentProcessorTypeCodeDescriptionsByPaymentProcessorTypeCode(paymentProcessorTypeCode, deletedBy);

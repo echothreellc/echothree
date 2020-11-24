@@ -79,13 +79,13 @@ public class EditGeoCodeTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         EditGeoCodeTimeZoneResult result = GeoResultFactory.getEditGeoCodeTimeZoneResult();
         String geoCodeName = spec.getGeoCodeName();
         GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String javaTimeZoneName = spec.getJavaTimeZoneName();
             TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             

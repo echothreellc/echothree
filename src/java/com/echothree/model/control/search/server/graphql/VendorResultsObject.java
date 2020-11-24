@@ -78,7 +78,7 @@ public class VendorResultsObject {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
 
             objects = vendorControl.getVendorResultObjects(userVisitSearch);
         }

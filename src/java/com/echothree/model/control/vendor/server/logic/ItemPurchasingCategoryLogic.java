@@ -50,8 +50,8 @@ public class ItemPurchasingCategoryLogic {
     }
 
     public void checkDeleteItemPurchasingCategory(final ExecutionErrorAccumulator ema, final ItemPurchasingCategory itemPurchasingCategory) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         
         if(countItemsByItemPurchasingCategoryChildren(vendorControl, itemControl, itemPurchasingCategory) != 0) {
             ema.addExecutionError(ExecutionErrors.CannotDeleteItemPurchasingCategoryInUse.name(), itemPurchasingCategory.getLastDetail().getItemPurchasingCategoryName());
@@ -59,7 +59,7 @@ public class ItemPurchasingCategoryLogic {
     }
 
     public void deleteItemPurchasingCategory(final ItemPurchasingCategory itemPurchasingCategory, final BasePK deletedBy) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
 
         vendorControl.deleteItemPurchasingCategory(itemPurchasingCategory, deletedBy);
     }

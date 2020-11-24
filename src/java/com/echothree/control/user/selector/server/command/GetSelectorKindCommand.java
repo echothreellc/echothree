@@ -79,7 +79,7 @@ public class GetSelectorKindCommand
 
     @Override
     protected BaseResult getTransfer(SelectorKind selectorKind) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorKindResult();
 
         if(selectorKind != null) {

@@ -50,7 +50,7 @@ public class CreatePartyTypeUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String partyTypeUseTypeName = form.getPartyTypeUseTypeName();
         PartyTypeUseType partyTypeUseType = partyControl.getPartyTypeUseTypeByName(partyTypeUseTypeName);
         

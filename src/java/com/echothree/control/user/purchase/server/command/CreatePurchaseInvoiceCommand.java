@@ -87,7 +87,7 @@ public class CreatePurchaseInvoiceCommand
     protected BaseResult execute() {
         var result = PurchaseResultFactory.getCreatePurchaseInvoiceResult();
         Invoice invoice = null;
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         var currencyIsoName = form.getCurrencyIsoName();
         var currency = currencyIsoName == null ? null : accountingControl.getCurrencyByIsoName(currencyIsoName);
 
@@ -98,13 +98,13 @@ public class CreatePurchaseInvoiceCommand
             var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, freeOnBoardName);
 
             if(!hasExecutionErrors()) {
-                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = Session.getModelController(VendorControl.class);
                 var vendorName = form.getVendorName();
                 var billFromPartyName = form.getBillFromPartyName();
                 var parameterCount = (vendorName == null? 0: 1) + (billFromPartyName == null? 0: 1);
 
                 if(parameterCount == 1) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     Party billFrom = null;
                     
                     if(vendorName == null) {
@@ -128,7 +128,7 @@ public class CreatePurchaseInvoiceCommand
                     }
                     
                     if(!hasExecutionErrors()) {
-                        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                        var contactControl = Session.getModelController(ContactControl.class);
                         var billFromContactMechanismName = form.getBillFromContactMechanismName();
                         var billFromContactMechanism = billFromContactMechanismName == null? null: contactControl.getPartyContactMechanismByContactMechanismName(this, billFrom, billFromContactMechanismName);
                         

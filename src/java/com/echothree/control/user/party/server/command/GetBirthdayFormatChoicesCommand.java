@@ -63,7 +63,7 @@ public class GetBirthdayFormatChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetBirthdayFormatChoicesResult result = PartyResultFactory.getGetBirthdayFormatChoicesResult();
         String defaultBirthdayFormatChoice = form.getDefaultBirthdayFormatChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

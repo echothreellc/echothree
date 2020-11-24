@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class RecoveryAnswerTransferCache
         extends BaseUserTransferCache<RecoveryAnswer, RecoveryAnswerTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of RecoveryAnswerTransferCache */
     public RecoveryAnswerTransferCache(UserVisit userVisit, UserControl userControl) {

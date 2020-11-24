@@ -91,7 +91,7 @@ public class EditContentPageDescriptionCommand
     
     @Override
     public ContentPageDescription getEntity(EditContentPageDescriptionResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageDescription contentPageDescription = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -105,7 +105,7 @@ public class EditContentPageDescriptionCommand
                 ContentPage contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     
@@ -144,7 +144,7 @@ public class EditContentPageDescriptionCommand
     
     @Override
     public void fillInResult(EditContentPageDescriptionResult result, ContentPageDescription contentPageDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentPageDescription(contentControl.getContentPageDescriptionTransfer(getUserVisit(), contentPageDescription));
     }
@@ -156,7 +156,7 @@ public class EditContentPageDescriptionCommand
     
     @Override
     public void doUpdate(ContentPageDescription contentPageDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageDescriptionValue contentPageDescriptionValue = contentControl.getContentPageDescriptionValue(contentPageDescription);
         contentPageDescriptionValue.setDescription(edit.getDescription());
 

@@ -104,7 +104,7 @@ public class IdentifyCommand
     private void checkItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             var item = itemControl.getItemByNameThenAlias(target);
 
             if(item != null) {
@@ -119,7 +119,7 @@ public class IdentifyCommand
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
             var vendor = vendorControl.getVendorByName(target);
 
             if(vendor != null) {
@@ -134,7 +134,7 @@ public class IdentifyCommand
     private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
             var vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
 
             vendorItems.stream().map((vendorItem) -> getCoreControl().getEntityInstanceByBasePK(vendorItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
@@ -267,7 +267,7 @@ public class IdentifyCommand
     // Add results from any of the BaseSearchEvaluators to the entityInstances.
     private void addSearchResults(final UserVisit userVisit, final SearchType searchType,
             final Set<EntityInstanceTransfer> entityInstances) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var userVisitSearch = SearchLogic.getInstance().getUserVisitSearch(null, userVisit, searchType);
         var resultEntityInstances = searchControl.getUserVisitSearchEntityInstances(userVisitSearch);
 

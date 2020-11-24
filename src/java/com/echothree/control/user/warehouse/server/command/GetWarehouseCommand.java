@@ -62,7 +62,7 @@ public class GetWarehouseCommand
         int parameterCount = (warehouseName == null? 0: 1) + (partyName == null? 0: 1);
         
         if(parameterCount == 1) {
-            var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
             Warehouse warehouse = null;
             
             if(warehouseName != null) {
@@ -72,7 +72,7 @@ public class GetWarehouseCommand
                     addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
                 }
             } else {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {

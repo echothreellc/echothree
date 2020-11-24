@@ -38,8 +38,8 @@ public class PartyCreditLimitTransferCache
     public PartyCreditLimitTransferCache(UserVisit userVisit, TermControl termControl) {
         super(userVisit, termControl);
         
-        accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        accountingControl = Session.getModelController(AccountingControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public PartyCreditLimitTransfer getPartyCreditLimitTransfer(PartyCreditLimit partyCreditLimit) {

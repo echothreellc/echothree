@@ -65,7 +65,7 @@ public class GetPartyScaleUsesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyScaleUsesResult result = ScaleResultFactory.getGetPartyScaleUsesResult();
         String partyName = form.getPartyName();
         Party party = null;
@@ -81,7 +81,7 @@ public class GetPartyScaleUsesCommand
         }
 
         if(!hasExecutionErrors()) {
-            var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+            var scaleControl = Session.getModelController(ScaleControl.class);
 
             result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
             result.setPartyScaleUses(scaleControl.getPartyScaleUseTransfersByParty(getUserVisit(), party));

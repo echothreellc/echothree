@@ -75,7 +75,7 @@ public class DeleteContactListContactMechanismPurposeCommand
             ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
-                var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                var contactListControl = Session.getModelController(ContactListControl.class);
                 ContactListContactMechanismPurpose contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurposeForUpdate(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurpose != null) {

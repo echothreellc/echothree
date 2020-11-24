@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class VendorIndexer
         extends PartyIndexer {
     
-    VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
     
     /** Creates a new instance of VendorIndexer */
     public VendorIndexer(final ExecutionErrorAccumulator eea, final Index index) {

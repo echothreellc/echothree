@@ -45,7 +45,7 @@ public class SelectorNodeTypeLogic
     }
     
     public SelectorNodeType getSelectorNodeTypeByName(final ExecutionErrorAccumulator eea, final String selectorNodeTypeName) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
 
         if(selectorNodeType == null) {
@@ -62,7 +62,7 @@ public class SelectorNodeTypeLogic
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.SelectorNodeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            var selectorControl = Session.getModelController(SelectorControl.class);
             
             selectorNodeType = selectorControl.getSelectorNodeTypeByEntityInstance(entityInstance, entityPermission);
         }

@@ -30,10 +30,10 @@ import com.echothree.util.server.persistence.Session;
 public class PaymentProcessorTransactionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTransaction, PaymentProcessorTransactionTransfer> {
 
-    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
-    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
-    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
-    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+    PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
+    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
+    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
 
     boolean includePaymentProcessorTransactionCodes;
     

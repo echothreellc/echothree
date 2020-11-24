@@ -56,7 +56,7 @@ public class DeleteFilterDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
         
@@ -69,7 +69,7 @@ public class DeleteFilterDescriptionCommand
                 Filter filter = filterControl.getFilterByName(filterType, filterName);
                 
                 if(filter != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     String languageIsoName = form.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     

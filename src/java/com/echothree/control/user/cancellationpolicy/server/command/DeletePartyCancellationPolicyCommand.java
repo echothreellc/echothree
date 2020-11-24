@@ -70,13 +70,13 @@ public class DeletePartyCancellationPolicyCommand
 
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyCancellationPolicyResult result = CancellationPolicyResultFactory.getGetPartyCancellationPolicyResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             String cancellationKindName = form.getCancellationKindName();
             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 

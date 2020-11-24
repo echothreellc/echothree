@@ -89,7 +89,7 @@ public class EditCampaignContentCommand
 
     @Override
     public CampaignContent getEntity(EditCampaignContentResult result) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignContent campaignContent;
         String campaignContentName = spec.getCampaignContentName();
 
@@ -113,14 +113,14 @@ public class EditCampaignContentCommand
 
     @Override
     public void fillInResult(EditCampaignContentResult result, CampaignContent campaignContent) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
 
         result.setCampaignContent(campaignControl.getCampaignContentTransfer(getUserVisit(), campaignContent));
     }
 
     @Override
     public void doLock(CampaignContentEdit edit, CampaignContent campaignContent) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignContentDescription campaignContentDescription = campaignControl.getCampaignContentDescription(campaignContent, getPreferredLanguage());
         CampaignContentDetail campaignContentDetail = campaignContent.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditCampaignContentCommand
 
     @Override
     public void canUpdate(CampaignContent campaignContent) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String value = edit.getValue();
         CampaignContent duplicateCampaignContent = campaignControl.getCampaignContentByValue(value);
 
@@ -146,7 +146,7 @@ public class EditCampaignContentCommand
 
     @Override
     public void doUpdate(CampaignContent campaignContent) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
         CampaignContentDetailValue campaignContentDetailValue = campaignControl.getCampaignContentDetailValueForUpdate(campaignContent);
         CampaignContentDescription campaignContentDescription = campaignControl.getCampaignContentDescriptionForUpdate(campaignContent, getPreferredLanguage());

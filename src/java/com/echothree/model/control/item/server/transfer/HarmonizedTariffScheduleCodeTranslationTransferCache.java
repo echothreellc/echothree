@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class HarmonizedTariffScheduleCodeTranslationTransferCache
         extends BaseItemDescriptionTransferCache<HarmonizedTariffScheduleCodeTranslation, HarmonizedTariffScheduleCodeTranslationTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTranslationTransferCache */
     public HarmonizedTariffScheduleCodeTranslationTransferCache(UserVisit userVisit, ItemControl itemControl) {

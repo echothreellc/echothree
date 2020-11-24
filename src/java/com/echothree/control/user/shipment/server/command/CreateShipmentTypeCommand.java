@@ -75,7 +75,7 @@ public class CreateShipmentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
@@ -88,7 +88,7 @@ public class CreateShipmentTypeCommand
             }
 
             if(parentShipmentTypeName == null || parentShipmentType != null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 String shipmentSequenceTypeName = form.getShipmentSequenceTypeName();
                 SequenceType shipmentSequenceType = sequenceControl.getSequenceTypeByName(shipmentSequenceTypeName);
 
@@ -97,7 +97,7 @@ public class CreateShipmentTypeCommand
                     SequenceType shipmentPackageSequenceType = sequenceControl.getSequenceTypeByName(shipmentPackageSequenceTypeName);
 
                     if(shipmentPackageSequenceTypeName == null || shipmentPackageSequenceType != null) {
-                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         String shipmentWorkflowName = form.getShipmentWorkflowName();
                         Workflow shipmentWorkflow = shipmentWorkflowName == null ? null : workflowControl.getWorkflowByName(shipmentWorkflowName);
 

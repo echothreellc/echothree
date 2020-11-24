@@ -84,7 +84,7 @@ public class GetWorkflowEntityTypesCommand
                 workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
 
                 if(!hasExecutionErrors()) {
-                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = Session.getModelController(WorkflowControl.class);
 
                     workflowEntityTypes = workflowControl.getWorkflowEntityTypesByWorkflow(workflow);
                 }
@@ -92,7 +92,7 @@ public class GetWorkflowEntityTypesCommand
                 entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
 
                 if(!hasExecutionErrors()) {
-                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = Session.getModelController(WorkflowControl.class);
 
                     workflowEntityTypes = workflowControl.getWorkflowEntityTypesByEntityType(entityType);
                 }
@@ -109,7 +109,7 @@ public class GetWorkflowEntityTypesCommand
         var result = WorkflowResultFactory.getGetWorkflowEntityTypesResult();
 
         if(entities != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflow == null ? null : workflowControl.getWorkflowTransfer(userVisit, workflow));

@@ -46,7 +46,7 @@ public class GetItemUseTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemUseTypesResult result = ItemResultFactory.getGetItemUseTypesResult();
         
         result.setItemUseTypes(itemControl.getItemUseTypeTransfers(getUserVisit()));

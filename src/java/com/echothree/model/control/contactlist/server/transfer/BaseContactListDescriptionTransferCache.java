@@ -32,7 +32,7 @@ public abstract class BaseContactListDescriptionTransferCache<K extends BaseEnti
     protected BaseContactListDescriptionTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
         super(userVisit, contactListControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

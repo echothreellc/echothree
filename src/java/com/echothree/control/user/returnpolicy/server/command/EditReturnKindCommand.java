@@ -92,7 +92,7 @@ public class EditReturnKindCommand
 
     @Override
     public ReturnKind getEntity(EditReturnKindResult result) {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnKind returnKind = null;
         String returnKindName = spec.getReturnKindName();
 
@@ -116,7 +116,7 @@ public class EditReturnKindCommand
 
     @Override
     public void fillInResult(EditReturnKindResult result, ReturnKind returnKind) {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
         result.setReturnKind(returnPolicyControl.getReturnKindTransfer(getUserVisit(), returnKind));
     }
@@ -125,7 +125,7 @@ public class EditReturnKindCommand
 
     @Override
     public void doLock(ReturnKindEdit edit, ReturnKind returnKind) {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         ReturnKindDescription returnKindDescription = returnPolicyControl.getReturnKindDescription(returnKind, getPreferredLanguage());
         ReturnKindDetail returnKindDetail = returnKind.getLastDetail();
 
@@ -143,14 +143,14 @@ public class EditReturnKindCommand
 
     @Override
     public void canUpdate(ReturnKind returnKind) {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         String returnKindName = edit.getReturnKindName();
         ReturnKind duplicateReturnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(duplicateReturnKind != null && !returnKind.equals(duplicateReturnKind)) {
             addExecutionError(ExecutionErrors.DuplicateReturnKindName.name(), returnKindName);
         } else {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             String returnSequenceTypeName = edit.getReturnSequenceTypeName();
 
             returnSequenceType = sequenceControl.getSequenceTypeByName(returnSequenceTypeName);
@@ -163,7 +163,7 @@ public class EditReturnKindCommand
 
     @Override
     public void doUpdate(ReturnKind returnKind) {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var partyPK = getPartyPK();
         ReturnKindDetailValue returnKindDetailValue = returnPolicyControl.getReturnKindDetailValueForUpdate(returnKind);
         ReturnKindDescription returnKindDescription = returnPolicyControl.getReturnKindDescriptionForUpdate(returnKind, getPreferredLanguage());

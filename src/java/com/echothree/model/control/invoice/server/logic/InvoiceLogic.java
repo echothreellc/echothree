@@ -76,7 +76,7 @@ public class InvoiceLogic
     }
     
     public InvoiceType getInvoiceTypeByName(final ExecutionErrorAccumulator eea, final String invoiceTypeName) {
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
         if(invoiceType == null) {
@@ -87,7 +87,7 @@ public class InvoiceLogic
     }
 
     public InvoiceRoleType getInvoiceRoleTypeByName(final ExecutionErrorAccumulator eea, final String invoiceRoleTypeName) {
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
         InvoiceRoleType invoiceRoleType = invoiceControl.getInvoiceRoleTypeByName(invoiceRoleTypeName);
 
         if(invoiceRoleType == null) {
@@ -114,7 +114,7 @@ public class InvoiceLogic
         } while(parentInvoiceType != null);
         
         if(sequenceType == null) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             
             sequenceType = sequenceControl.getDefaultSequenceType();
         }
@@ -131,7 +131,7 @@ public class InvoiceLogic
         SequenceType sequenceType = getInvoiceSequenceType(eea, invoiceType);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
@@ -156,7 +156,7 @@ public class InvoiceLogic
 
     public Term getInvoiceTerm(final ExecutionErrorAccumulator eea, final Party billFrom, Term term) {
         if(term == null) {
-            var termControl = (TermControl)Session.getModelController(TermControl.class);
+            var termControl = Session.getModelController(TermControl.class);
 
             term = termControl.getPartyTerm(billFrom).getTerm();
         }
@@ -170,7 +170,7 @@ public class InvoiceLogic
 
     public FreeOnBoard getInvoiceFreeOnBoard(final ExecutionErrorAccumulator eea, final Party billFrom, FreeOnBoard freeOnBoard) {
         if(freeOnBoard == null) {
-            var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
+            var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
 
             freeOnBoard = partyFreeOnBoardControl.getPartyFreeOnBoard(billFrom).getFreeOnBoard();
         }
@@ -189,7 +189,7 @@ public class InvoiceLogic
     }
     
     public Long getDueTime(final Session session, final Term term, final String termTypeName, Long invoicedTime) {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         Long dueTime;
         
         if(termTypeName.equals(TermTypes.STANDARD.name())) {
@@ -218,7 +218,7 @@ public class InvoiceLogic
     public Invoice createInvoice(final Session session, final ExecutionErrorAccumulator eea, String invoiceTypeName, final Party billFrom,
             final PartyContactMechanism billFromPartyContactMechanism, final Party billTo, final PartyContactMechanism billToPartyContactMechanism, Currency currency, final GlAccount glAccount,
             Term term, FreeOnBoard freeOnBoard, final String reference, final String description, Long invoicedTime, Long dueTime, Long paidTime, final BasePK createdBy) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         Invoice invoice = null;
         
         currency = currency == null ? partyControl.getPreferredCurrency(billFrom) : currency;
@@ -226,7 +226,7 @@ public class InvoiceLogic
                 null, createdBy);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+            var invoiceControl = Session.getModelController(InvoiceControl.class);
             var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
             
             if(invoiceType != null) {
@@ -245,7 +245,7 @@ public class InvoiceLogic
                     }
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
+                        var billingControl = Session.getModelController(BillingControl.class);
                         var invoicedTimeLogic = InvoiceTimeLogic.getInstance();
                         var billFromContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, BillingAccountRoleTypes.BILL_FROM.name()).getPartyContactMechanism();
                         var billToContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, BillingAccountRoleTypes.BILL_TO.name()).getPartyContactMechanism();
@@ -275,7 +275,7 @@ public class InvoiceLogic
     public InvoiceLine createInvoiceLine(final ExecutionErrorAccumulator eea, final Invoice invoice, final Integer invoiceLineSequence, final InvoiceLine parentInvoiceLine,
             final Long amount, final InvoiceLineType invoiceLineType, GlAccount glAccount, final String description, final BasePK createdBy) {
         InvoiceLine invoiceLine = null;
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
         InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(InvoiceLineUseTypes.GL_ACCOUNT.name());
         
         if(glAccount == null) {

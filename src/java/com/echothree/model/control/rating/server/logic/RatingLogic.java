@@ -40,7 +40,7 @@ public class RatingLogic
     }
     
     public Rating getRatingByName(final ExecutionErrorAccumulator eea, final String ratingName) {
-        var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+        var ratingControl = Session.getModelController(RatingControl.class);
         Rating rating = ratingControl.getRatingByName(ratingName);
 
         if(rating == null) {

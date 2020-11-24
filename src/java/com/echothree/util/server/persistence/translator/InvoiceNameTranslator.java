@@ -95,7 +95,7 @@ public class InvoiceNameTranslator
     public EntityInstanceAndNames getNames(final String sequenceTypeName, final String invoiceName,
             final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
         var invoiceTypeName = sequenceTypesToInvoiceTypes.get(sequenceTypeName);
 
         if(invoiceTypeName != null) {
@@ -103,7 +103,7 @@ public class InvoiceNameTranslator
             Invoice invoice = invoiceControl.getInvoiceByName(invoiceType, invoiceName);
 
             if(invoice != null) {
-                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var coreControl = Session.getModelController(CoreControl.class);
                 EntityNames entityNames = getNames(sequenceTypesToTargets, sequenceTypeName, invoice.getLastDetail());
                 
                 result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance ? coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey()) : null, entityNames);

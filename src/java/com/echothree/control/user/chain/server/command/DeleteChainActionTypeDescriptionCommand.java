@@ -66,12 +66,12 @@ public class DeleteChainActionTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         String chainActionTypeName = form.getChainActionTypeName();
         ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);
         
         if(chainActionType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

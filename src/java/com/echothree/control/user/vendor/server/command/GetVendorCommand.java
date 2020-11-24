@@ -81,7 +81,7 @@ public class GetVendorCommand
         var result = VendorResultFactory.getGetVendorResult();
 
         if(vendor != null) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
 
             result.setVendor(vendorControl.getVendorTransfer(getUserVisit(), vendor));
         }

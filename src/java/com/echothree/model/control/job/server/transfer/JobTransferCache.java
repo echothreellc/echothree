@@ -34,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 public class JobTransferCache
         extends BaseJobTransferCache<Job, JobTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of JobTransferCache */
     public JobTransferCache(UserVisit userVisit, JobControl jobControl) {

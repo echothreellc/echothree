@@ -32,7 +32,7 @@ public abstract class BaseWorkflowDescriptionTransferCache<K extends BaseEntity,
     protected BaseWorkflowDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
         super(userVisit, workflowControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

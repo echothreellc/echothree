@@ -49,7 +49,7 @@ public class GetItemPriceTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemPriceTypeChoicesResult result = ItemResultFactory.getGetItemPriceTypeChoicesResult();
         String defaultItemPriceTypeChoice = form.getDefaultItemPriceTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

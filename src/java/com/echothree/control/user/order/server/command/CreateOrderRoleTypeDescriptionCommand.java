@@ -53,12 +53,12 @@ public class CreateOrderRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
         String orderRoleTypeName = form.getOrderRoleTypeName();
         OrderRoleType orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
         
         if(orderRoleType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

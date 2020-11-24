@@ -42,7 +42,7 @@ public class ForumThreadTransferCache
     public ForumThreadTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        iconControl = (IconControl)Session.getModelController(IconControl.class);
+        iconControl = Session.getModelController(IconControl.class);
         
         Set<String> options = session.getOptions();
         if(options != null) {

@@ -70,7 +70,7 @@ public class GetSequenceChecksumTypeCommand
 
     @Override
     protected BaseResult getTransfer(SequenceChecksumType sequenceChecksumType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceChecksumTypeResult();
 
         if(sequenceChecksumType != null) {

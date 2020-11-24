@@ -60,7 +60,7 @@ public class GetDocumentTypeUsageTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         GetDocumentTypeUsageTypesResult result = DocumentResultFactory.getGetDocumentTypeUsageTypesResult();
         
         result.setDocumentTypeUsageTypes(documentControl.getDocumentTypeUsageTypeTransfers(getUserVisit()));

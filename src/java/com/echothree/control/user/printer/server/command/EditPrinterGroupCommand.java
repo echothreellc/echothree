@@ -93,7 +93,7 @@ public class EditPrinterGroupCommand
 
     @Override
     public PrinterGroup getEntity(EditPrinterGroupResult result) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterGroup printerGroup = null;
         String printerGroupName = spec.getPrinterGroupName();
 
@@ -119,14 +119,14 @@ public class EditPrinterGroupCommand
 
     @Override
     public void fillInResult(EditPrinterGroupResult result, PrinterGroup printerGroup) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
 
         result.setPrinterGroup(printerControl.getPrinterGroupTransfer(getUserVisit(), printerGroup));
     }
 
     @Override
     public void doLock(PrinterGroupEdit edit, PrinterGroup printerGroup) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescription(printerGroup, getPreferredLanguage());
         PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetail();
@@ -148,7 +148,7 @@ public class EditPrinterGroupCommand
 
     @Override
     public void canUpdate(PrinterGroup printerGroup) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         String printerGroupName = edit.getPrinterGroupName();
         PrinterGroup duplicatePrinterGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
@@ -166,7 +166,7 @@ public class EditPrinterGroupCommand
 
     @Override
     public void doUpdate(PrinterGroup printerGroup) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         var partyPK = getPartyPK();
         PrinterGroupDetailValue printerGroupDetailValue = printerControl.getPrinterGroupDetailValueForUpdate(printerGroup);
         PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, getPreferredLanguage());

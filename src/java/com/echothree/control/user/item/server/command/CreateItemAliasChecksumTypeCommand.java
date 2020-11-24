@@ -50,7 +50,7 @@ public class CreateItemAliasChecksumTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String itemAliasChecksumTypeName = form.getItemAliasChecksumTypeName();
         ItemAliasChecksumType itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
         

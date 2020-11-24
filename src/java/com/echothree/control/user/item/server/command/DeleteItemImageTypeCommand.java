@@ -62,7 +62,7 @@ public class DeleteItemImageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String itemImageTypeName = form.getItemImageTypeName();
         ItemImageType itemImageType = itemControl.getItemImageTypeByNameForUpdate(itemImageTypeName);
         

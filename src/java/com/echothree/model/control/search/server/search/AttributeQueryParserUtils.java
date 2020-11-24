@@ -99,7 +99,7 @@ public class AttributeQueryParserUtils
 
     protected CoreControl getCoreControl() {
         if(coreControl == null) {
-            coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            coreControl = Session.getModelController(CoreControl.class);
         }
 
         return coreControl;
@@ -107,7 +107,7 @@ public class AttributeQueryParserUtils
     
     public UserControl getUserControl() {
         if(userControl == null) {
-            userControl = (UserControl)Session.getModelController(UserControl.class);
+            userControl = Session.getModelController(UserControl.class);
         }
         
         return userControl;

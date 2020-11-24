@@ -68,13 +68,13 @@ public class GetGlAccountCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetGlAccountCategoryDescriptionResult result = AccountingResultFactory.getGetGlAccountCategoryDescriptionResult();
         String glAccountCategoryName = form.getGlAccountCategoryName();
         GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
         
         if(glAccountCategory != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

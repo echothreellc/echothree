@@ -63,7 +63,7 @@ public class GetEmployeesCommand
     @Override
     protected BaseResult execute() {
         GetEmployeesResult result = PartyResultFactory.getGetEmployeesResult();
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         boolean includeInactive = Boolean.parseBoolean(form.getIncludeInactive());
         
         result.setEmployees(employeeControl.getEmployeeTransfers(getUserVisit(), includeInactive));

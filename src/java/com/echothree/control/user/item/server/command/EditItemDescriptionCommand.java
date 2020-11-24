@@ -115,7 +115,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public ItemDescription getEntity(EditItemDescriptionResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
         String itemDescriptionTypeName = spec.getItemDescriptionTypeName();
 
@@ -127,7 +127,7 @@ public class EditItemDescriptionCommand
             item = itemControl.getItemByName(itemName);
 
             if(item != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -161,7 +161,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public void fillInResult(EditItemDescriptionResult result, ItemDescription itemDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemDescription(itemControl.getItemDescriptionTransfer(getUserVisit(), itemDescription));
     }
@@ -170,7 +170,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public void doLock(ItemDescriptionEdit edit, ItemDescription itemDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         
         mimeType = itemDescription.getLastDetail().getMimeType();
 
@@ -242,7 +242,7 @@ public class EditItemDescriptionCommand
                                     String itemImageTypeName = edit.getItemImageTypeName();
 
                                     if(itemImageTypeName != null) {
-                                        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                        var itemControl = Session.getModelController(ItemControl.class);
 
                                         itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
@@ -312,7 +312,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public void doUpdate(ItemDescription itemDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
 
         if(mimeType == null) {

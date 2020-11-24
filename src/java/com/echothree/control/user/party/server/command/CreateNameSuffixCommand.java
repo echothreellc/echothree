@@ -55,7 +55,7 @@ public class CreateNameSuffixCommand
         var description = form.getDescription();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         NameSuffix nameSuffix = partyControl.createNameSuffix(description, isDefault, sortOrder, getPartyPK());
         result.setNameSuffixId(nameSuffix.getPrimaryKey().getEntityId().toString());

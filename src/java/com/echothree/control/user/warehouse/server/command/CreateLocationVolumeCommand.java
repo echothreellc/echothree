@@ -62,7 +62,7 @@ public class CreateLocationVolumeCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -74,7 +74,7 @@ public class CreateLocationVolumeCommand
                 LocationVolume locationVolume = warehouseControl.getLocationVolume(location);
                 
                 if(locationVolume == null) {
-                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = Session.getModelController(UomControl.class);
                     UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
                     
                     if(volumeUnitOfMeasureKind != null) {

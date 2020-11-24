@@ -89,7 +89,7 @@ public class EditShipmentAliasCommand
     
     @Override
     public ShipmentAlias getEntity(EditShipmentAliasResult result) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentAlias shipmentAlias = null;
         String shipmentTypeName = spec.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
@@ -135,7 +135,7 @@ public class EditShipmentAliasCommand
 
     @Override
     public void fillInResult(EditShipmentAliasResult result, ShipmentAlias shipmentAlias) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
 
         result.setShipmentAlias(shipmentControl.getShipmentAliasTransfer(getUserVisit(), shipmentAlias));
     }
@@ -147,7 +147,7 @@ public class EditShipmentAliasCommand
 
     @Override
     public void canUpdate(ShipmentAlias shipmentAlias) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         String alias = edit.getAlias();
         ShipmentAlias duplicateShipmentAlias = shipmentControl.getShipmentAliasByAlias(shipmentAliasType, alias);
 
@@ -161,7 +161,7 @@ public class EditShipmentAliasCommand
 
     @Override
     public void doUpdate(ShipmentAlias shipmentAlias) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentAliasValue shipmentAliasValue = shipmentControl.getShipmentAliasValue(shipmentAlias);
 
         shipmentAliasValue.setAlias(edit.getAlias());

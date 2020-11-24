@@ -67,7 +67,7 @@ public class GetPaymentProcessorResultCodeCommand
     
     @Override
     protected BaseResult getTransfer(PaymentProcessorResultCode paymentProcessorResultCode) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         GetPaymentProcessorResultCodeResult result = PaymentResultFactory.getGetPaymentProcessorResultCodeResult();
 
         if(paymentProcessorResultCode != null) {

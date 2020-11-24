@@ -68,13 +68,13 @@ public class GetLeaveTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetLeaveTypeDescriptionResult result = EmployeeResultFactory.getGetLeaveTypeDescriptionResult();
         String leaveTypeName = form.getLeaveTypeName();
         LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
         
         if(leaveType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

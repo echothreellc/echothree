@@ -73,7 +73,7 @@ public class GetGeoCodeCommand
         var result = GeoResultFactory.getGetGeoCodeResult();
 
         if(entity != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
 
             result.setGeoCode(geoControl.getGeoCodeTransfer(getUserVisit(), entity));
         }

@@ -47,7 +47,7 @@ public class GetPartyTypesCommand
     @Override
     protected BaseResult execute() {
         GetPartyTypesResult result = PartyResultFactory.getGetPartyTypesResult();
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         result.setPartyTypes(partyControl.getPartyTypeTransfers(getUserVisit()));
         

@@ -54,7 +54,7 @@ public class CreateUserVisitTrackCommand
         int parameterCount = trackValue == null ? 0 : 1;
 
         if(parameterCount > 0) {
-            var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+            var trackControl = Session.getModelController(TrackControl.class);
             Track track = null;
             
             if(trackValue != null) {

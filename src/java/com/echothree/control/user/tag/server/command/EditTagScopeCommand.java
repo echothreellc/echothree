@@ -89,7 +89,7 @@ public class EditTagScopeCommand
 
     @Override
     public TagScope getEntity(EditTagScopeResult result) {
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
         TagScope tagScope = null;
         String tagScopeName = spec.getTagScopeName();
 
@@ -115,14 +115,14 @@ public class EditTagScopeCommand
 
     @Override
     public void fillInResult(EditTagScopeResult result, TagScope tagScope) {
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
 
         result.setTagScope(tagControl.getTagScopeTransfer(getUserVisit(), tagScope));
     }
 
     @Override
     public void doLock(TagScopeEdit edit, TagScope tagScope) {
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
         TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescription(tagScope, getPreferredLanguage());
         TagScopeDetail tagScopeDetail = tagScope.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditTagScopeCommand
 
     @Override
     public void canUpdate(TagScope tagScope) {
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
         String tagScopeName = edit.getTagScopeName();
         TagScope duplicateTagScope = tagControl.getTagScopeByName(tagScopeName);
 
@@ -148,7 +148,7 @@ public class EditTagScopeCommand
 
     @Override
     public void doUpdate(TagScope tagScope) {
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
         var partyPK = getPartyPK();
         TagScopeDetailValue tagScopeDetailValue = tagControl.getTagScopeDetailValueForUpdate(tagScope);
         TagScopeDescription tagScopeDescription = tagControl.getTagScopeDescriptionForUpdate(tagScope, getPreferredLanguage());

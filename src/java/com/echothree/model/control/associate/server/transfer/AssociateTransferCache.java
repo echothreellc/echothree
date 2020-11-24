@@ -31,8 +31,8 @@ import com.echothree.util.server.persistence.Session;
 public class AssociateTransferCache
         extends BaseAssociateTransferCache<Associate, AssociateTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of AssociateTransferCache */
     public AssociateTransferCache(UserVisit userVisit, AssociateControl associateControl) {

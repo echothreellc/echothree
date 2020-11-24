@@ -33,9 +33,9 @@ import com.echothree.util.server.persistence.Session;
 public class OrderShipmentGroupTransferCache
         extends BaseOrderTransferCache<OrderShipmentGroup, OrderShipmentGroupTransfer> {
     
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);;
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);;
-    ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);;
+    ContactControl contactControl = Session.getModelController(ContactControl.class);;
+    ItemControl itemControl = Session.getModelController(ItemControl.class);;
+    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);;
     
     /** Creates a new instance of OrderShipmentGroupTransferCache */
     public OrderShipmentGroupTransferCache(UserVisit userVisit) {

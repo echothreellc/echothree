@@ -49,9 +49,9 @@ public class ItemPriceTransferCache
         extends BaseItemTransferCache<ItemPrice, ItemPriceTransfer>
         implements HistoryCache<ItemPrice, ItemPriceTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     TransferProperties transferProperties;
     boolean filterItem;

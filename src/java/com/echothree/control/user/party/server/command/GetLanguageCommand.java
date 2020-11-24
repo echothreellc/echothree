@@ -61,7 +61,7 @@ public class GetLanguageCommand
     
     @Override
     protected Language getEntity() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         Language language = null;
         String languageIsoName = form.getLanguageIsoName();
         int parameterCount = (languageIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -96,7 +96,7 @@ public class GetLanguageCommand
     
     @Override
     protected BaseResult getTransfer(Language language) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetLanguageResult result = PartyResultFactory.getGetLanguageResult();
 
         if(language != null) {

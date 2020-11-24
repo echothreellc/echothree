@@ -117,7 +117,7 @@ public class EditContentCategoryCommand
     
     @Override
     public ContentCategory getEntity(EditContentCategoryResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCategory contentCategory = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -158,15 +158,15 @@ public class EditContentCategoryCommand
     
     @Override
     public void fillInResult(EditContentCategoryResult result, ContentCategory contentCategory) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentCategory(contentControl.getContentCategoryTransfer(getUserVisit(), contentCategory));
     }
     
     @Override
     public void doLock(ContentCategoryEdit edit, ContentCategory contentCategory) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         var contentCategoryDescription = contentControl.getContentCategoryDescription(contentCategory, getPreferredLanguage());
         var contentCategoryDetail = contentCategory.getLastDetail();
         var parentContentCategory = contentCategoryDetail.getParentContentCategory();
@@ -196,7 +196,7 @@ public class EditContentCategoryCommand
    
     @Override
     public void canUpdate(ContentCategory contentCategory) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCategoryName = edit.getContentCategoryName();
         ContentCategory duplicateContentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
 
@@ -208,7 +208,7 @@ public class EditContentCategoryCommand
 
             if(parentContentCategory != null) {
                 if(contentControl.isParentContentCategorySafe(contentCategory, parentContentCategory)) {
-                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                    var offerControl = Session.getModelController(OfferControl.class);
                     String defaultOfferName = edit.getDefaultOfferName();
                     String defaultUseName = edit.getDefaultUseName();
                     String defaultSourceName = edit.getDefaultSourceName();
@@ -218,11 +218,11 @@ public class EditContentCategoryCommand
                         Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                         if(defaultOffer != null) {
-                            var useControl = (UseControl)Session.getModelController(UseControl.class);
+                            var useControl = Session.getModelController(UseControl.class);
                             Use defaultUse = useControl.getUseByName(defaultUseName);
 
                             if(defaultUse != null) {
-                                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                                var offerUseControl = Session.getModelController(OfferUseControl.class);
                                 defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                                 if(defaultOfferUse == null) {
@@ -235,7 +235,7 @@ public class EditContentCategoryCommand
                             addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                         }
                     } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                        var sourceControl = Session.getModelController(SourceControl.class);
                         Source source = sourceControl.getSourceByName(defaultSourceName);
 
                         if(source != null) {
@@ -254,7 +254,7 @@ public class EditContentCategoryCommand
                         boolean invalidOfferCompany = false;
 
                         if(defaultOfferUse != null) {
-                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = Session.getModelController(PartyControl.class);
                             Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
                             PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
                             PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
@@ -274,7 +274,7 @@ public class EditContentCategoryCommand
                             String contentCategoryItemSelectorName = edit.getContentCategoryItemSelectorName();
 
                             if(contentCategoryItemSelectorName != null) {
-                                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                var selectorControl = Session.getModelController(SelectorControl.class);
                                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
 
                                 if(selectorKind != null) {
@@ -310,7 +310,7 @@ public class EditContentCategoryCommand
     
     @Override
     public void doUpdate(ContentCategory contentCategory) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         ContentCategoryDetailValue contentCategoryDetailValue = contentControl.getContentCategoryDetailValueForUpdate(contentCategory);
         ContentCategoryDescription contentCategoryDescription = contentControl.getContentCategoryDescriptionForUpdate(contentCategory, getPreferredLanguage());

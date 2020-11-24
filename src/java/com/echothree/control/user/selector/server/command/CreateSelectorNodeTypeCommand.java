@@ -49,7 +49,7 @@ public class CreateSelectorNodeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         String selectorNodeTypeName = form.getSelectorNodeTypeName();
         SelectorNodeType selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
         

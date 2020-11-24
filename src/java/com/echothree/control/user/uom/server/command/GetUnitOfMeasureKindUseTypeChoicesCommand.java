@@ -49,7 +49,7 @@ public class GetUnitOfMeasureKindUseTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         GetUnitOfMeasureKindUseTypeChoicesResult result = UomResultFactory.getGetUnitOfMeasureKindUseTypeChoicesResult();
         String defaultUnitOfMeasureKindUseTypeChoice = form.getDefaultUnitOfMeasureKindUseTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -80,7 +80,7 @@ public class EditCancellationTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         EditCancellationTypeDescriptionResult result = CancellationPolicyResultFactory.getEditCancellationTypeDescriptionResult();
         String cancellationKindName = spec.getCancellationKindName();
         CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
@@ -90,7 +90,7 @@ public class EditCancellationTypeDescriptionCommand
             CancellationType cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
             
             if(cancellationType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

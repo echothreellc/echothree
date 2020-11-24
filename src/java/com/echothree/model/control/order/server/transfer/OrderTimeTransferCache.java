@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderTimeTransferCache
         extends BaseOrderTransferCache<OrderTime, OrderTimeTransfer> {
 
-    OrderTimeControl orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+    OrderTimeControl orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
     /** Creates a new instance of OrderTimeTransferCache */
     public OrderTimeTransferCache(UserVisit userVisit) {

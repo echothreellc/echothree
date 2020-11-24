@@ -62,7 +62,7 @@ public class GetContactMechanismAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         GetContactMechanismAliasTypeChoicesResult result = ContactResultFactory.getGetContactMechanismAliasTypeChoicesResult();
         String defaultContactMechanismAliasTypeChoice = form.getDefaultContactMechanismAliasTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

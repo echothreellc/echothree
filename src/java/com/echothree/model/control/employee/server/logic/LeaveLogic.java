@@ -56,7 +56,7 @@ public class LeaveLogic
     }
     
     public LeaveType getLeaveTypeByName(final ExecutionErrorAccumulator eea, final String leaveTypeName) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
         if(leaveType == null) {
@@ -67,7 +67,7 @@ public class LeaveLogic
     }
     
     public LeaveReason getLeaveReasonByName(final ExecutionErrorAccumulator eea, final String leaveReasonName) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
         if(leaveReason == null) {
@@ -78,7 +78,7 @@ public class LeaveLogic
     }
     
     private void insertLeaveIntoWorkflow(final EntityInstance entityInstance, final WorkflowEntrance leaveStatus, final PartyPK createdBy) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         
         if(leaveStatus == null) {
             workflowControl.addEntityToWorkflowUsingNames(null, LeaveStatusConstants.Workflow_LEAVE_STATUS, LeaveStatusConstants.WorkflowEntrance_NEW_SUBMITTED,
@@ -90,8 +90,8 @@ public class LeaveLogic
 
     public Leave createLeave(final Session session, final Party party, final Party companyParty, final LeaveType leaveType, final LeaveReason leaveReason,
             final Long startTime, final Long endTime, final Long totalTime, final WorkflowEntrance leaveStatus, final PartyPK createdBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
 
         Leave leave = employeeControl.createLeave(party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(leave.getPrimaryKey());
@@ -102,7 +102,7 @@ public class LeaveLogic
     }
 
     public void updateLeaveFromValue(final ExecutionErrorAccumulator eea, final LeaveDetailValue leaveDetailValue, final PartyPK updatedBy) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         EntityInstance entityInstance = getEntityInstanceByBasePK(leaveDetailValue.getLeavePK());
         WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(null, LeaveStatusConstants.Workflow_LEAVE_STATUS);
@@ -119,7 +119,7 @@ public class LeaveLogic
         if(workflowDestinationName == null && !workflowStepName.equals(LeaveStatusConstants.WorkflowStep_SUBMITTED)) {
             handleExecutionError(InvalidLeaveStatusException.class, eea, ExecutionErrors.InvalidLeaveStatus.name(), leaveDetailValue.getLeaveName(), workflowStepName);
         } else {
-            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = Session.getModelController(EmployeeControl.class);
             
             if(workflowDestinationName != null) {
                 workflowControl.transitionEntityInWorkflowUsingNames(eea, workflowEntityStatus, workflowDestinationName, null, updatedBy);
@@ -130,7 +130,7 @@ public class LeaveLogic
     }
     
     public void deleteLeave(Leave leave, final BasePK deleteBy) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         
         employeeControl.deleteLeave(leave, deleteBy);
     }

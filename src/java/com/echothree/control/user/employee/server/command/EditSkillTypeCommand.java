@@ -66,7 +66,7 @@ public class EditSkillTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         EditSkillTypeResult result = EmployeeResultFactory.getEditSkillTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

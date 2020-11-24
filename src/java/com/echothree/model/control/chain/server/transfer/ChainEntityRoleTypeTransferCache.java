@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class ChainEntityRoleTypeTransferCache
         extends BaseChainTransferCache<ChainEntityRoleType, ChainEntityRoleTypeTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of ChainEntityRoleTypeTransferCache */
     public ChainEntityRoleTypeTransferCache(UserVisit userVisit, ChainControl chainControl) {

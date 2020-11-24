@@ -48,7 +48,7 @@ public class CancellationPolicyLogic
     }
 
     public CancellationKind getCancellationKindByName(final ExecutionErrorAccumulator eea, final String cancellationKindName) {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
         if(cancellationKind == null) {
@@ -59,7 +59,7 @@ public class CancellationPolicyLogic
     }
 
     public CancellationPolicy getCancellationPolicyByName(final ExecutionErrorAccumulator eea, final String cancellationKindName, final String cancellationPolicyName) {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationKind cancellationKind = getCancellationKindByName(eea, cancellationKindName);
         CancellationPolicy cancellationPolicy = null;
         
@@ -84,7 +84,7 @@ public class CancellationPolicyLogic
         }
 
         if(cancellationPolicy == null) {
-            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
             if(cancellationKind != null) {
@@ -102,13 +102,13 @@ public class CancellationPolicyLogic
     }
 
     public void checkDeleteCancellationPolicy(final ExecutionErrorAccumulator eea, final CancellationPolicy cancellationPolicy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = Session.getModelController(OrderControl.class);
 
         // Both CUSTOMERs and VENDORs use Orders and OrderLines, so check for CancellationPolicy use there first.
         boolean inUse = orderControl.countOrdersByCancellationPolicy(cancellationPolicy) != 0;
 
         if(!inUse) {
-            var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+            var orderLineControl = Session.getModelController(OrderLineControl.class);
 
             inUse |= orderLineControl.countOrderLinesByCancellationPolicy(cancellationPolicy) != 0;
         }
@@ -117,11 +117,11 @@ public class CancellationPolicyLogic
             String cancellationKindName = cancellationPolicy.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName();
             
             if(cancellationKindName.equals(CancellationKinds.CUSTOMER_CANCELLATION.name())) {
-                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = Session.getModelController(ItemControl.class);
 
                 inUse |= itemControl.countItemsByCancellationPolicy(cancellationPolicy) != 0;
             } else if(cancellationKindName.equals(CancellationKinds.VENDOR_CANCELLATION.name())) {
-                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = Session.getModelController(VendorControl.class);
 
                 inUse |= vendorControl.countVendorItemsByCancellationPolicy(cancellationPolicy) != 0;
             }
@@ -133,7 +133,7 @@ public class CancellationPolicyLogic
     }
 
     public void deleteCancellationPolicy(final CancellationPolicy cancellationPolicy, final BasePK deletedBy) {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
 
         cancellationPolicyControl.deleteCancellationPolicy(cancellationPolicy, deletedBy);
     }

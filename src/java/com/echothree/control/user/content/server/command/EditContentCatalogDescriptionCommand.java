@@ -89,7 +89,7 @@ public class EditContentCatalogDescriptionCommand
     
     @Override
     public ContentCatalogDescription getEntity(EditContentCatalogDescriptionResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCatalogDescription contentCatalogDescription = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -99,7 +99,7 @@ public class EditContentCatalogDescriptionCommand
             ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -135,7 +135,7 @@ public class EditContentCatalogDescriptionCommand
     
     @Override
     public void fillInResult(EditContentCatalogDescriptionResult result, ContentCatalogDescription contentCatalogDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentCatalogDescription(contentControl.getContentCatalogDescriptionTransfer(getUserVisit(), contentCatalogDescription));
     }
@@ -147,7 +147,7 @@ public class EditContentCatalogDescriptionCommand
     
     @Override
     public void doUpdate(ContentCatalogDescription contentCatalogDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCatalogDescriptionValue contentCatalogDescriptionValue = contentControl.getContentCatalogDescriptionValue(contentCatalogDescription);
         contentCatalogDescriptionValue.setDescription(edit.getDescription());
 

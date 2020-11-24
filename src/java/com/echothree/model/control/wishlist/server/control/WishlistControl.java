@@ -344,7 +344,7 @@ public class WishlistControl
     }
     
     public void deleteWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = Session.getModelController(OrderControl.class);
         
         deleteWishlistTypeDescriptionsByWishlistType(wishlistType, deletedBy);
         deleteOrdersByWishlistType(wishlistType, deletedBy);
@@ -1496,7 +1496,7 @@ public class WishlistControl
     }
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = Session.getModelController(OrderControl.class);
         List<Order> orders = getOrdersByWishlistTypeForUpdate(wishlistType);
         
         orders.stream().forEach((order) -> {
@@ -1734,7 +1734,7 @@ public class WishlistControl
     }
     
     public void deleteOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
-        var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+        var orderLineControl = Session.getModelController(OrderLineControl.class);
         List<OrderLine> orderLines = getOrderLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
         orderLines.stream().forEach((orderLine) -> {

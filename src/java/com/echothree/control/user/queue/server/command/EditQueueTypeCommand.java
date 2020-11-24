@@ -89,7 +89,7 @@ public class EditQueueTypeCommand
 
     @Override
     public QueueType getEntity(EditQueueTypeResult result) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         QueueType queueType;
         String queueTypeName = spec.getQueueTypeName();
 
@@ -113,14 +113,14 @@ public class EditQueueTypeCommand
 
     @Override
     public void fillInResult(EditQueueTypeResult result, QueueType queueType) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
 
         result.setQueueType(queueControl.getQueueTypeTransfer(getUserVisit(), queueType));
     }
 
     @Override
     public void doLock(QueueTypeEdit edit, QueueType queueType) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescription(queueType, getPreferredLanguage());
         QueueTypeDetail queueTypeDetail = queueType.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditQueueTypeCommand
 
     @Override
     public void canUpdate(QueueType queueType) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         String queueTypeName = edit.getQueueTypeName();
         QueueType duplicateQueueType = queueControl.getQueueTypeByName(queueTypeName);
 
@@ -146,7 +146,7 @@ public class EditQueueTypeCommand
 
     @Override
     public void doUpdate(QueueType queueType) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         var partyPK = getPartyPK();
         QueueTypeDetailValue queueTypeDetailValue = queueControl.getQueueTypeDetailValueForUpdate(queueType);
         QueueTypeDescription queueTypeDescription = queueControl.getQueueTypeDescriptionForUpdate(queueType, getPreferredLanguage());

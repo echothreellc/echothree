@@ -62,7 +62,7 @@ public class DeleteSearchCheckSpellingActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         String searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
         SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByNameForUpdate(searchCheckSpellingActionTypeName);
         

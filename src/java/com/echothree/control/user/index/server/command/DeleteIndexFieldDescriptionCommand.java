@@ -68,7 +68,7 @@ public class DeleteIndexFieldDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         String indexTypeName = form.getIndexTypeName();
         IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
         
@@ -77,7 +77,7 @@ public class DeleteIndexFieldDescriptionCommand
             IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
             
             if(indexField != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

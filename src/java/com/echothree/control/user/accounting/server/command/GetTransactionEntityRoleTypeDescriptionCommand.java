@@ -70,7 +70,7 @@ public class GetTransactionEntityRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetTransactionEntityRoleTypeDescriptionResult result = AccountingResultFactory.getGetTransactionEntityRoleTypeDescriptionResult();
         String transactionTypeName = form.getTransactionTypeName();
         TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
@@ -80,7 +80,7 @@ public class GetTransactionEntityRoleTypeDescriptionCommand
             TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
 
             if(transactionEntityRoleType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

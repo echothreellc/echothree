@@ -34,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 public class PrinterGroupJobTransferCache
         extends BasePrinterTransferCache<PrinterGroupJob, PrinterGroupJobTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PrinterGroupJobTransferCache */
     public PrinterGroupJobTransferCache(UserVisit userVisit, PrinterControl printerControl) {

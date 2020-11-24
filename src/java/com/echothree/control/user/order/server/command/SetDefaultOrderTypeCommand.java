@@ -61,7 +61,7 @@ public class SetDefaultOrderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
         OrderTypeDetailValue orderTypeDetailValue = orderTypeControl.getOrderTypeDetailValueByNameForUpdate(orderTypeName);
         

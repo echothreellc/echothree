@@ -79,7 +79,7 @@ public class EditMessageDescriptionCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                var messageControl = Session.getModelController(MessageControl.class);
                 String messageTypeName = spec.getMessageTypeName();
                 MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 
@@ -88,7 +88,7 @@ public class EditMessageDescriptionCommand
                     Message message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message != null) {
-                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         

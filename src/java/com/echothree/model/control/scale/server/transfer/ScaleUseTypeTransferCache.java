@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class ScaleUseTypeTransferCache
         extends BaseScaleTransferCache<ScaleUseType, ScaleUseTypeTransfer> {
 
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of ScaleUseTypeTransferCache */
     public ScaleUseTypeTransferCache(UserVisit userVisit, ScaleControl scaleControl) {

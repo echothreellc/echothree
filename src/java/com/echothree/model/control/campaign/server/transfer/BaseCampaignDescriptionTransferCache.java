@@ -32,7 +32,7 @@ public abstract class BaseCampaignDescriptionTransferCache<K extends BaseEntity,
     protected BaseCampaignDescriptionTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
         super(userVisit, campaignControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

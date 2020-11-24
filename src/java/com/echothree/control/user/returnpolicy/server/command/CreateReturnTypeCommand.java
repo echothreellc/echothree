@@ -71,7 +71,7 @@ public class CreateReturnTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         String returnKindName = form.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
@@ -80,7 +80,7 @@ public class CreateReturnTypeCommand
             ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType == null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 String returnSequenceName = form.getReturnSequenceName();
                 SequenceType returnSequenceType = returnKind.getLastDetail().getReturnSequenceType();
                 Sequence returnSequence = returnSequenceName == null ? null : sequenceControl.getSequenceByName(returnSequenceType, returnSequenceName);

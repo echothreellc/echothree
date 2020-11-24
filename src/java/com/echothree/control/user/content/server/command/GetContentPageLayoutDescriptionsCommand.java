@@ -64,7 +64,7 @@ public class GetContentPageLayoutDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         GetContentPageLayoutDescriptionsResult result = ContentResultFactory.getGetContentPageLayoutDescriptionsResult();
         String contentPageLayoutName = form.getContentPageLayoutName();
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);

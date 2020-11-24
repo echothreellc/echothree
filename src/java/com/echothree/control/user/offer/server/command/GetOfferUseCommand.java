@@ -81,7 +81,7 @@ public class GetOfferUseCommand
         var result = OfferResultFactory.getGetOfferUseResult();
 
         if(offerUse != null) {
-            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
 
             result.setOfferUse(offerUseControl.getOfferUseTransfer(getUserVisit(), offerUse));
         }

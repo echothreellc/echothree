@@ -48,7 +48,7 @@ public class DeleteAssociateReferralCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = Session.getModelController(AssociateControl.class);
         String associateReferralName = form.getAssociateReferralName();
         AssociateReferral associateReferral = associateControl.getAssociateReferralByNameForUpdate(associateReferralName);
         

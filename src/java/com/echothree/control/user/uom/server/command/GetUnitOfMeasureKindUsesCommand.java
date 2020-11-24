@@ -69,7 +69,7 @@ public class GetUnitOfMeasureKindUsesCommand
                 unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, unitOfMeasureKindName);
                 
                 if(!hasExecutionErrors()) {
-                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = Session.getModelController(UomControl.class);
 
                     entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
                 }
@@ -77,7 +77,7 @@ public class GetUnitOfMeasureKindUsesCommand
                 unitOfMeasureKindUseType = UnitOfMeasureKindUseLogic.getInstance().getUnitOfMeasureKindUseTypeByName(this, unitOfMeasureKindUseTypeName);
                 
                 if(!hasExecutionErrors()) {
-                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = Session.getModelController(UomControl.class);
 
                     entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
                 }
@@ -94,7 +94,7 @@ public class GetUnitOfMeasureKindUsesCommand
         GetUnitOfMeasureKindUsesResult result = UomResultFactory.getGetUnitOfMeasureKindUsesResult();
         
         if(entities != null) {
-            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = Session.getModelController(UomControl.class);
 
             if(unitOfMeasureKind != null) {
                 result.setUnitOfMeasureKind(uomControl.getUnitOfMeasureKindTransfer(getUserVisit(), unitOfMeasureKind));

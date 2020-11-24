@@ -71,14 +71,14 @@ public class GetOfferItemsCommand
     
     @Override
     protected Collection<OfferItem> getEntities() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Collection<OfferItem> offerItems = null;
         
         offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
             offerItems = offerItemControl.getOfferItemsByOffer(offer);
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
@@ -92,8 +92,8 @@ public class GetOfferItemsCommand
         GetOfferItemsResult result = OfferResultFactory.getGetOfferItemsResult();
         
         if(entities != null) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(session.hasLimit(OfferItemFactory.class)) {

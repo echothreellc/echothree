@@ -50,7 +50,7 @@ public class GetTerminationTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetTerminationTypeChoicesResult result = EmployeeResultFactory.getGetTerminationTypeChoicesResult();
         String defaultTerminationTypeChoice = form.getDefaultTerminationTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

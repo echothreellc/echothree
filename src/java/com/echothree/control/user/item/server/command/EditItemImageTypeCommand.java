@@ -93,7 +93,7 @@ public class EditItemImageTypeCommand
     
     @Override
     public ItemImageType getEntity(EditItemImageTypeResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemImageType itemImageType = null;
         String itemImageTypeName = spec.getItemImageTypeName();
 
@@ -119,7 +119,7 @@ public class EditItemImageTypeCommand
     
     @Override
     public void fillInResult(EditItemImageTypeResult result, ItemImageType itemImageType) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         
         result.setItemImageType(itemControl.getItemImageTypeTransfer(getUserVisit(), itemImageType));
     }
@@ -128,7 +128,7 @@ public class EditItemImageTypeCommand
 
     @Override
     public void doLock(ItemImageTypeEdit edit, ItemImageType itemImageType) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescription(itemImageType, getPreferredLanguage());
         ItemImageTypeDetail itemImageTypeDetail = itemImageType.getLastDetail();
         Integer quality = itemImageTypeDetail.getQuality();
@@ -148,7 +148,7 @@ public class EditItemImageTypeCommand
         
     @Override
     public void canUpdate(ItemImageType itemImageType) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String itemImageTypeName = edit.getItemImageTypeName();
         ItemImageType duplicateItemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
@@ -168,7 +168,7 @@ public class EditItemImageTypeCommand
     
     @Override
     public void doUpdate(ItemImageType itemImageType) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
         ItemImageTypeDetailValue itemImageTypeDetailValue = itemControl.getItemImageTypeDetailValueForUpdate(itemImageType);
         ItemImageTypeDescription itemImageTypeDescription = itemControl.getItemImageTypeDescriptionForUpdate(itemImageType, getPreferredLanguage());

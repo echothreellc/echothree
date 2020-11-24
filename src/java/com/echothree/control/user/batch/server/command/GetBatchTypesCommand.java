@@ -60,7 +60,7 @@ public class GetBatchTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         GetBatchTypesResult result = BatchResultFactory.getGetBatchTypesResult();
         
         result.setBatchTypes(batchControl.getBatchTypeTransfers(getUserVisit()));

@@ -63,7 +63,7 @@ public class EditTimeZoneDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         EditTimeZoneDescriptionResult result = PartyResultFactory.getEditTimeZoneDescriptionResult();
         String javaTimeZoneName = spec.getJavaTimeZoneName();
         TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);

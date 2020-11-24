@@ -105,13 +105,13 @@ public class EditContactTelephoneCommand
 
     @Override
     public PartyContactMechanism getEntity(EditContactTelephoneResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactMechanism partyContactMechanism = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = spec.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
@@ -151,7 +151,7 @@ public class EditContactTelephoneCommand
 
     @Override
     public void fillInResult(EditContactTelephoneResult result, PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
 
         result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
                 partyContactMechanism.getLastDetail().getContactMechanism()));
@@ -159,8 +159,8 @@ public class EditContactTelephoneCommand
 
     @Override
     public void doLock(ContactTelephoneEdit edit, PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetail = contactMechanism.getLastDetail();
         var contactTelephone = contactControl.getContactTelephone(contactMechanism);
@@ -178,7 +178,7 @@ public class EditContactTelephoneCommand
 
     @Override
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = edit.getCountryName();
         var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
 
@@ -214,7 +214,7 @@ public class EditContactTelephoneCommand
 
     @Override
     public void doUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var updatedBy = getPartyPK();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetailValue = contactControl.getContactMechanismDetailValue(contactMechanism.getLastDetail());

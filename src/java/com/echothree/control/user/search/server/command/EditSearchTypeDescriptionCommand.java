@@ -88,7 +88,7 @@ public class EditSearchTypeDescriptionCommand
 
     @Override
     public SearchTypeDescription getEntity(EditSearchTypeDescriptionResult result) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchTypeDescription searchTypeDescription = null;
         String searchKindName = spec.getSearchKindName();
         SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
@@ -98,7 +98,7 @@ public class EditSearchTypeDescriptionCommand
             SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
             if(searchType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,7 +132,7 @@ public class EditSearchTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchTypeDescriptionResult result, SearchTypeDescription searchTypeDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
 
         result.setSearchTypeDescription(searchControl.getSearchTypeDescriptionTransfer(getUserVisit(), searchTypeDescription));
     }
@@ -144,7 +144,7 @@ public class EditSearchTypeDescriptionCommand
 
     @Override
     public void doUpdate(SearchTypeDescription searchTypeDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchTypeDescriptionValue searchTypeDescriptionValue = searchControl.getSearchTypeDescriptionValue(searchTypeDescription);
 
         searchTypeDescriptionValue.setDescription(edit.getDescription());

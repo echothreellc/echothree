@@ -86,7 +86,7 @@ public class EditItemAliasCommand
 
     @Override
     public ItemAlias getEntity(EditItemAliasResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String alias = spec.getAlias();
         ItemAlias itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);
 
@@ -104,7 +104,7 @@ public class EditItemAliasCommand
 
     @Override
     public void fillInResult(EditItemAliasResult result, ItemAlias itemAlias) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemAlias(itemControl.getItemAliasTransfer(getUserVisit(), itemAlias));
     }
@@ -121,7 +121,7 @@ public class EditItemAliasCommand
 
     @Override
     public void canUpdate(ItemAlias itemAlias) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String alias = edit.getAlias();
         Item duplicateItem = itemControl.getItemByName(alias);
 
@@ -129,7 +129,7 @@ public class EditItemAliasCommand
             ItemAlias duplicateItemAlias = itemControl.getItemAliasByAlias(alias);
 
             if(duplicateItemAlias == null || duplicateItemAlias.getPrimaryKey().equals(itemAlias.getPrimaryKey())) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 String unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
                 ItemDetail itemDetail = itemAlias.getItem().getLastDetail();
                 UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -174,7 +174,7 @@ public class EditItemAliasCommand
 
     @Override
     public void doUpdate(ItemAlias itemAlias) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemAliasValue itemAliasValue = itemControl.getItemAliasValue(itemAlias);
         String alias = edit.getAlias();
         String originalAlias = itemAliasValue.getAlias();
@@ -187,7 +187,7 @@ public class EditItemAliasCommand
         itemControl.updateItemAliasFromValue(itemAliasValue, updatedBy);
 
         if(itemAliasValue.getAliasHasBeenModified()) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
             List<Vendor> vendors = vendorControl.getVendorsByDefaultItemAliasType(itemAliasType);
 
             for(Vendor vendor : vendors) {

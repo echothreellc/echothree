@@ -34,7 +34,7 @@ public class WorkflowDestinationSecurityRoleTransferCache
     public WorkflowDestinationSecurityRoleTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
         super(userVisit, workflowControl);
         
-        securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        securityControl = Session.getModelController(SecurityControl.class);
     }
     
     public WorkflowDestinationSecurityRoleTransfer getWorkflowDestinationSecurityRoleTransfer(WorkflowDestinationSecurityRole workflowDestinationSecurityRole) {

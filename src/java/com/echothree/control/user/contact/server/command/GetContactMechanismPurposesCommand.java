@@ -46,7 +46,7 @@ public class GetContactMechanismPurposesCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         GetContactMechanismPurposesResult result = ContactResultFactory.getGetContactMechanismPurposesResult();
         
         result.setContactMechanismPurposes(contactControl.getContactMechanismPurposeTransfers(getUserVisit()));

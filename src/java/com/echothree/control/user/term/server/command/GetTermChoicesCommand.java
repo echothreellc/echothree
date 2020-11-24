@@ -49,7 +49,7 @@ public class GetTermChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         GetTermChoicesResult result = TermResultFactory.getGetTermChoicesResult();
         String defaultTermChoice = form.getDefaultTermChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

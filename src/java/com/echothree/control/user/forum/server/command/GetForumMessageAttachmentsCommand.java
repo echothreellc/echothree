@@ -53,7 +53,7 @@ public class GetForumMessageAttachmentsCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         GetForumMessageAttachmentsResult result = ForumResultFactory.getGetForumMessageAttachmentsResult();
         String forumMessageName = form.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);

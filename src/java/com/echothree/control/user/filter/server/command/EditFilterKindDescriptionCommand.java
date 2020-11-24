@@ -87,13 +87,13 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public FilterKindDescription getEntity(EditFilterKindDescriptionResult result) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         FilterKindDescription filterKindDescription = null;
         String filterKindName = spec.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public void fillInResult(EditFilterKindDescriptionResult result, FilterKindDescription filterKindDescription) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
 
         result.setFilterKindDescription(filterControl.getFilterKindDescriptionTransfer(getUserVisit(), filterKindDescription));
     }
@@ -136,7 +136,7 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public void doUpdate(FilterKindDescription filterKindDescription) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         FilterKindDescriptionValue filterKindDescriptionValue = filterControl.getFilterKindDescriptionValue(filterKindDescription);
 
         filterKindDescriptionValue.setDescription(edit.getDescription());

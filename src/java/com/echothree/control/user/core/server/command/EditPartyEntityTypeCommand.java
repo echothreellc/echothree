@@ -89,7 +89,7 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public PartyEntityType getEntity(EditPartyEntityTypeResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyEntityType partyEntityType = null;
         String partyName = spec.getPartyName();
         Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);

@@ -74,11 +74,11 @@ public class GetCustomerTypeContactListGroupsCommand
         int parameterCount = (customerTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
         
         if(parameterCount == 1) {
-            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = Session.getModelController(ContactListControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(customerTypeName != null) {
-                var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                var customerControl = Session.getModelController(CustomerControl.class);
                 CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
                 
                 if(customerType != null) {

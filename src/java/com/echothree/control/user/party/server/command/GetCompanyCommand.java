@@ -81,7 +81,7 @@ public class GetCompanyCommand
         var result = PartyResultFactory.getGetCompanyResult();
 
         if(partyCompany != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
 
             result.setCompany(partyControl.getCompanyTransfer(getUserVisit(), partyCompany));
         }

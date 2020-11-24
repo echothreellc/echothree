@@ -78,7 +78,7 @@ public class GetSearchCheckSpellingActionTypeCommand
         int parameterCount = (searchCheckSpellingActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var searchControl = Session.getModelController(SearchControl.class);
             SearchCheckSpellingActionType searchCheckSpellingActionType = null;
 
             if(searchCheckSpellingActionTypeName == null) {

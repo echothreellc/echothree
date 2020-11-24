@@ -72,7 +72,7 @@ public class GetApplicationDescriptionCommand
         Application application = coreControl.getApplicationByName(applicationName);
 
         if(application != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

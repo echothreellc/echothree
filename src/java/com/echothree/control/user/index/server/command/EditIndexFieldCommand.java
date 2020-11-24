@@ -93,7 +93,7 @@ public class EditIndexFieldCommand
 
     @Override
     public IndexField getEntity(EditIndexFieldResult result) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         IndexField indexField = null;
         String indexTypeName = spec.getIndexTypeName();
 
@@ -125,14 +125,14 @@ public class EditIndexFieldCommand
 
     @Override
     public void fillInResult(EditIndexFieldResult result, IndexField indexField) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
 
         result.setIndexField(indexControl.getIndexFieldTransfer(getUserVisit(), indexField));
     }
 
     @Override
     public void doLock(IndexFieldEdit edit, IndexField indexField) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescription(indexField, getPreferredLanguage());
         IndexFieldDetail indexFieldDetail = indexField.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditIndexFieldCommand
 
     @Override
     public void canUpdate(IndexField indexField) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
         String indexFieldName = edit.getIndexFieldName();
         IndexField duplicateIndexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
@@ -159,7 +159,7 @@ public class EditIndexFieldCommand
 
     @Override
     public void doUpdate(IndexField indexField) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
         IndexFieldDetailValue indexFieldDetailValue = indexControl.getIndexFieldDetailValueForUpdate(indexField);
         IndexFieldDescription indexFieldDescription = indexControl.getIndexFieldDescriptionForUpdate(indexField, getPreferredLanguage());

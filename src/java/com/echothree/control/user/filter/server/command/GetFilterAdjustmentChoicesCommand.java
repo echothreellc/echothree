@@ -52,7 +52,7 @@ public class GetFilterAdjustmentChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         GetFilterAdjustmentChoicesResult result = FilterResultFactory.getGetFilterAdjustmentChoicesResult();
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);

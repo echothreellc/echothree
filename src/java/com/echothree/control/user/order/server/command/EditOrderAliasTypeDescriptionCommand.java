@@ -89,18 +89,18 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public OrderAliasTypeDescription getEntity(EditOrderAliasTypeDescriptionResult result) {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAliasTypeDescription orderAliasTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+            var orderAliasControl = Session.getModelController(OrderAliasControl.class);
             String orderAliasTypeName = spec.getOrderAliasTypeName();
             OrderAliasType orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -134,7 +134,7 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderAliasTypeDescriptionResult result, OrderAliasTypeDescription orderAliasTypeDescription) {
-        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
         result.setOrderAliasTypeDescription(orderAliasControl.getOrderAliasTypeDescriptionTransfer(getUserVisit(), orderAliasTypeDescription));
     }
@@ -146,7 +146,7 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderAliasTypeDescription orderAliasTypeDescription) {
-        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         OrderAliasTypeDescriptionValue orderAliasTypeDescriptionValue = orderAliasControl.getOrderAliasTypeDescriptionValue(orderAliasTypeDescription);
 
         orderAliasTypeDescriptionValue.setDescription(edit.getDescription());

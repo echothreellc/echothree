@@ -47,7 +47,7 @@ public class WorkflowLogic
 
     public Workflow getWorkflowByName(final Class unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final String workflowName) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = workflowControl.getWorkflowByName(workflowName);
 
         if(workflow == null) {
@@ -68,7 +68,7 @@ public class WorkflowLogic
         WorkflowEntityType workflowEntityType = null;
 
         if(eea != null && !eea.hasExecutionErrors()) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntityType = workflowControl.getWorkflowEntityType(workflow, entityType);
 
@@ -92,7 +92,7 @@ public class WorkflowLogic
         WorkflowSelectorKind workflowSelectorKind = null;
 
         if(eea != null && !eea.hasExecutionErrors()) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowSelectorKind = workflowControl.getWorkflowSelectorKind(workflow, selectorKind);
 

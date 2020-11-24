@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class UserLoginPasswordTransferCache
         extends BaseUserTransferCache<UserLoginPassword, UserLoginPasswordTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of UserLoginPasswordTransferCache */
     public UserLoginPasswordTransferCache(UserVisit userVisit, UserControl userControl) {

@@ -140,7 +140,7 @@ public class CreateChainActionCommand
     private abstract class LetterComponentChainActionType
             extends BaseChainActionType {
 
-        protected LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        protected LetterControl letterControl = Session.getModelController(LetterControl.class);
 
         public LetterComponentChainActionType(ChainControl chainControl, String chainActionTypeName) {
             super(chainControl, chainActionTypeName);
@@ -185,7 +185,7 @@ public class CreateChainActionCommand
                 nextChainActionSet = chainControl.getChainActionSetByName(chain, nextChainActionSetName);
                 
                 if(nextChainActionSet != null) {
-                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = Session.getModelController(UomControl.class);
                     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                     if(timeUnitOfMeasureKind != null) {
@@ -214,7 +214,7 @@ public class CreateChainActionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
 

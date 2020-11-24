@@ -80,7 +80,7 @@ public class GetWorkflowDestinationSecurityRolesCommand
                 workflowStepName, workflowDestinationName, partyTypeName);
 
         if(!this.hasExecutionErrors()) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinationSecurityRoles = workflowControl.getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType);
         }
@@ -93,7 +93,7 @@ public class GetWorkflowDestinationSecurityRolesCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationSecurityRolesResult();
 
         if(entities != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflowDestinationPartyType(workflowControl.getWorkflowDestinationPartyTypeTransfer(userVisit, workflowDestinationPartyType));

@@ -135,25 +135,25 @@ public class Validator {
 
     public AccountingControl getAccountingControl() {
         if(accountingControl == null)
-            accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            accountingControl = Session.getModelController(AccountingControl.class);
         return accountingControl;
     }
     
     public PartyControl getPartyControl() {
         if(partyControl == null)
-            partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            partyControl = Session.getModelController(PartyControl.class);
         return partyControl;
     }
     
     public UserControl getUserControl() {
         if(userControl == null)
-            userControl = (UserControl)Session.getModelController(UserControl.class);
+            userControl = Session.getModelController(UserControl.class);
         return userControl;
     }
     
     public VendorControl getVendorControl() {
         if(vendorControl == null)
-            vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            vendorControl = Session.getModelController(VendorControl.class);
         return vendorControl;
     }
     

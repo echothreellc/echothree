@@ -78,7 +78,7 @@ public class GetLicenseTypeCommand
         int parameterCount = (licenseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+            var licenseControl = Session.getModelController(LicenseControl.class);
             LicenseType licenseType = null;
 
             if(licenseTypeName == null) {

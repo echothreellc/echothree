@@ -85,7 +85,7 @@ public class GetTrainingClassCommand
         int parameterCount = (trainingClassName == null? 0: 1) + (partyTrainingClassName == null? 0: 1);
 
         if(parameterCount == 1) {
-            var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+            var trainingControl = Session.getModelController(TrainingControl.class);
             TrainingClass trainingClass = null;
             var partyPK = getPartyPK();
 

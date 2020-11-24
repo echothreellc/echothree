@@ -944,9 +944,18 @@ public class SequenceControl
     }
 
     public long countSequences() {
-        return session.queryForLong("SELECT COUNT(*) " +
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
                 "FROM sequences, sequencedetails " +
                 "WHERE sq_activedetailid = sqdt_sequencedetailid");
+    }
+
+    public long countSequencesBySequenceType(SequenceType sequenceType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM sequences, sequencedetails " +
+                "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?",
+                sequenceType);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Sequence */
@@ -1206,7 +1215,7 @@ public class SequenceControl
         String sequenceTypeName = sequenceDetail.getSequenceType().getLastDetail().getSequenceTypeName();
         
         if(SequenceTypes.SALES_ORDER.name().equals(sequenceTypeName)) {
-            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
 
             offerUseControl.deleteOfferUsesBySalesOrderSequence(sequence, deletedBy);
         }

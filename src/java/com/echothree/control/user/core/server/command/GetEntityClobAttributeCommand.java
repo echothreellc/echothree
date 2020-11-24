@@ -66,7 +66,7 @@ public class GetEntityClobAttributeCommand
             EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             
             if(entityAttribute != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
                 

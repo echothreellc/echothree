@@ -94,7 +94,7 @@ public class DeleteUserLoginCommand
             Party party = null;
             
             if(partyName == null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.Party.name());
 

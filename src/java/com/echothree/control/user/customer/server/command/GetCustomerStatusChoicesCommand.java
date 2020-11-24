@@ -65,7 +65,7 @@ public class GetCustomerStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         GetCustomerStatusChoicesResult result = CustomerResultFactory.getGetCustomerStatusChoicesResult();
         String customerName = form.getCustomerName();
         Customer customer = customerName == null? null: customerControl.getCustomerByName(customerName);

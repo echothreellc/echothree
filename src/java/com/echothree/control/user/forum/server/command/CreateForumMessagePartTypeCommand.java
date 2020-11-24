@@ -51,7 +51,7 @@ public class CreateForumMessagePartTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumMessagePartTypeName = form.getForumMessagePartTypeName();
         ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
         

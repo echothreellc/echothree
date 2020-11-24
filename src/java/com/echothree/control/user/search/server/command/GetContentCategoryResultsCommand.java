@@ -57,7 +57,7 @@ public class GetContentCategoryResultsCommand
     @Override
     protected BaseResult execute() {
         GetContentCategoryResultsResult result = SearchResultFactory.getGetContentCategoryResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_CONTENT_CATEGORY);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetContentCategoryResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var contentCategoryControl = (ContentCategoryControl)Session.getModelController(ContentCategoryControl.class);
+                    var contentCategoryControl = Session.getModelController(ContentCategoryControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setContentCategoryResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

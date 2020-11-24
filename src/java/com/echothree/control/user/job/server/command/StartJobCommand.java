@@ -57,7 +57,7 @@ public class StartJobCommand
     
     @Override
     protected BaseResult execute() {
-        var jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = Session.getModelController(JobControl.class);
         String jobName = form.getJobName();
         Job job = jobControl.getJobByName(jobName);
         

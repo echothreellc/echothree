@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class SourceTransferCache
         extends BaseOfferTransferCache<Source, SourceTransfer> {
 
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
 
     /** Creates a new instance of SourceTransferCache */
     public SourceTransferCache(UserVisit userVisit) {

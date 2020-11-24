@@ -70,7 +70,7 @@ public class GetLetterContactMechanismPurposesCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         GetLetterContactMechanismPurposesResult result = LetterResultFactory.getGetLetterContactMechanismPurposesResult();
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -80,7 +80,7 @@ public class GetLetterContactMechanismPurposesCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = Session.getModelController(LetterControl.class);
                 String letterName = form.getLetterName();
                 Letter letter = letterControl.getLetterByName(chainType, letterName);
                 

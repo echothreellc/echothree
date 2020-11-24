@@ -98,7 +98,7 @@ public class EditBatchTypeCommand
 
     @Override
     public BatchType getEntity(EditBatchTypeResult result) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         BatchType batchType = null;
         String batchTypeName = spec.getBatchTypeName();
 
@@ -124,7 +124,7 @@ public class EditBatchTypeCommand
 
     @Override
     public void fillInResult(EditBatchTypeResult result, BatchType batchType) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
 
         result.setBatchType(batchControl.getBatchTypeTransfer(getUserVisit(), batchType));
     }
@@ -136,7 +136,7 @@ public class EditBatchTypeCommand
 
     @Override
     public void doLock(BatchTypeEdit edit, BatchType batchType) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescription(batchType, getPreferredLanguage());
         BatchTypeDetail batchTypeDetail = batchType.getLastDetail();
 
@@ -160,7 +160,7 @@ public class EditBatchTypeCommand
 
     @Override
     public void canUpdate(BatchType batchType) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         String batchTypeName = edit.getBatchTypeName();
         BatchType duplicateBatchType = batchControl.getBatchTypeByName(batchTypeName);
 
@@ -173,13 +173,13 @@ public class EditBatchTypeCommand
 
             if(parentBatchTypeName == null || parentBatchType != null) {
                 if(batchControl.isParentBatchTypeSafe(batchType, parentBatchType)) {
-                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     String batchSequenceTypeName = edit.getBatchSequenceTypeName();
 
                     batchSequenceType = sequenceControl.getSequenceTypeByName(batchSequenceTypeName);
 
                     if(batchSequenceTypeName == null || batchSequenceType != null) {
-                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         String batchWorkflowName = edit.getBatchWorkflowName();
 
                         batchWorkflow = batchWorkflowName == null ? null : workflowControl.getWorkflowByName(batchWorkflowName);
@@ -215,7 +215,7 @@ public class EditBatchTypeCommand
 
     @Override
     public void doUpdate(BatchType batchType) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         var partyPK = getPartyPK();
         BatchTypeDetailValue batchTypeDetailValue = batchControl.getBatchTypeDetailValueForUpdate(batchType);
         BatchTypeDescription batchTypeDescription = batchControl.getBatchTypeDescriptionForUpdate(batchType, getPreferredLanguage());

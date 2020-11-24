@@ -92,7 +92,7 @@ public class PurchaseOrderLogic
             if(requireReference && reference == null) {
                 handleExecutionError(PurchaseOrderReferenceRequiredException.class, eea, ExecutionErrors.PurchaseOrderReferenceRequired.name());
             } else if(reference != null) {
-                var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+                var orderControl = Session.getModelController(OrderControl.class);
 
                 if(!allowReferenceDuplicates && orderControl.countOrdersByBillToAndReference(vendor.getParty(), reference) != 0) {
                     handleExecutionError(PurchaseOrderDuplicateReferenceException.class, eea, ExecutionErrors.PurchaseOrderDuplicateReference.name());
@@ -122,6 +122,7 @@ public class PurchaseOrderLogic
     }
 
     /**
+     * Create a new Purchase Order using appropriate defaults where possible for Optional parameters.
      *
      * @param session Required.
      * @param eea Required.
@@ -147,11 +148,11 @@ public class PurchaseOrderLogic
         Order order = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-            var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
-            var termControl = (TermControl)Session.getModelController(TermControl.class);
-            var userControl = (UserControl)Session.getModelController(UserControl.class);
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var orderControl = Session.getModelController(OrderControl.class);
+            var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
+            var termControl = Session.getModelController(TermControl.class);
+            var userControl = Session.getModelController(UserControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
             var currency = userControl.getPreferredCurrencyFromParty(vendorParty);
             var vendor = vendorControl.getVendor(vendorParty);
             var vendorType = vendor.getVendorType();
@@ -172,9 +173,9 @@ public class PurchaseOrderLogic
             var sequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.PURCHASE_ORDER.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
-                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var coreControl = Session.getModelController(CoreControl.class);
+                var orderRoleControl = Session.getModelController(OrderRoleControl.class);
+                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var userSesson = userControl.getUserSessionByUserVisit(userVisit);;
                 var createdByPartyPK = createdByParty.getPrimaryKey();
 
@@ -247,14 +248,14 @@ public class PurchaseOrderLogic
 
     public PurchaseOrderStatusChoicesBean getPurchaseOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
             final Order order, final PartyPK partyPK) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var purchaseOrderStatusChoicesBean = new PurchaseOrderStatusChoicesBean();
 
         if(order == null) {
             workflowControl.getWorkflowEntranceChoices(purchaseOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS), partyPK);
         } else {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, entityInstance);
 
@@ -265,8 +266,8 @@ public class PurchaseOrderLogic
     }
 
     public void setPurchaseOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS);
         var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
@@ -316,7 +317,7 @@ public class PurchaseOrderLogic
      * @param modifiedBy Required.
      */
     public void checkOrderAvailableForModification(final Session session, final ExecutionErrorAccumulator eea, final Order order, final PartyPK modifiedBy) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PurchaseOrderStatusConstants.Workflow_PURCHASE_ORDER_STATUS, getEntityInstanceByBaseEntity(order));
         var workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
 
@@ -331,7 +332,7 @@ public class PurchaseOrderLogic
      * @return The Party used for the BILL_TO OrderRoleType. May be null.
      */
     public Party getOrderBillToParty(final Order order) {
-        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
         var billToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
         Party party = null;
         
@@ -348,7 +349,7 @@ public class PurchaseOrderLogic
      * @return The VendorType for the Party. May be null.
      */
     public VendorType getVendorTypeFromParty(final Party party) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         var vendor = party == null ? null : vendorControl.getVendor(party);
         VendorType vendorType = null;
         
@@ -377,7 +378,7 @@ public class PurchaseOrderLogic
      * @return The Party that is to be used for the SHIP_TO OrderRoleType. May be null.
      */
     public Party getOrderShipToParty(final Order order, final boolean billToFallback, final BasePK createdBy) {
-        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
         var shipToOrderRole = orderRoleControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
         
         if(shipToOrderRole == null && billToFallback) {

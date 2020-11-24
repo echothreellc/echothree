@@ -65,7 +65,7 @@ public class GetTrackStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         GetTrackStatusChoicesResult result = TrackResultFactory.getGetTrackStatusChoicesResult();
         String trackName = form.getTrackName();
         Track track = trackControl.getTrackByName(trackName);

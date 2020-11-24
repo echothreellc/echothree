@@ -94,18 +94,18 @@ public class EditTaxClassificationTranslationCommand
 
     @Override
     public TaxClassificationTranslation getEntity(EditTaxClassificationTranslationResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         TaxClassificationTranslation taxClassificationTranslation = null;
         String countryName = spec.getCountryName();
         GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
-            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = Session.getModelController(TaxControl.class);
             String taxClassificationName = spec.getTaxClassificationName();
             TaxClassification taxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
 
             if(taxClassification != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -139,7 +139,7 @@ public class EditTaxClassificationTranslationCommand
 
     @Override
     public void fillInResult(EditTaxClassificationTranslationResult result, TaxClassificationTranslation taxClassificationTranslation) {
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
 
         result.setTaxClassificationTranslation(taxControl.getTaxClassificationTranslationTransfer(getUserVisit(), taxClassificationTranslation));
     }
@@ -167,7 +167,7 @@ public class EditTaxClassificationTranslationCommand
     
     @Override
     public void doUpdate(TaxClassificationTranslation taxClassificationTranslation) {
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
         TaxClassificationTranslationValue taxClassificationTranslationValue = taxControl.getTaxClassificationTranslationValue(taxClassificationTranslation);
 
         taxClassificationTranslationValue.setDescription(edit.getDescription());

@@ -83,8 +83,8 @@ public class OfferNameElementObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

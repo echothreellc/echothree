@@ -83,8 +83,8 @@ public class UseObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var useControl = Session.getModelController(UseControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return useControl.getBestUseDescription(use, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

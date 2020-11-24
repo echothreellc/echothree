@@ -66,7 +66,7 @@ public class GetCommentTypesCommand
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
-                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = Session.getModelController(CommentControl.class);
                 
                 result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
                 result.setCommentTypes(commentControl.getCommentTypeTransfers(userVisit, entityType));

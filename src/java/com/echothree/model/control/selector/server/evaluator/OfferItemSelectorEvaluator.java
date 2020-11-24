@@ -53,8 +53,8 @@ import java.util.List;
 public class OfferItemSelectorEvaluator
         extends BaseItemSelectorEvaluator {
 
-    protected OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    protected OfferItemControl offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+    protected OfferControl offerControl = Session.getModelController(OfferControl.class);
+    protected OfferItemControl offerItemControl = Session.getModelController(OfferItemControl.class);
     protected OfferItemPriceFilterEvaluator offerItemPriceFilterEvaluator;
     
     ItemPriceType fixedItemPriceType;

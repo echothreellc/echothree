@@ -66,12 +66,12 @@ public class DeleteCampaignMediumDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String campaignMediumName = form.getCampaignMediumName();
         CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
         
         if(campaignMedium != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

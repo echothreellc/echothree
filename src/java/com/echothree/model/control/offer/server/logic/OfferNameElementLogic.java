@@ -52,7 +52,7 @@ public class OfferNameElementLogic
     public OfferNameElement createOfferNameElement(final ExecutionErrorAccumulator eea, final String offerNameElementName,
             final Integer offset, final Integer length, final String validationPattern, final Language language, final String description,
             final BasePK createdBy) {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
 
         if(offerNameElement == null) {
@@ -72,7 +72,7 @@ public class OfferNameElementLogic
 
     public OfferNameElement getOfferNameElementByName(final ExecutionErrorAccumulator eea, final String offerNameElementName,
             final EntityPermission entityPermission) {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName, entityPermission);
 
         if(offerNameElement == null) {
@@ -92,7 +92,7 @@ public class OfferNameElementLogic
 
     public OfferNameElement getOfferNameElementByUniversalSpec(final ExecutionErrorAccumulator eea,
             final OfferNameElementUniversalSpec universalSpec, final EntityPermission entityPermission) {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElementName = universalSpec.getOfferNameElementName();
         int parameterCount = (offerNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         OfferNameElement offerNameElement = null;
@@ -127,7 +127,7 @@ public class OfferNameElementLogic
 
     public void deleteOfferNameElement(final ExecutionErrorAccumulator eea, final OfferNameElement offerNameElement,
             final BasePK deletedBy) {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
 
         offerNameElementControl.deleteOfferNameElement(offerNameElement, deletedBy);
     }

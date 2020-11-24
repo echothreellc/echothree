@@ -64,13 +64,13 @@ public class EditClubDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = Session.getModelController(ClubControl.class);
         EditClubDescriptionResult result = ClubResultFactory.getEditClubDescriptionResult();
         String clubName = spec.getClubName();
         Club club = clubControl.getClubByName(clubName);
         
         if(club != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

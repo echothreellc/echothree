@@ -62,7 +62,7 @@ public class GetSequenceTypesCommand
 
     @Override
     protected Collection<SequenceType> getEntities() {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
 
         return sequenceControl.getSequenceTypes();
     }
@@ -70,7 +70,7 @@ public class GetSequenceTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<SequenceType> entities) {
         var result = SequenceResultFactory.getGetSequenceTypesResult();
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
 
         if(session.hasLimit(SequenceTypeFactory.class)) {
             result.setSequenceTypeCount(sequenceControl.countSequenceTypes());

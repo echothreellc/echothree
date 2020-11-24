@@ -65,7 +65,7 @@ public class WorkflowDestinationLogic
     }
     
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep, final String workflowDestinationName) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
 
         if(workflowDestination == null) {
@@ -103,7 +103,7 @@ public class WorkflowDestinationLogic
     }
 
     public Set<WorkflowStep> getWorkflowDestinationStepsAsSet(final WorkflowDestination workflowDestination) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         List<WorkflowDestinationStep> workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Set<WorkflowStep> workflowSteps = new HashSet<>(workflowDestinationSteps.size());
         
@@ -115,7 +115,7 @@ public class WorkflowDestinationLogic
     }
     
     public Map<String, Set<String>> getWorkflowDestinationsAsMap(final WorkflowDestination workflowDestination) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         List<WorkflowDestinationStep> workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Map<String, Set<String>> map = new HashMap<>();
         
@@ -157,7 +157,7 @@ public class WorkflowDestinationLogic
         WorkflowDestinationPartyType workflowDestinationPartyType = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType, entityPermission);
 
@@ -222,7 +222,7 @@ public class WorkflowDestinationLogic
                     var workflowDestinationPartyType = getWorkflowDestinationPartyType(eea, workflowDestination, partyType);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = Session.getModelController(WorkflowControl.class);
 
                         workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRole(workflowDestinationPartyType,
                                 securityRole, entityPermission);
@@ -276,7 +276,7 @@ public class WorkflowDestinationLogic
                 var selector = SelectorLogic.getInstance().getSelectorByName(eea, selectorType, selectorName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = Session.getModelController(WorkflowControl.class);
 
                     workflowDestinationSelector = workflowControl.getWorkflowDestinationSelector(workflowDestination,
                             selector, entityPermission);
@@ -326,7 +326,7 @@ public class WorkflowDestinationLogic
 
     public WorkflowDestinationStep getWorkflowDestinationStep(final ExecutionErrorAccumulator eea,
             WorkflowDestination workflowDestination, WorkflowStep destinationWorkflowStep) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowDestinationStep = workflowControl.getWorkflowDestinationStep(workflowDestination, destinationWorkflowStep);
 
         if(workflowDestinationStep == null) {

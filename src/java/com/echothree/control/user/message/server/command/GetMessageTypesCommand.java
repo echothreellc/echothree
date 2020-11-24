@@ -66,7 +66,7 @@ public class GetMessageTypesCommand
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
-                var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                var messageControl = Session.getModelController(MessageControl.class);
                 
                 result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
                 result.setMessageTypes(messageControl.getMessageTypeTransfers(userVisit, entityType));

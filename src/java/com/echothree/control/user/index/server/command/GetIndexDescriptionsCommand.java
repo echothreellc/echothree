@@ -64,7 +64,7 @@ public class GetIndexDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         GetIndexDescriptionsResult result = IndexResultFactory.getGetIndexDescriptionsResult();
         String indexName = form.getIndexName();
         Index index = indexControl.getIndexByName(indexName);

@@ -36,9 +36,9 @@ import com.echothree.util.server.persistence.Session;
 public class CommentTypeTransferCache
         extends BaseCommentTransferCache<CommentType, CommentTypeTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CommentTypeTransferCache */
     public CommentTypeTransferCache(UserVisit userVisit, CommentControl commentControl) {

@@ -32,7 +32,7 @@ public abstract class BaseJobDescriptionTransferCache<K extends BaseEntity, V ex
     protected BaseJobDescriptionTransferCache(UserVisit userVisit, JobControl jobControl) {
         super(userVisit, jobControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

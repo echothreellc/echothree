@@ -28,8 +28,8 @@ import com.echothree.util.server.persistence.Session;
 public class OfferCustomerTypeTransferCache
         extends BaseOfferTransferCache<OfferCustomerType, OfferCustomerTypeTransfer> {
     
-    CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
+    OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferCustomerTypeTransferCache */
     public OfferCustomerTypeTransferCache(UserVisit userVisit) {

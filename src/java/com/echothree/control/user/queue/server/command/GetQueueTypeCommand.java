@@ -79,7 +79,7 @@ public class GetQueueTypeCommand
         int parameterCount = (queueTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+            var queueControl = Session.getModelController(QueueControl.class);
 
             if(queueTypeName == null) {
                 EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
@@ -104,7 +104,7 @@ public class GetQueueTypeCommand
 
     @Override
     protected BaseResult getTransfer(QueueType queueType) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         GetQueueTypeResult result = QueueResultFactory.getGetQueueTypeResult();
 
         if(queueType != null) {

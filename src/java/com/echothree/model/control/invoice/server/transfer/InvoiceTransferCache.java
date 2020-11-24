@@ -49,11 +49,11 @@ import java.util.Set;
 public class InvoiceTransferCache
         extends BaseInvoiceTransferCache<Invoice, InvoiceTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    BillingControl billingControl = Session.getModelController(BillingControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    TermControl termControl = Session.getModelController(TermControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeLines;
     boolean includeRoles;
     DateTimeFormatter shortDateFormatter;

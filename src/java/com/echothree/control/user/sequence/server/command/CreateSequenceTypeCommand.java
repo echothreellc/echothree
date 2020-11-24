@@ -71,7 +71,7 @@ public class CreateSequenceTypeCommand
     @Override
     protected BaseResult execute() {
         var result = SequenceResultFactory.getCreateSequenceTypeResult();
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeName = form.getSequenceTypeName();
         var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         

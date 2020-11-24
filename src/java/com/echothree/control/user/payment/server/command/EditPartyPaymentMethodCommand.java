@@ -118,7 +118,7 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public PartyPaymentMethod getEntity(EditPartyPaymentMethodResult result) {
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         PartyPaymentMethod partyPaymentMethod = null;
         String partyPaymentMethodName = spec.getPartyPaymentMethodName();
 
@@ -157,14 +157,14 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public void fillInResult(EditPartyPaymentMethodResult result, PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
 
         result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
     }
 
     @Override
     public void doLock(PartyPaymentMethodEdit edit, PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
         String paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
@@ -223,7 +223,7 @@ public class EditPartyPaymentMethodCommand
 
     @Override
     public void doUpdate(PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         PartyPK executingPartyPK = getPartyPK();
         PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = partyPaymentMethodControl.getPartyPaymentMethodDetailValueForUpdate(partyPaymentMethod);
         String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
@@ -236,8 +236,8 @@ public class EditPartyPaymentMethodCommand
         partyPaymentMethodControl.updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, executingPartyPK);
 
         if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var contactControl = Session.getModelController(ContactControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             Party party = getPartyFromPartyPaymentMethod(partyPaymentMethod);
             Soundex soundex = new Soundex();
             String personalTitleId = edit.getPersonalTitleId();

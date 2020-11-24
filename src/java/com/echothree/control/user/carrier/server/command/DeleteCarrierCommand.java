@@ -62,7 +62,7 @@ public class DeleteCarrierCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         String carrierName = form.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByNameForUpdate(carrierName);
         

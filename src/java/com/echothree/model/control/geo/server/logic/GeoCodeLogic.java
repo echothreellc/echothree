@@ -51,7 +51,7 @@ public class GeoCodeLogic
     }
 
     public GeoCode getGeoCodeByName(final ExecutionErrorAccumulator eea, final String geoCodeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var geoCode = geoControl.getGeoCodeByName(geoCodeName);
 
         if(geoCode == null) {
@@ -64,21 +64,21 @@ public class GeoCodeLogic
     
     public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator eea, final GeoCode geoCode,
             final String geoCodeAliasTypeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         return geoControl.getGeoCodeAlias(geoCode, getGeoCodeAliasTypeByName(eea, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 
     public GeoCodeAliasValue getGeoCodeAliasValueUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode,
             final String geoCodeAliasTypeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         return geoControl.getGeoCodeAliasValueForUpdate(geoCode, getGeoCodeAliasTypeByName(ema, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 
     public GeoCode getGeoCodeByAlias(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType, final GeoCodeScope geoCodeScope,
             final String geoCodeAliasTypeName, final String alias) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
         GeoCodeAlias geoCodeAlias = null;
 
@@ -94,7 +94,7 @@ public class GeoCodeLogic
 
     public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType,
             final String geoCodeAliasTypeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
 
         if(geoCodeAliasType == null) {
@@ -106,11 +106,11 @@ public class GeoCodeLogic
     }
 
     public void deleteGeoCode(final ExecutionErrorAccumulator eea, final GeoCode geoCode, final BasePK deletedBy) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
 
         if(contactControl.countContactPostalAddressCorrectionsByCityGeoCode(geoCode) == 0
                 && contactControl.countContactPostalAddressCorrectionsByCountyGeoCode(geoCode) == 0

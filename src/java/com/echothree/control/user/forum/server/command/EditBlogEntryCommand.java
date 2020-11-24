@@ -101,7 +101,7 @@ public class EditBlogEntryCommand
 
     @Override
     public ForumMessage getEntity(EditBlogEntryResult result) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessage forumMessage = null;
         String forumMessageName = spec.getForumMessageName();
 
@@ -125,14 +125,14 @@ public class EditBlogEntryCommand
 
     @Override
     public void fillInResult(EditBlogEntryResult result, ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
 
         result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
     }
 
     @Override
     public void doLock(BlogEntryEdit edit, ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
         ForumThreadDetail forumThreadDetail = forumMessageDetail.getForumThread().getLastDetail();
 
@@ -191,11 +191,11 @@ public class EditBlogEntryCommand
 
     @Override
     public void canUpdate(ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
 
         if(forumMessageDetail.getForumMessageType().getForumMessageTypeName().equals(ForumConstants.ForumMessageType_BLOG_ENTRY)) {
-            var iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = Session.getModelController(IconControl.class);
             String forumThreadIconName = edit.getForumThreadIconName();
 
             forumThreadIcon = iconControl.getIconByName(forumThreadIconName);
@@ -297,7 +297,7 @@ public class EditBlogEntryCommand
 
     @Override
     public void doUpdate(ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
         ForumMessageDetailValue forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
         ForumThreadDetailValue forumThreadDetailValue = forumControl.getForumThreadDetailValueForUpdate(forumMessage.getLastDetail().getForumThreadForUpdate());

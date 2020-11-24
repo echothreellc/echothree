@@ -1851,7 +1851,7 @@ public class PartyControl
         }
         
         if(partyName == null) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY.name());
             if(sequenceType != null) {
                 Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
@@ -2008,7 +2008,7 @@ public class PartyControl
         Currency currency = party.getLastDetail().getPreferredCurrency();
         
         if(currency == null) {
-            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = Session.getModelController(AccountingControl.class);
             
             currency = accountingControl.getDefaultCurrency();
         }
@@ -2082,14 +2082,14 @@ public class PartyControl
     }
     
     public void deleteParty(Party party, BasePK deletedBy) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
+        var termControl = Session.getModelController(TermControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         PartyDetail partyDetail = party.getLastDetailForUpdate();
         PartyType partyType = partyDetail.getPartyType();
         String partyTypeName = partyType.getPartyTypeName();
@@ -2114,30 +2114,30 @@ public class PartyControl
         
         if(partyTypeName.equals(PartyTypes.COMPANY.name()) || partyTypeName.equals(PartyTypes.CUSTOMER.name())
                 || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-            var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+            var carrierControl = Session.getModelController(CarrierControl.class);
 
             carrierControl.deletePartyCarriersByParty(party, deletedBy);
             carrierControl.deletePartyCarrierAccountsByParty(party, deletedBy);
         }
 
         if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-            var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
             cancellationPolicyControl.deletePartyCancellationPoliciesByParty(party, deletedBy);
             returnPolicyControl.deletePartyReturnPoliciesByParty(party, deletedBy);
         }
 
         if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-            var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+            var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
 
             partyPaymentMethodControl.deletePartyPaymentMethodsByParty(party, deletedBy);
         }
         
         if(partyTypeName.equals(PartyTypes.EMPLOYEE.name())) {
-            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-            var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-            var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+            var employeeControl = Session.getModelController(EmployeeControl.class);
+            var trainingControl = Session.getModelController(TrainingControl.class);
+            var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
             employeeControl.deleteEmploymentsByParty(party, deletedBy);
             employeeControl.deleteLeavesByParty(party, deletedBy);

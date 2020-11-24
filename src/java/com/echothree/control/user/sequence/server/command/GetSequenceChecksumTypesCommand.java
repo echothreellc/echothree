@@ -62,7 +62,7 @@ public class GetSequenceChecksumTypesCommand
 
     @Override
     protected Collection<SequenceChecksumType> getEntities() {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
 
         return sequenceControl.getSequenceChecksumTypes();
     }
@@ -70,7 +70,7 @@ public class GetSequenceChecksumTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<SequenceChecksumType> entities) {
         var result = SequenceResultFactory.getGetSequenceChecksumTypesResult();
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
 
         if(session.hasLimit(SequenceChecksumTypeFactory.class)) {
             result.setSequenceChecksumTypeCount(sequenceControl.countSequenceChecksumTypes());

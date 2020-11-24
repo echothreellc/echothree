@@ -87,13 +87,13 @@ public class EditItemImageTypeDescriptionCommand
 
     @Override
     public ItemImageTypeDescription getEntity(EditItemImageTypeDescriptionResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemImageTypeDescription itemImageTypeDescription = null;
         String itemImageTypeName = spec.getItemImageTypeName();
         ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
         if(itemImageType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditItemImageTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditItemImageTypeDescriptionResult result, ItemImageTypeDescription itemImageTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemImageTypeDescription(itemControl.getItemImageTypeDescriptionTransfer(getUserVisit(), itemImageTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditItemImageTypeDescriptionCommand
 
     @Override
     public void doUpdate(ItemImageTypeDescription itemImageTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemImageTypeDescriptionValue itemImageTypeDescriptionValue = itemControl.getItemImageTypeDescriptionValue(itemImageTypeDescription);
         
         itemImageTypeDescriptionValue.setDescription(edit.getDescription());

@@ -67,7 +67,7 @@ public class GetSequenceCommand
     
     @Override
     protected BaseResult execute() {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         GetSequenceResult result = SequenceResultFactory.getGetSequenceResult();
         String sequenceTypeName = form.getSequenceTypeName();
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
@@ -75,8 +75,6 @@ public class GetSequenceCommand
         if(sequenceType != null) {
             String sequenceName = form.getSequenceName();
             Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
-            
-            result.setSequenceType(sequenceControl.getSequenceTypeTransfer(getUserVisit(), sequenceType));
             
             if(sequence != null) {
                 result.setSequence(sequenceControl.getSequenceTransfer(getUserVisit(), sequence));

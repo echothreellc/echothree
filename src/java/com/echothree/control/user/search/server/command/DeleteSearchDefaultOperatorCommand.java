@@ -62,7 +62,7 @@ public class DeleteSearchDefaultOperatorCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
         SearchDefaultOperator searchDefaultOperator = searchControl.getSearchDefaultOperatorByNameForUpdate(searchDefaultOperatorName);
         

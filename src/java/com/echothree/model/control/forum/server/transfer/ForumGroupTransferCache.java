@@ -36,7 +36,7 @@ import java.util.Set;
 public class ForumGroupTransferCache
         extends BaseForumTransferCache<ForumGroup, ForumGroupTransfer> {
     
-    IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+    IconControl iconControl = Session.getModelController(IconControl.class);
     boolean includeForums;
     
     /** Creates a new instance of ForumGroupTransferCache */

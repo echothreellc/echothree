@@ -87,13 +87,13 @@ public class EditCampaignDescriptionCommand
 
     @Override
     public CampaignDescription getEntity(EditCampaignDescriptionResult result) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignDescription campaignDescription = null;
         String campaignName = spec.getCampaignName();
         Campaign campaign = campaignControl.getCampaignByName(campaignName);
 
         if(campaign != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditCampaignDescriptionCommand
 
     @Override
     public void fillInResult(EditCampaignDescriptionResult result, CampaignDescription campaignDescription) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
 
         result.setCampaignDescription(campaignControl.getCampaignDescriptionTransfer(getUserVisit(), campaignDescription));
     }
@@ -136,7 +136,7 @@ public class EditCampaignDescriptionCommand
 
     @Override
     public void doUpdate(CampaignDescription campaignDescription) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignDescriptionValue campaignDescriptionValue = campaignControl.getCampaignDescriptionValue(campaignDescription);
         campaignDescriptionValue.setDescription(edit.getDescription());
 

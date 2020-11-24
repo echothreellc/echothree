@@ -31,8 +31,8 @@ import com.echothree.util.server.persistence.Session;
 public class ItemUnitLimitTransferCache
         extends BaseItemTransferCache<ItemUnitLimit, ItemUnitLimitTransfer> {
     
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitLimitTransferCache */
     public ItemUnitLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {

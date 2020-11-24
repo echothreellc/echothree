@@ -53,72 +53,42 @@ public class WorkEffortLogic {
         private Long estimatedTimeAllowed;
         private Long maximumTimeAllowed;
 
-        /**
-         * @return the workEffortScope
-         */
         public WorkEffortScope getWorkEffortScope() {
             return workEffortScope;
         }
 
-        /**
-         * @param workEffortScope the workEffortScope to set
-         */
         public void setWorkEffortScope(WorkEffortScope workEffortScope) {
             this.workEffortScope = workEffortScope;
         }
 
-        /**
-         * @return the workEffortSequence
-         */
         public Sequence getWorkEffortSequence() {
             return workEffortSequence;
         }
 
-        /**
-         * @param workEffortSequence the workEffortSequence to set
-         */
         public void setWorkEffortSequence(Sequence workEffortSequence) {
             this.workEffortSequence = workEffortSequence;
         }
 
-        /**
-         * @return the scheduledTime
-         */
         public Long getScheduledTime() {
             return scheduledTime;
         }
 
-        /**
-         * @param scheduledTime the scheduledTime to set
-         */
         public void setScheduledTime(Long scheduledTime) {
             this.scheduledTime = scheduledTime;
         }
 
-        /**
-         * @return the estimatedTimeAllowed
-         */
         public Long getEstimatedTimeAllowed() {
             return estimatedTimeAllowed;
         }
 
-        /**
-         * @param estimatedTimeAllowed the estimatedTimeAllowed to set
-         */
         public void setEstimatedTimeAllowed(Long estimatedTimeAllowed) {
             this.estimatedTimeAllowed = estimatedTimeAllowed;
         }
 
-        /**
-         * @return the maximumTimeAllowed
-         */
         public Long getMaximumTimeAllowed() {
             return maximumTimeAllowed;
         }
 
-        /**
-         * @param maximumTimeAllowed the maximumTimeAllowed to set
-         */
         public void setMaximumTimeAllowed(Long maximumTimeAllowed) {
             this.maximumTimeAllowed = maximumTimeAllowed;
         }
@@ -138,7 +108,7 @@ public class WorkEffortLogic {
             workEffortSequence = workEffortTypeDetail.getWorkEffortSequence();
 
             if(workEffortSequence == null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 
                 workEffortSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_EFFORT.name());
             }
@@ -205,7 +175,7 @@ public class WorkEffortLogic {
     }
 
     public WorkEffort createWorkEffort(final PreparedWorkEffort preparedWorkEffort, final EntityInstance owningEntityInstance, final BasePK createdBy) {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         String workEffortName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
         
         WorkEffort workEffort = workEffortControl.createWorkEffort(workEffortName, owningEntityInstance, preparedWorkEffort.getWorkEffortScope(),
@@ -216,7 +186,7 @@ public class WorkEffortLogic {
     }
 
     public void deleteWorkEffort(final WorkEffort workEffort, final BasePK deletedBy) {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
 
         workEffortControl.deleteWorkEffort(workEffort, deletedBy);
     }

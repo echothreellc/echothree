@@ -64,7 +64,7 @@ public class GetUseTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         GetUseTypeDescriptionsResult result = OfferResultFactory.getGetUseTypeDescriptionsResult();
         String useTypeName = form.getUseTypeName();
         UseType useType = useTypeControl.getUseTypeByName(useTypeName);

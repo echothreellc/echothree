@@ -105,7 +105,7 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
                     }
                 } else if(itemDescriptionTypeName != null) {
-                    var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                    var itemControl = Session.getModelController(ItemControl.class);
                     ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
                     if(itemDescriptionType != null) {
@@ -118,7 +118,7 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
                     }
                 } else if(documentTypeName != null || documentName != null) {
-                    var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+                    var documentControl = Session.getModelController(DocumentControl.class);
 
                     if(documentTypeName != null) {
                         DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
@@ -152,7 +152,7 @@ public class GetMimeTypeChoicesCommand
                             getPreferredLanguage(), allowNullChoice));
                 }
             } else if(forumName != null || forumMessageName != null) {
-                var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+                var forumControl = Session.getModelController(ForumControl.class);
 
                 if(forumName != null) {
                     Forum forum = forumControl.getForumByName(forumName);
@@ -177,7 +177,7 @@ public class GetMimeTypeChoicesCommand
                     }
                 }
             } else if((componentVendorName != null && entityTypeName != null && commentTypeName != null) || commentName != null) {
-                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = Session.getModelController(CommentControl.class);
                 MimeTypeUsageType mimeTypeUsageType = null;
 
                 if(commentName != null) {

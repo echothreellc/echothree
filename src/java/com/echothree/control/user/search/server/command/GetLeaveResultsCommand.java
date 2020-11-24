@@ -71,7 +71,7 @@ public class GetLeaveResultsCommand
         UserVisitSearch userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchConstants.SearchKind_LEAVE, form.getSearchTypeName());
         
         if(!hasExecutionErrors()) {
-            var leaveControl = (LeaveControl)Session.getModelController(LeaveControl.class);
+            var leaveControl = Session.getModelController(LeaveControl.class);
 
             if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                 result.setLeaveResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

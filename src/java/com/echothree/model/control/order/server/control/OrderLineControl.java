@@ -298,7 +298,7 @@ public class OrderLineControl
     }
     
     public void deleteOrderLine(OrderLine orderLine, BasePK deletedBy) {
-        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetailForUpdate();
 
         removeOrderLineStatusByOrderLine(orderLine);
@@ -326,7 +326,7 @@ public class OrderLineControl
     }
     
     public void deleteOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
-        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = Session.getModelController(WishlistControl.class);
         List<WishlistLine> wishlistLines = wishlistControl.getWishlistLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
         wishlistLines.stream().forEach((wishlistLine) -> {

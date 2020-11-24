@@ -104,14 +104,14 @@ public class EditPaymentMethodTypeCommand
     
     @Override
     public void fillInResult(EditPaymentMethodTypeResult result, PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         
         result.setPaymentMethodType(paymentMethodTypeControl.getPaymentMethodTypeTransfer(getUserVisit(), paymentMethodType));
     }
     
     @Override
     public void doLock(PaymentMethodTypeEdit edit, PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         PaymentMethodTypeDescription paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescription(paymentMethodType, getPreferredLanguage());
         PaymentMethodTypeDetail paymentMethodTypeDetail = paymentMethodType.getLastDetail();
         
@@ -126,7 +126,7 @@ public class EditPaymentMethodTypeCommand
         
     @Override
     public void canUpdate(PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         String paymentMethodTypeName = edit.getPaymentMethodTypeName();
         PaymentMethodType duplicatePaymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
 
@@ -137,7 +137,7 @@ public class EditPaymentMethodTypeCommand
     
     @Override
     public void doUpdate(PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var partyPK = getPartyPK();
         PaymentMethodTypeDetailValue paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueForUpdate(paymentMethodType);
         PaymentMethodTypeDescription paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescriptionForUpdate(paymentMethodType, getPreferredLanguage());

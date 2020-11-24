@@ -87,7 +87,7 @@ public class EditPartyAliasCommand
     
     @Override
     public PartyAlias getEntity(EditPartyAliasResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyAlias partyAlias = null;
         String partyName = spec.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
@@ -127,7 +127,7 @@ public class EditPartyAliasCommand
 
     @Override
     public void fillInResult(EditPartyAliasResult result, PartyAlias partyAlias) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
 
         result.setPartyAlias(partyControl.getPartyAliasTransfer(getUserVisit(), partyAlias));
     }
@@ -139,7 +139,7 @@ public class EditPartyAliasCommand
 
     @Override
     public void canUpdate(PartyAlias partyAlias) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String alias = edit.getAlias();
         PartyAlias duplicatePartyAlias = partyControl.getPartyAliasByAlias(partyAliasType, alias);
 
@@ -153,7 +153,7 @@ public class EditPartyAliasCommand
 
     @Override
     public void doUpdate(PartyAlias partyAlias) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyAliasValue partyAliasValue = partyControl.getPartyAliasValue(partyAlias);
 
         partyAliasValue.setAlias(edit.getAlias());

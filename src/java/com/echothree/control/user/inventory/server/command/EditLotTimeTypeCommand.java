@@ -90,7 +90,7 @@ public class EditLotTimeTypeCommand
 
     @Override
     public LotTimeType getEntity(EditLotTimeTypeResult result) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         LotTimeType lotTimeType = null;
         String lotTimeTypeName = spec.getLotTimeTypeName();
 
@@ -116,14 +116,14 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void fillInResult(EditLotTimeTypeResult result, LotTimeType lotTimeType) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
 
         result.setLotTimeType(lotTimeControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
     }
 
     @Override
     public void doLock(LotTimeTypeEdit edit, LotTimeType lotTimeType) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, getPreferredLanguage());
         LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void canUpdate(LotTimeType lotTimeType) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         String lotTimeTypeName = edit.getLotTimeTypeName();
         LotTimeType duplicateLotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
@@ -149,7 +149,7 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void doUpdate(LotTimeType lotTimeType) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var partyPK = getPartyPK();
         LotTimeTypeDetailValue lotTimeTypeDetailValue = lotTimeControl.getLotTimeTypeDetailValueForUpdate(lotTimeType);
         LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, getPreferredLanguage());

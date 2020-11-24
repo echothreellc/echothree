@@ -53,12 +53,12 @@ public class CreateClubItemTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = Session.getModelController(ClubControl.class);
         String clubItemTypeName = form.getClubItemTypeName();
         ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
         
         if(clubItemType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

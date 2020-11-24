@@ -73,7 +73,7 @@ public class EditRelatedItemCommand
     
     @Override
     public RelatedItem getEntity(EditRelatedItemResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         RelatedItem relatedItem = null;
         String relatedItemTypeName = spec.getRelatedItemTypeName();
         RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
@@ -116,7 +116,7 @@ public class EditRelatedItemCommand
     
     @Override
     public void fillInResult(EditRelatedItemResult result, RelatedItem relatedItem) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         
         result.setRelatedItem(itemControl.getRelatedItemTransfer(getUserVisit(), relatedItem));
     }
@@ -128,7 +128,7 @@ public class EditRelatedItemCommand
 
     @Override
     public void doUpdate(RelatedItem relatedItem) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         RelatedItemDetailValue relatedItemValueDetail = itemControl.getRelatedItemDetailValueForUpdate(relatedItem);
 
         relatedItemValueDetail.setSortOrder(Integer.valueOf(edit.getSortOrder()));

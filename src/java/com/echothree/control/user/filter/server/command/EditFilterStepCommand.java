@@ -76,7 +76,7 @@ public class EditFilterStepCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         EditFilterStepResult result = FilterResultFactory.getEditFilterStepResult();
         String filterKindName = spec.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
@@ -131,7 +131,7 @@ public class EditFilterStepCommand
                                 Selector filterItemSelector = null;
                                 
                                 if(filterItemSelectorName != null) {
-                                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                    var selectorControl = Session.getModelController(SelectorControl.class);
                                     SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
                                     
                                     if(selectorKind != null) {

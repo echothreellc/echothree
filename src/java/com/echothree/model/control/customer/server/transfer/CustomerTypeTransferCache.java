@@ -35,14 +35,14 @@ import com.echothree.util.server.persistence.Session;
 public class CustomerTypeTransferCache
         extends BaseCustomerTransferCache<CustomerType, CustomerTypeTransfer> {
 
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-    FreeOnBoardControl freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-    ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    TermControl termControl = Session.getModelController(TermControl.class);
 
     TransferProperties transferProperties;
     boolean filterCustomerTypeName;

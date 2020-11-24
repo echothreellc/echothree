@@ -33,8 +33,8 @@ import java.util.Set;
 public class CampaignTransferCache
         extends BaseCampaignTransferCache<Campaign, CampaignTransfer> {
 
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignTransferCache */
     public CampaignTransferCache(UserVisit userVisit, CampaignControl campaignControl) {

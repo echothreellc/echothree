@@ -67,7 +67,7 @@ public class DeleteRatingTypeListItemDescriptionCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = Session.getModelController(RatingControl.class);
                 String ratingTypeName = form.getRatingTypeName();
                 RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
@@ -76,7 +76,7 @@ public class DeleteRatingTypeListItemDescriptionCommand
                     RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItem != null) {
-                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = Session.getModelController(PartyControl.class);
                         String languageIsoName = form.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         

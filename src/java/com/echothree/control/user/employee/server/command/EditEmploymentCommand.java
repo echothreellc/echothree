@@ -84,7 +84,7 @@ public class EditEmploymentCommand
 
     @Override
     public Employment getEntity(EditEmploymentResult result) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         Employment employment = null;
         String employmentName = spec.getEmploymentName();
 
@@ -108,7 +108,7 @@ public class EditEmploymentCommand
 
     @Override
     public void fillInResult(EditEmploymentResult result, Employment employment) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
 
         result.setEmployment(employeeControl.getEmploymentTransfer(getUserVisit(), employment));
     }
@@ -118,7 +118,7 @@ public class EditEmploymentCommand
 
     @Override
     public void doLock(EmploymentEdit edit, Employment employment) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         EmploymentDetail employmentDetail = employment.getLastDetail();
         Long endTime = employmentDetail.getEndTime();
 
@@ -136,13 +136,13 @@ public class EditEmploymentCommand
     
     @Override
     public void canUpdate(Employment employment) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String companyName = edit.getCompanyName();
 
         partyCompany = partyControl.getPartyCompanyByName(companyName);
 
         if(partyCompany != null) {
-            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = Session.getModelController(EmployeeControl.class);
             String terminationTypeName = edit.getTerminationTypeName();
 
             terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
@@ -165,7 +165,7 @@ public class EditEmploymentCommand
 
     @Override
     public void doUpdate(Employment employment) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         EmploymentDetailValue employmentDetailValue = employeeControl.getEmploymentDetailValueForUpdate(employment);
         String strEndTime = edit.getEndTime();
 

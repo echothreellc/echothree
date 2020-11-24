@@ -89,7 +89,7 @@ public class EditPicklistTimeTypeDescriptionCommand
 
     @Override
     public PicklistTimeTypeDescription getEntity(EditPicklistTimeTypeDescriptionResult result) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistTimeTypeDescription picklistTimeTypeDescription = null;
         String picklistTypeName = spec.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -99,7 +99,7 @@ public class EditPicklistTimeTypeDescriptionCommand
             PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
 
             if(picklistTimeType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditPicklistTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPicklistTimeTypeDescriptionResult result, PicklistTimeTypeDescription picklistTimeTypeDescription) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
 
         result.setPicklistTimeTypeDescription(picklistControl.getPicklistTimeTypeDescriptionTransfer(getUserVisit(), picklistTimeTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditPicklistTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(PicklistTimeTypeDescription picklistTimeTypeDescription) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistTimeTypeDescriptionValue picklistTimeTypeDescriptionValue = picklistControl.getPicklistTimeTypeDescriptionValue(picklistTimeTypeDescription);
         picklistTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

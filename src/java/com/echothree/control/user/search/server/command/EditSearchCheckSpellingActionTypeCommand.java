@@ -89,7 +89,7 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public SearchCheckSpellingActionType getEntity(EditSearchCheckSpellingActionTypeResult result) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionType searchCheckSpellingActionType;
         String searchCheckSpellingActionTypeName = spec.getSearchCheckSpellingActionTypeName();
 
@@ -113,14 +113,14 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public void fillInResult(EditSearchCheckSpellingActionTypeResult result, SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
 
         result.setSearchCheckSpellingActionType(searchControl.getSearchCheckSpellingActionTypeTransfer(getUserVisit(), searchCheckSpellingActionType));
     }
 
     @Override
     public void doLock(SearchCheckSpellingActionTypeEdit edit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getPreferredLanguage());
         SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public void canUpdate(SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         String searchCheckSpellingActionTypeName = edit.getSearchCheckSpellingActionTypeName();
         SearchCheckSpellingActionType duplicateSearchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
@@ -146,7 +146,7 @@ public class EditSearchCheckSpellingActionTypeCommand
 
     @Override
     public void doUpdate(SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var partyPK = getPartyPK();
         SearchCheckSpellingActionTypeDetailValue searchCheckSpellingActionTypeDetailValue = searchControl.getSearchCheckSpellingActionTypeDetailValueForUpdate(searchCheckSpellingActionType);
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = searchControl.getSearchCheckSpellingActionTypeDescriptionForUpdate(searchCheckSpellingActionType, getPreferredLanguage());

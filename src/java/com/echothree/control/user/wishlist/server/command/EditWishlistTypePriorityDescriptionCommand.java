@@ -66,7 +66,7 @@ public class EditWishlistTypePriorityDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = Session.getModelController(WishlistControl.class);
         EditWishlistTypePriorityDescriptionResult result = WishlistResultFactory.getEditWishlistTypePriorityDescriptionResult();
         String wishlistTypeName = spec.getWishlistTypeName();
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
@@ -76,7 +76,7 @@ public class EditWishlistTypePriorityDescriptionCommand
             WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
             
             if(wishlistTypePriority != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

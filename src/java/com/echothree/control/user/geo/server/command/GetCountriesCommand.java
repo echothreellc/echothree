@@ -63,7 +63,7 @@ public class GetCountriesCommand
 
     @Override
     protected Collection<GeoCode> getEntities() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         return geoControl.getCountries();
     }
@@ -73,7 +73,7 @@ public class GetCountriesCommand
         var result = GeoResultFactory.getGetCountriesResult();
 
         if(entities != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
 
             result.setCountries(geoControl.getCountryTransfers(getUserVisit(), entities));
         }

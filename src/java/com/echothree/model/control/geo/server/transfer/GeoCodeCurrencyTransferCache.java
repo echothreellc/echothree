@@ -34,7 +34,7 @@ public class GeoCodeCurrencyTransferCache
     public GeoCodeCurrencyTransferCache(UserVisit userVisit, GeoControl geoControl) {
         super(userVisit, geoControl);
         
-        accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        accountingControl = Session.getModelController(AccountingControl.class);
     }
     
     public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(GeoCodeCurrency geoCodeCurrency) {

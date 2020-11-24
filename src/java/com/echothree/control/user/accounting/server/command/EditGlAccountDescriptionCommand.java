@@ -78,13 +78,13 @@ public class EditGlAccountDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         EditGlAccountDescriptionResult result = AccountingResultFactory.getEditGlAccountDescriptionResult();
         String glAccountName = spec.getGlAccountName();
         GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
         
         if(glAccount != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

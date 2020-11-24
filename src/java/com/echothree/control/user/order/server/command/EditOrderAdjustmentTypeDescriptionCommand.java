@@ -89,18 +89,18 @@ public class EditOrderAdjustmentTypeDescriptionCommand
 
     @Override
     public OrderAdjustmentTypeDescription getEntity(EditOrderAdjustmentTypeDescriptionResult result) {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
+            var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
             String orderAdjustmentTypeName = spec.getOrderAdjustmentTypeName();
             OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -134,7 +134,7 @@ public class EditOrderAdjustmentTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderAdjustmentTypeDescriptionResult result, OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
-        var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
+        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
 
         result.setOrderAdjustmentTypeDescription(orderAdjustmentControl.getOrderAdjustmentTypeDescriptionTransfer(getUserVisit(), orderAdjustmentTypeDescription));
     }
@@ -146,7 +146,7 @@ public class EditOrderAdjustmentTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
-        var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
+        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
         OrderAdjustmentTypeDescriptionValue orderAdjustmentTypeDescriptionValue = orderAdjustmentControl.getOrderAdjustmentTypeDescriptionValue(orderAdjustmentTypeDescription);
         orderAdjustmentTypeDescriptionValue.setDescription(edit.getDescription());
 

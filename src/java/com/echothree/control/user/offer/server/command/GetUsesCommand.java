@@ -63,7 +63,7 @@ public class GetUsesCommand
     
     @Override
     protected Collection<Use> getEntities() {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         
         return useControl.getUses();
     }
@@ -71,7 +71,7 @@ public class GetUsesCommand
     @Override
     protected BaseResult getTransfers(Collection<Use> entities) {
         GetUsesResult result = OfferResultFactory.getGetUsesResult();
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         
         if(session.hasLimit(UseFactory.class)) {
             result.setUseCount(useControl.countUses());

@@ -249,7 +249,7 @@ public class PaymentProcessorTypeActionControl
 
     public PaymentProcessorTypeActionChoicesBean getPaymentProcessorTypeActionChoices(final PaymentProcessorType paymentProcessorType,
             final String defaultPaymentProcessorTypeActionChoice, final Language language, final boolean allowNullChoice) {
-        var paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
+        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var paymentProcessorTypeActions = getPaymentProcessorTypeActionsByPaymentProcessorType(paymentProcessorType);
         var size = paymentProcessorTypeActions.size();
         var labels = new ArrayList<String>(size);
@@ -333,7 +333,7 @@ public class PaymentProcessorTypeActionControl
     }
 
     public void deletePaymentProcessorTypeAction(final PaymentProcessorTypeAction paymentProcessorTypeAction, final BasePK deletedBy) {
-        var paymentProcessorActionControl = (PaymentProcessorActionControl)Session.getModelController(PaymentProcessorActionControl.class);
+        var paymentProcessorActionControl = Session.getModelController(PaymentProcessorActionControl.class);
 
         paymentProcessorActionControl.deletePaymentProcessorActionsByPaymentProcessorTypeAction(paymentProcessorTypeAction, deletedBy);
         

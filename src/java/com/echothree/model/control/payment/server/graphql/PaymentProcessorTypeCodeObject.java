@@ -99,8 +99,8 @@ public class PaymentProcessorTypeCodeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var paymentProcessorTypeCodeControl = (PaymentProcessorTypeCodeControl)Session.getModelController(PaymentProcessorTypeCodeControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return paymentProcessorTypeCodeControl.getBestPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

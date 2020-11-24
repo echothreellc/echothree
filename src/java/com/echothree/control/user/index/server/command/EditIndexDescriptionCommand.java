@@ -87,13 +87,13 @@ public class EditIndexDescriptionCommand
 
     @Override
     public IndexDescription getEntity(EditIndexDescriptionResult result) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         IndexDescription indexDescription = null;
         String indexName = spec.getIndexName();
         Index index = indexControl.getIndexByName(indexName);
 
         if(index != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditIndexDescriptionCommand
 
     @Override
     public void fillInResult(EditIndexDescriptionResult result, IndexDescription indexDescription) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
 
         result.setIndexDescription(indexControl.getIndexDescriptionTransfer(getUserVisit(), indexDescription));
     }
@@ -136,7 +136,7 @@ public class EditIndexDescriptionCommand
 
     @Override
     public void doUpdate(IndexDescription indexDescription) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         IndexDescriptionValue indexDescriptionValue = indexControl.getIndexDescriptionValue(indexDescription);
         indexDescriptionValue.setDescription(edit.getDescription());
 

@@ -49,7 +49,7 @@ public class GetForumRoleTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         GetForumRoleTypeChoicesResult result = ForumResultFactory.getGetForumRoleTypeChoicesResult();
         String defaultForumRoleTypeChoice = form.getDefaultForumRoleTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

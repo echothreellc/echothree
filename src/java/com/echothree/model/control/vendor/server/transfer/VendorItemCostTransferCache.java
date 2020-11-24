@@ -41,9 +41,9 @@ public class VendorItemCostTransferCache
     public VendorItemCostTransferCache(UserVisit userVisit, VendorControl vendorControl) {
         super(userVisit, vendorControl);
         
-        inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        uomControl = (UomControl)Session.getModelController(UomControl.class);
+        inventoryControl = Session.getModelController(InventoryControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
+        uomControl = Session.getModelController(UomControl.class);
     }
     
     public VendorItemCostTransfer getVendorItemCostTransfer(VendorItemCost vendorItemCost) {

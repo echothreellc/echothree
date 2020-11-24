@@ -68,7 +68,7 @@ public class SetLeaveStatusCommand
 
     @Override
     public Leave getEntity() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         String leaveName = form.getLeaveName();
         Leave leave = employeeControl.getLeaveByNameForUpdate(leaveName);
 
@@ -86,7 +86,7 @@ public class SetLeaveStatusCommand
 
     @Override
     public void doUpdate(Leave leave) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         String leaveStatusChoice = form.getLeaveStatusChoice();
 
         employeeControl.setLeaveStatus(this, leave, leaveStatusChoice, getPartyPK());

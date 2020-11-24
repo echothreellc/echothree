@@ -53,7 +53,7 @@ public class FilterKindLogic
     public FilterKind createFilterKind(final ExecutionErrorAccumulator eea, final String filterKindName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         var filterKind = filterControl.getFilterKindByName(filterKindName);
 
         if(filterKind == null) {
@@ -71,7 +71,7 @@ public class FilterKindLogic
 
     public FilterKind getFilterKindByName(final ExecutionErrorAccumulator eea, final String filterKindName,
             final EntityPermission entityPermission) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         var filterKind = filterControl.getFilterKindByName(filterKindName, entityPermission);
 
         if(filterKind == null) {
@@ -92,7 +92,7 @@ public class FilterKindLogic
     public FilterKind getFilterKindByUniversalSpec(final ExecutionErrorAccumulator eea,
             final FilterKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         FilterKind filterKind = null;
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = universalSpec.getFilterKindName();
         int parameterCount = (filterKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -140,7 +140,7 @@ public class FilterKindLogic
 
     public void deleteFilterKind(final ExecutionErrorAccumulator eea, final FilterKind filterKind,
             final BasePK deletedBy) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
 
         filterControl.deleteFilterKind(filterKind, deletedBy);
     }

@@ -51,7 +51,7 @@ public class GetPrinterGroupStatusChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         GetPrinterGroupStatusChoicesResult result = PrinterResultFactory.getGetPrinterGroupStatusChoicesResult();
         String printerGroupName = form.getPrinterGroupName();
         PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);

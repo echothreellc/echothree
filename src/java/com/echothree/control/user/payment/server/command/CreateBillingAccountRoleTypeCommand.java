@@ -57,7 +57,7 @@ public class CreateBillingAccountRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
+        var billingControl = Session.getModelController(BillingControl.class);
         String billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
         BillingAccountRoleType billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         

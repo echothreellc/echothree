@@ -1112,7 +1112,7 @@ public class AssociateControl
     
     public AssociateReferral createAssociateReferral(Associate associate, AssociatePartyContactMechanism associatePartyContactMechanism,
             EntityInstance targetEntityInstance, Long associateReferralTime, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ASSOCIATE_REFERRAL.name());
         String associateReferralName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 

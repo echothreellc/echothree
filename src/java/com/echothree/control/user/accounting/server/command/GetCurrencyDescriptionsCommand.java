@@ -64,7 +64,7 @@ public class GetCurrencyDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetCurrencyDescriptionsResult result = AccountingResultFactory.getGetCurrencyDescriptionsResult();
         String currencyIsoName = form.getCurrencyIsoName();
         Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);

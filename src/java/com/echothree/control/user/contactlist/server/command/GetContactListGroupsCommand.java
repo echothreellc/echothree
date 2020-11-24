@@ -60,7 +60,7 @@ public class GetContactListGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         GetContactListGroupsResult result = ContactListResultFactory.getGetContactListGroupsResult();
         
         result.setContactListGroups(contactListControl.getContactListGroupTransfers(getUserVisit()));

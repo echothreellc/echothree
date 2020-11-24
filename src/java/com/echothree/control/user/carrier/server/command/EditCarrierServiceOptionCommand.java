@@ -103,7 +103,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public CarrierServiceOption getEntity(EditCarrierServiceOptionResult result) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierServiceOption carrierServiceOption = null;
         String carrierName = spec.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
@@ -149,7 +149,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void fillInResult(EditCarrierServiceOptionResult result, CarrierServiceOption carrierServiceOption) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
 
         result.setCarrierServiceOption(carrierControl.getCarrierServiceOptionTransfer(getUserVisit(), carrierServiceOption));
     }
@@ -188,7 +188,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void canUpdate(CarrierServiceOption carrierServiceOption) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
 
         if(selectorKind != null) {
@@ -325,7 +325,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void doUpdate(CarrierServiceOption carrierServiceOption) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
         CarrierServiceOptionValue carrierServiceOptionValue = carrierControl.getCarrierServiceOptionValue(carrierServiceOption);
     

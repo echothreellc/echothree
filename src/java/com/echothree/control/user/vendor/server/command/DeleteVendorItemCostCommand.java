@@ -76,7 +76,7 @@ public class DeleteVendorItemCostCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
         
@@ -86,7 +86,7 @@ public class DeleteVendorItemCostCommand
             VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
             
             if(vendorItem != null) {
-                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                var inventoryControl = Session.getModelController(InventoryControl.class);
                 String inventoryConditionName = form.getInventoryConditionName();
                 InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
@@ -96,7 +96,7 @@ public class DeleteVendorItemCostCommand
                             inventoryCondition);
                     
                     if(inventoryConditionUse != null) {
-                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = Session.getModelController(UomControl.class);
                         UnitOfMeasureKind unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
                         String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);

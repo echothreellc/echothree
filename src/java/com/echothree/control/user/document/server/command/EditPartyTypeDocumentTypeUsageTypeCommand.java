@@ -88,13 +88,13 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
 
     @Override
     public PartyTypeDocumentTypeUsageType getEntity(EditPartyTypeDocumentTypeUsageTypeResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = null;
         String partyTypeName = spec.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
 
         if(partyType != null) {
-            var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+            var documentControl = Session.getModelController(DocumentControl.class);
             String documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
             DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
@@ -125,7 +125,7 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
 
     @Override
     public void fillInResult(EditPartyTypeDocumentTypeUsageTypeResult result, PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
 
         result.setPartyTypeDocumentTypeUsageType(documentControl.getPartyTypeDocumentTypeUsageTypeTransfer(getUserVisit(), partyTypeDocumentTypeUsageType));
     }
@@ -138,7 +138,7 @@ public class EditPartyTypeDocumentTypeUsageTypeCommand
 
     @Override
     public void doUpdate(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         PartyTypeDocumentTypeUsageTypeValue partyTypeDocumentTypeUsageTypeValue = documentControl.getPartyTypeDocumentTypeUsageTypeValueForUpdate(partyTypeDocumentTypeUsageType);
 
         partyTypeDocumentTypeUsageTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

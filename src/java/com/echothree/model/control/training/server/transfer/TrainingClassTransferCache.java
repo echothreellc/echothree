@@ -38,8 +38,8 @@ import java.util.Set;
 public class TrainingClassTransferCache
         extends BaseTrainingTransferCache<TrainingClass, TrainingClassTransfer> {
     
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     boolean includeTrainingClassSections;
     boolean includePartyTrainingClasses;
     

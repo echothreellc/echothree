@@ -49,7 +49,7 @@ public class GetMoodChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetMoodChoicesResult result = PartyResultFactory.getGetMoodChoicesResult();
         String defaultMoodChoice = form.getDefaultMoodChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

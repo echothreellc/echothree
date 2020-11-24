@@ -69,7 +69,7 @@ public class CreateSequenceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         String sequenceTypeName = form.getSequenceTypeName();
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
         
@@ -78,7 +78,7 @@ public class CreateSequenceDescriptionCommand
             Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
             
             if(sequence != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

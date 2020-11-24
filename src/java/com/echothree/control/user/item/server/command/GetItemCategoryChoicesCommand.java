@@ -62,7 +62,7 @@ public class GetItemCategoryChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemCategoryChoicesResult result = ItemResultFactory.getGetItemCategoryChoicesResult();
         String defaultItemCategoryChoice = form.getDefaultItemCategoryChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

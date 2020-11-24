@@ -50,7 +50,7 @@ public class CreateGlAccountTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String glAccountTypeName = form.getGlAccountTypeName();
         GlAccountType glAccountType = accountingControl.getGlAccountTypeByName(glAccountTypeName);
         

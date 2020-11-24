@@ -54,7 +54,7 @@ public class OfferUseLogic
         OfferUse offerUse = null;
 
         if(!eea.hasExecutionErrors()) {
-            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
 
             offerUse = offerUseControl.getOfferUse(offer, use, entityPermission);
 
@@ -76,11 +76,11 @@ public class OfferUseLogic
     }
 
     public void deleteOfferUse(final ExecutionErrorAccumulator eea, final OfferUse offerUse, final BasePK deletedBy) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
-        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
+        var salesOrderControl = Session.getModelController(SalesOrderControl.class);
+        var userControl = Session.getModelController(UserControl.class);
+        var wishlistControl = Session.getModelController(WishlistControl.class);
 
         if(contentControl.countContentCollectionsByDefaultOfferUse(offerUse) == 0
                 && contentControl.countContentCatalogsByDefaultOfferUse(offerUse) == 0
@@ -92,7 +92,7 @@ public class OfferUseLogic
                 && userControl.countUserVisitsByOfferUse(offerUse) == 0
                 && wishlistControl.countWishlistsByOfferUse(offerUse) == 0
                 && wishlistControl.countWishlistLinesByOfferUse(offerUse) == 0) {
-            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
 
             offerUseControl.deleteOfferUse(offerUse, deletedBy);
         } else {

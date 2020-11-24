@@ -34,7 +34,7 @@ public class QueuedLetterTransferCache
     public QueuedLetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
         super(userVisit, letterControl);
         
-        chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        chainControl = Session.getModelController(ChainControl.class);
     }
     
     public QueuedLetterTransfer getQueuedLetterTransfer(QueuedLetter queuedLetter) {

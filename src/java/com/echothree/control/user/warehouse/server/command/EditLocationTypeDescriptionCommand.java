@@ -67,7 +67,7 @@ public class EditLocationTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         EditLocationTypeDescriptionResult result = WarehouseResultFactory.getEditLocationTypeDescriptionResult();
         String warehouseName = spec.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -78,7 +78,7 @@ public class EditLocationTypeDescriptionCommand
             LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
             
             if(locationType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

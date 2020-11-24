@@ -87,13 +87,13 @@ public class EditShippingMethodDescriptionCommand
 
     @Override
     public ShippingMethodDescription getEntity(EditShippingMethodDescriptionResult result) {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         ShippingMethodDescription shippingMethodDescription = null;
         String shippingMethodName = spec.getShippingMethodName();
         ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
         if(shippingMethod != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditShippingMethodDescriptionCommand
 
     @Override
     public void fillInResult(EditShippingMethodDescriptionResult result, ShippingMethodDescription shippingMethodDescription) {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
 
         result.setShippingMethodDescription(shippingControl.getShippingMethodDescriptionTransfer(getUserVisit(), shippingMethodDescription));
     }
@@ -136,7 +136,7 @@ public class EditShippingMethodDescriptionCommand
 
     @Override
     public void doUpdate(ShippingMethodDescription shippingMethodDescription) {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         ShippingMethodDescriptionValue shippingMethodDescriptionValue = shippingControl.getShippingMethodDescriptionValue(shippingMethodDescription);
         shippingMethodDescriptionValue.setDescription(edit.getDescription());
 

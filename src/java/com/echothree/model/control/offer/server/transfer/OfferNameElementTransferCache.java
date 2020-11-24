@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class OfferNameElementTransferCache
         extends BaseOfferTransferCache<OfferNameElement, OfferNameElementTransfer> {
 
-    OfferNameElementControl offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+    OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementTransferCache */
     public OfferNameElementTransferCache(UserVisit userVisit) {

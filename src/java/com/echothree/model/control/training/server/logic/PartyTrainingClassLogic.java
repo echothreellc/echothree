@@ -60,7 +60,7 @@ public class PartyTrainingClassLogic
     }
     
     public PartyTrainingClass getPartyTrainingClassByName(final ExecutionErrorAccumulator eea, final String partyTrainingClassName) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
         if(partyTrainingClass == null) {
@@ -72,7 +72,7 @@ public class PartyTrainingClassLogic
     
     private void insertPartyTrainingClassIntoWorkflow(final EntityInstance entityInstance, final Long completedTime, final Long validUntilTime,
             final BasePK partyPK) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowEntranceName = completedTime == null ? PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_ASSIGNED : PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_PASSED;
         
         workflowControl.addEntityToWorkflowUsingNames(null, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowEntranceName,
@@ -87,72 +87,42 @@ public class PartyTrainingClassLogic
         private Long validUntilTime;
         private PreparedWorkEffort preparedWorkEffort;
 
-        /**
-         * @return the party
-         */
         public Party getParty() {
             return party;
         }
 
-        /**
-         * @param party the party to set
-         */
         public void setParty(Party party) {
             this.party = party;
         }
 
-        /**
-         * @return the trainingClass
-         */
         public TrainingClass getTrainingClass() {
             return trainingClass;
         }
 
-        /**
-         * @param trainingClass the trainingClass to set
-         */
         public void setTrainingClass(TrainingClass trainingClass) {
             this.trainingClass = trainingClass;
         }
 
-        /**
-         * @return the completedTime
-         */
         public Long getCompletedTime() {
             return completedTime;
         }
 
-        /**
-         * @param completedTime the completedTime to set
-         */
         public void setCompletedTime(Long completedTime) {
             this.completedTime = completedTime;
         }
 
-        /**
-         * @return the validUntilTime
-         */
         public Long getValidUntilTime() {
             return validUntilTime;
         }
 
-        /**
-         * @param validUntilTime the validUntilTime to set
-         */
         public void setValidUntilTime(Long validUntilTime) {
             this.validUntilTime = validUntilTime;
         }
 
-        /**
-         * @return the preparedWorkEffort
-         */
         public PreparedWorkEffort getPreparedWorkEffort() {
             return preparedWorkEffort;
         }
 
-        /**
-         * @param preparedWorkEffort the preparedWorkEffort to set
-         */
         public void setPreparedWorkEffort(PreparedWorkEffort preparedWorkEffort) {
             this.preparedWorkEffort = preparedWorkEffort;
         }
@@ -210,8 +180,8 @@ public class PartyTrainingClassLogic
 
     public PartyTrainingClass createPartyTrainingClass(final Session session, final PreparedPartyTrainingClass preparedPartyTrainingClass,
             final BasePK createdBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         Party party = preparedPartyTrainingClass.getParty();
         TrainingClass trainingClass = preparedPartyTrainingClass.getTrainingClass();
         Long completedTime = preparedPartyTrainingClass.getCompletedTime();
@@ -259,9 +229,9 @@ public class PartyTrainingClassLogic
         boolean invalidPartyTrainingClass = false;
 
         if(modifiedBy.equals(partyTrainingClassDetail.getPartyPK())) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                     entityInstance);
             String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
@@ -283,16 +253,16 @@ public class PartyTrainingClassLogic
     }
 
     public void updatePartyTrainingClassFromValue(final PartyTrainingClassDetailValue partyTrainingClassDetailValue, final BasePK updatedBy) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         
-        // TODO: adjust Status if necesssary
+        // TODO: adjust Status if necessary
         // TODO: delete PartyTrainingClassStatus if necessary
         
         trainingControl.updatePartyTrainingClassFromValue(partyTrainingClassDetailValue, updatedBy);
     }
     
     public void deletePartyTrainingClass(PartyTrainingClass partyTrainingClass, final BasePK deleteBy) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         
         trainingControl.deletePartyTrainingClass(partyTrainingClass, deleteBy);
     }

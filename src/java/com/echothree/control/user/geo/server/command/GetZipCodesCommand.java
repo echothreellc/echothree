@@ -68,7 +68,7 @@ public class GetZipCodesCommand
 
     @Override
     protected Collection<GeoCode> getEntities() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = form.getCountryName();
         Collection<GeoCode> postalCodeGeoCodes = null;
 
@@ -88,7 +88,7 @@ public class GetZipCodesCommand
         var result = GeoResultFactory.getGetZipCodesResult();
 
         if(entities != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
             var userVisit = getUserVisit();
 
             result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));

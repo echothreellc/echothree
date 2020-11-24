@@ -78,18 +78,18 @@ public class EditItemUnitLimitCommand
 
     @Override
     public ItemUnitLimit getEntity(EditItemUnitLimitResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitLimit itemUnitLimit = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
             String inventoryConditionName = spec.getInventoryConditionName();
             InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 ItemDetail itemDetail = item.getLastDetail();
                 String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                 UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
@@ -124,7 +124,7 @@ public class EditItemUnitLimitCommand
 
     @Override
     public void fillInResult(EditItemUnitLimitResult result, ItemUnitLimit itemUnitLimit) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemUnitLimit(itemControl.getItemUnitLimitTransfer(getUserVisit(), itemUnitLimit));
     }
@@ -158,7 +158,7 @@ public class EditItemUnitLimitCommand
 
     @Override
     public void doUpdate(ItemUnitLimit itemUnitLimit) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemUnitLimitValue itemUnitLimitValue = itemControl.getItemUnitLimitValue(itemUnitLimit);
 
         itemUnitLimitValue.setMinimumQuantity(minimumQuantity);

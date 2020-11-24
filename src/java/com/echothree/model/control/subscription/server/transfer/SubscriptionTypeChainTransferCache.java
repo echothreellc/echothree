@@ -31,8 +31,8 @@ import com.echothree.util.server.persistence.Session;
 public class SubscriptionTypeChainTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionTypeChain, SubscriptionTypeChainTransfer> {
     
-    ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of SubscriptionTypeChainTransferCache */

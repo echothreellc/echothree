@@ -52,7 +52,7 @@ public class UseNameElementLogic
     public UseNameElement createUseNameElement(final ExecutionErrorAccumulator eea, final String useNameElementName,
             final Integer offset, final Integer length, final String validationPattern, final Language language, final String description,
             final BasePK createdBy) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
 
         if(useNameElement == null) {
@@ -72,7 +72,7 @@ public class UseNameElementLogic
 
     public UseNameElement getUseNameElementByName(final ExecutionErrorAccumulator eea, final String useNameElementName,
             final EntityPermission entityPermission) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName, entityPermission);
 
         if(useNameElement == null) {
@@ -92,7 +92,7 @@ public class UseNameElementLogic
 
     public UseNameElement getUseNameElementByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UseNameElementUniversalSpec universalSpec, final EntityPermission entityPermission) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElementName = universalSpec.getUseNameElementName();
         int parameterCount = (useNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         UseNameElement useNameElement = null;
@@ -127,7 +127,7 @@ public class UseNameElementLogic
 
     public void deleteUseNameElement(final ExecutionErrorAccumulator eea, final UseNameElement useNameElement,
             final BasePK deletedBy) {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
 
         useNameElementControl.deleteUseNameElement(useNameElement, deletedBy);
     }

@@ -95,7 +95,7 @@ public class EditChainActionDescriptionCommand
 
     @Override
     public ChainActionDescription getEntity(EditChainActionDescriptionResult result) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainActionDescription chainActionDescription = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -117,7 +117,7 @@ public class EditChainActionDescriptionCommand
                         ChainAction chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
                         if(chainAction != null) {
-                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = Session.getModelController(PartyControl.class);
                             String languageIsoName = spec.getLanguageIsoName();
                             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -162,7 +162,7 @@ public class EditChainActionDescriptionCommand
 
     @Override
     public void fillInResult(EditChainActionDescriptionResult result, ChainActionDescription chainActionDescription) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
 
         result.setChainActionDescription(chainControl.getChainActionDescriptionTransfer(getUserVisit(), chainActionDescription));
     }
@@ -174,7 +174,7 @@ public class EditChainActionDescriptionCommand
 
     @Override
     public void doUpdate(ChainActionDescription chainActionDescription) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainActionDescriptionValue chainActionDescriptionValue = chainControl.getChainActionDescriptionValue(chainActionDescription);
 
         chainActionDescriptionValue.setDescription(edit.getDescription());

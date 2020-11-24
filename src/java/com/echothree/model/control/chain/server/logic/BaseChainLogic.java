@@ -54,7 +54,7 @@ public class BaseChainLogic
     }
     
     public ChainKind getChainKindByName(final ExecutionErrorAccumulator eea, final String chainKindName) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind == null) {
@@ -65,7 +65,7 @@ public class BaseChainLogic
     }
 
     public ChainType getChainTypeByName(final ExecutionErrorAccumulator eea, final ChainKind chainKind, final String chainTypeName) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
         if(chainType == null) {
@@ -88,7 +88,7 @@ public class BaseChainLogic
     }
     
     public ChainEntityRoleType getChainEntityRoleTypeByName(final ExecutionErrorAccumulator eea, final ChainType chainType, final String chainEntityRoleTypeName) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainEntityRoleType chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
         if(chainEntityRoleType == null) {
@@ -100,19 +100,19 @@ public class BaseChainLogic
     }
     
     protected long countChainInstanceEntityRolesByChainEntityRoleType(final ChainEntityRoleType chainEntityRoleType) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         
         return chainControl.countChainInstanceEntityRolesByChainEntityRoleType(chainEntityRoleType);
     }
 
     protected long countChainInstanceEntityRolesByEntityInstance(final EntityInstance entityInstance) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         
         return chainControl.countChainInstanceEntityRolesByEntityInstance(entityInstance);
     }
 
     protected long countChainInstanceEntityRoles(final ChainEntityRoleType chainEntityRoleType, final EntityInstance entityInstance) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         
         return chainControl.countChainInstanceEntityRoles(chainEntityRoleType, entityInstance);
     }
@@ -125,9 +125,9 @@ public class BaseChainLogic
     }
     
     protected Chain getChain(final ExecutionErrorAccumulator eea, final ChainType chainType, final Party party) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         Customer customer = customerControl.getCustomer(party);
         OfferUse initialOfferUse = customer == null ? null : customer.getInitialOfferUse();
         OfferChainType offerChainType = initialOfferUse == null ? null : offerControl.getOfferChainType(initialOfferUse.getLastDetail().getOffer(), chainType);
@@ -136,7 +136,7 @@ public class BaseChainLogic
     }
 
     protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final Chain chain, final BasePK createdBy) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainActionSet defaultChainActionSet = chainControl.getDefaultChainActionSet(chain);
         ChainInstance chainInstance = null;
         
@@ -181,7 +181,7 @@ public class BaseChainLogic
     
     protected void deleteChainInstancedByChainEntityRoleTypeAndEntityInstance(final ChainEntityRoleType chainEntityRoleType, final EntityInstance entityInstance,
             final BasePK deletedBy) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         List<ChainInstanceEntityRole> chainInstanceEntityRoles = chainControl.getChainInstanceEntityRoles(chainEntityRoleType, entityInstance);
         Set<ChainInstance> chainInstances = new HashSet<>();
         

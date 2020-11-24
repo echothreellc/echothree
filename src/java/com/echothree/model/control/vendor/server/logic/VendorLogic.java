@@ -95,7 +95,7 @@ public class VendorLogic
             final Boolean allowCombiningShipments, final Boolean requireReference, final Boolean allowReferenceDuplicates,
             final String referenceValidationPattern, final Selector vendorItemSelector, final Filter vendorItemCostFilter,
             final BasePK createdBy) {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
 
         if(vendorName == null) {
             vendorName = getVendorName(eea);
@@ -113,7 +113,7 @@ public class VendorLogic
         Vendor vendor = null;
 
         if(parameterCount == 1) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
 
             if(vendorName != null) {
                 vendor = vendorControl.getVendorByName(vendorName);
@@ -122,7 +122,7 @@ public class VendorLogic
                     handleExecutionError(UnknownVendorNameException.class, eea, ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
@@ -145,8 +145,8 @@ public class VendorLogic
     }
 
     public void setVendorStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, VendorStatusConstants.Workflow_VENDOR_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);

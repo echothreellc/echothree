@@ -67,12 +67,12 @@ public class CreateCustomerTypeContactListCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = Session.getModelController(ContactListControl.class);
             String contactListName = form.getContactListName();
             ContactList contactList = contactListControl.getContactListByName(contactListName);
             

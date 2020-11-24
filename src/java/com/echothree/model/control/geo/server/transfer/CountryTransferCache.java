@@ -33,7 +33,7 @@ import java.util.Set;
 public class CountryTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountryTransfer> {
     
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */

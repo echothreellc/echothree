@@ -400,9 +400,9 @@ public class CustomerControl
     }
     
     public void deleteCustomerType(CustomerType customerType, BasePK deletedBy) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         
         contactListControl.deleteCustomerTypeContactListGroupsByCustomerType(customerType, deletedBy);
         contactListControl.deleteCustomerTypeContactListsByCustomerType(customerType, deletedBy);
@@ -1422,7 +1422,7 @@ public class CustomerControl
     // --------------------------------------------------------------------------------
 
     public List<CustomerResultTransfer> getCustomerResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var customerResultTransfers = new ArrayList<CustomerResultTransfer>();
         var includeCustomer = false;
 
@@ -1432,7 +1432,7 @@ public class CustomerControl
         }
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
                 var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -1448,7 +1448,7 @@ public class CustomerControl
     }
 
     public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var customerResultObjects = new ArrayList<CustomerResultObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

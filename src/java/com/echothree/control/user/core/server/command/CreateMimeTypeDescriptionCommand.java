@@ -57,7 +57,7 @@ public class CreateMimeTypeDescriptionCommand
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

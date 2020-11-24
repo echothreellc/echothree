@@ -40,7 +40,7 @@ public class SequenceChecksumTypeLogic
     }
 
     public SequenceChecksumType getSequenceChecksumTypeByName(final ExecutionErrorAccumulator eea, final String sequenceChecksumTypeName) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeByName(sequenceChecksumTypeName);
 
         if(sequenceChecksumType == null) {

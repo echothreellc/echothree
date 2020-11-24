@@ -92,8 +92,8 @@ public class ContentSectionObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentSectionDescription(contentSection, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -102,7 +102,7 @@ public class ContentSectionObject
     @GraphQLField
     @GraphQLDescription("content pages count")
     public Long getContentPagesCount(final DataFetchingEnvironment env) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         return ContentSecurityUtils.getInstance().getHasContentPagesAccess(env) ? contentControl.countContentPagesByContentSection(contentSection) : null;
     }
@@ -110,7 +110,7 @@ public class ContentSectionObject
     @GraphQLField
     @GraphQLDescription("content pages")
     public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         List<ContentPage> entities = ContentSecurityUtils.getInstance().getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
         List<ContentPageObject> contentPages = entities == null ? null : new ArrayList<>(entities.size());
         

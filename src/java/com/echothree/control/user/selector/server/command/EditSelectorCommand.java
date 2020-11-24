@@ -72,7 +72,7 @@ public class EditSelectorCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         EditSelectorResult result = SelectorResultFactory.getEditSelectorResult();
         String selectorKindName = spec.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);

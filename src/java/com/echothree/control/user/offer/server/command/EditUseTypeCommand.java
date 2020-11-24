@@ -103,14 +103,14 @@ public class EditUseTypeCommand
     
     @Override
     public void fillInResult(EditUseTypeResult result, UseType useType) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         
         result.setUseType(useTypeControl.getUseTypeTransfer(getUserVisit(), useType));
     }
     
     @Override
     public void doLock(UseTypeEdit edit, UseType useType) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescription(useType, getPreferredLanguage());
         UseTypeDetail useTypeDetail = useType.getLastDetail();
         
@@ -125,7 +125,7 @@ public class EditUseTypeCommand
         
     @Override
     public void canUpdate(UseType useType) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         String useTypeName = edit.getUseTypeName();
         UseType duplicateUseType = useTypeControl.getUseTypeByName(useTypeName);
 
@@ -136,7 +136,7 @@ public class EditUseTypeCommand
     
     @Override
     public void doUpdate(UseType useType) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var partyPK = getPartyPK();
         UseTypeDetailValue useTypeDetailValue = useTypeControl.getUseTypeDetailValueForUpdate(useType);
         UseTypeDescription useTypeDescription = useTypeControl.getUseTypeDescriptionForUpdate(useType, getPreferredLanguage());

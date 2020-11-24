@@ -31,7 +31,7 @@ import com.echothree.util.server.persistence.Session;
 public class SubscriptionTypeTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionType, SubscriptionTypeTransfer> {
     
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of SubscriptionTypeTransferCache */
     public SubscriptionTypeTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {

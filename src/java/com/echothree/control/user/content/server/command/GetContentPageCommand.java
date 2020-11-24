@@ -67,7 +67,7 @@ public class GetContentPageCommand
         ContentPage contentPage = null;
 
         if(parameterCount == 1) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -126,7 +126,7 @@ public class GetContentPageCommand
         GetContentPageResult result = ContentResultFactory.getGetContentPageResult();
 
         if (contentPage != null) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
 
             result.setContentPage(contentControl.getContentPageTransfer(getUserVisit(), contentPage));
         }

@@ -67,7 +67,7 @@ public class GetContentPageLayoutCommand
     
     @Override
     protected BaseResult getTransfer(ContentPageLayout contentPageLayout) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         GetContentPageLayoutResult result = ContentResultFactory.getGetContentPageLayoutResult();
 
         if(contentPageLayout != null) {

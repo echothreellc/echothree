@@ -29,7 +29,7 @@ import com.echothree.util.server.string.PercentUtils;
 public class ItemCountryOfOriginTransferCache
         extends BaseItemTransferCache<ItemCountryOfOrigin, ItemCountryOfOriginTransfer> {
     
-    GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
     public ItemCountryOfOriginTransferCache(UserVisit userVisit, ItemControl itemControl) {

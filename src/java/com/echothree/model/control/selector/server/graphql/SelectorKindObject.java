@@ -77,8 +77,8 @@ public class SelectorKindObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return selectorControl.getBestSelectorKindDescription(selectorKind, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

@@ -51,7 +51,7 @@ public class GetTransactionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetTransactionResult result = AccountingResultFactory.getGetTransactionResult();
         String transactionName = form.getTransactionName();
         Transaction transaction = accountingControl.getTransactionByName(transactionName);

@@ -59,7 +59,7 @@ public class CreateWorkflowStepTypeCommand
     @Override
     protected BaseResult execute() {
         String workflowStepTypeName = form.getWorkflowStepTypeName();
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         WorkflowStepType workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
         
         if(workflowStepType == null) {

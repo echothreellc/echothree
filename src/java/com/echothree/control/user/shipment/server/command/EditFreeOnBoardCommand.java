@@ -104,14 +104,14 @@ public class EditFreeOnBoardCommand
     
     @Override
     public void fillInResult(EditFreeOnBoardResult result, FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         
         result.setFreeOnBoard(freeOnBoardControl.getFreeOnBoardTransfer(getUserVisit(), freeOnBoard));
     }
     
     @Override
     public void doLock(FreeOnBoardEdit edit, FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, getPreferredLanguage());
         FreeOnBoardDetail freeOnBoardDetail = freeOnBoard.getLastDetail();
         
@@ -126,7 +126,7 @@ public class EditFreeOnBoardCommand
         
     @Override
     public void canUpdate(FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         String freeOnBoardName = edit.getFreeOnBoardName();
         FreeOnBoard duplicateFreeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
 
@@ -137,7 +137,7 @@ public class EditFreeOnBoardCommand
     
     @Override
     public void doUpdate(FreeOnBoard freeOnBoard) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var partyPK = getPartyPK();
         FreeOnBoardDetailValue freeOnBoardDetailValue = freeOnBoardControl.getFreeOnBoardDetailValueForUpdate(freeOnBoard);
         FreeOnBoardDescription freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescriptionForUpdate(freeOnBoard, getPreferredLanguage());

@@ -72,7 +72,7 @@ public class GetChainEntityRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         GetChainEntityRoleTypeDescriptionResult result = ChainResultFactory.getGetChainEntityRoleTypeDescriptionResult();
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -86,7 +86,7 @@ public class GetChainEntityRoleTypeDescriptionCommand
                 ChainEntityRoleType chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
                 if(chainEntityRoleType != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     String languageIsoName = form.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

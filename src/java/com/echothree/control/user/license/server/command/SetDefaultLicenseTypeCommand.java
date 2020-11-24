@@ -62,7 +62,7 @@ public class SetDefaultLicenseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = Session.getModelController(LicenseControl.class);
         String licenseTypeName = form.getLicenseTypeName();
         LicenseTypeDetailValue licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueByNameForUpdate(licenseTypeName);
         

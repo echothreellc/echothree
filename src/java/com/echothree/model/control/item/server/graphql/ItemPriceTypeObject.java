@@ -66,8 +66,8 @@ public class ItemPriceTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return itemControl.getBestItemPriceTypeDescription(itemPriceType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

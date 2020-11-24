@@ -34,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 public class ClubTransferCache
         extends BaseClubTransferCache<Club, ClubTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
-    SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     
     /** Creates a new instance of ClubTransferCache */
     public ClubTransferCache(UserVisit userVisit, ClubControl clubControl) {

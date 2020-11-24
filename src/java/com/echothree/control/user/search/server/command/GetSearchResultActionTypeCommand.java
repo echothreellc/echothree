@@ -78,7 +78,7 @@ public class GetSearchResultActionTypeCommand
         int parameterCount = (searchResultActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var searchControl = Session.getModelController(SearchControl.class);
             SearchResultActionType searchResultActionType = null;
 
             if(searchResultActionTypeName == null) {

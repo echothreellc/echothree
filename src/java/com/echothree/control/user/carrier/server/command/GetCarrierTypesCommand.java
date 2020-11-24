@@ -61,7 +61,7 @@ public class GetCarrierTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         GetCarrierTypesResult result = CarrierResultFactory.getGetCarrierTypesResult();
         UserVisit userVisit = getUserVisit();
 

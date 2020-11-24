@@ -58,7 +58,7 @@ public class CreatePrinterCommand
    @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         String printerName = form.getPrinterName();
         Printer printer = printerControl.getPrinterByName(printerName);
         
@@ -67,7 +67,7 @@ public class CreatePrinterCommand
             PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
             
             if(printerGroup != null) {
-                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var workflowControl = Session.getModelController(WorkflowControl.class);
                 Integer priority = Integer.valueOf(form.getPriority());
                 var description = form.getDescription();
                 PartyPK createdBy = getPartyPK();

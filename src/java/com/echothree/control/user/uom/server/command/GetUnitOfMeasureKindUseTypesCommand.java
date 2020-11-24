@@ -48,7 +48,7 @@ public class GetUnitOfMeasureKindUseTypesCommand
     
     @Override
     protected Collection<UnitOfMeasureKindUseType> getEntities() {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         
         return uomControl.getUnitOfMeasureKindUseTypes();
     }
@@ -56,7 +56,7 @@ public class GetUnitOfMeasureKindUseTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<UnitOfMeasureKindUseType> entities) {
         GetUnitOfMeasureKindUseTypesResult result = UomResultFactory.getGetUnitOfMeasureKindUseTypesResult();
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         
         result.setUnitOfMeasureKindUseTypes(uomControl.getUnitOfMeasureKindUseTypeTransfers(getUserVisit(), entities));
         

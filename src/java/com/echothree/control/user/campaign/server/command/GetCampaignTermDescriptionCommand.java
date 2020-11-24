@@ -67,13 +67,13 @@ public class GetCampaignTermDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         GetCampaignTermDescriptionResult result = CampaignResultFactory.getGetCampaignTermDescriptionResult();
         String campaignTermName = form.getCampaignTermName();
         CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
 
         if(campaignTerm != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

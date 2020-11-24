@@ -77,7 +77,7 @@ public class GetWorkflowEntityTypeCommand
         var result = WorkflowResultFactory.getGetWorkflowEntityTypeResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowEntityType(workflowControl.getWorkflowEntityTypeTransfer(getUserVisit(), entity));
         }

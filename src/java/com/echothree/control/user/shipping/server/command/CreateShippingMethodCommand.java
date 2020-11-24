@@ -72,7 +72,7 @@ public class CreateShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         String shippingMethodName = form.getShippingMethodName();
         ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
         
@@ -81,7 +81,7 @@ public class CreateShippingMethodCommand
             Selector geoCodeSelector = null;
 
             if(geoCodeSelectorName != null) {
-                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                var selectorControl = Session.getModelController(SelectorControl.class);
                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
 
                 if(selectorKind != null) {
@@ -103,7 +103,7 @@ public class CreateShippingMethodCommand
                 Selector itemSelector = null;
 
                 if(itemSelectorName != null) {
-                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                    var selectorControl = Session.getModelController(SelectorControl.class);
                     SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
 
                     if(selectorKind != null) {

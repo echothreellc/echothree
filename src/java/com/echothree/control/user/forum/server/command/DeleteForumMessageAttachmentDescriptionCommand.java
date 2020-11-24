@@ -54,7 +54,7 @@ public class DeleteForumMessageAttachmentDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumMessageName = form.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
@@ -63,7 +63,7 @@ public class DeleteForumMessageAttachmentDescriptionCommand
             ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
             if(forumMessageAttachment != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

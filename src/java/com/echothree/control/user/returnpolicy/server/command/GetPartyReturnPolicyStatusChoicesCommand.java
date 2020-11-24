@@ -72,13 +72,13 @@ public class GetPartyReturnPolicyStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyReturnPolicyStatusChoicesResult result = ReturnPolicyResultFactory.getGetPartyReturnPolicyStatusChoicesResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             String returnKindName = form.getReturnKindName();
             ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
