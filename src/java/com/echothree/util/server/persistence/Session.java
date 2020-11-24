@@ -146,7 +146,7 @@ public class Session {
         return ThreadSession.currentSession().getSessionModelController(modelController);
     }
     
-    public <T extends BaseModelControl> T getSessionModelController(Class<? extends BaseModelControl> modelController) {
+    public <T extends BaseModelControl> T getSessionModelController(Class<T> modelController) {
         var result = modelControllers.get(modelController);
         
         if(result == null) {
