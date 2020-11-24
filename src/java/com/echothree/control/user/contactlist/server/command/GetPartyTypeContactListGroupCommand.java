@@ -68,13 +68,13 @@ public class GetPartyTypeContactListGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyTypeContactListGroupResult result = ContactListResultFactory.getGetPartyTypeContactListGroupResult();
         String partyTypeName = form.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = Session.getModelController(ContactListControl.class);
             String contactListGroupName = form.getContactListGroupName();
             ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
             

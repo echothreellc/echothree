@@ -31,7 +31,7 @@ import java.util.Set;
 public class IndexTypeTransferCache
         extends BaseIndexTransferCache<IndexType, IndexTypeTransfer> {
 
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of IndexTypeTransferCache */
     public IndexTypeTransferCache(UserVisit userVisit, IndexControl indexControl) {

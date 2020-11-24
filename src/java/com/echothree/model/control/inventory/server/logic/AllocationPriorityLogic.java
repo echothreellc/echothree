@@ -41,7 +41,7 @@ public class AllocationPriorityLogic
     }
 
     public AllocationPriority getDefaultAllocationPriority(final ExecutionErrorAccumulator eea) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         AllocationPriority allocationPriority = inventoryControl.getDefaultAllocationPriority();
 
         if(allocationPriority == null) {
@@ -52,7 +52,7 @@ public class AllocationPriorityLogic
     }
     
     public AllocationPriority getAllocationPriorityByName(final ExecutionErrorAccumulator eea, final String allocationPriorityName) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority == null) {
@@ -63,7 +63,7 @@ public class AllocationPriorityLogic
     }
     
     public AllocationPriority getAllocationPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String allocationPriorityName) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByNameForUpdate(allocationPriorityName);
 
         if(allocationPriority == null) {

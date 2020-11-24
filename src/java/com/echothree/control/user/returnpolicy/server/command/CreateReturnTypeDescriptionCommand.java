@@ -69,7 +69,7 @@ public class CreateReturnTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         String returnKindName = form.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
@@ -78,7 +78,7 @@ public class CreateReturnTypeDescriptionCommand
             ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

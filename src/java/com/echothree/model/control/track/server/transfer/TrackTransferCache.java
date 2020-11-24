@@ -33,8 +33,8 @@ import java.util.Set;
 public class TrackTransferCache
         extends BaseTrackTransferCache<Track, TrackTransfer> {
 
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of TrackTransferCache */
     public TrackTransferCache(UserVisit userVisit, TrackControl trackControl) {

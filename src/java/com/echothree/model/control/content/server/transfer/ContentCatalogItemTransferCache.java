@@ -43,10 +43,10 @@ import java.util.Set;
 public class ContentCatalogItemTransferCache
         extends BaseContentTransferCache<ContentCatalogItem, ContentCatalogItemTransfer> {
 
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     AmountUtils amountUtils = AmountUtils.getInstance();
     
     TransferProperties transferProperties;

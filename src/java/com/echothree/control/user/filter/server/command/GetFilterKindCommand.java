@@ -80,7 +80,7 @@ public class GetFilterKindCommand
 
     @Override
     protected BaseResult getTransfer(FilterKind filterKind) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         GetFilterKindResult result = FilterResultFactory.getGetFilterKindResult();
 
         if(filterKind != null) {

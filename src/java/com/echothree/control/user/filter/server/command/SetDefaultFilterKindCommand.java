@@ -61,7 +61,7 @@ public class SetDefaultFilterKindCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         String filterKindName = form.getFilterKindName();
         FilterKindDetailValue filterKindDetailValue = filterControl.getFilterKindDetailValueByNameForUpdate(filterKindName);
         

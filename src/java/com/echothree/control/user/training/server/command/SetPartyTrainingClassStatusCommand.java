@@ -68,7 +68,7 @@ public class SetPartyTrainingClassStatusCommand
 
     @Override
     public PartyTrainingClass getEntity() {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         String partyTrainingClassName = form.getPartyTrainingClassName();
         PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByNameForUpdate(partyTrainingClassName);
 
@@ -86,7 +86,7 @@ public class SetPartyTrainingClassStatusCommand
 
     @Override
     public void doUpdate(PartyTrainingClass partyTrainingClass) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         String partyTrainingClassStatusChoice = form.getPartyTrainingClassStatusChoice();
 
         trainingControl.setPartyTrainingClassStatus(this, partyTrainingClass, partyTrainingClassStatusChoice, getPartyPK());

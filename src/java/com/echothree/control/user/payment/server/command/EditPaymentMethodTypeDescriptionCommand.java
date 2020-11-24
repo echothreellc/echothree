@@ -78,13 +78,13 @@ public class EditPaymentMethodTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         EditPaymentMethodTypeDescriptionResult result = PaymentResultFactory.getEditPaymentMethodTypeDescriptionResult();
         String paymentMethodTypeName = spec.getPaymentMethodTypeName();
         PaymentMethodType paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
         
         if(paymentMethodType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

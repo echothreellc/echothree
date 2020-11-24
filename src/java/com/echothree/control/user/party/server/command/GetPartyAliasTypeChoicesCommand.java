@@ -65,7 +65,7 @@ public class GetPartyAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyAliasTypeChoicesResult result = PartyResultFactory.getGetPartyAliasTypeChoicesResult();
         String partyTypeName = form.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);

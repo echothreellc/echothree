@@ -1001,7 +1001,7 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
         String printerGroupJobName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
@@ -1035,7 +1035,7 @@ public class PrinterControl
     }
 
     private PrinterGroupJob convertEntityInstanceToPrinterGroupJob(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         PrinterGroupJob printerGroupJob = null;
 
         if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.PrinterGroupJob.name())) {
@@ -1342,7 +1342,7 @@ public class PrinterControl
     }
 
     public void deletePrinterGroupJob(PrinterGroupJob printerGroupJob, BasePK deletedBy) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         PrinterGroupJobDetail printerGroupJobDetail = printerGroupJob.getLastDetailForUpdate();
 
         documentControl.deleteDocument(printerGroupJobDetail.getDocumentForUpdate(), deletedBy);
@@ -1365,7 +1365,7 @@ public class PrinterControl
     }
 
     public void removePrinterGroupJob(PrinterGroupJob printerGroupJob) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
 
         // Cascades to the PrinterGroupJob, so a seprate remove isn't required.
         documentControl.removeDocument(printerGroupJob.getLastDetail().getDocumentForUpdate());

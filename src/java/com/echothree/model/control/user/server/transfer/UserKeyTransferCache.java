@@ -38,7 +38,7 @@ public class UserKeyTransferCache
     public UserKeyTransferCache(UserVisit userVisit, UserControl userControl) {
         super(userVisit, userControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public UserKeyTransfer getUserKeyTransfer(UserKey userKey) {

@@ -62,7 +62,7 @@ public class GetSourcesCommand
     
     @Override
     protected Collection<Source> getEntities() {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         
         return sourceControl.getSources();
     }
@@ -70,7 +70,7 @@ public class GetSourcesCommand
     @Override
     protected BaseResult getTransfers(Collection<Source> entities) {
         GetSourcesResult result = OfferResultFactory.getGetSourcesResult();
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         
         result.setSources(sourceControl.getSourceTransfers(getUserVisit(), entities));
         

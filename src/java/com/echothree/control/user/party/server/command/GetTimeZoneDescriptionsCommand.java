@@ -50,7 +50,7 @@ public class GetTimeZoneDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetTimeZoneDescriptionsResult result = PartyResultFactory.getGetTimeZoneDescriptionsResult();
         String javaTimeZoneName = form.getJavaTimeZoneName();
         TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);

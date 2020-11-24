@@ -103,14 +103,14 @@ public class EditContentPageLayoutCommand
     
     @Override
     public void fillInResult(EditContentPageLayoutResult result, ContentPageLayout contentPageLayout) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));
     }
     
     @Override
     public void doLock(ContentPageLayoutEdit edit, ContentPageLayout contentPageLayout) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, getPreferredLanguage());
         ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
         
@@ -125,7 +125,7 @@ public class EditContentPageLayoutCommand
         
     @Override
     public void canUpdate(ContentPageLayout contentPageLayout) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentPageLayoutName = edit.getContentPageLayoutName();
         ContentPageLayout duplicateContentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
 
@@ -136,7 +136,7 @@ public class EditContentPageLayoutCommand
     
     @Override
     public void doUpdate(ContentPageLayout contentPageLayout) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueForUpdate(contentPageLayout);
         ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescriptionForUpdate(contentPageLayout, getPreferredLanguage());

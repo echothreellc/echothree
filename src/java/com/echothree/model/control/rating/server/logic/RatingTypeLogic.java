@@ -43,7 +43,7 @@ public class RatingTypeLogic
     }
     
     public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String ratingTypeName) {
-        var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+        var ratingControl = Session.getModelController(RatingControl.class);
         RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
 
         if(ratingType == null) {

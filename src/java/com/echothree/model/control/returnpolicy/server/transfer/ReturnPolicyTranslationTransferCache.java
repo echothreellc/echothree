@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class ReturnPolicyTranslationTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnPolicyTranslation, ReturnPolicyTranslationTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of ReturnPolicyTranslationTransferCache */
     public ReturnPolicyTranslationTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {

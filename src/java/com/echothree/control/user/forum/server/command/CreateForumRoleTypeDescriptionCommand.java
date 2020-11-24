@@ -53,12 +53,12 @@ public class CreateForumRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumRoleTypeName = form.getForumRoleTypeName();
         ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
         
         if(forumRoleType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

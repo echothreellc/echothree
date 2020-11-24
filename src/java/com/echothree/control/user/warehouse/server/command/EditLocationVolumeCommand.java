@@ -73,7 +73,7 @@ public class EditLocationVolumeCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         EditLocationVolumeResult result = WarehouseResultFactory.getEditLocationVolumeResult();
         String warehouseName = spec.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -83,7 +83,7 @@ public class EditLocationVolumeCommand
             Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 UnitOfMeasureKind volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
                 
                 if(volumeUnitOfMeasureKind != null) {

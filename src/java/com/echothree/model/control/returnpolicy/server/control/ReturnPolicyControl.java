@@ -299,7 +299,7 @@ public class ReturnPolicyControl
     }
 
     public void deletePartyReturnPolicy(PartyReturnPolicy partyReturnPolicy, BasePK deletedBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
 
         partyReturnPolicy.setThruTime(session.START_TIME_LONG);
 

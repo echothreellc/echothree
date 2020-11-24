@@ -66,7 +66,7 @@ public class GetPeriodTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         GetPeriodTypeDescriptionsResult result = PeriodResultFactory.getGetPeriodTypeDescriptionsResult();
         String periodKindName = form.getPeriodKindName();
         PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);

@@ -40,9 +40,9 @@ public class InvoiceLineItemTransferCache
     public InvoiceLineItemTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
         super(userVisit, invoiceControl);
 
-        inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        uomControl = (UomControl)Session.getModelController(UomControl.class);
+        inventoryControl = Session.getModelController(InventoryControl.class);
+        itemControl = Session.getModelController(ItemControl.class);
+        uomControl = Session.getModelController(UomControl.class);
     }
 
     public InvoiceLineItemTransfer getInvoiceLineItemTransfer(InvoiceLineItem invoiceLineItem) {

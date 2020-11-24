@@ -62,7 +62,7 @@ public class GetVendorTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         GetVendorTypeChoicesResult result = VendorResultFactory.getGetVendorTypeChoicesResult();
         String defaultVendorTypeChoice = form.getDefaultVendorTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -232,7 +232,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class AccountingSelectorNodeType
         extends BaseSelectorNodeType {
-        protected AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        protected AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
         protected AccountingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -250,7 +250,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class EmployeeSelectorNodeType
         extends BaseSelectorNodeType {
-        protected EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        protected EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
         protected EmployeeSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -259,7 +259,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class GeoSelectorNodeType
         extends BaseSelectorNodeType {
-        protected GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        protected GeoControl geoControl = Session.getModelController(GeoControl.class);
 
         protected GeoSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -268,7 +268,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class ItemSelectorNodeType
         extends BaseSelectorNodeType {
-        protected ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        protected ItemControl itemControl = Session.getModelController(ItemControl.class);
 
         protected ItemSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -277,7 +277,7 @@ public class CreateSelectorNodeCommand
 
     private abstract class PaymentProcessorSelectorNodeType
             extends BaseSelectorNodeType {
-        protected PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        protected PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
 
         protected PaymentProcessorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -286,7 +286,7 @@ public class CreateSelectorNodeCommand
 
     private abstract class PaymentMethodSelectorNodeType
             extends BaseSelectorNodeType {
-        protected PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        protected PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
         protected PaymentMethodSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -295,7 +295,7 @@ public class CreateSelectorNodeCommand
 
     private abstract class TrainingSelectorNodeType
         extends BaseSelectorNodeType {
-        protected TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        protected TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
 
         protected TrainingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -304,7 +304,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class VendorSelectorNodeType
         extends BaseSelectorNodeType {
-        protected VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        protected VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
         protected VendorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -313,7 +313,7 @@ public class CreateSelectorNodeCommand
     
     private abstract class WorkSelectorNodeType
         extends BaseSelectorNodeType {
-        protected WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
         protected WorkSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
@@ -681,7 +681,7 @@ public class CreateSelectorNodeCommand
     @Override
     protected BaseResult execute() {
         if(!hasExecutionErrors()) {
-            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            var selectorControl = Session.getModelController(SelectorControl.class);
             String selectorKindName = form.getSelectorKindName();
             SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 

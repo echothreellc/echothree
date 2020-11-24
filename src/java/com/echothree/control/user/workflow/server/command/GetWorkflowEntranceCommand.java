@@ -59,7 +59,7 @@ public class GetWorkflowEntranceCommand
 
     @Override
     protected BaseResult getTransfer(WorkflowEntrance workflowEntrance) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var result = WorkflowResultFactory.getGetWorkflowEntranceResult();
 
         if(workflowEntrance != null) {

@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class TransactionEntityRoleTransferCache
         extends BaseAccountingTransferCache<TransactionEntityRole, TransactionEntityRoleTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of TransactionEntityRoleTransferCache */
     public TransactionEntityRoleTransferCache(UserVisit userVisit, AccountingControl accountingControl) {

@@ -50,7 +50,7 @@ public class GetItemTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemTypeResult result = ItemResultFactory.getGetItemTypeResult();
         String itemTypeName = form.getItemTypeName();
         ItemType itemType = itemControl.getItemTypeByName(itemTypeName);

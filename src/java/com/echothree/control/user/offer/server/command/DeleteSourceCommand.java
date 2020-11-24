@@ -62,7 +62,7 @@ public class DeleteSourceCommand
 
     @Override
     protected BaseResult execute() {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         String sourceName = form.getSourceName();
         Source source = sourceControl.getSourceByNameForUpdate(sourceName);
 

@@ -54,7 +54,7 @@ public class CampaignMediumLogic
     }
     
     public CampaignMedium getCampaignMediumByName(final ExecutionErrorAccumulator eea, final String campaignMediumName) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
 
         if(campaignMedium == null) {
@@ -65,7 +65,7 @@ public class CampaignMediumLogic
     }
     
     public CampaignMedium getCampaignMediumByValue(final ExecutionErrorAccumulator eea, final String campaignMediumValue) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignMedium campaignMedium = campaignControl.getCampaignMediumByValue(campaignMediumValue);
 
         if(campaignMedium == null) {
@@ -76,8 +76,8 @@ public class CampaignMediumLogic
     }
     
     public void setCampaignMediumStatus(final Session session, ExecutionErrorAccumulator eea, CampaignMedium campaignMedium, String campaignMediumStatusChoice, PartyPK modifiedBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaignMedium.getPrimaryKey());

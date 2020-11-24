@@ -45,7 +45,7 @@ public class SymbolPositionLogic
     }
 
     public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
 
         if(symbolPosition == null) {
@@ -62,7 +62,7 @@ public class SymbolPositionLogic
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.SymbolPosition.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = Session.getModelController(AccountingControl.class);
             
             symbolPosition = accountingControl.getSymbolPositionByEntityInstance(entityInstance, entityPermission);
         }

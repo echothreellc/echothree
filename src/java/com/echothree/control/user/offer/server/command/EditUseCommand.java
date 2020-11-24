@@ -84,7 +84,7 @@ public class EditUseCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         EditUseResult result = OfferResultFactory.getEditUseResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -125,7 +125,7 @@ public class EditUseCommand
                 Use duplicateUse = useControl.getUseByName(useName);
                 
                 if(duplicateUse == null || use.equals(duplicateUse)) {
-                    var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+                    var useTypeControl = Session.getModelController(UseTypeControl.class);
                     String useTypeName = edit.getUseTypeName();
                     UseType useType = useTypeControl.getUseTypeByName(useTypeName);
                     

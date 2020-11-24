@@ -1908,7 +1908,7 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
     
     public PartyTrainingClass createPartyTrainingClass(Party party, TrainingClass trainingClass, Long completedTime, Long validUntilTime, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.PARTY_TRAINING_CLASS.name());
         String partyTrainingClassName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -1943,7 +1943,7 @@ public class TrainingControl
     }
 
     private PartyTrainingClass convertEntityInstanceToPartyTrainingClass(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         PartyTrainingClass partyTrainingClass = null;
         
         if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.PartyTrainingClass.name())) {
@@ -2147,7 +2147,7 @@ public class TrainingControl
     }
     
     public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         Workflow workflow = workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS);
         WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
         

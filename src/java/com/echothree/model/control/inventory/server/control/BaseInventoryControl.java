@@ -37,7 +37,7 @@ public abstract class BaseInventoryControl
     
     public InventoryTransferCaches getInventoryTransferCaches(UserVisit userVisit) {
         if(inventoryTransferCaches == null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
 
             inventoryTransferCaches = new InventoryTransferCaches(userVisit, inventoryControl);
         }

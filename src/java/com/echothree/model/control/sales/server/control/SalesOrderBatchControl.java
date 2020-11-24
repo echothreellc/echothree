@@ -107,7 +107,7 @@ public class SalesOrderBatchControl
     }
 
     public List<SalesOrderBatchTransfer> getSalesOrderBatchTransfers(UserVisit userVisit) {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         List<Batch> batches = batchControl.getBatchesUsingNames(BatchConstants.BatchType_SALES_ORDER);
         List<SalesOrderBatchTransfer> salesOrderBatchTransfers = new ArrayList<>(batches.size());
         SalesOrderBatchTransferCache salesOrderBatchTransferCache = getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache();
@@ -161,8 +161,8 @@ public class SalesOrderBatchControl
         }
 
         try {
-            var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
-            var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
+            var batchControl = Session.getModelController(BatchControl.class);
+            var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

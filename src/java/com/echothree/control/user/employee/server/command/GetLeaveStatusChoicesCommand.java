@@ -65,7 +65,7 @@ public class GetLeaveStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetLeaveStatusChoicesResult result = EmployeeResultFactory.getGetLeaveStatusChoicesResult();
         String leaveName = form.getLeaveName();
         Leave leave = leaveName == null ? null : employeeControl.getLeaveByName(leaveName);

@@ -36,7 +36,7 @@ import java.util.Set;
 public class ItemDescriptionTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionType, ItemDescriptionTypeTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     TransferProperties transferProperties;
     boolean filterItemDescriptionTypeName;

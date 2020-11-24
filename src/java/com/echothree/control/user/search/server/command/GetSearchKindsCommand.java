@@ -60,7 +60,7 @@ public class GetSearchKindsCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         GetSearchKindsResult result = SearchResultFactory.getGetSearchKindsResult();
         
         result.setSearchKinds(searchControl.getSearchKindTransfers(getUserVisit()));

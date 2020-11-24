@@ -79,7 +79,7 @@ public class EditJobCommand
     
     @Override
     protected BaseResult execute() {
-        var jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = Session.getModelController(JobControl.class);
         EditJobResult result = JobResultFactory.getEditJobResult();
         
         if(editMode.equals(EditMode.LOCK)) {

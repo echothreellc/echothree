@@ -62,7 +62,7 @@ public class GetItemCommand
     
     @Override
     protected Item getEntity() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         Item item = null;
         String itemName = form.getItemName();
         String itemNameOrAlias = form.getItemNameOrAlias();
@@ -92,7 +92,7 @@ public class GetItemCommand
     
     @Override
     protected BaseResult getTransfer(Item item) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemResult result = ItemResultFactory.getGetItemResult();
 
         if(item != null) {

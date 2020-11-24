@@ -37,7 +37,7 @@ public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
     
     IndexControl indexControl;
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     UnitOfMeasureUtils unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
 
@@ -80,7 +80,7 @@ public class EntityTypeTransferCache
             includeIndexTypes = options.contains(CoreOptions.EntityTypeIncludeIndexTypes);
             
             if(includeIndexTypesCount || includeIndexTypes) {
-                indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+                indexControl = Session.getModelController(IndexControl.class);
             }
         }
     }

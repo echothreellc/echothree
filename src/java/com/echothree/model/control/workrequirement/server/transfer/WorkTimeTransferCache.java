@@ -34,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 public class WorkTimeTransferCache
         extends BaseWorkRequirementTransferCache<WorkTime, WorkTimeTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of WorkTimeTransferCache */
     public WorkTimeTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {

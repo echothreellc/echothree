@@ -59,7 +59,7 @@ public class ContactListLogic
     }
     
     public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactList contactList = contactListControl.getContactListByName(contactListName);
 
         if(contactList == null) {
@@ -71,7 +71,7 @@ public class ContactListLogic
     
     public ContactListContactMechanismPurpose getContactListContactMechanismPurpose(final ExecutionErrorAccumulator eea, final ContactList contactList,
             final ContactMechanismPurpose contactMechanismPurpose) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListContactMechanismPurpose contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
         
         if(contactListContactMechanismPurpose == null) {
@@ -83,16 +83,16 @@ public class ContactListLogic
     }
     
     public boolean isPartyOnContactList(final Party party, final ContactList contactList) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         
         return contactListControl.getPartyContactList(party, contactList) != null;
     }
     
     public void addContactListToParty(final ExecutionErrorAccumulator eea, final Party party, final ContactList contactList,
             final ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose, final BasePK createdBy) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         PartyContactList partyContactList = contactListControl.createPartyContactList(party, contactList, preferredContactListContactMechanismPurpose, createdBy);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
         WorkflowEntrance workflowEntrance = contactList.getLastDetail().getDefaultPartyContactListStatus();
@@ -108,9 +108,9 @@ public class ContactListLogic
     }
     
     public void removeContactListFromParty(final ExecutionErrorAccumulator eea, final PartyContactList partyContactList, final BasePK deletedBy) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS, entityInstance);
         String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
@@ -124,7 +124,7 @@ public class ContactListLogic
     }
     
     public void setupInitialContactLists(final ExecutionErrorAccumulator eea, final Party party, final BasePK createdBy) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         PartyType partyType = party.getLastDetail().getPartyType();
         Set<ContactList> contactLists = new HashSet<>();
 
@@ -136,7 +136,7 @@ public class ContactListLogic
         });
 
         if(PartyLogic.getInstance().isPartyType(party, PartyTypes.CUSTOMER.name())) {
-            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = Session.getModelController(CustomerControl.class);
             CustomerType customerType = customerControl.getCustomer(party).getCustomerType();
 
             contactListControl.getCustomerTypeContactListsByCustomerType(customerType).stream().filter((customerTypeContactList) -> customerTypeContactList.getAddWhenCreated()).map((customerTypeContactList) -> customerTypeContactList.getContactList()).forEach((contactList) -> {

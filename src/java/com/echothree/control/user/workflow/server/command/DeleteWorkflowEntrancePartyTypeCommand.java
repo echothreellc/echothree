@@ -68,7 +68,7 @@ public class DeleteWorkflowEntrancePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
         
@@ -77,7 +77,7 @@ public class DeleteWorkflowEntrancePartyTypeCommand
             WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
             
             if(workflowEntrance != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String partyTypeName = form.getPartyTypeName();
                 PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
                 

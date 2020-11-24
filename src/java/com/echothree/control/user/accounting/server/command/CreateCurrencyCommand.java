@@ -81,7 +81,7 @@ public class CreateCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String currencyIsoName = form.getCurrencyIsoName();
         Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
         

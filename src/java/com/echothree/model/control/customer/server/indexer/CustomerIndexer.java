@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class CustomerIndexer
         extends PartyIndexer {
     
-    CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerIndexer */
     public CustomerIndexer(final ExecutionErrorAccumulator eea, final Index index) {

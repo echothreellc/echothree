@@ -63,7 +63,7 @@ public class SetCustomerStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         String customerName = form.getCustomerName();
         Customer customer = customerControl.getCustomerByName(customerName);
         

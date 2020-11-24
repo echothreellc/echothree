@@ -53,12 +53,12 @@ public class CreateInventoryConditionUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
         InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         
         if(inventoryConditionUseType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

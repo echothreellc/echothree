@@ -32,7 +32,7 @@ public abstract class BaseTaxDescriptionTransferCache<K extends BaseEntity, V ex
     protected BaseTaxDescriptionTransferCache(UserVisit userVisit, TaxControl taxControl) {
         super(userVisit, taxControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

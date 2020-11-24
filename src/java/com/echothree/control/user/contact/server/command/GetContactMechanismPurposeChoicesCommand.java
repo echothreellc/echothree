@@ -64,7 +64,7 @@ public class GetContactMechanismPurposeChoicesCommand
         int parameterCount = (contactMechanismName == null? 0: 1) + (contactMechanismTypeName == null? 0: 1) + (contactListName == null? 0: 1);
         
         if(parameterCount < 2) {
-            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = Session.getModelController(ContactControl.class);
             ContactMechanismType contactMechanismType = null;
             String defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

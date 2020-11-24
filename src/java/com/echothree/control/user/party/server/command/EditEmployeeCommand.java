@@ -105,7 +105,7 @@ public class EditEmployeeCommand
 
     @Override
     public Party getEntity(EditEmployeeResult result) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         PartyEmployee partyEmployee;
         var employeeName = spec.getEmployeeName();
 
@@ -131,16 +131,16 @@ public class EditEmployeeCommand
 
     @Override
     public void fillInResult(EditEmployeeResult result, Party party) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
 
         result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), party));
     }
 
     @Override
     public void doLock(EmployeeEdit edit, Party party) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         var partyEmployee = employeeControl.getPartyEmployee(party);
         var partyDetail = party.getLastDetail();
         var preferredLanguage = partyDetail.getPreferredLanguage();
@@ -174,9 +174,9 @@ public class EditEmployeeCommand
 
     @Override
     public void canUpdate(Party party) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         var employeeTypeName = edit.getEmployeeTypeName();
 
         employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
@@ -202,7 +202,7 @@ public class EditEmployeeCommand
                         if(preferredCurrencyIsoName == null) {
                             preferredCurrency = null;
                         } else {
-                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = Session.getModelController(AccountingControl.class);
                             preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                         }
 
@@ -233,9 +233,9 @@ public class EditEmployeeCommand
 
     @Override
     public void doUpdate(Party party) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         var soundex = new Soundex();
         var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
         var partyEmployee = employeeControl.getPartyEmployeeForUpdate(party);

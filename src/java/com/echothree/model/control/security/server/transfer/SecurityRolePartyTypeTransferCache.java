@@ -31,8 +31,8 @@ import com.echothree.util.server.persistence.Session;
 public class SecurityRolePartyTypeTransferCache
         extends BaseSecurityTransferCache<SecurityRolePartyType, SecurityRolePartyTypeTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
         
     /** Creates a new instance of SecurityRolePartyTypeTransferCache */
     public SecurityRolePartyTypeTransferCache(UserVisit userVisit, SecurityControl securityControl) {

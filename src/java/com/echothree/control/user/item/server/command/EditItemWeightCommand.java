@@ -79,8 +79,8 @@ public class EditItemWeightCommand
 
     @Override
     public ItemWeight getEntity(EditItemWeightResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         ItemWeight itemWeight = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
@@ -124,14 +124,14 @@ public class EditItemWeightCommand
 
     @Override
     public void fillInResult(EditItemWeightResult result, ItemWeight itemWeight) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemWeight(itemControl.getItemWeightTransfer(getUserVisit(), itemWeight));
     }
 
     @Override
     public void doLock(ItemWeightEdit edit, ItemWeight itemWeight) {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
 
         weight = itemWeight.getWeight();
         Conversion weightConversion = weight == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, weight).convertToHighestUnitOfMeasureType();
@@ -145,7 +145,7 @@ public class EditItemWeightCommand
 
     @Override
     public void canUpdate(ItemWeight itemWeight) {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         String weightUnitOfMeasureTypeName = edit.getWeightUnitOfMeasureTypeName();
 
         weightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, weightUnitOfMeasureTypeName);
@@ -163,8 +163,8 @@ public class EditItemWeightCommand
 
     @Override
     public void doUpdate(ItemWeight itemWeight) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         ItemWeightValue itemWeightValue = itemControl.getItemWeightValue(itemWeight);
 
         Conversion weightConversion = new Conversion(uomControl, weightUnitOfMeasureType, weight).convertToLowestUnitOfMeasureType();

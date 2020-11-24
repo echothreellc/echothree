@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class CancellationTypeTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationType, CancellationTypeTransfer> {
     
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of CancellationTypeTransferCache */
     public CancellationTypeTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {

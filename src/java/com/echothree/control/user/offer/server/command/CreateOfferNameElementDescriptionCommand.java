@@ -67,12 +67,12 @@ public class CreateOfferNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         String offerNameElementName = form.getOfferNameElementName();
         OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -34,13 +34,13 @@ import com.echothree.util.server.string.AmountUtils;
 public class SalesOrderBatchTransferCache
         extends GenericBatchTransferCache<SalesOrderBatchTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
-    OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-    OrderBatchControl orderBatchControl = (OrderBatchControl)Session.getModelController(OrderBatchControl.class);
-    SalesOrderBatchControl salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+    OrderControl orderControl = Session.getModelController(OrderControl.class);
+    OrderBatchControl orderBatchControl = Session.getModelController(OrderBatchControl.class);
+    SalesOrderBatchControl salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of SalesOrderBatchTransferCache */
     public SalesOrderBatchTransferCache(UserVisit userVisit) {

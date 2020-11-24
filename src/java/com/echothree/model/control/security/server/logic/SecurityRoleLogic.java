@@ -43,7 +43,7 @@ public class SecurityRoleLogic
     }
 
     public SecurityRole getSecurityRoleByName(final ExecutionErrorAccumulator eea, final SecurityRoleGroup securityRoleGroup, final String securityRoleName) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
         if(securityRole == null) {
@@ -69,7 +69,7 @@ public class SecurityRoleLogic
         boolean result = false;
 
         if(party != null) {
-            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var securityControl = Session.getModelController(SecurityControl.class);
             var partySecurityRole = securityControl.getPartySecurityRole(party, securityRole);
 
             if(partySecurityRole != null) {
@@ -81,7 +81,7 @@ public class SecurityRoleLogic
                     var partySelector = securityRolePartyType.getPartySelector();
 
                     if(partySelector != null) {
-                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                        var selectorControl = Session.getModelController(SelectorControl.class);
 
                         if(selectorControl.getSelectorParty(partySelector, party) != null) {
                             result = true;

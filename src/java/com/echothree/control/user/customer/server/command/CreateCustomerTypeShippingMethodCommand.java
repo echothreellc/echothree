@@ -55,12 +55,12 @@ public class CreateCustomerTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+            var shippingControl = Session.getModelController(ShippingControl.class);
             String shippingMethodName = form.getShippingMethodName();
             ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             

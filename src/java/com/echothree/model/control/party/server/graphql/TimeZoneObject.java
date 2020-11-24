@@ -84,8 +84,8 @@ public class TimeZoneObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return partyControl.getBestTimeZoneDescription(timeZone, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

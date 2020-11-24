@@ -33,8 +33,8 @@ import java.util.Set;
 public class ItemTaxClassificationTransferCache
         extends BaseTaxTransferCache<ItemTaxClassification, ItemTaxClassificationTransfer> {
     
-    GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     
     /** Creates a new instance of ItemTaxClassificationTransferCache */
     public ItemTaxClassificationTransferCache(UserVisit userVisit, TaxControl taxControl) {

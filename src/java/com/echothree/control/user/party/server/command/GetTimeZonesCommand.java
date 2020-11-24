@@ -49,7 +49,7 @@ public class GetTimeZonesCommand
     
     @Override
     protected Collection<TimeZone> getEntities() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         return partyControl.getTimeZones();
     }
@@ -57,7 +57,7 @@ public class GetTimeZonesCommand
     @Override
     protected BaseResult getTransfers(Collection<TimeZone> entities) {
         GetTimeZonesResult result = PartyResultFactory.getGetTimeZonesResult();
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         result.setTimeZones(partyControl.getTimeZoneTransfers(getUserVisit(), entities));
         

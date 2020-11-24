@@ -40,7 +40,7 @@ public class GeoCodeScopeLogic
     }
 
     public GeoCodeScope getGeoCodeScopeByName(final ExecutionErrorAccumulator eea, final String geoCodeScopeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
         if(geoCodeScope == null) {

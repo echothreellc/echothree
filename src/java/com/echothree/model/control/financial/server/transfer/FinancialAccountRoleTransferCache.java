@@ -35,7 +35,7 @@ public class FinancialAccountRoleTransferCache
     public FinancialAccountRoleTransferCache(UserVisit userVisit, FinancialControl financialControl) {
         super(userVisit, financialControl);
 
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
 
     public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(FinancialAccountRole financialAccountRole) {

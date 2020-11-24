@@ -41,9 +41,9 @@ import java.util.Set;
 public class LocationTransferCache
         extends BaseWarehouseTransferCache<Location, LocationTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeCapacities;
     boolean includeVolume;
     

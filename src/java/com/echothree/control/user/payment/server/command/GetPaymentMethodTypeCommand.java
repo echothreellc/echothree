@@ -67,7 +67,7 @@ public class GetPaymentMethodTypeCommand
     
     @Override
     protected BaseResult getTransfer(PaymentMethodType paymentMethodType) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         GetPaymentMethodTypeResult result = PaymentResultFactory.getGetPaymentMethodTypeResult();
 
         if(paymentMethodType != null) {

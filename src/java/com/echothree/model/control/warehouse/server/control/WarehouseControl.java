@@ -414,7 +414,7 @@ public class WarehouseControl
     }
     
     public void deleteWarehouse(Warehouse warehouse, BasePK deletedBy) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         Party party = warehouse.getPartyForUpdate();
         
         deleteLocationsByWarehouseParty(party, deletedBy);

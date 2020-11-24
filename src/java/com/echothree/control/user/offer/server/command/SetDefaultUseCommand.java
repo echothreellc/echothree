@@ -62,7 +62,7 @@ public class SetDefaultUseCommand
     
     @Override
     protected BaseResult execute() {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         String useName = form.getUseName();
         UseDetailValue useDetailValue = useControl.getUseDetailValueByNameForUpdate(useName);
         

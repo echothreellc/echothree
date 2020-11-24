@@ -56,7 +56,7 @@ public class SequenceTypeLogic
             final String prefix, final String suffix, final SequenceEncoderType sequenceEncoderType,
             final SequenceChecksumType sequenceChecksumType, final Integer chunkSize, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType == null) {
@@ -75,7 +75,7 @@ public class SequenceTypeLogic
 
     public SequenceType getSequenceTypeByName(final ExecutionErrorAccumulator eea, final String sequenceTypeName,
             final EntityPermission entityPermission) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName, entityPermission);
 
         if(sequenceType == null) {
@@ -96,7 +96,7 @@ public class SequenceTypeLogic
     public SequenceType getSequenceTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SequenceTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SequenceType sequenceType = null;
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeName = universalSpec.getSequenceTypeName();
         int parameterCount = (sequenceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 

@@ -56,7 +56,7 @@ public class LeaveControl
         }
 
         try {
-            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = Session.getModelController(EmployeeControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

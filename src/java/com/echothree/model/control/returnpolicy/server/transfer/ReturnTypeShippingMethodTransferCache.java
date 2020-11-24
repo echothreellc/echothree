@@ -34,7 +34,7 @@ public class ReturnTypeShippingMethodTransferCache
     public ReturnTypeShippingMethodTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
         super(userVisit, returnPolicyControl);
         
-        shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        shippingControl = Session.getModelController(ShippingControl.class);
     }
     
     public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(ReturnTypeShippingMethod returnTypeShippingMethod) {

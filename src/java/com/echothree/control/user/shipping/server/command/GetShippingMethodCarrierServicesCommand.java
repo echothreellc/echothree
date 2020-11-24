@@ -72,7 +72,7 @@ public class GetShippingMethodCarrierServicesCommand
     
     @Override
     protected BaseResult execute() {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         GetShippingMethodCarrierServicesResult result = ShippingResultFactory.getGetShippingMethodCarrierServicesResult();
         String shippingMethodName = form.getShippingMethodName();
         String carrierName = form.getCarrierName();
@@ -89,7 +89,7 @@ public class GetShippingMethodCarrierServicesCommand
                 addExecutionError(ExecutionErrors.UnknownShippingMethodName.name(), shippingMethodName);
             }
         } else if(shippingMethodName == null && carrierName != null && carrierServiceName != null) {
-            var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+            var carrierControl = Session.getModelController(CarrierControl.class);
             Carrier carrier = carrierControl.getCarrierByName(carrierName);
             
             if(carrier != null) {

@@ -49,7 +49,7 @@ public class CreateOrderRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
         String orderRoleTypeName = form.getOrderRoleTypeName();
         OrderRoleType orderRoleType = orderRoleControl.getOrderRoleTypeByName(orderRoleTypeName);
         

@@ -69,12 +69,12 @@ public class CreateOrderAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
+            var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
             String orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
             OrderAdjustmentType orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 

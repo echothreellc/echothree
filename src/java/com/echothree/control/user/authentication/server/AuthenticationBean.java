@@ -63,9 +63,9 @@ public class AuthenticationBean
         UserVisitPK userVisitPK = null;
         
         try {
-            var userControl = (UserControl)Session.getModelController(UserControl.class);
+            var userControl = Session.getModelController(UserControl.class);
             UserVisit userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             Party party = partyControl.getPartyByName(PartyNames.DATA_LOADER.name());
             
             if(party == null) {

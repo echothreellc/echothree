@@ -61,7 +61,7 @@ public class SetDefaultPaymentProcessorActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
+        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         String paymentProcessorActionTypeName = form.getPaymentProcessorActionTypeName();
         PaymentProcessorActionTypeDetailValue paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueByNameForUpdate(paymentProcessorActionTypeName);
         

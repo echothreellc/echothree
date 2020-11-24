@@ -53,12 +53,12 @@ public class CreateIconUsageTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var iconControl = (IconControl)Session.getModelController(IconControl.class);
+        var iconControl = Session.getModelController(IconControl.class);
         String iconUsageTypeName = form.getIconUsageTypeName();
         IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
         
         if(iconUsageType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

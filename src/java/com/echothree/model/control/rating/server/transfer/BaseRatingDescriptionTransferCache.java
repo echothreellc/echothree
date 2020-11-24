@@ -32,7 +32,7 @@ public abstract class BaseRatingDescriptionTransferCache<K extends BaseEntity, V
     protected BaseRatingDescriptionTransferCache(UserVisit userVisit, RatingControl ratingControl) {
         super(userVisit, ratingControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

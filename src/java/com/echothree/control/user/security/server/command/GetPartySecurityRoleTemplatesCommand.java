@@ -61,7 +61,7 @@ public class GetPartySecurityRoleTemplatesCommand
     @Override
     protected BaseResult execute() {
         GetPartySecurityRoleTemplatesResult result = SecurityResultFactory.getGetPartySecurityRoleTemplatesResult();
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         
         result.setPartySecurityRoleTemplates(securityControl.getPartySecurityRoleTemplateTransfers(getUserVisit()));
         

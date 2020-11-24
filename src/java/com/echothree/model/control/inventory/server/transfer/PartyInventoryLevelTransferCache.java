@@ -32,8 +32,8 @@ import com.echothree.util.server.persistence.Session;
 public class PartyInventoryLevelTransferCache
         extends BaseInventoryTransferCache<PartyInventoryLevel, PartyInventoryLevelTransfer> {
     
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyInventoryLevelTransferCache */
     public PartyInventoryLevelTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {

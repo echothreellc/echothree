@@ -80,7 +80,7 @@ public class GetWorkflowDestinationSelectorCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationSelectorResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowDestinationSelector(workflowControl.getWorkflowDestinationSelectorTransfer(getUserVisit(), entity));
         }

@@ -93,7 +93,7 @@ public class CreateContentCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -117,7 +117,7 @@ public class CreateContentCategoryCommand
                     if(parentContentCategory == null) {
                         addExecutionError(ExecutionErrors.UnknownParentContentCategoryName.name(), parentContentCategoryName);
                     } else {
-                        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                        var offerControl = Session.getModelController(OfferControl.class);
                         String defaultOfferName = form.getDefaultOfferName();
                         String defaultUseName = form.getDefaultUseName();
                         String defaultSourceName = form.getDefaultSourceName();
@@ -128,11 +128,11 @@ public class CreateContentCategoryCommand
                             Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
                             
                             if(defaultOffer != null) {
-                                var useControl = (UseControl)Session.getModelController(UseControl.class);
+                                var useControl = Session.getModelController(UseControl.class);
                                 Use defaultUse = useControl.getUseByName(defaultUseName);
                                 
                                 if(defaultUse != null) {
-                                    var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                                    var offerUseControl = Session.getModelController(OfferUseControl.class);
                                     defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                                     
                                     if(defaultOfferUse == null) {
@@ -145,7 +145,7 @@ public class CreateContentCategoryCommand
                                 addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                             }
                         } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                            var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                            var sourceControl = Session.getModelController(SourceControl.class);
                             Source source = sourceControl.getSourceByName(defaultSourceName);
                             
                             if(source != null) {
@@ -164,7 +164,7 @@ public class CreateContentCategoryCommand
                             boolean invalidOfferCompany = false;
                             
                             if(defaultOfferUse != null) {
-                                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                var partyControl = Session.getModelController(PartyControl.class);
                                 Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
                                 PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
                                 PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
@@ -185,7 +185,7 @@ public class CreateContentCategoryCommand
                                 Selector contentCategoryItemSelector = null;
                                 
                                 if(contentCategoryItemSelectorName != null) {
-                                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                    var selectorControl = Session.getModelController(SelectorControl.class);
                                     SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
                                     
                                     if(selectorKind != null) {

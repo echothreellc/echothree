@@ -78,13 +78,13 @@ public class EditItemPurchasingCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         EditItemPurchasingCategoryDescriptionResult result = VendorResultFactory.getEditItemPurchasingCategoryDescriptionResult();
         String itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
         ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
         
         if(itemPurchasingCategory != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -64,7 +64,7 @@ public class DeleteIndexFieldCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         String indexTypeName = form.getIndexTypeName();
         IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
         

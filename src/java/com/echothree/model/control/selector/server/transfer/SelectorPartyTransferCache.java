@@ -34,7 +34,7 @@ public class SelectorPartyTransferCache
     public SelectorPartyTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
         super(userVisit, selectorControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public SelectorPartyTransfer getSelectorPartyTransfer(SelectorParty selectorParty) {

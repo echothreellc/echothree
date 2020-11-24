@@ -68,7 +68,7 @@ public class GetVendorItemStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         GetVendorItemStatusChoicesResult result = VendorResultFactory.getGetVendorItemStatusChoicesResult();
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);

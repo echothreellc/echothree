@@ -63,7 +63,7 @@ public class GetQueueTypesCommand
 
     @Override
     protected Collection<QueueType> getEntities() {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
 
         return queueControl.getQueueTypes();
     }
@@ -71,7 +71,7 @@ public class GetQueueTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<QueueType> entities) {
         GetQueueTypesResult result = QueueResultFactory.getGetQueueTypesResult();
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         UserVisit userVisit = getUserVisit();
 
         result.setQueueTypes(queueControl.getQueueTypeTransfers(userVisit, entities));

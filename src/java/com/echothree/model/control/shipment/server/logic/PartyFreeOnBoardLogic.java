@@ -41,7 +41,7 @@ public class PartyFreeOnBoardLogic
     }
     
     public PartyFreeOnBoard getPartyFreeOnBoard(final ExecutionErrorAccumulator eea, final Party party) {
-        var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
+        var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
         var partyFreeOnBoard = partyFreeOnBoardControl.getPartyFreeOnBoard(party);
 
         if(partyFreeOnBoard == null) {

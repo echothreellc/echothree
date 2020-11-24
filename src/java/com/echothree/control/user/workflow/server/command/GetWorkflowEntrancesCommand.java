@@ -60,7 +60,7 @@ public class GetWorkflowEntrancesCommand
         workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
 
         if(!this.hasExecutionErrors()) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntrances = workflowControl.getWorkflowEntrancesByWorkflow(workflow);
         }
@@ -73,7 +73,7 @@ public class GetWorkflowEntrancesCommand
         var result = WorkflowResultFactory.getGetWorkflowEntrancesResult();
 
         if(entities != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflowControl.getWorkflowTransfer(userVisit, workflow));

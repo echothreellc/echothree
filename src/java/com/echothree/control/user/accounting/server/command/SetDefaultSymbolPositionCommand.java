@@ -61,7 +61,7 @@ public class SetDefaultSymbolPositionCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String symbolPositionName = form.getSymbolPositionName();
         SymbolPositionDetailValue symbolPositionDetailValue = accountingControl.getSymbolPositionDetailValueByNameForUpdate(symbolPositionName);
         

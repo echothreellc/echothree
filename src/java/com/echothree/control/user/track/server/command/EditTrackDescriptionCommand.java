@@ -87,13 +87,13 @@ public class EditTrackDescriptionCommand
 
     @Override
     public TrackDescription getEntity(EditTrackDescriptionResult result) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         TrackDescription trackDescription = null;
         String trackName = spec.getTrackName();
         Track track = trackControl.getTrackByName(trackName);
 
         if(track != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditTrackDescriptionCommand
 
     @Override
     public void fillInResult(EditTrackDescriptionResult result, TrackDescription trackDescription) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
 
         result.setTrackDescription(trackControl.getTrackDescriptionTransfer(getUserVisit(), trackDescription));
     }
@@ -136,7 +136,7 @@ public class EditTrackDescriptionCommand
 
     @Override
     public void doUpdate(TrackDescription trackDescription) {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         TrackDescriptionValue trackDescriptionValue = trackControl.getTrackDescriptionValue(trackDescription);
         trackDescriptionValue.setDescription(edit.getDescription());
 

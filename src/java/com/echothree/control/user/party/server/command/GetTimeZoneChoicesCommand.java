@@ -50,7 +50,7 @@ public class GetTimeZoneChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetTimeZoneChoicesResult result = PartyResultFactory.getGetTimeZoneChoicesResult();
         String defaultTimeZoneChoice = form.getDefaultTimeZoneChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

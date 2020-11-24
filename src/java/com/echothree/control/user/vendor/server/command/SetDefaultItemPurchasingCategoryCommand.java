@@ -61,7 +61,7 @@ public class SetDefaultItemPurchasingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
 
         String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
         ItemPurchasingCategoryDetailValue itemPurchasingCategoryDetailValue = vendorControl.getItemPurchasingCategoryDetailValueByNameForUpdate(itemPurchasingCategoryName);

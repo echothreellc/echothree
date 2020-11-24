@@ -54,7 +54,7 @@ public class ForumMessageControl
         }
 
         try {
-            var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+            var forumControl = Session.getModelController(ForumControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

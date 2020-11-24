@@ -56,8 +56,8 @@ import java.util.Set;
 public class EntityAttributeTransferCache
         extends BaseCoreTransferCache<EntityAttribute, EntityAttributeTransfer> {
     
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     boolean includeValue;
     boolean includeEntityListItems;

@@ -64,7 +64,7 @@ public class GetOrderTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         GetOrderTypeDescriptionsResult result = OrderResultFactory.getGetOrderTypeDescriptionsResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);

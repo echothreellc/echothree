@@ -37,9 +37,9 @@ import java.util.Set;
 public class PartyTrainingClassTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClass, PartyTrainingClassTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includePartyTrainingClassSessions;
     
     /** Creates a new instance of PartyTrainingClassTransferCache */

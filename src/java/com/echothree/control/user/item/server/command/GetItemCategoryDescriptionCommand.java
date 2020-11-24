@@ -68,13 +68,13 @@ public class GetItemCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemCategoryDescriptionResult result = ItemResultFactory.getGetItemCategoryDescriptionResult();
         String itemCategoryName = form.getItemCategoryName();
         ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
         
         if(itemCategory != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

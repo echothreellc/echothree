@@ -79,7 +79,7 @@ public class GetPartyPaymentMethodChoicesCommand
             if(partyName == null) {
                 addExecutionError(ExecutionErrors.PartyNameRequired.name());
             } else {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
 
                 party = partyControl.getPartyByName(partyName);
 
@@ -90,7 +90,7 @@ public class GetPartyPaymentMethodChoicesCommand
         }
 
         if(!hasExecutionErrors()) {
-            var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+            var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
             String defaultPaymentMethodChoice = form.getDefaultPaymentMethodChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

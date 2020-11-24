@@ -73,7 +73,7 @@ public class EditForumForumThreadCommand
 
     @Override
     public ForumForumThread getEntity(EditForumForumThreadResult result) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumForumThread forumForumThread = null;
         String forumName = spec.getForumName();
         Forum forum = forumControl.getForumByName(forumName);
@@ -109,7 +109,7 @@ public class EditForumForumThreadCommand
 
     @Override
     public void fillInResult(EditForumForumThreadResult result, ForumForumThread forumForumThread) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
 
         result.setForumForumThread(forumControl.getForumForumThreadTransfer(getUserVisit(), forumForumThread));
     }
@@ -122,7 +122,7 @@ public class EditForumForumThreadCommand
 
     @Override
     public void doUpdate(ForumForumThread forumForumThread) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumForumThreadValue forumForumThreadValue = forumControl.getForumForumThreadValue(forumForumThread);
 
         forumForumThreadValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

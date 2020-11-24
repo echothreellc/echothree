@@ -76,7 +76,7 @@ public class EditAssociateProgramCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = Session.getModelController(AssociateControl.class);
         EditAssociateProgramResult result = AssociateResultFactory.getEditAssociateProgramResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -123,7 +123,7 @@ public class EditAssociateProgramCommand
                 AssociateProgram duplicateAssociateProgram = associateControl.getAssociateProgramByName(associateProgramName);
                 
                 if(duplicateAssociateProgram == null || associateProgram.equals(duplicateAssociateProgram)) {
-                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     String associateSequenceName = edit.getAssociateSequenceName();
                     Sequence associateSequence = null;
                     

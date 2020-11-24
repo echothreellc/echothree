@@ -65,7 +65,7 @@ public class CreateMessageTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                var messageControl = Session.getModelController(MessageControl.class);
                 String messageTypeName = form.getMessageTypeName();
                 MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 

@@ -65,7 +65,7 @@ public class CreateDocumentTypeUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 

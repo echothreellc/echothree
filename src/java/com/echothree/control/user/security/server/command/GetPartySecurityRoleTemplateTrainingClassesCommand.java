@@ -66,7 +66,7 @@ public class GetPartySecurityRoleTemplateTrainingClassesCommand
     @Override
     protected BaseResult execute() {
         GetPartySecurityRoleTemplateTrainingClassesResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateTrainingClassesResult();
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
         PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
         

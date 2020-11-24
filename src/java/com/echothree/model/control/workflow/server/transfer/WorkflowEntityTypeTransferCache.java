@@ -37,7 +37,7 @@ public class WorkflowEntityTypeTransferCache
         WorkflowEntityTypeTransfer workflowEntityTypeTransfer = get(workflowEntityType);
         
         if(workflowEntityTypeTransfer == null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            CoreControl coreControl = Session.getModelController(CoreControl.class);
             WorkflowTransfer workflow = workflowControl.getWorkflowTransfer(userVisit, workflowEntityType.getWorkflow());
             EntityTypeTransfer entityType = coreControl.getEntityTypeTransfer(userVisit, workflowEntityType.getEntityType());
             

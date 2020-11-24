@@ -48,7 +48,7 @@ public class DeleteForumCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByNameForUpdate(forumName);
         

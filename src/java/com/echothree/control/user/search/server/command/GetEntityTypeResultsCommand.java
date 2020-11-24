@@ -57,7 +57,7 @@ public class GetEntityTypeResultsCommand
     @Override
     protected BaseResult execute() {
         GetEntityTypeResultsResult result = SearchResultFactory.getGetEntityTypeResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_ENTITY_TYPE);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetEntityTypeResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityTypeControl = (EntityTypeControl)Session.getModelController(EntityTypeControl.class);
+                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setEntityTypeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

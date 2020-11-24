@@ -76,7 +76,7 @@ public class CreateContactListCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         String contactListName = form.getContactListName();
         ContactList contactList = contactListControl.getContactListByName(contactListName);
 
@@ -93,7 +93,7 @@ public class CreateContactListCommand
                     ContactListFrequency contactListFrequency = contactListFrequencyName == null ? null : contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
                     if(contactListFrequencyName == null || contactListFrequency != null) {
-                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         String defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
                         Workflow workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
                         WorkflowEntrance defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);

@@ -48,7 +48,7 @@ public class EntityTypeLogic
     
     public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final EntityPermission entityPermission) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName, entityPermission);
 
         if(entityType == null) {
@@ -94,7 +94,7 @@ public class EntityTypeLogic
     public EntityType getEntityTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final EntityTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         EntityType entityType = null;
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         var componentVendorName = universalSpec.getComponentVendorName();
         var entityTypeName = universalSpec.getEntityTypeName();
         int parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)

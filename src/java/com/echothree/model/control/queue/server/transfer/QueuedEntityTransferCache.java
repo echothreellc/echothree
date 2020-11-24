@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class QueuedEntityTransferCache
         extends BaseQueueTransferCache<QueuedEntity, QueuedEntityTransfer> {
 
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
         
     /** Creates a new instance of QueuedEntityTransferCache */
     public QueuedEntityTransferCache(UserVisit userVisit, QueueControl queueControl) {

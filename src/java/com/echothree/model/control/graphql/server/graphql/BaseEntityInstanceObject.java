@@ -40,7 +40,7 @@ public abstract class BaseEntityInstanceObject {
     
     protected EntityInstance getEntityInstanceByBasePK() {
         if(entityInstance == null) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
 
             entityInstance = coreControl.getEntityInstanceByBasePK(basePrimaryKey);
         }
@@ -67,7 +67,7 @@ public abstract class BaseEntityInstanceObject {
     @GraphQLDescription("id")
     @GraphQLNonNull
     public String getId() {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
 
         entityInstance = coreControl.ensureUlidForEntityInstance(getEntityInstanceByBasePK(), false);
 

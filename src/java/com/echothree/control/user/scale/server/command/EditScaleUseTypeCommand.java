@@ -89,7 +89,7 @@ public class EditScaleUseTypeCommand
 
     @Override
     public ScaleUseType getEntity(EditScaleUseTypeResult result) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         ScaleUseType scaleUseType = null;
         String scaleUseTypeName = spec.getScaleUseTypeName();
 
@@ -115,14 +115,14 @@ public class EditScaleUseTypeCommand
 
     @Override
     public void fillInResult(EditScaleUseTypeResult result, ScaleUseType scaleUseType) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
 
         result.setScaleUseType(scaleControl.getScaleUseTypeTransfer(getUserVisit(), scaleUseType));
     }
 
     @Override
     public void doLock(ScaleUseTypeEdit edit, ScaleUseType scaleUseType) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         ScaleUseTypeDescription scaleUseTypeDescription = scaleControl.getScaleUseTypeDescription(scaleUseType, getPreferredLanguage());
         ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditScaleUseTypeCommand
 
     @Override
     public void canUpdate(ScaleUseType scaleUseType) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         String scaleUseTypeName = edit.getScaleUseTypeName();
         ScaleUseType duplicateScaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
@@ -148,7 +148,7 @@ public class EditScaleUseTypeCommand
 
     @Override
     public void doUpdate(ScaleUseType scaleUseType) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         var partyPK = getPartyPK();
         ScaleUseTypeDetailValue scaleUseTypeDetailValue = scaleControl.getScaleUseTypeDetailValueForUpdate(scaleUseType);
         ScaleUseTypeDescription scaleUseTypeDescription = scaleControl.getScaleUseTypeDescriptionForUpdate(scaleUseType, getPreferredLanguage());

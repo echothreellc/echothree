@@ -47,8 +47,8 @@ import java.util.Set;
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     boolean includeBlob;
     boolean includeClob;

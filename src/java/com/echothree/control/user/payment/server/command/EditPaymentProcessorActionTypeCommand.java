@@ -104,14 +104,14 @@ public class EditPaymentProcessorActionTypeCommand
     
     @Override
     public void fillInResult(EditPaymentProcessorActionTypeResult result, PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
+        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         
         result.setPaymentProcessorActionType(paymentProcessorActionTypeControl.getPaymentProcessorActionTypeTransfer(getUserVisit(), paymentProcessorActionType));
     }
     
     @Override
     public void doLock(PaymentProcessorActionTypeEdit edit, PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
+        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescription(paymentProcessorActionType, getPreferredLanguage());
         PaymentProcessorActionTypeDetail paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetail();
         
@@ -126,7 +126,7 @@ public class EditPaymentProcessorActionTypeCommand
         
     @Override
     public void canUpdate(PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
+        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         String paymentProcessorActionTypeName = edit.getPaymentProcessorActionTypeName();
         PaymentProcessorActionType duplicatePaymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByName(paymentProcessorActionTypeName);
 
@@ -137,7 +137,7 @@ public class EditPaymentProcessorActionTypeCommand
     
     @Override
     public void doUpdate(PaymentProcessorActionType paymentProcessorActionType) {
-        var paymentProcessorActionTypeControl = (PaymentProcessorActionTypeControl)Session.getModelController(PaymentProcessorActionTypeControl.class);
+        var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         var partyPK = getPartyPK();
         PaymentProcessorActionTypeDetailValue paymentProcessorActionTypeDetailValue = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDetailValueForUpdate(paymentProcessorActionType);
         PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeDescriptionForUpdate(paymentProcessorActionType, getPreferredLanguage());

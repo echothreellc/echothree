@@ -36,7 +36,7 @@ import java.util.Set;
 public class ContentCatalogTransferCache
         extends BaseContentTransferCache<ContentCatalog, ContentCatalogTransfer> {
 
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     
     boolean includeContentCatalogItems;
     boolean includeContentCatalogCategories;

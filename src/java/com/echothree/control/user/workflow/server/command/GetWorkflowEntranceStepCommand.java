@@ -80,7 +80,7 @@ public class GetWorkflowEntranceStepCommand
         var result = WorkflowResultFactory.getGetWorkflowEntranceStepResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowEntranceStep(workflowControl.getWorkflowEntranceStepTransfer(getUserVisit(), entity));
         }

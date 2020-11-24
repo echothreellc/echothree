@@ -90,7 +90,7 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public SecurityRoleGroup getEntity(EditSecurityRoleGroupResult result) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleGroup securityRoleGroup = null;
         String securityRoleGroupName = spec.getSecurityRoleGroupName();
 
@@ -116,7 +116,7 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public void fillInResult(EditSecurityRoleGroupResult result, SecurityRoleGroup securityRoleGroup) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         
         result.setSecurityRoleGroup(securityControl.getSecurityRoleGroupTransfer(getUserVisit(), securityRoleGroup));
     }
@@ -125,7 +125,7 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public void doLock(SecurityRoleGroupEdit edit, SecurityRoleGroup securityRoleGroup) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         SecurityRoleGroupDescription securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescription(securityRoleGroup, getPreferredLanguage());
         SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
         
@@ -146,7 +146,7 @@ public class EditSecurityRoleGroupCommand
         
     @Override
     public void canUpdate(SecurityRoleGroup securityRoleGroup) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         String securityRoleGroupName = edit.getSecurityRoleGroupName();
         SecurityRoleGroup duplicateSecurityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
@@ -169,7 +169,7 @@ public class EditSecurityRoleGroupCommand
     
     @Override
     public void doUpdate(SecurityRoleGroup securityRoleGroup) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         var partyPK = getPartyPK();
         SecurityRoleGroupDetailValue securityRoleGroupDetailValue = securityControl.getSecurityRoleGroupDetailValueForUpdate(securityRoleGroup);
         SecurityRoleGroupDescription securityRoleGroupDescription = securityControl.getSecurityRoleGroupDescriptionForUpdate(securityRoleGroup, getPreferredLanguage());

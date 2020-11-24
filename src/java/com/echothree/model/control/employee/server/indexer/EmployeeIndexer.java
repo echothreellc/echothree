@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class EmployeeIndexer
         extends PartyIndexer {
     
-    EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
     
     /** Creates a new instance of EmployeeIndexer */
     public EmployeeIndexer(final ExecutionErrorAccumulator eea, final Index index) {

@@ -51,7 +51,7 @@ public class ShippingMethodLogic
     }
 
     private ShippingMethod getShippingMethodByName(final ExecutionErrorAccumulator eea, final String shippingMethodName, final EntityPermission entityPermission) {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         ShippingMethod shippingMethod = null;
 
         shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName, entityPermission);

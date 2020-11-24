@@ -49,16 +49,16 @@ public class ContactPostalAddressTransferCache
     public ContactPostalAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
         super(userVisit, contactControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
+        workflowControl = Session.getModelController(WorkflowControl.class);
     }
     
     public ContactPostalAddressTransfer getContactPostalAddressTransfer(ContactPostalAddress contactPostalAddress) {
         ContactPostalAddressTransfer contactPostalAddressTransfer = get(contactPostalAddress);
         
         if(contactPostalAddressTransfer == null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            GeoControl geoControl = Session.getModelController(GeoControl.class);
+            PartyControl partyControl = Session.getModelController(PartyControl.class);
             PersonalTitle personalTitle = contactPostalAddress.getPersonalTitle();
             PersonalTitleTransfer personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
             String firstName = contactPostalAddress.getFirstName();

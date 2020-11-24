@@ -60,7 +60,7 @@ public class GetGlResourceTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetGlResourceTypesResult result = AccountingResultFactory.getGetGlResourceTypesResult();
         
         result.setGlResourceTypes(accountingControl.getGlResourceTypeTransfers(getUserVisit()));

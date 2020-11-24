@@ -65,7 +65,7 @@ public class GetShipmentAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         GetShipmentAliasTypeChoicesResult result = ShipmentResultFactory.getGetShipmentAliasTypeChoicesResult();
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);

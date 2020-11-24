@@ -47,7 +47,8 @@ public class SalesOrderPaymentPreferenceLogic
         return LogicHolder.instance;
     }
     
-    /** Verify that the CustomerType is authorized to use the PaymentMethod. If there are no CustomerTypePaymentMethods for any PaymentMethod,
+    /**
+     * Verify that the CustomerType is authorized to use the PaymentMethod. If there are no CustomerTypePaymentMethods for any PaymentMethod,
      * then it is assumed they're authorized.
      * 
      * @param eea Required.
@@ -56,7 +57,7 @@ public class SalesOrderPaymentPreferenceLogic
      */
     public void checkCustomerTypePaymentMethod(final ExecutionErrorAccumulator eea, final CustomerType customerType,
             final PaymentMethod paymentMethod) {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         
         if(!customerControl.getCustomerTypePaymentMethodExists(customerType, paymentMethod)
                 && customerControl.countCustomerTypePaymentMethodsByCustomerType(customerType) != 0) {
@@ -66,6 +67,7 @@ public class SalesOrderPaymentPreferenceLogic
     }
     
     /**
+     * Create an Order Payment Preference for a given Order.
      * 
      * @param eea Required.
      * @param order Required.

@@ -53,7 +53,7 @@ public class SelectorKindLogic
     public SelectorKind createSelectorKind(final ExecutionErrorAccumulator eea, final String selectorKindName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind == null) {
@@ -71,7 +71,7 @@ public class SelectorKindLogic
 
     public SelectorKind getSelectorKindByName(final ExecutionErrorAccumulator eea, final String selectorKindName,
             final EntityPermission entityPermission) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName, entityPermission);
 
         if(selectorKind == null) {
@@ -92,7 +92,7 @@ public class SelectorKindLogic
     public SelectorKind getSelectorKindByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SelectorKindUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SelectorKind selectorKind = null;
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindName = universalSpec.getSelectorKindName();
         int parameterCount = (selectorKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -140,7 +140,7 @@ public class SelectorKindLogic
 
     public void deleteSelectorKind(final ExecutionErrorAccumulator eea, final SelectorKind selectorKind,
             final BasePK deletedBy) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
 
         selectorControl.deleteSelectorKind(selectorKind, deletedBy);
     }

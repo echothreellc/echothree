@@ -49,7 +49,7 @@ public class DateUtils {
         String result = null;
         
         if(date != null) {
-            var userControl = (UserControl)Session.getModelController(UserControl.class);
+            var userControl = Session.getModelController(UserControl.class);
             LocalDate localDate = LocalDate.parse(date.toString(), dateTimeFormatter);
             java.time.format.DateTimeFormatter resultDateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(userControl.getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail().getJavaShortDateFormat());
             

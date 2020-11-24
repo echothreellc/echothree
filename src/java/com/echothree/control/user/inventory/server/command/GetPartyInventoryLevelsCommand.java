@@ -70,12 +70,12 @@ public class GetPartyInventoryLevelsCommand
                 (itemName == null? 0: 1) + (inventoryConditionName == null? 0: 1);
         
         if(parameterCount == 1) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
             UserVisit userVisit = getUserVisit();
             List<PartyInventoryLevelTransfer> partyInventoryLevels = null;
             
             if(itemName != null) {
-                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = Session.getModelController(ItemControl.class);
                 Item item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
@@ -97,7 +97,7 @@ public class GetPartyInventoryLevelsCommand
                 Party party = getParty(partyName, companyName, warehouseName);
                 
                 if(party != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = Session.getModelController(PartyControl.class);
                     
                     partyInventoryLevels = inventoryControl.getPartyInventoryLevelTransfersByParty(userVisit, party);
                     
@@ -106,7 +106,7 @@ public class GetPartyInventoryLevelsCommand
                     } else if(companyName != null) {
                         result.setCompany(partyControl.getCompanyTransfer(userVisit, party));
                     } else if(warehouseName != null) {
-                        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+                        var warehouseControl = Session.getModelController(WarehouseControl.class);
                         
                         result.setWarehouse(warehouseControl.getWarehouseTransfer(userVisit, party));
                     }

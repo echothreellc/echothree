@@ -69,12 +69,12 @@ public class GetContentCollectionDescriptionCommand
     @Override
     protected BaseResult execute() {
         GetContentCollectionDescriptionResult result = ContentResultFactory.getGetContentCollectionDescriptionResult();
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

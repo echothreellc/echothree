@@ -87,13 +87,13 @@ public class EditSearchDefaultOperatorDescriptionCommand
 
     @Override
     public SearchDefaultOperatorDescription getEntity(EditSearchDefaultOperatorDescriptionResult result) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchDefaultOperatorDescription searchDefaultOperatorDescription = null;
         String searchDefaultOperatorName = spec.getSearchDefaultOperatorName();
         SearchDefaultOperator searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
         if(searchDefaultOperator != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSearchDefaultOperatorDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchDefaultOperatorDescriptionResult result, SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
 
         result.setSearchDefaultOperatorDescription(searchControl.getSearchDefaultOperatorDescriptionTransfer(getUserVisit(), searchDefaultOperatorDescription));
     }
@@ -136,7 +136,7 @@ public class EditSearchDefaultOperatorDescriptionCommand
 
     @Override
     public void doUpdate(SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchDefaultOperatorDescriptionValue searchDefaultOperatorDescriptionValue = searchControl.getSearchDefaultOperatorDescriptionValue(searchDefaultOperatorDescription);
         searchDefaultOperatorDescriptionValue.setDescription(edit.getDescription());
 

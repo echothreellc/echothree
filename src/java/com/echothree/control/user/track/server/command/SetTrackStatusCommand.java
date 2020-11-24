@@ -64,7 +64,7 @@ public class SetTrackStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = Session.getModelController(TrackControl.class);
         String trackName = form.getTrackName();
         Track track = trackControl.getTrackByName(trackName);
         

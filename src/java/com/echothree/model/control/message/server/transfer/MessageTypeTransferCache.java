@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class MessageTypeTransferCache
         extends BaseMessageTransferCache<MessageType, MessageTypeTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of MessageTypeTransferCache */
     public MessageTypeTransferCache(UserVisit userVisit, MessageControl messageControl) {

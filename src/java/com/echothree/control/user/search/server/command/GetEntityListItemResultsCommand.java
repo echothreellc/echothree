@@ -58,7 +58,7 @@ public class GetEntityListItemResultsCommand
     @Override
     protected BaseResult execute() {
         GetEntityListItemResultsResult result = SearchResultFactory.getGetEntityListItemResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_ENTITY_LIST_ITEM);
         
         if(searchKind != null) {
@@ -70,7 +70,7 @@ public class GetEntityListItemResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var entityListItemControl = (EntityListItemControl)Session.getModelController(EntityListItemControl.class);
+                    var entityListItemControl = Session.getModelController(EntityListItemControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setEntityListItemResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

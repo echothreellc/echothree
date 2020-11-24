@@ -361,8 +361,8 @@ public class UseControl
     }
 
     public void deleteUse(Use use, BasePK deletedBy) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
-        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
+        var offerUseControl = Session.getModelController(OfferUseControl.class);
 
         useControl.deleteUseDescriptionsByUse(use, deletedBy);
         offerUseControl.deleteOfferUsesByUse(use, deletedBy);
@@ -583,7 +583,7 @@ public class UseControl
         }
 
         try {
-            var useControl = (UseControl)Session.getModelController(UseControl.class);
+            var useControl = Session.getModelController(UseControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

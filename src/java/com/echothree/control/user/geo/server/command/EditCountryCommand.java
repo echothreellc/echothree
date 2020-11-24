@@ -121,7 +121,7 @@ public class EditCountryCommand
 
     @Override
     public GeoCode getEntity(EditCountryResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCode geoCode = null;
         String geoCodeName = spec.getGeoCodeName();
 
@@ -151,14 +151,14 @@ public class EditCountryCommand
 
     @Override
     public void fillInResult(EditCountryResult result, GeoCode geoCode) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         result.setCountry(geoControl.getCountryTransfer(getUserVisit(), geoCode));
     }
 
     @Override
     public void doLock(CountryEdit edit, GeoCode geoCode) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
         GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, getPreferredLanguage());
         GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
@@ -235,7 +235,7 @@ public class EditCountryCommand
                             duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_COUNTRY_NAME, countryName);
 
                             if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
-                                var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                                var contactControl = Session.getModelController(ContactControl.class);
                                 String postalAddressFormatName = edit.getPostalAddressFormatName();
 
                                 postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
@@ -269,7 +269,7 @@ public class EditCountryCommand
 
     @Override
     public void doUpdate(GeoCode geoCode) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
         var partyPK = getPartyPK();
         GeoCodeDetailValue geoCodeDetailValue = geoControl.getGeoCodeDetailValueForUpdate(geoCode);

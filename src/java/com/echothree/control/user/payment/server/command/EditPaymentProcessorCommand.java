@@ -90,7 +90,7 @@ public class EditPaymentProcessorCommand
 
     @Override
     public PaymentProcessor getEntity(EditPaymentProcessorResult result) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         PaymentProcessor paymentProcessor = null;
         String paymentProcessorName = spec.getPaymentProcessorName();
 
@@ -116,14 +116,14 @@ public class EditPaymentProcessorCommand
 
     @Override
     public void fillInResult(EditPaymentProcessorResult result, PaymentProcessor paymentProcessor) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
 
         result.setPaymentProcessor(paymentProcessorControl.getPaymentProcessorTransfer(getUserVisit(), paymentProcessor));
     }
 
     @Override
     public void doLock(PaymentProcessorEdit edit, PaymentProcessor paymentProcessor) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescription(paymentProcessor, getPreferredLanguage());
         PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditPaymentProcessorCommand
 
     @Override
     public void canUpdate(PaymentProcessor paymentProcessor) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         String paymentProcessorName = edit.getPaymentProcessorName();
         PaymentProcessor duplicatePaymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
@@ -149,7 +149,7 @@ public class EditPaymentProcessorCommand
 
     @Override
     public void doUpdate(PaymentProcessor paymentProcessor) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var partyPK = getPartyPK();
         PaymentProcessorDetailValue paymentProcessorDetailValue = paymentProcessorControl.getPaymentProcessorDetailValueForUpdate(paymentProcessor);
         PaymentProcessorDescription paymentProcessorDescription = paymentProcessorControl.getPaymentProcessorDescriptionForUpdate(paymentProcessor, getPreferredLanguage());

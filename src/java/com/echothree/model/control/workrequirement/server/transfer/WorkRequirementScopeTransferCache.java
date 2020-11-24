@@ -41,10 +41,10 @@ import java.util.Set;
 public class WorkRequirementScopeTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirementScope, WorkRequirementScopeTransfer> {
     
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkRequirementScopeTransferCache */

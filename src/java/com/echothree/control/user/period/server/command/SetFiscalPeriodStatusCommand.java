@@ -62,7 +62,7 @@ public class SetFiscalPeriodStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         Period period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
         
         if(!hasExecutionErrors()) {

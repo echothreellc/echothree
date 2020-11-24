@@ -68,12 +68,12 @@ public class CreateGeoCodeCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         String geoCodeName = form.getGeoCodeName();
         GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = Session.getModelController(AccountingControl.class);
             String currencyIsoName = form.getCurrencyIsoName();
             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             

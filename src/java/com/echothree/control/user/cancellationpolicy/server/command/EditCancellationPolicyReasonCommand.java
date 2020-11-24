@@ -80,7 +80,7 @@ public class EditCancellationPolicyReasonCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         EditCancellationPolicyReasonResult result = CancellationPolicyResultFactory.getEditCancellationPolicyReasonResult();
         String cancellationPolicyName = spec.getCancellationPolicyName();
         String cancellationKindName = spec.getCancellationKindName();

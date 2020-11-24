@@ -62,7 +62,7 @@ public class DeleteAllocationPriorityCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
             String allocationPriorityName = form.getAllocationPriorityName();
             AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByNameForUpdate(allocationPriorityName);
 

@@ -55,9 +55,9 @@ import org.apache.lucene.util.BytesRef;
 public class ContactMechanismIndexer
         extends BaseIndexer<ContactMechanism> {
     
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of ContactMechanismIndexer */
     public ContactMechanismIndexer(final ExecutionErrorAccumulator eea, final Index index) {

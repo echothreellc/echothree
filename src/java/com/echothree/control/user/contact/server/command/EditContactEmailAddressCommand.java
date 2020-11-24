@@ -98,13 +98,13 @@ public class EditContactEmailAddressCommand
 
     @Override
     public PartyContactMechanism getEntity(EditContactEmailAddressResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyContactMechanism partyContactMechanism = null;
         var partyName = spec.getPartyName();
         var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = Session.getModelController(ContactControl.class);
             var contactMechanismName = spec.getContactMechanismName();
             var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
 
@@ -144,7 +144,7 @@ public class EditContactEmailAddressCommand
 
     @Override
     public void fillInResult(EditContactEmailAddressResult result, PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
 
         result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
                 partyContactMechanism.getLastDetail().getContactMechanism()));
@@ -152,7 +152,7 @@ public class EditContactEmailAddressCommand
 
     @Override
     public void doLock(ContactEmailAddressEdit edit, PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetail = contactMechanism.getLastDetail();
         var contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
@@ -165,7 +165,7 @@ public class EditContactEmailAddressCommand
 
     @Override
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var userControl = getUserControl();
         var party = partyContactMechanism.getLastDetail().getParty();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
@@ -186,7 +186,7 @@ public class EditContactEmailAddressCommand
 
     @Override
     public void doUpdate(PartyContactMechanism partyContactMechanism) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var updatedBy = getPartyPK();
         var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
         var contactMechanismDetailValue = contactControl.getContactMechanismDetailValue(contactMechanism.getLastDetail());

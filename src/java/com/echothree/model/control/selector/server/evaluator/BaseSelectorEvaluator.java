@@ -47,9 +47,9 @@ public class BaseSelectorEvaluator {
     
     protected Session session;
     protected BasePK evaluatedBy;
-    protected CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    protected SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-    protected WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    protected CoreControl coreControl = Session.getModelController(CoreControl.class);
+    protected SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     protected Log log;
     
     protected CachedSelector cachedSelector = null;

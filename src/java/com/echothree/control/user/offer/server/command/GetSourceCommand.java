@@ -64,7 +64,7 @@ public class GetSourceCommand
     
     @Override
     protected Source getEntity() {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         String sourceName = form.getSourceName();
         Source source = sourceControl.getSourceByName(sourceName);
         
@@ -77,7 +77,7 @@ public class GetSourceCommand
     
     @Override
     protected BaseResult getTransfer(Source source) {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         GetSourceResult result = OfferResultFactory.getGetSourceResult();
         
         if(source != null) {

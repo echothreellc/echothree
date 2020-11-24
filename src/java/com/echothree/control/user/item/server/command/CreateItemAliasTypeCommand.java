@@ -70,7 +70,7 @@ public class CreateItemAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         String itemAliasTypeName = form.getItemAliasTypeName();
         ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 

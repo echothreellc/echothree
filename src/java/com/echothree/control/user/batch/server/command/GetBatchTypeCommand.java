@@ -65,7 +65,7 @@ public class GetBatchTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         GetBatchTypeResult result = BatchResultFactory.getGetBatchTypeResult();
         String batchTypeName = form.getBatchTypeName();
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);

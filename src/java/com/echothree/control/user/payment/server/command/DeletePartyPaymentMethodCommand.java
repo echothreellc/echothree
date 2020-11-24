@@ -74,7 +74,7 @@ public class DeletePartyPaymentMethodCommand
 
             // If the executing Party is a CUSTOMER...
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-                var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+                var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
                 var partyPaymentMethodName = form.getPartyPaymentMethodName();
                 var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
 

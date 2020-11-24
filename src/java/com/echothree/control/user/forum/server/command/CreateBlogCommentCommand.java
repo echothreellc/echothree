@@ -79,13 +79,13 @@ public class CreateBlogCommentCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         CreateBlogCommentResult result = ForumResultFactory.getCreateBlogCommentResult();
         String username = form.getUsername();
         UserLogin userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
 
         if(username == null || userLogin != null) {
-            var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+            var forumControl = Session.getModelController(ForumControl.class);
             String parentForumMessageName = form.getParentForumMessageName();
             ForumMessage parentForumMessage = forumControl.getForumMessageByName(parentForumMessageName);
 
@@ -102,12 +102,12 @@ public class CreateBlogCommentCommand
                         Forum forum = forumControl.getDefaultForumForumThread(forumThread).getForum();
 
                         if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
-                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
-                                var iconControl = (IconControl)Session.getModelController(IconControl.class);
+                                var iconControl = Session.getModelController(IconControl.class);
                                 String forumMessageIconName = form.getForumMessageIconName();
                                 Icon forumMessageIcon = iconControl.getIconByName(forumMessageIconName);
 

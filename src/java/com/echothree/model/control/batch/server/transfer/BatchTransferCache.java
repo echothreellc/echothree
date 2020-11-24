@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class BatchTransferCache
         extends GenericBatchTransferCache<BatchTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of BatchTransferCache */
     public BatchTransferCache(UserVisit userVisit, BatchControl batchControl) {

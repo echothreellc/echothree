@@ -50,7 +50,7 @@ public class GetForumPartyTypeRolesCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         GetForumPartyTypeRolesResult result = ForumResultFactory.getGetForumPartyTypeRolesResult();
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByName(forumName);

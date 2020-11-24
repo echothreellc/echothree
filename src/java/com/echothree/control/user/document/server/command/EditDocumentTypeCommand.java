@@ -93,7 +93,7 @@ public class EditDocumentTypeCommand
 
     @Override
     public DocumentType getEntity(EditDocumentTypeResult result) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentType documentType = null;
         String documentTypeName = spec.getDocumentTypeName();
 
@@ -119,7 +119,7 @@ public class EditDocumentTypeCommand
 
     @Override
     public void fillInResult(EditDocumentTypeResult result, DocumentType documentType) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
 
         result.setDocumentType(documentControl.getDocumentTypeTransfer(getUserVisit(), documentType));
     }
@@ -129,7 +129,7 @@ public class EditDocumentTypeCommand
 
     @Override
     public void doLock(DocumentTypeEdit edit, DocumentType documentType) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeDescription documentTypeDescription = documentControl.getDocumentTypeDescription(documentType, getPreferredLanguage());
         DocumentTypeDetail documentTypeDetail = documentType.getLastDetail();
 
@@ -150,7 +150,7 @@ public class EditDocumentTypeCommand
 
     @Override
     public void canUpdate(DocumentType documentType) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         String documentTypeName = edit.getDocumentTypeName();
         DocumentType duplicateDocumentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -187,7 +187,7 @@ public class EditDocumentTypeCommand
 
     @Override
     public void doUpdate(DocumentType documentType) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         var partyPK = getPartyPK();
         DocumentTypeDetailValue documentTypeDetailValue = documentControl.getDocumentTypeDetailValueForUpdate(documentType);
         DocumentTypeDescription documentTypeDescription = documentControl.getDocumentTypeDescriptionForUpdate(documentType, getPreferredLanguage());

@@ -64,13 +64,13 @@ public class EditTerminationReasonDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         EditTerminationReasonDescriptionResult result = EmployeeResultFactory.getEditTerminationReasonDescriptionResult();
         String terminationReasonName = spec.getTerminationReasonName();
         TerminationReason terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
         
         if(terminationReason != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

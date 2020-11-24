@@ -100,7 +100,7 @@ public class EditTrainingClassQuestionCommand
     
     @Override
     public TrainingClassQuestion getEntity(EditTrainingClassQuestionResult result) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassQuestion trainingClassQuestion = null;
         String trainingClassName = spec.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -141,7 +141,7 @@ public class EditTrainingClassQuestionCommand
 
     @Override
     public void fillInResult(EditTrainingClassQuestionResult result, TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
 
         result.setTrainingClassQuestion(trainingControl.getTrainingClassQuestionTransfer(getUserVisit(), trainingClassQuestion));
     }
@@ -150,7 +150,7 @@ public class EditTrainingClassQuestionCommand
     
     @Override
     public void doLock(TrainingClassQuestionEdit edit, TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassQuestionTranslation trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslation(trainingClassQuestion, getPreferredLanguage());
         TrainingClassQuestionDetail trainingClassQuestionDetail = trainingClassQuestion.getLastDetail();
 
@@ -167,7 +167,7 @@ public class EditTrainingClassQuestionCommand
 
     @Override
     public void canUpdate(TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         String trainingClassQuestionName = edit.getTrainingClassQuestionName();
         TrainingClassQuestion duplicateTrainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
@@ -186,7 +186,7 @@ public class EditTrainingClassQuestionCommand
     
     @Override
     public void doUpdate(TrainingClassQuestion trainingClassQuestion) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         TrainingClassQuestionDetailValue trainingClassQuestionDetailValue = trainingControl.getTrainingClassQuestionDetailValueForUpdate(trainingClassQuestion);
         TrainingClassQuestionTranslation trainingClassQuestionTranslation = trainingControl.getTrainingClassQuestionTranslationForUpdate(trainingClassQuestion, getPreferredLanguage());

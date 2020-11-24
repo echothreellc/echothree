@@ -68,13 +68,13 @@ public class GetPaymentProcessorResultCodeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         GetPaymentProcessorResultCodeDescriptionResult result = PaymentResultFactory.getGetPaymentProcessorResultCodeDescriptionResult();
         String paymentProcessorResultCodeName = form.getPaymentProcessorResultCodeName();
         PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCode != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class TrainingClassSectionTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassSectionTranslation, TrainingClassSectionTranslationTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of TrainingClassSectionTranslationTransferCache */
     public TrainingClassSectionTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {

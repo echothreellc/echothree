@@ -67,12 +67,12 @@ import java.util.Set;
 public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
     
-    CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
-    ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-    VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
     
     boolean includeEntityAppearance;
     boolean includeNames;

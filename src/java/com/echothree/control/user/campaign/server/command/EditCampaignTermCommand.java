@@ -89,7 +89,7 @@ public class EditCampaignTermCommand
 
     @Override
     public CampaignTerm getEntity(EditCampaignTermResult result) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignTerm campaignTerm;
         String campaignTermName = spec.getCampaignTermName();
 
@@ -113,14 +113,14 @@ public class EditCampaignTermCommand
 
     @Override
     public void fillInResult(EditCampaignTermResult result, CampaignTerm campaignTerm) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
 
         result.setCampaignTerm(campaignControl.getCampaignTermTransfer(getUserVisit(), campaignTerm));
     }
 
     @Override
     public void doLock(CampaignTermEdit edit, CampaignTerm campaignTerm) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignTermDescription campaignTermDescription = campaignControl.getCampaignTermDescription(campaignTerm, getPreferredLanguage());
         CampaignTermDetail campaignTermDetail = campaignTerm.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditCampaignTermCommand
 
     @Override
     public void canUpdate(CampaignTerm campaignTerm) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String value = edit.getValue();
         CampaignTerm duplicateCampaignTerm = campaignControl.getCampaignTermByValue(value);
 
@@ -146,7 +146,7 @@ public class EditCampaignTermCommand
 
     @Override
     public void doUpdate(CampaignTerm campaignTerm) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
         CampaignTermDetailValue campaignTermDetailValue = campaignControl.getCampaignTermDetailValueForUpdate(campaignTerm);
         CampaignTermDescription campaignTermDescription = campaignControl.getCampaignTermDescriptionForUpdate(campaignTerm, getPreferredLanguage());

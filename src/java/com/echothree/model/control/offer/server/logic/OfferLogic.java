@@ -61,7 +61,7 @@ public class OfferLogic
     public Offer createOffer(final ExecutionErrorAccumulator eea, final String offerName, final Sequence salesOrderSequence,
             final Party departmentParty, final Selector offerItemSelector, final Filter offerItemPriceFilter, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         Offer offer = offerControl.getOfferByName(offerName);
 
         if(offer == null) {
@@ -80,7 +80,7 @@ public class OfferLogic
 
     public Offer getOfferByName(final ExecutionErrorAccumulator eea, final String offerName,
             final EntityPermission entityPermission) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         Offer offer = offerControl.getOfferByName(offerName, entityPermission);
 
         if(offer == null) {
@@ -101,7 +101,7 @@ public class OfferLogic
     public Offer getOfferByUniversalSpec(final ExecutionErrorAccumulator eea,
             final OfferUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         Offer offer = null;
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         String offerName = universalSpec.getOfferName();
         int parameterCount = (offerName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -148,16 +148,16 @@ public class OfferLogic
     }
 
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
 
         offerControl.updateOfferFromValue(offerDetailValue, updatedBy);
     }
 
     public void deleteOffer(final ExecutionErrorAccumulator eea, final Offer offer, final BasePK deletedBy) {
-        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+        var offerUseControl = Session.getModelController(OfferUseControl.class);
 
         if(offerUseControl.countOfferUsesByOffer(offer) == 0) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
 
             offerControl.deleteOffer(offer, deletedBy);
         } else {

@@ -63,7 +63,7 @@ public class SetDefaultRatingTypeListItemCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = Session.getModelController(RatingControl.class);
                 String ratingTypeName = form.getRatingTypeName();
                 RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 

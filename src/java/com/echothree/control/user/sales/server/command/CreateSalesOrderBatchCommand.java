@@ -72,13 +72,13 @@ public class CreateSalesOrderBatchCommand
     @Override
     protected BaseResult execute() {
         CreateSalesOrderBatchResult result = SalesResultFactory.getCreateSalesOrderBatchResult();
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String currencyIsoName = form.getCurrencyIsoName();
 
         Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency != null) {
-            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
             String paymentMethodName = form.getPaymentMethodName();
             PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 

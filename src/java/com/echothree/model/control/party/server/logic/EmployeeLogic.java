@@ -65,7 +65,7 @@ public class EmployeeLogic
         PartyEmployee partyEmployee = null;
 
         if(parameterCount == 1) {
-            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = Session.getModelController(EmployeeControl.class);
 
             if(employeeName != null) {
                 partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
@@ -74,7 +74,7 @@ public class EmployeeLogic
                     handleExecutionError(UnknownEmployeeNameException.class, eea, ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
@@ -97,8 +97,8 @@ public class EmployeeLogic
     }
 
     public void setEmployeeStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);

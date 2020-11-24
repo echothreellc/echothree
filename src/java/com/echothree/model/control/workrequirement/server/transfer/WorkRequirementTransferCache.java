@@ -38,10 +38,10 @@ import java.util.Set;
 public class WorkRequirementTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirement, WorkRequirementTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeWorkAssignments;
     boolean includeWorkTimes;
     

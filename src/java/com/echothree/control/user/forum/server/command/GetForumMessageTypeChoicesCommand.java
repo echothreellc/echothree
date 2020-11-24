@@ -49,7 +49,7 @@ public class GetForumMessageTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         GetForumMessageTypeChoicesResult result = ForumResultFactory.getGetForumMessageTypeChoicesResult();
         String defaultForumMessageTypeChoice = form.getDefaultForumMessageTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

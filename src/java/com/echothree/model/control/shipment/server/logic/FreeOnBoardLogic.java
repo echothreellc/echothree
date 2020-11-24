@@ -53,7 +53,7 @@ public class FreeOnBoardLogic
     public FreeOnBoard createFreeOnBoard(final ExecutionErrorAccumulator eea, final String freeOnBoardName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
 
         if(freeOnBoard == null) {
@@ -71,7 +71,7 @@ public class FreeOnBoardLogic
 
     public FreeOnBoard getFreeOnBoardByName(final ExecutionErrorAccumulator eea, final String freeOnBoardName,
             final EntityPermission entityPermission) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName, entityPermission);
 
         if(freeOnBoard == null) {
@@ -92,7 +92,7 @@ public class FreeOnBoardLogic
     public FreeOnBoard getFreeOnBoardByUniversalSpec(final ExecutionErrorAccumulator eea,
             final FreeOnBoardUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         FreeOnBoard freeOnBoard = null;
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoardName = universalSpec.getFreeOnBoardName();
         int parameterCount = (freeOnBoardName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -139,7 +139,7 @@ public class FreeOnBoardLogic
     }
 
     public FreeOnBoard getDefaultFreeOnBoard(final ExecutionErrorAccumulator eea) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoard = freeOnBoardControl.getDefaultFreeOnBoard();
 
         if(freeOnBoard == null) {
@@ -151,7 +151,7 @@ public class FreeOnBoardLogic
 
     public void deleteFreeOnBoard(final ExecutionErrorAccumulator eea, final FreeOnBoard freeOnBoard,
             final BasePK deletedBy) {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
 
         freeOnBoardControl.deleteFreeOnBoard(freeOnBoard, deletedBy);
     }

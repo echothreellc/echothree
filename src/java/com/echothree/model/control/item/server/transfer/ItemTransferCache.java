@@ -80,19 +80,19 @@ import java.util.Set;
 public class ItemTransferCache
         extends BaseItemTransferCache<Item, ItemTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-    CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
-    ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    OfferControl offerControl = Session.getModelController(OfferControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    RatingControl ratingControl = Session.getModelController(RatingControl.class);
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     boolean includeItemShippingTimes;
     boolean includeItemAliases;
@@ -326,7 +326,7 @@ public class ItemTransferCache
             }
 
             if(includeOfferItems) {
-                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                var offerItemControl = Session.getModelController(OfferItemControl.class);
 
                 itemTransfer.setOfferItems(ListWrapperBuilder.getInstance().filter(transferProperties, offerItemControl.getOfferItemTransfersByItem(userVisit, item)));
             }

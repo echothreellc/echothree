@@ -325,7 +325,7 @@ public class OrderSearchEvaluator
             Order order = null;
 
             if(parameterCount == 1) {
-                var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+                var orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
                 if(orderAliasType == null) {
                     orderAliasType = orderAliasControl.getDefaultOrderAliasType(orderType);
@@ -338,7 +338,7 @@ public class OrderSearchEvaluator
                 }
 
                 if(orderName != null) {
-                    var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+                    var orderControl = Session.getModelController(OrderControl.class);
 
                     order = orderControl.getOrderByName(orderType, orderName);
                 }

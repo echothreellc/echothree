@@ -36,7 +36,7 @@ import org.apache.lucene.util.BytesRef;
 public class UseTypeIndexer
         extends BaseIndexer<UseType> {
 
-    UseTypeControl useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+    UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTypeIndexer */
     public UseTypeIndexer(final ExecutionErrorAccumulator eea, final Index index) {

@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class BaseEncryptionKeyTransferCache
         extends BaseCoreTransferCache<BaseEncryptionKey, BaseEncryptionKeyTransfer> {
     
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BaseEncryptionKeyTransferCache */
     protected BaseEncryptionKeyTransferCache(UserVisit userVisit, CoreControl coreControl) {

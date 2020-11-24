@@ -66,12 +66,12 @@ public class DeleteUseNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         String useNameElementName = form.getUseNameElementName();
         UseNameElement useNameElement = useNameElementControl.getUseNameElementByName(useNameElementName);
         
         if(useNameElement != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

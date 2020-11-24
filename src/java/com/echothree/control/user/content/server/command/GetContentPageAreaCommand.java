@@ -61,7 +61,7 @@ public class GetContentPageAreaCommand
     
     @Override
     protected ContentPageArea getEntity() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         ContentPageArea contentPageArea = null;
@@ -80,7 +80,7 @@ public class GetContentPageAreaCommand
                     ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
-                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = Session.getModelController(PartyControl.class);
                         String languageIsoName = form.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         
@@ -116,7 +116,7 @@ public class GetContentPageAreaCommand
         GetContentPageAreaResult result = ContentResultFactory.getGetContentPageAreaResult();
 
         if (contentPageArea != null) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
             
             result.setContentPageArea(contentControl.getContentPageAreaTransfer(getUserVisit(), contentPageArea));
         }

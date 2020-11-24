@@ -68,7 +68,7 @@ public class DeleteSecurityRolePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
@@ -77,7 +77,7 @@ public class DeleteSecurityRolePartyTypeCommand
             SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String partyTypeName = form.getPartyTypeName();
                 PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
                 

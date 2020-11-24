@@ -71,7 +71,7 @@ public class GetPaymentProcessorTransactionCodesCommand
         var paymentProcessorTransaction = PaymentProcessorTransactionLogic.getInstance().getPaymentProcessorTransactionByName(this, form.getPaymentProcessorTransactionName());
 
         if(!hasExecutionErrors()) {
-            var paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+            var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
 
             paymentProcessorTransactionCodes = paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction);
         }
@@ -81,7 +81,7 @@ public class GetPaymentProcessorTransactionCodesCommand
     @Override
     protected BaseResult getTransfers(Collection<PaymentProcessorTransactionCode> entities) {
         GetPaymentProcessorTransactionCodesResult result = PaymentResultFactory.getGetPaymentProcessorTransactionCodesResult();
-        var paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+        var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
         
         result.setPaymentProcessorTransactionCodes(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfers(getUserVisit(), entities));
         

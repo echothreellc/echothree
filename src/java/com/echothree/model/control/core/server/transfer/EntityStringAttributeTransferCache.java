@@ -32,7 +32,7 @@ import java.util.Set;
 public class EntityStringAttributeTransferCache
         extends BaseCoreTransferCache<EntityStringAttribute, EntityStringAttributeTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeString;
     
     /** Creates a new instance of EntityStringAttributeTransferCache */

@@ -97,7 +97,7 @@ public class CreateOfferCommand
         Sequence salesOrderSequence = null;
 
         if(salesOrderSequenceName != null) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
 
             if(sequenceType != null) {
@@ -108,7 +108,7 @@ public class CreateOfferCommand
         }
 
         if(salesOrderSequenceName == null || salesOrderSequence != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String companyName = form.getCompanyName();
             PartyCompany partyCompany = companyName == null? partyControl.getDefaultPartyCompany():
                 partyControl.getPartyCompanyByName(companyName);
@@ -131,7 +131,7 @@ public class CreateOfferCommand
                         Selector offerItemSelector = null;
 
                         if(offerItemSelectorName != null) {
-                            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                            var selectorControl = Session.getModelController(SelectorControl.class);
                             SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
 
                             if(selectorKind != null) {
@@ -153,7 +153,7 @@ public class CreateOfferCommand
                             Filter offerItemPriceFilter = null;
 
                             if(offerItemPriceFilterName != null) {
-                                var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+                                var filterControl = Session.getModelController(FilterControl.class);
                                 FilterKind filterKind = filterControl.getFilterKindByName(FilterConstants.FilterKind_PRICE);
                                 FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterConstants.FilterType_OFFER_ITEM_PRICE);
 

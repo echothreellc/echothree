@@ -76,7 +76,7 @@ public class RecoveryQuestionObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return userControl.getBestRecoveryQuestionDescription(recoveryQuestion, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

@@ -58,7 +58,7 @@ public class PaymentProcessorTypeCodeLogic
             final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType, final String paymentProcessorTypeCodeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentProcessorTypeCodeControl = (PaymentProcessorTypeCodeControl)Session.getModelController(PaymentProcessorTypeCodeControl.class);
+        var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         var paymentProcessorTypeCode = paymentProcessorTypeCodeControl.getPaymentProcessorTypeCodeByName(paymentProcessorTypeCodeType, paymentProcessorTypeCodeName);
 
         if(paymentProcessorTypeCode == null) {
@@ -94,7 +94,7 @@ public class PaymentProcessorTypeCodeLogic
     public PaymentProcessorTypeCode getPaymentProcessorTypeCodeByName(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType, final String paymentProcessorTypeCodeName,
             final EntityPermission entityPermission) {
-        var paymentProcessorTypeCodeControl = (PaymentProcessorTypeCodeControl)Session.getModelController(PaymentProcessorTypeCodeControl.class);
+        var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         PaymentProcessorTypeCode paymentProcessorTypeCode = paymentProcessorTypeCodeControl.getPaymentProcessorTypeCodeByName(paymentProcessorTypeCodeType,
                 paymentProcessorTypeCodeName, entityPermission);
 
@@ -142,7 +142,7 @@ public class PaymentProcessorTypeCodeLogic
     public PaymentProcessorTypeCode getPaymentProcessorTypeCodeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorTypeCode paymentProcessorTypeCode = null;
-        var paymentProcessorTypeCodeControl = (PaymentProcessorTypeCodeControl)Session.getModelController(PaymentProcessorTypeCodeControl.class);
+        var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         var paymentProcessorTypeName = universalSpec.getPaymentProcessorTypeName();
         var paymentProcessorTypeCodeTypeName = universalSpec.getPaymentProcessorTypeCodeTypeName();
         var paymentProcessorTypeCodeName = universalSpec.getPaymentProcessorTypeCodeName();
@@ -208,7 +208,7 @@ public class PaymentProcessorTypeCodeLogic
 
     public void deletePaymentProcessorTypeCode(final ExecutionErrorAccumulator eea, final PaymentProcessorTypeCode paymentProcessorTypeCode,
             final BasePK deletedBy) {
-        var paymentProcessorTypeCodeControl = (PaymentProcessorTypeCodeControl)Session.getModelController(PaymentProcessorTypeCodeControl.class);
+        var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
 
         paymentProcessorTypeCodeControl.deletePaymentProcessorTypeCode(paymentProcessorTypeCode, deletedBy);
     }
@@ -216,7 +216,7 @@ public class PaymentProcessorTypeCodeLogic
     public PaymentProcessorTypeCodeDescription createPaymentProcessorTypeCodeDescription(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final Language language,
             final String description, final BasePK createdBy) {
-        var paymentProcessorTypeCodeControl = (PaymentProcessorTypeCodeControl)Session.getModelController(PaymentProcessorTypeCodeControl.class);
+        var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         var paymentProcessorTypeCodeDescription = paymentProcessorTypeCodeControl.getPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, language);
 
         if(paymentProcessorTypeCodeDescription == null) {

@@ -54,7 +54,7 @@ public class CampaignTermLogic
     }
     
     public CampaignTerm getCampaignTermByName(final ExecutionErrorAccumulator eea, final String campaignTermName) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
 
         if(campaignTerm == null) {
@@ -65,7 +65,7 @@ public class CampaignTermLogic
     }
     
     public CampaignTerm getCampaignTermByValue(final ExecutionErrorAccumulator eea, final String campaignTermValue) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignTerm campaignTerm = campaignControl.getCampaignTermByValue(campaignTermValue);
 
         if(campaignTerm == null) {
@@ -76,8 +76,8 @@ public class CampaignTermLogic
     }
     
     public void setCampaignTermStatus(final Session session, ExecutionErrorAccumulator eea, CampaignTerm campaignTerm, String campaignTermStatusChoice, PartyPK modifiedBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());

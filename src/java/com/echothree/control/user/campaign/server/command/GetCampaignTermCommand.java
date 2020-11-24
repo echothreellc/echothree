@@ -78,7 +78,7 @@ public class GetCampaignTermCommand
         int parameterCount = (campaignTermName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+            var campaignControl = Session.getModelController(CampaignControl.class);
             CampaignTerm campaignTerm = null;
 
             if(campaignTermName == null) {

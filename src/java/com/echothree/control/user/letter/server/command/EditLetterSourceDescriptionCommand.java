@@ -78,13 +78,13 @@ public class EditLetterSourceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = Session.getModelController(LetterControl.class);
         EditLetterSourceDescriptionResult result = LetterResultFactory.getEditLetterSourceDescriptionResult();
         String letterSourceName = spec.getLetterSourceName();
         LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
         if(letterSource != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

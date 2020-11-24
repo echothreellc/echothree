@@ -63,7 +63,7 @@ public class GetLotsCommand
     
     @Override
     protected Collection<Lot> getEntities() {
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
         
         return lotControl.getLots();
     }
@@ -71,7 +71,7 @@ public class GetLotsCommand
     @Override
     protected BaseResult getTransfers(Collection<Lot> entities) {
         var result = InventoryResultFactory.getGetLotsResult();
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
         
         result.setLots(lotControl.getLotTransfers(getUserVisit(), entities));
         

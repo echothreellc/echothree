@@ -57,7 +57,7 @@ public class GetUseResultsCommand
     @Override
     protected BaseResult execute() {
         GetUseResultsResult result = SearchResultFactory.getGetUseResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_USE);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetUseResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var useControl = (UseControl)Session.getModelController(UseControl.class);
+                    var useControl = Session.getModelController(UseControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setUseResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

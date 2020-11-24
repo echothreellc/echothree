@@ -62,7 +62,7 @@ public class CreateClubItemCommand
     
     @Override
     protected BaseResult execute() {
-        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = Session.getModelController(ClubControl.class);
         String clubName = form.getClubName();
         Club club = clubControl.getClubByName(clubName);
         
@@ -71,7 +71,7 @@ public class CreateClubItemCommand
             ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
             
             if(clubItemType != null) {
-                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = Session.getModelController(ItemControl.class);
                 String itemName = form.getItemName();
                 Item item = itemControl.getItemByName(itemName);
                 
@@ -82,7 +82,7 @@ public class CreateClubItemCommand
                         ClubItem clubItem = clubControl.getClubItem(club, clubItemType, item);
                         
                         if(clubItem == null) {
-                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                            var uomControl = Session.getModelController(UomControl.class);
                             String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             UnitOfMeasureType unitOfMeasureType = null;
                             

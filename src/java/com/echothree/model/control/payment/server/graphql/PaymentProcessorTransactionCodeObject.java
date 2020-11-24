@@ -87,7 +87,7 @@ public class PaymentProcessorTransactionCodeObject
         List<PaymentProcessorTransactionCodeObject> paymentProcessorTransactionCodes = null;
 
         if(getHasPaymentProcessorTransactionCodesAccess(env)) {
-            var paymentProcessorTransactionCodeControl = (PaymentProcessorTransactionCodeControl)Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+            var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
             var entities = paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransactionCode.getPaymentProcessorTransaction());
             var objects = new ArrayList<PaymentProcessorTransactionCodeObject>(entities.size());
 

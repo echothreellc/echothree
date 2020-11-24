@@ -145,7 +145,7 @@ public class ULID {
     }
         
     private static String generateUlid(EntityInstance entityInstance) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         EntityTime entityTime = coreControl.getEntityTime(entityInstance);
         Long time = entityTime == null ? null : entityTime.getCreatedTime();
         

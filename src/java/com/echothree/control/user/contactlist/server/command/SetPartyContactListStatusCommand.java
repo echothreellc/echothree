@@ -67,12 +67,12 @@ public class SetPartyContactListStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = Session.getModelController(ContactListControl.class);
             String contactListName = form.getContactListName();
             ContactList contactList = contactListControl.getContactListByName(contactListName);
 

@@ -63,7 +63,7 @@ public class GetTrainingClassChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         GetTrainingClassChoicesResult result = TrainingResultFactory.getGetTrainingClassChoicesResult();
         String defaultTrainingClassChoice = form.getDefaultTrainingClassChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

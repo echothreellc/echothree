@@ -89,7 +89,7 @@ public class EditFilterKindCommand
 
     @Override
     public FilterKind getEntity(EditFilterKindResult result) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         FilterKind filterKind = null;
         String filterKindName = spec.getFilterKindName();
 
@@ -113,14 +113,14 @@ public class EditFilterKindCommand
 
     @Override
     public void fillInResult(EditFilterKindResult result, FilterKind filterKind) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
 
         result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
     }
 
     @Override
     public void doLock(FilterKindEdit edit, FilterKind filterKind) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         FilterKindDescription filterKindDescription = filterControl.getFilterKindDescription(filterKind, getPreferredLanguage());
         FilterKindDetail filterKindDetail = filterKind.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditFilterKindCommand
 
     @Override
     public void canUpdate(FilterKind filterKind) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         String filterKindName = edit.getFilterKindName();
         FilterKind duplicateFilterKind = filterControl.getFilterKindByName(filterKindName);
 
@@ -146,7 +146,7 @@ public class EditFilterKindCommand
 
     @Override
     public void doUpdate(FilterKind filterKind) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         var partyPK = getPartyPK();
         FilterKindDetailValue filterKindDetailValue = filterControl.getFilterKindDetailValueForUpdate(filterKind);
         FilterKindDescription filterKindDescription = filterControl.getFilterKindDescriptionForUpdate(filterKind, getPreferredLanguage());

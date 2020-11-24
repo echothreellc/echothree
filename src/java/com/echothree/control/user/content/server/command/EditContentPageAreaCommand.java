@@ -104,7 +104,7 @@ public class EditContentPageAreaCommand
     
     @Override
     public ContentPageArea getEntity(EditContentPageAreaResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageArea contentPageArea = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -123,7 +123,7 @@ public class EditContentPageAreaCommand
                     ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
-                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         
@@ -163,14 +163,14 @@ public class EditContentPageAreaCommand
     
     @Override
     public void fillInResult(EditContentPageAreaResult result, ContentPageArea contentPageArea) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentPageArea(contentControl.getContentPageAreaTransfer(getUserVisit(), contentPageArea));
     }
     
     @Override
     public void doLock(ContentPageAreaEdit edit, ContentPageArea contentPageArea) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageAreaDetail contentPageAreaDetail = contentPageArea.getLastDetail();
         ContentPageAreaBlob contentPageAreaBlob = contentControl.getContentPageAreaBlob(contentPageAreaDetail);
         ContentPageAreaClob contentPageAreaClob = contentControl.getContentPageAreaClob(contentPageAreaDetail);
@@ -212,7 +212,7 @@ public class EditContentPageAreaCommand
     
     @Override
     public void doUpdate(ContentPageArea contentPageArea) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageAreaDetailValue contentPageAreaDetailValue = contentControl.getContentPageAreaDetailValueForUpdate(contentPageArea);
         String description = edit.getDescription();
         ByteArray contentPageAreaBlob = edit.getContentPageAreaBlob();

@@ -91,7 +91,7 @@ public class EditSequenceDescriptionCommand
     
     @Override
     public SequenceDescription getEntity(EditSequenceDescriptionResult result) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceDescription sequenceDescription = null;
         String sequenceTypeName = spec.getSequenceTypeName();
         
@@ -102,7 +102,7 @@ public class EditSequenceDescriptionCommand
             Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
             if(sequence != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -136,7 +136,7 @@ public class EditSequenceDescriptionCommand
 
     @Override
     public void fillInResult(EditSequenceDescriptionResult result, SequenceDescription sequenceDescription) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
 
         result.setSequenceDescription(sequenceControl.getSequenceDescriptionTransfer(getUserVisit(), sequenceDescription));
     }
@@ -148,7 +148,7 @@ public class EditSequenceDescriptionCommand
 
     @Override
     public void doUpdate(SequenceDescription sequenceDescription) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceDescriptionValue sequenceDescriptionValue = sequenceControl.getSequenceDescriptionValue(sequenceDescription);
         
         sequenceDescriptionValue.setDescription(edit.getDescription());

@@ -77,8 +77,8 @@ public class FontStyleObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return coreControl.getBestFontStyleDescription(fontStyle, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

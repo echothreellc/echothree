@@ -78,9 +78,9 @@ public class PostingLogic {
     }
     
     public void postTransaction(final Transaction transaction) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         Long postingTime = transaction.getLastDetail().getPostingTime();
         List<TransactionGlEntry> transactionGlEntries = accountingControl.getTransactionGlEntriesByTransaction(transaction);
         List<Period> periods = periodControl.getContainingPeriodsUsingNames(PeriodConstants.PeriodKind_FISCAL, postingTime);

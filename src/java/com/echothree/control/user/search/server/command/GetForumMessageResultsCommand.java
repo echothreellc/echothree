@@ -61,7 +61,7 @@ public class GetForumMessageResultsCommand
         setupPreferredClobMimeType();
         
         if(!hasExecutionErrors()) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var searchControl = Session.getModelController(SearchControl.class);
             SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_FORUM_MESSAGE);
 
             if(searchKind != null) {
@@ -73,7 +73,7 @@ public class GetForumMessageResultsCommand
                     UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
 
                     if(userVisitSearch != null) {
-                        var forumMessageControl = (ForumMessageControl)Session.getModelController(ForumMessageControl.class);
+                        var forumMessageControl = Session.getModelController(ForumMessageControl.class);
 
                         if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                             result.setForumMessageResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

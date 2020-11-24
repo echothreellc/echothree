@@ -70,7 +70,7 @@ public class DeleteAppearanceDescriptionCommand
         Appearance appearance = coreControl.getAppearanceByName(appearanceName);
         
         if(appearance != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

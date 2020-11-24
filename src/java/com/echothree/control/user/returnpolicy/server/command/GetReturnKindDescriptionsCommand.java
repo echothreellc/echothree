@@ -64,7 +64,7 @@ public class GetReturnKindDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         GetReturnKindDescriptionsResult result = ReturnPolicyResultFactory.getGetReturnKindDescriptionsResult();
         String returnKindName = form.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);

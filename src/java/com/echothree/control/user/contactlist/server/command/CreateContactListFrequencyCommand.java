@@ -66,7 +66,7 @@ public class CreateContactListFrequencyCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         String contactListFrequencyName = form.getContactListFrequencyName();
         ContactListFrequency contactListFrequency = contactListControl.getContactListFrequencyByName(contactListFrequencyName);
         

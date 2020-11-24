@@ -57,7 +57,7 @@ public class PaymentMethodTypePartyTypeLogic
     public PaymentMethodTypePartyType createPaymentMethodTypePartyType(final ExecutionErrorAccumulator eea,
             final PaymentMethodType paymentMethodType, final PartyType partyType, final Workflow partyPaymentMethodWorkflow,
             final Workflow partyContactMechanismWorkflow, final Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
-        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl)Session.getModelController(PaymentMethodTypePartyTypeControl.class);
+        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
         var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
 
         if(paymentMethodTypePartyType == null) {
@@ -92,7 +92,7 @@ public class PaymentMethodTypePartyTypeLogic
     public PaymentMethodTypePartyType getPaymentMethodTypePartyType(final ExecutionErrorAccumulator eea,
             final PaymentMethodType paymentMethodType, final PartyType partyType,
             final EntityPermission entityPermission) {
-        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl)Session.getModelController(PaymentMethodTypePartyTypeControl.class);
+        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
         PaymentMethodTypePartyType paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType,
                 partyType, entityPermission);
 
@@ -142,7 +142,7 @@ public class PaymentMethodTypePartyTypeLogic
     public PaymentMethodTypePartyType getPaymentMethodTypePartyTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentMethodTypePartyTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentMethodTypePartyType paymentMethodTypePartyType = null;
-        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl)Session.getModelController(PaymentMethodTypePartyTypeControl.class);
+        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
         var paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
         var partyTypeName = universalSpec.getPartyTypeName();
         var fullySpecifiedName = paymentMethodTypeName != null && partyTypeName != null;
@@ -206,7 +206,7 @@ public class PaymentMethodTypePartyTypeLogic
 
     public void deletePaymentMethodTypePartyType(final ExecutionErrorAccumulator eea, final PaymentMethodTypePartyType paymentMethodTypePartyType,
             final BasePK deletedBy) {
-        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl)Session.getModelController(PaymentMethodTypePartyTypeControl.class);
+        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
 
         paymentMethodTypePartyTypeControl.deletePaymentMethodTypePartyType(paymentMethodTypePartyType, deletedBy);
     }

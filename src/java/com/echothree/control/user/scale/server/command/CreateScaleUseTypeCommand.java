@@ -53,7 +53,7 @@ public class CreateScaleUseTypeCommand
     
    @Override
     protected BaseResult execute() {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         String scaleUseTypeName = form.getScaleUseTypeName();
         ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         

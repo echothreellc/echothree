@@ -31,7 +31,7 @@ import java.util.Set;
 public class ItemShippingTimeTransferCache
         extends BaseItemTransferCache<ItemShippingTime, ItemShippingTimeTransfer> {
     
-    CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     TransferProperties transferProperties;
     boolean filterItem;

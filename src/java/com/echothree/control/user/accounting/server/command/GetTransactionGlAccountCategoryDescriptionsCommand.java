@@ -66,7 +66,7 @@ public class GetTransactionGlAccountCategoryDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetTransactionGlAccountCategoryDescriptionsResult result = AccountingResultFactory.getGetTransactionGlAccountCategoryDescriptionsResult();
         String transactionTypeName = form.getTransactionTypeName();
         TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);

@@ -60,7 +60,7 @@ public class GetGlAccountCategoriesCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetGlAccountCategoriesResult result = AccountingResultFactory.getGetGlAccountCategoriesResult();
         
         result.setGlAccountCategories(accountingControl.getGlAccountCategoryTransfers(getUserVisit()));

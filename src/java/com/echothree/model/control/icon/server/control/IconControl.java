@@ -168,7 +168,7 @@ public class IconControl
     
     public IconChoicesBean getIconChoicesByIconUsageType(IconUsageType iconUsageType, String defaultIconChoice, Language language,
             boolean allowNullChoice) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         List<IconUsage> iconUsages = getIconUsagesByIconUsageType(iconUsageType);
         List<Icon> icons = getIcons();
         int size = icons.size();

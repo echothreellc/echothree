@@ -34,7 +34,7 @@ public class ShippingMethodCarrierServiceTransferCache
     public ShippingMethodCarrierServiceTransferCache(UserVisit userVisit, ShippingControl shippingControl) {
         super(userVisit, shippingControl);
         
-        carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        carrierControl = Session.getModelController(CarrierControl.class);
     }
     
     public ShippingMethodCarrierServiceTransfer getShippingMethodCarrierServiceTransfer(ShippingMethodCarrierService shippingMethodCarrierService) {

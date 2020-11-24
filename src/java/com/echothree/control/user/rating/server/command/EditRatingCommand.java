@@ -62,7 +62,7 @@ public class EditRatingCommand
     
     @Override
     protected BaseResult execute() {
-        var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+        var ratingControl = Session.getModelController(RatingControl.class);
         EditRatingResult result = RatingResultFactory.getEditRatingResult();
         String ratingName = spec.getRatingName();
         Rating rating = ratingControl.getRatingByName(ratingName);

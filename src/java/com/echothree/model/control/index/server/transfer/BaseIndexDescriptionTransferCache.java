@@ -32,7 +32,7 @@ public abstract class BaseIndexDescriptionTransferCache<K extends BaseEntity, V 
     protected BaseIndexDescriptionTransferCache(UserVisit userVisit, IndexControl indexControl) {
         super(userVisit, indexControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

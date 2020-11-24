@@ -57,7 +57,7 @@ public class GetSalesOrderBatchResultsCommand
     @Override
     protected BaseResult execute() {
         GetSalesOrderBatchResultsResult result = SearchResultFactory.getGetSalesOrderBatchResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SALES_ORDER_BATCH);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetSalesOrderBatchResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
+                    var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setSalesOrderBatchResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

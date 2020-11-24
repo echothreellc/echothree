@@ -105,7 +105,7 @@ public class EditContentCategoryItemCommand
     
     @Override
     public ContentCategoryItem getEntity(EditContentCategoryItemResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCategoryItem contentCategoryItem = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -119,24 +119,24 @@ public class EditContentCategoryItemCommand
                 ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                    var itemControl = Session.getModelController(ItemControl.class);
                     String itemName = spec.getItemName();
                     Item item = itemControl.getItemByName(itemName);
                     
                     if(item != null) {
-                        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                        var inventoryControl = Session.getModelController(InventoryControl.class);
                         String inventoryConditionName = spec.getInventoryConditionName();
                         InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                         if(inventoryCondition != null) {
-                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                            var uomControl = Session.getModelController(UomControl.class);
                             String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                             ItemDetail itemDetail = item.getLastDetail();
                             UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                             if(unitOfMeasureType != null) {
-                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 String currencyIsoName = spec.getCurrencyIsoName();
                                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
@@ -190,7 +190,7 @@ public class EditContentCategoryItemCommand
     
     @Override
     public void fillInResult(EditContentCategoryItemResult result, ContentCategoryItem contentCategoryItem) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentCategoryItem(contentControl.getContentCategoryItemTransfer(getUserVisit(), contentCategoryItem));
     }
@@ -203,7 +203,7 @@ public class EditContentCategoryItemCommand
     
     @Override
     public void doUpdate(ContentCategoryItem contentCategoryItem) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCategoryItemValue contentCategoryItemValue = contentControl.getContentCategoryItemValue(contentCategoryItem);
 
         contentCategoryItemValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

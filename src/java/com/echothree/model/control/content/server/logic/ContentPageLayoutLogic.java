@@ -53,7 +53,7 @@ public class ContentPageLayoutLogic
     public ContentPageLayout createContentPageLayout(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
 
         if(contentPageLayout == null) {
@@ -71,7 +71,7 @@ public class ContentPageLayoutLogic
 
     public ContentPageLayout getContentPageLayoutByName(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
             final EntityPermission entityPermission) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName, entityPermission);
 
         if(contentPageLayout == null) {
@@ -92,7 +92,7 @@ public class ContentPageLayoutLogic
     public ContentPageLayout getContentPageLayoutByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ContentPageLayoutUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ContentPageLayout contentPageLayout = null;
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentPageLayoutName = universalSpec.getContentPageLayoutName();
         int parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -140,7 +140,7 @@ public class ContentPageLayoutLogic
 
     public void deleteContentPageLayout(final ExecutionErrorAccumulator eea, final ContentPageLayout contentPageLayout,
             final BasePK deletedBy) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
 
         contentControl.deleteContentPageLayout(contentPageLayout, deletedBy);
     }

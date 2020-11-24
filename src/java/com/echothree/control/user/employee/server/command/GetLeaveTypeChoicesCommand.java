@@ -49,7 +49,7 @@ public class GetLeaveTypeChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetLeaveTypeChoicesResult result = EmployeeResultFactory.getGetLeaveTypeChoicesResult();
         String defaultLeaveTypeChoice = form.getDefaultLeaveTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

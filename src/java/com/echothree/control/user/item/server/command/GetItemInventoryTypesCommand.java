@@ -46,7 +46,7 @@ public class GetItemInventoryTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemInventoryTypesResult result = ItemResultFactory.getGetItemInventoryTypesResult();
         
         result.setItemInventoryTypes(itemControl.getItemInventoryTypeTransfers(getUserVisit()));

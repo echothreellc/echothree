@@ -61,7 +61,7 @@ public class SetDefaultLotTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         String lotTimeTypeName = form.getLotTimeTypeName();
         LotTimeTypeDetailValue lotTimeTypeDetailValue = lotTimeControl.getLotTimeTypeDetailValueByNameForUpdate(lotTimeTypeName);
 

@@ -61,7 +61,7 @@ public class GetPrinterGroupJobsCommand
         int parameterCount = (printerGroupName == null ? 0 : 1) + (printerGroupJobStatusChoice == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+            var printerControl = Session.getModelController(PrinterControl.class);
             UserVisit userVisit = getUserVisit();
 
             if(printerGroupName != null) {
@@ -74,7 +74,7 @@ public class GetPrinterGroupJobsCommand
                     addExecutionError(ExecutionErrors.UnknownPrinterGroupName.name(), printerGroupName);
                 }
             } else if(printerGroupJobStatusChoice != null) {
-                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var workflowControl = Session.getModelController(WorkflowControl.class);
                 WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS),
                         printerGroupJobStatusChoice);
 

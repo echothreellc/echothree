@@ -106,8 +106,8 @@ public class CreatePartyPaymentMethodCommand
     private void setupWorkflows(final PaymentMethodType paymentMethodType, final PartyType partyType,
             final PartyPaymentMethodContactMechanism billingPartyPaymentMethodContactMechanism,
             final PartyPaymentMethod partyPaymentMethod, final PartyPK createdBy) {
-        var paymentMethodTypePartyTypeControl = (PaymentMethodTypePartyTypeControl)Session.getModelController(PaymentMethodTypePartyTypeControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var paymentMethodTypePartyTypeControl = Session.getModelController(PaymentMethodTypePartyTypeControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyType(paymentMethodType, partyType);
         
         if(paymentMethodTypePartyType != null) {
@@ -152,7 +152,7 @@ public class CreatePartyPaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         CreatePartyPaymentMethodResult result = PaymentResultFactory.getCreatePartyPaymentMethodResult();
         Party party = getParty();
         String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
@@ -174,7 +174,7 @@ public class CreatePartyPaymentMethodCommand
         }
 
         if(!hasExecutionErrors()) {
-            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
             String paymentMethodName = form.getPaymentMethodName();
             PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
 
@@ -186,8 +186,8 @@ public class CreatePartyPaymentMethodCommand
                     String paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
                     if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
-                        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
-                        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
+                        var contactControl = Session.getModelController(ContactControl.class);
                         Soundex soundex = new Soundex();
                         String personalTitleId = form.getPersonalTitleId();
                         PersonalTitle personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);

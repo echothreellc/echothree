@@ -68,7 +68,7 @@ public class GetWorkflowsCommand
 
     @Override
     protected Collection<Workflow> getEntities() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var selectorKindName = form.getSelectorKindName();
         Collection<Workflow> workflows = null;
 
@@ -90,11 +90,11 @@ public class GetWorkflowsCommand
         var result = WorkflowResultFactory.getGetWorkflowsResult();
 
         if(entities != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             if(selectorKind != null) {
-                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                var selectorControl = Session.getModelController(SelectorControl.class);
 
                 result.setSelectorKind(selectorControl.getSelectorKindTransfer(userVisit, selectorKind));
             }

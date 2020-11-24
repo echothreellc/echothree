@@ -51,7 +51,7 @@ public class CreateRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String roleTypeName = form.getRoleTypeName();
         RoleType roleType = partyControl.getRoleTypeByName(roleTypeName);
         

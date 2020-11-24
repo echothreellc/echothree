@@ -69,7 +69,7 @@ public class CreateAssociatePartyContactMechanismCommand
         int parameterCount = (contactMechanismName == null? 0: 1) + (contactMechanismAliasTypeName == null && alias == null? 0: 1);
         
         if(parameterCount == 1) {
-            var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+            var associateControl = Session.getModelController(AssociateControl.class);
             String associateProgramName = form.getAssociateProgramName();
             AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
             
@@ -83,7 +83,7 @@ public class CreateAssociatePartyContactMechanismCommand
                             associatePartyContactMechanismName);
                     
                     if(associatePartyContactMechanism == null) {
-                        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                        var contactControl = Session.getModelController(ContactControl.class);
                         ContactMechanism contactMechanism = null;
                         
                         if(contactMechanismName != null) {

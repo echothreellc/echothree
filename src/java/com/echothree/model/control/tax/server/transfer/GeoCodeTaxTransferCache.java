@@ -38,7 +38,7 @@ public class GeoCodeTaxTransferCache
         GeoCodeTaxTransfer geoCodeTaxTransfer = get(geoCodeTax);
         
         if(geoCodeTaxTransfer == null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            GeoControl geoControl = Session.getModelController(GeoControl.class);
             GeoCodeTransfer geoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeTax.getGeoCode());
             TaxTransfer tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
             

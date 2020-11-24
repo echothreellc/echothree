@@ -66,13 +66,13 @@ public class GetOrderTimeTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         GetOrderTimeTypeChoicesResult result = OrderResultFactory.getGetOrderTimeTypeChoicesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
             String defaultOrderTimeTypeChoice = form.getDefaultOrderTimeTypeChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

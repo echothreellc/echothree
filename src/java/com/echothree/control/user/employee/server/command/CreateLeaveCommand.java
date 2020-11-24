@@ -82,7 +82,7 @@ public class CreateLeaveCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
@@ -91,7 +91,7 @@ public class CreateLeaveCommand
             PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
 
             if(partyCompany != null) {
-                var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+                var employeeControl = Session.getModelController(EmployeeControl.class);
                 String leaveTypeName = form.getLeaveTypeName();
                 LeaveType leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
@@ -112,7 +112,7 @@ public class CreateLeaveCommand
                             String leaveStatusChoice = form.getLeaveStatus();
 
                             if(leaveStatusChoice != null) {
-                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                 leaveStatus = workflowControl.getWorkflowEntranceUsingNames(this, LeaveStatusConstants.Workflow_LEAVE_STATUS,
                                         leaveStatusChoice);
 

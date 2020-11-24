@@ -34,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 public class OrderTypeTransferCache
         extends BaseOrderTransferCache<OrderType, OrderTypeTransfer> {
 
-    OrderTypeControl orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of OrderTypeTransferCache */
     public OrderTypeTransferCache(UserVisit userVisit) {

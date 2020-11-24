@@ -70,7 +70,7 @@ public class GetContentPagesCommand
         Collection<ContentPage> contentPages = null;
 
         if(parameterCount == 1) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -120,7 +120,7 @@ public class GetContentPagesCommand
         GetContentPagesResult result = ContentResultFactory.getGetContentPagesResult();
 
         if(entities != null) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
             UserVisit userVisit = getUserVisit();
 
             result.setContentSection(contentControl.getContentSectionTransfer(userVisit, contentSection));

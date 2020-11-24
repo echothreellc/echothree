@@ -78,13 +78,13 @@ public class EditFreeOnBoardDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         EditFreeOnBoardDescriptionResult result = ShipmentResultFactory.getEditFreeOnBoardDescriptionResult();
         String freeOnBoardName = spec.getFreeOnBoardName();
         FreeOnBoard freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
         
         if(freeOnBoard != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

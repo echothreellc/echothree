@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class ContactListContactMechanismPurposeTransferCache
         extends BaseContactListTransferCache<ContactListContactMechanismPurpose, ContactListContactMechanismPurposeTransfer> {
     
-    final ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+    final ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of ContactListContactMechanismPurposeTransferCache */
     public ContactListContactMechanismPurposeTransferCache(UserVisit userVisit, ContactListControl contactListControl) {

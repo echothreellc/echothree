@@ -78,13 +78,13 @@ public class EditPaymentProcessorResultCodeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         EditPaymentProcessorResultCodeDescriptionResult result = PaymentResultFactory.getEditPaymentProcessorResultCodeDescriptionResult();
         String paymentProcessorResultCodeName = spec.getPaymentProcessorResultCodeName();
         PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
         
         if(paymentProcessorResultCode != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

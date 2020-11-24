@@ -89,7 +89,7 @@ public class EditCarrierTypeCommand
     
     @Override
     public CarrierType getEntity(EditCarrierTypeResult result) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierType carrierType = null;
         String carrierTypeName = spec.getCarrierTypeName();
 
@@ -115,14 +115,14 @@ public class EditCarrierTypeCommand
     
     @Override
     public void fillInResult(EditCarrierTypeResult result, CarrierType carrierType) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         
         result.setCarrierType(carrierControl.getCarrierTypeTransfer(getUserVisit(), carrierType));
     }
     
     @Override
     public void doLock(CarrierTypeEdit edit, CarrierType carrierType) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescription(carrierType, getPreferredLanguage());
         CarrierTypeDetail carrierTypeDetail = carrierType.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditCarrierTypeCommand
         
     @Override
     public void canUpdate(CarrierType carrierType) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         String carrierTypeName = edit.getCarrierTypeName();
         CarrierType duplicateCarrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
 
@@ -148,7 +148,7 @@ public class EditCarrierTypeCommand
     
     @Override
     public void doUpdate(CarrierType carrierType) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         var partyPK = getPartyPK();
         CarrierTypeDetailValue carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueForUpdate(carrierType);
         CarrierTypeDescription carrierTypeDescription = carrierControl.getCarrierTypeDescriptionForUpdate(carrierType, getPreferredLanguage());

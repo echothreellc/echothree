@@ -68,13 +68,13 @@ public class GetScaleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         GetScaleTypeDescriptionResult result = ScaleResultFactory.getGetScaleTypeDescriptionResult();
         String scaleTypeName = form.getScaleTypeName();
         ScaleType scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
         
         if(scaleType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

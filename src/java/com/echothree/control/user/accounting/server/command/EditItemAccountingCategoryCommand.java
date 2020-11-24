@@ -82,7 +82,7 @@ public class EditItemAccountingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         EditItemAccountingCategoryResult result = AccountingResultFactory.getEditItemAccountingCategoryResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

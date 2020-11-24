@@ -33,7 +33,7 @@ import java.util.Set;
 public class IndexTransferCache
         extends BaseIndexTransferCache<Index, IndexTransfer> {
 
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of IndexTransferCache */
     public IndexTransferCache(UserVisit userVisit, IndexControl indexControl) {

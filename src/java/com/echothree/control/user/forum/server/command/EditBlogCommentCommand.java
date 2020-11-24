@@ -92,7 +92,7 @@ public class EditBlogCommentCommand
 
     @Override
     public ForumMessage getEntity(EditBlogCommentResult result) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessage forumMessage = null;
         String forumMessageName = spec.getForumMessageName();
 
@@ -116,14 +116,14 @@ public class EditBlogCommentCommand
 
     @Override
     public void fillInResult(EditBlogCommentResult result, ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
 
         result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
     }
 
     @Override
     public void doLock(BlogCommentEdit edit, ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
 
         forumMessageIcon = forumMessageDetail.getIcon();
@@ -155,11 +155,11 @@ public class EditBlogCommentCommand
 
     @Override
     public void canUpdate(ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageDetail forumMessageDetail = forumMessage.getLastDetail();
 
         if(forumMessageDetail.getForumMessageType().getForumMessageTypeName().equals(ForumConstants.ForumMessageType_BLOG_COMMENT)) {
-            var iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = Session.getModelController(IconControl.class);
             String forumMessageIconName = edit.getForumMessageIconName();
 
             forumMessageIcon = forumMessageIconName == null? null: iconControl.getIconByName(forumMessageIconName);
@@ -201,7 +201,7 @@ public class EditBlogCommentCommand
 
     @Override
     public void doUpdate(ForumMessage forumMessage) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
         ForumMessageDetailValue forumMessageDetailValue = forumControl.getForumMessageDetailValueForUpdate(forumMessage);
 

@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BasePaymentDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BasePaymentTransferCache<K, V> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BasePaymentDescriptionTransferCache */
     protected BasePaymentDescriptionTransferCache(UserVisit userVisit) {

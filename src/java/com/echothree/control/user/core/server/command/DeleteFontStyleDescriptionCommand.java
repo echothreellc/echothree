@@ -70,7 +70,7 @@ public class DeleteFontStyleDescriptionCommand
         FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
         
         if(fontStyle != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

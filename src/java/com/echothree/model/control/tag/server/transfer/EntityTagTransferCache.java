@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class EntityTagTransferCache
         extends BaseTagTransferCache<EntityTag, EntityTagTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of EntityTagTransferCache */
     public EntityTagTransferCache(UserVisit userVisit, TagControl tagControl) {

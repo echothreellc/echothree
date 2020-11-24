@@ -62,7 +62,7 @@ public class SetDefaultPartyDocumentCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         String documentName = form.getDocumentName();
         Document document = documentControl.getDocumentByNameForUpdate(documentName);
         

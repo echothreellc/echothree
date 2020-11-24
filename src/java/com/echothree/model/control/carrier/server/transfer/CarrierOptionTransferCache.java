@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class CarrierOptionTransferCache
         extends BaseCarrierTransferCache<CarrierOption, CarrierOptionTransfer> {
 
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of CarrierOptionTransferCache */
     public CarrierOptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {

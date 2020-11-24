@@ -34,7 +34,7 @@ import java.util.Set;
 public class EntityClobAttributeTransferCache
         extends BaseCoreTransferCache<EntityClobAttribute, EntityClobAttributeTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeClob;
     boolean includeETag;
     

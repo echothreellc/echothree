@@ -38,8 +38,8 @@ import java.util.Set;
 public class ContentCategoryTransferCache
         extends BaseContentTransferCache<ContentCategory, ContentCategoryTransfer> {
 
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
     boolean includeContentCategoryItems;
     

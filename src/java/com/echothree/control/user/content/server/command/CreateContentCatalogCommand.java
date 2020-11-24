@@ -80,7 +80,7 @@ public class CreateContentCatalogCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -95,15 +95,15 @@ public class CreateContentCatalogCommand
                 OfferUse defaultOfferUse = null;
 
                 if(defaultOfferName != null && defaultUseName != null && defaultSourceName == null) {
-                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                    var offerControl = Session.getModelController(OfferControl.class);
                     Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
                     
                     if(defaultOffer != null) {
-                        var useControl = (UseControl)Session.getModelController(UseControl.class);
+                        var useControl = Session.getModelController(UseControl.class);
                         Use defaultUse = useControl.getUseByName(defaultUseName);
                         
                         if(defaultUse != null) {
-                            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                            var offerUseControl = Session.getModelController(OfferUseControl.class);
                             defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
                             
                             if(defaultOfferUse == null) {
@@ -116,7 +116,7 @@ public class CreateContentCatalogCommand
                         addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                     }
                 } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                    var sourceControl = Session.getModelController(SourceControl.class);
                     Source source = sourceControl.getSourceByName(defaultSourceName);
                     
                     if(source != null) {

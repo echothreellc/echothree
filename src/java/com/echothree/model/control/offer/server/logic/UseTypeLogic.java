@@ -55,7 +55,7 @@ public class UseTypeLogic
     public UseType createUseType(final ExecutionErrorAccumulator eea, final String useTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useType = useTypeControl.getUseTypeByName(useTypeName);
 
         if(useType == null) {
@@ -73,7 +73,7 @@ public class UseTypeLogic
 
     public UseType getUseTypeByName(final ExecutionErrorAccumulator eea, final String useTypeName,
             final EntityPermission entityPermission) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useType = useTypeControl.getUseTypeByName(useTypeName, entityPermission);
 
         if(useType == null) {
@@ -94,7 +94,7 @@ public class UseTypeLogic
     public UseType getUseTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UseTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         UseType useType = null;
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useTypeName = universalSpec.getUseTypeName();
         int parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -142,10 +142,10 @@ public class UseTypeLogic
 
     public void deleteUseType(final ExecutionErrorAccumulator eea, final UseType useType,
             final BasePK deletedBy) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
 
         if(useControl.countUsesByUseType(useType) == 0) {
-            var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+            var useTypeControl = Session.getModelController(UseTypeControl.class);
 
             useTypeControl.deleteUseType(useType, deletedBy);
         } else {

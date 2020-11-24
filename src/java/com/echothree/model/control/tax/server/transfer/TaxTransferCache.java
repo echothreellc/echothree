@@ -30,8 +30,8 @@ import com.echothree.util.server.persistence.Session;
 public class TaxTransferCache
         extends BaseTaxTransferCache<Tax, TaxTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of TaxTransferCache */
     public TaxTransferCache(UserVisit userVisit, TaxControl taxControl) {

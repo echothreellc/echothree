@@ -56,7 +56,7 @@ public class GetSubscriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         GetSubscriptionsResult result = SubscriptionResultFactory.getGetSubscriptionsResult();
         String subscriptionKindName = form.getSubscriptionKindName();
         String subscriptionTypeName = form.getSubscriptionTypeName();
@@ -81,7 +81,7 @@ public class GetSubscriptionsCommand
                 addExecutionError(ExecutionErrors.UnknownSubscriptionKindName.name(), subscriptionKindName);
             }
         } else if(subscriptionKindName == null && subscriptionTypeName == null && partyName != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             Party party = partyControl.getPartyByName(partyName);
             
             if(party != null) {

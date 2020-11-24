@@ -45,7 +45,7 @@ public class QueuedEntityLogic
         QueuedEntity queuedEntity = null;
         
         if(!hasExecutionErrors(eea)) {
-            var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+            var queueControl = Session.getModelController(QueueControl.class);
             
             queueControl.createQueuedEntity(queueType, entityInstance);
         }
