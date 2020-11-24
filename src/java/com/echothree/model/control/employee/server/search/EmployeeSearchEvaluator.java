@@ -147,7 +147,7 @@ public class EmployeeSearchEvaluator
             PartyEmployee partyEmployee = null;
             
             if(partyEmployeeName != null) {
-                var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+                var employeeControl = Session.getModelController(EmployeeControl.class);
                 
                 partyEmployee = employeeControl.getPartyEmployeeByName(partyEmployeeName);
             }

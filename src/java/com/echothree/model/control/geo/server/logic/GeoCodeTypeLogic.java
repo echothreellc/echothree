@@ -40,7 +40,7 @@ public class GeoCodeTypeLogic
     }
 
     public GeoCodeType getGeoCodeTypeByName(final ExecutionErrorAccumulator eea, final String geoCodeTypeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType == null) {

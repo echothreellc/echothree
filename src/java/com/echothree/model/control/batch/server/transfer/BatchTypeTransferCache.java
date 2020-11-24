@@ -34,8 +34,8 @@ import com.echothree.util.server.persistence.Session;
 public class BatchTypeTransferCache
         extends BaseBatchTransferCache<BatchType, BatchTypeTransfer> {
     
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BatchTypeTransferCache */
     public BatchTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {

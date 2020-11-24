@@ -42,7 +42,7 @@ public class SelectorTypeLogic
     
     public SelectorType getSelectorTypeByName(final ExecutionErrorAccumulator eea, final SelectorKind selectorKind,
             final String selectorTypeName) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
         if(selectorType == null) {

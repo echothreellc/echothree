@@ -67,7 +67,7 @@ public class GetPartyTrainingClassSessionCommand
     
     @Override
     protected BaseResult execute() {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         GetPartyTrainingClassSessionResult result = TrainingResultFactory.getGetPartyTrainingClassSessionResult();
         String partyTrainingClassName = form.getPartyTrainingClassName();
         PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);

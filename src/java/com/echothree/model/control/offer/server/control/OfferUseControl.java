@@ -323,7 +323,7 @@ public class OfferUseControl
     }
 
     public void deleteOfferUse(OfferUse offerUse, BasePK deletedBy) {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
 
         sourceControl.deleteSourcesByOfferUse(offerUse, deletedBy);
 

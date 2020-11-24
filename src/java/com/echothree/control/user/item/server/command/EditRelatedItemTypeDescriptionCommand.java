@@ -87,13 +87,13 @@ public class EditRelatedItemTypeDescriptionCommand
 
     @Override
     public RelatedItemTypeDescription getEntity(EditRelatedItemTypeDescriptionResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         RelatedItemTypeDescription relatedItemTypeDescription = null;
         String relatedItemTypeName = spec.getRelatedItemTypeName();
         RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
         if(relatedItemType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditRelatedItemTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditRelatedItemTypeDescriptionResult result, RelatedItemTypeDescription relatedItemTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setRelatedItemTypeDescription(itemControl.getRelatedItemTypeDescriptionTransfer(getUserVisit(), relatedItemTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditRelatedItemTypeDescriptionCommand
 
     @Override
     public void doUpdate(RelatedItemTypeDescription relatedItemTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         RelatedItemTypeDescriptionValue relatedItemTypeDescriptionValue = itemControl.getRelatedItemTypeDescriptionValue(relatedItemTypeDescription);
         
         relatedItemTypeDescriptionValue.setDescription(edit.getDescription());

@@ -73,7 +73,7 @@ public class DeleteContactMechanismCommand
             // If the executing Party's PartyType is CUSTOMER or VENDOR, then the specified ContactMechanism
             // MUST belong to the executing Party.
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-                var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                var contactControl = Session.getModelController(ContactControl.class);
                 var contactMechanismName = form.getContactMechanismName();
                 var contactMechanism = contactControl.getContactMechanismByNameForUpdate(contactMechanismName);
 

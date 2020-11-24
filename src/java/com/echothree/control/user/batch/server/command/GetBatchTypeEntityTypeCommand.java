@@ -55,7 +55,7 @@ public class GetBatchTypeEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         GetBatchTypeEntityTypeResult result = BatchResultFactory.getGetBatchTypeEntityTypeResult();
         String batchTypeName = form.getBatchTypeName();
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);

@@ -68,13 +68,13 @@ public class GetAllocationPriorityDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         GetAllocationPriorityDescriptionResult result = InventoryResultFactory.getGetAllocationPriorityDescriptionResult();
         String allocationPriorityName = form.getAllocationPriorityName();
         AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

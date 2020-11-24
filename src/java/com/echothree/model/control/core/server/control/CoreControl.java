@@ -1019,14 +1019,14 @@ public class CoreControl
     }
     
     public void deleteEntityType(EntityType entityType, BasePK deletedBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
-        var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
-        var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
-        var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
+        var commentControl = Session.getModelController(CommentControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
+        var messageControl = Session.getModelController(MessageControl.class);
+        var ratingControl = Session.getModelController(RatingControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         
         deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
         deleteEntityAttributesByEntityType(entityType, deletedBy);
@@ -2809,7 +2809,7 @@ public class CoreControl
     public void deleteEntityInstanceDependencies(EntityInstance entityInstance, BasePK deletedBy) {
         ChainControl chainControl = ((ChainControl)Session.getModelController(ChainControl.class));
         SearchControl searchControl = ((SearchControl)Session.getModelController(SearchControl.class));
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
 
         ((AccountingControl)Session.getModelController(AccountingControl.class)).deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
         ((AssociateControl)Session.getModelController(AssociateControl.class)).deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
@@ -3372,7 +3372,7 @@ public class CoreControl
     }
     
     public EventGroup createEventGroup(BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var workflowControl = getWorkflowControl();
         EventGroup eventGroup = null;
         Workflow workflow = workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS);
@@ -9768,7 +9768,7 @@ public class CoreControl
     }
 
     public void deleteServerService(ServerService serverService, BasePK deletedBy) {
-        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = Session.getModelController(ScaleControl.class);
         
         scaleControl.deleteScalesByServerService(serverService, deletedBy);
 
@@ -12330,7 +12330,7 @@ public class CoreControl
         }
         
         if(!eea.hasExecutionErrors()) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.name());
             String baseEncryptionKeyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
             String sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
@@ -12627,7 +12627,7 @@ public class CoreControl
     
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
         String eventSubscriberName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
@@ -13000,7 +13000,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     private void queueEntityInstanceToIndexing(EntityInstance entityInstance) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
 
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
             try {

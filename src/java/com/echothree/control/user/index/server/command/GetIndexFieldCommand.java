@@ -67,7 +67,7 @@ public class GetIndexFieldCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         GetIndexFieldResult result = IndexResultFactory.getGetIndexFieldResult();
         String indexTypeName = form.getIndexTypeName();
         IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);

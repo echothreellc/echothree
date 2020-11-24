@@ -64,7 +64,7 @@ public class GetGeoCodeScopeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GetGeoCodeScopeDescriptionsResult result = GeoResultFactory.getGetGeoCodeScopeDescriptionsResult();
         String geoCodeScopeName = form.getGeoCodeScopeName();
         GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);

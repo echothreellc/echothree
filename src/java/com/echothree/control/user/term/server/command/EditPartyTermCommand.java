@@ -67,13 +67,13 @@ public class EditPartyTermCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         EditPartyTermResult result = TermResultFactory.getEditPartyTermResult();
         String partyName = spec.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            var termControl = (TermControl)Session.getModelController(TermControl.class);
+            var termControl = Session.getModelController(TermControl.class);
             
             if(editMode.equals(EditMode.LOCK)) {
                 PartyTerm partyTerm = termControl.getPartyTerm(party);

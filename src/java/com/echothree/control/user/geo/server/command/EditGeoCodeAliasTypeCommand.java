@@ -95,7 +95,7 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public GeoCodeAliasType getEntity(EditGeoCodeAliasTypeResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasType geoAliasType = null;
         String geoCodeTypeName = spec.getGeoCodeTypeName();
 
@@ -129,14 +129,14 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public void fillInResult(EditGeoCodeAliasTypeResult result, GeoCodeAliasType geoAliasType) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         result.setGeoCodeAliasType(geoControl.getGeoCodeAliasTypeTransfer(getUserVisit(), geoAliasType));
     }
 
     @Override
     public void doLock(GeoCodeAliasTypeEdit edit, GeoCodeAliasType geoAliasType) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasTypeDescription geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescription(geoAliasType, getPreferredLanguage());
         GeoCodeAliasTypeDetail geoAliasTypeDetail = geoAliasType.getLastDetail();
 
@@ -153,7 +153,7 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public void canUpdate(GeoCodeAliasType geoAliasType) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         String geoAliasTypeName = edit.getGeoCodeAliasTypeName();
         GeoCodeAliasType duplicateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
@@ -164,7 +164,7 @@ public class EditGeoCodeAliasTypeCommand
 
     @Override
     public void doUpdate(GeoCodeAliasType geoAliasType) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
         GeoCodeAliasTypeDetailValue geoAliasTypeDetailValue = geoControl.getGeoCodeAliasTypeDetailValueForUpdate(geoAliasType);
         GeoCodeAliasTypeDescription geoAliasTypeDescription = geoControl.getGeoCodeAliasTypeDescriptionForUpdate(geoAliasType, getPreferredLanguage());

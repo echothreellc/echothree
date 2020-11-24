@@ -32,7 +32,7 @@ import com.echothree.util.server.persistence.Session;
 public class AssociateReferralTransferCache
         extends BaseAssociateTransferCache<AssociateReferral, AssociateReferralTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of AssociateReferralTransferCache */
     public AssociateReferralTransferCache(UserVisit userVisit, AssociateControl associateControl) {

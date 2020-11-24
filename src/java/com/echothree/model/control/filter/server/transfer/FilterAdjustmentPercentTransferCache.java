@@ -42,8 +42,8 @@ public class FilterAdjustmentPercentTransferCache
         FilterAdjustmentPercentTransfer filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
         
         if(filterAdjustmentPercentTransfer == null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+            UomControl uomControl = Session.getModelController(UomControl.class);
             FilterAdjustmentTransferCache filterAdjustmentTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
             FilterAdjustmentTransfer filterAdjustment = filterAdjustmentTransferCache.getFilterAdjustmentTransfer(filterAdjustmentPercent.getFilterAdjustment());
             UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();

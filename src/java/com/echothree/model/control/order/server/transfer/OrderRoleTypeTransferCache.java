@@ -25,7 +25,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderRoleTypeTransferCache
         extends BaseOrderTransferCache<OrderRoleType, OrderRoleTypeTransfer> {
 
-    OrderRoleControl orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+    OrderRoleControl orderRoleControl = Session.getModelController(OrderRoleControl.class);
 
     /** Creates a new instance of OrderRoleTypeTransferCache */
     public OrderRoleTypeTransferCache(UserVisit userVisit) {

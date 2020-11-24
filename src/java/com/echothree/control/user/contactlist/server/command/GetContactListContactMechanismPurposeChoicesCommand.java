@@ -70,7 +70,7 @@ public class GetContactListContactMechanismPurposeChoicesCommand
         ContactList contactList = ContactListLogic.getInstance().getContactListByName(this, contactListName);
         
         if(!hasExecutionErrors()) {
-            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = Session.getModelController(ContactListControl.class);
             String defaultContactMechanismPurposeChoice = form.getDefaultContactMechanismPurposeChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

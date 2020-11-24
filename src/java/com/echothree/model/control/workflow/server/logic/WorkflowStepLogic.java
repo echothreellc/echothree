@@ -53,7 +53,7 @@ public class WorkflowStepLogic
     
     public WorkflowStep getWorkflowStepByName(final Class unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
 
         if(workflowStep == null) {
@@ -122,7 +122,7 @@ public class WorkflowStepLogic
     
     public Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final BasePK pk,
             EntityPermission entityPermission, String... workflowStepNames) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(pk);
         
         return isEntityInWorkflowSteps(eea, workflowName, entityInstance, entityPermission, workflowStepNames);
@@ -144,7 +144,7 @@ public class WorkflowStepLogic
         Set<WorkflowEntityStatus> result = new HashSet<>();
         
         if(!hasExecutionErrors(eea)) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance, entityPermission);
             Set<String> possibleWorkflowStepNames = new HashSet<>(workflowStepNames.length);
             

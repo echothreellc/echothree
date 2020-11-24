@@ -68,13 +68,13 @@ public class GetDocumentTypeUsageTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         GetDocumentTypeUsageTypeDescriptionResult result = DocumentResultFactory.getGetDocumentTypeUsageTypeDescriptionResult();
         String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
         
         if(documentTypeUsageType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

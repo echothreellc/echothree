@@ -62,7 +62,7 @@ public class GetSequenceChecksumTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         GetSequenceChecksumTypeChoicesResult result = SequenceResultFactory.getGetSequenceChecksumTypeChoicesResult();
         String defaultSequenceChecksumTypeChoice = form.getDefaultSequenceChecksumTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

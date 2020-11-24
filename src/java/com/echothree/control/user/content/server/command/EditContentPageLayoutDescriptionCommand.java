@@ -78,13 +78,13 @@ public class EditContentPageLayoutDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         EditContentPageLayoutDescriptionResult result = ContentResultFactory.getEditContentPageLayoutDescriptionResult();
         String contentPageLayoutName = spec.getContentPageLayoutName();
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
         if(contentPageLayout != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

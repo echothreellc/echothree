@@ -61,7 +61,7 @@ public class SetDefaultUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         String useTypeName = form.getUseTypeName();
         UseTypeDetailValue useTypeDetailValue = useTypeControl.getUseTypeDetailValueByNameForUpdate(useTypeName);
         

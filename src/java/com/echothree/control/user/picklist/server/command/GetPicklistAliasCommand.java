@@ -66,7 +66,7 @@ public class GetPicklistAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         GetPicklistAliasResult result = PicklistResultFactory.getGetPicklistAliasResult();
         String picklistTypeName = form.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);

@@ -96,7 +96,7 @@ public class GetCountryCommand
         }
 
         if(parameterCount < 2) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
             var geoCodeScope = geoControl.getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
 
             if(parameterCount == 0) {
@@ -206,7 +206,7 @@ public class GetCountryCommand
         var result = GeoResultFactory.getGetCountryResult();
 
         if(entity != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
 
             result.setCountry(geoControl.getCountryTransfer(getUserVisit(), entity));
         }

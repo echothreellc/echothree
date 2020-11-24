@@ -42,8 +42,8 @@ import java.util.Set;
 public class ContentPageAreaTransferCache
         extends BaseContentTransferCache<ContentPageArea, ContentPageAreaTransfer> {
 
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeBlob;
     boolean includeClob;
     boolean includeString;

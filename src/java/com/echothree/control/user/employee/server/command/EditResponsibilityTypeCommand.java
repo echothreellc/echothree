@@ -66,7 +66,7 @@ public class EditResponsibilityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         EditResponsibilityTypeResult result = EmployeeResultFactory.getEditResponsibilityTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

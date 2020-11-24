@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderPriorityTransferCache
         extends BaseOrderTransferCache<OrderPriority, OrderPriorityTransfer> {
 
-    OrderPriorityControl orderPriorityControl = (OrderPriorityControl)Session.getModelController(OrderPriorityControl.class);
+    OrderPriorityControl orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
 
     /** Creates a new instance of OrderPriorityTransferCache */
     public OrderPriorityTransferCache(UserVisit userVisit) {

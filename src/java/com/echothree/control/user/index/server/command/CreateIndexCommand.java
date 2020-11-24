@@ -74,7 +74,7 @@ public class CreateIndexCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         String indexName = form.getIndexName();
         Index index = indexControl.getIndexByName(indexName);
         

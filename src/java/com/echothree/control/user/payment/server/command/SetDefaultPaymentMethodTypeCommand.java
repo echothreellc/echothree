@@ -61,7 +61,7 @@ public class SetDefaultPaymentMethodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         String paymentMethodTypeName = form.getPaymentMethodTypeName();
         PaymentMethodTypeDetailValue paymentMethodTypeDetailValue = paymentMethodTypeControl.getPaymentMethodTypeDetailValueByNameForUpdate(paymentMethodTypeName);
         

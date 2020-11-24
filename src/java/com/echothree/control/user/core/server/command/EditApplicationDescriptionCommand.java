@@ -92,7 +92,7 @@ public class EditApplicationDescriptionCommand
         Application application = coreControl.getApplicationByName(applicationName);
 
         if(application != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

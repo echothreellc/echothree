@@ -1900,7 +1900,7 @@ public class SelectorControl
     }
     
     public void deleteSelector(Selector selector, BasePK deletedBy) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         
         securityControl.deleteSecurityRolePartyTypesBySelector(selector, deletedBy);
         deleteSelectorNodesBySelector(selector, deletedBy);

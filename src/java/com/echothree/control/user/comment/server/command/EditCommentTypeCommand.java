@@ -84,7 +84,7 @@ public class EditCommentTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = Session.getModelController(CommentControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     String commentTypeName = spec.getCommentTypeName();
@@ -127,7 +127,7 @@ public class EditCommentTypeCommand
                             Sequence commentSequence = null;
                             
                             if(commentSequenceName != null) {
-                                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                                var sequenceControl = Session.getModelController(SequenceControl.class);
                                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
                                 
                                 if(sequenceType != null) {

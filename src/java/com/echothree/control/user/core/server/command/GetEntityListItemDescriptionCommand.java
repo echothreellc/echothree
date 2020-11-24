@@ -96,7 +96,7 @@ public class GetEntityListItemDescriptionCommand
                         EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
 
                         if(entityListItem != null) {
-                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

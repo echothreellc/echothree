@@ -36,7 +36,7 @@ import java.util.Set;
 public class HarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCode, HarmonizedTariffScheduleCodeTransfer> {
     
-    GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
 
     boolean includeHarmonizedTariffScheduleCodeUses;
     

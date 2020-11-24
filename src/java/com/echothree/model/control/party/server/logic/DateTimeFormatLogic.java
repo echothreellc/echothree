@@ -40,7 +40,7 @@ public class DateTimeFormatLogic
     }
     
     public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
 
         if(dateTimeFormat == null) {

@@ -57,7 +57,7 @@ public class AppearanceLogic
 
     public Appearance getAppearanceByName(final ExecutionErrorAccumulator eea, final String appearanceName,
             final EntityPermission entityPermission) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         var appearance = coreControl.getAppearanceByName(appearanceName, entityPermission);
 
         if(appearance == null) {
@@ -78,7 +78,7 @@ public class AppearanceLogic
     public Appearance getAppearanceByUniversalSpec(final ExecutionErrorAccumulator eea,
             final AppearanceUniversalSpec universalSpec, final EntityPermission entityPermission) {
         Appearance appearance = null;
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         var appearanceName = universalSpec.getAppearanceName();
         int parameterCount = (appearanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -114,7 +114,7 @@ public class AppearanceLogic
     }
 
     public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         Color color = coreControl.getColorByName(colorName);
 
         if(color == null) {
@@ -125,7 +125,7 @@ public class AppearanceLogic
     }
     
     public FontStyle getFontStyleByName(final ExecutionErrorAccumulator eea, final String fontStyleName) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle == null) {
@@ -136,7 +136,7 @@ public class AppearanceLogic
     }
     
     public FontWeight getFontWeightByName(final ExecutionErrorAccumulator eea, final String fontWeightName) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
 
         if(fontWeight == null) {
@@ -147,7 +147,7 @@ public class AppearanceLogic
     }
     
     public TextDecoration getTextDecorationByName(final ExecutionErrorAccumulator eea, final String textDecorationName) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration == null) {
@@ -158,7 +158,7 @@ public class AppearanceLogic
     }
     
     public TextTransformation getTextTransformationByName(final ExecutionErrorAccumulator eea, final String textTransformationName) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation == null) {

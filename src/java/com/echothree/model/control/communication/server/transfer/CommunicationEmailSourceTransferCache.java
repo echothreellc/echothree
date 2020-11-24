@@ -40,9 +40,9 @@ public class CommunicationEmailSourceTransferCache
     public CommunicationEmailSourceTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
         super(userVisit, communicationControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-        workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
+        selectorControl = Session.getModelController(SelectorControl.class);
+        workEffortControl = Session.getModelController(WorkEffortControl.class);
     }
     
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(CommunicationEmailSource communicationEmailSource) {

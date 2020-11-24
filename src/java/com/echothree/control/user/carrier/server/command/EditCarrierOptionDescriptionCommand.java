@@ -90,7 +90,7 @@ public class EditCarrierOptionDescriptionCommand
 
     @Override
     public CarrierOptionDescription getEntity(EditCarrierOptionDescriptionResult result) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierOptionDescription carrierOptionDescription = null;
         String carrierName = spec.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
@@ -101,7 +101,7 @@ public class EditCarrierOptionDescriptionCommand
             CarrierOption carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
 
             if(carrierOption != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -135,7 +135,7 @@ public class EditCarrierOptionDescriptionCommand
 
     @Override
     public void fillInResult(EditCarrierOptionDescriptionResult result, CarrierOptionDescription carrierOptionDescription) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
 
         result.setCarrierOptionDescription(carrierControl.getCarrierOptionDescriptionTransfer(getUserVisit(), carrierOptionDescription));
     }
@@ -147,7 +147,7 @@ public class EditCarrierOptionDescriptionCommand
 
     @Override
     public void doUpdate(CarrierOptionDescription carrierOptionDescription) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierOptionDescriptionValue carrierOptionDescriptionValue = carrierControl.getCarrierOptionDescriptionValue(carrierOptionDescription);
 
         carrierOptionDescriptionValue.setDescription(edit.getDescription());

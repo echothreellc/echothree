@@ -83,7 +83,7 @@ public class CreateAppearanceCommand
         String appearanceName = form.getAppearanceName();
         
         if(appearanceName == null) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.APPEARANCE.name());
             
             appearanceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);

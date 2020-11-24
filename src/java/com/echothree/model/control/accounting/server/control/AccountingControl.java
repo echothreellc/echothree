@@ -822,7 +822,7 @@ public class AccountingControl
     }
     
     private void deleteItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, boolean checkDefault, BasePK deletedBy) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getLastDetailForUpdate();
         
         deleteItemAccountingCategoriesByParentItemAccountingCategory(itemAccountingCategory, deletedBy);
@@ -3164,7 +3164,7 @@ public class AccountingControl
     }
     
     private void deleteGlAccount(GlAccount glAccount, boolean checkDefault, BasePK deletedBy) {
-        FinancialControl financialControl  = (FinancialControl)Session.getModelController(FinancialControl.class);
+        FinancialControl financialControl  = Session.getModelController(FinancialControl.class);
         
         deleteGlAccountsByParentGlAccount(glAccount, deletedBy);
         deleteTransactionGlAccountByGlAccount(glAccount, deletedBy);
@@ -4714,7 +4714,7 @@ public class AccountingControl
     }
     
     public TransactionGroup createTransactionGroup(BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.name());
         String transactionGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -4879,7 +4879,7 @@ public class AccountingControl
     
     public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType, Long postingTime,
             BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.name());
         String transactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         

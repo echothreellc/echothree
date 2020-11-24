@@ -57,7 +57,7 @@ public class CreateLocationCapacityCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -66,7 +66,7 @@ public class CreateLocationCapacityCommand
             Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 

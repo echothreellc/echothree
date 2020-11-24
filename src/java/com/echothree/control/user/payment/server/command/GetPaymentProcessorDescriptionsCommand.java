@@ -64,7 +64,7 @@ public class GetPaymentProcessorDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         GetPaymentProcessorDescriptionsResult result = PaymentResultFactory.getGetPaymentProcessorDescriptionsResult();
         String paymentProcessorName = form.getPaymentProcessorName();
         PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);

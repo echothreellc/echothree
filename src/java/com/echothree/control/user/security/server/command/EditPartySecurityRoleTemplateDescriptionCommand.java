@@ -87,13 +87,13 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
 
     @Override
     public PartySecurityRoleTemplateDescription getEntity(EditPartySecurityRoleTemplateDescriptionResult result) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = null;
         String partySecurityRoleTemplateName = spec.getPartySecurityRoleTemplateName();
         PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
 
         if(partySecurityRoleTemplate != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
 
     @Override
     public void fillInResult(EditPartySecurityRoleTemplateDescriptionResult result, PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
 
         result.setPartySecurityRoleTemplateDescription(securityControl.getPartySecurityRoleTemplateDescriptionTransfer(getUserVisit(), partySecurityRoleTemplateDescription));
     }
@@ -136,7 +136,7 @@ public class EditPartySecurityRoleTemplateDescriptionCommand
 
     @Override
     public void doUpdate(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplateDescriptionValue partySecurityRoleTemplateDescriptionValue = securityControl.getPartySecurityRoleTemplateDescriptionValue(partySecurityRoleTemplateDescription);
         
         partySecurityRoleTemplateDescriptionValue.setDescription(edit.getDescription());

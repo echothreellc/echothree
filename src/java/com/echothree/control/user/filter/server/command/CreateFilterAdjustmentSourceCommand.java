@@ -52,7 +52,7 @@ public class CreateFilterAdjustmentSourceCommand
     @Override
     protected BaseResult execute() {
         String filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         FilterAdjustmentSource filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
         
         if(filterAdjustmentSource == null) {

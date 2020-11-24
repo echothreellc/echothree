@@ -69,12 +69,12 @@ public class GetContentWebAddressDescriptionCommand
     @Override
     protected BaseResult execute() {
         GetContentWebAddressDescriptionResult result = ContentResultFactory.getGetContentWebAddressDescriptionResult();
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentWebAddressName = form.getContentWebAddressName();
         ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

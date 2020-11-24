@@ -86,7 +86,7 @@ public class EditPeriodKindCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         EditPeriodKindResult result = PeriodResultFactory.getEditPeriodKindResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -140,7 +140,7 @@ public class EditPeriodKindCommand
                     int parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
                     if(parameterCount == 0 || parameterCount == 2) {
-                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = Session.getModelController(WorkflowControl.class);
                         Workflow workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
 
                         if(workflowName == null || workflow != null) {

@@ -81,7 +81,7 @@ public class EditLocationCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         EditLocationResult result = WarehouseResultFactory.getEditLocationResult();
         String warehouseName = spec.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -174,7 +174,7 @@ public class EditLocationCommand
                                     }
                                     
                                     if(!multipleUseError) {
-                                        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                                        var inventoryControl = Session.getModelController(InventoryControl.class);
                                         String inventoryLocationGroupName = edit.getInventoryLocationGroupName();
                                         InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                                         

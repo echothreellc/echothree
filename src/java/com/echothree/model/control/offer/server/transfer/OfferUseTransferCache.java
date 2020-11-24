@@ -32,9 +32,9 @@ import com.echothree.util.server.persistence.Session;
 public class OfferUseTransferCache
         extends BaseOfferTransferCache<OfferUse, OfferUseTransfer> {
 
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    UseControl useControl = (UseControl)Session.getModelController(UseControl.class);
+    OfferControl offerControl = Session.getModelController(OfferControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    UseControl useControl = Session.getModelController(UseControl.class);
 
     /** Creates a new instance of OfferUseTransferCache */
     public OfferUseTransferCache(UserVisit userVisit) {

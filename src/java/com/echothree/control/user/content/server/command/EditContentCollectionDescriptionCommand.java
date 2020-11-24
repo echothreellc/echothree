@@ -87,13 +87,13 @@ public class EditContentCollectionDescriptionCommand
     
     @Override
     public ContentCollectionDescription getEntity(EditContentCollectionDescriptionResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCollectionDescription contentCollectionDescription = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -126,7 +126,7 @@ public class EditContentCollectionDescriptionCommand
     
     @Override
     public void fillInResult(EditContentCollectionDescriptionResult result, ContentCollectionDescription contentCollectionDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentCollectionDescription(contentControl.getContentCollectionDescriptionTransfer(getUserVisit(), contentCollectionDescription));
     }
@@ -138,7 +138,7 @@ public class EditContentCollectionDescriptionCommand
     
     @Override
     public void doUpdate(ContentCollectionDescription contentCollectionDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCollectionDescriptionValue contentCollectionDescriptionValue = contentControl.getContentCollectionDescriptionValue(contentCollectionDescription);
         contentCollectionDescriptionValue.setDescription(edit.getDescription());
 

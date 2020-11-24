@@ -53,7 +53,7 @@ public class DeleteDepartmentCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String companyName = form.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
         

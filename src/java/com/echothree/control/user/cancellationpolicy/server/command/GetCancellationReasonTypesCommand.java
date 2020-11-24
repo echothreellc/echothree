@@ -68,7 +68,7 @@ public class GetCancellationReasonTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         GetCancellationReasonTypesResult result = CancellationPolicyResultFactory.getGetCancellationReasonTypesResult();
         String cancellationReasonName = form.getCancellationReasonName();
         String cancellationTypeName = form.getCancellationTypeName();

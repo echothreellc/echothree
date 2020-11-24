@@ -64,13 +64,13 @@ public class EditCommunicationEventPurposeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = Session.getModelController(CommunicationControl.class);
         EditCommunicationEventPurposeDescriptionResult result = CommunicationResultFactory.getEditCommunicationEventPurposeDescriptionResult();
         String communicationEventPurposeName = spec.getCommunicationEventPurposeName();
         CommunicationEventPurpose communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);
         
         if(communicationEventPurpose != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

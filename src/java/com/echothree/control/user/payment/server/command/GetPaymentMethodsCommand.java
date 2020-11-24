@@ -62,7 +62,7 @@ public class GetPaymentMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var result = PaymentResultFactory.getGetPaymentMethodsResult();
         var paymentMethodTypeName = form.getPaymentMethodTypeName();
         var paymentMethodType = paymentMethodTypeName == null ? null : PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);

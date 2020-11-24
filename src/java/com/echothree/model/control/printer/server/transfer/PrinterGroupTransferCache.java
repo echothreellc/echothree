@@ -38,9 +38,9 @@ import java.util.Set;
 public class PrinterGroupTransferCache
         extends BasePrinterTransferCache<PrinterGroup, PrinterGroupTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includePrinters;
     
     /** Creates a new instance of PrinterGroupTransferCache */

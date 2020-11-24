@@ -32,7 +32,7 @@ import java.util.Set;
 public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
         extends BaseBatchTransferCache<Batch, V> {
     
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeAliases;
     boolean includeEntities;
     

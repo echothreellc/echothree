@@ -77,14 +77,14 @@ public class EditFilterAdjustmentPercentCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String currencyIsoName = spec.getCurrencyIsoName();
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         EditFilterAdjustmentPercentResult result = FilterResultFactory.getEditFilterAdjustmentPercentResult();
         String filterKindName = spec.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
@@ -97,7 +97,7 @@ public class EditFilterAdjustmentPercentCommand
                 String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
                 if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_PERCENT)) {
-                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = Session.getModelController(UomControl.class);
                     String unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
@@ -122,7 +122,7 @@ public class EditFilterAdjustmentPercentCommand
                                     unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
-                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = Session.getModelController(AccountingControl.class);
                                 String currencyIsoName = spec.getCurrencyIsoName();
                                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 

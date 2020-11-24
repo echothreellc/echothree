@@ -89,7 +89,7 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public GeoCodeScope getEntity(EditGeoCodeScopeResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScope geoCodeScope = null;
         String geoCodeScopeName = spec.getGeoCodeScopeName();
 
@@ -115,14 +115,14 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public void fillInResult(EditGeoCodeScopeResult result, GeoCodeScope geoCodeScope) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         result.setGeoCodeScope(geoControl.getGeoCodeScopeTransfer(getUserVisit(), geoCodeScope));
     }
 
     @Override
     public void doLock(GeoCodeScopeEdit edit, GeoCodeScope geoCodeScope) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescription(geoCodeScope, getPreferredLanguage());
         GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public void canUpdate(GeoCodeScope geoCodeScope) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         String geoCodeScopeName = edit.getGeoCodeScopeName();
         GeoCodeScope duplicateGeoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
@@ -148,7 +148,7 @@ public class EditGeoCodeScopeCommand
 
     @Override
     public void doUpdate(GeoCodeScope geoCodeScope) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var partyPK = getPartyPK();
         GeoCodeScopeDetailValue geoCodeScopeDetailValue = geoControl.getGeoCodeScopeDetailValueForUpdate(geoCodeScope);
         GeoCodeScopeDescription geoCodeScopeDescription = geoControl.getGeoCodeScopeDescriptionForUpdate(geoCodeScope, getPreferredLanguage());

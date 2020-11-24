@@ -52,7 +52,7 @@ public class GetSubscriptionTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         GetSubscriptionTypeDescriptionsResult result = SubscriptionResultFactory.getGetSubscriptionTypeDescriptionsResult();
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);

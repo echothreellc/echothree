@@ -69,7 +69,7 @@ public class CreateWorkflowDestinationCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
         

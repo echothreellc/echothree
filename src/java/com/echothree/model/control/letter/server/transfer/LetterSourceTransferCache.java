@@ -30,8 +30,8 @@ import com.echothree.util.server.persistence.Session;
 public class LetterSourceTransferCache
         extends BaseLetterTransferCache<LetterSource, LetterSourceTransfer> {
     
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of LetterSourceTransferCache */
     public LetterSourceTransferCache(UserVisit userVisit, LetterControl letterControl) {

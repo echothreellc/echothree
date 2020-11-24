@@ -99,7 +99,7 @@ public class EditShipmentTypeCommand
 
     @Override
     public ShipmentType getEntity(EditShipmentTypeResult result) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentType shipmentType = null;
         String shipmentTypeName = spec.getShipmentTypeName();
 
@@ -125,7 +125,7 @@ public class EditShipmentTypeCommand
 
     @Override
     public void fillInResult(EditShipmentTypeResult result, ShipmentType shipmentType) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
 
         result.setShipmentType(shipmentControl.getShipmentTypeTransfer(getUserVisit(), shipmentType));
     }
@@ -138,7 +138,7 @@ public class EditShipmentTypeCommand
 
     @Override
     public void doLock(ShipmentTypeEdit edit, ShipmentType shipmentType) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentTypeDescription shipmentTypeDescription = shipmentControl.getShipmentTypeDescription(shipmentType, getPreferredLanguage());
         ShipmentTypeDetail shipmentTypeDetail = shipmentType.getLastDetail();
 
@@ -164,7 +164,7 @@ public class EditShipmentTypeCommand
 
     @Override
     public void canUpdate(ShipmentType shipmentType) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         String shipmentTypeName = edit.getShipmentTypeName();
         ShipmentType duplicateShipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
@@ -177,7 +177,7 @@ public class EditShipmentTypeCommand
 
             if(parentShipmentTypeName == null || parentShipmentType != null) {
                 if(shipmentControl.isParentShipmentTypeSafe(shipmentType, parentShipmentType)) {
-                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = Session.getModelController(SequenceControl.class);
                     String shipmentSequenceTypeName = edit.getShipmentSequenceTypeName();
 
                     shipmentSequenceType = sequenceControl.getSequenceTypeByName(shipmentSequenceTypeName);
@@ -188,7 +188,7 @@ public class EditShipmentTypeCommand
                         shipmentPackageSequenceType = sequenceControl.getSequenceTypeByName(shipmentPackageSequenceTypeName);
 
                         if(shipmentPackageSequenceTypeName == null || shipmentPackageSequenceType != null) {
-                            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                            var workflowControl = Session.getModelController(WorkflowControl.class);
                             String shipmentWorkflowName = edit.getShipmentWorkflowName();
 
                             shipmentWorkflow = shipmentWorkflowName == null ? null : workflowControl.getWorkflowByName(shipmentWorkflowName);
@@ -227,7 +227,7 @@ public class EditShipmentTypeCommand
 
     @Override
     public void doUpdate(ShipmentType shipmentType) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         var partyPK = getPartyPK();
         ShipmentTypeDetailValue shipmentTypeDetailValue = shipmentControl.getShipmentTypeDetailValueForUpdate(shipmentType);
         ShipmentTypeDescription shipmentTypeDescription = shipmentControl.getShipmentTypeDescriptionForUpdate(shipmentType, getPreferredLanguage());

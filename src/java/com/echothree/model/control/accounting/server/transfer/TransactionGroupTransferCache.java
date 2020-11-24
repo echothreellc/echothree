@@ -34,8 +34,8 @@ import java.util.Set;
 public class TransactionGroupTransferCache
         extends BaseAccountingTransferCache<TransactionGroup, TransactionGroupTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeTransactions;
     
     /** Creates a new instance of TransactionGroupTransferCache */

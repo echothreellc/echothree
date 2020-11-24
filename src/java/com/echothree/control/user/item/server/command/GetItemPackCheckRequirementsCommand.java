@@ -52,7 +52,7 @@ public class GetItemPackCheckRequirementsCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemPackCheckRequirementsResult result = ItemResultFactory.getGetItemPackCheckRequirementsResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

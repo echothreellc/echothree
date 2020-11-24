@@ -73,7 +73,7 @@ public class CreateLetterContactMechanismPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -82,7 +82,7 @@ public class CreateLetterContactMechanismPurposeCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = Session.getModelController(LetterControl.class);
                 String letterName = form.getLetterName();
                 Letter letter = letterControl.getLetterByName(chainType, letterName);
                 
@@ -92,7 +92,7 @@ public class CreateLetterContactMechanismPurposeCommand
                             priority);
                     
                     if(letterContactMechanismPurpose == null) {
-                        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                        var contactControl = Session.getModelController(ContactControl.class);
                         String contactMechanismPurposeName = form.getContactMechanismPurposeName();
                         ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                         

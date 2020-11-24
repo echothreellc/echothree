@@ -61,7 +61,7 @@ public class GetRelatedItemTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetRelatedItemTypesResult result = ItemResultFactory.getGetRelatedItemTypesResult();
         UserVisit userVisit = getUserVisit();
 

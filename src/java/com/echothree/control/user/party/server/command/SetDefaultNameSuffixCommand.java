@@ -49,7 +49,7 @@ public class SetDefaultNameSuffixCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String nameSuffixId = form.getNameSuffixId();
         NameSuffixPK nameSuffixPK = partyControl.convertNameSuffixIdToPK(nameSuffixId);
         

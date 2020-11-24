@@ -32,7 +32,7 @@ public abstract class BaseWorkEffortDescriptionTransferCache<K extends BaseEntit
     protected BaseWorkEffortDescriptionTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
         super(userVisit, workEffortControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

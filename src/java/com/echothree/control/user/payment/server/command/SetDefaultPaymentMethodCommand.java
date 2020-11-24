@@ -61,7 +61,7 @@ public class SetDefaultPaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         String paymentMethodName = form.getPaymentMethodName();
         PaymentMethodDetailValue paymentMethodDetailValue = paymentMethodControl.getPaymentMethodDetailValueByNameForUpdate(paymentMethodName);
         

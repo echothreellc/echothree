@@ -88,7 +88,7 @@ public class ComponentVendorObject
     @GraphQLDescription("entity types")
     public List<EntityTypeObject> getEntityTypes(final DataFetchingEnvironment env) {
         if(getHasEntityTypesAccess(env)) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             var entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
             var entityTypes = entities.stream().map(EntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
@@ -102,7 +102,7 @@ public class ComponentVendorObject
     @GraphQLDescription("entity type count")
     public Long getEntityTypeCount(final DataFetchingEnvironment env) {
         if(getHasEntityTypesAccess(env)) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
 
             return coreControl.countEntityTypesByComponentVendor(componentVendor);
         } else {

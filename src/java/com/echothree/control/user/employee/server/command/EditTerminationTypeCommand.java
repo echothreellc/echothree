@@ -66,7 +66,7 @@ public class EditTerminationTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         EditTerminationTypeResult result = EmployeeResultFactory.getEditTerminationTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

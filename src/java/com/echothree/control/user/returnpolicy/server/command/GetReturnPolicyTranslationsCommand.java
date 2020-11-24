@@ -66,7 +66,7 @@ public class GetReturnPolicyTranslationsCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         GetReturnPolicyTranslationsResult result = ReturnPolicyResultFactory.getGetReturnPolicyTranslationsResult();
         String returnKindName = form.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);

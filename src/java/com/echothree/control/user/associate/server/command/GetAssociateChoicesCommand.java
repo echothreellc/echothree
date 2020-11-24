@@ -52,7 +52,7 @@ public class GetAssociateChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = Session.getModelController(AssociateControl.class);
         GetAssociateChoicesResult result = AssociateResultFactory.getGetAssociateChoicesResult();
         String associateProgramName = form.getAssociateProgramName();
         AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);

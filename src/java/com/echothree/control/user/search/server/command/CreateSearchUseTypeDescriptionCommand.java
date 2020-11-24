@@ -67,12 +67,12 @@ public class CreateSearchUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         String searchUseTypeName = form.getSearchUseTypeName();
         SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
         
         if(searchUseType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

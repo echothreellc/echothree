@@ -50,7 +50,7 @@ public class GetForumMimeTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         GetForumMimeTypesResult result = ForumResultFactory.getGetForumMimeTypesResult();
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByName(forumName);

@@ -34,7 +34,7 @@ public class PartyTermTransferCache
     public PartyTermTransferCache(UserVisit userVisit, TermControl termControl) {
         super(userVisit, termControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public PartyTermTransfer getPartyTermTransfer(PartyTerm partyTerm) {

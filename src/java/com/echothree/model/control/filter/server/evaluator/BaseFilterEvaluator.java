@@ -50,7 +50,7 @@ public class BaseFilterEvaluator {
         this.session = session;
         this.evaluatedBy = evaluatedBy;
         
-        filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        filterControl = Session.getModelController(FilterControl.class);
         filterCache = FilterCacheFactory.getInstance().getFilterCache(session, filterKindName, filterTypeName);
         selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
                 selectorTypeName);

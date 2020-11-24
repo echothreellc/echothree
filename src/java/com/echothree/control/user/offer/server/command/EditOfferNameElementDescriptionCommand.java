@@ -78,13 +78,13 @@ public class EditOfferNameElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         EditOfferNameElementDescriptionResult result = OfferResultFactory.getEditOfferNameElementDescriptionResult();
         String offerNameElementName = spec.getOfferNameElementName();
         OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);
         
         if(offerNameElement != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

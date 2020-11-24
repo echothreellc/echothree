@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class MoodTransferCache
         extends BasePartyTransferCache<Mood, MoodTransfer> {
     
-    IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+    IconControl iconControl = Session.getModelController(IconControl.class);
     
     /** Creates a new instance of MoodTransferCache */
     public MoodTransferCache(UserVisit userVisit, PartyControl partyControl) {

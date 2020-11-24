@@ -143,6 +143,8 @@ public class SequenceGeneratorLogic
     }
 
     /**
+     * Generate and return the next value for a given Sequence.
+     * 
      * @return A unique value for the sequence is returned. Null will be returned when the
      * sequence is exhausted, the length of the mask is not equal to the length of the
      * value, or an invalid character is encountered in the mask.
@@ -168,7 +170,7 @@ public class SequenceGeneratorLogic
             try {
                 result = sequenceDeque.removeFirst();
             } catch (NoSuchElementException nsee1) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 var sequenceSession = SessionFactory.getInstance().getSession();
                 var sequenceValue = sequenceControl.getSequenceValueForUpdateInSession(sequenceSession, sequence);
 
@@ -306,7 +308,7 @@ public class SequenceGeneratorLogic
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequence = sequenceControl.getDefaultSequence(sequenceType);
 
         if(sequence == null) {
@@ -377,7 +379,7 @@ public class SequenceGeneratorLogic
     }
 
     public SequenceType identifySequenceType(final String value) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypes = sequenceControl.getSequenceTypes();
         SequenceType result = null;
 

@@ -65,7 +65,7 @@ public class LotLogic
         }
 
         if(!eea.hasExecutionErrors()) {
-            var lotControl = (LotControl)Session.getModelController(LotControl.class);
+            var lotControl = Session.getModelController(LotControl.class);
 
             lot = lotControl.getLotByName(lotName);
             if(lot == null) {
@@ -81,7 +81,7 @@ public class LotLogic
 
     public Lot getLotByName(final ExecutionErrorAccumulator eea, final String lotName,
             final EntityPermission entityPermission) {
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
         Lot lot = lotControl.getLotByName(lotName, entityPermission);
 
         if(lot == null) {
@@ -102,7 +102,7 @@ public class LotLogic
     public Lot getLotByUniversalSpec(final ExecutionErrorAccumulator eea, final LotUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
         Lot lot = null;
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
         String lotName = universalSpec.getLotName();
         int parameterCount = (lotName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -139,7 +139,7 @@ public class LotLogic
 
     public void deleteLot(final ExecutionErrorAccumulator eea, final Lot lot,
             final BasePK deletedBy) {
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
 
         lotControl.deleteLot(lot, deletedBy);
     }

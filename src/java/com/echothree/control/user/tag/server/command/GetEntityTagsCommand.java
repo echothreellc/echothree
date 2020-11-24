@@ -76,7 +76,7 @@ public class GetEntityTagsCommand
         int parameterCount = (tagScopeName == null && tagName == null? 0: 1) + (entityRef == null? 0: 1);
         
         if(parameterCount == 1) {
-            var tagControl = (TagControl)Session.getModelController(TagControl.class);
+            var tagControl = Session.getModelController(TagControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(entityRef != null) {

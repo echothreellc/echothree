@@ -47,11 +47,11 @@ import java.util.Set;
 public class VendorItemTransferCache
         extends BaseVendorTransferCache<VendorItem, VendorItemTransfer> {
     
-    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     ItemDescriptionLogic itemDescriptionLogic = ItemDescriptionLogic.getInstance();
     
     boolean includeVendorItemCosts;

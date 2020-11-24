@@ -79,7 +79,7 @@ public class GetWorkflowSelectorKindsCommand
         Collection<WorkflowSelectorKind> workflowSelectorKinds = null;
 
         if(parameterCount == 1) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             if(workflowName != null) {
                 workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
@@ -107,13 +107,13 @@ public class GetWorkflowSelectorKindsCommand
         var result = WorkflowResultFactory.getGetWorkflowSelectorKindsResult();
 
         if(entities != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflowControl == null ? null : workflowControl.getWorkflowTransfer(userVisit, workflow));
 
             if(selectorKind != null) {
-                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                var selectorControl = Session.getModelController(SelectorControl.class);
 
                 result.setSelectorKind(selectorControl.getSelectorKindTransfer(userVisit, selectorKind));
             }

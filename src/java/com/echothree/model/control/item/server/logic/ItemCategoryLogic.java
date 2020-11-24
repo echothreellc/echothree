@@ -44,7 +44,7 @@ public class ItemCategoryLogic
     }
 
     public ItemCategory getItemCategoryByName(final ExecutionErrorAccumulator eea, final String itemCategoryName, EntityPermission entityPermission) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = itemControl.getItemCategoryByName(itemCategoryName, entityPermission);
 
         if(itemCategory == null) {
@@ -72,7 +72,7 @@ public class ItemCategoryLogic
     }
 
     public void checkDeleteItemCategory(final ExecutionErrorAccumulator ema, final ItemCategory itemCategory) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         
         if(countItemsByItemCategoryChildren(itemControl, itemCategory) != 0) {
             ema.addExecutionError(ExecutionErrors.CannotDeleteItemCategoryInUse.name(), itemCategory.getLastDetail().getItemCategoryName());
@@ -81,7 +81,7 @@ public class ItemCategoryLogic
 
 
     public ItemCategory getDefaultItemCategory(final ExecutionErrorAccumulator eea) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = itemControl.getDefaultItemCategory();
 
         if(itemCategory == null) {
@@ -92,7 +92,7 @@ public class ItemCategoryLogic
     }
     
     public void deleteItemCategory(final ItemCategory itemCategory, final BasePK deletedBy) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         itemControl.deleteItemCategory(itemCategory, deletedBy);
     }

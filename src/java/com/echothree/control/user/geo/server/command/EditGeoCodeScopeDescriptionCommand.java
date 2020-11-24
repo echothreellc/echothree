@@ -87,13 +87,13 @@ public class EditGeoCodeScopeDescriptionCommand
 
     @Override
     public GeoCodeScopeDescription getEntity(EditGeoCodeScopeDescriptionResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScopeDescription geoCodeScopeDescription = null;
         String geoCodeScopeName = spec.getGeoCodeScopeName();
         GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
         if(geoCodeScope != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditGeoCodeScopeDescriptionCommand
 
     @Override
     public void fillInResult(EditGeoCodeScopeDescriptionResult result, GeoCodeScopeDescription geoCodeScopeDescription) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         result.setGeoCodeScopeDescription(geoControl.getGeoCodeScopeDescriptionTransfer(getUserVisit(), geoCodeScopeDescription));
     }
@@ -136,7 +136,7 @@ public class EditGeoCodeScopeDescriptionCommand
 
     @Override
     public void doUpdate(GeoCodeScopeDescription geoCodeScopeDescription) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeScopeDescriptionValue geoCodeScopeDescriptionValue = geoControl.getGeoCodeScopeDescriptionValue(geoCodeScopeDescription);
         geoCodeScopeDescriptionValue.setDescription(edit.getDescription());
 

@@ -66,7 +66,7 @@ public class GetGlAccountChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetGlAccountChoicesResult result = AccountingResultFactory.getGetGlAccountChoicesResult();
         String glAccountCategoryName = form.getGlAccountCategoryName();
         GlAccountCategory glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);

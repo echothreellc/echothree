@@ -53,23 +53,23 @@ public class Session {
     private static final Pattern ALL_FIELDS_PATTERN = Pattern.compile("_ALL_");
     private static final Pattern LIMIT_PATTERN = Pattern.compile("_LIMIT_");
     
-    private static final Map<Class, String> allColumnsCache = new ConcurrentHashMap<>();
-    private static final Map<Class, String> pkColumnCache = new ConcurrentHashMap<>();
-    private static final Map<Class, String> entityNameCache = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> allColumnsCache = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> pkColumnCache = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> entityNameCache = new ConcurrentHashMap<>();
     
     private Log log;
     
     private DSLContext dslContext;
     private Connection connection;
 
-    private final Map<Class, BaseModelControl> modelControllers = new HashMap<>();
+    private final Map<Class<? extends BaseModelControl>, BaseModelControl> modelControllers = new HashMap<>();
 
     private ValueCache valueCache = ValueCacheProviderImpl.getInstance().getValueCache();
     private SessionEntityCache sessionEntityCache = new SessionEntityCache(this);
 
     private final Map<EntityInstancePK, Integer> eventTimeSequences = new HashMap<>();
 
-    private Map<Class, String> limitCache;
+    private Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> limitCache;
     private Map<String, PreparedStatement> preparedStatementCache;
     
     private MimeType preferredClobMimeType;
@@ -79,13 +79,13 @@ public class Session {
     
     public static final long MAX_TIME = Long.MAX_VALUE;
     public static final Long MAX_TIME_LONG = Long.MAX_VALUE;
-    public static final long RANGE_TIME = Long.MAX_VALUE - 1;
-    public static final Long RANGE_TIME_LONG = Long.MAX_VALUE - 1;
-    
+
     public long START_TIME;
     public Long START_TIME_LONG;
     
-    /** Creates a new instance of Session */
+    /**
+     * Creates a new instance of Session
+     */
     public Session() {
         if(PersistenceDebugFlags.LogSessions) {
             getLog().info("Session()");
@@ -140,12 +140,12 @@ public class Session {
         return connection;
     }
     
-    public static BaseModelControl getModelController(Class<? extends BaseModelControl> modelController) {
+    public static <T extends BaseModelControl> T getModelController(Class<T> modelController) {
         return ThreadSession.currentSession().getSessionModelController(modelController);
     }
     
-    public BaseModelControl getSessionModelController(Class<? extends BaseModelControl> modelController) {
-        BaseModelControl result = modelControllers.get(modelController);
+    public <T extends BaseModelControl> T getSessionModelController(Class<T> modelController) {
+        var result = modelControllers.get(modelController);
         
         if(result == null) {
             try {
@@ -154,15 +154,14 @@ public class Session {
                 throw new RuntimeException(e);
             }
             
-            if(result != null) {
-                modelControllers.put(modelController, result);
-            }
+            modelControllers.put(modelController, result);
         }
         
-        return result;
+        return (T)result;
     }
     
-    private String getStringFromBaseFactory(Class<? extends BaseFactory> entityFactory, Map<Class, String> cache, String methodName) {
+    private String getStringFromBaseFactory(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,
+            final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> cache, final String methodName) {
         String result = cache.get(entityFactory);
         
         if(result == null) {
@@ -182,15 +181,15 @@ public class Session {
         return result;
     }
     
-    public boolean hasLimit(String entityName) {
-        return limits == null? false: limits.get(entityName) != null;
+    public boolean hasLimit(final String entityName) {
+        return limits != null && limits.get(entityName) != null;
     }
     
-    public boolean hasLimit(Class<? extends BaseFactory> entityFactory) {
-        return limits == null? false: limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME)) != null;
+    public boolean hasLimit(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
+        return limits != null && limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME)) != null;
     }
     
-    public void copyLimit(String sourceEntityName, String destinationEntityName) {
+    public void copyLimit(final String sourceEntityName, final String destinationEntityName) {
         if(limits != null) {
             Limit limit = limits.get(sourceEntityName);
             
@@ -200,7 +199,7 @@ public class Session {
         }
     }
     
-    private String getLimit(Class<? extends BaseFactory> entityFactory) {
+    private String getLimit(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
         String result = null;
         
         if(limitCache == null) {
@@ -255,11 +254,14 @@ public class Session {
     }
 
     /**
+     * Creates a <code>PreparedStatement</code> object for sending
+     * parameterized SQL statements to the database.
      * @param sql SQL statement to use for the PreparedStatement
      * @return Returns a PreparedStatement
      * @throws PersistenceDatabaseException Thrown if the PreparedStatement was unable to be created
      */
-    public PreparedStatement prepareStatement(final Class<? extends BaseFactory> entityFactory, final String sql) {
+    public PreparedStatement prepareStatement(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,
+            final String sql) {
         PreparedStatement preparedStatement = null;
         
         if(preparedStatementCache == null) {
@@ -297,6 +299,8 @@ public class Session {
     }
     
     /**
+     * Creates a <code>PreparedStatement</code> object for sending
+     * parameterized SQL statements to the database.
      * @param sql SQL statement to use for the PreparedStatement
      * @return Returns a PreparedStatement
      * @throws PersistenceDatabaseException Thrown if the PreparedStatement was unable to be created
@@ -409,9 +413,9 @@ public class Session {
     private void freePreparedStatementCache() {
         Collection<PreparedStatement> preparedStatements = preparedStatementCache.values();
 
-        preparedStatements.forEach((preparedStatment) -> {
+        preparedStatements.forEach((preparedStatement) -> {
             try {
-                preparedStatment.close();
+                preparedStatement.close();
             } catch (SQLException se) {
                 // not much to do to recover from this problem, connection is closing soon.
                 throw new PersistenceDatabaseException(se);
@@ -498,18 +502,14 @@ public class Session {
         this.options = options;
     }
     
-    public Set<String> getOptions(boolean createifNeeded) {
+    public Set<String> getOptions() {
         if(options == null) {
             options = new HashSet<>();
         }
         
         return options;
     }
-    
-    public Set<String> getOptions() {
-        return getOptions(false);
-    }
-    
+
     public void setTransferProperties(TransferProperties transferProperties) {
         this.transferProperties = transferProperties;
     }

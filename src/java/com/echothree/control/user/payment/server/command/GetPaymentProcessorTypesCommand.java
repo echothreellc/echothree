@@ -49,7 +49,7 @@ public class GetPaymentProcessorTypesCommand
     
     @Override
     protected Collection<PaymentProcessorType> getEntities() {
-        var paymentProcessorTypeControl = (PaymentProcessorTypeControl)Session.getModelController(PaymentProcessorTypeControl.class);
+        var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         
         return paymentProcessorTypeControl.getPaymentProcessorTypes();
     }
@@ -57,7 +57,7 @@ public class GetPaymentProcessorTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<PaymentProcessorType> entities) {
         GetPaymentProcessorTypesResult result = PaymentResultFactory.getGetPaymentProcessorTypesResult();
-        var paymentProcessorTypeControl = (PaymentProcessorTypeControl)Session.getModelController(PaymentProcessorTypeControl.class);
+        var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         
         result.setPaymentProcessorTypes(paymentProcessorTypeControl.getPaymentProcessorTypeTransfers(getUserVisit(), entities));
         

@@ -63,7 +63,7 @@ public class GetUseNameElementsCommand
     
     @Override
     protected Collection<UseNameElement> getEntities() {
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         
         return useNameElementControl.getUseNameElements();
     }
@@ -71,7 +71,7 @@ public class GetUseNameElementsCommand
     @Override
     protected BaseResult getTransfers(Collection<UseNameElement> entities) {
         GetUseNameElementsResult result = OfferResultFactory.getGetUseNameElementsResult();
-        var useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+        var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         
         if(session.hasLimit(UseNameElementFactory.class)) {
             result.setUseNameElementCount(useNameElementControl.countUseNameElements());

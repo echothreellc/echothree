@@ -67,12 +67,12 @@ public class CreateIndexTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         String indexTypeName = form.getIndexTypeName();
         IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

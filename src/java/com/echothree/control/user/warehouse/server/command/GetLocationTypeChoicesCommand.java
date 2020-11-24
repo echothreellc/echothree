@@ -53,7 +53,7 @@ public class GetLocationTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         GetLocationTypeChoicesResult result = WarehouseResultFactory.getGetLocationTypeChoicesResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);

@@ -62,17 +62,17 @@ import java.util.Set;
 public class EmployeeTransferCache
         extends BaseEmployeeTransferCache<Party, EmployeeTransfer> {
 
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-    ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-    TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-    UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
     boolean includePartyContactMechanisms;

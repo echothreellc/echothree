@@ -61,7 +61,7 @@ public class SetDefaultDocumentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         String documentTypeName = form.getDocumentTypeName();
         DocumentTypeDetailValue documentTypeDetailValue = documentControl.getDocumentTypeDetailValueByNameForUpdate(documentTypeName);
         

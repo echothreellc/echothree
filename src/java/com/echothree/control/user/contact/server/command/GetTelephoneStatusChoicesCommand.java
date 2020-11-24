@@ -52,7 +52,7 @@ public class GetTelephoneStatusChoicesCommand
 
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         GetTelephoneStatusChoicesResult result = ContactResultFactory.getGetTelephoneStatusChoicesResult();
         String contactMechanismName = form.getContactMechanismName();
         ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);

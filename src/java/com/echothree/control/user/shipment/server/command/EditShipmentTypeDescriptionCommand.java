@@ -87,13 +87,13 @@ public class EditShipmentTypeDescriptionCommand
 
     @Override
     public ShipmentTypeDescription getEntity(EditShipmentTypeDescriptionResult result) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentTypeDescription shipmentTypeDescription = null;
         String shipmentTypeName = spec.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditShipmentTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditShipmentTypeDescriptionResult result, ShipmentTypeDescription shipmentTypeDescription) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
 
         result.setShipmentTypeDescription(shipmentControl.getShipmentTypeDescriptionTransfer(getUserVisit(), shipmentTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditShipmentTypeDescriptionCommand
 
     @Override
     public void doUpdate(ShipmentTypeDescription shipmentTypeDescription) {
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         ShipmentTypeDescriptionValue shipmentTypeDescriptionValue = shipmentControl.getShipmentTypeDescriptionValue(shipmentTypeDescription);
         shipmentTypeDescriptionValue.setDescription(edit.getDescription());
 

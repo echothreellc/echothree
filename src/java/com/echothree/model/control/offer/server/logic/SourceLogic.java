@@ -41,7 +41,7 @@ public class SourceLogic
     }
     
     public Source getSourceByName(final ExecutionErrorAccumulator eea, final String sourceName) {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         Source source = sourceControl.getSourceByName(sourceName);
 
         if(source == null) {

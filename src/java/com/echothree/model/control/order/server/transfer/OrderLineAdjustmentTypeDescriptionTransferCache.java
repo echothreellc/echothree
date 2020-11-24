@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderLineAdjustmentTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderLineAdjustmentTypeDescription, OrderLineAdjustmentTypeDescriptionTransfer> {
 
-    OrderLineAdjustmentControl orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+    OrderLineAdjustmentControl orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
 
     /** Creates a new instance of OrderLineAdjustmentTypeDescriptionTransferCache */
     public OrderLineAdjustmentTypeDescriptionTransferCache(UserVisit userVisit) {

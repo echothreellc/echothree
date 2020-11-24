@@ -66,7 +66,7 @@ public class EditCommunicationEventPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = Session.getModelController(CommunicationControl.class);
         EditCommunicationEventPurposeResult result = CommunicationResultFactory.getEditCommunicationEventPurposeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

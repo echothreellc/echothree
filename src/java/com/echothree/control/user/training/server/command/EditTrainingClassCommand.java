@@ -121,7 +121,7 @@ public class EditTrainingClassCommand
 
     @Override
     public TrainingClass getEntity(EditTrainingClassResult result) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClass trainingClass = null;
         String trainingClassName = spec.getTrainingClassName();
 
@@ -147,7 +147,7 @@ public class EditTrainingClassCommand
 
     @Override
     public void fillInResult(EditTrainingClassResult result, TrainingClass trainingClass) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
 
         result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));
     }
@@ -157,7 +157,7 @@ public class EditTrainingClassCommand
     
     @Override
     public void doLock(TrainingClassEdit edit, TrainingClass trainingClass) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         TrainingClassTranslation trainingClassTranslation = trainingControl.getTrainingClassTranslation(trainingClass, getPreferredLanguage());
         TrainingClassDetail trainingClassDetail = trainingClass.getLastDetail();
@@ -217,7 +217,7 @@ public class EditTrainingClassCommand
     
     @Override
     public void canUpdate(TrainingClass trainingClass) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         String trainingClassName = edit.getTrainingClassName();
         TrainingClass duplicateTrainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -276,7 +276,7 @@ public class EditTrainingClassCommand
                                         String workEffortScopeName = edit.getWorkEffortScopeName();
 
                                         if(workEffortScopeName != null) {
-                                            var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+                                            var workEffortControl = Session.getModelController(WorkEffortControl.class);
                                             WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(TrainingConstants.WorkEffortType_TRAINING);
 
                                             if(workEffortType != null) {
@@ -316,7 +316,7 @@ public class EditTrainingClassCommand
     
     @Override
     public void doUpdate(TrainingClass trainingClass) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         TrainingClassDetailValue trainingClassDetailValue = trainingControl.getTrainingClassDetailValueForUpdate(trainingClass);
         TrainingClassTranslation trainingClassTranslation = trainingControl.getTrainingClassTranslationForUpdate(trainingClass, getPreferredLanguage());

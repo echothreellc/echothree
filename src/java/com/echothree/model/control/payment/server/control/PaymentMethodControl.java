@@ -389,9 +389,9 @@ public class PaymentMethodControl
     }
     
     public void deletePaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        var orderPaymentPreferenceControl = (OrderPaymentPreferenceControl)Session.getModelController(OrderPaymentPreferenceControl.class);
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
+        var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
 
         customerControl.deleteCustomerTypePaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
         orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);

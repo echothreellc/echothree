@@ -36,9 +36,9 @@ import com.echothree.util.server.persistence.Session;
 public class FinancialAccountTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountType, FinancialAccountTypeTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of FinancialAccountTypeTransferCache */
     public FinancialAccountTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {

@@ -62,7 +62,7 @@ public class GetPeriodKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         GetPeriodKindChoicesResult result = PeriodResultFactory.getGetPeriodKindChoicesResult();
         String defaultPeriodKindChoice = form.getDefaultPeriodKindChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

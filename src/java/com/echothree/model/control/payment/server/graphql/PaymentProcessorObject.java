@@ -118,8 +118,8 @@ public class PaymentProcessorObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -132,7 +132,7 @@ public class PaymentProcessorObject
         List<PaymentProcessorTransactionObject> paymentProcessorTransactions = null;
 
         if(getHasPaymentProcessorTransactionsAccess(env)) {
-            var paymentProcessorTransactionControl = (PaymentProcessorTransactionControl)Session.getModelController(PaymentProcessorTransactionControl.class);
+            var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
             var entities = paymentProcessorTransactionControl.getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor);
             var objects = new ArrayList<PaymentProcessorTransactionObject>(entities.size());
 

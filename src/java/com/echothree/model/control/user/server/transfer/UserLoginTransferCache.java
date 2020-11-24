@@ -34,7 +34,7 @@ import java.util.Set;
 public class UserLoginTransferCache
         extends BaseUserTransferCache<UserLogin, UserLoginTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeUserLoginPasswords;
 
     /** Creates a new instance of UserLoginTransferCache */

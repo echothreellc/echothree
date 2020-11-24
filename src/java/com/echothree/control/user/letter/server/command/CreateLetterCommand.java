@@ -75,7 +75,7 @@ public class CreateLetterCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -84,7 +84,7 @@ public class CreateLetterCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = Session.getModelController(LetterControl.class);
                 String letterName = form.getLetterName();
                 Letter letter = letterControl.getLetterByName(chainType, letterName);
                 
@@ -93,7 +93,7 @@ public class CreateLetterCommand
                     LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
                     
                     if(letterSource != null) {
-                        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                        var contactListControl = Session.getModelController(ContactListControl.class);
                         String contactListName = form.getContactListName();
                         ContactList contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
                         

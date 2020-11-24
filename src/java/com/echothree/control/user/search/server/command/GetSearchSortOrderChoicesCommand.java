@@ -82,7 +82,7 @@ public class GetSearchSortOrderChoicesCommand
             SearchType searchType = searchTypeName != null && defaultSearchSortOrderChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKind, searchTypeName) : null;
             
             if(!hasExecutionErrors()) {
-                var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+                var searchControl = Session.getModelController(SearchControl.class);
                 boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {

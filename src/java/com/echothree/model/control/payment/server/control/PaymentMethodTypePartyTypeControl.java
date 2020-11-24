@@ -252,7 +252,7 @@ public class PaymentMethodTypePartyTypeControl
 
     public PaymentMethodTypePartyTypeChoicesBean getPaymentMethodTypePartyTypeChoices(final PaymentMethodType paymentMethodType,
             final String defaultPaymentMethodTypePartyTypeChoice, final Language language, final boolean allowNullChoice) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         var paymentMethodTypePartyTypes = getPaymentMethodTypePartyTypesByPaymentMethodType(paymentMethodType);
         var size = paymentMethodTypePartyTypes.size();
         var labels = new ArrayList<String>(size);

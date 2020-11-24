@@ -68,13 +68,13 @@ public class GetGeoCodeTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GetGeoCodeTimeZoneResult result = GeoResultFactory.getGetGeoCodeTimeZoneResult();
         String geoCodeName = form.getGeoCodeName();
         GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String javaTimeZoneName = form.getJavaTimeZoneName();
             TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
             

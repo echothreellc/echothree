@@ -48,7 +48,7 @@ public class GetPreferredTimeZoneCommand
 
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPreferredTimeZoneResult result = PartyResultFactory.getGetPreferredTimeZoneResult();
         TimeZone timeZone = getPreferredTimeZone();
 

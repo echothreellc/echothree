@@ -59,7 +59,7 @@ public class GetWorkflowStepCommand
 
     @Override
     protected BaseResult getTransfer(WorkflowStep workflowStep) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         var result = WorkflowResultFactory.getGetWorkflowStepResult();
 
         if(workflowStep != null) {

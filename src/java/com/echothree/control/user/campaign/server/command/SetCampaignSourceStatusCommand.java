@@ -64,7 +64,7 @@ public class SetCampaignSourceStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String campaignSourceName = form.getCampaignSourceName();
         CampaignSource campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
         

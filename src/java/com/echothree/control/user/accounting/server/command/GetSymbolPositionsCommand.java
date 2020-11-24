@@ -49,7 +49,7 @@ public class GetSymbolPositionsCommand
     
     @Override
     protected Collection<SymbolPosition> getEntities() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         return accountingControl.getSymbolPositions();
     }
@@ -57,7 +57,7 @@ public class GetSymbolPositionsCommand
     @Override
     protected BaseResult getTransfers(Collection<SymbolPosition> entities) {
         GetSymbolPositionsResult result = AccountingResultFactory.getGetSymbolPositionsResult();
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         result.setSymbolPositions(accountingControl.getSymbolPositionTransfers(getUserVisit(), entities));
         

@@ -54,13 +54,13 @@ import java.util.Set;
 public class CarrierTransferCache
         extends BaseCarrierTransferCache<Party, CarrierTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-    ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

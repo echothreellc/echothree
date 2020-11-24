@@ -93,13 +93,13 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public OrderLineAdjustmentType getEntity(EditOrderLineAdjustmentTypeResult result) {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderLineAdjustmentType orderLineAdjustmentType = null;
         String orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+            var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
             String orderLineAdjustmentTypeName = spec.getOrderLineAdjustmentTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -127,14 +127,14 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void fillInResult(EditOrderLineAdjustmentTypeResult result, OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
 
         result.setOrderLineAdjustmentType(orderLineAdjustmentControl.getOrderLineAdjustmentTypeTransfer(getUserVisit(), orderLineAdjustmentType));
     }
 
     @Override
     public void doLock(OrderLineAdjustmentTypeEdit edit, OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPreferredLanguage());
         OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
 
@@ -149,12 +149,12 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void canUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         String orderTypeName = spec.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+            var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
             String orderLineAdjustmentTypeName = edit.getOrderLineAdjustmentTypeName();
             OrderLineAdjustmentType duplicateOrderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
@@ -168,7 +168,7 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void doUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
-        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var partyPK = getPartyPK();
         OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDetailValueForUpdate(orderLineAdjustmentType);
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderLineAdjustmentControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, getPreferredLanguage());

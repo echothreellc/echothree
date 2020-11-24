@@ -37,9 +37,9 @@ import java.util.Set;
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
 
-    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
-    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
-    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+    PaymentMethodTypeControl paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
+    PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
 
     boolean includeComments;
 

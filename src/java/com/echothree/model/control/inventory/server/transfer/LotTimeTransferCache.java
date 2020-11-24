@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class LotTimeTransferCache
         extends BaseInventoryTransferCache<LotTime, LotTimeTransfer> {
 
-    LotTimeControl lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+    LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTransferCache */
     public LotTimeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {

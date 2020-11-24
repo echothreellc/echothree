@@ -57,7 +57,7 @@ public class UseLogic
     public Use createUse(final ExecutionErrorAccumulator eea, final String useName, final UseType useType,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         var use = useControl.getUseByName(useName);
 
         if(use == null) {
@@ -75,7 +75,7 @@ public class UseLogic
 
     public Use getUseByName(final ExecutionErrorAccumulator eea, final String useName,
             final EntityPermission entityPermission) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         var use = useControl.getUseByName(useName, entityPermission);
 
         if(use == null) {
@@ -95,7 +95,7 @@ public class UseLogic
 
     public Use getUseByUniversalSpec(final ExecutionErrorAccumulator eea,
             final UseUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
         var useName = universalSpec.getUseName();
         var parameterCount = (useName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         Use use = null;
@@ -143,16 +143,16 @@ public class UseLogic
     }
 
     public void updateUseFromValue(UseDetailValue useDetailValue, BasePK updatedBy) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
 
         useControl.updateUseFromValue(useDetailValue, updatedBy);
     }
 
     public void deleteUse(final ExecutionErrorAccumulator eea, final Use use, final BasePK deletedBy) {
-        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+        var offerUseControl = Session.getModelController(OfferUseControl.class);
 
         if(offerUseControl.countOfferUsesByUse(use) == 0) {
-            var useControl = (UseControl)Session.getModelController(UseControl.class);
+            var useControl = Session.getModelController(UseControl.class);
 
             useControl.deleteUse(use, deletedBy);
         } else {

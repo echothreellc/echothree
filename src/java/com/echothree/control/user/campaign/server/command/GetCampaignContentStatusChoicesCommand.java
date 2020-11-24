@@ -65,7 +65,7 @@ public class GetCampaignContentStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         GetCampaignContentStatusChoicesResult result = CampaignResultFactory.getGetCampaignContentStatusChoicesResult();
         String campaignContentName = form.getCampaignContentName();
         CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);

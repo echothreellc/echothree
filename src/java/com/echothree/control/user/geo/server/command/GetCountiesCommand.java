@@ -69,7 +69,7 @@ public class GetCountiesCommand
 
     @Override
     protected Collection<GeoCode> getEntities() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = form.getCountryName();
         var countryGeoCode = geoControl.getCountryByAlias(countryName);
         Collection<GeoCode> countyGeoCodes = null;
@@ -96,7 +96,7 @@ public class GetCountiesCommand
         var result = GeoResultFactory.getGetCountiesResult();
 
         if(entities != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
             var userVisit = getUserVisit();
 
             result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));

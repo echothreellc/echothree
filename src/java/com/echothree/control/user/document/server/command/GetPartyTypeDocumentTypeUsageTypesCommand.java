@@ -74,11 +74,11 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
         int parameterCount = (partyTypeName == null? 0: 1) + (documentTypeUsageTypeName == null? 0: 1);
         
         if(parameterCount == 1) {
-            var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+            var documentControl = Session.getModelController(DocumentControl.class);
             UserVisit userVisit = getUserVisit();
 
             if(partyTypeName != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
 
                 if(partyType != null) {

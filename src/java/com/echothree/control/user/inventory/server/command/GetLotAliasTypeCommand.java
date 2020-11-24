@@ -65,7 +65,7 @@ public class GetLotAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         GetLotAliasTypeResult result = InventoryResultFactory.getGetLotAliasTypeResult();
         String lotAliasTypeName = form.getLotAliasTypeName();
         LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);

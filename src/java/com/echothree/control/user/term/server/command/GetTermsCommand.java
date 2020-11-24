@@ -47,7 +47,7 @@ public class GetTermsCommand
     @Override
     protected BaseResult execute() {
         GetTermsResult result = TermResultFactory.getGetTermsResult();
-        var partyControl = (TermControl)Session.getModelController(TermControl.class);
+        var partyControl = Session.getModelController(TermControl.class);
         
         result.setTerms(partyControl.getTermTransfers(getUserVisit()));
         

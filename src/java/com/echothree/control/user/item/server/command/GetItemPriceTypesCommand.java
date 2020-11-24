@@ -46,7 +46,7 @@ public class GetItemPriceTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemPriceTypesResult result = ItemResultFactory.getGetItemPriceTypesResult();
         
         result.setItemPriceTypes(itemControl.getItemPriceTypeTransfers(getUserVisit()));

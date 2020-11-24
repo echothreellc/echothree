@@ -77,8 +77,8 @@ public class FilterKindObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return filterControl.getBestFilterKindDescription(filterKind, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

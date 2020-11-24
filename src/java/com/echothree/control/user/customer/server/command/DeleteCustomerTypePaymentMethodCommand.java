@@ -52,12 +52,12 @@ public class DeleteCustomerTypePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
             String paymentMethodName = form.getPaymentMethodName();
             PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
             

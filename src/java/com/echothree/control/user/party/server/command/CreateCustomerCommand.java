@@ -133,7 +133,7 @@ public class CreateCustomerCommand
     @Override
     protected BaseResult execute() {
         CreateCustomerResult result = PartyResultFactory.getCreateCustomerResult();
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         Customer customer = null;
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerTypeName == null ? customerControl.getDefaultCustomerType() : customerControl.getCustomerTypeByName(customerTypeName);
@@ -143,7 +143,7 @@ public class CreateCustomerCommand
             CancellationPolicy cancellationPolicy = null;
 
             if(cancellationPolicyName != null) {
-                var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                 CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -154,14 +154,14 @@ public class CreateCustomerCommand
                 ReturnPolicy returnPolicy = null;
 
                 if(returnPolicyName != null) {
-                    var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                    var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                     ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                     returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                 }
 
                 if(returnPolicyName == null || returnPolicy != null) {
-                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = Session.getModelController(AccountingControl.class);
                     String arGlAccountName = form.getArGlAccountName();
                     GlAccount arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
 
@@ -170,7 +170,7 @@ public class CreateCustomerCommand
                                 : arGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                         if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
-                            var termControl = (TermControl)Session.getModelController(TermControl.class);
+                            var termControl = Session.getModelController(TermControl.class);
                             CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
                             Term term = customerTypeDetail.getDefaultTerm();
 
@@ -186,15 +186,15 @@ public class CreateCustomerCommand
                                 boolean invalidInitialOfferOrSourceSpecification = false;
 
                                 if(initialOfferName != null && initialUseName != null && initialSourceName == null) {
-                                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                                    var offerControl = Session.getModelController(OfferControl.class);
                                     Offer initialOffer = offerControl.getOfferByName(initialOfferName);
 
                                     if(initialOffer != null) {
-                                        var useControl = (UseControl)Session.getModelController(UseControl.class);
+                                        var useControl = Session.getModelController(UseControl.class);
                                         Use initialUse = useControl.getUseByName(initialUseName);
 
                                         if(initialUse != null) {
-                                            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                                            var offerUseControl = Session.getModelController(OfferUseControl.class);
                                             initialOfferUse = offerUseControl.getOfferUse(initialOffer, initialUse);
 
                                             if(initialOfferUse == null) {
@@ -207,7 +207,7 @@ public class CreateCustomerCommand
                                         addExecutionError(ExecutionErrors.UnknownInitialOfferName.name(), initialOfferName);
                                     }
                                 } else {
-                                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                                    var sourceControl = Session.getModelController(SourceControl.class);
 
                                     if(initialOfferName == null && initialUseName == null && initialSourceName != null) {
                                         Source source = sourceControl.getSourceByName(initialSourceName);
@@ -235,7 +235,7 @@ public class CreateCustomerCommand
                                 }
 
                                 if(initialOfferUse != null) {
-                                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                    var partyControl = Session.getModelController(PartyControl.class);
                                     String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                                     Language preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
@@ -258,9 +258,9 @@ public class CreateCustomerCommand
                                                 }
 
                                                 if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                                    var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-                                                    var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
-                                                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                                    var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+                                                    var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
+                                                    var workflowControl = Session.getModelController(WorkflowControl.class);
                                                     Soundex soundex = new Soundex();
                                                     PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
                                                     BasePK createdBy = getPartyPK();

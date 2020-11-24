@@ -54,12 +54,12 @@ import java.util.Set;
 public class PartyPaymentMethodTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethod, PartyPaymentMethodTransfer> {
     
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
-    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    PartyPaymentMethodControl partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
+    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     boolean includeNumber;
     boolean includeSecurityCode;
@@ -81,7 +81,7 @@ public class PartyPaymentMethodTransferCache
             includeComments = options.contains(PaymentOptions.PartyPaymentMethodIncludeComments);
 
             if(includeNumber || includeSecurityCode) {
-                UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+                UserControl userControl = Session.getModelController(UserControl.class);
 
                 if(!SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, userControl.getPartyFromUserVisit(userVisit),
                         SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.CreditCard.name())) {

@@ -933,7 +933,7 @@ public class ContactControl
     
     public ContactMechanismPurposeChoicesBean getContactMechanismPurposeChoicesByContactList(String defaultContactListContactMechanismPurposeChoice, Language language, boolean allowNullChoice,
             ContactList contactList) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes = contactListControl.getContactListContactMechanismPurposesByContactList(contactList);
         int size = contactListContactMechanismPurposes.size();
         List<String> labels = new ArrayList<>(size);
@@ -2645,14 +2645,14 @@ public class ContactControl
     }
     
     public void deletePartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {
-        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
-        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
-        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
-        var orderShipmentGroupControl = (OrderShipmentGroupControl)Session.getModelController(OrderShipmentGroupControl.class);
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
-        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var associateControl = Session.getModelController(AssociateControl.class);
+        var billingControl = Session.getModelController(BillingControl.class);
+        var communicationControl = Session.getModelController(CommunicationControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
+        var letterControl = Session.getModelController(LetterControl.class);
+        var orderShipmentGroupControl = Session.getModelController(OrderShipmentGroupControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
+        var shipmentControl = Session.getModelController(ShipmentControl.class);
         
         deletePartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism, deletedBy);
         deletePartyContactMechanismRelationshipsByPartyContactMechanism(partyContactMechanism, deletedBy);

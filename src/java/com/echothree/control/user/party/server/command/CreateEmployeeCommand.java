@@ -112,7 +112,7 @@ public class CreateEmployeeCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         UserControl userControl = getUserControl();
         CreateEmployeeResult result = PartyResultFactory.getCreateEmployeeResult();
         PartyEmployee partyEmployee = null;
@@ -124,7 +124,7 @@ public class CreateEmployeeCommand
             String password2 = form.getPassword2();
             
             if(password1.equals(password2)) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.EMPLOYEE.name());
                 PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
                         getUserVisit(), this, partyType, null, null, password1);
@@ -152,18 +152,18 @@ public class CreateEmployeeCommand
                                     if(preferredCurrencyIsoName == null)
                                         preferredCurrency = null;
                                     else {
-                                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                        var accountingControl = Session.getModelController(AccountingControl.class);
                                         preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                     }
                                     
                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+                                        var securityControl = Session.getModelController(SecurityControl.class);
                                         String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
                                         PartySecurityRoleTemplate partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
                                         
                                         if(partySecurityRoleTemplate != null) {
                                             var coreControl = getCoreControl();
-                                            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                            var workflowControl = Session.getModelController(WorkflowControl.class);
                                             Soundex soundex = new Soundex();
                                             BasePK createdBy = getPartyPK();
                                             String personalTitleId = form.getPersonalTitleId();

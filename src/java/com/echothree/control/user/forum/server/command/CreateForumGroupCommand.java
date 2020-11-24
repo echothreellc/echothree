@@ -56,12 +56,12 @@ public class CreateForumGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumGroupName = form.getForumGroupName();
         ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroup == null) {
-            var iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = Session.getModelController(IconControl.class);
             String iconName = form.getIconName();
             Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
             

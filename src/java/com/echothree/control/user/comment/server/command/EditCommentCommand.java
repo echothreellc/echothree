@@ -144,7 +144,7 @@ public class EditCommentCommand
     
     @Override
     protected BaseResult execute() {
-        var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+        var commentControl = Session.getModelController(CommentControl.class);
         EditCommentResult result = CommentResultFactory.getEditCommentResult();
         String commentName = spec.getCommentName();
         Comment comment = commentControl.getCommentByName(commentName);
@@ -189,7 +189,7 @@ public class EditCommentCommand
             } else if(editMode.equals(EditMode.ABANDON)) {
                 unlockEntity(comment);
             } else if(editMode.equals(EditMode.UPDATE)) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = edit.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

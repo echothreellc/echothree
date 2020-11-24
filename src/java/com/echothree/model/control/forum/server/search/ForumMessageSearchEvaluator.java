@@ -61,7 +61,7 @@ public class ForumMessageSearchEvaluator
         this.forum = forum;
         this.forumMessageType = forumMessageType;
         
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageTypePartType indexDefaultForumMessageTypePartType = forumControl.getIndexDefaultForumMessageTypePartType(forumMessageType);
 
         setField(indexDefaultForumMessageTypePartType.getForumMessagePartType().getForumMessagePartTypeName());

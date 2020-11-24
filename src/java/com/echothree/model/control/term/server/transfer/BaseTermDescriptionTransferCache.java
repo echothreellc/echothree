@@ -32,7 +32,7 @@ public abstract class BaseTermDescriptionTransferCache<K extends BaseEntity, V e
     protected BaseTermDescriptionTransferCache(UserVisit userVisit, TermControl termControl) {
         super(userVisit, termControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

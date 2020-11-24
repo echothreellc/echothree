@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class UseTypeTransferCache
         extends BaseOfferTransferCache<UseType, UseTypeTransfer> {
 
-    UseTypeControl useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+    UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTypeTransferCache */
     public UseTypeTransferCache(UserVisit userVisit) {

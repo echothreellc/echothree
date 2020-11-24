@@ -82,7 +82,7 @@ public class EmployeeLoginCommand
                     LockoutPolicyLogic.getInstance().checkUserLogin(session, this, party, userLoginStatus);
 
                     if(!hasExecutionErrors()) {
-                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = Session.getModelController(PartyControl.class);
 
                         if(checkPasswords(userLoginStatus, form.getPassword(), party, true)) {
                             String partyCompanyName = form.getCompanyName();

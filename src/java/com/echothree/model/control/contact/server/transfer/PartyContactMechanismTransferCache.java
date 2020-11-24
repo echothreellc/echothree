@@ -35,7 +35,7 @@ import java.util.Set;
 public class PartyContactMechanismTransferCache
         extends BaseContactTransferCache<PartyContactMechanism, PartyContactMechanismTransfer> {
     
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includePartyContactMechanismPurposes;
     boolean includePartyContactMechanismRelationships;
     boolean includePartyContactMechanismRelationshipsByFromPartyContactMechanism;

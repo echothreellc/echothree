@@ -40,7 +40,7 @@ public class UserLoginLogic
     }
     
     public UserLogin getUserLoginByUsername(final ExecutionErrorAccumulator eea, final String username) {
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         UserLogin userLogin = userControl.getUserLoginByUsername(username);
 
         if(userLogin == null) {

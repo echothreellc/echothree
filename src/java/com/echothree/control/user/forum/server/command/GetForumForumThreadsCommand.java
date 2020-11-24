@@ -52,7 +52,7 @@ public class GetForumForumThreadsCommand
     
     @Override
     protected BaseResult execute() {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         GetForumForumThreadsResult result = ForumResultFactory.getGetForumForumThreadsResult();
         String forumName = form.getForumName();
         String forumThreadName = form.getForumThreadName();

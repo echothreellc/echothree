@@ -57,7 +57,7 @@ public class GetOfferResultsCommand
     @Override
     protected BaseResult execute() {
         GetOfferResultsResult result = SearchResultFactory.getGetOfferResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_OFFER);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetOfferResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                    var offerControl = Session.getModelController(OfferControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setOfferResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

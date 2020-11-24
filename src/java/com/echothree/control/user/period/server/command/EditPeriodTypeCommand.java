@@ -89,7 +89,7 @@ public class EditPeriodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         EditPeriodTypeResult result = PeriodResultFactory.getEditPeriodTypeResult();
         String periodKindName = spec.getPeriodKindName();
         PeriodKind periodKind = periodControl.getPeriodKindByName(periodKindName);
@@ -156,7 +156,7 @@ public class EditPeriodTypeCommand
                                 int parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
                                 if(parameterCount == 0 || parameterCount == 2) {
-                                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                    var workflowControl = Session.getModelController(WorkflowControl.class);
                                     Workflow workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
 
                                     if(workflowName == null || workflow != null) {

@@ -66,7 +66,7 @@ public class GetPartyRelationshipsCommand
         int toParameterCount = (toPartyName == null? 0: 1) + (toRoleTypeName == null? 0: 1);
         
         if((fromParameterCount == 2 && toParameterCount == 0) || (fromParameterCount == 0 && toParameterCount == 2)) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String partyRelationshipTypeName = form.getPartyRelationshipTypeName();
             PartyRelationshipType partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
             

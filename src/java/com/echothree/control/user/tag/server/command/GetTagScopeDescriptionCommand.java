@@ -68,13 +68,13 @@ public class GetTagScopeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
         GetTagScopeDescriptionResult result = TagResultFactory.getGetTagScopeDescriptionResult();
         String tagScopeName = form.getTagScopeName();
         TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

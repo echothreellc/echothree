@@ -50,7 +50,7 @@ public class GetPartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetPartyTypeResult result = PartyResultFactory.getGetPartyTypeResult();
         String partyTypeName = form.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);

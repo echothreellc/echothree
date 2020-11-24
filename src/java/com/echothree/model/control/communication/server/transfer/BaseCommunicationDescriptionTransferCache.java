@@ -32,7 +32,7 @@ public abstract class BaseCommunicationDescriptionTransferCache<K extends BaseEn
     protected BaseCommunicationDescriptionTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
         super(userVisit, communicationControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

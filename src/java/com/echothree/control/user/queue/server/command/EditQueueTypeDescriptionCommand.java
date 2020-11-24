@@ -87,13 +87,13 @@ public class EditQueueTypeDescriptionCommand
 
     @Override
     public QueueTypeDescription getEntity(EditQueueTypeDescriptionResult result) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         QueueTypeDescription queueTypeDescription = null;
         String queueTypeName = spec.getQueueTypeName();
         QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(queueType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditQueueTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditQueueTypeDescriptionResult result, QueueTypeDescription queueTypeDescription) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
 
         result.setQueueTypeDescription(queueControl.getQueueTypeDescriptionTransfer(getUserVisit(), queueTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditQueueTypeDescriptionCommand
 
     @Override
     public void doUpdate(QueueTypeDescription queueTypeDescription) {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         QueueTypeDescriptionValue queueTypeDescriptionValue = queueControl.getQueueTypeDescriptionValue(queueTypeDescription);
         queueTypeDescriptionValue.setDescription(edit.getDescription());
 

@@ -62,7 +62,7 @@ public class SetDefaultCampaignTermCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String campaignTermName = form.getCampaignTermName();
         CampaignTermDetailValue campaignTermDetailValue = campaignControl.getCampaignTermDetailValueByNameForUpdate(campaignTermName);
         

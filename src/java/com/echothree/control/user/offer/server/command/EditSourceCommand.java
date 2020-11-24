@@ -84,7 +84,7 @@ public class EditSourceCommand
 
     @Override
     public Source getEntity(EditSourceResult result) {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         Source source;
         String sourceName = spec.getSourceName();
 
@@ -110,7 +110,7 @@ public class EditSourceCommand
 
     @Override
     public void fillInResult(EditSourceResult result, Source source) {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
 
         result.setSource(sourceControl.getSourceTransfer(getUserVisit(), source));
     }
@@ -126,7 +126,7 @@ public class EditSourceCommand
 
     @Override
     public void canUpdate(Source source) {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         String sourceName = edit.getSourceName();
         Source duplicateSource = sourceControl.getSourceByName(sourceName);
 
@@ -137,7 +137,7 @@ public class EditSourceCommand
 
     @Override
     public void doUpdate(Source source) {
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         var partyPK = getPartyPK();
         SourceDetailValue sourceDetailValue = sourceControl.getSourceDetailValueForUpdate(source);
 

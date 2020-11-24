@@ -50,7 +50,7 @@ public class GetTerminationTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetTerminationTypeDescriptionsResult result = EmployeeResultFactory.getGetTerminationTypeDescriptionsResult();
         String terminationTypeName = form.getTerminationTypeName();
         TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);

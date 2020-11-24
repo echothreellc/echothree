@@ -37,7 +37,7 @@ import java.util.Set;
 public class ForumMessageTransferCache
         extends BaseForumTransferCache<ForumMessage, ForumMessageTransfer> {
 
-    IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+    IconControl iconControl = Session.getModelController(IconControl.class);
     boolean includeForumMessageRoles;
     boolean includeForumMessageParts;
     boolean includeForumMessageAttachments;

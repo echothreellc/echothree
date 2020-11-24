@@ -78,7 +78,7 @@ public class GetCampaignContentCommand
         int parameterCount = (campaignContentName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+            var campaignControl = Session.getModelController(CampaignControl.class);
             CampaignContent campaignContent = null;
 
             if(campaignContentName == null) {

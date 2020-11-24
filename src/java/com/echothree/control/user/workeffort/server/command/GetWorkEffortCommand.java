@@ -51,7 +51,7 @@ public class GetWorkEffortCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         GetWorkEffortResult result = WorkEffortResultFactory.getGetWorkEffortResult();
         String workEffortName = form.getWorkEffortName();
         WorkEffort workEffort = workEffortControl.getWorkEffortByName(workEffortName);

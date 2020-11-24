@@ -88,7 +88,7 @@ public class CreateTermCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = Session.getModelController(TermControl.class);
         String termName = form.getTermName();
         Term term = termControl.getTermByName(termName);
         

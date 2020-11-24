@@ -35,7 +35,7 @@ public class ForumPartyTypeRoleTransferCache
     public ForumPartyTypeRoleTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public ForumPartyTypeRoleTransfer getForumPartyTypeRoleTransfer(ForumPartyTypeRole forumPartyTypeRole) {

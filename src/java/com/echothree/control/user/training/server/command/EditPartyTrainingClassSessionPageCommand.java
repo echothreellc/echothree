@@ -126,7 +126,7 @@ public class EditPartyTrainingClassSessionPageCommand
 
     @Override
     public void fillInResult(EditPartyTrainingClassSessionPageResult result, PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
 
         result.setPartyTrainingClassSessionPage(trainingControl.getPartyTrainingClassSessionPageTransfer(getUserVisit(), partyTrainingClassSessionPage));
     }
@@ -158,7 +158,7 @@ public class EditPartyTrainingClassSessionPageCommand
 
     @Override
     public void doUpdate(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         PartyTrainingClassSessionPageValue partyTrainingClassSessionPageValue = trainingControl.getPartyTrainingClassSessionPageValue(partyTrainingClassSessionPage);
 

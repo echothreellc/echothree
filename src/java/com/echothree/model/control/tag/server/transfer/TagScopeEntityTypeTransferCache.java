@@ -34,7 +34,7 @@ public class TagScopeEntityTypeTransferCache
     public TagScopeEntityTypeTransferCache(UserVisit userVisit, TagControl tagControl) {
         super(userVisit, tagControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(TagScopeEntityType tagScopeEntityType) {

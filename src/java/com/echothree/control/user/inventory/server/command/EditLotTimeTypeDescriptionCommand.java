@@ -87,13 +87,13 @@ public class EditLotTimeTypeDescriptionCommand
 
     @Override
     public LotTimeTypeDescription getEntity(EditLotTimeTypeDescriptionResult result) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         LotTimeTypeDescription lotTimeTypeDescription = null;
         String lotTimeTypeName = spec.getLotTimeTypeName();
         LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditLotTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLotTimeTypeDescriptionResult result, LotTimeTypeDescription lotTimeTypeDescription) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
 
         result.setLotTimeTypeDescription(lotTimeControl.getLotTimeTypeDescriptionTransfer(getUserVisit(), lotTimeTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditLotTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(LotTimeTypeDescription lotTimeTypeDescription) {
-        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         LotTimeTypeDescriptionValue lotTimeTypeDescriptionValue = lotTimeControl.getLotTimeTypeDescriptionValue(lotTimeTypeDescription);
         lotTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

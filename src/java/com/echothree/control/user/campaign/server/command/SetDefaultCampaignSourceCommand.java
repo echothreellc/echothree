@@ -62,7 +62,7 @@ public class SetDefaultCampaignSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String campaignSourceName = form.getCampaignSourceName();
         CampaignSourceDetailValue campaignSourceDetailValue = campaignControl.getCampaignSourceDetailValueByNameForUpdate(campaignSourceName);
         

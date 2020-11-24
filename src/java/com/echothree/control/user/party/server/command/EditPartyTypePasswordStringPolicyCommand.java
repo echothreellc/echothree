@@ -85,7 +85,7 @@ public class EditPartyTypePasswordStringPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         EditPartyTypePasswordStringPolicyResult result = PartyResultFactory.getEditPartyTypePasswordStringPolicyResult();
         String partyTypeName = spec.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -94,7 +94,7 @@ public class EditPartyTypePasswordStringPolicyCommand
             PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
             
             if(partyTypePasswordStringPolicy != null) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 
                 if(timeUnitOfMeasureKind != null) {

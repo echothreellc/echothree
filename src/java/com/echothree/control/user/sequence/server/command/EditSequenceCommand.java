@@ -95,7 +95,7 @@ public class EditSequenceCommand
     
     @Override
     public Sequence getEntity(EditSequenceResult result) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = null;
         String sequenceTypeName = spec.getSequenceTypeName();
         
@@ -129,14 +129,14 @@ public class EditSequenceCommand
     
     @Override
     public void fillInResult(EditSequenceResult result, Sequence sequence) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         
         result.setSequence(sequenceControl.getSequenceTransfer(getUserVisit(), sequence));
     }
     
     @Override
     public void doLock(SequenceEdit edit, Sequence sequence) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceDescription sequenceDescription = sequenceControl.getSequenceDescription(sequence, getPreferredLanguage());
         SequenceDetail sequenceDetail = sequence.getLastDetail();
         Integer chunkSize = sequenceDetail.getChunkSize();
@@ -154,7 +154,7 @@ public class EditSequenceCommand
     
     @Override
     public void canUpdate(Sequence sequence) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         String sequenceName = edit.getSequenceName();
         Sequence duplicateSequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
@@ -165,7 +165,7 @@ public class EditSequenceCommand
     
     @Override
     public void doUpdate(Sequence sequence) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var partyPK = getPartyPK();
         SequenceDetailValue sequenceDetailValue = sequenceControl.getSequenceDetailValueForUpdate(sequence);
         SequenceDescription sequenceDescription = sequenceControl.getSequenceDescriptionForUpdate(sequence, getPreferredLanguage());

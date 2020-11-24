@@ -49,7 +49,7 @@ public class GetCurrenciesCommand
     
     @Override
     protected Collection<Currency> getEntities() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         return accountingControl.getCurrencies();
     }
@@ -57,7 +57,7 @@ public class GetCurrenciesCommand
     @Override
     protected BaseResult getTransfers(Collection<Currency> entities) {
         GetCurrenciesResult result = AccountingResultFactory.getGetCurrenciesResult();
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         result.setCurrencies(accountingControl.getCurrencyTransfers(getUserVisit(), entities));
         

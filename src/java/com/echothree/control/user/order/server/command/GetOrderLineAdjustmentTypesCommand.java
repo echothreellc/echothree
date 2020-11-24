@@ -65,13 +65,13 @@ public class GetOrderLineAdjustmentTypesCommand
 
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         GetOrderLineAdjustmentTypesResult result = OrderResultFactory.getGetOrderLineAdjustmentTypesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+            var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
 
             result.setOrderLineAdjustmentTypes(orderLineAdjustmentControl.getOrderLineAdjustmentTypeTransfers(getUserVisit(), orderType));
         } else {

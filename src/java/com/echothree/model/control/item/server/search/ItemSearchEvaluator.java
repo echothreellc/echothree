@@ -284,7 +284,7 @@ public class ItemSearchEvaluator
                 }
             }
         } else {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             Item item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
             
             if(item != null) {

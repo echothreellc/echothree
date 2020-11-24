@@ -80,7 +80,7 @@ public class GetOfferUsesCommand
 
         if(ParameterUtils.getInstance().isExactlyOneBooleanTrue(this, offerName != null && useName == null,
                 offerName == null && useName != null, offerName == null && useName == null)) {
-            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
 
             if(offerName != null) {
                 offer = OfferLogic.getInstance().getOfferByName(this, offerName);
@@ -107,17 +107,17 @@ public class GetOfferUsesCommand
         var result = OfferResultFactory.getGetOfferUsesResult();
         
         if(entities != null) {
-            var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
             UserVisit userVisit = getUserVisit();
 
             if(offer != null) {
-                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                var offerControl = Session.getModelController(OfferControl.class);
 
                 result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
             }
 
             if(use != null) {
-                var useControl = (UseControl)Session.getModelController(UseControl.class);
+                var useControl = Session.getModelController(UseControl.class);
 
                 result.setUse(useControl.getUseTransfer(userVisit, use));
             }

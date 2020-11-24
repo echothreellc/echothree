@@ -34,7 +34,7 @@ public class EntityMessageTransferCache
     public EntityMessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
         super(userVisit, messageControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public EntityMessageTransfer getEntityMessageTransfer(EntityMessage entityMessage) {

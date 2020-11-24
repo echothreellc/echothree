@@ -95,7 +95,7 @@ public class EditIndexTypeCommand
 
     @Override
     public IndexType getEntity(EditIndexTypeResult result) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         IndexType indexType;
         String indexTypeName = spec.getIndexTypeName();
 
@@ -119,7 +119,7 @@ public class EditIndexTypeCommand
 
     @Override
     public void fillInResult(EditIndexTypeResult result, IndexType indexType) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
 
         result.setIndexType(indexControl.getIndexTypeTransfer(getUserVisit(), indexType));
     }
@@ -128,7 +128,7 @@ public class EditIndexTypeCommand
     
     @Override
     public void doLock(IndexTypeEdit edit, IndexType indexType) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescription(indexType, getPreferredLanguage());
         IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
         
@@ -150,7 +150,7 @@ public class EditIndexTypeCommand
     
     @Override
     public void canUpdate(IndexType indexType) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         String indexTypeName = edit.getIndexTypeName();
         IndexType duplicateIndexType = indexControl.getIndexTypeByName(indexTypeName);
 
@@ -171,7 +171,7 @@ public class EditIndexTypeCommand
 
     @Override
     public void doUpdate(IndexType indexType) {
-        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = Session.getModelController(IndexControl.class);
         var partyPK = getPartyPK();
         IndexTypeDetailValue indexTypeDetailValue = indexControl.getIndexTypeDetailValueForUpdate(indexType);
         IndexTypeDescription indexTypeDescription = indexControl.getIndexTypeDescriptionForUpdate(indexType, getPreferredLanguage());

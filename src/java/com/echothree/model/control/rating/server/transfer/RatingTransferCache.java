@@ -33,7 +33,7 @@ public class RatingTransferCache
     public RatingTransferCache(UserVisit userVisit, RatingControl ratingControl) {
         super(userVisit, ratingControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
     }
     
     public RatingTransfer getRatingTransfer(Rating rating) {

@@ -87,13 +87,13 @@ public class EditCampaignSourceDescriptionCommand
 
     @Override
     public CampaignSourceDescription getEntity(EditCampaignSourceDescriptionResult result) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignSourceDescription campaignSourceDescription = null;
         String campaignSourceName = spec.getCampaignSourceName();
         CampaignSource campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
 
         if(campaignSource != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditCampaignSourceDescriptionCommand
 
     @Override
     public void fillInResult(EditCampaignSourceDescriptionResult result, CampaignSourceDescription campaignSourceDescription) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
 
         result.setCampaignSourceDescription(campaignControl.getCampaignSourceDescriptionTransfer(getUserVisit(), campaignSourceDescription));
     }
@@ -136,7 +136,7 @@ public class EditCampaignSourceDescriptionCommand
 
     @Override
     public void doUpdate(CampaignSourceDescription campaignSourceDescription) {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         CampaignSourceDescriptionValue campaignSourceDescriptionValue = campaignControl.getCampaignSourceDescriptionValue(campaignSourceDescription);
         campaignSourceDescriptionValue.setDescription(edit.getDescription());
 

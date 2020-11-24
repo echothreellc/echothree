@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class LotAliasTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<LotAliasTypeDescription, LotAliasTypeDescriptionTransfer> {
 
-    LotAliasControl lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+    LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeDescriptionTransferCache */
     public LotAliasTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {

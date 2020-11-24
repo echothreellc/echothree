@@ -64,13 +64,13 @@ public class EditResponsibilityTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         EditResponsibilityTypeDescriptionResult result = EmployeeResultFactory.getEditResponsibilityTypeDescriptionResult();
         String responsibilityTypeName = spec.getResponsibilityTypeName();
         ResponsibilityType responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
         
         if(responsibilityType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

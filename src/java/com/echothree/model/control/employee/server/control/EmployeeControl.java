@@ -1902,7 +1902,7 @@ public class EmployeeControl
 
     public Leave createLeave(Party party, Party companyParty, LeaveType leaveType, LeaveReason leaveReason, Long startTime, Long endTime, Long totalTime,
             BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.name());
         String leaveName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
@@ -3104,7 +3104,7 @@ public class EmployeeControl
 
     public Employment createEmployment(Party party, Party companyParty, Long startTime, Long endTime, TerminationType terminationType,
             TerminationReason terminationReason, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.name());
         String employmentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
@@ -4476,7 +4476,7 @@ public class EmployeeControl
         }
 
         try {
-            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = Session.getModelController(EmployeeControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

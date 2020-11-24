@@ -34,7 +34,7 @@ public class ItemUnitOfMeasureTypeTransferCache
     public ItemUnitOfMeasureTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
         super(userVisit, itemControl);
         
-        uomControl = (UomControl)Session.getModelController(UomControl.class);
+        uomControl = Session.getModelController(UomControl.class);
     }
     
     @Override

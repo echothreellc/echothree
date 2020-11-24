@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class FreeOnBoardDescriptionTransferCache
         extends BaseShipmentDescriptionTransferCache<FreeOnBoardDescription, FreeOnBoardDescriptionTransfer> {
 
-    FreeOnBoardControl freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+    FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
 
     /** Creates a new instance of FreeOnBoardDescriptionTransferCache */
     public FreeOnBoardDescriptionTransferCache(UserVisit userVisit) {

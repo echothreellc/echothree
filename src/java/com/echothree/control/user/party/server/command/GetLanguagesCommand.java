@@ -49,7 +49,7 @@ public class GetLanguagesCommand
     
     @Override
     protected Collection<Language> getEntities() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         return partyControl.getLanguages();
     }
@@ -57,7 +57,7 @@ public class GetLanguagesCommand
     @Override
     protected BaseResult getTransfers(Collection<Language> entities) {
         GetLanguagesResult result = PartyResultFactory.getGetLanguagesResult();
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         result.setLanguages(partyControl.getLanguageTransfers(getUserVisit(), entities));
         

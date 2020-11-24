@@ -76,20 +76,20 @@ public class GetOfferItemPricesCommand
     
     @Override
     protected Collection<OfferItemPrice> getEntities() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Collection<OfferItemPrice> offerItemPrices = null;
         
         offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
            
             item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                var offerItemControl = Session.getModelController(OfferItemControl.class);
                 offerItem = offerItemControl.getOfferItem(offer, item);
                 
                 if(offerItem != null) {
@@ -113,9 +113,9 @@ public class GetOfferItemPricesCommand
         GetOfferItemPricesResult result = OfferResultFactory.getGetOfferItemPricesResult();
         
         if (entities != null) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));

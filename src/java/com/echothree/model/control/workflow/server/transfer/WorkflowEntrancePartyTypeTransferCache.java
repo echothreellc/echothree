@@ -34,7 +34,7 @@ public class WorkflowEntrancePartyTypeTransferCache
     public WorkflowEntrancePartyTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
         super(userVisit, workflowControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public WorkflowEntrancePartyTypeTransfer getWorkflowEntrancePartyTypeTransfer(WorkflowEntrancePartyType workflowEntrancePartyType) {

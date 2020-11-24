@@ -103,7 +103,7 @@ public class EditContentCollectionCommand
     
     @Override
     public ContentCollection getEntity(EditContentCollectionResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentCollection contentCollection = null;
         String contentCollectionName = spec.getContentCollectionName();
 
@@ -129,15 +129,15 @@ public class EditContentCollectionCommand
     
     @Override
     public void fillInResult(EditContentCollectionResult result, ContentCollection contentCollection) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
     }
     
     @Override
     public void doLock(ContentCollectionEdit edit, ContentCollection contentCollection) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
+        var sourceControl = Session.getModelController(SourceControl.class);
         ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescription(contentCollection, getPreferredLanguage());
         ContentCollectionDetail contentCollectionDetail = contentCollection.getLastDetail();
         OfferUse offerUse = contentCollectionDetail.getDefaultOfferUse();
@@ -158,12 +158,12 @@ public class EditContentCollectionCommand
     
     @Override
     public void canUpdate(ContentCollection contentCollection) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = edit.getContentCollectionName();
         ContentCollection duplicateContentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
         if(duplicateContentCollection == null || contentCollection.equals(duplicateContentCollection)) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
             String defaultOfferName = edit.getDefaultOfferName();
             String defaultUseName = edit.getDefaultUseName();
             String defaultSourceName = edit.getDefaultSourceName();
@@ -172,11 +172,11 @@ public class EditContentCollectionCommand
                 Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
-                    var useControl = (UseControl)Session.getModelController(UseControl.class);
+                    var useControl = Session.getModelController(UseControl.class);
                     Use defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
-                        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                        var offerUseControl = Session.getModelController(OfferUseControl.class);
                         defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                         if(defaultOfferUse == null) {
@@ -189,7 +189,7 @@ public class EditContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                var sourceControl = Session.getModelController(SourceControl.class);
                 Source source = sourceControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
@@ -198,7 +198,7 @@ public class EditContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultSourceName.name(), defaultSourceName);
                 }
             } else {
-                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                var sourceControl = Session.getModelController(SourceControl.class);
                 // If all three parameters are null, then try to get the default Source and use its OfferUse.
                 Source source = sourceControl.getDefaultSource();
 
@@ -210,7 +210,7 @@ public class EditContentCollectionCommand
             }
 
             if(defaultOfferUse != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
                 PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
                 PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
@@ -232,7 +232,7 @@ public class EditContentCollectionCommand
     
     @Override
     public void doUpdate(ContentCollection contentCollection) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         var partyPK = getPartyPK();
         ContentCollectionDetailValue contentCollectionDetailValue = contentControl.getContentCollectionDetailValueForUpdate(contentCollection);
         ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescriptionForUpdate(contentCollection, getPreferredLanguage());

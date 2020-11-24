@@ -27,9 +27,9 @@ import com.echothree.util.server.persistence.Session;
 public class BillingAccountRoleTransferCache
         extends BasePaymentTransferCache<BillingAccountRole, BillingAccountRoleTransfer> {
 
-    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    BillingControl billingControl = Session.getModelController(BillingControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of BillingAccountRoleTransferCache */
     public BillingAccountRoleTransferCache(UserVisit userVisit) {

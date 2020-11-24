@@ -90,7 +90,7 @@ public class EditLetterCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         EditLetterResult result = LetterResultFactory.getEditLetterResult();
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -100,7 +100,7 @@ public class EditLetterCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = Session.getModelController(LetterControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     String letterName = spec.getLetterName();
@@ -145,7 +145,7 @@ public class EditLetterCommand
                             LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
                             
                             if(letterSource != null) {
-                                var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                                var contactListControl = Session.getModelController(ContactListControl.class);
                                 String contactListName = edit.getContactListName();
                                 ContactList contactList = contactListName == null? null: contactListControl.getContactListByName(contactListName);
                                 

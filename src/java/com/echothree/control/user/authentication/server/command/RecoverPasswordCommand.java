@@ -83,7 +83,7 @@ public class RecoverPasswordCommand
             }
 
             if(!hasExecutionErrors()) {
-                var userControl = (UserControl)Session.getModelController(UserControl.class);
+                var userControl = Session.getModelController(UserControl.class);
                 RecoveryAnswer recoveryAnswer = userControl.getRecoveryAnswer(party);
                 String answer = form.getAnswer();
                 

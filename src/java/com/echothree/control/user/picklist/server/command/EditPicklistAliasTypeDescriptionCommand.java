@@ -89,7 +89,7 @@ public class EditPicklistAliasTypeDescriptionCommand
 
     @Override
     public PicklistAliasTypeDescription getEntity(EditPicklistAliasTypeDescriptionResult result) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAliasTypeDescription picklistAliasTypeDescription = null;
         String picklistTypeName = spec.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -99,7 +99,7 @@ public class EditPicklistAliasTypeDescriptionCommand
             PicklistAliasType picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
             if(picklistAliasType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditPicklistAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPicklistAliasTypeDescriptionResult result, PicklistAliasTypeDescription picklistAliasTypeDescription) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
 
         result.setPicklistAliasTypeDescription(picklistControl.getPicklistAliasTypeDescriptionTransfer(getUserVisit(), picklistAliasTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditPicklistAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(PicklistAliasTypeDescription picklistAliasTypeDescription) {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         PicklistAliasTypeDescriptionValue picklistAliasTypeDescriptionValue = picklistControl.getPicklistAliasTypeDescriptionValue(picklistAliasTypeDescription);
 
         picklistAliasTypeDescriptionValue.setDescription(edit.getDescription());

@@ -52,12 +52,12 @@ public class DeleteLeaveReasonDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         String leaveReasonName = form.getLeaveReasonName();
         LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
         
         if(leaveReason != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

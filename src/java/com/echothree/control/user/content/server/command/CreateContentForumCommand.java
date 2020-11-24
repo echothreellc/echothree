@@ -67,12 +67,12 @@ public class CreateContentForumCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
-            var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+            var forumControl = Session.getModelController(ForumControl.class);
             String forumName = form.getForumName();
             Forum forum = forumControl.getForumByName(forumName);
             

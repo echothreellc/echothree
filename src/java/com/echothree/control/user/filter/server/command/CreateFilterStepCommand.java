@@ -61,7 +61,7 @@ public class CreateFilterStepCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
         
@@ -82,7 +82,7 @@ public class CreateFilterStepCommand
                         Selector filterItemSelector = null;
                         
                         if(filterItemSelectorName != null) {
-                            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                            var selectorControl = Session.getModelController(SelectorControl.class);
                             SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
                             
                             if(selectorKind != null) {

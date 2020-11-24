@@ -34,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 public class WishlistTransferCache
         extends BaseWishlistTransferCache<Order, WishlistTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    OfferUseControl offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
-    OrderTypeControl orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+    OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
     
     /** Creates a new instance of WishlistTransferCache */
     public WishlistTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {

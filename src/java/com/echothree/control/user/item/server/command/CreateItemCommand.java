@@ -107,7 +107,7 @@ public class CreateItemCommand
     @Override
     protected BaseResult execute() {
         var result = ItemResultFactory.getCreateItemResult();
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         var itemName = form.getItemName();
         var item = itemName == null ? null : itemControl.getItemByNameThenAlias(itemName);
         
@@ -136,7 +136,7 @@ public class CreateItemCommand
                                 addExecutionError(ExecutionErrors.NotPermittedItemAccountingCategory.name(), itemAccountingCategoryName);
                             }
                         } else {
-                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = Session.getModelController(AccountingControl.class);
                             
                             itemAccountingCategory = itemAccountingCategoryName == null? null: accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
                             
@@ -156,7 +156,7 @@ public class CreateItemCommand
                                     addExecutionError(ExecutionErrors.NotPermittedItemPurchasingCategory.name(), itemPurchasingCategoryName);
                                 }
                             } else {
-                                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                                var vendorControl = Session.getModelController(VendorControl.class);
                                 
                                 itemPurchasingCategory = itemPurchasingCategoryName == null? null: vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
                                 
@@ -168,7 +168,7 @@ public class CreateItemCommand
                             }
                             
                             if(!hasExecutionErrors()) {
-                                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                var partyControl = Session.getModelController(PartyControl.class);
                                 var companyName = form.getCompanyName();
                                 var partyCompany = partyControl.getPartyCompanyByName(companyName);
                                 
@@ -209,7 +209,7 @@ public class CreateItemCommand
                                         }
 
                                         if(!hasExecutionErrors()) {
-                                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                                            var uomControl = Session.getModelController(UomControl.class);
                                             var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                                             var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
 
@@ -222,7 +222,7 @@ public class CreateItemCommand
                                                     CancellationPolicy cancellationPolicy = null;
 
                                                     if(cancellationPolicyName != null) {
-                                                        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                                                        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                                                         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
                                                         cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -233,7 +233,7 @@ public class CreateItemCommand
                                                         ReturnPolicy returnPolicy = null;
 
                                                         if(returnPolicyName != null) {
-                                                            var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                                            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                                             var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
 
                                                             returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
@@ -244,7 +244,7 @@ public class CreateItemCommand
                                                             var inventorySerialized = rawInventorySerialized == null? null: Boolean.valueOf(rawInventorySerialized);
 
                                                             if(isKitOrStyle ? inventorySerialized == null : inventorySerialized != null) {
-                                                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                                                 var itemStatusChoice = form.getItemStatus();
                                                                 var itemStatus = workflowControl.getWorkflowEntranceUsingNames(this, ItemStatusConstants.Workflow_ITEM_STATUS,
                                                                         itemStatusChoice);

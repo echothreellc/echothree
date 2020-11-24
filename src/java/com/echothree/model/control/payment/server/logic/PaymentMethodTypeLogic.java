@@ -53,7 +53,7 @@ public class PaymentMethodTypeLogic
     public PaymentMethodType createPaymentMethodType(final ExecutionErrorAccumulator eea, final String paymentMethodTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         PaymentMethodType paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
 
         if(paymentMethodType == null) {
@@ -71,7 +71,7 @@ public class PaymentMethodTypeLogic
 
     public PaymentMethodType getPaymentMethodTypeByName(final ExecutionErrorAccumulator eea, final String paymentMethodTypeName,
             final EntityPermission entityPermission) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         PaymentMethodType paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName, entityPermission);
 
         if(paymentMethodType == null) {
@@ -92,7 +92,7 @@ public class PaymentMethodTypeLogic
     public PaymentMethodType getPaymentMethodTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentMethodTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentMethodType paymentMethodType = null;
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         String paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
         int parameterCount = (paymentMethodTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -140,7 +140,7 @@ public class PaymentMethodTypeLogic
 
     public void deletePaymentMethodType(final ExecutionErrorAccumulator eea, final PaymentMethodType paymentMethodType,
             final BasePK deletedBy) {
-        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
 
         paymentMethodTypeControl.deletePaymentMethodType(paymentMethodType, deletedBy);
     }

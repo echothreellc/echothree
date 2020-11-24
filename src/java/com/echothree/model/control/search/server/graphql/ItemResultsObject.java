@@ -78,7 +78,7 @@ public class ItemResultsObject {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
 
             objects = itemControl.getItemResultObjects(userVisitSearch);
         }

@@ -64,7 +64,7 @@ public class GetSymbolPositionDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetSymbolPositionDescriptionsResult result = AccountingResultFactory.getGetSymbolPositionDescriptionsResult();
         String symbolPositionName = form.getSymbolPositionName();
         SymbolPosition symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);

@@ -34,7 +34,7 @@ public class PartyEntityTypeTransferCache
     public PartyEntityTypeTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public PartyEntityTypeTransfer getPartyEntityTypeTransfer(PartyEntityType partyEntityType) {

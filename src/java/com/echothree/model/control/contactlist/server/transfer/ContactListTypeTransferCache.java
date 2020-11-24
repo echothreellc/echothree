@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class ContactListTypeTransferCache
         extends BaseContactListTransferCache<ContactListType, ContactListTypeTransfer> {
     
-    ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     /** Creates a new instance of ContactListTypeTransferCache */
     public ContactListTypeTransferCache(UserVisit userVisit, ContactListControl contactListControl) {

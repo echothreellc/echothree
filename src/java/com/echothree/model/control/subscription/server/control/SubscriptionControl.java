@@ -784,7 +784,7 @@ public class SubscriptionControl
         SubscriptionTypeDetail subscriptionTypeDetail = subscriptionType.getLastDetailForUpdate();
         
         if(subscriptionTypeDetail.getSubscriptionKind().getLastDetail().getSubscriptionKindName().equals(SubscriptionConstants.SubscriptionKind_CLUB)) {
-            var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+            var clubControl = Session.getModelController(ClubControl.class);
             
             clubControl.deleteClubBySubscriptionType(subscriptionType, deletedBy);
         }
@@ -1206,7 +1206,7 @@ public class SubscriptionControl
     public Subscription createSubscription(SubscriptionType subscriptionType, Party party, Long startTime, Long endTime,
             BasePK createdBy) {
         Sequence sequence = subscriptionType.getLastDetail().getSubscriptionSequence();
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         
         if(sequence == null) {
             SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());

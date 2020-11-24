@@ -32,7 +32,7 @@ public abstract class BaseUomDescriptionTransferCache<K extends BaseEntity, V ex
     protected BaseUomDescriptionTransferCache(UserVisit userVisit, UomControl uomControl) {
         super(userVisit, uomControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

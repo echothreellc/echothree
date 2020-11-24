@@ -72,7 +72,7 @@ public class GetOfferCustomerTypesCommand
     
     @Override
     protected Collection<OfferCustomerType> getEntities() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         String customerTypeName = form.getCustomerTypeName();
         int parameterCount = (offerName != null ? 1 : 0) + (customerTypeName != null ? 1 : 0);
@@ -88,7 +88,7 @@ public class GetOfferCustomerTypesCommand
                     addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
                 }
             } else if(customerTypeName != null) {
-                var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                var customerControl = Session.getModelController(CustomerControl.class);
 
                 customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
@@ -110,14 +110,14 @@ public class GetOfferCustomerTypesCommand
         GetOfferCustomerTypesResult result = OfferResultFactory.getGetOfferCustomerTypesResult();
         
         if(entities != null) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
 
             if(offer != null) {
                 result.setOffer(offerControl.getOfferTransfer(getUserVisit(), offer));
             }
 
             if(customerType != null) {
-                var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                var customerControl = Session.getModelController(CustomerControl.class);
 
                 result.setCustomerType(customerControl.getCustomerTypeTransfer(getUserVisit(), customerType));
             }

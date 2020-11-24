@@ -62,7 +62,7 @@ public class GetOrderTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         GetOrderTypeChoicesResult result = OrderResultFactory.getGetOrderTypeChoicesResult();
         String defaultOrderTypeChoice = form.getDefaultOrderTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

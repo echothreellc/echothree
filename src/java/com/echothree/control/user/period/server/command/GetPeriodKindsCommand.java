@@ -60,7 +60,7 @@ public class GetPeriodKindsCommand
     
     @Override
     protected BaseResult execute() {
-        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = Session.getModelController(PeriodControl.class);
         GetPeriodKindsResult result = PeriodResultFactory.getGetPeriodKindsResult();
         
         result.setPeriodKinds(periodControl.getPeriodKindTransfers(getUserVisit()));

@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class UseNameElementTransferCache
         extends BaseOfferTransferCache<UseNameElement, UseNameElementTransfer> {
 
-    UseNameElementControl useNameElementControl = (UseNameElementControl)Session.getModelController(UseNameElementControl.class);
+    UseNameElementControl useNameElementControl = Session.getModelController(UseNameElementControl.class);
 
     /** Creates a new instance of UseNameElementTransferCache */
     public UseNameElementTransferCache(UserVisit userVisit) {

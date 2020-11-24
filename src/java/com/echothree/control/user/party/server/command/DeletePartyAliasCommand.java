@@ -63,7 +63,7 @@ public class DeletePartyAliasCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 

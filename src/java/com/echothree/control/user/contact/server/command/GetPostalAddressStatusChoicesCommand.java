@@ -52,7 +52,7 @@ public class GetPostalAddressStatusChoicesCommand
 
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         GetPostalAddressStatusChoicesResult result = ContactResultFactory.getGetPostalAddressStatusChoicesResult();
         String contactMechanismName = form.getContactMechanismName();
         ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);

@@ -62,7 +62,7 @@ public class GetReturnKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         GetReturnKindChoicesResult result = ReturnPolicyResultFactory.getGetReturnKindChoicesResult();
         String defaultReturnKindChoice = form.getDefaultReturnKindChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

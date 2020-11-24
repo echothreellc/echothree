@@ -96,14 +96,14 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public OrderAliasType getEntity(EditOrderAliasTypeResult result) {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         OrderAliasType orderAliasType = null;
         String orderTypeName = spec.getOrderTypeName();
 
         orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+            var orderAliasControl = Session.getModelController(OrderAliasControl.class);
             String orderAliasTypeName = spec.getOrderAliasTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -131,14 +131,14 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void fillInResult(EditOrderAliasTypeResult result, OrderAliasType orderAliasType) {
-        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
         result.setOrderAliasType(orderAliasControl.getOrderAliasTypeTransfer(getUserVisit(), orderAliasType));
     }
 
     @Override
     public void doLock(OrderAliasTypeEdit edit, OrderAliasType orderAliasType) {
-        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         OrderAliasTypeDescription orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescription(orderAliasType, getPreferredLanguage());
         OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
 
@@ -154,7 +154,7 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void canUpdate(OrderAliasType orderAliasType) {
-        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         String orderAliasTypeName = edit.getOrderAliasTypeName();
         OrderAliasType duplicateOrderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
@@ -165,7 +165,7 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void doUpdate(OrderAliasType orderAliasType) {
-        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         var partyPK = getPartyPK();
         OrderAliasTypeDetailValue orderAliasTypeDetailValue = orderAliasControl.getOrderAliasTypeDetailValueForUpdate(orderAliasType);
         OrderAliasTypeDescription orderAliasTypeDescription = orderAliasControl.getOrderAliasTypeDescriptionForUpdate(orderAliasType, getPreferredLanguage());

@@ -62,7 +62,7 @@ public class DeleteContactListCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         String contactListName = form.getContactListName();
         ContactList contactList = contactListControl.getContactListByNameForUpdate(contactListName);
         

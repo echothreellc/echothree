@@ -61,7 +61,7 @@ public class GetTrainingClassesCommand
     @Override
     protected BaseResult execute() {
         GetTrainingClassesResult result = TrainingResultFactory.getGetTrainingClassesResult();
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         
         result.setTrainingClasses(trainingControl.getTrainingClassTransfers(getUserVisit()));
         

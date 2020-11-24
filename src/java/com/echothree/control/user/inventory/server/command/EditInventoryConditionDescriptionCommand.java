@@ -78,13 +78,13 @@ public class EditInventoryConditionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         EditInventoryConditionDescriptionResult result = InventoryResultFactory.getEditInventoryConditionDescriptionResult();
         String inventoryConditionName = spec.getInventoryConditionName();
         InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
         
         if(inventoryCondition != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -63,7 +63,7 @@ public class PasswordStringPolicyLogic {
         Integer passwordHistory = policyDetail.getPasswordHistory();
         
         if(passwordHistory != null) {
-            var userControl = (UserControl)Session.getModelController(UserControl.class);
+            var userControl = Session.getModelController(UserControl.class);
             
             for(UserLoginPasswordString userLoginPasswordString: userControl.getUserLoginPasswordStringHistory(ulp, passwordHistory)) {
                 String salt = userLoginPasswordString.getSalt();
@@ -84,7 +84,7 @@ public class PasswordStringPolicyLogic {
             long currentPasswordLifetime = session.START_TIME - ulpsv.getChangedTime();
             
             if(currentPasswordLifetime < minimumPasswordLifetime) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 String fmtMinimumPasswordLifetime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(userVisit,
                         timeUnitOfMeasureKind, minimumPasswordLifetime);
@@ -204,7 +204,7 @@ public class PasswordStringPolicyLogic {
     
     public PartyTypePasswordStringPolicy checkStringPassword(final Session session, final UserVisit userVisit, final ExecutionErrorAccumulator ema,
             final PartyType partyType, final UserLoginPassword ulp, final UserLoginPasswordStringValue ulpsv, final String password) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyTypePasswordStringPolicy policy = partyControl.getPartyTypePasswordStringPolicy(partyType);
         
         if(policy != null) {

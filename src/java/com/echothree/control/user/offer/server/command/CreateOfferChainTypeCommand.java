@@ -70,12 +70,12 @@ public class CreateOfferChainTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+            var chainControl = Session.getModelController(ChainControl.class);
             String chainKindName = form.getChainKindName();
             ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
             

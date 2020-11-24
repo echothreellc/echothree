@@ -54,7 +54,7 @@ public class PaymentProcessorLogic
     public PaymentProcessor createPaymentProcessor(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             PaymentProcessorType paymentProcessorType, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
         if(paymentProcessor == null) {
@@ -73,7 +73,7 @@ public class PaymentProcessorLogic
 
     public PaymentProcessor getPaymentProcessorByName(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
             final EntityPermission entityPermission) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         PaymentProcessor paymentProcessor = paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName, entityPermission);
 
         if(paymentProcessor == null) {
@@ -94,7 +94,7 @@ public class PaymentProcessorLogic
     public PaymentProcessor getPaymentProcessorByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessor paymentProcessor = null;
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         String paymentProcessorName = universalSpec.getPaymentProcessorName();
         int parameterCount = (paymentProcessorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -142,7 +142,7 @@ public class PaymentProcessorLogic
 
     public void deletePaymentProcessor(final ExecutionErrorAccumulator eea, final PaymentProcessor paymentProcessor,
             final BasePK deletedBy) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
 
         paymentProcessorControl.deletePaymentProcessor(paymentProcessor, deletedBy);
     }

@@ -96,7 +96,7 @@ public class EditSequenceTypeCommand
     
     @Override
     public SequenceType getEntity(EditSequenceTypeResult result) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceType sequenceType;
         String sequenceTypeName = spec.getSequenceTypeName();
 
@@ -122,7 +122,7 @@ public class EditSequenceTypeCommand
     
     @Override
     public void fillInResult(EditSequenceTypeResult result, SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         
         result.setSequenceType(sequenceControl.getSequenceTypeTransfer(getUserVisit(), sequenceType));
     }
@@ -131,7 +131,7 @@ public class EditSequenceTypeCommand
     
     @Override
     public void doLock(SequenceTypeEdit edit, SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceTypeDescription sequenceTypeDescription = sequenceControl.getSequenceTypeDescription(sequenceType, getPreferredLanguage());
         SequenceTypeDetail sequenceTypeDetail = sequenceType.getLastDetail();
         Integer chunkSize = sequenceTypeDetail.getChunkSize();
@@ -155,7 +155,7 @@ public class EditSequenceTypeCommand
     
     @Override
     public void canUpdate(SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         String sequenceTypeName = edit.getSequenceTypeName();
         SequenceType duplicateSequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
@@ -198,7 +198,7 @@ public class EditSequenceTypeCommand
     
     @Override
     public void doUpdate(SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var partyPK = getPartyPK();
         SequenceTypeDetailValue sequenceTypeDetailValue = sequenceControl.getSequenceTypeDetailValueForUpdate(sequenceType);
         SequenceTypeDescription sequenceTypeDescription = sequenceControl.getSequenceTypeDescriptionForUpdate(sequenceType, getPreferredLanguage());

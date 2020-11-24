@@ -78,7 +78,7 @@ public class GetSearchUseTypeCommand
         int parameterCount = (searchUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var searchControl = Session.getModelController(SearchControl.class);
             SearchUseType searchUseType = null;
 
             if(searchUseTypeName == null) {

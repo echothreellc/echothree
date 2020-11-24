@@ -35,10 +35,10 @@ import com.echothree.util.server.persistence.Session;
 public class PartyPaymentMethodContactMechanismTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethodContactMechanism, PartyPaymentMethodContactMechanismTransfer> {
 
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyPaymentMethodControl partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyPaymentMethodControl partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PartyPaymentMethodContactMechanismTransferCache */
     public PartyPaymentMethodContactMechanismTransferCache(UserVisit userVisit) {

@@ -157,7 +157,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.name());
         String campaignName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -673,7 +673,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.name());
         String campaignSourceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -1189,7 +1189,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.name());
         String campaignMediumName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -1705,7 +1705,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.name());
         String campaignTermName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -2221,7 +2221,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.name());
         String campaignContentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
@@ -2738,7 +2738,7 @@ public class CampaignControl
 
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Long time, Campaign campaign, CampaignSource campaignSource,
             CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         UserVisitStatus userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitCampaignSequence = userVisitStatus.getUserVisitCampaignSequence()+ 1;
         

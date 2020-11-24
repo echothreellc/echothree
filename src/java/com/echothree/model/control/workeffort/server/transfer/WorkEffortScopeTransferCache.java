@@ -37,9 +37,9 @@ import java.util.Set;
 public class WorkEffortScopeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortScope, WorkEffortScopeTransfer> {
     
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     boolean includeWorkRequirementScopes;
     boolean includeWorkEfforts;

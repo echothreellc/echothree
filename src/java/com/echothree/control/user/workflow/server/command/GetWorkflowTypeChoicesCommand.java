@@ -50,7 +50,7 @@ public class GetWorkflowTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         GetWorkflowTypeChoicesResult result = WorkflowResultFactory.getGetWorkflowTypeChoicesResult();
         String defaultWorkflowTypeChoice = form.getDefaultWorkflowTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

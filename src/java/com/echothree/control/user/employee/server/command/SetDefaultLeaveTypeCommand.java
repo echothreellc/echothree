@@ -48,7 +48,7 @@ public class SetDefaultLeaveTypeCommand
     
    @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         String leaveTypeName = form.getLeaveTypeName();
         LeaveTypeDetailValue leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueByNameForUpdate(leaveTypeName);
         

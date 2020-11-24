@@ -50,7 +50,7 @@ public class GetMoodDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetMoodDescriptionsResult result = PartyResultFactory.getGetMoodDescriptionsResult();
         String moodName = form.getMoodName();
         Mood mood = partyControl.getMoodByName(moodName);

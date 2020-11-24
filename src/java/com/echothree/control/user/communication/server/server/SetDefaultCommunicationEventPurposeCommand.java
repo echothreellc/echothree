@@ -48,7 +48,7 @@ public class SetDefaultCommunicationEventPurposeCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = Session.getModelController(CommunicationControl.class);
         String communicationEventPurposeName = form.getCommunicationEventPurposeName();
         CommunicationEventPurposeDetailValue communicationEventPurposeDetailValue = communicationControl.getCommunicationEventPurposeDetailValueByNameForUpdate(communicationEventPurposeName);
         

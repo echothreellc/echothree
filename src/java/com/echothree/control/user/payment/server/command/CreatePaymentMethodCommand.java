@@ -125,7 +125,7 @@ public class CreatePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         CreatePaymentMethodResult result = PaymentResultFactory.getCreatePaymentMethodResult();
         String paymentMethodName = form.getPaymentMethodName();
         PaymentMethod paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
@@ -135,12 +135,12 @@ public class CreatePaymentMethodCommand
             PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
 
             if(!hasExecutionErrors()) {
-                var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+                var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
                 String paymentProcessorName = form.getPaymentProcessorName();
                 PaymentProcessor paymentProcessor = paymentProcessorName == null ? null : paymentProcessorControl.getPaymentProcessorByName(paymentProcessorName);
 
                 if(paymentProcessorName == null || paymentProcessor != null) {
-                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                    var selectorControl = Session.getModelController(SelectorControl.class);
                     String itemSelectorName = form.getItemSelectorName();
                     Selector itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorConstants.SelectorKind_ITEM,
                             SelectorConstants.SelectorType_PAYMENT_METHOD, itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());

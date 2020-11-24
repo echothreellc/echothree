@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class TaxClassificationTransferCache
         extends BaseTaxTransferCache<TaxClassification, TaxClassificationTransfer> {
     
-    GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
     
     /** Creates a new instance of TaxClassificationTransferCache */
     public TaxClassificationTransferCache(UserVisit userVisit, TaxControl taxControl) {

@@ -314,7 +314,7 @@ public class UseTypeControl
     }
     
     public void deleteUseType(UseType useType, BasePK deletedBy) {
-        var useControl = (UseControl)Session.getModelController(UseControl.class);
+        var useControl = Session.getModelController(UseControl.class);
 
         deleteUseTypeDescriptionsByUseType(useType, deletedBy);
         useControl.deleteUsesByUseType(useType, deletedBy);
@@ -527,7 +527,7 @@ public class UseTypeControl
         }
 
         try {
-            var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+            var useTypeControl = Session.getModelController(UseTypeControl.class);
             var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                             "FROM searchresults, entityinstances " +

@@ -44,7 +44,7 @@ public class PartyTypeTransferCache
     public PartyTypeTransferCache(UserVisit userVisit, PartyControl partyControl) {
         super(userVisit, partyControl);
         
-        sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        sequenceControl = Session.getModelController(SequenceControl.class);
         
         Set<String> options = session.getOptions();
         if(options != null) {

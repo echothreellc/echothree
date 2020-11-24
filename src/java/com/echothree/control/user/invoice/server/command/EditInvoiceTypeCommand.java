@@ -84,7 +84,7 @@ public class EditInvoiceTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = Session.getModelController(InvoiceControl.class);
         EditInvoiceTypeResult result = InvoiceResultFactory.getEditInvoiceTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -136,7 +136,7 @@ public class EditInvoiceTypeCommand
                     
                     if(parentInvoiceTypeName == null || parentInvoiceType != null) {
                         if(invoiceControl.isParentInvoiceTypeSafe(invoiceType, parentInvoiceType)) {
-                            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                            var sequenceControl = Session.getModelController(SequenceControl.class);
                             String invoiceSequenceTypeName = edit.getInvoiceSequenceTypeName();
                             SequenceType invoiceSequenceType = sequenceControl.getSequenceTypeByName(invoiceSequenceTypeName);
                             

@@ -29,8 +29,8 @@ import com.echothree.util.server.persistence.Session;
 public class PartyTypeContactListGroupTransferCache
         extends BaseContactListTransferCache<PartyTypeContactListGroup, PartyTypeContactListGroupTransfer> {
     
-    ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyTypeContactListGroupTransferCache */
     public PartyTypeContactListGroupTransferCache(UserVisit userVisit, ContactListControl contactListControl) {

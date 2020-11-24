@@ -68,8 +68,8 @@ public class OrderLineLogic
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-            var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+            var orderControl = Session.getModelController(OrderControl.class);
+            var orderLineControl = Session.getModelController(OrderLineControl.class);
             var orderStatus = orderControl.getOrderStatusForUpdate(order);
 
             if(orderLineSequence == null) {
@@ -105,7 +105,7 @@ public class OrderLineLogic
         OrderLine orderLine = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+            var orderLineControl = Session.getModelController(OrderLineControl.class);
 
             orderLine = orderLineControl.getOrderLineBySequence(order, Integer.valueOf(orderLineSequence), entityPermission);
             
@@ -126,7 +126,7 @@ public class OrderLineLogic
     }
     
     public Long getOrderTotalWithAdjustments(final Order order) {
-        var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
+        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
         long total = 0;
         var orderAdjustments = orderAdjustmentControl.getOrderAdjustmentsByOrder(order);
 
@@ -136,7 +136,7 @@ public class OrderLineLogic
     }
 
     public Long getOrderLineTotalsWithAdjustments(final Order order) {
-        var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+        var orderLineControl = Session.getModelController(OrderLineControl.class);
         var orderLines = orderLineControl.getOrderLinesByOrder(order);
         long total = 0;
 
@@ -146,7 +146,7 @@ public class OrderLineLogic
     }
 
     public Long getOrderLineTotalWithAdjustments(final OrderLine orderLine) {
-        var orderLineAdjustmentControl = (OrderLineAdjustmentControl)Session.getModelController(OrderLineAdjustmentControl.class);
+        var orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
         var orderLineDetail = orderLine.getLastDetail();
         long total = orderLineDetail.getQuantity() * orderLineDetail.getUnitAmount();
         var orderLineAdjustments = orderLineAdjustmentControl.getOrderLineAdjustmentsByOrderLine(orderLine);

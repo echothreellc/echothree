@@ -2052,7 +2052,7 @@ public class GeoControl
         deleteGeoCodeDateTimeFormatsByGeoCode(geoCode, deletedBy);
 
         if(geoCodeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName().equals(GeoConstants.GeoCodeType_COUNTRY)) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             
             itemControl.deleteHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode, deletedBy);
             itemControl.deleteItemHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode, deletedBy);

@@ -1165,7 +1165,7 @@ public class CarrierControl
     }
     
     private void deleteCarrierService(CarrierService carrierService, boolean checkDefault, BasePK deletedBy) {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         
         deleteCarrierServiceDescriptionsByCarrierService(carrierService, deletedBy);
         deleteCarrierServiceOptionsByCarrierService(carrierService, deletedBy);

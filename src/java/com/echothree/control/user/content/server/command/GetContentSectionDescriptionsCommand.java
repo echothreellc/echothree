@@ -66,7 +66,7 @@ public class GetContentSectionDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         GetContentSectionDescriptionsResult result = ContentResultFactory.getGetContentSectionDescriptionsResult();
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);

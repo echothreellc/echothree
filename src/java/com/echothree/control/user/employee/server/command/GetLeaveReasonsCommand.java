@@ -46,7 +46,7 @@ public class GetLeaveReasonsCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetLeaveReasonsResult result = EmployeeResultFactory.getGetLeaveReasonsResult();
 
         result.setLeaveReasons(employeeControl.getLeaveReasonTransfers(getUserVisit()));

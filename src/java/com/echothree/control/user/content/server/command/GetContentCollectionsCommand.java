@@ -62,14 +62,14 @@ public class GetContentCollectionsCommand
     
     @Override
     protected Collection<ContentCollection> getEntities() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         return contentControl.getContentCollections();
     }
     
     @Override
     protected BaseResult getTransfers(Collection<ContentCollection> entities) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         GetContentCollectionsResult result = ContentResultFactory.getGetContentCollectionsResult();
         
         if(entities != null) {

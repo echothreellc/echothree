@@ -60,7 +60,7 @@ public class CreatePrinterGroupCommand
     
    @Override
     protected BaseResult execute() {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         String printerGroupName = form.getPrinterGroupName();
         PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
@@ -73,7 +73,7 @@ public class CreatePrinterGroupCommand
 
             if(!hasExecutionErrors()) {
                 var coreControl = getCoreControl();
-                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();

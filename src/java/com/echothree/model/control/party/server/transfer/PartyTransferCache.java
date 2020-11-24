@@ -57,16 +57,16 @@ import java.util.Set;
 public class PartyTransferCache
         extends BasePartyTransferCache<Party, PartyTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-    EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-    PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
-    ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
-    TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-    UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
 
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

@@ -34,7 +34,7 @@ public class PartyResponsibilityTransferCache
     public PartyResponsibilityTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
         super(userVisit, employeeControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public PartyResponsibilityTransfer getPartyResponsibilityTransfer(PartyResponsibility partyResponsibility) {

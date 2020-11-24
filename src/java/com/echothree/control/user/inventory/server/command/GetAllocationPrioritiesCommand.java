@@ -60,7 +60,7 @@ public class GetAllocationPrioritiesCommand
 
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         GetAllocationPrioritiesResult result = InventoryResultFactory.getGetAllocationPrioritiesResult();
         
         result.setAllocationPriorities(inventoryControl.getAllocationPriorityTransfers(getUserVisit()));

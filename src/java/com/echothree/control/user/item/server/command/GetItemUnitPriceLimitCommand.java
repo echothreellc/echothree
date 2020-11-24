@@ -61,24 +61,24 @@ public class GetItemUnitPriceLimitCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemUnitPriceLimitResult result = ItemResultFactory.getGetItemUnitPriceLimitResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
             String inventoryConditionName = form.getInventoryConditionName();
             InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
                 UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
-                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = Session.getModelController(AccountingControl.class);
                     String currencyIsoName = form.getCurrencyIsoName();
                     Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                     

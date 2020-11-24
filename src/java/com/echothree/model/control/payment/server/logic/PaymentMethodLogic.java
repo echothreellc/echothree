@@ -51,7 +51,7 @@ public class PaymentMethodLogic
     }
 
     private PaymentMethod getPaymentMethodByName(final ExecutionErrorAccumulator eea, final String paymentMethodName, final EntityPermission entityPermission) {
-        var paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
         var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName, entityPermission);
 
         if(paymentMethod == null) {

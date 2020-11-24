@@ -82,7 +82,7 @@ public class EditCommentUsageTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = Session.getModelController(CommentControl.class);
                 String commentTypeName = spec.getCommentTypeName();
                 CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 

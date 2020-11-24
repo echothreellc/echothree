@@ -87,13 +87,13 @@ public class EditContentWebAddressDescriptionCommand
     
     @Override
     public ContentWebAddressDescription getEntity(EditContentWebAddressDescriptionResult result) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentWebAddressDescription contentWebAddressDescription = null;
         String contentWebAddressName = spec.getContentWebAddressName();
         ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -126,7 +126,7 @@ public class EditContentWebAddressDescriptionCommand
     
     @Override
     public void fillInResult(EditContentWebAddressDescriptionResult result, ContentWebAddressDescription contentWebAddressDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         
         result.setContentWebAddressDescription(contentControl.getContentWebAddressDescriptionTransfer(getUserVisit(), contentWebAddressDescription));
     }
@@ -138,7 +138,7 @@ public class EditContentWebAddressDescriptionCommand
     
     @Override
     public void doUpdate(ContentWebAddressDescription contentWebAddressDescription) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentWebAddressDescriptionValue contentWebAddressDescriptionValue = contentControl.getContentWebAddressDescriptionValue(contentWebAddressDescription);
         contentWebAddressDescriptionValue.setDescription(edit.getDescription());
 
