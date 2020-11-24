@@ -57,7 +57,7 @@ public class GlAccountLogic
         }
 
         if(glAccount == null) {
-            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = Session.getModelController(AccountingControl.class);
             var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
 
             if(glAccountCategory != null) {
