@@ -675,7 +675,7 @@ public abstract class BaseCommand
      * @param option The option to remove.
      */
     protected void removeOption(String option) {
-        session.getOptions(true).remove(option);
+        session.getOptions().remove(option);
     }
 
     // --------------------------------------------------------------------------------
