@@ -194,6 +194,9 @@ public class SalesOrderLogic
     }
 
     /**
+     * Create a new Sales Order given a set of parameters. Default values will be determined as best as possible when
+     * a parameter is marked as Optional. If a previous preference has not been set then it may not be possible to
+     * to determine appropriate defaults.
      *
      * @param session Required.
      * @param eea Required.

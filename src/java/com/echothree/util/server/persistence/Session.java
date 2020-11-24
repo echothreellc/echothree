@@ -85,7 +85,9 @@ public class Session {
     public long START_TIME;
     public Long START_TIME_LONG;
     
-    /** Creates a new instance of Session */
+    /**
+     * Creates a new instance of Session
+     */
     public Session() {
         if(PersistenceDebugFlags.LogSessions) {
             getLog().info("Session()");
@@ -255,6 +257,8 @@ public class Session {
     }
 
     /**
+     * Creates a <code>PreparedStatement</code> object for sending
+     * parameterized SQL statements to the database.
      * @param sql SQL statement to use for the PreparedStatement
      * @return Returns a PreparedStatement
      * @throws PersistenceDatabaseException Thrown if the PreparedStatement was unable to be created
@@ -297,6 +301,8 @@ public class Session {
     }
     
     /**
+     * Creates a <code>PreparedStatement</code> object for sending
+     * parameterized SQL statements to the database.
      * @param sql SQL statement to use for the PreparedStatement
      * @return Returns a PreparedStatement
      * @throws PersistenceDatabaseException Thrown if the PreparedStatement was unable to be created

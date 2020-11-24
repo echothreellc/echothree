@@ -114,44 +114,26 @@ public class PartySecurityRoleTemplateLogic {
         private TrainingClass trainingClass;
         private Set<PreparedPartyTrainingClass> preparedPartyTrainingClasses;
 
-        /**
-         * @return the partySecurityRoleTemplate
-         */
         public PartySecurityRoleTemplate getPartySecurityRoleTemplate() {
             return partySecurityRoleTemplate;
         }
 
-        /**
-         * @param partySecurityRoleTemplate the partySecurityRoleTemplate to set
-         */
         public void setPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate) {
             this.partySecurityRoleTemplate = partySecurityRoleTemplate;
         }
 
-        /**
-         * @return the trainingClass
-         */
         public TrainingClass getTrainingClass() {
             return trainingClass;
         }
 
-        /**
-         * @param trainingClass the trainingClass to set
-         */
         public void setTrainingClass(TrainingClass trainingClass) {
             this.trainingClass = trainingClass;
         }
 
-        /**
-         * @return the preparedPartyTrainingClasses
-         */
         public Set<PreparedPartyTrainingClass> getPreparedPartyTrainingClasses() {
             return preparedPartyTrainingClasses;
         }
 
-        /**
-         * @param preparedPartyTrainingClasses the preparedPartyTrainingClasses to set
-         */
         public void setPreparedPartyTrainingClasses(Set<PreparedPartyTrainingClass> preparedPartyTrainingClasses) {
             this.preparedPartyTrainingClasses = preparedPartyTrainingClasses;
         }

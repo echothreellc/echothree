@@ -206,7 +206,7 @@ public class ItemDescriptionLogic
         return imageReader;
     }
 
-    // http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
+    // Based on: http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html
     /**
      * Convenience method that returns a scaled instance of the
      * provided {@code BufferedImage}.
@@ -442,30 +442,18 @@ public class ItemDescriptionLogic
             this.width = width;
         }
 
-        /**
-         * @return the height
-         */
         public Integer getHeight() {
             return height;
         }
 
-        /**
-         * @param height the height to set
-         */
         public void setHeight(Integer height) {
             this.height = height;
         }
 
-        /**
-         * @return the width
-         */
         public Integer getWidth() {
             return width;
         }
 
-        /**
-         * @param width the width to set
-         */
         public void setWidth(Integer width) {
             this.width = width;
         }

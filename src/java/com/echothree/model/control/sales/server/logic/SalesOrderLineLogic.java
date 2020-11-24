@@ -86,6 +86,7 @@ public class SalesOrderLineLogic
     }
 
     /**
+     * Create a new Sales Order Line using appropriate defaults for Optional values when possible.
      * 
      * @param session Required.
      * @param eea Optional.

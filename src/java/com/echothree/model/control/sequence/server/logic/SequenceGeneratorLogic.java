@@ -143,6 +143,8 @@ public class SequenceGeneratorLogic
     }
 
     /**
+     * Generate and return the next value for a given Sequence.
+     * 
      * @return A unique value for the sequence is returned. Null will be returned when the
      * sequence is exhausted, the length of the mask is not equal to the length of the
      * value, or an invalid character is encountered in the mask.

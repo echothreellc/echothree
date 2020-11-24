@@ -122,6 +122,7 @@ public class PurchaseOrderLogic
     }
 
     /**
+     * Create a new Purchase Order using appropriate defaults where possible for Optional parameters.
      *
      * @param session Required.
      * @param eea Required.

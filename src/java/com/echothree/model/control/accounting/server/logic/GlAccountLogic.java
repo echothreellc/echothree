@@ -40,6 +40,7 @@ public class GlAccountLogic
     }
     
     /**
+     * Obtain a GL Account fitting within a given GL Account Category.
      *
      * @param eea The ExecutionErrorAccumulator that any errors that are encountered should be added to.
      * @param glAccounts A list of GlAccounts that will be drawn from to find a result.
@@ -47,8 +48,8 @@ public class GlAccountLogic
      * @param unknownDefaultGlAccountError If no default is found, this error will be added to the ExecutionErrorAccumulator.
      * @return The glAccount to use, unless null.
      */
-    public GlAccount getDefaultGlAccountByCategory(final ExecutionErrorAccumulator eea, final GlAccount glAccounts[], final String glAccountCategoryName,
-            final String unknownDefaultGlAccountError) {
+    public GlAccount getDefaultGlAccountByCategory(final ExecutionErrorAccumulator eea, final GlAccount[] glAccounts,
+            final String glAccountCategoryName, final String unknownDefaultGlAccountError) {
         GlAccount glAccount = null;
 
         for(int i = 0 ; glAccount == null && i < glAccounts.length ; i++) {
@@ -57,7 +58,7 @@ public class GlAccountLogic
 
         if(glAccount == null) {
             var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-            GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+            var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
 
             if(glAccountCategory != null) {
                 glAccount = accountingControl.getDefaultGlAccount(glAccountCategory);
