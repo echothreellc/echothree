@@ -66,7 +66,7 @@ public abstract class BaseModelControl {
     
     protected CoreControl getCoreControl() {
         if(coreControl == null) {
-            coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            coreControl = Session.getModelController(CoreControl.class);
         }
         
         return coreControl;
@@ -74,7 +74,7 @@ public abstract class BaseModelControl {
     
     protected PartyControl getPartyControl() {
         if(partyControl == null) {
-            partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            partyControl = Session.getModelController(PartyControl.class);
         }
         
         return partyControl;
@@ -82,7 +82,7 @@ public abstract class BaseModelControl {
     
     protected WorkflowControl getWorkflowControl() {
         if(workflowControl == null) {
-            workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            workflowControl = Session.getModelController(WorkflowControl.class);
         }
         
         return workflowControl;

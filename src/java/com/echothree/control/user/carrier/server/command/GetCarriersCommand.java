@@ -60,7 +60,7 @@ public class GetCarriersCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         GetCarriersResult result = CarrierResultFactory.getGetCarriersResult();
         
         result.setCarriers(carrierControl.getCarrierTransfers(getUserVisit()));

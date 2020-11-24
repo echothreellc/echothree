@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class ShipmentAliasTransferCache
         extends BaseShipmentTransferCache<ShipmentAlias, ShipmentAliasTransfer> {
 
-    ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+    ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentAliasTransferCache */
     public ShipmentAliasTransferCache(UserVisit userVisit) {

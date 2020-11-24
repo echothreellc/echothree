@@ -51,7 +51,7 @@ public class DeleteTimeZoneDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String javaTimeZoneName = form.getJavaTimeZoneName();
         TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         

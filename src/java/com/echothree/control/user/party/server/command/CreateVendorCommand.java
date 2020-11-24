@@ -124,7 +124,7 @@ public class CreateVendorCommand
     @Override
     protected BaseResult execute() {
         CreateVendorResult result = PartyResultFactory.getCreateVendorResult();
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorName == null ? null : vendorControl.getVendorByName(vendorName);
 
@@ -137,7 +137,7 @@ public class CreateVendorCommand
                 CancellationPolicy cancellationPolicy = null;
 
                 if(cancellationPolicyName != null) {
-                    var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                    var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                     CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -148,14 +148,14 @@ public class CreateVendorCommand
                     ReturnPolicy returnPolicy = null;
 
                     if(returnPolicyName != null) {
-                        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
 
                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     }
 
                     if(returnPolicyName == null || returnPolicy != null) {
-                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                        var accountingControl = Session.getModelController(AccountingControl.class);
                         String apGlAccountName = form.getApGlAccountName();
                         GlAccount apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
 
@@ -164,13 +164,13 @@ public class CreateVendorCommand
                                     : apGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                var itemControl = Session.getModelController(ItemControl.class);
                                 String defaultItemAliasTypeName = form.getDefaultItemAliasTypeName();
                                 ItemAliasType defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
 
                                 if(defaultItemAliasTypeName == null || defaultItemAliasType != null) {
                                     if(defaultItemAliasType == null || !defaultItemAliasType.getLastDetail().getAllowMultiple()) {
-                                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                        var partyControl = Session.getModelController(PartyControl.class);
                                         String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                                         Language preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
@@ -194,10 +194,10 @@ public class CreateVendorCommand
 
                                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
                                                         var coreControl = getCoreControl();
-                                                        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-                                                        var partyFreeOnBoardControl = (PartyFreeOnBoardControl)Session.getModelController(PartyFreeOnBoardControl.class);
-                                                        var termControl = (TermControl)Session.getModelController(TermControl.class);
-                                                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                                        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+                                                        var partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
+                                                        var termControl = Session.getModelController(TermControl.class);
+                                                        var workflowControl = Session.getModelController(WorkflowControl.class);
                                                         VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
                                                         Soundex soundex = new Soundex();
                                                         PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());

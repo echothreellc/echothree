@@ -53,7 +53,7 @@ public class CreateUnitOfMeasureKindUseCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
         UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         

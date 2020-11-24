@@ -34,8 +34,8 @@ import java.util.Set;
 public class BillingAccountTransferCache
         extends BasePaymentTransferCache<BillingAccount, BillingAccountTransfer> {
 
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    BillingControl billingControl = Session.getModelController(BillingControl.class);
     boolean includeRoles;
 
     /** Creates a new instance of BillingAccountTransferCache */

@@ -96,7 +96,7 @@ public class GetEntityLongRangeDescriptionCommand
                         EntityLongRange entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
                         if(entityLongRange != null) {
-                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -176,8 +176,8 @@ public class CurrencyObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

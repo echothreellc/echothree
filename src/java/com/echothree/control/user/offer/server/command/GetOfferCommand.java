@@ -88,8 +88,8 @@ public class GetOfferCommand
         var result = OfferResultFactory.getGetOfferResult();
         
         if(offer != null) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
+            var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));

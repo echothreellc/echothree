@@ -30,8 +30,8 @@ import com.echothree.util.server.persistence.Session;
 public class ContactWebAddressTransferCache
         extends BaseContactTransferCache<ContactWebAddress, ContactWebAddressTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactWebAddressTransferCache */
     public ContactWebAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {

@@ -112,8 +112,8 @@ public class UnitOfMeasureUtils {
         String result = null;
         
         if(measure != null) {
-            var uomControl = (UomControl)Session.getModelController(UomControl.class);
-            var userControl = (UserControl)Session.getModelController(UserControl.class);
+            var uomControl = Session.getModelController(UomControl.class);
+            var userControl = Session.getModelController(UserControl.class);
             Language language = userControl.getPreferredLanguageFromUserVisit(userVisit);
             UnitOfMeasureType unitOfMeasureType = getLowestUnitOfMeasureType(uomControl, unitOfMeasureKind);
             

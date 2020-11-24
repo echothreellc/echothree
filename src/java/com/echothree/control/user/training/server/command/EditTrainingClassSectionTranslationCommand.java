@@ -98,7 +98,7 @@ public class EditTrainingClassSectionTranslationCommand
     
     @Override
     public TrainingClassSectionTranslation getEntity(EditTrainingClassSectionTranslationResult result) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassSectionTranslation trainingClassSectionTranslation = null;
         String trainingClassName = spec.getTrainingClassName();
         
@@ -109,7 +109,7 @@ public class EditTrainingClassSectionTranslationCommand
             TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -143,7 +143,7 @@ public class EditTrainingClassSectionTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassSectionTranslationResult result, TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
 
         result.setTrainingClassSectionTranslation(trainingControl.getTrainingClassSectionTranslationTransfer(getUserVisit(), trainingClassSectionTranslation));
     }
@@ -185,7 +185,7 @@ public class EditTrainingClassSectionTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassSectionTranslation trainingClassSectionTranslation) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassSectionTranslationValue trainingClassSectionTranslationValue = trainingControl.getTrainingClassSectionTranslationValue(trainingClassSectionTranslation);
         
         trainingClassSectionTranslationValue.setDescription(edit.getDescription());

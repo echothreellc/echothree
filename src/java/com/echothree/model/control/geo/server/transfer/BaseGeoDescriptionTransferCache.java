@@ -32,7 +32,7 @@ public abstract class BaseGeoDescriptionTransferCache<K extends BaseEntity, V ex
     protected BaseGeoDescriptionTransferCache(UserVisit userVisit, GeoControl geoControl) {
         super(userVisit, geoControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

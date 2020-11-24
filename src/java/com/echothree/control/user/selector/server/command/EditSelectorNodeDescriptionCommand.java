@@ -70,7 +70,7 @@ public class EditSelectorNodeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         EditSelectorNodeDescriptionResult result = SelectorResultFactory.getEditSelectorNodeDescriptionResult();
         String selectorKindName = spec.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
@@ -88,7 +88,7 @@ public class EditSelectorNodeDescriptionCommand
                     SelectorNode selectorNode = selectorControl.getSelectorNodeByName(selector, selectorNodeName);
                     
                     if(selectorNode != null) {
-                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         

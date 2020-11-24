@@ -87,13 +87,13 @@ public class EditSearchSortDirectionDescriptionCommand
 
     @Override
     public SearchSortDirectionDescription getEntity(EditSearchSortDirectionDescriptionResult result) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchSortDirectionDescription searchSortDirectionDescription = null;
         String searchSortDirectionName = spec.getSearchSortDirectionName();
         SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(searchSortDirection != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSearchSortDirectionDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchSortDirectionDescriptionResult result, SearchSortDirectionDescription searchSortDirectionDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
 
         result.setSearchSortDirectionDescription(searchControl.getSearchSortDirectionDescriptionTransfer(getUserVisit(), searchSortDirectionDescription));
     }
@@ -136,7 +136,7 @@ public class EditSearchSortDirectionDescriptionCommand
 
     @Override
     public void doUpdate(SearchSortDirectionDescription searchSortDirectionDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchSortDirectionDescriptionValue searchSortDirectionDescriptionValue = searchControl.getSearchSortDirectionDescriptionValue(searchSortDirectionDescription);
         searchSortDirectionDescriptionValue.setDescription(edit.getDescription());
 

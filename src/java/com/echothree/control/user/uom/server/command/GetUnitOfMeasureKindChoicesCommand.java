@@ -53,7 +53,7 @@ public class GetUnitOfMeasureKindChoicesCommand
     @Override
     protected BaseResult execute() {
         GetUnitOfMeasureKindChoicesResult result = UomResultFactory.getGetUnitOfMeasureKindChoicesResult();
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
         UnitOfMeasureKindUseType unitOfMeasureKindUseType = unitOfMeasureKindUseTypeName == null? null: uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
         

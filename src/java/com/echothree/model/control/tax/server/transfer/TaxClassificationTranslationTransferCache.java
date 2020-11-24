@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class TaxClassificationTranslationTransferCache
         extends BaseTaxDescriptionTransferCache<TaxClassificationTranslation, TaxClassificationTranslationTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
     public TaxClassificationTranslationTransferCache(UserVisit userVisit, TaxControl taxControl) {

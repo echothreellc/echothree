@@ -55,7 +55,7 @@ public class CreatePersonalTitleCommand
         var description = form.getDescription();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         
         PersonalTitle personalTitle = partyControl.createPersonalTitle(description, isDefault, sortOrder, getPartyPK());
         result.setPersonalTitleId(personalTitle.getPrimaryKey().getEntityId().toString());

@@ -129,7 +129,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     
     protected UomControl getUomControl() {
         if(uomControl == null) {
-            uomControl = (UomControl)Session.getModelController(UomControl.class);
+            uomControl = Session.getModelController(UomControl.class);
         }
         
         return uomControl;
@@ -137,7 +137,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     
     protected UserControl getUserControl() {
         if(userControl == null) {
-            userControl = (UserControl)Session.getModelController(UserControl.class);
+            userControl = Session.getModelController(UserControl.class);
         }
         
         return userControl;
@@ -281,7 +281,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupTagScopes(CoreControl coreControl, EntityInstance entityInstance, V transfer) {
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+        TagControl tagControl = Session.getModelController(TagControl.class);
         List<TagScope> tagScopes = tagControl.getTagScopesByEntityType(entityInstance.getEntityType());
         MapWrapper<TagScopeTransfer> mapWrapper = new MapWrapper<>(tagScopes.size());
 
@@ -389,7 +389,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
     
     protected void setupEntityInstance(final K baseEntity, EntityInstance entityInstance, final V transfer) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        CoreControl coreControl = Session.getModelController(CoreControl.class);
         
         if(entityInstance == null) {
             entityInstance = coreControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
@@ -414,10 +414,10 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected EntityInstance setupComments(final K commentedEntity, EntityInstance commentedEntityInstance, final V transfer, final String commentTypeName) {
-        CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+        CommentControl commentControl = Session.getModelController(CommentControl.class);
         
         if(commentedEntityInstance == null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            CoreControl coreControl = Session.getModelController(CoreControl.class);
             
             commentedEntityInstance = coreControl.getEntityInstanceByBasePK(commentedEntity.getPrimaryKey());
         }
@@ -430,10 +430,10 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected EntityInstance setupRatings(final K ratedEntity, EntityInstance ratedEntityInstance, final V transfer, final String ratingTypeName) {
-        RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+        RatingControl ratingControl = Session.getModelController(RatingControl.class);
         
         if(ratedEntityInstance == null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            CoreControl coreControl = Session.getModelController(CoreControl.class);
             
             ratedEntityInstance = coreControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
         }
@@ -446,10 +446,10 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected EntityInstance setupOwnedWorkEfforts(final K baseEntity, EntityInstance owningEntityInstance, final V transfer) {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
         
         if(owningEntityInstance == null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            CoreControl coreControl = Session.getModelController(CoreControl.class);
             
             owningEntityInstance = coreControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
         }

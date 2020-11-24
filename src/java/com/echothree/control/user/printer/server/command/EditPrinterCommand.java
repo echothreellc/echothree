@@ -89,7 +89,7 @@ public class EditPrinterCommand
 
     @Override
     public Printer getEntity(EditPrinterResult result) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         Printer printer = null;
         String printerName = spec.getPrinterName();
 
@@ -115,14 +115,14 @@ public class EditPrinterCommand
 
     @Override
     public void fillInResult(EditPrinterResult result, Printer printer) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
 
         result.setPrinter(printerControl.getPrinterTransfer(getUserVisit(), printer));
     }
 
     @Override
     public void doLock(PrinterEdit edit, Printer printer) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         PrinterDescription printerDescription = printerControl.getPrinterDescription(printer, getPreferredLanguage());
         PrinterDetail printerDetail = printer.getLastDetail();
 
@@ -139,7 +139,7 @@ public class EditPrinterCommand
 
     @Override
     public void canUpdate(Printer printer) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         String printerName = edit.getPrinterName();
         Printer duplicatePrinter = printerControl.getPrinterByName(printerName);
 
@@ -158,7 +158,7 @@ public class EditPrinterCommand
 
     @Override
     public void doUpdate(Printer printer) {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         var partyPK = getPartyPK();
         PrinterDetailValue printerDetailValue = printerControl.getPrinterDetailValueForUpdate(printer);
         PrinterDescription printerDescription = printerControl.getPrinterDescriptionForUpdate(printer, getPreferredLanguage());

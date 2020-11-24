@@ -61,7 +61,7 @@ public class GetFreeOnBoardChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
+        var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var result = ShipmentResultFactory.getGetFreeOnBoardChoicesResult();
         var defaultFreeOnBoardChoice = form.getDefaultFreeOnBoardChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

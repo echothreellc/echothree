@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class FinancialAccountTransactionTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountTransactionType, FinancialAccountTransactionTypeTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     
     /** Creates a new instance of FinancialAccountTransactionTypeTransferCache */
     public FinancialAccountTransactionTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {

@@ -90,7 +90,7 @@ public class EditCarrierServiceDescriptionCommand
 
     @Override
     public CarrierServiceDescription getEntity(EditCarrierServiceDescriptionResult result) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierServiceDescription carrierServiceDescription = null;
         String carrierName = spec.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
@@ -101,7 +101,7 @@ public class EditCarrierServiceDescriptionCommand
             CarrierService carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
 
             if(carrierService != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -135,7 +135,7 @@ public class EditCarrierServiceDescriptionCommand
 
     @Override
     public void fillInResult(EditCarrierServiceDescriptionResult result, CarrierServiceDescription carrierServiceDescription) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
 
         result.setCarrierServiceDescription(carrierControl.getCarrierServiceDescriptionTransfer(getUserVisit(), carrierServiceDescription));
     }
@@ -147,7 +147,7 @@ public class EditCarrierServiceDescriptionCommand
 
     @Override
     public void doUpdate(CarrierServiceDescription carrierServiceDescription) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         CarrierServiceDescriptionValue carrierServiceDescriptionValue = carrierControl.getCarrierServiceDescriptionValue(carrierServiceDescription);
 
         carrierServiceDescriptionValue.setDescription(edit.getDescription());

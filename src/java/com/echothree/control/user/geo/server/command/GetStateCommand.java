@@ -88,7 +88,7 @@ public class GetStateCommand
         }
 
         if(parameterCount == 1) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
 
             var countryGeoCodeName = form.getCountryGeoCodeName();
             var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
@@ -148,7 +148,7 @@ public class GetStateCommand
         var result = GeoResultFactory.getGetStateResult();
 
         if(entity != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
 
             result.setState(geoControl.getStateTransfer(getUserVisit(), entity));
         }

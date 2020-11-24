@@ -68,7 +68,7 @@ public class GetChainEntityRoleTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         GetChainEntityRoleTypeDescriptionsResult result = ChainResultFactory.getGetChainEntityRoleTypeDescriptionsResult();
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);

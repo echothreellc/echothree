@@ -57,7 +57,7 @@ public class GetContactMechanismResultsCommand
     @Override
     protected BaseResult execute() {
         GetContactMechanismResultsResult result = SearchResultFactory.getGetContactMechanismResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_CONTACT_MECHANISM);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetContactMechanismResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var contactMechanismControl = (ContactMechanismControl)Session.getModelController(ContactMechanismControl.class);
+                    var contactMechanismControl = Session.getModelController(ContactMechanismControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setContactMechanismResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

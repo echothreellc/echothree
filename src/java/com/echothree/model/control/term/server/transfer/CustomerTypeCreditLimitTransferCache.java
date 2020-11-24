@@ -38,8 +38,8 @@ public class CustomerTypeCreditLimitTransferCache
     public CustomerTypeCreditLimitTransferCache(UserVisit userVisit, TermControl termControl) {
         super(userVisit, termControl);
         
-        accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        accountingControl = Session.getModelController(AccountingControl.class);
+        customerControl = Session.getModelController(CustomerControl.class);
     }
     
     public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(CustomerTypeCreditLimit customerTypeCreditLimit) {

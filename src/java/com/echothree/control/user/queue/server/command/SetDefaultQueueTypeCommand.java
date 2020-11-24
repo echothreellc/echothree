@@ -62,7 +62,7 @@ public class SetDefaultQueueTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = Session.getModelController(QueueControl.class);
         String queueTypeName = form.getQueueTypeName();
         QueueTypeDetailValue queueTypeDetailValue = queueControl.getQueueTypeDetailValueByNameForUpdate(queueTypeName);
         

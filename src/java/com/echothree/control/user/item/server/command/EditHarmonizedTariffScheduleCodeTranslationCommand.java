@@ -94,18 +94,18 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
 
     @Override
     public HarmonizedTariffScheduleCodeTranslation getEntity(EditHarmonizedTariffScheduleCodeTranslationResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = null;
         String countryName = spec.getCountryName();
         GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             String harmonizedTariffScheduleCodeName = spec.getHarmonizedTariffScheduleCodeName();
             HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(countryGeoCode, harmonizedTariffScheduleCodeName);
 
             if(harmonizedTariffScheduleCode != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -139,7 +139,7 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
 
     @Override
     public void fillInResult(EditHarmonizedTariffScheduleCodeTranslationResult result, HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setHarmonizedTariffScheduleCodeTranslation(itemControl.getHarmonizedTariffScheduleCodeTranslationTransfer(getUserVisit(), harmonizedTariffScheduleCodeTranslation));
     }
@@ -167,7 +167,7 @@ public class EditHarmonizedTariffScheduleCodeTranslationCommand
     
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeTranslationValue harmonizedTariffScheduleCodeTranslationValue = itemControl.getHarmonizedTariffScheduleCodeTranslationValue(harmonizedTariffScheduleCodeTranslation);
 
         harmonizedTariffScheduleCodeTranslationValue.setDescription(edit.getDescription());

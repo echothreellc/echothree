@@ -62,8 +62,8 @@ public class SequenceChecksumTypeObject {
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

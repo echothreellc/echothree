@@ -83,7 +83,7 @@ public class PartyPaymentMethodControl
     
     public PartyPaymentMethod createPartyPaymentMethod(Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.name());
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
         String partyPaymentMethodName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
@@ -361,7 +361,7 @@ public class PartyPaymentMethodControl
     }
 
     public void deletePartyPaymentMethod(PartyPaymentMethod partyPaymentMethod, BasePK deletedBy) {
-        var orderPaymentPreferenceControl = (OrderPaymentPreferenceControl)Session.getModelController(OrderPaymentPreferenceControl.class);
+        var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
 
         orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPartyPaymentMethod(partyPaymentMethod, deletedBy);
         

@@ -60,7 +60,7 @@ public class GetEmployeeTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetEmployeeTypesResult result = EmployeeResultFactory.getGetEmployeeTypesResult();
         
         result.setEmployeeTypes(employeeControl.getEmployeeTypeTransfers(getUserVisit()));

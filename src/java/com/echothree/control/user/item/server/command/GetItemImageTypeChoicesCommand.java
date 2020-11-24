@@ -62,7 +62,7 @@ public class GetItemImageTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemImageTypeChoicesResult result = ItemResultFactory.getGetItemImageTypeChoicesResult();
         String defaultItemImageTypeChoice = form.getDefaultItemImageTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

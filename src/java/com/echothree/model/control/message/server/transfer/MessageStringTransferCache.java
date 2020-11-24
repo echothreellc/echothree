@@ -34,7 +34,7 @@ public class MessageStringTransferCache
     public MessageStringTransferCache(UserVisit userVisit, MessageControl messageControl) {
         super(userVisit, messageControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public MessageStringTransfer getMessageStringTransfer(MessageString messageString) {

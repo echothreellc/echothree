@@ -89,7 +89,7 @@ public class EditGeoCodeAliasTypeDescriptionCommand
 
     @Override
     public GeoCodeAliasTypeDescription getEntity(EditGeoCodeAliasTypeDescriptionResult result) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasTypeDescription geoAliasTypeDescription = null;
         String geoCodeTypeName = spec.getGeoCodeTypeName();
         GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
@@ -99,7 +99,7 @@ public class EditGeoCodeAliasTypeDescriptionCommand
             GeoCodeAliasType geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditGeoCodeAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditGeoCodeAliasTypeDescriptionResult result, GeoCodeAliasTypeDescription geoAliasTypeDescription) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
 
         result.setGeoCodeAliasTypeDescription(geoControl.getGeoCodeAliasTypeDescriptionTransfer(getUserVisit(), geoAliasTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditGeoCodeAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(GeoCodeAliasTypeDescription geoAliasTypeDescription) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GeoCodeAliasTypeDescriptionValue geoAliasTypeDescriptionValue = geoControl.getGeoCodeAliasTypeDescriptionValue(geoAliasTypeDescription);
 
         geoAliasTypeDescriptionValue.setDescription(edit.getDescription());

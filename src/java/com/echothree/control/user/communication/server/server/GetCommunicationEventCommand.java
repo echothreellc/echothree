@@ -51,7 +51,7 @@ public class GetCommunicationEventCommand
     
     @Override
     protected BaseResult execute() {
-        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = Session.getModelController(CommunicationControl.class);
         GetCommunicationEventResult result = CommunicationResultFactory.getGetCommunicationEventResult();
         String communicationEventName = form.getCommunicationEventName();
         CommunicationEvent communicationEvent = communicationControl.getCommunicationEventByName(communicationEventName);

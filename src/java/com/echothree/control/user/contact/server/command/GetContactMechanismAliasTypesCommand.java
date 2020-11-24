@@ -61,7 +61,7 @@ public class GetContactMechanismAliasTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         GetContactMechanismAliasTypesResult result = ContactResultFactory.getGetContactMechanismAliasTypesResult();
         UserVisit userVisit = getUserVisit();
 

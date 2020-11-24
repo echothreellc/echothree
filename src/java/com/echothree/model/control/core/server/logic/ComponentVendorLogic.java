@@ -47,7 +47,7 @@ public class ComponentVendorLogic
 
     public ComponentVendor getComponentVendorByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final EntityPermission entityPermission) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         var componentVendor = coreControl.getComponentVendorByName(componentVendorName, entityPermission);
 
         if(componentVendor == null) {
@@ -68,7 +68,7 @@ public class ComponentVendorLogic
     public ComponentVendor getComponentVendorByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ComponentVendorUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ComponentVendor componentVendor = null;
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         var componentVendorName = universalSpec.getComponentVendorName();
         int parameterCount = (componentVendorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 

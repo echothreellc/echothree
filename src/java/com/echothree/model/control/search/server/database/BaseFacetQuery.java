@@ -37,7 +37,7 @@ public abstract class BaseFacetQuery<R extends BaseDatabaseResult>
         
         CachedSearch cachedSearch = userVisitSearch.getSearch().getCachedSearch();
         if(cachedSearch != null) {
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var searchControl = Session.getModelController(SearchControl.class);
             
             cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
         } 

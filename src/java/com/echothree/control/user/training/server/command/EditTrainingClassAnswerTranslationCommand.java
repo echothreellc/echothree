@@ -101,7 +101,7 @@ public class EditTrainingClassAnswerTranslationCommand
     
     @Override
     public TrainingClassAnswerTranslation getEntity(EditTrainingClassAnswerTranslationResult result) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassAnswerTranslation trainingClassAnswerTranslation = null;
         String trainingClassName = spec.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -120,7 +120,7 @@ public class EditTrainingClassAnswerTranslationCommand
                     TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer != null) {
-                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -163,7 +163,7 @@ public class EditTrainingClassAnswerTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassAnswerTranslationResult result, TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
 
         result.setTrainingClassAnswerTranslation(trainingControl.getTrainingClassAnswerTranslationTransfer(getUserVisit(), trainingClassAnswerTranslation));
     }
@@ -204,7 +204,7 @@ public class EditTrainingClassAnswerTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassAnswerTranslation trainingClassAnswerTranslation) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassAnswerTranslationValue trainingClassAnswerTranslationValue = trainingControl.getTrainingClassAnswerTranslationValue(trainingClassAnswerTranslation);
         
         trainingClassAnswerTranslationValue.setAnswerMimeTypePK(answerMimeType == null? null: answerMimeType.getPrimaryKey());

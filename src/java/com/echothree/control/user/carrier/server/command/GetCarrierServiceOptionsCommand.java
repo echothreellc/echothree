@@ -69,7 +69,7 @@ public class GetCarrierServiceOptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         GetCarrierServiceOptionsResult result = CarrierResultFactory.getGetCarrierServiceOptionsResult();
         String carrierName = form.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);

@@ -79,7 +79,7 @@ public class EditItemPriceCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         String currencyIsoName = spec.getCurrencyIsoName();
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
@@ -100,24 +100,24 @@ public class EditItemPriceCommand
 
     @Override
     public ItemPrice getEntity(EditItemPriceResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemPrice itemPrice = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = Session.getModelController(InventoryControl.class);
             String inventoryConditionName = spec.getInventoryConditionName();
             InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                var uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = Session.getModelController(UomControl.class);
                 ItemDetail itemDetail = item.getLastDetail();
                 String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                 UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
-                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = Session.getModelController(AccountingControl.class);
                     String currencyIsoName = spec.getCurrencyIsoName();
 
                     currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
@@ -153,14 +153,14 @@ public class EditItemPriceCommand
 
     @Override
     public void fillInResult(EditItemPriceResult result, ItemPrice itemPrice) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemPrice(itemControl.getItemPriceTransfer(getUserVisit(), itemPrice));
     }
 
     @Override
     public void doLock(ItemPriceEdit edit, ItemPrice itemPrice) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             ItemFixedPrice itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
@@ -221,7 +221,7 @@ public class EditItemPriceCommand
 
     @Override
     public void doUpdate(ItemPrice itemPrice) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             ItemFixedPriceValue itemFixedPriceValue = itemControl.getItemFixedPriceValueForUpdate(itemPrice);
 

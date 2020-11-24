@@ -64,12 +64,12 @@ public class SetDefaultTaxClassificationCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         String countryName = form.getCountryName();
         GeoCode geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = Session.getModelController(TaxControl.class);
             String taxClassificationName = form.getTaxClassificationName();
             TaxClassificationDetailValue taxClassificationDetailValue = taxControl.getTaxClassificationDetailValueByNameForUpdate(geoCode,
                     taxClassificationName);

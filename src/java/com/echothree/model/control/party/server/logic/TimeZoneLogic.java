@@ -40,7 +40,7 @@ public class TimeZoneLogic
     }
     
     public TimeZone getTimeZoneByName(final ExecutionErrorAccumulator eea, final String javaTimeZoneName) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
 
         if(timeZone == null) {

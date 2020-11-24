@@ -39,8 +39,8 @@ import java.util.Set;
 public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeCapacities;
     boolean includeVolume;
     
@@ -62,7 +62,7 @@ public class InventoryLocationGroupTransferCache
         InventoryLocationGroupTransfer inventoryLocationGroupTransfer = get(inventoryLocationGroup);
         
         if(inventoryLocationGroupTransfer == null) {
-            WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+            WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
             InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             Party warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
             Warehouse warehouse = warehouseControl.getWarehouse(warehouseParty);

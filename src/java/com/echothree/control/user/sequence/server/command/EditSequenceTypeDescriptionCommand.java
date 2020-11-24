@@ -87,13 +87,13 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public SequenceTypeDescription getEntity(EditSequenceTypeDescriptionResult result) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceTypeDescription sequenceTypeDescription = null;
         String sequenceTypeName = spec.getSequenceTypeName();
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSequenceTypeDescriptionResult result, SequenceTypeDescription sequenceTypeDescription) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
 
         result.setSequenceTypeDescription(sequenceControl.getSequenceTypeDescriptionTransfer(getUserVisit(), sequenceTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public void doUpdate(SequenceTypeDescription sequenceTypeDescription) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         SequenceTypeDescriptionValue sequenceTypeDescriptionValue = sequenceControl.getSequenceTypeDescriptionValue(sequenceTypeDescription);
         
         sequenceTypeDescriptionValue.setDescription(edit.getDescription());

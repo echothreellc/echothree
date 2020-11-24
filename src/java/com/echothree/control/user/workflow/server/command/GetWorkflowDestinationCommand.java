@@ -65,7 +65,7 @@ public class GetWorkflowDestinationCommand
         var result = WorkflowResultFactory.getGetWorkflowDestinationResult();
 
         if(workflowDestination != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(getUserVisit(), workflowDestination));
         }

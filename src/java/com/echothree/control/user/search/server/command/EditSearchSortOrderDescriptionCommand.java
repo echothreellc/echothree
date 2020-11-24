@@ -88,7 +88,7 @@ public class EditSearchSortOrderDescriptionCommand
 
     @Override
     public SearchSortOrderDescription getEntity(EditSearchSortOrderDescriptionResult result) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchSortOrderDescription searchSortOrderDescription = null;
         String searchKindName = spec.getSearchKindName();
         SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
@@ -98,7 +98,7 @@ public class EditSearchSortOrderDescriptionCommand
             SearchSortOrder searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
 
             if(searchSortOrder != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,7 +132,7 @@ public class EditSearchSortOrderDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchSortOrderDescriptionResult result, SearchSortOrderDescription searchSortOrderDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
 
         result.setSearchSortOrderDescription(searchControl.getSearchSortOrderDescriptionTransfer(getUserVisit(), searchSortOrderDescription));
     }
@@ -144,7 +144,7 @@ public class EditSearchSortOrderDescriptionCommand
 
     @Override
     public void doUpdate(SearchSortOrderDescription searchSortOrderDescription) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchSortOrderDescriptionValue searchSortOrderDescriptionValue = searchControl.getSearchSortOrderDescriptionValue(searchSortOrderDescription);
 
         searchSortOrderDescriptionValue.setDescription(edit.getDescription());

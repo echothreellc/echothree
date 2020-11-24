@@ -57,7 +57,7 @@ public class GetHarmonizedTariffScheduleCodeResultsCommand
     @Override
     protected BaseResult execute() {
         GetHarmonizedTariffScheduleCodeResultsResult result = SearchResultFactory.getGetHarmonizedTariffScheduleCodeResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_HARMONIZED_TARIFF_SCHEDULE_CODE);
         
         if(searchKind != null) {
@@ -69,7 +69,7 @@ public class GetHarmonizedTariffScheduleCodeResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var harmonizedTariffScheduleCodeControl = (HarmonizedTariffScheduleCodeControl)Session.getModelController(HarmonizedTariffScheduleCodeControl.class);
+                    var harmonizedTariffScheduleCodeControl = Session.getModelController(HarmonizedTariffScheduleCodeControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setHarmonizedTariffScheduleCodeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

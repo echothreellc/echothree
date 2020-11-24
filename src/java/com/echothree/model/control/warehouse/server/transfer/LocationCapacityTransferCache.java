@@ -36,7 +36,7 @@ public class LocationCapacityTransferCache
     public LocationCapacityTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
         super(userVisit, warehouseControl);
         
-        uomControl = (UomControl)Session.getModelController(UomControl.class);
+        uomControl = Session.getModelController(UomControl.class);
     }
     
     public LocationCapacityTransfer getLocationCapacityTransfer(LocationCapacity locationCapacity) {

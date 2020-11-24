@@ -83,7 +83,7 @@ public class EditForumCommand
 
     @Override
     public Forum getEntity(EditForumResult result) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         Forum forum = null;
         String forumName = spec.getForumName();
 
@@ -107,14 +107,14 @@ public class EditForumCommand
 
     @Override
     public void fillInResult(EditForumResult result, Forum forum) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
 
         result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
     }
 
     @Override
     public void doLock(ForumEdit edit, Forum forum) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumDescription forumDescription = forumControl.getForumDescription(forum, getPreferredLanguage());
         ForumDetail forumDetail = forum.getLastDetail();
 
@@ -139,12 +139,12 @@ public class EditForumCommand
 
     @Override
     public void canUpdate(Forum forum) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         String forumName = edit.getForumName();
         Forum duplicateForum = forumControl.getForumByName(forumName);
 
         if(duplicateForum == null || forum.equals(duplicateForum)) {
-            var iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = Session.getModelController(IconControl.class);
             String iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
@@ -155,7 +155,7 @@ public class EditForumCommand
                 String forumMessageSequenceName = edit.getForumMessageSequenceName();
 
                 if(forumThreadSequenceName != null || forumMessageSequenceName != null) {
-                    sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    sequenceControl = Session.getModelController(SequenceControl.class);
 
                     if(forumThreadSequenceName != null) {
                         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
@@ -186,7 +186,7 @@ public class EditForumCommand
 
     @Override
     public void doUpdate(Forum forum) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         var partyPK = getPartyPK();
         ForumDetailValue forumDetailValue = forumControl.getForumDetailValueForUpdate(forum);
         ForumDescription forumDescription = forumControl.getForumDescriptionForUpdate(forum, getPreferredLanguage());

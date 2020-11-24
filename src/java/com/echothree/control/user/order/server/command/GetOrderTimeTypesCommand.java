@@ -65,13 +65,13 @@ public class GetOrderTimeTypesCommand
 
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         GetOrderTimeTypesResult result = OrderResultFactory.getGetOrderTimeTypesResult();
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+            var orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
             result.setOrderTimeTypes(orderTimeControl.getOrderTimeTypeTransfers(getUserVisit(), orderType));
         } else {

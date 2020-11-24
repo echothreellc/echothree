@@ -40,7 +40,7 @@ public class ContactMechanismPurposeLogic
     }
     
     public ContactMechanismPurpose getContactMechanismPurposeByName(final ExecutionErrorAccumulator eea, final String contactMechanismPurposeName) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
         var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
 
         if(contactMechanismPurpose == null) {

@@ -68,7 +68,7 @@ public class GetReturnReasonTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         GetReturnReasonTypesResult result = ReturnPolicyResultFactory.getGetReturnReasonTypesResult();
         String returnReasonName = form.getReturnReasonName();
         String returnTypeName = form.getReturnTypeName();

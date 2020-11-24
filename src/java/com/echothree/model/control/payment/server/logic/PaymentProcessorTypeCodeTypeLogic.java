@@ -58,7 +58,7 @@ public class PaymentProcessorTypeCodeTypeLogic
             final PaymentProcessorType paymentProcessorType, final String paymentProcessorTypeCodeTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl)Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByName(paymentProcessorType, paymentProcessorTypeCodeTypeName);
 
         if(paymentProcessorTypeCodeType == null) {
@@ -92,7 +92,7 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByName(final ExecutionErrorAccumulator eea,
             final PaymentProcessorType paymentProcessorType, final String paymentProcessorTypeCodeTypeName,
             final EntityPermission entityPermission) {
-        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl)Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByName(paymentProcessorType,
                 paymentProcessorTypeCodeTypeName, entityPermission);
 
@@ -139,7 +139,7 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
-        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl)Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeName = universalSpec.getPaymentProcessorTypeName();
         var paymentProcessorTypeCodeTypeName = universalSpec.getPaymentProcessorTypeCodeTypeName();
         int parameterCount = (paymentProcessorTypeName != null && paymentProcessorTypeCodeTypeName != null ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
@@ -201,7 +201,7 @@ public class PaymentProcessorTypeCodeTypeLogic
 
     public void deletePaymentProcessorTypeCodeType(final ExecutionErrorAccumulator eea, final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType,
             final BasePK deletedBy) {
-        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl)Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
 
         paymentProcessorTypeCodeTypeControl.deletePaymentProcessorTypeCodeType(paymentProcessorTypeCodeType, deletedBy);
     }
@@ -209,7 +209,7 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeTypeDescription createPaymentProcessorTypeCodeTypeDescription(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType, final Language language,
             final String description, final BasePK createdBy) {
-        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl)Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, language);
 
         if(paymentProcessorTypeCodeTypeDescription == null) {

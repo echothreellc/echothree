@@ -87,13 +87,13 @@ public class EditItemDescriptionTypeDescriptionCommand
 
     @Override
     public ItemDescriptionTypeDescription getEntity(EditItemDescriptionTypeDescriptionResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescriptionTypeDescription itemDescriptionTypeDescription = null;
         String itemDescriptionTypeName = spec.getItemDescriptionTypeName();
         ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
         if(itemDescriptionType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditItemDescriptionTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditItemDescriptionTypeDescriptionResult result, ItemDescriptionTypeDescription itemDescriptionTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemDescriptionTypeDescription(itemControl.getItemDescriptionTypeDescriptionTransfer(getUserVisit(), itemDescriptionTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditItemDescriptionTypeDescriptionCommand
 
     @Override
     public void doUpdate(ItemDescriptionTypeDescription itemDescriptionTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemDescriptionTypeDescriptionValue itemDescriptionTypeDescriptionValue = itemControl.getItemDescriptionTypeDescriptionValue(itemDescriptionTypeDescription);
         
         itemDescriptionTypeDescriptionValue.setDescription(edit.getDescription());

@@ -35,7 +35,7 @@ import com.echothree.util.server.persistence.Session;
 public class BaseContactMechanismSelectorEvaluator
         extends BaseSelectorEvaluator {
     
-    protected ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+    protected ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     protected BaseContactMechanismSelectorEvaluator(Session session, BasePK evaluatedBy, Class logClass) {
         super(session, evaluatedBy, logClass);

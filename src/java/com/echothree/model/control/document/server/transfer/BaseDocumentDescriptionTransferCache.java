@@ -32,7 +32,7 @@ public abstract class BaseDocumentDescriptionTransferCache<K extends BaseEntity,
     protected BaseDocumentDescriptionTransferCache(UserVisit userVisit, DocumentControl documentControl) {
         super(userVisit, documentControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

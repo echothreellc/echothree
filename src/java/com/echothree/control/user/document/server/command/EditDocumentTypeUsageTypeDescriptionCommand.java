@@ -87,13 +87,13 @@ public class EditDocumentTypeUsageTypeDescriptionCommand
 
     @Override
     public DocumentTypeUsageTypeDescription getEntity(EditDocumentTypeUsageTypeDescriptionResult result) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = null;
         String documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
         DocumentTypeUsageType documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
         if(documentTypeUsageType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditDocumentTypeUsageTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditDocumentTypeUsageTypeDescriptionResult result, DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
 
         result.setDocumentTypeUsageTypeDescription(documentControl.getDocumentTypeUsageTypeDescriptionTransfer(getUserVisit(), documentTypeUsageTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditDocumentTypeUsageTypeDescriptionCommand
 
     @Override
     public void doUpdate(DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
-        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = Session.getModelController(DocumentControl.class);
         DocumentTypeUsageTypeDescriptionValue documentTypeUsageTypeDescriptionValue = documentControl.getDocumentTypeUsageTypeDescriptionValue(documentTypeUsageTypeDescription);
         documentTypeUsageTypeDescriptionValue.setDescription(edit.getDescription());
 

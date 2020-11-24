@@ -36,8 +36,8 @@ import java.util.Set;
 public class WorkflowTransferCache
         extends BaseWorkflowTransferCache<Workflow, WorkflowTransfer> {
     
-    SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
     TransferProperties transferProperties;
     boolean filterWorkflowName;

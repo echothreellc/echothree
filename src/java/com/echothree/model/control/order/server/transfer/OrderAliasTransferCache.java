@@ -26,7 +26,7 @@ import com.echothree.util.server.persistence.Session;
 public class OrderAliasTransferCache
         extends BaseOrderTransferCache<OrderAlias, OrderAliasTransfer> {
 
-    OrderAliasControl orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+    OrderAliasControl orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
     /** Creates a new instance of OrderAliasTransferCache */
     public OrderAliasTransferCache(UserVisit userVisit) {

@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class IconTransferCache
         extends BaseIconTransferCache<Icon, IconTransfer> {
     
-    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     
     /** Creates a new instance of IconTransferCache */
     public IconTransferCache(UserVisit userVisit, IconControl iconControl) {

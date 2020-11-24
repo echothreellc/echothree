@@ -71,7 +71,7 @@ public class GetVendorResultsCommand
     @Override
     protected BaseResult execute() {
         GetVendorResultsResult result = SearchResultFactory.getGetVendorResultsResult();
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_VENDOR);
         
         if(searchKind != null) {
@@ -83,7 +83,7 @@ public class GetVendorResultsCommand
                 UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
                 
                 if(userVisitSearch != null) {
-                    var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                    var vendorControl = Session.getModelController(VendorControl.class);
 
                     if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
                         result.setVendorResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));

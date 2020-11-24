@@ -60,7 +60,7 @@ public class GetLetterSourcesCommand
     
     @Override
     protected BaseResult execute() {
-        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = Session.getModelController(LetterControl.class);
         GetLetterSourcesResult result = LetterResultFactory.getGetLetterSourcesResult();
         
         result.setLetterSources(letterControl.getLetterSourceTransfers(getUserVisit()));

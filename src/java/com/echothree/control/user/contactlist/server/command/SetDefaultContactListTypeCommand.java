@@ -61,7 +61,7 @@ public class SetDefaultContactListTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         String contactListTypeName = form.getContactListTypeName();
         ContactListTypeDetailValue contactListTypeDetailValue = contactListControl.getContactListTypeDetailValueByNameForUpdate(contactListTypeName);
         

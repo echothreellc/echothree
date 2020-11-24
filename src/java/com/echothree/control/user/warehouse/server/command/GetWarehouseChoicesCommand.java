@@ -49,7 +49,7 @@ public class GetWarehouseChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         GetWarehouseChoicesResult result = WarehouseResultFactory.getGetWarehouseChoicesResult();
         String defaultWarehouseChoice = form.getDefaultWarehouseChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

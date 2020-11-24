@@ -64,7 +64,7 @@ public class GetSubscriptionKindDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         GetSubscriptionKindDescriptionsResult result = SubscriptionResultFactory.getGetSubscriptionKindDescriptionsResult();
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);

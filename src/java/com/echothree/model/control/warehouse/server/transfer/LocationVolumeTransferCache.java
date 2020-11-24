@@ -35,7 +35,7 @@ public class LocationVolumeTransferCache
     public LocationVolumeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
         super(userVisit, warehouseControl);
         
-        uomControl = (UomControl)Session.getModelController(UomControl.class);
+        uomControl = Session.getModelController(UomControl.class);
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(LocationVolume locationVolume) {

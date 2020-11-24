@@ -35,7 +35,7 @@ import java.util.Set;
 public class DocumentTransferCache
         extends BaseDocumentTransferCache<Document, DocumentTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     boolean includeBlob;
     boolean includeClob;
     boolean includeETag;

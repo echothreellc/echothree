@@ -36,7 +36,7 @@ import org.apache.lucene.util.BytesRef;
 public class OfferIndexer
         extends BaseIndexer<Offer> {
     
-    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+    OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferIndexer */
     public OfferIndexer(final ExecutionErrorAccumulator eea, final Index index) {

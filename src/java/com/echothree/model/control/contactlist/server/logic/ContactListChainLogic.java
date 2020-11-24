@@ -86,7 +86,7 @@ public class ContactListChainLogic
         ChainInstance chainInstance = createChainInstance(eea, ChainConstants.ChainKind_CONTACT_LIST, chainTypeName, partyContactList, createdBy);
         
         if(chainInstance != null) {
-            var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+            var chainControl = Session.getModelController(ChainControl.class);
             ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
             
             chainControl.createChainInstanceEntityRole(chainInstance, chainControl.getChainEntityRoleTypeByName(chainType,

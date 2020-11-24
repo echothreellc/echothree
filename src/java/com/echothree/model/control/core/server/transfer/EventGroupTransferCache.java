@@ -30,7 +30,7 @@ import com.echothree.util.server.persistence.Session;
 public class EventGroupTransferCache
         extends BaseCoreTransferCache<EventGroup, EventGroupTransfer> {
     
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of EventGroupTransferCache */
     public EventGroupTransferCache(UserVisit userVisit, CoreControl coreControl) {

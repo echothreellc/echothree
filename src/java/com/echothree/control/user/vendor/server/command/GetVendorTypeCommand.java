@@ -65,7 +65,7 @@ public class GetVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         GetVendorTypeResult result = VendorResultFactory.getGetVendorTypeResult();
         String vendorTypeName = form.getVendorTypeName();
         VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);

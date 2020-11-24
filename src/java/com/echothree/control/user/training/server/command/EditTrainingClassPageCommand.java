@@ -101,7 +101,7 @@ public class EditTrainingClassPageCommand
     
     @Override
     public TrainingClassPage getEntity(EditTrainingClassPageResult result) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassPage trainingClassPage = null;
         String trainingClassName = spec.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -142,7 +142,7 @@ public class EditTrainingClassPageCommand
 
     @Override
     public void fillInResult(EditTrainingClassPageResult result, TrainingClassPage trainingClassPage) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
 
         result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(getUserVisit(), trainingClassPage));
     }
@@ -152,7 +152,7 @@ public class EditTrainingClassPageCommand
     
     @Override
     public void doLock(TrainingClassPageEdit edit, TrainingClassPage trainingClassPage) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslation(trainingClassPage, getPreferredLanguage());
         TrainingClassPageDetail trainingClassPageDetail = trainingClassPage.getLastDetail();
 
@@ -170,7 +170,7 @@ public class EditTrainingClassPageCommand
 
     @Override
     public void canUpdate(TrainingClassPage trainingClassPage) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         String trainingClassPageName = edit.getTrainingClassPageName();
         TrainingClassPage duplicateTrainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
@@ -189,7 +189,7 @@ public class EditTrainingClassPageCommand
     
     @Override
     public void doUpdate(TrainingClassPage trainingClassPage) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         TrainingClassPageDetailValue trainingClassPageDetailValue = trainingControl.getTrainingClassPageDetailValueForUpdate(trainingClassPage);
         TrainingClassPageTranslation trainingClassPageTranslation = trainingControl.getTrainingClassPageTranslationForUpdate(trainingClassPage, getPreferredLanguage());

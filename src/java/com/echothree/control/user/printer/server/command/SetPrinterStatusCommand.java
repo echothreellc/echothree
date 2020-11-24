@@ -49,7 +49,7 @@ public class SetPrinterStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = Session.getModelController(PrinterControl.class);
         String printerName = form.getPrinterName();
         Printer printer = printerControl.getPrinterByName(printerName);
         

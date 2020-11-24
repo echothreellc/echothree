@@ -69,7 +69,7 @@ public class GetContentCatalogsCommand
         Collection<ContentCatalog> contentCatalogs = null;
 
         if(parameterCount == 1) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
 
             if(contentWebAddressName != null) {
                 ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
@@ -110,7 +110,7 @@ public class GetContentCatalogsCommand
         GetContentCatalogsResult result = ContentResultFactory.getGetContentCatalogsResult();
         
         if(entities != null) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));

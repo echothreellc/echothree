@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class DocumentTypeTransferCache
         extends BaseDocumentTransferCache<DocumentType, DocumentTypeTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of DocumentTypeTransferCache */
     public DocumentTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {

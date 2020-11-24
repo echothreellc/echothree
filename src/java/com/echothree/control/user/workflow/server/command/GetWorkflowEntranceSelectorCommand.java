@@ -78,7 +78,7 @@ public class GetWorkflowEntranceSelectorCommand
         var result = WorkflowResultFactory.getGetWorkflowEntranceSelectorResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowEntranceSelector(workflowControl.getWorkflowEntranceSelectorTransfer(getUserVisit(), entity));
         }

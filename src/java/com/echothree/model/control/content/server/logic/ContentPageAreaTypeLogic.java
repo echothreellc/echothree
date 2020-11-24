@@ -51,7 +51,7 @@ public class ContentPageAreaTypeLogic
 
     public ContentPageAreaType createContentPageAreaType(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,
             final Language language, final String description, final BasePK createdBy) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageAreaType contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
 
         if(contentPageAreaType == null) {
@@ -69,7 +69,7 @@ public class ContentPageAreaTypeLogic
 
     public ContentPageAreaType getContentPageAreaTypeByName(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,
             final EntityPermission entityPermission) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         ContentPageAreaType contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName, entityPermission);
 
         if(contentPageAreaType == null) {
@@ -90,7 +90,7 @@ public class ContentPageAreaTypeLogic
     public ContentPageAreaType getContentPageAreaTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ContentPageAreaTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
         ContentPageAreaType contentPageAreaType = null;
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentPageAreaTypeName = universalSpec.getContentPageAreaTypeName();
         int parameterCount = (contentPageAreaTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 

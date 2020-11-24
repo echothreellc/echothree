@@ -137,7 +137,7 @@ public class EncryptionUtils {
     }
 
     private BaseKeys createBaseKeys(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         BaseKey baseKey1 = generateBaseKey(cacheBaseKey1);
         BaseKey baseKey2 = generateBaseKey(cacheBaseKey2);
         BaseKey baseKey3 = xorBaseKeys(baseKey1, baseKey2);
@@ -147,7 +147,7 @@ public class EncryptionUtils {
     }
     
     public BaseKeys generateBaseKeys(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         BaseKeys baseKeys = null;
 
         if(coreControl.countEntityEncryptionKeys() == 0) {
@@ -188,12 +188,12 @@ public class EncryptionUtils {
                 }
             }
 
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
             String sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
             BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyBySha1Hash(sha1Hash);
 
             if(baseEncryptionKey != null) {
-                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var workflowControl = Session.getModelController(WorkflowControl.class);
                 EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(baseEncryptionKey.getPrimaryKey());
                 WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance);
 
@@ -218,7 +218,7 @@ public class EncryptionUtils {
 
     public BaseKeys changeBaseKeys(final ExecutionErrorAccumulator eea, final BaseKeys oldBaseKeys,
             final PartyPK changedBy) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
 
         validateBaseKeys(oldBaseKeys, 3);
         BaseKeys newBaseKeys = createBaseKeys(eea, changedBy);
@@ -380,7 +380,7 @@ public class EncryptionUtils {
     }
 
     private Cipher getCipher(final String entityTypeName, final String entityColumnName, final Boolean isExternal, final int cipherMode) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         String entityEncryptionKeyName = MD5Utils.getInstance().encode(new StringBuilder(entityTypeName).append('.').append(isExternal? externalPrefix: entityColumnName).toString());
         SecretKey secretKey;
         byte[] iv;

@@ -87,13 +87,13 @@ public class EditItemAliasTypeDescriptionCommand
 
     @Override
     public ItemAliasTypeDescription getEntity(EditItemAliasTypeDescriptionResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemAliasTypeDescription itemAliasTypeDescription = null;
         String itemAliasTypeName = spec.getItemAliasTypeName();
         ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
         if(itemAliasType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditItemAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditItemAliasTypeDescriptionResult result, ItemAliasTypeDescription itemAliasTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemAliasTypeDescription(itemControl.getItemAliasTypeDescriptionTransfer(getUserVisit(), itemAliasTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditItemAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(ItemAliasTypeDescription itemAliasTypeDescription) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemAliasTypeDescriptionValue itemAliasTypeDescriptionValue = itemControl.getItemAliasTypeDescriptionValue(itemAliasTypeDescription);
         
         itemAliasTypeDescriptionValue.setDescription(edit.getDescription());

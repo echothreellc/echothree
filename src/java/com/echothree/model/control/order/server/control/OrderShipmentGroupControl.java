@@ -300,7 +300,7 @@ public class OrderShipmentGroupControl
     }
 
     public void deleteOrderShipmentGroup(OrderShipmentGroup orderShipmentGroup, BasePK deletedBy) {
-        var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+        var orderLineControl = Session.getModelController(OrderLineControl.class);
 
         orderLineControl.deleteOrderLinesByOrderShipmentGroup(orderShipmentGroup, deletedBy);
 

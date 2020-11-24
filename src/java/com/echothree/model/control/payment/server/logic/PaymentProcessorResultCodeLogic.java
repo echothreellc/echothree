@@ -53,7 +53,7 @@ public class PaymentProcessorResultCodeLogic
     public PaymentProcessorResultCode createPaymentProcessorResultCode(final ExecutionErrorAccumulator eea, final String paymentProcessorResultCodeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
 
         if(paymentProcessorResultCode == null) {
@@ -71,7 +71,7 @@ public class PaymentProcessorResultCodeLogic
 
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByName(final ExecutionErrorAccumulator eea, final String paymentProcessorResultCodeName,
             final EntityPermission entityPermission) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         PaymentProcessorResultCode paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName, entityPermission);
 
         if(paymentProcessorResultCode == null) {
@@ -92,7 +92,7 @@ public class PaymentProcessorResultCodeLogic
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorResultCodeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorResultCode paymentProcessorResultCode = null;
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         String paymentProcessorResultCodeName = universalSpec.getPaymentProcessorResultCodeName();
         int parameterCount = (paymentProcessorResultCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -140,7 +140,7 @@ public class PaymentProcessorResultCodeLogic
 
     public void deletePaymentProcessorResultCode(final ExecutionErrorAccumulator eea, final PaymentProcessorResultCode paymentProcessorResultCode,
             final BasePK deletedBy) {
-        var paymentProcessorResultCodeControl = (PaymentProcessorResultCodeControl)Session.getModelController(PaymentProcessorResultCodeControl.class);
+        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
 
         paymentProcessorResultCodeControl.deletePaymentProcessorResultCode(paymentProcessorResultCode, deletedBy);
     }

@@ -66,7 +66,7 @@ public class GetCarrierOptionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         GetCarrierOptionChoicesResult result = CarrierResultFactory.getGetCarrierOptionChoicesResult();
         String carrierName = form.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);

@@ -89,7 +89,7 @@ public class EditSelectorKindCommand
 
     @Override
     public SelectorKind getEntity(EditSelectorKindResult result) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKind selectorKind = null;
         String selectorKindName = spec.getSelectorKindName();
 
@@ -113,14 +113,14 @@ public class EditSelectorKindCommand
 
     @Override
     public void fillInResult(EditSelectorKindResult result, SelectorKind selectorKind) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
 
         result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));
     }
 
     @Override
     public void doLock(SelectorKindEdit edit, SelectorKind selectorKind) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         SelectorKindDescription selectorKindDescription = selectorControl.getSelectorKindDescription(selectorKind, getPreferredLanguage());
         SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditSelectorKindCommand
 
     @Override
     public void canUpdate(SelectorKind selectorKind) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         String selectorKindName = edit.getSelectorKindName();
         SelectorKind duplicateSelectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
@@ -146,7 +146,7 @@ public class EditSelectorKindCommand
 
     @Override
     public void doUpdate(SelectorKind selectorKind) {
-        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = Session.getModelController(SelectorControl.class);
         var partyPK = getPartyPK();
         SelectorKindDetailValue selectorKindDetailValue = selectorControl.getSelectorKindDetailValueForUpdate(selectorKind);
         SelectorKindDescription selectorKindDescription = selectorControl.getSelectorKindDescriptionForUpdate(selectorKind, getPreferredLanguage());

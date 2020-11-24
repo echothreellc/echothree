@@ -96,7 +96,7 @@ public class EditCancellationPolicyTranslationCommand
     
     @Override
     public CancellationPolicyTranslation getEntity(EditCancellationPolicyTranslationResult result) {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicyTranslation cancellationPolicyTranslation = null;
         String cancellationKindName = spec.getCancellationKindName();
         
@@ -107,7 +107,7 @@ public class EditCancellationPolicyTranslationCommand
             CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
             if(cancellationPolicy != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -141,7 +141,7 @@ public class EditCancellationPolicyTranslationCommand
 
     @Override
     public void fillInResult(EditCancellationPolicyTranslationResult result, CancellationPolicyTranslation cancellationPolicyTranslation) {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
 
         result.setCancellationPolicyTranslation(cancellationPolicyControl.getCancellationPolicyTranslationTransfer(getUserVisit(), cancellationPolicyTranslation));
     }
@@ -171,7 +171,7 @@ public class EditCancellationPolicyTranslationCommand
     
     @Override
     public void doUpdate(CancellationPolicyTranslation cancellationPolicyTranslation) {
-        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicyTranslationValue cancellationPolicyTranslationValue = cancellationPolicyControl.getCancellationPolicyTranslationValue(cancellationPolicyTranslation);
         
         cancellationPolicyTranslationValue.setDescription(edit.getDescription());

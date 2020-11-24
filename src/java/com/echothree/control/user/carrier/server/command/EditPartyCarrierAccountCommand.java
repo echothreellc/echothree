@@ -89,13 +89,13 @@ public class EditPartyCarrierAccountCommand
 
     @Override
     public PartyCarrierAccount getEntity(EditPartyCarrierAccountResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         PartyCarrierAccount partyCarrierAccount = null;
         String partyName = spec.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+            var carrierControl = Session.getModelController(CarrierControl.class);
             String carrierName = spec.getCarrierName();
             Carrier carrier = carrierControl.getCarrierByName(carrierName);
 
@@ -130,7 +130,7 @@ public class EditPartyCarrierAccountCommand
 
     @Override
     public void fillInResult(EditPartyCarrierAccountResult result, PartyCarrierAccount partyCarrierAccount) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
 
         result.setPartyCarrierAccount(carrierControl.getPartyCarrierAccountTransfer(getUserVisit(), partyCarrierAccount));
     }
@@ -145,7 +145,7 @@ public class EditPartyCarrierAccountCommand
 
     @Override
     public void doUpdate(PartyCarrierAccount partyCarrierAccount) {
-        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = Session.getModelController(CarrierControl.class);
         PartyCarrierAccountDetailValue partyCarrierAccountDetailValue = carrierControl.getPartyCarrierAccountDetailValueForUpdate(partyCarrierAccount);
 
         partyCarrierAccountDetailValue.setAccount(edit.getAccount());

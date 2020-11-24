@@ -36,7 +36,7 @@ public class UserSessionTransferCache
     public UserSessionTransferCache(UserVisit userVisit, UserControl userControl) {
         super(userVisit, userControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public UserSessionTransfer getUserSessionTransfer(UserSession userSession) {

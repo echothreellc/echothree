@@ -40,7 +40,7 @@ public class SequenceEncoderTypeLogic
     }
 
     public SequenceEncoderType getSequenceEncoderTypeByName(final ExecutionErrorAccumulator eea, final String sequenceEncoderTypeName) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeByName(sequenceEncoderTypeName);
 
         if(sequenceEncoderType == null) {

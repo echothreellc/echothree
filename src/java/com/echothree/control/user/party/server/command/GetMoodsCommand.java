@@ -46,7 +46,7 @@ public class GetMoodsCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         GetMoodsResult result = PartyResultFactory.getGetMoodsResult();
         
         result.setMoods(partyControl.getMoodTransfers(getUserVisit()));

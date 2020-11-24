@@ -65,7 +65,7 @@ public class GetItemPurchasingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         GetItemPurchasingCategoryResult result = VendorResultFactory.getGetItemPurchasingCategoryResult();
         String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
         ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);

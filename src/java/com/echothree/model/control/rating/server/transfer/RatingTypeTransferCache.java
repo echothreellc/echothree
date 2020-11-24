@@ -31,8 +31,8 @@ import com.echothree.util.server.persistence.Session;
 public class RatingTypeTransferCache
         extends BaseRatingTransferCache<RatingType, RatingTypeTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of RatingTypeTransferCache */
     public RatingTypeTransferCache(UserVisit userVisit, RatingControl ratingControl) {

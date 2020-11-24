@@ -50,20 +50,20 @@ public class TransactionLogic {
     }
     
     public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName, final Long postingTime, final BasePK createdBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         return createTransaction(session, groupParty, accountingControl.getTransactionTypeByName(transactionTypeName), postingTime, createdBy);
     }
     
     public Transaction createTransaction(final Session session, final Party groupParty, final TransactionType transactionType, final Long postingTime, final BasePK createdBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         return accountingControl.createTransaction(groupParty, transactionType, postingTime == null? session.START_TIME_LONG: postingTime, createdBy);
     }
     
     public TransactionGlEntry createTransactionGlEntryUsingNames(final Transaction transaction, final Party groupParty, final String transactionGlAccountCategoryName,
             final GlAccount glAccount, final Currency originalCurrency, final Long originalAmount, final BasePK createdBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         TransactionDetail transactionDetail = transaction.getLastDetail();
         
         return createTransactionGlEntry(transaction, groupParty == null? transactionDetail.getGroupParty(): groupParty,
@@ -109,7 +109,7 @@ public class TransactionLogic {
     
     public TransactionGlEntry createTransactionGlEntry(final Transaction transaction, final Party groupParty, final TransactionGlAccountCategory transactionGlAccountCategory,
             GlAccount glAccount, final Currency originalCurrency, final Long originalAmount, final BasePK createdBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         glAccount = getGlAccount(accountingControl, transactionGlAccountCategory, glAccount);
         
@@ -121,7 +121,7 @@ public class TransactionLogic {
     
     public TransactionEntityRole createTransactionEntityRoleUsingNames(final Transaction transaction, final String transactionEntityRoleTypeName, final BasePK pk,
             final BasePK createdBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transaction.getLastDetail().getTransactionType(),
                 transactionEntityRoleTypeName);
         
@@ -130,8 +130,8 @@ public class TransactionLogic {
     
     public TransactionEntityRole createTransactionEntityRole(final Transaction transaction, final TransactionEntityRoleType transactionEntityRoleType, final BasePK pk,
             final BasePK createdBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(pk);
         
         if(!transactionEntityRoleType.getLastDetail().getEntityType().equals(entityInstance.getEntityType())) {
@@ -142,7 +142,7 @@ public class TransactionLogic {
     }
     
     public void finishTransaction(final Transaction transaction) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         
         accountingControl.removeTransactionStatusByTransaction(transaction);
         
@@ -150,8 +150,8 @@ public class TransactionLogic {
     }
     
     public void testTransaction(final Session session, final BasePK testedBy) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         Party companyParty = partyControl.getDefaultPartyCompany().getParty();
         Party divisionParty = partyControl.getDefaultPartyDivision(companyParty).getParty();
         Party departmentParty = partyControl.getDefaultPartyDepartment(divisionParty).getParty();

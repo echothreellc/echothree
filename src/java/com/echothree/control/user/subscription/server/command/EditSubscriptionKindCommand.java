@@ -89,7 +89,7 @@ public class EditSubscriptionKindCommand
 
     @Override
     public SubscriptionKind getEntity(EditSubscriptionKindResult result) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKind subscriptionKind = null;
         String subscriptionKindName = spec.getSubscriptionKindName();
 
@@ -113,14 +113,14 @@ public class EditSubscriptionKindCommand
 
     @Override
     public void fillInResult(EditSubscriptionKindResult result, SubscriptionKind subscriptionKind) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
 
         result.setSubscriptionKind(subscriptionControl.getSubscriptionKindTransfer(getUserVisit(), subscriptionKind));
     }
 
     @Override
     public void doLock(SubscriptionKindEdit edit, SubscriptionKind subscriptionKind) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         SubscriptionKindDescription subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescription(subscriptionKind, getPreferredLanguage());
         SubscriptionKindDetail subscriptionKindDetail = subscriptionKind.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditSubscriptionKindCommand
 
     @Override
     public void canUpdate(SubscriptionKind subscriptionKind) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         String subscriptionKindName = edit.getSubscriptionKindName();
         SubscriptionKind duplicateSubscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
 
@@ -146,7 +146,7 @@ public class EditSubscriptionKindCommand
 
     @Override
     public void doUpdate(SubscriptionKind subscriptionKind) {
-        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
         var partyPK = getPartyPK();
         SubscriptionKindDetailValue subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueForUpdate(subscriptionKind);
         SubscriptionKindDescription subscriptionKindDescription = subscriptionControl.getSubscriptionKindDescriptionForUpdate(subscriptionKind, getPreferredLanguage());

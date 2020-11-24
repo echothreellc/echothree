@@ -130,8 +130,8 @@ public class SalesOrderLineLogic
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var salesOrderShipmentGroupLogic = SalesOrderShipmentGroupLogic.getInstance();
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            var salesOrderControl = (SalesOrderControl)Session.getModelController(SalesOrderControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
+            var salesOrderControl = Session.getModelController(SalesOrderControl.class);
             var orderDetail = order.getLastDetail();
             var itemDetail = item.getLastDetail();
             var itemDeliveryType = itemDetail.getItemDeliveryType();
@@ -178,7 +178,7 @@ public class SalesOrderLineLogic
 
                 // Check InventoryCondition.
                 if(inventoryCondition == null) {
-                    var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                    var inventoryControl = Session.getModelController(InventoryControl.class);
 
                     inventoryCondition = inventoryControl.getDefaultInventoryCondition();
 
@@ -210,7 +210,7 @@ public class SalesOrderLineLogic
 
                 // Verify unitAmount.
                 if(offerItem != null) {
-                    var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                    var offerItemControl = Session.getModelController(OfferItemControl.class);
                     var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency);
 
                     if(offerItemPrice == null) {

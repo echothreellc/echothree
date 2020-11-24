@@ -74,7 +74,7 @@ public class CreateBatchTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = Session.getModelController(BatchControl.class);
         String batchTypeName = form.getBatchTypeName();
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
 
@@ -87,12 +87,12 @@ public class CreateBatchTypeCommand
             }
 
             if(parentBatchTypeName == null || parentBatchType != null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 String batchSequenceTypeName = form.getBatchSequenceTypeName();
                 SequenceType batchSequenceType = sequenceControl.getSequenceTypeByName(batchSequenceTypeName);
 
                 if(batchSequenceTypeName == null || batchSequenceType != null) {
-                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = Session.getModelController(WorkflowControl.class);
                     String batchWorkflowName = form.getBatchWorkflowName();
                     Workflow batchWorkflow = batchWorkflowName == null ? null : workflowControl.getWorkflowByName(batchWorkflowName);
 

@@ -67,12 +67,12 @@ public class CreateUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         String useTypeName = form.getUseTypeName();
         UseType useType = useTypeControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

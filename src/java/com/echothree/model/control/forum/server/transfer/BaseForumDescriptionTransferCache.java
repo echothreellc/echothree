@@ -32,7 +32,7 @@ public abstract class BaseForumDescriptionTransferCache<K extends BaseEntity, V 
     protected BaseForumDescriptionTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

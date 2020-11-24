@@ -46,7 +46,7 @@ public class GetWarehousesCommand
 
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         GetWarehousesResult result = WarehouseResultFactory.getGetWarehousesResult();
         
         result.setWarehouses(warehouseControl.getWarehouseTransfers(getUserVisit()));

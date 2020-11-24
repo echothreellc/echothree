@@ -59,7 +59,7 @@ public class GetCommentStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         GetCommentStatusChoicesResult result = CommentResultFactory.getGetCommentStatusChoicesResult();
-        var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+        var commentControl = Session.getModelController(CommentControl.class);
         String commentTypeName = form.getCommentTypeName();
         String commentName = form.getCommentName();
         int parameterCount = (commentTypeName == null? 0: 1) + (commentName == null? 0: 1);

@@ -90,13 +90,13 @@ public class EditLotAliasCommand
     
     @Override
     public LotAlias getEntity(EditLotAliasResult result) {
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
         LotAlias lotAlias = null;
         String lotName = spec.getLotName();
         Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
-            var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+            var lotAliasControl = Session.getModelController(LotAliasControl.class);
             String lotAliasTypeName = spec.getLotAliasTypeName();
 
             lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
@@ -130,7 +130,7 @@ public class EditLotAliasCommand
 
     @Override
     public void fillInResult(EditLotAliasResult result, LotAlias lotAlias) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
 
         result.setLotAlias(lotAliasControl.getLotAliasTransfer(getUserVisit(), lotAlias));
     }
@@ -142,7 +142,7 @@ public class EditLotAliasCommand
 
     @Override
     public void canUpdate(LotAlias lotAlias) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         String alias = edit.getAlias();
         LotAlias duplicateLotAlias = lotAliasControl.getLotAliasByAlias(lotAliasType, alias);
 
@@ -155,7 +155,7 @@ public class EditLotAliasCommand
 
     @Override
     public void doUpdate(LotAlias lotAlias) {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         LotAliasValue lotAliasValue = lotAliasControl.getLotAliasValue(lotAlias);
 
         lotAliasValue.setAlias(edit.getAlias());

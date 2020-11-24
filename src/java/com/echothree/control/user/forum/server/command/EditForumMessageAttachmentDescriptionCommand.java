@@ -75,7 +75,7 @@ public class EditForumMessageAttachmentDescriptionCommand
 
     @Override
     public ForumMessageAttachmentDescription getEntity(EditForumMessageAttachmentDescriptionResult result) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageAttachmentDescription forumMessageAttachmentDescription = null;
         String forumMessageName = spec.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
@@ -85,7 +85,7 @@ public class EditForumMessageAttachmentDescriptionCommand
             ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
             if(forumMessageAttachment != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -120,7 +120,7 @@ public class EditForumMessageAttachmentDescriptionCommand
 
     @Override
     public void fillInResult(EditForumMessageAttachmentDescriptionResult result, ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
 
         result.setForumMessageAttachmentDescription(forumControl.getForumMessageAttachmentDescriptionTransfer(getUserVisit(), forumMessageAttachmentDescription));
     }
@@ -132,7 +132,7 @@ public class EditForumMessageAttachmentDescriptionCommand
 
     @Override
     public void doUpdate(ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMessageAttachmentDescriptionValue forumMessageAttachmentDescriptionValue = forumControl.getForumMessageAttachmentDescriptionValue(forumMessageAttachmentDescription);
 
         forumMessageAttachmentDescriptionValue.setDescription(edit.getDescription());

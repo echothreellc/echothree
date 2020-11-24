@@ -68,7 +68,7 @@ public class GetContentCategoryCommand
         ContentCategory contentCategory = null;
 
         if(parameterCount == 1) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -127,7 +127,7 @@ public class GetContentCategoryCommand
         GetContentCategoryResult result = ContentResultFactory.getGetContentCategoryResult();
 
         if (contentCategory != null) {
-            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = Session.getModelController(ContentControl.class);
 
             result.setContentCategory(contentControl.getContentCategoryTransfer(getUserVisit(), contentCategory));
         }

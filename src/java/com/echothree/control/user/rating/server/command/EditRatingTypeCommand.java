@@ -84,7 +84,7 @@ public class EditRatingTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = Session.getModelController(RatingControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     String ratingTypeName = spec.getRatingTypeName();
@@ -127,7 +127,7 @@ public class EditRatingTypeCommand
                             Sequence ratingSequence = null;
                             
                             if(ratingSequenceName != null) {
-                                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                                var sequenceControl = Session.getModelController(SequenceControl.class);
                                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
                                 
                                 if(sequenceType != null) {

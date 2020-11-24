@@ -74,7 +74,7 @@ public class CreatePicklistTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = Session.getModelController(PicklistControl.class);
         String picklistTypeName = form.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
@@ -87,12 +87,12 @@ public class CreatePicklistTypeCommand
             }
 
             if(parentPicklistTypeName == null || parentPicklistType != null) {
-                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = Session.getModelController(SequenceControl.class);
                 String picklistSequenceTypeName = form.getPicklistSequenceTypeName();
                 SequenceType picklistSequenceType = sequenceControl.getSequenceTypeByName(picklistSequenceTypeName);
 
                 if(picklistSequenceTypeName == null || picklistSequenceType != null) {
-                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = Session.getModelController(WorkflowControl.class);
                     String picklistWorkflowName = form.getPicklistWorkflowName();
                     Workflow picklistWorkflow = picklistWorkflowName == null ? null : workflowControl.getWorkflowByName(picklistWorkflowName);
 

@@ -73,7 +73,7 @@ public class EditUnitOfMeasureTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         EditUnitOfMeasureTypeResult result = UomResultFactory.getEditUnitOfMeasureTypeResult();
         String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);

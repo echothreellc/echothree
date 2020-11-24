@@ -77,8 +77,8 @@ public class SymbolPositionObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return accountingControl.getBestSymbolPositionDescription(symbolPosition, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

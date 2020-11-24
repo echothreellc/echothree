@@ -26,8 +26,8 @@ import com.echothree.util.server.persistence.Session;
 public class PaymentProcessorActionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorAction, PaymentProcessorActionTransfer> {
 
-    PaymentProcessorControl paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
-    PaymentProcessorTypeActionControl paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl)Session.getModelController(PaymentProcessorTypeActionControl.class);
+    PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
+    PaymentProcessorTypeActionControl paymentProcessorTypeActionControl = Session.getModelController(PaymentProcessorTypeActionControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
     public PaymentProcessorActionTransferCache(UserVisit userVisit) {

@@ -76,7 +76,7 @@ public class GetWorkflowEntranceStepsCommand
                 workflowName, workflowEntranceName);
 
         if(!this.hasExecutionErrors()) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             workflowEntranceSteps = workflowControl.getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
         }
@@ -89,7 +89,7 @@ public class GetWorkflowEntranceStepsCommand
         var result = WorkflowResultFactory.getGetWorkflowEntranceStepsResult();
 
         if(entities != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
             var userVisit = getUserVisit();
 
             result.setWorkflowEntrance(workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrance));

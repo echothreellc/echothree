@@ -68,13 +68,13 @@ public class GetHarmonizedTariffScheduleCodeCommand
     
     @Override
     protected BaseResult execute() {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = Session.getModelController(GeoControl.class);
         GetHarmonizedTariffScheduleCodeResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeResult();
         String countryName = form.getCountryName();
         GeoCode geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             String harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
             HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
             

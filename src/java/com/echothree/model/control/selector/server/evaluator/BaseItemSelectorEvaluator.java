@@ -35,7 +35,7 @@ import com.echothree.util.server.persistence.Session;
 public class BaseItemSelectorEvaluator
         extends BaseSelectorEvaluator {
     
-    protected ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+    protected ItemControl itemControl = Session.getModelController(ItemControl.class);
     
     private Item item = null;
     

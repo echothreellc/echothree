@@ -184,7 +184,7 @@ public class OrderControl
     }
 
     private Order getOrderByNameUsingNames(String orderTypeName, String orderName, EntityPermission entityPermission) {
-        var orderTypeControl = (OrderTypeControl)Session.getModelController(OrderTypeControl.class);
+        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
 
         OrderType orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
@@ -267,10 +267,10 @@ public class OrderControl
     }
     
     public void deleteOrder(Order order, BasePK deletedBy) {
-        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
-        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
-        var orderAdjustmentControl = (OrderAdjustmentControl)Session.getModelController(OrderAdjustmentControl.class);
-        var orderLineControl = (OrderLineControl)Session.getModelController(OrderLineControl.class);
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
+        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
+        var orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
+        var orderLineControl = Session.getModelController(OrderLineControl.class);
 
         removeOrderStatusByOrder(order);
         orderTimeControl.deleteOrderTimesByOrder(order, deletedBy);
@@ -282,7 +282,7 @@ public class OrderControl
         OrderDetail orderDetail = order.getLastDetailForUpdate();
         String orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
         if(orderTypeName.equals(OrderTypes.WISHLIST.name())) {
-            var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+            var wishlistControl = Session.getModelController(WishlistControl.class);
             
             wishlistControl.deleteWishlistByOrder(order, deletedBy);
         }
@@ -301,7 +301,7 @@ public class OrderControl
     }
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = Session.getModelController(WishlistControl.class);
         List<Wishlist> wishlists = wishlistControl.getWishlistsByWishlistTypeForUpdate(wishlistType);
         
         wishlists.stream().forEach((wishlist) -> {

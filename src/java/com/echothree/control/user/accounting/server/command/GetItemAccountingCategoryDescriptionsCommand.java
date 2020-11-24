@@ -64,7 +64,7 @@ public class GetItemAccountingCategoryDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = Session.getModelController(AccountingControl.class);
         GetItemAccountingCategoryDescriptionsResult result = AccountingResultFactory.getGetItemAccountingCategoryDescriptionsResult();
         String itemAccountingCategoryName = form.getItemAccountingCategoryName();
         ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);

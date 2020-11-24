@@ -31,7 +31,7 @@ public class CommandResultWithIdObject
     private EntityInstance entityInstance; // Optional, use getEntityInstance()
     
     public void setEntityInstanceFromEntityRef(String entityRef) {
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
 
         entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
     }
@@ -46,7 +46,7 @@ public class CommandResultWithIdObject
         String id = null;
         
         if(entityInstance != null) {
-            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = Session.getModelController(CoreControl.class);
 
             entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
 

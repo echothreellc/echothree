@@ -37,12 +37,12 @@ import java.util.Set;
 public class LotTransferCache
         extends BaseInventoryTransferCache<Lot, LotTransfer> {
 
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    LotAliasControl lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
-    LotTimeControl lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
+    LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     boolean includeLotAliases;
     boolean includeLotTimes;

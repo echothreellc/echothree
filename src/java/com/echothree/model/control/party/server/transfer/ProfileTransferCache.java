@@ -44,8 +44,8 @@ public class ProfileTransferCache
     public ProfileTransferCache(UserVisit userVisit, PartyControl partyControl) {
         super(userVisit, partyControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        iconControl = (IconControl)Session.getModelController(IconControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
+        iconControl = Session.getModelController(IconControl.class);
     }
     
     public ProfileTransfer getProfileTransfer(Profile profile) {

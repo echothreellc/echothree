@@ -54,9 +54,9 @@ public class CommentTransferCache
     public CommentTransferCache(UserVisit userVisit, CommentControl commentControl) {
         super(userVisit, commentControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
+        workflowControl = Session.getModelController(WorkflowControl.class);
         
         Set<String> options = session.getOptions();
         if(options != null) {

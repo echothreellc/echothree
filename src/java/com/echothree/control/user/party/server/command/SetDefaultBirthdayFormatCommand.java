@@ -61,7 +61,7 @@ public class SetDefaultBirthdayFormatCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String birthdayFormatName = form.getBirthdayFormatName();
         BirthdayFormatDetailValue birthdayFormatDetailValue = partyControl.getBirthdayFormatDetailValueByNameForUpdate(birthdayFormatName);
         

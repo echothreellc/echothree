@@ -92,19 +92,19 @@ public class EditItemTaxClassificationCommand
 
     @Override
     public ItemTaxClassification getEntity(EditItemTaxClassificationResult result) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         ItemTaxClassification itemTaxClassification = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = Session.getModelController(GeoControl.class);
             String countryName = spec.getCountryName();
             
             countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+                var taxControl = Session.getModelController(TaxControl.class);
                 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     itemTaxClassification = taxControl.getItemTaxClassification(item, countryGeoCode);
@@ -132,7 +132,7 @@ public class EditItemTaxClassificationCommand
 
     @Override
     public void fillInResult(EditItemTaxClassificationResult result, ItemTaxClassification itemTaxClassification) {
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
 
         result.setItemTaxClassification(taxControl.getItemTaxClassificationTransfer(getUserVisit(), itemTaxClassification));
     }
@@ -148,7 +148,7 @@ public class EditItemTaxClassificationCommand
     
     @Override
     public void canUpdate(ItemTaxClassification itemTaxClassification) {
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
         String harmonizedTariffScheduleCodeName = edit.getTaxClassificationName();
         
         harmonizedTariffScheduleCode = taxControl.getTaxClassificationByName(countryGeoCode, harmonizedTariffScheduleCodeName);
@@ -160,7 +160,7 @@ public class EditItemTaxClassificationCommand
 
     @Override
     public void doUpdate(ItemTaxClassification itemTaxClassification) {
-        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = Session.getModelController(TaxControl.class);
         ItemTaxClassificationDetailValue itemTaxClassificationDetailValue = taxControl.getItemTaxClassificationDetailValueForUpdate(itemTaxClassification);
         
         itemTaxClassificationDetailValue.setTaxClassificationPK(harmonizedTariffScheduleCode.getPrimaryKey());

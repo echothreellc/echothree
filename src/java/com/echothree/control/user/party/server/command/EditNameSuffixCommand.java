@@ -65,7 +65,7 @@ public class EditNameSuffixCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         EditNameSuffixResult result = PartyResultFactory.getEditNameSuffixResult();
         
         if(editMode.equals(EditMode.LOCK)) {

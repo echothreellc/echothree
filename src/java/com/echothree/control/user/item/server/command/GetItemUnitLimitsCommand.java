@@ -52,7 +52,7 @@ public class GetItemUnitLimitsCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemUnitLimitsResult result = ItemResultFactory.getGetItemUnitLimitsResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

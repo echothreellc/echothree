@@ -60,7 +60,7 @@ public class GetSearchDefaultOperatorsCommand
     
     @Override
     protected BaseResult execute() {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         GetSearchDefaultOperatorsResult result = SearchResultFactory.getGetSearchDefaultOperatorsResult();
         
         result.setSearchDefaultOperators(searchControl.getSearchDefaultOperatorTransfers(getUserVisit()));

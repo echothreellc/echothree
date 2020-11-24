@@ -32,7 +32,7 @@ public abstract class BaseInvoiceDescriptionTransferCache<K extends BaseEntity, 
     protected BaseInvoiceDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
         super(userVisit, invoiceControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

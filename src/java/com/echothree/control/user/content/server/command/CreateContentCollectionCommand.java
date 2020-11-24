@@ -76,12 +76,12 @@ public class CreateContentCollectionCommand
     
     @Override
     protected BaseResult execute() {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
         if(contentCollection == null) {
-            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = Session.getModelController(OfferControl.class);
             String defaultOfferName = form.getDefaultOfferName();
             String defaultUseName = form.getDefaultUseName();
             String defaultSourceName = form.getDefaultSourceName();
@@ -91,11 +91,11 @@ public class CreateContentCollectionCommand
                 Offer defaultOffer = offerControl.getOfferByName(defaultOfferName);
 
                 if(defaultOffer != null) {
-                    var useControl = (UseControl)Session.getModelController(UseControl.class);
+                    var useControl = Session.getModelController(UseControl.class);
                     Use defaultUse = useControl.getUseByName(defaultUseName);
 
                     if(defaultUse != null) {
-                        var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                        var offerUseControl = Session.getModelController(OfferUseControl.class);
                         defaultOfferUse = offerUseControl.getOfferUse(defaultOffer, defaultUse);
 
                         if(defaultOfferUse == null) {
@@ -108,7 +108,7 @@ public class CreateContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultOfferName.name(), defaultOfferName);
                 }
             } else if(defaultOfferName == null && defaultUseName == null && defaultSourceName != null) {
-                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                var sourceControl = Session.getModelController(SourceControl.class);
                 Source source = sourceControl.getSourceByName(defaultSourceName);
 
                 if(source != null) {
@@ -117,7 +117,7 @@ public class CreateContentCollectionCommand
                     addExecutionError(ExecutionErrors.UnknownDefaultSourceName.name(), defaultSourceName);
                 }
             } else {
-                var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                var sourceControl = Session.getModelController(SourceControl.class);
                 // If all three parameters are null, then try to get the default Source and use its OfferUse.
                 Source source = sourceControl.getDefaultSource();
 

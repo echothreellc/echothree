@@ -70,7 +70,7 @@ public class EditUnitOfMeasureTypeVolumeCommand
     
     @Override
     protected BaseResult execute() {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = Session.getModelController(UomControl.class);
         EditUnitOfMeasureTypeVolumeResult result = UomResultFactory.getEditUnitOfMeasureTypeVolumeResult();
         String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);

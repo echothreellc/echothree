@@ -62,7 +62,7 @@ public class GetLotAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        var lotAliasControl = Session.getModelController(LotAliasControl.class);
         GetLotAliasTypeChoicesResult result = InventoryResultFactory.getGetLotAliasTypeChoicesResult();
         String defaultLotAliasTypeChoice = form.getDefaultLotAliasTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

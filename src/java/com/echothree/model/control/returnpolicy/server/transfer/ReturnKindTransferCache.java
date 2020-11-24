@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class ReturnKindTransferCache
         extends BaseReturnPolicyTransferCache<ReturnKind, ReturnKindTransfer> {
     
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ReturnKindTransferCache */
     public ReturnKindTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {

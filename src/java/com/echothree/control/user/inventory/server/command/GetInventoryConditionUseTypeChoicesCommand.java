@@ -48,7 +48,7 @@ public class GetInventoryConditionUseTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         GetInventoryConditionUseTypeChoicesResult result = InventoryResultFactory.getGetInventoryConditionUseTypeChoicesResult();
         String defaultInventoryConditionUseTypeChoice = form.getDefaultInventoryConditionUseTypeChoice();
         

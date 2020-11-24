@@ -40,8 +40,8 @@ import java.util.Set;
 public class ForumTransferCache
         extends BaseForumTransferCache<Forum, ForumTransfer> {
     
-    IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    IconControl iconControl = Session.getModelController(IconControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     boolean includeForumGroups;
     boolean includeForumThreads;
     boolean includeFutureForumThreads;

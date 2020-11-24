@@ -38,8 +38,8 @@ public class MessageBlobTransferCache
     public MessageBlobTransferCache(UserVisit userVisit, MessageControl messageControl) {
         super(userVisit, messageControl);
         
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        coreControl = Session.getModelController(CoreControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
     public MessageBlobTransfer getMessageBlobTransfer(MessageBlob messageBlob) {

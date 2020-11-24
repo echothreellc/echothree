@@ -67,8 +67,8 @@ public class BasicAnalyzer
     public BasicAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
         super(AnalyzerWrapper.PER_FIELD_REUSE_STRATEGY);
         
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var tagControl = Session.getModelController(TagControl.class);
         
         init(eea, language, entityType, coreControl.getEntityAttributesByEntityType(entityType), tagControl.getTagScopesByEntityType(entityType));
     }
@@ -154,7 +154,7 @@ public class BasicAnalyzer
     }
     
     protected Map<String, Analyzer> getWorkflowFieldAnalyzers(final EntityType entityType, final Map<String, Analyzer> fieldAnalyzers) {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
 
         workflowControl.getWorkflowsByEntityType(entityType).stream().map((workflow) -> workflow.getLastDetail().getWorkflowName()).map((fieldName) -> {
             if(IndexerDebugFlags.LogBaseAnalyzer) {

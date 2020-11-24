@@ -52,13 +52,13 @@ public class GetWorkRequirementTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         GetWorkRequirementTypesResult result = WorkRequirementResultFactory.getGetWorkRequirementTypesResult();
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortType));

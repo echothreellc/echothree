@@ -37,7 +37,7 @@ import org.apache.lucene.util.BytesRef;
 public class ContentCategoryIndexer
         extends BaseIndexer<ContentCategory> {
     
-    ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentCategoryIndexer */
     public ContentCategoryIndexer(final ExecutionErrorAccumulator eea, final Index index) {

@@ -69,7 +69,7 @@ public class GetQueuedLettersCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         GetQueuedLettersResult result = LetterResultFactory.getGetQueuedLettersResult();
         String chainKindName = form.getChainKindName();
         String chainTypeName = form.getChainTypeName();
@@ -83,7 +83,7 @@ public class GetQueuedLettersCommand
                 ChainType chainType = chainTypeName == null ? null : chainControl.getChainTypeByName(chainKind, chainTypeName);
 
                 if(chainTypeName == null || chainType != null) {
-                    var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                    var letterControl = Session.getModelController(LetterControl.class);
                     Letter letter = letterName == null ? null : letterControl.getLetterByName(chainType, letterName);
 
                     if(letterName == null || letter != null) {

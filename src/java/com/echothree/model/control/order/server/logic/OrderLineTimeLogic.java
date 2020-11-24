@@ -55,7 +55,7 @@ public class OrderLineTimeLogic
     }
 
     public OrderTimeType getOrderTimeTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderTimeTypeName) {
-        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         OrderTimeType orderTimeType = orderTimeControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
 
         if(orderTimeType == null) {
@@ -68,7 +68,7 @@ public class OrderLineTimeLogic
     }
 
     public void createOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time, final BasePK partyPK) {
-        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
@@ -85,7 +85,7 @@ public class OrderLineTimeLogic
     }
 
     public void updateOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time, final BasePK partyPK) {
-        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
@@ -113,7 +113,7 @@ public class OrderLineTimeLogic
 
     public void createOrUpdateOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final Long time,
             final BasePK partyPK) {
-        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
@@ -132,7 +132,7 @@ public class OrderLineTimeLogic
     }
 
     private OrderLineTime getOrderLineTimeEntity(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName) {
-        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();
@@ -169,7 +169,7 @@ public class OrderLineTimeLogic
     }
 
     public void deleteOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName, final BasePK deletedBy) {
-        var orderTimeControl = (OrderTimeControl)Session.getModelController(OrderTimeControl.class);
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         OrderDetail orderDetail = orderLineDetail.getOrder().getLastDetail();
         OrderType orderType = orderDetail.getOrderType();

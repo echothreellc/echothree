@@ -42,10 +42,10 @@ import com.echothree.util.server.string.UnitOfMeasureUtils;
 public class LeaveTransferCache
         extends BaseEmployeeTransferCache<Leave, LeaveTransfer> {
     
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     UnitOfMeasureKind timeUnitOfMeasureKind;
     UnitOfMeasureUtils unitOfMeasureUtils;

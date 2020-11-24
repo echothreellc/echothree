@@ -116,7 +116,7 @@ public class EditProfileCommand
 
     @Override
     public Profile getEntity(EditProfileResult result) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         Profile profile = null;
         String partyTypeName = getPartyTypeName();
         String partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? null : spec.getPartyName();
@@ -154,7 +154,7 @@ public class EditProfileCommand
 
     @Override
     public void fillInResult(EditProfileResult result, Profile profile) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
 
         result.setParty(partyControl.getPartyTransfer(getUserVisit(), profile.getParty()));
     }
@@ -190,7 +190,7 @@ public class EditProfileCommand
 
     @Override
     protected void canUpdate(Profile profile) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         MimeTypeLogic mimeTypeLogic = MimeTypeLogic.getInstance();
         String bioMimeTypeName = edit.getBioMimeTypeName();
         String bio = edit.getBio();
@@ -209,7 +209,7 @@ public class EditProfileCommand
         Profile duplicateProfile = nickname == null ? null : partyControl.getProfileByNickname(nickname);
 
         if(duplicateProfile == null || duplicateProfile.getPrimaryKey().equals(profile.getPrimaryKey())) {
-            var iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = Session.getModelController(IconControl.class);
             String iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
@@ -251,7 +251,7 @@ public class EditProfileCommand
 
     @Override
     public void doUpdate(Profile profile) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         ProfileValue profileValue = partyControl.getProfileValue(profile);
         String nickname = edit.getNickname();
         String birthday = edit.getBirthday();

@@ -1942,7 +1942,7 @@ public class VendorControl
     // --------------------------------------------------------------------------------
 
     public List<VendorResultTransfer> getVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var vendorResultTransfers = new ArrayList<VendorResultTransfer>();
         var includeVendor = false;
 
@@ -1952,7 +1952,7 @@ public class VendorControl
         }
 
         try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
-            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = Session.getModelController(VendorControl.class);
 
             while(rs.next()) {
                 var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
@@ -1968,7 +1968,7 @@ public class VendorControl
     }
 
     public List<VendorResultObject> getVendorResultObjects(UserVisitSearch userVisitSearch) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = Session.getModelController(SearchControl.class);
         var vendorResultObjects = new ArrayList<VendorResultObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {

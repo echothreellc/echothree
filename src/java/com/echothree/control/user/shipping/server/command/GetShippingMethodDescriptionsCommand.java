@@ -64,7 +64,7 @@ public class GetShippingMethodDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = Session.getModelController(ShippingControl.class);
         GetShippingMethodDescriptionsResult result = ShippingResultFactory.getGetShippingMethodDescriptionsResult();
         String shippingMethodName = form.getShippingMethodName();
         ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);

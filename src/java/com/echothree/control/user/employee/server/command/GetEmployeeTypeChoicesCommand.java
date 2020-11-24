@@ -62,7 +62,7 @@ public class GetEmployeeTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetEmployeeTypeChoicesResult result = EmployeeResultFactory.getGetEmployeeTypeChoicesResult();
         String defaultEmployeeTypeChoice = form.getDefaultEmployeeTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

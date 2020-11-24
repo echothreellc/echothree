@@ -73,7 +73,7 @@ public class EditForumMimeTypeCommand
 
     @Override
     public ForumMimeType getEntity(EditForumMimeTypeResult result) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMimeType forumMimeType = null;
         String forumName = spec.getForumName();
         Forum forum = forumControl.getForumByName(forumName);
@@ -110,7 +110,7 @@ public class EditForumMimeTypeCommand
 
     @Override
     public void fillInResult(EditForumMimeTypeResult result, ForumMimeType forumMimeType) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
 
         result.setForumMimeType(forumControl.getForumMimeTypeTransfer(getUserVisit(), forumMimeType));
     }
@@ -123,7 +123,7 @@ public class EditForumMimeTypeCommand
 
     @Override
     public void doUpdate(ForumMimeType forumMimeType) {
-        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = Session.getModelController(ForumControl.class);
         ForumMimeTypeValue forumMimeTypeValue = forumControl.getForumMimeTypeValue(forumMimeType);
 
         forumMimeTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

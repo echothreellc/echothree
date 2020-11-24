@@ -92,7 +92,7 @@ public class EditServiceDescriptionCommand
         Service service = coreControl.getServiceByName(serviceName);
 
         if(service != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

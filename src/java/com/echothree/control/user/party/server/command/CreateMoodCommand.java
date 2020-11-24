@@ -57,12 +57,12 @@ public class CreateMoodCommand
 
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         String moodName = form.getMoodName();
         Mood mood = partyControl.getMoodByName(moodName);
 
         if(mood == null) {
-            var iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = Session.getModelController(IconControl.class);
             String iconName = form.getIconName();
             Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
             

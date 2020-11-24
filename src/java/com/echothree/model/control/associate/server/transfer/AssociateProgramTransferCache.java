@@ -30,7 +30,7 @@ import com.echothree.util.server.string.PercentUtils;
 public class AssociateProgramTransferCache
         extends BaseAssociateTransferCache<AssociateProgram, AssociateProgramTransfer> {
     
-    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of AssociateProgramTransferCache */
     public AssociateProgramTransferCache(UserVisit userVisit, AssociateControl associateControl) {

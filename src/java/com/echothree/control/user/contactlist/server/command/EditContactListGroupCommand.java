@@ -90,7 +90,7 @@ public class EditContactListGroupCommand
 
     @Override
     public ContactListGroup getEntity(EditContactListGroupResult result) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListGroup contactListGroup = null;
         String contactListGroupName = spec.getContactListGroupName();
 
@@ -114,14 +114,14 @@ public class EditContactListGroupCommand
 
     @Override
     public void fillInResult(EditContactListGroupResult result, ContactListGroup contactListGroup) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
 
         result.setContactListGroup(contactListControl.getContactListGroupTransfer(getUserVisit(), contactListGroup));
     }
 
     @Override
     public void doLock(ContactListGroupEdit edit, ContactListGroup contactListGroup) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         ContactListGroupDescription contactListGroupDescription = contactListControl.getContactListGroupDescription(contactListGroup, getPreferredLanguage());
         ContactListGroupDetail contactListGroupDetail = contactListGroup.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditContactListGroupCommand
 
     @Override
     public void canUpdate(ContactListGroup contactListGroup) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         String contactListGroupName = edit.getContactListGroupName();
         ContactListGroup duplicateContactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
@@ -147,7 +147,7 @@ public class EditContactListGroupCommand
 
     @Override
     public void doUpdate(ContactListGroup contactListGroup) {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         var partyPK = getPartyPK();
         ContactListGroupDetailValue contactListGroupDetailValue = contactListControl.getContactListGroupDetailValueForUpdate(contactListGroup);
         ContactListGroupDescription contactListGroupDescription = contactListControl.getContactListGroupDescriptionForUpdate(contactListGroup, getPreferredLanguage());

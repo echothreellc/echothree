@@ -65,7 +65,7 @@ public class GetItemDescriptionTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemDescriptionTypesResult result = ItemResultFactory.getGetItemDescriptionTypesResult();
         String parentItemDescriptionTypeName = form.getParentItemDescriptionTypeName();
         ItemDescriptionType parentItemDescriptionType = parentItemDescriptionTypeName == null? null: itemControl.getItemDescriptionTypeByName(parentItemDescriptionTypeName);

@@ -63,7 +63,7 @@ public class GetFilterKindsCommand
 
     @Override
     protected Collection<FilterKind> getEntities() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
 
         return filterControl.getFilterKinds();
     }
@@ -71,7 +71,7 @@ public class GetFilterKindsCommand
     @Override
     protected BaseResult getTransfers(Collection<FilterKind> entities) {
         GetFilterKindsResult result = FilterResultFactory.getGetFilterKindsResult();
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
 
         if(session.hasLimit(FilterKindFactory.class)) {
             result.setFilterKindCount(filterControl.countFilterKinds());

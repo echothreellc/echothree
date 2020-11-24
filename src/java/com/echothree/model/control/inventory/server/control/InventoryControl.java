@@ -1175,8 +1175,8 @@ public class InventoryControl
     }
     
     public void deleteInventoryCondition(final InventoryCondition inventoryCondition, final BasePK deletedBy) {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         
         deleteInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, deletedBy);

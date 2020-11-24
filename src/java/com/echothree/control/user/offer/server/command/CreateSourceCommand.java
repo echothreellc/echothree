@@ -68,23 +68,23 @@ public class CreateSourceCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getCreateSourceResult();
         Source source = null;
         var offerName = form.getOfferName();
         var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            var useControl = (UseControl)Session.getModelController(UseControl.class);
+            var useControl = Session.getModelController(UseControl.class);
             var useName = form.getUseName();
             var use = useControl.getUseByName(useName);
             
             if(use != null) {
-                var offerUseControl = (OfferUseControl)Session.getModelController(OfferUseControl.class);
+                var offerUseControl = Session.getModelController(OfferUseControl.class);
                 var offerUse = offerUseControl.getOfferUse(offer, use);
                 
                 if(offerUse != null) {
-                    var sourceControl = (SourceControl)Session.getModelController(SourceControl.class);
+                    var sourceControl = Session.getModelController(SourceControl.class);
                     var sourceName = form.getSourceName();
 
                     source = sourceControl.getSourceByName(sourceName);

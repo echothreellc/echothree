@@ -30,11 +30,11 @@ import com.echothree.util.server.persistence.Session;
 public class VendorTypeTransferCache
         extends BaseVendorTransferCache<VendorType, VendorTypeTransfer> {
     
-    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-    FreeOnBoardControl freeOnBoardControl = (FreeOnBoardControl)Session.getModelController(FreeOnBoardControl.class);
-    ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-    TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of VendorTypeTransferCache */
     public VendorTypeTransferCache(UserVisit userVisit, VendorControl vendorControl) {

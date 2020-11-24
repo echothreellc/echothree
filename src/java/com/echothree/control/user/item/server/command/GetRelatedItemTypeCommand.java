@@ -65,7 +65,7 @@ public class GetRelatedItemTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetRelatedItemTypeResult result = ItemResultFactory.getGetRelatedItemTypeResult();
         String relatedItemTypeName = form.getRelatedItemTypeName();
         RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);

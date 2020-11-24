@@ -65,7 +65,7 @@ public class GetDivisionCommand
             PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, true);
 
             if(!hasExecutionErrors()) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = Session.getModelController(PartyControl.class);
                 result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
 
                 sendEventUsingNames(partyDivision.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());

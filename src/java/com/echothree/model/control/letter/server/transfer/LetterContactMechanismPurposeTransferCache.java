@@ -35,7 +35,7 @@ public class LetterContactMechanismPurposeTransferCache
     public LetterContactMechanismPurposeTransferCache(UserVisit userVisit, LetterControl letterControl) {
         super(userVisit, letterControl);
         
-        contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        contactControl = Session.getModelController(ContactControl.class);
     }
     
     public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(LetterContactMechanismPurpose letterContactMechanismPurpose) {

@@ -80,7 +80,7 @@ public class GetPaymentProcessorCommand
 
     @Override
     protected BaseResult getTransfer(PaymentProcessor paymentProcessor) {
-        var paymentProcessorControl = (PaymentProcessorControl)Session.getModelController(PaymentProcessorControl.class);
+        var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         GetPaymentProcessorResult result = PaymentResultFactory.getGetPaymentProcessorResult();
 
         if(paymentProcessor != null) {

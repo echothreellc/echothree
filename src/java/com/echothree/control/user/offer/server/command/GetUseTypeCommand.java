@@ -80,7 +80,7 @@ public class GetUseTypeCommand
     
     @Override
     protected BaseResult getTransfer(UseType useType) {
-        var useTypeControl = (UseTypeControl)Session.getModelController(UseTypeControl.class);
+        var useTypeControl = Session.getModelController(UseTypeControl.class);
         GetUseTypeResult result = OfferResultFactory.getGetUseTypeResult();
 
         if(useType != null) {

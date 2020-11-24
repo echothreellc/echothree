@@ -52,7 +52,7 @@ public class GetItemUnitPriceLimitsCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemUnitPriceLimitsResult result = ItemResultFactory.getGetItemUnitPriceLimitsResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

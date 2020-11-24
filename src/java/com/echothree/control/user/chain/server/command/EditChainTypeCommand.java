@@ -93,7 +93,7 @@ public class EditChainTypeCommand
 
     @Override
     public ChainType getEntity(EditChainTypeResult result) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainType chainType = null;
         String chainKindName = spec.getChainKindName();
 
@@ -125,14 +125,14 @@ public class EditChainTypeCommand
 
     @Override
     public void fillInResult(EditChainTypeResult result, ChainType chainType) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
 
         result.setChainType(chainControl.getChainTypeTransfer(getUserVisit(), chainType));
     }
 
     @Override
     public void doLock(ChainTypeEdit edit, ChainType chainType) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainTypeDescription chainTypeDescription = chainControl.getChainTypeDescription(chainType, getPreferredLanguage());
         ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditChainTypeCommand
 
     @Override
     public void canUpdate(ChainType chainType) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         ChainKindDetail chainKindDetail = chainKind.getLastDetail();
         String chainTypeName = edit.getChainTypeName();
         ChainType duplicateChainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
@@ -159,7 +159,7 @@ public class EditChainTypeCommand
 
     @Override
     public void doUpdate(ChainType chainType) {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         var partyPK = getPartyPK();
         ChainTypeDetailValue chainTypeDetailValue = chainControl.getChainTypeDetailValueForUpdate(chainType);
         ChainTypeDescription chainTypeDescription = chainControl.getChainTypeDescriptionForUpdate(chainType, getPreferredLanguage());

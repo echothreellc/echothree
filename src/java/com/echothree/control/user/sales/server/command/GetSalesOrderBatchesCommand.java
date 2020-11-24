@@ -60,7 +60,7 @@ public class GetSalesOrderBatchesCommand
     
     @Override
     protected BaseResult execute() {
-        var salesOrderBatchControl = (SalesOrderBatchControl)Session.getModelController(SalesOrderBatchControl.class);
+        var salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
         GetSalesOrderBatchesResult result = SalesResultFactory.getGetSalesOrderBatchesResult();
         
         result.setSalesOrderBatches(salesOrderBatchControl.getSalesOrderBatchTransfers(getUserVisit()));

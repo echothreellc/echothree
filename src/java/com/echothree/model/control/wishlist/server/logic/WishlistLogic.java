@@ -65,7 +65,7 @@ public class WishlistLogic
     }
 
     private OfferUse getOrderOfferUse(final UserVisit userVisit, final OfferUse offerUse, final Party companyParty) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
         OfferUse orderOfferUse = userVisit.getOfferUse();
 
         if(orderOfferUse == null) {
@@ -92,8 +92,8 @@ public class WishlistLogic
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-            var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
+            var wishlistControl = Session.getModelController(WishlistControl.class);
             OrderLogic orderLogic = OrderLogic.getInstance();
             Currency currency = offerItemPrice.getCurrency();
             OfferUse offerUse = source.getLastDetail().getOfferUse();
@@ -111,7 +111,7 @@ public class WishlistLogic
                     order = orderLogic.createOrder(ema, orderType, null, null, currency, null, null, null, null, null, null, null, null, null, null, null, createdBy);
 
                     if(!ema.hasExecutionErrors()) {
-                        var orderRoleControl = (OrderRoleControl)Session.getModelController(OrderRoleControl.class);
+                        var orderRoleControl = Session.getModelController(OrderRoleControl.class);
 
                         wishlistControl.createWishlist(order, getOrderOfferUse(userVisit, offerUse, companyParty), wishlistType, createdBy);
 
@@ -127,7 +127,7 @@ public class WishlistLogic
                 OrderLine orderLine = wishlistControl.getWishlistLineByItemForUpdate(order, item, inventoryCondition, unitOfMeasureType);
 
                 if(orderLine == null) {
-                    var offerItemControl = (OfferItemControl)Session.getModelController(OfferItemControl.class);
+                    var offerItemControl = Session.getModelController(OfferItemControl.class);
                     OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
                     Long unitAmount = offerItemFixedPrice.getUnitPrice();
                     AssociateReferral associateReferral = userVisit.getAssociateReferral();

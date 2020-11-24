@@ -61,7 +61,7 @@ public class SetDefaultInventoryConditionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = Session.getModelController(InventoryControl.class);
         String inventoryConditionName = form.getInventoryConditionName();
         InventoryConditionDetailValue inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueByNameForUpdate(inventoryConditionName);
         

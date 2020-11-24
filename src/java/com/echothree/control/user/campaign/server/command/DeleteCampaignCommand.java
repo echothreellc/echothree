@@ -62,7 +62,7 @@ public class DeleteCampaignCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String campaignName = form.getCampaignName();
         Campaign campaign = campaignControl.getCampaignByNameForUpdate(campaignName);
         

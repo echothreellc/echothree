@@ -64,7 +64,7 @@ public class GetContactListGroupDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = Session.getModelController(ContactListControl.class);
         GetContactListGroupDescriptionsResult result = ContactListResultFactory.getGetContactListGroupDescriptionsResult();
         String contactListGroupName = form.getContactListGroupName();
         ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);

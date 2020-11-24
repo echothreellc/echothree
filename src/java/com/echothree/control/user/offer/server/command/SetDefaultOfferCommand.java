@@ -63,7 +63,7 @@ public class SetDefaultOfferCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         OfferDetailValue offerDetailValue = offerControl.getOfferDetailValueByNameForUpdate(offerName);
         

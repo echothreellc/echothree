@@ -95,7 +95,7 @@ public class SearchForumMessagesCommand
                 Language language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
                 
                 if(!hasExecutionErrors()) {
-                    var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+                    var searchControl = Session.getModelController(SearchControl.class);
                     PartySearchTypePreference partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
                     PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                     boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());
@@ -121,7 +121,7 @@ public class SearchForumMessagesCommand
                                 SearchUseType searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
 
                                 if(!hasExecutionErrors()) {
-                                    var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+                                    var forumControl = Session.getModelController(ForumControl.class);
                                     String forumName = form.getForumName();
                                     Forum forum = forumControl.getForumByName(forumName);
 

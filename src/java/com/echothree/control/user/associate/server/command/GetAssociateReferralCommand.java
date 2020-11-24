@@ -50,7 +50,7 @@ public class GetAssociateReferralCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = Session.getModelController(AssociateControl.class);
         GetAssociateReferralResult result = AssociateResultFactory.getGetAssociateReferralResult();
         String associateReferralName = form.getAssociateReferralName();
         AssociateReferral associateReferral = associateControl.getAssociateReferralByName(associateReferralName);

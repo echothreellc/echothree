@@ -79,7 +79,7 @@ public class EditMessageTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                var messageControl = Session.getModelController(MessageControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     String messageTypeName = spec.getMessageTypeName();

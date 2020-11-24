@@ -87,13 +87,13 @@ public class EditLicenseTypeDescriptionCommand
 
     @Override
     public LicenseTypeDescription getEntity(EditLicenseTypeDescriptionResult result) {
-        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = Session.getModelController(LicenseControl.class);
         LicenseTypeDescription licenseTypeDescription = null;
         String licenseTypeName = spec.getLicenseTypeName();
         LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
         if(licenseType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditLicenseTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLicenseTypeDescriptionResult result, LicenseTypeDescription licenseTypeDescription) {
-        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = Session.getModelController(LicenseControl.class);
 
         result.setLicenseTypeDescription(licenseControl.getLicenseTypeDescriptionTransfer(getUserVisit(), licenseTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditLicenseTypeDescriptionCommand
 
     @Override
     public void doUpdate(LicenseTypeDescription licenseTypeDescription) {
-        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = Session.getModelController(LicenseControl.class);
         LicenseTypeDescriptionValue licenseTypeDescriptionValue = licenseControl.getLicenseTypeDescriptionValue(licenseTypeDescription);
         licenseTypeDescriptionValue.setDescription(edit.getDescription());
 

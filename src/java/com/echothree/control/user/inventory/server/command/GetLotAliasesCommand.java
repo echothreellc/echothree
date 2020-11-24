@@ -66,13 +66,13 @@ public class GetLotAliasesCommand
     
     @Override
     protected BaseResult execute() {
-        var lotControl = (LotControl)Session.getModelController(LotControl.class);
+        var lotControl = Session.getModelController(LotControl.class);
         GetLotAliasesResult result = InventoryResultFactory.getGetLotAliasesResult();
         String lotName = form.getLotName();
         Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
-            var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+            var lotAliasControl = Session.getModelController(LotAliasControl.class);
             UserVisit userVisit = getUserVisit();
 
             result.setLot(lotControl.getLotTransfer(userVisit, lot));

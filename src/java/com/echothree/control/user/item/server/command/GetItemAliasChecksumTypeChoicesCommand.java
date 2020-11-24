@@ -49,7 +49,7 @@ public class GetItemAliasChecksumTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
         GetItemAliasChecksumTypeChoicesResult result = ItemResultFactory.getGetItemAliasChecksumTypeChoicesResult();
         String defaultItemAliasChecksumTypeChoice = form.getDefaultItemAliasChecksumTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

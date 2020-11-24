@@ -66,12 +66,12 @@ public class DeleteVendorTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         String vendorTypeName = form.getVendorTypeName();
         VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
         
         if(vendorType != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

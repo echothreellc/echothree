@@ -89,7 +89,7 @@ public class EditPartyTrainingClassCommand
 
     @Override
     public PartyTrainingClass getEntity(EditPartyTrainingClassResult result) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         PartyTrainingClass partyTrainingClass;
         String partyTrainingClassName = spec.getPartyTrainingClassName();
 
@@ -115,7 +115,7 @@ public class EditPartyTrainingClassCommand
 
     @Override
     public void fillInResult(EditPartyTrainingClassResult result, PartyTrainingClass partyTrainingClass) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
 
         result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
     }
@@ -155,7 +155,7 @@ public class EditPartyTrainingClassCommand
 
     @Override
     public void doUpdate(PartyTrainingClass partyTrainingClass) {
-        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = Session.getModelController(TrainingControl.class);
         var partyPK = getPartyPK();
         PartyTrainingClassDetailValue partyTrainingClassDetailValue = trainingControl.getPartyTrainingClassDetailValueForUpdate(partyTrainingClass);
 

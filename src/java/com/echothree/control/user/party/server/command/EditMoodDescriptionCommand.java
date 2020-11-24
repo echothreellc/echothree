@@ -63,7 +63,7 @@ public class EditMoodDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         EditMoodDescriptionResult result = PartyResultFactory.getEditMoodDescriptionResult();
         String moodName = spec.getMoodName();
         Mood mood = partyControl.getMoodByName(moodName);

@@ -52,7 +52,7 @@ public class GetWorkRequirementCommand
     @Override
     protected BaseResult execute() {
         GetWorkRequirementResult result = WorkRequirementResultFactory.getGetWorkRequirementResult();
-        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
         String workRequirementName = form.getWorkRequirementName();
         WorkRequirement workRequirement = workRequirementControl.getWorkRequirementByName(workRequirementName);
         

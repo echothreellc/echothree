@@ -57,7 +57,7 @@ public class SalesOrderPaymentPreferenceLogic
      */
     public void checkCustomerTypePaymentMethod(final ExecutionErrorAccumulator eea, final CustomerType customerType,
             final PaymentMethod paymentMethod) {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = Session.getModelController(CustomerControl.class);
         
         if(!customerControl.getCustomerTypePaymentMethodExists(customerType, paymentMethod)
                 && customerControl.countCustomerTypePaymentMethodsByCustomerType(customerType) != 0) {

@@ -75,7 +75,7 @@ public class GetWorkflowSelectorKindCommand
         var result = WorkflowResultFactory.getGetWorkflowSelectorKindResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowSelectorKind(workflowControl.getWorkflowSelectorKindTransfer(getUserVisit(), entity));
         }

@@ -32,7 +32,7 @@ public abstract class BasePeriodDescriptionTransferCache<K extends BaseEntity, V
     protected BasePeriodDescriptionTransferCache(UserVisit userVisit, PeriodControl periodControl) {
         super(userVisit, periodControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

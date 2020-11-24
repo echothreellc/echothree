@@ -68,12 +68,12 @@ public class CreateReturnKindCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         String returnKindName = form.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind == null) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
             String returnSequenceTypeName = form.getReturnSequenceTypeName();
             SequenceType returnSequenceType = sequenceControl.getSequenceTypeByName(returnSequenceTypeName);
             

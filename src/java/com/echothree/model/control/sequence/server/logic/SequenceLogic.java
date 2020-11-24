@@ -69,7 +69,7 @@ public class SequenceLogic
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = Session.getModelController(SequenceControl.class);
 
             sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
     
@@ -122,7 +122,7 @@ public class SequenceLogic
     }
     
     public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
         if(sequence == null) {

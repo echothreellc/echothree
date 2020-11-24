@@ -28,7 +28,7 @@ import com.echothree.util.server.persistence.Session;
 public class CustomerTypePaymentMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypePaymentMethod, CustomerTypePaymentMethodTransfer> {
 
-    PaymentMethodControl paymentMethodControl = (PaymentMethodControl)Session.getModelController(PaymentMethodControl.class);
+    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of CustomerTypePaymentMethodTransferCache */
     public CustomerTypePaymentMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {

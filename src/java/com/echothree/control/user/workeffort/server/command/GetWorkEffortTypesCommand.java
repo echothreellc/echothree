@@ -47,7 +47,7 @@ public class GetWorkEffortTypesCommand
     @Override
     protected BaseResult execute() {
         GetWorkEffortTypesResult result = WorkEffortResultFactory.getGetWorkEffortTypesResult();
-        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = Session.getModelController(WorkEffortControl.class);
         
         result.setWorkEffortTypes(workEffortControl.getWorkEffortTypeTransfers(getUserVisit()));
         

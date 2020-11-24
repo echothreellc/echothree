@@ -66,7 +66,7 @@ public class SetDefaultLetterCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -75,7 +75,7 @@ public class SetDefaultLetterCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = Session.getModelController(LetterControl.class);
                 String letterName = form.getLetterName();
                 LetterDetailValue letterDetailValue = letterControl.getLetterDetailValueByNameForUpdate(chainType, letterName);
                 

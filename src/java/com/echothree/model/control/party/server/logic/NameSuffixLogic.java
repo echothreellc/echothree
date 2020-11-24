@@ -46,7 +46,7 @@ public class NameSuffixLogic
 
     private NameSuffix getNameSuffixById(final ExecutionErrorAccumulator eea, final String nameSuffixId,
             final EntityPermission entityPermission) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         var nameSuffix = partyControl.convertNameSuffixIdToEntity(nameSuffixId, entityPermission);
 
         if(nameSuffix == null) {
@@ -65,9 +65,9 @@ public class NameSuffixLogic
     }
 
     public void deleteNameSuffix(final ExecutionErrorAccumulator eea, final NameSuffix nameSuffix, final PartyPK deletedBy) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        var partyPaymentMethodControl = (PartyPaymentMethodControl)Session.getModelController(PartyPaymentMethodControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
+        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
 
         // Check if the NameSuffix is in-use by any PartyPaymentMethodCreditCard, ContactPostalAddress or Person.
         if(partyPaymentMethodControl.countPartyPaymentMethodCreditCardsByNameSuffix(nameSuffix) != 0

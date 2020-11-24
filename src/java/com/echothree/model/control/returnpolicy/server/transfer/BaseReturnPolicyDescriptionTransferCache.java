@@ -32,7 +32,7 @@ public abstract class BaseReturnPolicyDescriptionTransferCache<K extends BaseEnt
     protected BaseReturnPolicyDescriptionTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
         super(userVisit, returnPolicyControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

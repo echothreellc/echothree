@@ -71,7 +71,7 @@ public class CreateFontWeightDescriptionCommand
         FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
         
         if(fontWeight != null) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

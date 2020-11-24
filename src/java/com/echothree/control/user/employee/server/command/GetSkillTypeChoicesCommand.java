@@ -50,7 +50,7 @@ public class GetSkillTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         GetSkillTypeChoicesResult result = EmployeeResultFactory.getGetSkillTypeChoicesResult();
         String defaultSkillTypeChoice = form.getDefaultSkillTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

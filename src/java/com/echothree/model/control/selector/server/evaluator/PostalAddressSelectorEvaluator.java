@@ -32,7 +32,7 @@ import com.echothree.util.server.persistence.Session;
 public class PostalAddressSelectorEvaluator
         extends BaseContactMechanismSelectorEvaluator {
     
-    protected GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+    protected GeoControl geoControl = Session.getModelController(GeoControl.class);
     private ContactPostalAddress contactPostalAddress = null;
     
     /** Creates a new instance of PostalAddressSelectorEvaluator */

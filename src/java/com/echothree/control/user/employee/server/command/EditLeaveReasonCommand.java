@@ -89,7 +89,7 @@ public class EditLeaveReasonCommand
 
     @Override
     public LeaveReason getEntity(EditLeaveReasonResult result) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveReason leaveReason = null;
         String leaveReasonName = spec.getLeaveReasonName();
 
@@ -115,14 +115,14 @@ public class EditLeaveReasonCommand
 
     @Override
     public void fillInResult(EditLeaveReasonResult result, LeaveReason leaveReason) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
 
         result.setLeaveReason(employeeControl.getLeaveReasonTransfer(getUserVisit(), leaveReason));
     }
 
     @Override
     public void doLock(LeaveReasonEdit edit, LeaveReason leaveReason) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         LeaveReasonDescription leaveReasonDescription = employeeControl.getLeaveReasonDescription(leaveReason, getPreferredLanguage());
         LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditLeaveReasonCommand
 
     @Override
     public void canUpdate(LeaveReason leaveReason) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         String leaveReasonName = edit.getLeaveReasonName();
         LeaveReason duplicateLeaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
@@ -148,7 +148,7 @@ public class EditLeaveReasonCommand
 
     @Override
     public void doUpdate(LeaveReason leaveReason) {
-        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = Session.getModelController(EmployeeControl.class);
         var partyPK = getPartyPK();
         LeaveReasonDetailValue leaveReasonDetailValue = employeeControl.getLeaveReasonDetailValueForUpdate(leaveReason);
         LeaveReasonDescription leaveReasonDescription = employeeControl.getLeaveReasonDescriptionForUpdate(leaveReason, getPreferredLanguage());

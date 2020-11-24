@@ -49,7 +49,7 @@ public class LanguageLogic
     
     public Language getLanguageByName(final ExecutionErrorAccumulator eea, final String languageIsoName,
             final EntityPermission entityPermission) {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = Session.getModelController(PartyControl.class);
         Language language = partyControl.getLanguageByIsoName(languageIsoName, entityPermission);
 
         if(language == null) {
@@ -74,7 +74,7 @@ public class LanguageLogic
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.Language.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
             
             projectLanguage = partyControl.getLanguageByEntityInstance(entityInstance, entityPermission);
         }

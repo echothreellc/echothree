@@ -68,7 +68,7 @@ public class CreateCampaignMediumCommand
     @Override
     protected BaseResult execute() {
         CreateCampaignMediumResult result = CampaignResultFactory.getCreateCampaignMediumResult();
-        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = Session.getModelController(CampaignControl.class);
         String value = form.getValue();
         CampaignMedium campaignMedium = campaignControl.getCampaignMediumByValue(value);
         

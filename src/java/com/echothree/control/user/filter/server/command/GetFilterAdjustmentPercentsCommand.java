@@ -53,7 +53,7 @@ public class GetFilterAdjustmentPercentsCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = Session.getModelController(FilterControl.class);
         GetFilterAdjustmentPercentsResult result = FilterResultFactory.getGetFilterAdjustmentPercentsResult();
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);

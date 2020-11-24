@@ -61,7 +61,7 @@ public class GetItemAliasTypesCommand
     @Override
     protected BaseResult execute() {
         GetItemAliasTypesResult result = ItemResultFactory.getGetItemAliasTypesResult();
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = Session.getModelController(ItemControl.class);
 
         result.setItemAliasTypes(itemControl.getItemAliasTypeTransfers(getUserVisit()));
 

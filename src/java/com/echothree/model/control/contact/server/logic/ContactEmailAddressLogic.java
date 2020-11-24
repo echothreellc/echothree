@@ -52,9 +52,9 @@ public class ContactEmailAddressLogic
     
     public PartyContactMechanism createContactEmailAddress(Party party, String emailAddress, Boolean allowSolicitation,
             String description, String contactMechanismPurposeName, BasePK createdBy) {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var contactControl = Session.getModelController(ContactControl.class);
+        var coreControl = Session.getModelController(CoreControl.class);
+        var workflowControl = Session.getModelController(WorkflowControl.class);
         String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
         ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.EMAIL_ADDRESS.name());
 

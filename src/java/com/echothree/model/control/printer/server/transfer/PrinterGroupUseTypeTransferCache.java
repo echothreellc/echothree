@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 public class PrinterGroupUseTypeTransferCache
         extends BasePrinterTransferCache<PrinterGroupUseType, PrinterGroupUseTypeTransfer> {
 
-    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of PrinterGroupUseTypeTransferCache */
     public PrinterGroupUseTypeTransferCache(UserVisit userVisit, PrinterControl printerControl) {

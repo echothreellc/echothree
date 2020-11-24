@@ -64,7 +64,7 @@ public class GetOfferNameElementDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var offerNameElementControl = (OfferNameElementControl)Session.getModelController(OfferNameElementControl.class);
+        var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         GetOfferNameElementDescriptionsResult result = OfferResultFactory.getGetOfferNameElementDescriptionsResult();
         String offerNameElementName = form.getOfferNameElementName();
         OfferNameElement offerNameElement = offerNameElementControl.getOfferNameElementByName(offerNameElementName);

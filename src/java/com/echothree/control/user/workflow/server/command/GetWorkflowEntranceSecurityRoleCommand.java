@@ -80,7 +80,7 @@ public class GetWorkflowEntranceSecurityRoleCommand
         var result = WorkflowResultFactory.getGetWorkflowEntranceSecurityRoleResult();
 
         if(entity != null) {
-            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
 
             result.setWorkflowEntranceSecurityRole(workflowControl.getWorkflowEntranceSecurityRoleTransfer(getUserVisit(),
                     entity));

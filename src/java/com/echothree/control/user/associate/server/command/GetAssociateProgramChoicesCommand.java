@@ -50,7 +50,7 @@ public class GetAssociateProgramChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = Session.getModelController(AssociateControl.class);
         GetAssociateProgramChoicesResult result = AssociateResultFactory.getGetAssociateProgramChoicesResult();
         String defaultAssociateProgramChoice = form.getDefaultAssociateProgramChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -52,8 +52,8 @@ public class ContentPageAreaTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var contentControl = Session.getModelController(ContentControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

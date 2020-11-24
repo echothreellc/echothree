@@ -68,7 +68,7 @@ public class CreateRatingTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = Session.getModelController(RatingControl.class);
                 String ratingTypeName = form.getRatingTypeName();
                 RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
@@ -77,7 +77,7 @@ public class CreateRatingTypeCommand
                     Sequence ratingSequence = null;
                     
                     if(ratingSequenceName != null) {
-                        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        var sequenceControl = Session.getModelController(SequenceControl.class);
                         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
                         
                         if(sequenceType != null) {

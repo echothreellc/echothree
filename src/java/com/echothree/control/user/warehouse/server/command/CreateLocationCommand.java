@@ -74,7 +74,7 @@ public class CreateLocationCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = Session.getModelController(WarehouseControl.class);
         CreateLocationResult result = WarehouseResultFactory.getCreateLocationResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -132,14 +132,14 @@ public class CreateLocationCommand
                             }
                             
                             if(!multipleUseError) {
-                                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                                var inventoryControl = Session.getModelController(InventoryControl.class);
                                 String inventoryLocationGroupName = form.getInventoryLocationGroupName();
                                 InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                                 
                                 if(inventoryLocationGroup != null) {
                                     var coreControl = getCoreControl();
                                     Integer velocity = Integer.valueOf(form.getVelocity());
-                                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                    var workflowControl = Session.getModelController(WorkflowControl.class);
                                     BasePK createdBy = getPartyPK();
                                     var description = form.getDescription();
                                     

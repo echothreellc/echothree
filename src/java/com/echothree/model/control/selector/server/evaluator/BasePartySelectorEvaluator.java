@@ -36,9 +36,9 @@ import com.echothree.util.server.persistence.Session;
 public class BasePartySelectorEvaluator
         extends BaseSelectorEvaluator {
     
-    protected PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-    protected EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
-    protected TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+    protected PartyControl partyControl = Session.getModelController(PartyControl.class);
+    protected EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    protected TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     
     private Party party = null;
     

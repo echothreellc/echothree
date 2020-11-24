@@ -356,7 +356,7 @@ public class OrderTypeControl
     }
 
     private void deleteOrderType(OrderType orderType, boolean checkDefault, BasePK deletedBy) {
-        var orderAliasControl = (OrderAliasControl)Session.getModelController(OrderAliasControl.class);
+        var orderAliasControl = Session.getModelController(OrderAliasControl.class);
         OrderTypeDetail orderTypeDetail = orderType.getLastDetailForUpdate();
 
         deleteOrderTypesByParentOrderType(orderType, deletedBy);

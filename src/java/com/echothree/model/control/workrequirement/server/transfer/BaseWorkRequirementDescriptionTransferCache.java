@@ -32,7 +32,7 @@ public abstract class BaseWorkRequirementDescriptionTransferCache<K extends Base
     protected BaseWorkRequirementDescriptionTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
         super(userVisit, workRequirementControl);
         
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        partyControl = Session.getModelController(PartyControl.class);
     }
     
 }

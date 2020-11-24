@@ -84,13 +84,13 @@ public class CreateBlogEntryCommand
     
     @Override
     protected BaseResult execute() {
-        var userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = Session.getModelController(UserControl.class);
         CreateBlogEntryResult result = ForumResultFactory.getCreateBlogEntryResult();
         String username = form.getUsername();
         UserLogin userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
         
         if(username == null || userLogin != null) {
-            var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+            var forumControl = Session.getModelController(ForumControl.class);
             String forumName = form.getForumName();
             Forum forum = forumControl.getForumByName(forumName);
 
@@ -103,12 +103,12 @@ public class CreateBlogEntryCommand
 
                     if(!hasExecutionErrors()) {
                         if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
-                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
-                                var iconControl = (IconControl)Session.getModelController(IconControl.class);
+                                var iconControl = Session.getModelController(IconControl.class);
                                 String forumThreadIconName = form.getForumThreadIconName();
                                 Icon forumThreadIcon = iconControl.getIconByName(forumThreadIconName);
 

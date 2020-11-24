@@ -89,12 +89,12 @@ public class CreateVendorItemCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
         
         if(vendor != null) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByNameThenAlias(itemName);
             
@@ -136,7 +136,7 @@ public class CreateVendorItemCommand
                         CancellationPolicy cancellationPolicy = null;
                         
                         if(cancellationPolicyName != null) {
-                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
                             
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -147,7 +147,7 @@ public class CreateVendorItemCommand
                             ReturnPolicy returnPolicy = null;
                             
                             if(returnPolicyName != null) {
-                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
                                 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
@@ -155,7 +155,7 @@ public class CreateVendorItemCommand
                             
                             if(returnPolicyName == null || returnPolicy != null) {
                                 var coreControl = getCoreControl();
-                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                var workflowControl = Session.getModelController(WorkflowControl.class);
                                 var description = form.getDescription();
                                 Integer priority = Integer.valueOf(form.getPriority());
                                 BasePK createdBy = getPartyPK();

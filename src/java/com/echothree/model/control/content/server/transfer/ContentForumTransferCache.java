@@ -29,7 +29,7 @@ import com.echothree.util.server.persistence.Session;
 public class ContentForumTransferCache
         extends BaseContentTransferCache<ContentForum, ContentForumTransfer> {
 
-    ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
 
     /** Creates a new instance of ContentForumTransferCache */
     public ContentForumTransferCache(UserVisit userVisit, ContentControl contentControl) {
