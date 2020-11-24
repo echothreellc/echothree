@@ -140,8 +140,8 @@ public class Session {
         return connection;
     }
     
-    public static BaseModelControl getModelController(Class<? extends BaseModelControl> modelController) {
-        return ThreadSession.currentSession().getSessionModelController(modelController);
+    public static <T extends BaseModelControl> T getModelController(Class<T> modelController) {
+        return (T)ThreadSession.currentSession().getSessionModelController(modelController);
     }
     
     public BaseModelControl getSessionModelController(Class<? extends BaseModelControl> modelController) {
