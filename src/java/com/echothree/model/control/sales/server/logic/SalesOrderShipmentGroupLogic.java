@@ -45,8 +45,9 @@ public class SalesOrderShipmentGroupLogic
         return LogicHolder.instance;
     }
     
-    /** Verify that the CustomerType is authorized to use the ShippingMethod. If there are no CustomerTypeShippingMethods for any ShippingMethod,
-     * then it is assumed they're authorized.
+    /**
+     * Verify that the CustomerType is authorized to use the ShippingMethod. If there are no CustomerTypeShippingMethods
+     * for any ShippingMethod then it is assumed they're authorized.
      *
      * @param eea Required.
      * @param customerType Required.
@@ -64,6 +65,7 @@ public class SalesOrderShipmentGroupLogic
     }
 
     /**
+     * Create a new Order Shipment Group for a given Order.
      *
      * @param session Required.
      * @param eea Required.

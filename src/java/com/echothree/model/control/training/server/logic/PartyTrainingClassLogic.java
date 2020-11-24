@@ -87,72 +87,42 @@ public class PartyTrainingClassLogic
         private Long validUntilTime;
         private PreparedWorkEffort preparedWorkEffort;
 
-        /**
-         * @return the party
-         */
         public Party getParty() {
             return party;
         }
 
-        /**
-         * @param party the party to set
-         */
         public void setParty(Party party) {
             this.party = party;
         }
 
-        /**
-         * @return the trainingClass
-         */
         public TrainingClass getTrainingClass() {
             return trainingClass;
         }
 
-        /**
-         * @param trainingClass the trainingClass to set
-         */
         public void setTrainingClass(TrainingClass trainingClass) {
             this.trainingClass = trainingClass;
         }
 
-        /**
-         * @return the completedTime
-         */
         public Long getCompletedTime() {
             return completedTime;
         }
 
-        /**
-         * @param completedTime the completedTime to set
-         */
         public void setCompletedTime(Long completedTime) {
             this.completedTime = completedTime;
         }
 
-        /**
-         * @return the validUntilTime
-         */
         public Long getValidUntilTime() {
             return validUntilTime;
         }
 
-        /**
-         * @param validUntilTime the validUntilTime to set
-         */
         public void setValidUntilTime(Long validUntilTime) {
             this.validUntilTime = validUntilTime;
         }
 
-        /**
-         * @return the preparedWorkEffort
-         */
         public PreparedWorkEffort getPreparedWorkEffort() {
             return preparedWorkEffort;
         }
 
-        /**
-         * @param preparedWorkEffort the preparedWorkEffort to set
-         */
         public void setPreparedWorkEffort(PreparedWorkEffort preparedWorkEffort) {
             this.preparedWorkEffort = preparedWorkEffort;
         }
@@ -285,7 +255,7 @@ public class PartyTrainingClassLogic
     public void updatePartyTrainingClassFromValue(final PartyTrainingClassDetailValue partyTrainingClassDetailValue, final BasePK updatedBy) {
         var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         
-        // TODO: adjust Status if necesssary
+        // TODO: adjust Status if necessary
         // TODO: delete PartyTrainingClassStatus if necessary
         
         trainingControl.updatePartyTrainingClassFromValue(partyTrainingClassDetailValue, updatedBy);
