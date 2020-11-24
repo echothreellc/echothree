@@ -143,11 +143,11 @@ public class Session {
     }
     
     public static <T extends BaseModelControl> T getModelController(Class<T> modelController) {
-        return (T)ThreadSession.currentSession().getSessionModelController(modelController);
+        return ThreadSession.currentSession().getSessionModelController(modelController);
     }
     
-    public BaseModelControl getSessionModelController(Class<? extends BaseModelControl> modelController) {
-        BaseModelControl result = modelControllers.get(modelController);
+    public <T extends BaseModelControl> T getSessionModelController(Class<? extends BaseModelControl> modelController) {
+        var result = modelControllers.get(modelController);
         
         if(result == null) {
             try {
@@ -159,7 +159,7 @@ public class Session {
             modelControllers.put(modelController, result);
         }
         
-        return result;
+        return (T)result;
     }
     
     private String getStringFromBaseFactory(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,
