@@ -1011,7 +1011,7 @@ public class SequenceControl
         return getSequencesBySequenceType(sequenceType, EntityPermission.READ_WRITE);
     }
     
-    private Sequence getDefaultSequence(SequenceType sequenceType, EntityPermission entityPermission) {
+    public Sequence getDefaultSequence(SequenceType sequenceType, EntityPermission entityPermission) {
         Sequence sequence;
         
         try {

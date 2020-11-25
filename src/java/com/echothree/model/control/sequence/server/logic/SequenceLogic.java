@@ -16,11 +16,19 @@
 
 package com.echothree.model.control.sequence.server.logic;
 
+import com.echothree.control.user.sequence.common.spec.SequenceUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.DuplicateSequenceNameException;
 import com.echothree.model.control.sequence.common.exception.InvalidValueLengthException;
+import com.echothree.model.control.sequence.common.exception.UnknownDefaultSequenceException;
+import com.echothree.model.control.sequence.common.exception.UnknownDefaultSequenceTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
@@ -30,6 +38,7 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.ParameterUtils;
 
 public class SequenceLogic
         extends BaseLogic {
@@ -156,6 +165,71 @@ public class SequenceLogic
 
     public Sequence getSequenceByNameForUpdate(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName) {
         return getSequenceByName(eea, sequenceTypeName, sequenceName, EntityPermission.READ_WRITE);
+    }
+
+    public Sequence getSequenceByUniversalSpec(final ExecutionErrorAccumulator eea, final SequenceUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        var sequenceControl = Session.getModelController(SequenceControl.class);
+        var sequenceTypeName = universalSpec.getSequenceTypeName();
+        var sequenceName = universalSpec.getSequenceName();
+        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(sequenceTypeName, sequenceName);
+        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        Sequence sequence = null;
+
+        if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
+            SequenceType sequenceType = null;
+            
+            if(sequenceTypeName == null) {
+                if(allowDefault) {
+                    sequenceType = sequenceControl.getDefaultSequenceType();
+
+                    if(sequenceType == null) {
+                        handleExecutionError(UnknownDefaultSequenceTypeException.class, eea, ExecutionErrors.UnknownDefaultSequenceType.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            } else {
+                sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+            }
+
+            if(!eea.hasExecutionErrors()) {
+                if(sequenceName == null) {
+                    if(allowDefault) {
+                        sequence = sequenceControl.getDefaultSequence(sequenceType, entityPermission);
+
+                        if(sequence == null) {
+                            handleExecutionError(UnknownDefaultSequenceException.class, eea, ExecutionErrors.UnknownDefaultSequence.name());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    sequence = getSequenceByName(eea, sequenceType, sequenceName, entityPermission);
+                }
+            }
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHOTHREE.name(), EntityTypes.Sequence.name());
+
+            if(!eea.hasExecutionErrors()) {
+                sequence = sequenceControl.getSequenceByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return sequence;
+    }
+
+    public Sequence getSequenceByUniversalSpec(final ExecutionErrorAccumulator eea, final SequenceUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getSequenceByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public Sequence getSequenceByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final SequenceUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getSequenceByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
 }

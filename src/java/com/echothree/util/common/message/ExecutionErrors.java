@@ -2231,5 +2231,6 @@ public enum ExecutionErrors {
     UnknownDefaultFilterKind,
     UnknownDefaultSelectorKind,
     UnknownDefaultSequenceType,
+    UnknownDefaultSequence,
 
 }
