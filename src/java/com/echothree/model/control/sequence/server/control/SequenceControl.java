@@ -1063,7 +1063,7 @@ public class SequenceControl
         return sequence;
     }
     
-    private Sequence getSequenceByName(SequenceType sequenceType, String sequenceName, EntityPermission entityPermission) {
+    public Sequence getSequenceByName(SequenceType sequenceType, String sequenceName, EntityPermission entityPermission) {
         Sequence sequence;
         
         try {

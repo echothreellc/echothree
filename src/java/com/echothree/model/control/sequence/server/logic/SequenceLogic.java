@@ -28,6 +28,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class SequenceLogic
@@ -116,16 +117,45 @@ public class SequenceLogic
         return sequence;
     }
 
-    public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName) {
+    public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName,
+            final EntityPermission entityPermission) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
+        var sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName, entityPermission);
 
         if(sequence == null) {
-            handleExecutionError(UnknownSequenceNameException.class, eea, ExecutionErrors.UnknownSequenceName.name(), sequenceType.getLastDetail().getSequenceTypeName(),
-                    sequenceName);
+            handleExecutionError(UnknownSequenceNameException.class, eea, ExecutionErrors.UnknownSequenceName.name(),
+                    sequenceType.getLastDetail().getSequenceTypeName(), sequenceName);
         }
 
         return sequence;
+    }
+
+    public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName) {
+        return getSequenceByName(eea, sequenceType, sequenceName, EntityPermission.READ_ONLY);
+    }
+
+    public Sequence getSequenceByNameForUpdate(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName) {
+        return getSequenceByName(eea, sequenceType, sequenceName, EntityPermission.READ_WRITE);
+    }
+
+    public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName,
+            final EntityPermission entityPermission) {
+        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+        Sequence sequence = null;
+
+        if(!eea.hasExecutionErrors()) {
+            sequence = getSequenceByName(eea, sequenceType, sequenceName, entityPermission);
+        }
+
+        return sequence;
+    }
+
+    public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName) {
+        return getSequenceByName(eea, sequenceTypeName, sequenceName, EntityPermission.READ_ONLY);
+    }
+
+    public Sequence getSequenceByNameForUpdate(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName) {
+        return getSequenceByName(eea, sequenceTypeName, sequenceName, EntityPermission.READ_WRITE);
     }
 
 }
