@@ -32,7 +32,6 @@ import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer
 import com.echothree.model.control.sequence.server.transfer.SequenceChecksumTypeTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceDescriptionTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceEncoderTypeTransferCache;
-import com.echothree.model.control.sequence.server.transfer.SequenceTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCaches;
 import com.echothree.model.control.sequence.server.transfer.SequenceTypeDescriptionTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTypeTransferCache;
@@ -1149,19 +1148,22 @@ public class SequenceControl
     public SequenceTransfer getSequenceTransfer(UserVisit userVisit, Sequence sequence) {
         return getSequenceTransferCaches(userVisit).getSequenceTransferCache().getSequenceTransfer(sequence);
     }
-    
-    public List<SequenceTransfer> getSequenceTransfersBySequenceType(UserVisit userVisit, SequenceType sequenceType) {
-        List<Sequence> sequences = getSequencesBySequenceType(sequenceType);
-        List<SequenceTransfer> sequenceTransfers = new ArrayList<>(sequences.size());
-        SequenceTransferCache sequenceTransferCache = getSequenceTransferCaches(userVisit).getSequenceTransferCache();
-        
+
+    public List<SequenceTransfer> getSequenceTransfers(UserVisit userVisit, Collection<Sequence> sequences) {
+        var sequenceTransfers = new ArrayList<SequenceTransfer>(sequences.size());
+        var sequenceTransferCache = getSequenceTransferCaches(userVisit).getSequenceTransferCache();
+
         sequences.forEach((sequence) ->
-                sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence))
+            sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence))
         );
-        
+
         return sequenceTransfers;
     }
-    
+
+    public List<SequenceTransfer> getSequenceTransfersBySequenceType(UserVisit userVisit, SequenceType sequenceType) {
+        return getSequenceTransfers(userVisit, getSequencesBySequenceType(sequenceType));
+    }
+
     private void updateSequenceFromValue(SequenceDetailValue sequenceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         Sequence sequence = SequenceFactory.getInstance().getEntityFromPK(session,
