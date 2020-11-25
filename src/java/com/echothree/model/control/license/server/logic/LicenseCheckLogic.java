@@ -113,7 +113,7 @@ public class LicenseCheckLogic
                         .setConnectionRequestTimeout(5000)
                         .build())
                 .build()) {
-            for(String foundServerName : foundServerNames) {
+            for(var foundServerName : foundServerNames) {
                 HttpGet httpGet = null;
 
                 try {

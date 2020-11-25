@@ -129,7 +129,7 @@ public abstract class BaseSpellCheckEvaluator
         }
         
         if(requiredOccur != null) {
-            for(BooleanClause booleanClause : booleanQuery) {
+            for(var booleanClause : booleanQuery) {
                 Occur occur = booleanClause.getOccur();
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
@@ -254,7 +254,7 @@ public abstract class BaseSpellCheckEvaluator
                     final Analyzer analyzer = getCachedAnalyzer(null, getLanguage());
                     final List<String> analyzedWords = new ArrayList<>(words.size());
 
-                    for(String word : words) {
+                    for(var word : words) {
                         String analyzedWord = null;
 
                         try {

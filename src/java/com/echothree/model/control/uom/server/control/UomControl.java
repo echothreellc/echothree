@@ -343,7 +343,7 @@ public class UomControl
             }
         }
         
-        for(UnitOfMeasureKind unitOfMeasureKind : unitOfMeasureKinds) {
+        for(var unitOfMeasureKind : unitOfMeasureKinds) {
             UnitOfMeasureKindDetail unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
             
             String label = getBestUnitOfMeasureKindDescription(unitOfMeasureKind, language);
@@ -875,7 +875,7 @@ public class UomControl
             }
         }
         
-        for(UnitOfMeasureType unitOfMeasureType : unitOfMeasureTypes) {
+        for(var unitOfMeasureType : unitOfMeasureTypes) {
             UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
             
             String label = getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, language);
@@ -1741,7 +1741,7 @@ public class UomControl
             }
         }
         
-        for(UnitOfMeasureKindUseType unitOfMeasureKindUseType : unitOfMeasureKindUseTypes) {
+        for(var unitOfMeasureKindUseType : unitOfMeasureKindUseTypes) {
             String label = getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, language);
             String value = unitOfMeasureKindUseType.getUnitOfMeasureKindUseTypeName();
             

@@ -215,7 +215,7 @@ public class PaymentProcessorResultCodeControl
             }
         }
 
-        for(PaymentProcessorResultCode paymentProcessorResultCode : paymentProcessorResultCodes) {
+        for(var paymentProcessorResultCode : paymentProcessorResultCodes) {
             var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetail();
 
             var label = getBestPaymentProcessorResultCodeDescription(paymentProcessorResultCode, language);

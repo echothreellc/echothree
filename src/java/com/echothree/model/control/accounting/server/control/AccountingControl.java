@@ -382,7 +382,7 @@ public class AccountingControl
             }
         }
         
-        for(Currency currency : currencies) {
+        for(var currency : currencies) {
             String label = getBestCurrencyDescription(currency, language);
             String value = currency.getCurrencyIsoName();
             
@@ -407,7 +407,7 @@ public class AccountingControl
         if(currencies != null) {
             currencyTransfers = new ArrayList<>(currencies.size());
             
-            for(Currency currency : currencies) {
+            for(var currency : currencies) {
                 currencyTransfers.add(getAccountingTransferCaches(userVisit).getCurrencyTransferCache().getTransfer(currency));
             }
         }
@@ -728,7 +728,7 @@ public class AccountingControl
             }
         }
         
-        for(ItemAccountingCategory itemAccountingCategory : itemAccountingCategories) {
+        for(var itemAccountingCategory : itemAccountingCategories) {
             ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
             
             String label = getBestItemAccountingCategoryDescription(itemAccountingCategory, language);
@@ -1099,7 +1099,7 @@ public class AccountingControl
             }
         }
         
-        for(GlAccountType glAccountType : glAccountTypes) {
+        for(var glAccountType : glAccountTypes) {
             String label = getBestGlAccountTypeDescription(glAccountType, language);
             String value = glAccountType.getGlAccountTypeName();
             
@@ -1380,7 +1380,7 @@ public class AccountingControl
             }
         }
         
-        for(GlAccountClass glAccountClass : glAccountClasses) {
+        for(var glAccountClass : glAccountClasses) {
             GlAccountClassDetail glAccountClassDetail = glAccountClass.getLastDetail();
             
             String label = getBestGlAccountClassDescription(glAccountClass, language);
@@ -1886,7 +1886,7 @@ public class AccountingControl
             }
         }
         
-        for(GlAccountCategory glAccountCategory : glAccountCategories) {
+        for(var glAccountCategory : glAccountCategories) {
             GlAccountCategoryDetail glAccountCategoryDetail = glAccountCategory.getLastDetail();
             
             String label = getBestGlAccountCategoryDescription(glAccountCategory, language);
@@ -2377,7 +2377,7 @@ public class AccountingControl
             }
         }
         
-        for(GlResourceType glResourceType : glResourceTypes) {
+        for(var glResourceType : glResourceTypes) {
             GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetail();
             
             String label = getBestGlResourceTypeDescription(glResourceType, language);
@@ -3010,7 +3010,7 @@ public class AccountingControl
             }
         }
         
-        for(GlAccount glAccount : glAccounts) {
+        for(var glAccount : glAccounts) {
             GlAccountDetail glAccountDetail = glAccount.getLastDetail();
             
             String label = getBestGlAccountDescription(glAccount, language);
@@ -3045,7 +3045,7 @@ public class AccountingControl
             }
         }
         
-        for(GlAccount glAccount : glAccounts) {
+        for(var glAccount : glAccounts) {
             GlAccountDetail glAccountDetail = glAccount.getLastDetail();
             
             String label = getBestGlAccountDescription(glAccount, language);
@@ -5477,7 +5477,7 @@ public class AccountingControl
             }
         }
         
-        for(SymbolPosition symbolPosition : symbolPositions) {
+        for(var symbolPosition : symbolPositions) {
             SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetail();
             
             String label = getBestSymbolPositionDescription(symbolPosition, language);

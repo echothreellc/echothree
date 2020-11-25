@@ -276,14 +276,14 @@ public class PartyTrainingClassSessionLogic
         Random random = EncryptionUtils.getInstance().getRandom();
 
         int overallQuestionTotal = 0;
-        for(TrainingClassSection trainingClassSection : trainingClassSections) {
+        for(var trainingClassSection : trainingClassSections) {
             Integer questionCount = trainingClassSection.getLastDetail().getQuestionCount();
             List<TrainingClassQuestion> trainingClassQuestions = trainingControl.getTrainingClassQuestions(trainingClassSection);
             List<TrainingClassQuestion> randomSectionQuestions = new ArrayList<>();
 
             // Add in all required questions...
             int questionTotal = 0;
-            for(TrainingClassQuestion trainingClassQuestion : trainingClassQuestions) {
+            for(var trainingClassQuestion : trainingClassQuestions) {
                 if(trainingClassQuestion.getLastDetail().getPassingRequired()) {
                     finalTrainingClassQuestions.add(trainingClassQuestion);
                     questionTotal++;
@@ -342,7 +342,7 @@ public class PartyTrainingClassSessionLogic
         Collections.sort(finalTrainingClassQuestions, new SortBySortOrder());
 
         int sortOrder = 0;
-        for(TrainingClassQuestion finalTrainingClassQuestion : finalTrainingClassQuestions) {
+        for(var finalTrainingClassQuestion : finalTrainingClassQuestions) {
             createPartyTrainingClassSessionQuestion(partyTrainingClassSession, finalTrainingClassQuestion, sortOrder++, createdBy);
         }
     }

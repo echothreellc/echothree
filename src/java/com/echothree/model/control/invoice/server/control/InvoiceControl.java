@@ -594,7 +594,7 @@ public class InvoiceControl
             }
         }
         
-        for(InvoiceType invoiceType : invoiceTypes) {
+        for(var invoiceType : invoiceTypes) {
             InvoiceTypeDetail invoiceTypeDetail = invoiceType.getLastDetail();
             
             String label = getBestInvoiceTypeDescription(invoiceType, language);
@@ -1068,7 +1068,7 @@ public class InvoiceControl
             }
         }
         
-        for(InvoiceAliasType invoiceAliasType : invoiceAliasTypes) {
+        for(var invoiceAliasType : invoiceAliasTypes) {
             InvoiceAliasTypeDetail invoiceAliasTypeDetail = invoiceAliasType.getLastDetail();
             
             String label = getBestInvoiceAliasTypeDescription(invoiceAliasType, language);
@@ -1349,7 +1349,7 @@ public class InvoiceControl
             }
         }
 
-        for(InvoiceTimeType invoiceTimeType : invoiceTimeTypes) {
+        for(var invoiceTimeType : invoiceTimeTypes) {
             InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
 
             String label = getBestInvoiceTimeTypeDescription(invoiceTimeType, language);
@@ -1979,7 +1979,7 @@ public class InvoiceControl
             }
         }
         
-        for(InvoiceLineType invoiceLineType : invoiceLineTypes) {
+        for(var invoiceLineType : invoiceLineTypes) {
             InvoiceLineTypeDetail invoiceLineTypeDetail = invoiceLineType.getLastDetail();
             
             String label = getBestInvoiceLineTypeDescription(invoiceLineType, language);

@@ -282,7 +282,7 @@ public class TagControl
             }
         }
         
-        for(TagScope tagScope : tagScopes) {
+        for(var tagScope : tagScopes) {
             TagScopeDetail tagScopeDetail = tagScope.getLastDetail();
             String label = getBestTagScopeDescription(tagScope, language);
             String value = tagScopeDetail.getTagScopeName();
@@ -901,7 +901,7 @@ public class TagControl
             }
         }
         
-        for(Tag tag : tags) {
+        for(var tag : tags) {
             TagDetail tagDetail = tag.getLastDetail();
             String value = tagDetail.getTagName();
             

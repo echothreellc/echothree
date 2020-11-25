@@ -193,7 +193,7 @@ public class ShippingControl
             }
         }
         
-        for(ShippingMethod shippingMethod : shippingMethods) {
+        for(var shippingMethod : shippingMethods) {
             ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
             String label = getBestShippingMethodDescription(shippingMethod, language);
             String value = shippingMethodDetail.getShippingMethodName();
@@ -228,7 +228,7 @@ public class ShippingControl
             }
         }
         
-        for(ShipmentTypeShippingMethod shipmentTypeShippingMethod : shipmentTypeShippingMethods) {
+        for(var shipmentTypeShippingMethod : shipmentTypeShippingMethods) {
             ShippingMethod shippingMethod = shipmentTypeShippingMethod.getShippingMethod();
             ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
             String label = getBestShippingMethodDescription(shippingMethod, language);

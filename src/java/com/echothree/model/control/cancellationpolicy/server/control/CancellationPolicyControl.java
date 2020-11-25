@@ -471,7 +471,7 @@ public class CancellationPolicyControl
             }
         }
         
-        for(CancellationKind cancellationKind : cancellationKinds) {
+        for(var cancellationKind : cancellationKinds) {
             CancellationKindDetail cancellationKindDetail = cancellationKind.getLastDetail();
             
             String label = getBestCancellationKindDescription(cancellationKind, language);
@@ -924,7 +924,7 @@ public class CancellationPolicyControl
             }
         }
         
-        for(CancellationPolicy cancellationPolicy : cancellationPolicies) {
+        for(var cancellationPolicy : cancellationPolicies) {
             CancellationPolicyDetail cancellationPolicyDetail = cancellationPolicy.getLastDetail();
             String cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
             CancellationPolicyTranslation cancellationPolicyTranslation = getBestCancellationPolicyTranslation(cancellationPolicy, language);
@@ -1671,7 +1671,7 @@ public class CancellationPolicyControl
             }
         }
         
-        for(CancellationReason cancellationReason : cancellationReasons) {
+        for(var cancellationReason : cancellationReasons) {
             CancellationReasonDetail cancellationReasonDetail = cancellationReason.getLastDetail();
             String label = getBestCancellationReasonDescription(cancellationReason, language);
             String value = cancellationReasonDetail.getCancellationReasonName();
@@ -2436,7 +2436,7 @@ public class CancellationPolicyControl
             }
         }
         
-        for(CancellationType cancellationType : cancellationTypes) {
+        for(var cancellationType : cancellationTypes) {
             CancellationTypeDetail cancellationTypeDetail = cancellationType.getLastDetail();
             String label = getBestCancellationTypeDescription(cancellationType, language);
             String value = cancellationTypeDetail.getCancellationTypeName();

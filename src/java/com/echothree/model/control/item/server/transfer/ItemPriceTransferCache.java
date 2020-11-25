@@ -147,7 +147,7 @@ public class ItemPriceTransferCache
             
             historyTransfers = new ArrayList<>(itemFixedPriceHistory.size());
             
-            for(ItemFixedPrice itemFixedPrice : itemFixedPriceHistory) {
+            for(var itemFixedPrice : itemFixedPriceHistory) {
                 Long unformattedFromTime = filterUnformattedFromTime ? null : itemFixedPrice.getFromTime();
                 String fromTime = filterFromTime ? null : formatTypicalDateTime(itemFixedPrice.getFromTime());
                 Long unformattedThruTime = filterUnformattedThruTime ? null : itemFixedPrice.getThruTime();
@@ -161,7 +161,7 @@ public class ItemPriceTransferCache
             
             historyTransfers = new ArrayList<>(itemVariablePriceHistory.size());
             
-            for(ItemVariablePrice itemVariablePrice : itemVariablePriceHistory) {
+            for(var itemVariablePrice : itemVariablePriceHistory) {
                 Long unformattedFromTime = filterUnformattedFromTime ? null : itemVariablePrice.getFromTime();
                 String fromTime = filterFromTime ? null : formatTypicalDateTime(itemVariablePrice.getFromTime());
                 Long unformattedThruTime = filterUnformattedThruTime ? null : itemVariablePrice.getThruTime();

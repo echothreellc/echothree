@@ -337,7 +337,7 @@ public class SequenceGeneratorLogic
         var maskChars = mask.toCharArray();
         StringBuilder pattern = new StringBuilder();
 
-        for(char maskChar : maskChars) {
+        for(var maskChar : maskChars) {
             switch(maskChar) {
                 case '9':
                     pattern.append("[\\p{Digit}]");

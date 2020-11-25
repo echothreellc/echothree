@@ -381,7 +381,7 @@ public class SelectorControl
             }
         }
 
-        for(SelectorKind selectorKind : selectorKinds) {
+        for(var selectorKind : selectorKinds) {
             SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
 
             String label = getBestSelectorKindDescription(selectorKind, language);
@@ -795,7 +795,7 @@ public class SelectorControl
             }
         }
 
-        for(SelectorType selectorType : selectorTypes) {
+        for(var selectorType : selectorTypes) {
             SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
             String label = getBestSelectorTypeDescription(selectorType, language);
             String value = selectorTypeDetail.getSelectorTypeName();
@@ -1121,7 +1121,7 @@ public class SelectorControl
             }
         }
         
-        for(SelectorBooleanType selectorBooleanType : selectorBooleanTypes) {
+        for(var selectorBooleanType : selectorBooleanTypes) {
             String label = getBestSelectorBooleanTypeDescription(selectorBooleanType, language);
             String value = selectorBooleanType.getSelectorBooleanTypeName();
             
@@ -1243,7 +1243,7 @@ public class SelectorControl
             }
         }
         
-        for(SelectorComparisonType selectorComparisonType : selectorComparisonTypes) {
+        for(var selectorComparisonType : selectorComparisonTypes) {
             String label = getBestSelectorComparisonTypeDescription(selectorComparisonType, language);
             String value = selectorComparisonType.getSelectorComparisonTypeName();
             
@@ -1534,7 +1534,7 @@ public class SelectorControl
             }
         }
         
-        for(SelectorTextSearchType selectorTextSearchType : selectorTextSearchTypes) {
+        for(var selectorTextSearchType : selectorTextSearchTypes) {
             String label = getBestSelectorTextSearchTypeDescription(selectorTextSearchType, language);
             String value = selectorTextSearchType.getSelectorTextSearchTypeName();
             
@@ -1818,7 +1818,7 @@ public class SelectorControl
             }
         }
         
-        for(Selector selector : selectors) {
+        for(var selector : selectors) {
             SelectorDetail selectorDetail = selector.getLastDetail();
             
             String label = getBestSelectorDescription(selector, language);
@@ -2327,7 +2327,7 @@ public class SelectorControl
             }
         }
         
-        for(SelectorNode selectorNode : selectorNodes) {
+        for(var selectorNode : selectorNodes) {
             String label = getBestSelectorNodeDescription(selectorNode, language);
             String value = selectorNode.getLastDetail().getSelectorNodeName();
             
@@ -2605,7 +2605,7 @@ public class SelectorControl
         if(selectorNodeDescriptions != null) {
             selectorNodeDescriptionTransfers = new ArrayList<>(selectorNodeDescriptions.size());
             
-            for(SelectorNodeDescription selectorNodeDescription : selectorNodeDescriptions) {
+            for(var selectorNodeDescription : selectorNodeDescriptions) {
                 selectorNodeDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorNodeDescriptionTransferCache().getSelectorNodeDescriptionTransfer(selectorNodeDescription));
             }
         }

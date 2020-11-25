@@ -155,7 +155,7 @@ public class CreateWorkRequirementTypeCommand
                                     }
 
                                     List<WorkEffortScope> workEffortScopes = workEffortControl.getWorkEffortScopes(workEffortType);
-                                    for(WorkEffortScope workEffortScope : workEffortScopes) {
+                                    for(var workEffortScope : workEffortScopes) {
                                         workRequirementControl.createWorkRequirementScope(workEffortScope, workRequirementType, null,
                                                 null, null, null, null, createdBy);
                                     }

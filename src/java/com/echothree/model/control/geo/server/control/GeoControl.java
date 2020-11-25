@@ -241,7 +241,7 @@ public class GeoControl
         var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
-        for(GeoCodeRelationship geoCodeRelationship : stateRelationships) {
+        for(var geoCodeRelationship : stateRelationships) {
             GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
             
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
@@ -290,7 +290,7 @@ public class GeoControl
         var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
-        for(GeoCodeRelationship geoCodeRelationship : stateRelationships) {
+        for(var geoCodeRelationship : stateRelationships) {
             GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
             
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
@@ -371,7 +371,7 @@ public class GeoControl
             }
         }
         
-        for(GeoCode geoCode : geoCodes) {
+        for(var geoCode : geoCodes) {
             String label = getBestGeoCodeDescription(geoCode, language);
             String value = getAliasForCountry(geoCode, geoCodeType, geoCodeAliasType);
             
@@ -592,7 +592,7 @@ public class GeoControl
             }
         }
         
-        for(GeoCodeType geoCodeType : geoCodeTypes) {
+        for(var geoCodeType : geoCodeTypes) {
             GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getLastDetail();
             
             String label = getBestGeoCodeTypeDescription(geoCodeType, language);
@@ -1063,7 +1063,7 @@ public class GeoControl
             }
         }
         
-        for(GeoCodeScope geoCodeScope : geoCodeScopes) {
+        for(var geoCodeScope : geoCodeScopes) {
             GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getLastDetail();
             
             String label = getBestGeoCodeScopeDescription(geoCodeScope, language);
@@ -1557,7 +1557,7 @@ public class GeoControl
             }
         }
         
-        for(GeoCodeAliasType geoCodeAliasType : geoCodeAliasTypes) {
+        for(var geoCodeAliasType : geoCodeAliasTypes) {
             GeoCodeAliasTypeDetail geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
             
             String label = getBestGeoCodeAliasTypeDescription(geoCodeAliasType, language);
@@ -4056,7 +4056,7 @@ public class GeoControl
         if(countryAlias == null) {
             List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
-            for(GeoCodeAliasType loopGeoCodeAliasType : geoCodeAliasTypes) {
+            for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(countryGeoCode, loopGeoCodeAliasType);
                 
                 if(geoCodeAlias != null) {
@@ -4095,7 +4095,7 @@ public class GeoControl
         if(postalCodeAlias == null) {
             List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
-            for(GeoCodeAliasType loopGeoCodeAliasType : geoCodeAliasTypes) {
+            for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(postalCodeGeoCode, loopGeoCodeAliasType);
                 
                 if(geoCodeAlias != null) {
@@ -4127,7 +4127,7 @@ public class GeoControl
         if(stateAlias == null) {
             List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
-            for(GeoCodeAliasType loopGeoCodeAliasType : geoCodeAliasTypes) {
+            for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(stateGeoCode, loopGeoCodeAliasType);
                 
                 if(geoCodeAlias != null) {
@@ -4172,7 +4172,7 @@ public class GeoControl
         if(cityAlias == null) {
             List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypesExceptDefault(geoCodeType);
             
-            for(GeoCodeAliasType loopGeoCodeAliasType : geoCodeAliasTypes) {
+            for(var loopGeoCodeAliasType : geoCodeAliasTypes) {
                 geoCodeAlias = getGeoCodeAlias(cityGeoCode, loopGeoCodeAliasType);
                 
                 if(geoCodeAlias != null) {

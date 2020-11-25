@@ -151,7 +151,7 @@ public class OfferItemPriceTransferCache
             
             historyTransfers = new ArrayList<>(offerItemFixedPriceHistory.size());
             
-            for(OfferItemFixedPrice offerItemFixedPrice : offerItemFixedPriceHistory) {
+            for(var offerItemFixedPrice : offerItemFixedPriceHistory) {
                 Long unformattedFromTime = filterUnformattedFromTime ? null : offerItemFixedPrice.getFromTime();
                 String fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemFixedPrice.getFromTime());
                 Long unformattedThruTime = filterUnformattedThruTime ? null : offerItemFixedPrice.getThruTime();
@@ -165,7 +165,7 @@ public class OfferItemPriceTransferCache
             
             historyTransfers = new ArrayList<>(offerItemVariablePriceHistory.size());
             
-            for(OfferItemVariablePrice offerItemVariablePrice : offerItemVariablePriceHistory) {
+            for(var offerItemVariablePrice : offerItemVariablePriceHistory) {
                 Long unformattedFromTime = filterUnformattedFromTime ? null : offerItemVariablePrice.getFromTime();
                 String fromTime = filterFromTime ? null : formatTypicalDateTime(offerItemVariablePrice.getFromTime());
                 Long unformattedThruTime = filterUnformattedThruTime ? null : offerItemVariablePrice.getThruTime();

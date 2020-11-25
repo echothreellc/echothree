@@ -466,7 +466,7 @@ public class ItemControl
             }
         }
         
-        for(ItemType itemType : itemTypes) {
+        for(var itemType : itemTypes) {
             String label = getBestItemTypeDescription(itemType, language);
             String value = itemType.getItemTypeName();
             
@@ -595,7 +595,7 @@ public class ItemControl
             }
         }
         
-        for(ItemDeliveryType itemDeliveryType : itemDeliveryTypes) {
+        for(var itemDeliveryType : itemDeliveryTypes) {
             String label = getBestItemDeliveryTypeDescription(itemDeliveryType, language);
             String value = itemDeliveryType.getItemDeliveryTypeName();
             
@@ -724,7 +724,7 @@ public class ItemControl
             }
         }
         
-        for(ItemInventoryType itemInventoryType : itemInventoryTypes) {
+        for(var itemInventoryType : itemInventoryTypes) {
             String label = getBestItemInventoryTypeDescription(itemInventoryType, language);
             String value = itemInventoryType.getItemInventoryTypeName();
             
@@ -853,7 +853,7 @@ public class ItemControl
             }
         }
         
-        for(ItemUseType itemUseType : itemUseTypes) {
+        for(var itemUseType : itemUseTypes) {
             String label = getBestItemUseTypeDescription(itemUseType, language);
             String value = itemUseType.getItemUseTypeName();
             
@@ -1164,7 +1164,7 @@ public class ItemControl
             }
         }
         
-        for(ItemCategory itemCategory : itemCategories) {
+        for(var itemCategory : itemCategories) {
             ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetail();
             
             String label = allowNullChoice ? new StringBuilder(getBestItemCategoryDescription(itemCategory, language)).append(itemCategoryDetail.getIsDefault() ? " *" : "").toString(): getBestItemCategoryDescription(itemCategory, language);
@@ -2344,7 +2344,7 @@ public class ItemControl
             }
         }
 
-        for(ItemAliasChecksumType itemAliasChecksumType : itemAliasChecksumTypes) {
+        for(var itemAliasChecksumType : itemAliasChecksumTypes) {
             String label = getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
             String value = itemAliasChecksumType.getItemAliasChecksumTypeName();
 
@@ -2579,7 +2579,7 @@ public class ItemControl
             }
         }
         
-        for(ItemAliasType itemAliasType : itemAliasTypes) {
+        for(var itemAliasType : itemAliasTypes) {
             ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
             
             String label = getBestItemAliasTypeDescription(itemAliasType, language);
@@ -5174,7 +5174,7 @@ public class ItemControl
             }
         }
         
-        for(ItemPriceType itemPriceType : itemPriceTypes) {
+        for(var itemPriceType : itemPriceTypes) {
             String label = getBestItemPriceTypeDescription(itemPriceType, language);
             String value = itemPriceType.getItemPriceTypeName();
             
@@ -6069,7 +6069,7 @@ public class ItemControl
             }
         }
 
-        for(ItemDescriptionType itemDescriptionType : itemDescriptionTypes) {
+        for(var itemDescriptionType : itemDescriptionTypes) {
             ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
 
             String label = getBestItemDescriptionTypeDescription(itemDescriptionType, language);
@@ -6685,7 +6685,7 @@ public class ItemControl
             }
         }
 
-        for(ItemDescriptionTypeUseType itemDescriptionTypeUseType : itemDescriptionTypeUseTypes) {
+        for(var itemDescriptionTypeUseType : itemDescriptionTypeUseTypes) {
             ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
 
             String label = getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
@@ -7309,7 +7309,7 @@ public class ItemControl
             }
         }
 
-        for(ItemImageType itemImageType : itemImageTypes) {
+        for(var itemImageType : itemImageTypes) {
             ItemImageTypeDetail itemImageTypeDetail = itemImageType.getLastDetail();
 
             String label = getBestItemImageTypeDescription(itemImageType, language);
@@ -8865,7 +8865,7 @@ public class ItemControl
             }
         }
 
-        for(RelatedItemType relatedItemType : relatedItemTypes) {
+        for(var relatedItemType : relatedItemTypes) {
             RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getLastDetail();
 
             String label = getBestRelatedItemTypeDescription(relatedItemType, language);
@@ -9722,7 +9722,7 @@ public class ItemControl
             }
         }
         
-        for(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode : harmonizedTariffScheduleCodees) {
+        for(var harmonizedTariffScheduleCode : harmonizedTariffScheduleCodees) {
             HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
             String harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName();
             HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
@@ -10160,7 +10160,7 @@ public class ItemControl
             }
         }
 
-        for(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType : harmonizedTariffScheduleCodeUseTypes) {
+        for(var harmonizedTariffScheduleCodeUseType : harmonizedTariffScheduleCodeUseTypes) {
             HarmonizedTariffScheduleCodeUseTypeDetail harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetail();
 
             String label = getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, language);
@@ -10566,7 +10566,7 @@ public class ItemControl
             }
         }
 
-        for(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit : harmonizedTariffScheduleCodeUnits) {
+        for(var harmonizedTariffScheduleCodeUnit : harmonizedTariffScheduleCodeUnits) {
             HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
 
             String label = getBestHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);

@@ -190,7 +190,7 @@ public class EditItemAliasCommand
             var vendorControl = Session.getModelController(VendorControl.class);
             List<Vendor> vendors = vendorControl.getVendorsByDefaultItemAliasType(itemAliasType);
 
-            for(Vendor vendor : vendors) {
+            for(var vendor : vendors) {
                 Party vendorParty = vendor.getParty();
                 VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemNameForUpdate(vendorParty, originalAlias);
 

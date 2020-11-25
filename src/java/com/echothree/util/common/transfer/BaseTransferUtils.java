@@ -89,7 +89,7 @@ public class BaseTransferUtils {
             if(includeMethods) {
                 Method[] methods = dependsOn.getClass().getMethods();
                 
-                for(Method method : methods) {
+                for(var method : methods) {
                     String name = method.getName();
 
                     if(name.startsWith("get")) {

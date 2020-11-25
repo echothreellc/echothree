@@ -445,7 +445,7 @@ public class SearchControl
             }
         }
 
-        for(SearchUseType searchUseType : searchUseTypes) {
+        for(var searchUseType : searchUseTypes) {
             SearchUseTypeDetail searchUseTypeDetail = searchUseType.getLastDetail();
 
             String label = getBestSearchUseTypeDescription(searchUseType, language);
@@ -878,7 +878,7 @@ public class SearchControl
             }
         }
 
-        for(SearchResultActionType searchResultActionType : searchResultActionTypes) {
+        for(var searchResultActionType : searchResultActionTypes) {
             SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getLastDetail();
 
             String label = getBestSearchResultActionTypeDescription(searchResultActionType, language);
@@ -1311,7 +1311,7 @@ public class SearchControl
             }
         }
 
-        for(SearchCheckSpellingActionType searchCheckSpellingActionType : searchCheckSpellingActionTypes) {
+        for(var searchCheckSpellingActionType : searchCheckSpellingActionTypes) {
             SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
 
             String label = getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
@@ -1743,7 +1743,7 @@ public class SearchControl
             }
         }
 
-        for(SearchDefaultOperator searchDefaultOperator : searchDefaultOperators) {
+        for(var searchDefaultOperator : searchDefaultOperators) {
             SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
 
             String label = getBestSearchDefaultOperatorDescription(searchDefaultOperator, language);
@@ -2177,7 +2177,7 @@ public class SearchControl
             }
         }
 
-        for(SearchSortDirection searchSortDirection : searchSortDirections) {
+        for(var searchSortDirection : searchSortDirections) {
             SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getLastDetail();
 
             String label = getBestSearchSortDirectionDescription(searchSortDirection, language);
@@ -2584,7 +2584,7 @@ public class SearchControl
             }
         }
 
-        for(SearchKind searchKind : searchKinds) {
+        for(var searchKind : searchKinds) {
             SearchKindDetail searchKindDetail = searchKind.getLastDetail();
 
             String label = getBestSearchKindDescription(searchKind, language);
@@ -3011,7 +3011,7 @@ public class SearchControl
             }
         }
 
-        for(SearchType searchType : searchTypes) {
+        for(var searchType : searchTypes) {
             SearchTypeDetail searchTypeDetail = searchType.getLastDetail();
             String label = getBestSearchTypeDescription(searchType, language);
             String value = searchTypeDetail.getSearchTypeName();
@@ -3438,7 +3438,7 @@ public class SearchControl
             }
         }
 
-        for(SearchSortOrder searchSortOrder : searchSortOrders) {
+        for(var searchSortOrder : searchSortOrders) {
             SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getLastDetail();
             String label = getBestSearchSortOrderDescription(searchSortOrder, language);
             String value = searchSortOrderDetail.getSearchSortOrderName();

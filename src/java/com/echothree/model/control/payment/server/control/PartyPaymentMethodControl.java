@@ -293,7 +293,7 @@ public class PartyPaymentMethodControl
             }
         }
 
-        for(PartyPaymentMethod partyPaymentMethod : partyPaymentMethods) {
+        for(var partyPaymentMethod : partyPaymentMethods) {
             PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
 
             String label = partyPaymentMethodDetail.getDescription();

@@ -54,7 +54,7 @@ public class EmployeeSelectorEvaluator
         long entityCount = 0;
         Long selectionTime = null;
         
-        for(EntityTime entityTime : entityTimes) {
+        for(var entityTime : entityTimes) {
             entityCount++;
             if(!(entityCount % 10 == 0)) {
                 if((System.currentTimeMillis() - startTime) > remainingTime)
@@ -99,7 +99,7 @@ public class EmployeeSelectorEvaluator
         long entityCount = 0;
         Long selectionTime = null;
         
-        for(EntityTime entityTime : entityTimes) {
+        for(var entityTime : entityTimes) {
             entityCount++;
             if(!(entityCount % 10 == 0)) {
                 if((System.currentTimeMillis() - startTime) > remainingTime)
@@ -150,7 +150,7 @@ public class EmployeeSelectorEvaluator
         long entityCount = 0;
         Long selectionTime = null;
         
-        for(EntityTime entityTime : entityTimes) {
+        for(var entityTime : entityTimes) {
             entityCount++;
             if(!(entityCount % 10 == 0)) {
                 if((System.currentTimeMillis() - startTime) > remainingTime)
@@ -195,7 +195,7 @@ public class EmployeeSelectorEvaluator
                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_EMPLOYEE);
                 List<Selector> employeeSelectors = selectorControl.getSelectorsBySelectorKind(selectorKind);
                 
-                for(Selector employeeSelector : employeeSelectors) {
+                for(var employeeSelector : employeeSelectors) {
                     CachedSelectorWithTime cachedSelectorWithTime = new CachedSelectorWithTime(employeeSelector);
                     
                     if(BaseSelectorEvaluatorDebugFlags.EmployeeSelectorEvaluator) {

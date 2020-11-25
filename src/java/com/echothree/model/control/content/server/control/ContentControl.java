@@ -357,7 +357,7 @@ public class ContentControl
             }
         }
         
-        for(ContentPageAreaType contentPageAreaType : contentPageAreaTypes) {
+        for(var contentPageAreaType : contentPageAreaTypes) {
             String label = getBestContentPageAreaTypeDescription(contentPageAreaType, language);
             String value = contentPageAreaType.getContentPageAreaTypeName();
             
@@ -610,7 +610,7 @@ public class ContentControl
             }
         }
         
-        for(ContentPageLayout contentPageLayout : contentPageLayouts) {
+        for(var contentPageLayout : contentPageLayouts) {
             ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
             
             String label = getBestContentPageLayoutDescription(contentPageLayout, language);
@@ -1088,7 +1088,7 @@ public class ContentControl
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
-        for(ContentCollection contentCollection : contentCollections) {
+        for(var contentCollection : contentCollections) {
             String label = getBestContentCollectionDescription(contentCollection, language);
             String value = contentCollection.getLastDetail().getContentCollectionName();
             
@@ -1285,7 +1285,7 @@ public class ContentControl
         List<ContentCollectionDescriptionTransfer> contentCollectionDescriptionTransfers = new ArrayList<>(contentCollectionDescriptions.size());
         ContentCollectionDescriptionTransferCache contentCollectionDescriptionTransferCache = getContentTransferCaches(userVisit).getContentCollectionDescriptionTransferCache();
         
-        for(ContentCollectionDescription contentCollectionDescription : contentCollectionDescriptions) {
+        for(var contentCollectionDescription : contentCollectionDescriptions) {
             contentCollectionDescriptionTransfers.add(contentCollectionDescriptionTransferCache.getContentCollectionDescriptionTransfer(contentCollectionDescription));
         }
         
@@ -1554,7 +1554,7 @@ public class ContentControl
             }
         }
         
-        for(ContentSection contentSection : contentSections) {
+        for(var contentSection : contentSections) {
             ContentSectionDetail contentSectionDetail = contentSection.getLastDetail();
             String value = contentSectionDetail.getContentSectionName();
             
@@ -2878,7 +2878,7 @@ public class ContentControl
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
-        for(ContentCatalog contentCatalog : contentCatalogs) {
+        for(var contentCatalog : contentCatalogs) {
             ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
             
             String label = getBestContentCatalogDescription(contentCatalog, language);
@@ -4037,7 +4037,7 @@ public class ContentControl
             }
         }
         
-        for(ContentCategory contentCategory : contentCategorys) {
+        for(var contentCategory : contentCategorys) {
             ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
             String value = contentCategoryDetail.getContentCategoryName();
             
@@ -5122,7 +5122,7 @@ public class ContentControl
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
-        for(ContentWebAddress contentWebAddress : contentWebAddresses) {
+        for(var contentWebAddress : contentWebAddresses) {
             String label = getBestContentWebAddressDescription(contentWebAddress, language);
             String value = contentWebAddress.getLastDetail().getContentWebAddressName();
             

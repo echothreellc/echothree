@@ -58,7 +58,7 @@ public abstract class BaseWrapperBuilder {
                     
                     objectsToRemove = new HashSet<>();
 
-                    for(E object : collection) {
+                    for(var object : collection) {
                         SimpleContext simpleContext = new SimpleContext();
 
                         simpleContext.setVariable(variableName, expressionFactory.createValueExpression(object, object.getClass()));

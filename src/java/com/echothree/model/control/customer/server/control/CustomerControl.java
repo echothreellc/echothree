@@ -296,7 +296,7 @@ public class CustomerControl
             }
         }
         
-        for(CustomerType customerType : customerTypes) {
+        for(var customerType : customerTypes) {
             CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
             String label = getBestCustomerTypeDescription(customerType, language);
             String value = customerTypeDetail.getCustomerTypeName();
@@ -326,7 +326,7 @@ public class CustomerControl
             
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
             
-            for(CustomerType customerType : customerTypes) {
+            for(var customerType : customerTypes) {
                 customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(customerType));
             }
         }
@@ -567,7 +567,7 @@ public class CustomerControl
             
             customerTypeDescriptionTransfers = new ArrayList<>(customerTypeDescriptions.size());
             
-            for(CustomerTypeDescription customerTypeDescription : customerTypeDescriptions) {
+            for(var customerTypeDescription : customerTypeDescriptions) {
                 customerTypeDescriptionTransfers.add(customerTypeDescriptionTransferCache.getCustomerTypeDescriptionTransfer(customerTypeDescription));
             }
         }
@@ -1026,7 +1026,7 @@ public class CustomerControl
         List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
         CustomerTypePaymentMethodTransferCache customerTypePaymentMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypePaymentMethodTransferCache();
 
-        for(CustomerTypePaymentMethod customerTypePaymentMethod : customerTypePaymentMethods) {
+        for(var customerTypePaymentMethod : customerTypePaymentMethods) {
             customerTypePaymentMethodTransfers.add(customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(customerTypePaymentMethod));
         }
 
@@ -1320,7 +1320,7 @@ public class CustomerControl
         List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
         CustomerTypeShippingMethodTransferCache customerTypeShippingMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeShippingMethodTransferCache();
 
-        for(CustomerTypeShippingMethod customerTypeShippingMethod : customerTypeShippingMethods) {
+        for(var customerTypeShippingMethod : customerTypeShippingMethods) {
             customerTypeShippingMethodTransfers.add(customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(customerTypeShippingMethod));
         }
 

@@ -323,7 +323,7 @@ public class ForumControl
             }
         }
         
-        for(ForumGroup forumGroup : forumGroups) {
+        for(var forumGroup : forumGroups) {
             ForumGroupDetail forumGroupDetail = forumGroup.getLastDetail();
             
             String label = getBestForumGroupDescription(forumGroup, language);
@@ -529,7 +529,7 @@ public class ForumControl
             
             forumGroupDescriptionTransfers = new ArrayList<>(forumGroupDescriptions.size());
             
-            for(ForumGroupDescription forumGroupDescription : forumGroupDescriptions) {
+            for(var forumGroupDescription : forumGroupDescriptions) {
                 forumGroupDescriptionTransfers.add(forumGroupDescriptionTransferCache.getForumGroupDescriptionTransfer(forumGroupDescription));
             }
         }
@@ -682,7 +682,7 @@ public class ForumControl
             }
         }
         
-        for(Forum forum : forums) {
+        for(var forum : forums) {
             ForumDetail forumDetail = forum.getLastDetail();
             
             String label = getBestForumDescription(forum, language);
@@ -897,7 +897,7 @@ public class ForumControl
             
             forumDescriptionTransfers = new ArrayList<>(forumDescriptions.size());
             
-            for(ForumDescription forumDescription : forumDescriptions) {
+            for(var forumDescription : forumDescriptions) {
                 forumDescriptionTransfers.add(forumDescriptionTransferCache.getForumDescriptionTransfer(forumDescription));
             }
         }
@@ -1298,7 +1298,7 @@ public class ForumControl
             }
         }
         
-        for(ForumRoleType forumRoleType : forumRoleTypes) {
+        for(var forumRoleType : forumRoleTypes) {
             String label = getBestForumRoleTypeDescription(forumRoleType, language);
             String value = forumRoleType.getForumRoleTypeName();
             
@@ -1416,7 +1416,7 @@ public class ForumControl
             }
         }
         
-        for(ForumType forumType : forumTypes) {
+        for(var forumType : forumTypes) {
             String label = getBestForumTypeDescription(forumType, language);
             String value = forumType.getForumTypeName();
             
@@ -1696,7 +1696,7 @@ public class ForumControl
             }
         }
         
-        for(ForumMimeType forumMimeType : forumMimeTypes) {
+        for(var forumMimeType : forumMimeTypes) {
             MimeType mimeType = forumMimeType.getMimeType();
             String label = coreControl.getBestMimeTypeDescription(mimeType, language);
             String value = mimeType.getLastDetail().getMimeTypeName();
@@ -1978,7 +1978,7 @@ public class ForumControl
             
             forumPartyRoleTransfers = new ArrayList<>(forumPartyRoles.size());
             
-            for(ForumPartyRole forumPartyRole : forumPartyRoles) {
+            for(var forumPartyRole : forumPartyRoles) {
                 forumPartyRoleTransfers.add(forumPartyRoleTransferCache.getForumPartyRoleTransfer(forumPartyRole));
             }
         }
@@ -2126,7 +2126,7 @@ public class ForumControl
             
             forumPartyTypeRoleTransfers = new ArrayList<>(forumPartyTypeRoles.size());
             
-            for(ForumPartyTypeRole forumPartyTypeRole : forumPartyTypeRoles) {
+            for(var forumPartyTypeRole : forumPartyTypeRoles) {
                 forumPartyTypeRoleTransfers.add(forumPartyTypeRoleTransferCache.getForumPartyTypeRoleTransfer(forumPartyTypeRole));
             }
         }
@@ -3582,7 +3582,7 @@ public class ForumControl
         if(forumMessageAttachmentDescriptions != null) {
             forumMessageAttachmentDescriptionTransfers = new ArrayList<>(forumMessageAttachmentDescriptions.size());
 
-            for(ForumMessageAttachmentDescription forumMessageAttachmentDescription : forumMessageAttachmentDescriptions) {
+            for(var forumMessageAttachmentDescription : forumMessageAttachmentDescriptions) {
                 forumMessageAttachmentDescriptionTransfers.add(getForumTransferCaches(userVisit).getForumMessageAttachmentDescriptionTransferCache().getForumMessageAttachmentDescriptionTransfer(forumMessageAttachmentDescription));
             }
         }
@@ -4367,7 +4367,7 @@ public class ForumControl
             }
         }
         
-        for(ForumMessageType forumMessageType : forumMessageTypes) {
+        for(var forumMessageType : forumMessageTypes) {
             String label = getBestForumMessageTypeDescription(forumMessageType, language);
             String value = forumMessageType.getForumMessageTypeName();
             
@@ -4532,7 +4532,7 @@ public class ForumControl
             
             forumMessageTypePartTypeTransfers = new ArrayList<>(forumMessageTypePartTypes.size());
             
-            for(ForumMessageTypePartType forumMessageTypePartType : forumMessageTypePartTypes) {
+            for(var forumMessageTypePartType : forumMessageTypePartTypes) {
                 forumMessageTypePartTypeTransfers.add(forumMessageTypePartTypeTransferCache.getForumMessageTypePartTypeTransfer(forumMessageTypePartType));
             }
         }

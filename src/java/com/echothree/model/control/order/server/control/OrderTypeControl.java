@@ -266,7 +266,7 @@ public class OrderTypeControl
             }
         }
 
-        for(OrderType orderType : orderTypes) {
+        for(var orderType : orderTypes) {
             OrderTypeDetail orderTypeDetail = orderType.getLastDetail();
 
             String label = getBestOrderTypeDescription(orderType, language);

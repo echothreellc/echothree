@@ -59,7 +59,7 @@ public class ProcessQueuedEventsCommand
         long remainingTime = (long) 2 * 60 * 1000; // 2 minutes
         List<QueuedEvent> queuedEvents = coreControl.getQueuedEventsForUpdate();
 
-        for(QueuedEvent queuedEvent : queuedEvents) {
+        for(var queuedEvent : queuedEvents) {
             long startTime = System.currentTimeMillis();
             Set<EventSubscriber> eventSubscribers = new HashSet<>();
             Event event = queuedEvent.getEvent();

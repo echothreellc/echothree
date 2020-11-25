@@ -259,7 +259,7 @@ public class QueueControl
             }
         }
 
-        for(QueueType queueType : queueTypes) {
+        for(var queueType : queueTypes) {
             QueueTypeDetail queueTypeDetail = queueType.getLastDetail();
 
             String label = getBestQueueTypeDescription(queueType, language);

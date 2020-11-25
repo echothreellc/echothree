@@ -389,7 +389,7 @@ public class EntityAttributeLogic
             String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
             boolean found = false;
             
-            for(EntityAttributeTypes entityAttributeType : entityAttributeTypes) {
+            for(var entityAttributeType : entityAttributeTypes) {
                 if(entityAttributeTypeName.equals(entityAttributeType.name())) {
                     found = true;
                     break;
@@ -466,7 +466,7 @@ public class EntityAttributeLogic
                 List<EntityInstanceResult> entityInstanceResults = getEntityInstanceResultsByEntityAttributeTypeName(entityAttribute);
                 List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityInstanceResults.size());
 
-                for(EntityInstanceResult entityInstanceResult : entityInstanceResults) {
+                for(var entityInstanceResult : entityInstanceResults) {
                     queuedEntities.add(new QueuedEntityValue(queueTypePK, entityInstanceResult.getEntityInstancePK(), session.START_TIME_LONG));
                 }
 

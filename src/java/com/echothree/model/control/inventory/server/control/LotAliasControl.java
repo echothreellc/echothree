@@ -230,7 +230,7 @@ public class LotAliasControl
             }
         }
 
-        for(LotAliasType lotAliasType : lotAliasTypes) {
+        for(var lotAliasType : lotAliasTypes) {
             LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
 
             String label = getBestLotAliasTypeDescription(lotAliasType, language);

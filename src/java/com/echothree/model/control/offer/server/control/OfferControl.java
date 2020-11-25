@@ -317,7 +317,7 @@ public class OfferControl
             }
         }
 
-        for(Offer offer : offers) {
+        for(var offer : offers) {
             OfferDetail offerDetail = offer.getLastDetail();
 
             String label = getBestOfferDescription(offer, language);

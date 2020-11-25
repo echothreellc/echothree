@@ -268,7 +268,7 @@ public class PaymentMethodTypePartyTypeControl
             }
         }
 
-        for(PaymentMethodTypePartyType paymentMethodTypePartyType : paymentMethodTypePartyTypes) {
+        for(var paymentMethodTypePartyType : paymentMethodTypePartyTypes) {
             var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getLastDetail();
 
             var label = partyControl.getBestPartyTypeDescription(paymentMethodTypePartyTypeDetail.getPartyType(), language);

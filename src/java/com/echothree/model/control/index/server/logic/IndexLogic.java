@@ -77,7 +77,7 @@ public class IndexLogic
             final List<EntityInstanceResult> entityInstanceResults) {
         List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityInstanceResults.size());
 
-        for(EntityInstanceResult entityInstanceResult : entityInstanceResults) {
+        for(var entityInstanceResult : entityInstanceResults) {
             queuedEntities.add(new QueuedEntityValue(queueTypePK, entityInstanceResult.getEntityInstancePK(), session.START_TIME_LONG));
         }
 
@@ -124,10 +124,10 @@ public class IndexLogic
             Set<EntityType> queuedEntityTypes = new HashSet<>();
             List<IndexType> indexTypes = entityType == null ? indexControl.getIndexTypes() : indexControl.getIndexTypesByEntityType(entityType);
 
-            for(IndexType indexType : indexTypes) {
+            for(var indexType : indexTypes) {
                 List<Index> indexes = indexControl.getIndexesByIndexType(indexType);
                 
-                for(Index index : indexes) {
+                for(var index : indexes) {
                     IndexStatus indexStatus = indexControl.getIndexStatusForUpdate(index);
                     
                     queueEntityInstancesByEntityType(session, eea, queueControl, queueTypePK, queuedEntityTypes, indexType);

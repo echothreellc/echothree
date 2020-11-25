@@ -376,7 +376,7 @@ public class EmployeeControl
             }
         }
         
-        for(ResponsibilityType responsibilityType : responsibilityTypes) {
+        for(var responsibilityType : responsibilityTypes) {
             ResponsibilityTypeDetail responsibilityTypeDetail = responsibilityType.getLastDetail();
             
             String label = getBestResponsibilityTypeDescription(responsibilityType, language);
@@ -803,7 +803,7 @@ public class EmployeeControl
             }
         }
         
-        for(SkillType skillType : skillTypes) {
+        for(var skillType : skillTypes) {
             SkillTypeDetail skillTypeDetail = skillType.getLastDetail();
             
             String label = getBestSkillTypeDescription(skillType, language);
@@ -1235,7 +1235,7 @@ public class EmployeeControl
             }
         }
 
-        for(LeaveType leaveType : leaveTypes) {
+        for(var leaveType : leaveTypes) {
             LeaveTypeDetail leaveTypeDetail = leaveType.getLastDetail();
 
             String label = getBestLeaveTypeDescription(leaveType, language);
@@ -1652,7 +1652,7 @@ public class EmployeeControl
             }
         }
 
-        for(LeaveReason leaveReason : leaveReasons) {
+        for(var leaveReason : leaveReasons) {
             LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetail();
 
             String label = getBestLeaveReasonDescription(leaveReason, language);
@@ -2411,7 +2411,7 @@ public class EmployeeControl
             }
         }
         
-        for(TerminationReason terminationReason : terminationReasons) {
+        for(var terminationReason : terminationReasons) {
             TerminationReasonDetail terminationReasonDetail = terminationReason.getLastDetail();
             
             String label = getBestTerminationReasonDescription(terminationReason, language);
@@ -2839,7 +2839,7 @@ public class EmployeeControl
             }
         }
         
-        for(TerminationType terminationType : terminationTypes) {
+        for(var terminationType : terminationTypes) {
             TerminationTypeDetail terminationTypeDetail = terminationType.getLastDetail();
             
             String label = getBestTerminationTypeDescription(terminationType, language);
@@ -3562,7 +3562,7 @@ public class EmployeeControl
             }
         }
         
-        for(EmployeeType employeeType : employeeTypes) {
+        for(var employeeType : employeeTypes) {
             EmployeeTypeDetail employeeTypeDetail = employeeType.getLastDetail();
             String label = getBestEmployeeTypeDescription(employeeType, language);
             String value = employeeTypeDetail.getEmployeeTypeName();
@@ -3592,7 +3592,7 @@ public class EmployeeControl
             
             employeeTypeTransfers = new ArrayList<>(employeeTypes.size());
             
-            for(EmployeeType employeeType : employeeTypes) {
+            for(var employeeType : employeeTypes) {
                 employeeTypeTransfers.add(employeeTypeTransferCache.getEmployeeTypeTransfer(employeeType));
             }
         }
@@ -3805,7 +3805,7 @@ public class EmployeeControl
             
             employeeTypeDescriptionTransfers = new ArrayList<>(employeeTypeDescriptions.size());
             
-            for(EmployeeTypeDescription employeeTypeDescription : employeeTypeDescriptions) {
+            for(var employeeTypeDescription : employeeTypeDescriptions) {
                 employeeTypeDescriptionTransfers.add(employeeTypeDescriptionTransferCache.getEmployeeTypeDescriptionTransfer(employeeTypeDescription));
             }
         }

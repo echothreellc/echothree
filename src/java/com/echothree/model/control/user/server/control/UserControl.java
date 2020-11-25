@@ -1391,7 +1391,7 @@ public class UserControl
             values.add("");
         }
         
-        for(RecoveryQuestion recoveryQuestion : recoveryQuestions) {
+        for(var recoveryQuestion : recoveryQuestions) {
             RecoveryQuestionDetail recoveryQuestionDetail = recoveryQuestion.getLastDetail();
             String label = getBestRecoveryQuestionDescription(recoveryQuestion, language);
             String value = recoveryQuestionDetail.getRecoveryQuestionName();

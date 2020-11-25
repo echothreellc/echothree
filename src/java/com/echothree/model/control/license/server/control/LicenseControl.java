@@ -246,7 +246,7 @@ public class LicenseControl
             }
         }
 
-        for(LicenseType licenseType : licenseTypes) {
+        for(var licenseType : licenseTypes) {
             LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetail();
 
             String label = getBestLicenseTypeDescription(licenseType, language);

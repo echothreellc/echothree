@@ -322,7 +322,7 @@ public class ShipmentControl
             }
         }
 
-        for(ShipmentType shipmentType : shipmentTypes) {
+        for(var shipmentType : shipmentTypes) {
             ShipmentTypeDetail shipmentTypeDetail = shipmentType.getLastDetail();
 
             String label = getBestShipmentTypeDescription(shipmentType, language);
@@ -788,7 +788,7 @@ public class ShipmentControl
             }
         }
 
-        for(ShipmentTimeType shipmentTimeType : shipmentTimeTypes) {
+        for(var shipmentTimeType : shipmentTimeTypes) {
             ShipmentTimeTypeDetail shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
 
             String label = getBestShipmentTimeTypeDescription(shipmentTimeType, language);
@@ -1692,7 +1692,7 @@ public class ShipmentControl
             }
         }
 
-        for(ShipmentAliasType shipmentAliasType : shipmentAliasTypes) {
+        for(var shipmentAliasType : shipmentAliasTypes) {
             ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
 
             String label = getBestShipmentAliasTypeDescription(shipmentAliasType, language);

@@ -250,7 +250,7 @@ public class UseTypeControl
             }
         }
         
-        for(UseType useType : useTypes) {
+        for(var useType : useTypes) {
             UseTypeDetail useTypeDetail = useType.getLastDetail();
             
             String label = getBestUseTypeDescription(useType, language);

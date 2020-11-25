@@ -388,7 +388,7 @@ public class PartyControl
             }
         }
         
-        for(Language language : languages) {
+        for(var language : languages) {
             String label = getBestLanguageDescription(language, descriptionLanguage);
             String value = language.getLanguageIsoName();
             
@@ -524,7 +524,7 @@ public class PartyControl
             values.add("");
         }
         
-        for(PartyType partyType : partyTypes) {
+        for(var partyType : partyTypes) {
             String label = getBestPartyTypeDescription(partyType, language);
             String value = partyType.getPartyTypeName();
             
@@ -826,7 +826,7 @@ public class PartyControl
             }
         }
         
-        for(PersonalTitleDetail personalTitleDetail : personalTitleDetails) {
+        for(var personalTitleDetail : personalTitleDetails) {
             String label = personalTitleDetail.getDescription();
             String value = personalTitleDetail.getPersonalTitlePK().getEntityId().toString();
             
@@ -1075,7 +1075,7 @@ public class PartyControl
             }
         }
         
-        for(NameSuffixDetail nameSuffixDetail : nameSuffixDetails) {
+        for(var nameSuffixDetail : nameSuffixDetails) {
             String label = nameSuffixDetail.getDescription();
             String value = nameSuffixDetail.getNameSuffixPK().getEntityId().toString();
             
@@ -1316,7 +1316,7 @@ public class PartyControl
             }
         }
         
-        for(TimeZone timeZone : timeZones) {
+        for(var timeZone : timeZones) {
             TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
             String value = timeZoneDetail.getJavaTimeZoneName();
             
@@ -1636,7 +1636,7 @@ public class PartyControl
             }
         }
         
-        for(DateTimeFormat dateTimeFormat : dateTimeFormats) {
+        for(var dateTimeFormat : dateTimeFormats) {
             DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
             String value = dateTimeFormatDetail.getDateTimeFormatName();
             
@@ -2733,7 +2733,7 @@ public class PartyControl
             }
         }
 
-        for(PartyAliasType partyAliasType : partyAliasTypes) {
+        for(var partyAliasType : partyAliasTypes) {
             PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
 
             String label = getBestPartyAliasTypeDescription(partyAliasType, language);
@@ -3374,7 +3374,7 @@ public class PartyControl
             }
         }
         
-        for(PartyCompany partyCompany : partyCompanies) {
+        for(var partyCompany : partyCompanies) {
             PartyGroup partyGroup = getPartyGroup(partyCompany.getParty());
             
             String label = partyGroup.getName();
@@ -3676,7 +3676,7 @@ public class PartyControl
             }
         }
         
-        for(PartyDivision partyDivision : partyDivisions) {
+        for(var partyDivision : partyDivisions) {
             PartyGroup partyGroup = getPartyGroup(partyDivision.getParty());
             
             String label = partyGroup.getName();
@@ -3979,7 +3979,7 @@ public class PartyControl
             }
         }
 
-        for(PartyDepartment partyDepartment : partyDepartments) {
+        for(var partyDepartment : partyDepartments) {
             PartyGroup partyGroup = getPartyGroup(partyDepartment.getParty());
             
             String label = partyGroup.getName();
@@ -4925,7 +4925,7 @@ public class PartyControl
             }
         }
         
-        for(Gender gender : genders) {
+        for(var gender : genders) {
             GenderDetail genderDetail = gender.getLastDetail();
             
             String label = getBestGenderDescription(gender, language);
@@ -5347,7 +5347,7 @@ public class PartyControl
             }
         }
         
-        for(Mood mood : moods) {
+        for(var mood : moods) {
             MoodDetail moodDetail = mood.getLastDetail();
             
             String label = getBestMoodDescription(mood, language);
@@ -5813,7 +5813,7 @@ public class PartyControl
             }
         }
 
-        for(BirthdayFormat birthdayFormat : birthdayFormats) {
+        for(var birthdayFormat : birthdayFormats) {
             BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetail();
             String label = getBestBirthdayFormatDescription(birthdayFormat, language);
             String value = birthdayFormatDetail.getBirthdayFormatName();

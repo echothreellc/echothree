@@ -297,7 +297,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowType workflowType : workflowTypes) {
+        for(var workflowType : workflowTypes) {
             String label = getBestWorkflowTypeDescription(workflowType, language);
             String value = workflowType.getWorkflowTypeName();
             
@@ -459,7 +459,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowStepType workflowStepType : workflowStepTypes) {
+        for(var workflowStepType : workflowStepTypes) {
             String label = getBestWorkflowStepTypeDescription(workflowStepType, language);
             String value = workflowStepType.getWorkflowStepTypeName();
             
@@ -974,7 +974,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowStep workflowStep : workflowSteps) {
+        for(var workflowStep : workflowSteps) {
             WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
             
             String label = getBestWorkflowStepDescription(workflowStep, language);
@@ -1619,7 +1619,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowEntrance workflowEntrance : workflowEntrances) {
+        for(var workflowEntrance : workflowEntrances) {
             if(workflowSecurityLogic.checkWorkflowEntranceAvailable(workflowEntrance, partyPK)) {
                 WorkflowEntranceDetail workflowEntranceDetail = workflowEntrance.getLastDetail();
 
@@ -2732,7 +2732,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowDestination workflowDestination : workflowDestinations) {
+        for(var workflowDestination : workflowDestinations) {
             if(workflowSecurityLogic.checkWorkflowDestinationAvailable(workflowDestination, partyPK)) {
                 WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getLastDetail();
 
@@ -4255,7 +4255,7 @@ public class WorkflowControl
             if(selectorKindName.equals(SelectorConstants.SelectorKind_POSTAL_ADDRESS)) {
                 PostalAddressSelectorEvaluator pase = new PostalAddressSelectorEvaluator(session, createdBy);
 
-                for(WorkflowEntranceSelector workflowEntranceSelector : workflowEntranceSelectors) {
+                for(var workflowEntranceSelector : workflowEntranceSelectors) {
                     CachedSelector cs = new CachedSelector(workflowEntranceSelector.getSelector());
 
                     if(pase.isPostalAddressSelected(cs, entityInstance)) {
@@ -4307,7 +4307,7 @@ public class WorkflowControl
                 var workflowEffortScope = workflowEntityStatus.getWorkEffortScope();
                 var workflowDestinationSteps = getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
 
-                for(WorkflowDestinationStep workflowDestinationStep : workflowDestinationSteps) {
+                for(var workflowDestinationStep : workflowDestinationSteps) {
                     workflowEntityStatus = createWorkflowEntityStatus(entityInstance, workflowDestinationStep.getWorkflowStep(),
                             workflowEffortScope, modifiedBy);
 

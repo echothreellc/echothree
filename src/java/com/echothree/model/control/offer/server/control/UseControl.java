@@ -297,7 +297,7 @@ public class UseControl
             }
         }
 
-        for(Use use : uses) {
+        for(var use : uses) {
             UseDetail useDetail = use.getLastDetail();
 
             String label = getBestUseDescription(use, language);

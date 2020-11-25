@@ -338,7 +338,7 @@ public class DocumentControl
             }
         }
         
-        for(DocumentType documentType : documentTypes) {
+        for(var documentType : documentTypes) {
             DocumentTypeDetail documentTypeDetail = documentType.getLastDetail();
             
             String label = getBestDocumentTypeDescription(documentType, language);
@@ -796,7 +796,7 @@ public class DocumentControl
             }
         }
 
-        for(DocumentTypeUsageType documentTypeUsageType : documentTypeUsageTypes) {
+        for(var documentTypeUsageType : documentTypeUsageTypes) {
             DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
 
             String label = getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
@@ -1833,7 +1833,7 @@ public class DocumentControl
         if(documentDescriptions != null) {
             documentDescriptionTransfers = new ArrayList<>(documentDescriptions.size());
             
-            for(DocumentDescription documentDescription : documentDescriptions) {
+            for(var documentDescription : documentDescriptions) {
                 documentDescriptionTransfers.add(getDocumentTransferCaches(userVisit).getDocumentDescriptionTransferCache().getDocumentDescriptionTransfer(documentDescription));
             }
         }
@@ -2398,7 +2398,7 @@ public class DocumentControl
             }
         }
 
-        for(PartyDocument partyDocument : partyDocuments) {
+        for(var partyDocument : partyDocuments) {
             Document document = partyDocument.getDocument();
             DocumentDetail documentDetail = document.getLastDetail();
 

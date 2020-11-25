@@ -323,7 +323,7 @@ public class PicklistControl
             }
         }
 
-        for(PicklistType picklistType : picklistTypes) {
+        for(var picklistType : picklistTypes) {
             PicklistTypeDetail picklistTypeDetail = picklistType.getLastDetail();
 
             String label = getBestPicklistTypeDescription(picklistType, language);
@@ -787,7 +787,7 @@ public class PicklistControl
             }
         }
 
-        for(PicklistTimeType picklistTimeType : picklistTimeTypes) {
+        for(var picklistTimeType : picklistTimeTypes) {
             PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getLastDetail();
 
             String label = getBestPicklistTimeTypeDescription(picklistTimeType, language);
@@ -1203,7 +1203,7 @@ public class PicklistControl
             }
         }
 
-        for(PicklistAliasType picklistAliasType : picklistAliasTypes) {
+        for(var picklistAliasType : picklistAliasTypes) {
             PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
 
             String label = getBestPicklistAliasTypeDescription(picklistAliasType, language);

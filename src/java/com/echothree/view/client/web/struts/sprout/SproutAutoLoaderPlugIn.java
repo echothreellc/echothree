@@ -254,13 +254,13 @@ public class SproutAutoLoaderPlugIn
             final ClassInfoList formClasses = scanResult
                     .getClassesWithAnnotation(SproutForm.class.getName());
 
-            for(ClassInfo actionClass : actionClasses) {
+            for(var actionClass : actionClasses) {
                 Class clazz = actionClass.loadClass();
 
                 loadAction(clazz);
             }
 
-            for(ClassInfo formClass : formClasses) {
+            for(var formClass : formClasses) {
                 Class clazz = formClass.loadClass();
 
                 loadForm(clazz);

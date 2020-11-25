@@ -156,7 +156,7 @@ public class EntityInstanceLogic
             boolean found = false;
             
             if(foundComponentVendorName.equals(componentVendorName)) {
-                for(String entityTypeName : entityTypeNames) {
+                for(var entityTypeName : entityTypeNames) {
                     if(entityTypeName.equals(foundEntityTypeName)) {
                         found = true;
                         break;

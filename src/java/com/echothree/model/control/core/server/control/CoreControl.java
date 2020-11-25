@@ -1750,7 +1750,7 @@ public class CoreControl
             }
         }
         
-        for(CommandMessageType commandMessageType : commandMessageTypes) {
+        for(var commandMessageType : commandMessageTypes) {
             CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetail();
             String label = getBestCommandMessageTypeDescription(commandMessageType, language);
             String value = commandMessageTypeDetail.getCommandMessageTypeName();
@@ -3031,7 +3031,7 @@ public class CoreControl
         if(entityAttributeTypes != null) {
             entityAttributeTypeTransfers = new ArrayList<>(entityAttributeTypes.size());
             
-            for(EntityAttributeType entityAttributeType : entityAttributeTypes) {
+            for(var entityAttributeType : entityAttributeTypes) {
                 entityAttributeTypeTransfers.add(getCoreTransferCaches(userVisit).getEntityAttributeTypeTransferCache().getEntityAttributeTypeTransfer(entityAttributeType));
             }
         }
@@ -3050,7 +3050,7 @@ public class CoreControl
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
-        for(EntityAttributeType entityAttributeType : entityAttributeTypes) {
+        for(var entityAttributeType : entityAttributeTypes) {
             String label = getBestEntityAttributeTypeDescription(entityAttributeType, language);
             String value = entityAttributeType.getEntityAttributeTypeName();
             
@@ -4018,7 +4018,7 @@ public class CoreControl
     public void createCacheEntryDependencies(CacheEntry cacheEntry, Set<String> entityRefs) {
         List<CacheEntryDependencyValue> cacheEntryDependencyValues = new ArrayList<>(entityRefs.size());
 
-        for(String entityRef : entityRefs) {
+        for(var entityRef : entityRefs) {
             EntityInstance entityInstance = getEntityInstanceByEntityRef(entityRef);
 
             if(entityInstance != null) {
@@ -4332,7 +4332,7 @@ public class CoreControl
             }
         }
         
-        for(EntityAttributeGroup entityAttributeGroup : entityAttributeGroups) {
+        for(var entityAttributeGroup : entityAttributeGroups) {
             EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
             String label = getBestEntityAttributeGroupDescription(entityAttributeGroup, language);
             String value = entityAttributeGroupDetail.getEntityAttributeGroupName();
@@ -6212,7 +6212,7 @@ public class CoreControl
             }
         }
         
-        for(EntityListItem entityListItem : entityListItems) {
+        for(var entityListItem : entityListItems) {
             EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
             String label = getBestEntityListItemDescription(entityListItem, language);
             String value = entityListItemDetail.getEntityListItemName();
@@ -6707,7 +6707,7 @@ public class CoreControl
             }
         }
         
-        for(EntityIntegerRange entityIntegerRange : entityIntegerRanges) {
+        for(var entityIntegerRange : entityIntegerRanges) {
             EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
             String label = getBestEntityIntegerRangeDescription(entityIntegerRange, language);
             String value = entityIntegerRangeDetail.getEntityIntegerRangeName();
@@ -7195,7 +7195,7 @@ public class CoreControl
             }
         }
         
-        for(EntityLongRange entityLongRange : entityLongRanges) {
+        for(var entityLongRange : entityLongRanges) {
             EntityLongRangeDetail entityLongRangeDetail = entityLongRange.getLastDetail();
             String label = getBestEntityLongRangeDescription(entityLongRange, language);
             String value = entityLongRangeDetail.getEntityLongRangeName();
@@ -7545,7 +7545,7 @@ public class CoreControl
             }
         }
         
-        for(MimeTypeUsageType mimeTypeUsageType : mimeTypeUsageTypes) {
+        for(var mimeTypeUsageType : mimeTypeUsageTypes) {
             String label = getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
             String value = mimeTypeUsageType.getMimeTypeUsageTypeName();
             
@@ -7884,7 +7884,7 @@ public class CoreControl
             }
         }
 
-        for(MimeType mimeType : mimeTypes) {
+        for(var mimeType : mimeTypes) {
             MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
 
             String label = getBestMimeTypeDescription(mimeType, language);
@@ -7919,7 +7919,7 @@ public class CoreControl
             }
         }
 
-        for(MimeType mimeType : mimeTypes) {
+        for(var mimeType : mimeTypes) {
             MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
 
             String label = getBestMimeTypeDescription(mimeType, language);
@@ -8491,7 +8491,7 @@ public class CoreControl
             }
         }
 
-        for(Protocol protocol : protocols) {
+        for(var protocol : protocols) {
             ProtocolDetail protocolDetail = protocol.getLastDetail();
 
             String label = getBestProtocolDescription(protocol, language);
@@ -8950,7 +8950,7 @@ public class CoreControl
             }
         }
 
-        for(Service service : services) {
+        for(var service : services) {
             ServiceDetail serviceDetail = service.getLastDetail();
 
             String label = getBestServiceDescription(service, language);
@@ -9381,7 +9381,7 @@ public class CoreControl
             }
         }
 
-        for(Server server : servers) {
+        for(var server : servers) {
             ServerDetail serverDetail = server.getLastDetail();
 
             String label = getBestServerDescription(server, language);
@@ -12739,7 +12739,7 @@ public class CoreControl
 //        List<EventSubscriberTransfer> eventSubscriberTransfers = new ArrayList<EventSubscriberTransfer>(eventSubscribers.size());
 //        EventSubscriberTransferCache eventSubscriberTransferCache = getPaymentTransferCaches(userVisit).getEventSubscriberTransferCache();
 //        
-//        for(EventSubscriber eventSubscriber : eventSubscribers) {
+//        for(var eventSubscriber : eventSubscribers) {
 //            eventSubscriberTransfers.add(eventSubscriberTransferCache.getEventSubscriberTransfer(eventSubscriber));
 //        }
 //        
@@ -13460,7 +13460,7 @@ public class CoreControl
             }
         }
 
-        for(Application application : applications) {
+        for(var application : applications) {
             ApplicationDetail applicationDetail = application.getLastDetail();
 
             String label = getBestApplicationDescription(application, language);
@@ -13887,7 +13887,7 @@ public class CoreControl
             }
         }
 
-        for(Editor editor : editors) {
+        for(var editor : editors) {
             EditorDetail editorDetail = editor.getLastDetail();
 
             String label = getBestEditorDescription(editor, language);
@@ -14364,7 +14364,7 @@ public class CoreControl
             }
         }
 
-        for(ApplicationEditor applicationEditor : applicationEditors) {
+        for(var applicationEditor : applicationEditors) {
             ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetail();
             Editor editor = applicationEditorDetail.getEditor();
 
@@ -14699,7 +14699,7 @@ public class CoreControl
             }
         }
 
-        for(ApplicationEditorUse applicationEditorUse : applicationEditorUses) {
+        for(var applicationEditorUse : applicationEditorUses) {
             ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetail();
 
             String label = getBestApplicationEditorUseDescription(applicationEditorUse, language);
@@ -15401,7 +15401,7 @@ public class CoreControl
             }
         }
 
-        for(Color color : colors) {
+        for(var color : colors) {
             ColorDetail colorDetail = color.getLastDetail();
 
             String label = getBestColorDescription(color, language);
@@ -15847,7 +15847,7 @@ public class CoreControl
             }
         }
 
-        for(FontStyle fontStyle : fontStyles) {
+        for(var fontStyle : fontStyles) {
             FontStyleDetail fontStyleDetail = fontStyle.getLastDetail();
 
             String label = getBestFontStyleDescription(fontStyle, language);
@@ -16290,7 +16290,7 @@ public class CoreControl
             }
         }
 
-        for(FontWeight fontWeight : fontWeights) {
+        for(var fontWeight : fontWeights) {
             FontWeightDetail fontWeightDetail = fontWeight.getLastDetail();
 
             String label = getBestFontWeightDescription(fontWeight, language);
@@ -16733,7 +16733,7 @@ public class CoreControl
             }
         }
 
-        for(TextDecoration textDecoration : textDecorations) {
+        for(var textDecoration : textDecorations) {
             TextDecorationDetail textDecorationDetail = textDecoration.getLastDetail();
 
             String label = getBestTextDecorationDescription(textDecoration, language);
@@ -17176,7 +17176,7 @@ public class CoreControl
             }
         }
 
-        for(TextTransformation textTransformation : textTransformations) {
+        for(var textTransformation : textTransformations) {
             TextTransformationDetail textTransformationDetail = textTransformation.getLastDetail();
 
             String label = getBestTextTransformationDescription(textTransformation, language);
@@ -17749,7 +17749,7 @@ public class CoreControl
             }
         }
 
-        for(Appearance appearance : appearances) {
+        for(var appearance : appearances) {
             AppearanceDetail appearanceDetail = appearance.getLastDetail();
 
             String label = getBestAppearanceDescription(appearance, language);

@@ -357,7 +357,7 @@ public class FilterControl
             }
         }
 
-        for(FilterKind filterKind : filterKinds) {
+        for(var filterKind : filterKinds) {
             FilterKindDetail filterKindDetail = filterKind.getLastDetail();
 
             String label = getBestFilterKindDescription(filterKind, language);
@@ -771,7 +771,7 @@ public class FilterControl
             }
         }
 
-        for(FilterType filterType : filterTypes) {
+        for(var filterType : filterTypes) {
             FilterTypeDetail filterTypeDetail = filterType.getLastDetail();
             String label = getBestFilterTypeDescription(filterType, language);
             String value = filterTypeDetail.getFilterTypeName();
@@ -1084,7 +1084,7 @@ public class FilterControl
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
-        for(FilterAdjustmentSource filterAdjustmentSource : filterAdjustmentSources) {
+        for(var filterAdjustmentSource : filterAdjustmentSources) {
             String label = getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, language);
             String value = filterAdjustmentSource.getFilterAdjustmentSourceName();
             
@@ -1197,7 +1197,7 @@ public class FilterControl
         labels.add("");
         values.add("");
         
-        for(FilterAdjustmentType filterAdjustmentType : filterAdjustmentTypes) {
+        for(var filterAdjustmentType : filterAdjustmentTypes) {
             String label = getBestFilterAdjustmentTypeDescription(filterAdjustmentType, language);
             String value = filterAdjustmentType.getFilterAdjustmentTypeName();
             
@@ -1470,7 +1470,7 @@ public class FilterControl
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
-        for(FilterAdjustment filterAdjustment : filterAdjustments) {
+        for(var filterAdjustment : filterAdjustments) {
             if(initialAdjustmentsOnly == false || filterAdjustment.getLastDetail().getFilterAdjustmentSource().getAllowedForInitialAmount()) {
                 String label = getBestFilterAdjustmentDescription(filterAdjustment, language);
                 String value = filterAdjustment.getLastDetail().getFilterAdjustmentName();
@@ -2433,7 +2433,7 @@ public class FilterControl
             }
         }
         
-        for(Filter filter : filters) {
+        for(var filter : filters) {
             FilterDetail filterDetail = filter.getLastDetail();
             String label = getBestFilterDescription(filter, language);
             String value = filterDetail.getFilterName();
@@ -2852,7 +2852,7 @@ public class FilterControl
             }
         }
         
-        for(FilterStep filterStep : filterSteps) {
+        for(var filterStep : filterSteps) {
             FilterStepDetail filterStepDetail = filterStep.getLastDetail();
             String label = getBestFilterStepDescription(filterStep, language);
             String value = filterStepDetail.getFilterStepName();

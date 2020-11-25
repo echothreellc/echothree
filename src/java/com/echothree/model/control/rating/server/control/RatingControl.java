@@ -678,7 +678,7 @@ public class RatingControl
             }
         }
         
-        for(RatingTypeListItem ratingTypeListItem : ratingTypeListItems) {
+        for(var ratingTypeListItem : ratingTypeListItems) {
             RatingTypeListItemDetail ratingTypeListItemDetail = ratingTypeListItem.getLastDetail();
             String label = getBestRatingTypeListItemDescription(ratingTypeListItem, language);
             String value = ratingTypeListItemDetail.getRatingTypeListItemName();
