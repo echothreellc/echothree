@@ -229,7 +229,7 @@ public class CreateCommunicationEventCommand
                                                 termControl.createPartyTerm(party, term, customerTypeDetail.getDefaultTaxable(), createdBy);
 
                                                 List<CustomerTypeCreditLimit> customerTypeCreditLimits = termControl.getCustomerTypeCreditLimitsByCustomerType(customerType);
-                                                for(CustomerTypeCreditLimit customerTypeCreditLimit: customerTypeCreditLimits) {
+                                                for(CustomerTypeCreditLimit customerTypeCreditLimit : customerTypeCreditLimits) {
                                                     termControl.createPartyCreditLimit(party, customerTypeCreditLimit.getCurrency(), customerTypeCreditLimit.getCreditLimit(),
                                                             customerTypeCreditLimit.getPotentialCreditLimit(), createdBy);
                                                 }

@@ -217,7 +217,7 @@ public class FreeOnBoardControl
             }
         }
 
-        for(FreeOnBoard freeOnBoard: freeOnBoards) {
+        for(FreeOnBoard freeOnBoard : freeOnBoards) {
             var freeOnBoardDetail = freeOnBoard.getLastDetail();
 
             var label = getBestFreeOnBoardDescription(freeOnBoard, language);

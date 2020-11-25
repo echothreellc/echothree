@@ -229,7 +229,7 @@ public class PaymentProcessorTypeCodeTypeControl
             }
         }
 
-        for(PaymentProcessorTypeCodeType paymentProcessorTypeCodeType: paymentProcessorTypeCodeTypes) {
+        for(PaymentProcessorTypeCodeType paymentProcessorTypeCodeType : paymentProcessorTypeCodeTypes) {
             var paymentProcessorTypeCodeTypeDetail = paymentProcessorTypeCodeType.getLastDetail();
 
             var label = getBestPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, language);

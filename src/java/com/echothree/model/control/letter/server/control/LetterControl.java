@@ -398,7 +398,7 @@ public class LetterControl
             }
         }
         
-        for(LetterSource letterSource: letterSources) {
+        for(LetterSource letterSource : letterSources) {
             LetterSourceDetail letterSourceDetail = letterSource.getLastDetail();
             
             String label = getBestLetterSourceDescription(letterSource, language);
@@ -648,7 +648,7 @@ public class LetterControl
             
             letterSourceDescriptionTransfers = new ArrayList<>(letterSourceDescriptions.size());
             
-            for(LetterSourceDescription letterSourceDescription: letterSourceDescriptions) {
+            for(LetterSourceDescription letterSourceDescription : letterSourceDescriptions) {
                 letterSourceDescriptionTransfers.add(letterSourceDescriptionTransferCache.getLetterSourceDescriptionTransfer(letterSourceDescription));
             }
         }
@@ -962,7 +962,7 @@ public class LetterControl
             }
         }
         
-        for(Letter letter: letters) {
+        for(Letter letter : letters) {
             LetterDetail letterDetail = letter.getLastDetail();
             
             String label = getBestLetterDescription(letter, language);
@@ -1202,7 +1202,7 @@ public class LetterControl
             
             letterDescriptionTransfers = new ArrayList<>(letterDescriptions.size());
             
-            for(LetterDescription letterDescription: letterDescriptions) {
+            for(LetterDescription letterDescription : letterDescriptions) {
                 letterDescriptionTransfers.add(letterDescriptionTransferCache.getLetterDescriptionTransfer(letterDescription));
             }
         }

@@ -296,7 +296,7 @@ public class CustomerControl
             }
         }
         
-        for(CustomerType customerType: customerTypes) {
+        for(CustomerType customerType : customerTypes) {
             CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
             String label = getBestCustomerTypeDescription(customerType, language);
             String value = customerTypeDetail.getCustomerTypeName();
@@ -326,7 +326,7 @@ public class CustomerControl
             
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
             
-            for(CustomerType customerType: customerTypes) {
+            for(CustomerType customerType : customerTypes) {
                 customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(customerType));
             }
         }
@@ -567,7 +567,7 @@ public class CustomerControl
             
             customerTypeDescriptionTransfers = new ArrayList<>(customerTypeDescriptions.size());
             
-            for(CustomerTypeDescription customerTypeDescription: customerTypeDescriptions) {
+            for(CustomerTypeDescription customerTypeDescription : customerTypeDescriptions) {
                 customerTypeDescriptionTransfers.add(customerTypeDescriptionTransferCache.getCustomerTypeDescriptionTransfer(customerTypeDescription));
             }
         }

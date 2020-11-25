@@ -145,7 +145,7 @@ public class BaseSelectorEvaluator {
         List<WorkflowEntityStatus> wess = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
         boolean result = false;
         
-        for(WorkflowEntityStatus wes: wess) {
+        for(WorkflowEntityStatus wes : wess) {
             if(wes.getWorkflowStep().equals(ws)) {
                 result = true;
                 break;

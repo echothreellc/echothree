@@ -336,7 +336,7 @@ public class CarrierControl
             }
         }
 
-        for(CarrierType carrierType: carrierTypes) {
+        for(CarrierType carrierType : carrierTypes) {
             CarrierTypeDetail carrierTypeDetail = carrierType.getLastDetail();
 
             String label = getBestCarrierTypeDescription(carrierType, language);
@@ -805,7 +805,7 @@ public class CarrierControl
             }
         }
 
-        for(Carrier carrier: carriers) {
+        for(Carrier carrier : carriers) {
             PartyGroup partyGroup = getPartyControl().getPartyGroup(carrier.getParty());
 
             String label = partyGroup.getName();
@@ -1082,7 +1082,7 @@ public class CarrierControl
             }
         }
         
-        for(CarrierService carrierService: carrierPartyPriorities) {
+        for(CarrierService carrierService : carrierPartyPriorities) {
             CarrierServiceDetail carrierServiceDetail = carrierService.getLastDetail();
             String label = getBestCarrierServiceDescription(carrierService, language);
             String value = carrierServiceDetail.getCarrierServiceName();
@@ -1566,7 +1566,7 @@ public class CarrierControl
             }
         }
         
-        for(CarrierOption carrierOption: carrierPartyPriorities) {
+        for(CarrierOption carrierOption : carrierPartyPriorities) {
             CarrierOptionDetail carrierOptionDetail = carrierOption.getLastDetail();
             String label = getBestCarrierOptionDescription(carrierOption, language);
             String value = carrierOptionDetail.getCarrierOptionName();

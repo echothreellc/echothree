@@ -1074,7 +1074,7 @@ public class InventoryControl
             }
         }
         
-        for(InventoryCondition inventoryCondition: inventoryConditions) {
+        for(InventoryCondition inventoryCondition : inventoryConditions) {
             var inventoryConditionDetail = inventoryCondition.getLastDetail();
 
             var label = getBestInventoryConditionDescription(inventoryCondition, language);
@@ -1109,7 +1109,7 @@ public class InventoryControl
             }
         }
         
-        for(InventoryConditionUse inventoryConditionUse: inventoryConditionUses) {
+        for(InventoryConditionUse inventoryConditionUse : inventoryConditionUses) {
             var inventoryCondition = inventoryConditionUse.getInventoryCondition();
             var inventoryConditionDetail = inventoryCondition.getLastDetail();
 
@@ -1437,7 +1437,7 @@ public class InventoryControl
             
             inventoryConditionUseTypeTransfers = new ArrayList<>(inventoryConditionUseTypes.size());
             
-            for(InventoryConditionUseType inventoryConditionUseType: inventoryConditionUseTypes) {
+            for(InventoryConditionUseType inventoryConditionUseType : inventoryConditionUseTypes) {
                 inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getTransfer(inventoryConditionUseType));
             }
         }
@@ -1704,7 +1704,7 @@ public class InventoryControl
             
             inventoryConditionUseTransfers = new ArrayList<>(inventoryConditionUses.size());
             
-            for(InventoryConditionUse inventoryConditionUse: inventoryConditionUses) {
+            for(InventoryConditionUse inventoryConditionUse : inventoryConditionUses) {
                 inventoryConditionUseTransfers.add(inventoryConditionUseTransferCache.getTransfer(inventoryConditionUse));
             }
         }
@@ -2461,7 +2461,7 @@ public class InventoryControl
             }
         }
 
-        for(AllocationPriority allocationPriority: allocationPriorities) {
+        for(AllocationPriority allocationPriority : allocationPriorities) {
             AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
 
             String label = getBestAllocationPriorityDescription(allocationPriority, language);

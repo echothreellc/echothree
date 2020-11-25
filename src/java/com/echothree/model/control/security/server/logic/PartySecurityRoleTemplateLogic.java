@@ -154,7 +154,7 @@ public class PartySecurityRoleTemplateLogic {
         if(partySecurityRoleTemplateUses.size() > 0) {
             var trainingControl = Session.getModelController(TrainingControl.class);
 
-            for(PartySecurityRoleTemplateUse partySecurityRoleTemplateUse: partySecurityRoleTemplateUses) {
+            for(PartySecurityRoleTemplateUse partySecurityRoleTemplateUse : partySecurityRoleTemplateUses) {
                 Party party = partySecurityRoleTemplateUse.getParty();
                 Set<PartyTrainingClass> partyTrainingClasses = trainingControl.getPartyTrainingClassesByStatuses(party, trainingClass,
                         PartyTrainingClassStatusConstants.WorkflowStep_ASSIGNED, PartyTrainingClassStatusConstants.WorkflowStep_TRAINING);

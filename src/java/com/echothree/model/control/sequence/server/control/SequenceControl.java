@@ -355,7 +355,7 @@ public class SequenceControl
             }
         }
         
-        for(SequenceType sequenceType: sequenceTypes) {
+        for(SequenceType sequenceType : sequenceTypes) {
             SequenceTypeDetail sequenceTypeDetail = sequenceType.getLastDetail();
             String label = getBestSequenceTypeDescription(sequenceType, language);
             String value = sequenceTypeDetail.getSequenceTypeName();
@@ -711,7 +711,7 @@ public class SequenceControl
             }
         }
         
-        for(SequenceChecksumType sequenceChecksumType: sequenceChecksumTypes) {
+        for(SequenceChecksumType sequenceChecksumType : sequenceChecksumTypes) {
             String label = getBestSequenceChecksumTypeDescription(sequenceChecksumType, language);
             String value = sequenceChecksumType.getSequenceChecksumTypeName();
             
@@ -849,7 +849,7 @@ public class SequenceControl
             }
         }
         
-        for(SequenceEncoderType sequenceEncoderType: sequenceEncoderTypes) {
+        for(SequenceEncoderType sequenceEncoderType : sequenceEncoderTypes) {
             String label = getBestSequenceEncoderTypeDescription(sequenceEncoderType, language);
             String value = sequenceEncoderType.getSequenceEncoderTypeName();
             
@@ -1128,7 +1128,7 @@ public class SequenceControl
             }
         }
         
-        for(Sequence sequence: sequences) {
+        for(Sequence sequence : sequences) {
             SequenceDetail sequenceDetail = sequence.getLastDetail();
             String label = getBestSequenceDescription(sequence, language);
             String value = sequenceDetail.getSequenceName();

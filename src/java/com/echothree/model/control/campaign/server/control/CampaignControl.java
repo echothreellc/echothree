@@ -410,7 +410,7 @@ public class CampaignControl
             }
         }
 
-        for(Campaign campaign: campaigns) {
+        for(Campaign campaign : campaigns) {
             CampaignDetail campaignDetail = campaign.getLastDetail();
 
             String label = getBestCampaignDescription(campaign, language);
@@ -926,7 +926,7 @@ public class CampaignControl
             }
         }
 
-        for(CampaignSource campaignSource: campaignSources) {
+        for(CampaignSource campaignSource : campaignSources) {
             CampaignSourceDetail campaignSourceDetail = campaignSource.getLastDetail();
 
             String label = getBestCampaignSourceDescription(campaignSource, language);
@@ -1442,7 +1442,7 @@ public class CampaignControl
             }
         }
 
-        for(CampaignMedium campaignMedium: campaignMediums) {
+        for(CampaignMedium campaignMedium : campaignMediums) {
             CampaignMediumDetail campaignMediumDetail = campaignMedium.getLastDetail();
 
             String label = getBestCampaignMediumDescription(campaignMedium, language);
@@ -1958,7 +1958,7 @@ public class CampaignControl
             }
         }
 
-        for(CampaignTerm campaignTerm: campaignTerms) {
+        for(CampaignTerm campaignTerm : campaignTerms) {
             CampaignTermDetail campaignTermDetail = campaignTerm.getLastDetail();
 
             String label = getBestCampaignTermDescription(campaignTerm, language);
@@ -2474,7 +2474,7 @@ public class CampaignControl
             }
         }
 
-        for(CampaignContent campaignContent: campaignContents) {
+        for(CampaignContent campaignContent : campaignContents) {
             CampaignContentDetail campaignContentDetail = campaignContent.getLastDetail();
 
             String label = getBestCampaignContentDescription(campaignContent, language);

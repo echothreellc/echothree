@@ -237,7 +237,7 @@ public class OrderAdjustmentControl
             }
         }
 
-        for(OrderAdjustmentType orderAdjustmentType: orderAdjustmentTypes) {
+        for(OrderAdjustmentType orderAdjustmentType : orderAdjustmentTypes) {
             OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
 
             String label = getBestOrderAdjustmentTypeDescription(orderAdjustmentType, language);

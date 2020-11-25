@@ -52,7 +52,7 @@ public class Conversion {
         long attemptMeasure = measure;
         
         if(!unitOfMeasureEquivalents.isEmpty()) {
-            for(UnitOfMeasureEquivalent unitOfMeasureEquivalent: unitOfMeasureEquivalents) {
+            for(UnitOfMeasureEquivalent unitOfMeasureEquivalent : unitOfMeasureEquivalents) {
                 long toQuantity = unitOfMeasureEquivalent.getToQuantity();
                 
                 // If there's no remainder, then check to see if its lower than the existing attemptMeasure

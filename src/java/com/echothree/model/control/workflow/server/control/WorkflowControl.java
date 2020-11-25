@@ -297,7 +297,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowType workflowType: workflowTypes) {
+        for(WorkflowType workflowType : workflowTypes) {
             String label = getBestWorkflowTypeDescription(workflowType, language);
             String value = workflowType.getWorkflowTypeName();
             
@@ -459,7 +459,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowStepType workflowStepType: workflowStepTypes) {
+        for(WorkflowStepType workflowStepType : workflowStepTypes) {
             String label = getBestWorkflowStepTypeDescription(workflowStepType, language);
             String value = workflowStepType.getWorkflowStepTypeName();
             
@@ -974,7 +974,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowStep workflowStep: workflowSteps) {
+        for(WorkflowStep workflowStep : workflowSteps) {
             WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
             
             String label = getBestWorkflowStepDescription(workflowStep, language);
@@ -1619,7 +1619,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowEntrance workflowEntrance: workflowEntrances) {
+        for(WorkflowEntrance workflowEntrance : workflowEntrances) {
             if(workflowSecurityLogic.checkWorkflowEntranceAvailable(workflowEntrance, partyPK)) {
                 WorkflowEntranceDetail workflowEntranceDetail = workflowEntrance.getLastDetail();
 
@@ -2732,7 +2732,7 @@ public class WorkflowControl
             }
         }
         
-        for(WorkflowDestination workflowDestination: workflowDestinations) {
+        for(WorkflowDestination workflowDestination : workflowDestinations) {
             if(workflowSecurityLogic.checkWorkflowDestinationAvailable(workflowDestination, partyPK)) {
                 WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getLastDetail();
 

@@ -215,7 +215,7 @@ public class PaymentProcessorActionTypeControl
             }
         }
 
-        for(PaymentProcessorActionType paymentProcessorActionType: paymentProcessorActionTypes) {
+        for(PaymentProcessorActionType paymentProcessorActionType : paymentProcessorActionTypes) {
             var paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetail();
 
             var label = getBestPaymentProcessorActionTypeDescription(paymentProcessorActionType, language);

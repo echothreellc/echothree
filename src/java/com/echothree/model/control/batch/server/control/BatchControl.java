@@ -319,7 +319,7 @@ public class BatchControl
             }
         }
         
-        for(BatchType batchType: batchTypes) {
+        for(BatchType batchType : batchTypes) {
             BatchTypeDetail batchTypeDetail = batchType.getLastDetail();
             
             String label = getBestBatchTypeDescription(batchType, language);
@@ -947,7 +947,7 @@ public class BatchControl
             }
         }
         
-        for(BatchAliasType batchAliasType: batchAliasTypes) {
+        for(BatchAliasType batchAliasType : batchAliasTypes) {
             BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetail();
             
             String label = getBestBatchAliasTypeDescription(batchAliasType, language);

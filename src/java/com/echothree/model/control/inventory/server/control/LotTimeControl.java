@@ -229,7 +229,7 @@ public class LotTimeControl
             }
         }
 
-        for(LotTimeType lotTimeType: lotTimeTypes) {
+        for(LotTimeType lotTimeType : lotTimeTypes) {
             LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
 
             String label = getBestLotTimeTypeDescription(lotTimeType, language);

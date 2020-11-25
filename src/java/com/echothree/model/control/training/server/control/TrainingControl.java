@@ -370,7 +370,7 @@ public class TrainingControl
             }
         }
         
-        for(TrainingClass trainingClass: trainingClasses) {
+        for(TrainingClass trainingClass : trainingClasses) {
             TrainingClassDetail trainingClassDetail = trainingClass.getLastDetail();
             String trainingClassName = trainingClassDetail.getTrainingClassName();
             TrainingClassTranslation trainingClassTranslation = getBestTrainingClassTranslation(trainingClass, language);

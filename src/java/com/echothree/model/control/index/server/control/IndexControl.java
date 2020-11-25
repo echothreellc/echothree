@@ -330,7 +330,7 @@ public class IndexControl
             }
         }
 
-        for(IndexType indexType: indexTypes) {
+        for(IndexType indexType : indexTypes) {
             IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
 
             String label = getBestIndexTypeDescription(indexType, language);
@@ -748,7 +748,7 @@ public class IndexControl
             }
         }
 
-        for(IndexField indexField: indexFields) {
+        for(IndexField indexField : indexFields) {
             IndexFieldDetail indexFieldDetail = indexField.getLastDetail();
             String label = getBestIndexFieldDescription(indexField, language);
             String value = indexFieldDetail.getIndexFieldName();
@@ -1316,7 +1316,7 @@ public class IndexControl
             }
         }
 
-        for(Index index: indexes) {
+        for(Index index : indexes) {
             IndexDetail indexDetail = index.getLastDetail();
 
             String label = getBestIndexDescription(index, language);

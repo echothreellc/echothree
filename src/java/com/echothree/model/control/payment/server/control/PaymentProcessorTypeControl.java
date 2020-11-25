@@ -217,7 +217,7 @@ public class PaymentProcessorTypeControl
             }
         }
 
-        for(PaymentProcessorType paymentProcessorType: paymentProcessorTypes) {
+        for(PaymentProcessorType paymentProcessorType : paymentProcessorTypes) {
             var paymentProcessorTypeDetail = paymentProcessorType.getLastDetail();
 
             var label = getBestPaymentProcessorTypeDescription(paymentProcessorType, language);

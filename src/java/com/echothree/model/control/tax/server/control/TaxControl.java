@@ -286,7 +286,7 @@ public class TaxControl
             }
         }
         
-        for(TaxClassification taxClassification: taxClassificationes) {
+        for(TaxClassification taxClassification : taxClassificationes) {
             TaxClassificationDetail taxClassificationDetail = taxClassification.getLastDetail();
             String taxClassificationName = taxClassificationDetail.getTaxClassificationName();
             TaxClassificationTranslation taxClassificationTranslation = getBestTaxClassificationTranslation(taxClassification, language);

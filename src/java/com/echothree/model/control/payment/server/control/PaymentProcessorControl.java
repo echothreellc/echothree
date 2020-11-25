@@ -224,7 +224,7 @@ public class PaymentProcessorControl
             values.add("");
         }
         
-        for(PaymentProcessor paymentProcessor: paymentProcessors) {
+        for(PaymentProcessor paymentProcessor : paymentProcessors) {
             PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetail();
             String label = getBestPaymentProcessorDescription(paymentProcessor, language);
             String value = paymentProcessorDetail.getPaymentProcessorName();

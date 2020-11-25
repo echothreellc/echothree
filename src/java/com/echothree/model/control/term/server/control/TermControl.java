@@ -154,7 +154,7 @@ public class TermControl
             }
         }
         
-        for(TermType termType: termTypes) {
+        for(TermType termType : termTypes) {
             String label = getBestTermTypeDescription(termType, language);
             String value = termType.getTermTypeName();
             
@@ -380,7 +380,7 @@ public class TermControl
             }
         }
         
-        for(Term term: terms) {
+        for(Term term : terms) {
             TermDetail termDetail = term.getLastDetail();
             
             String label = getBestTermDescription(term, language);

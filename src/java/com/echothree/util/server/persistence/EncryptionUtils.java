@@ -230,7 +230,7 @@ public class EncryptionUtils {
 
         List<EntityEncryptionKey> entityEncryptionKeys = coreControl.getEntityEncryptionKeysForUpdate();
 
-        for(EntityEncryptionKey entityEncryptionKey: entityEncryptionKeys) {
+        for(EntityEncryptionKey entityEncryptionKey : entityEncryptionKeys) {
             BaseEncoding baseEncoding = BaseEncoding.base64();
             byte[] encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
             byte[] encryptedIv = baseEncoding.decode(entityEncryptionKey.getInitializationVector());

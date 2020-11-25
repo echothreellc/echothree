@@ -278,7 +278,7 @@ public class ScaleControl
             }
         }
 
-        for(ScaleType scaleType: scaleTypes) {
+        for(ScaleType scaleType : scaleTypes) {
             ScaleTypeDetail scaleTypeDetail = scaleType.getLastDetail();
 
             String label = getBestScaleTypeDescription(scaleType, language);
@@ -764,7 +764,7 @@ public class ScaleControl
             }
         }
 
-        for(Scale scale: scales) {
+        for(Scale scale : scales) {
             ScaleDetail scaleDetail = scale.getLastDetail();
 
             String label = getBestScaleDescription(scale, language);
@@ -1208,7 +1208,7 @@ public class ScaleControl
             }
         }
 
-        for(ScaleUseType scaleUseType: scaleUseTypes) {
+        for(ScaleUseType scaleUseType : scaleUseTypes) {
             ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getLastDetail();
 
             String label = getBestScaleUseTypeDescription(scaleUseType, language);

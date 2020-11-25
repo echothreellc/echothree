@@ -66,7 +66,7 @@ public class WorkflowSecurityLogic {
                     checkPassed = true;
                 } else {
                     // Otherwise, check each individual Security Role.
-                    for(WorkflowEntranceSecurityRole workflowEntranceSecurityRole: workflowEntranceSecurityRoles) {
+                    for(WorkflowEntranceSecurityRole workflowEntranceSecurityRole : workflowEntranceSecurityRoles) {
                         if(securityControl.partySecurityRoleExists(partyPK, workflowEntranceSecurityRole.getSecurityRolePK())) {
                             // The Party has one of the required Security Roles, allow the transition and stop further checking.
                             checkPassed = true;
@@ -111,7 +111,7 @@ public class WorkflowSecurityLogic {
                     checkPassed = true;
                 } else {
                     // Otherwise, check each individual Security Role.
-                    for(WorkflowDestinationSecurityRole workflowDestinationSecurityRole: workflowDestinationSecurityRoles) {
+                    for(WorkflowDestinationSecurityRole workflowDestinationSecurityRole : workflowDestinationSecurityRoles) {
                         if(securityControl.partySecurityRoleExists(partyPK, workflowDestinationSecurityRole.getSecurityRolePK())) {
                             // The Party has one of the required Security Roles, allow the transition and stop further checking.
                             checkPassed = true;

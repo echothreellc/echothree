@@ -345,7 +345,7 @@ public class TrackControl
             }
         }
 
-        for(Track track: tracks) {
+        for(Track track : tracks) {
             TrackDetail trackDetail = track.getLastDetail();
 
             String label = getBestTrackDescription(track, language);

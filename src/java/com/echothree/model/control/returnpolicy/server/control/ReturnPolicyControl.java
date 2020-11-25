@@ -474,7 +474,7 @@ public class ReturnPolicyControl
             }
         }
         
-        for(ReturnKind returnKind: returnKinds) {
+        for(ReturnKind returnKind : returnKinds) {
             ReturnKindDetail returnKindDetail = returnKind.getLastDetail();
             
             String label = getBestReturnKindDescription(returnKind, language);
@@ -910,7 +910,7 @@ public class ReturnPolicyControl
             }
         }
         
-        for(ReturnPolicy returnPolicy: returnPolicies) {
+        for(ReturnPolicy returnPolicy : returnPolicies) {
             ReturnPolicyDetail returnPolicyDetail = returnPolicy.getLastDetail();
             String returnPolicyName = returnPolicyDetail.getReturnPolicyName();
             ReturnPolicyTranslation returnPolicyTranslation = getBestReturnPolicyTranslation(returnPolicy, language);
@@ -1657,7 +1657,7 @@ public class ReturnPolicyControl
             }
         }
         
-        for(ReturnReason returnReason: returnReasons) {
+        for(ReturnReason returnReason : returnReasons) {
             ReturnReasonDetail returnReasonDetail = returnReason.getLastDetail();
             String label = getBestReturnReasonDescription(returnReason, language);
             String value = returnReasonDetail.getReturnReasonName();
@@ -2400,7 +2400,7 @@ public class ReturnPolicyControl
             }
         }
         
-        for(ReturnType returnType: returnTypes) {
+        for(ReturnType returnType : returnTypes) {
             ReturnTypeDetail returnTypeDetail = returnType.getLastDetail();
             String label = getBestReturnTypeDescription(returnType, language);
             String value = returnTypeDetail.getReturnTypeName();

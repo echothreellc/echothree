@@ -243,7 +243,7 @@ public class OrderTimeControl
             }
         }
 
-        for(OrderTimeType orderTimeType: orderTimeTypes) {
+        for(OrderTimeType orderTimeType : orderTimeTypes) {
             OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getLastDetail();
 
             String label = getBestOrderTimeTypeDescription(orderTimeType, language);

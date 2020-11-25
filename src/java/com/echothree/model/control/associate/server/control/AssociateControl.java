@@ -263,7 +263,7 @@ public class AssociateControl
             }
         }
         
-        for(AssociateProgram associateProgram: associatePrograms) {
+        for(AssociateProgram associateProgram : associatePrograms) {
             AssociateProgramDetail associateProgramDetail = associateProgram.getLastDetail();
             
             String label = getBestAssociateProgramDescription(associateProgram, language);
@@ -666,7 +666,7 @@ public class AssociateControl
             }
         }
         
-        for(Associate associate: associates) {
+        for(Associate associate : associates) {
             AssociateDetail associateDetail = associate.getLastDetail();
             
             String label = associateDetail.getDescription();
@@ -974,7 +974,7 @@ public class AssociateControl
             }
         }
         
-        for(AssociatePartyContactMechanism associatePartyContactMechanism: associatePartyContactMechanisms) {
+        for(AssociatePartyContactMechanism associatePartyContactMechanism : associatePartyContactMechanisms) {
             AssociatePartyContactMechanismDetail associatePartyContactMechanismDetail = associatePartyContactMechanism.getLastDetail();
             
             String label = associatePartyContactMechanismDetail.getAssociatePartyContactMechanismName();

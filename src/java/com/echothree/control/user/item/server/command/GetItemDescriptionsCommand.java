@@ -111,7 +111,7 @@ public class GetItemDescriptionsCommand
 
                         itemDescriptions = new ArrayList<>();
 
-                        for(ItemDescriptionTypeUse itemDescriptionTypeUse: itemDescriptionTypeUses) {
+                        for(ItemDescriptionTypeUse itemDescriptionTypeUse : itemDescriptionTypeUses) {
                             ItemDescription itemDescription = itemControl.getBestItemDescription(itemDescriptionTypeUse.getItemDescriptionType(), item, language);
 
                             if(itemDescription != null) {

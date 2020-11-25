@@ -361,7 +361,7 @@ public class SecurityControl
             }
         }
         
-        for(SecurityRoleGroup securityRoleGroup: securityRoleGroups) {
+        for(SecurityRoleGroup securityRoleGroup : securityRoleGroups) {
             SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
             String value = securityRoleGroupDetail.getSecurityRoleGroupName();
             
@@ -878,7 +878,7 @@ public class SecurityControl
             }
         }
         
-        for(SecurityRole securityRole: securityRoles) {
+        for(SecurityRole securityRole : securityRoles) {
             SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
             String label = getBestSecurityRoleDescription(securityRole, language);
             String value = securityRoleDetail.getSecurityRoleName();
@@ -1502,7 +1502,7 @@ public class SecurityControl
             }
         }
         
-        for(PartySecurityRoleTemplate partySecurityRoleTemplate: partySecurityRoleTemplates) {
+        for(PartySecurityRoleTemplate partySecurityRoleTemplate : partySecurityRoleTemplates) {
             PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
             String label = getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
             String value = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();

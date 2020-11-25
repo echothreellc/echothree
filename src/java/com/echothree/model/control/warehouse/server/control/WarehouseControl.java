@@ -335,7 +335,7 @@ public class WarehouseControl
             }
         }
 
-        for(Warehouse warehouse: partyCompanies) {
+        for(Warehouse warehouse : partyCompanies) {
             PartyGroup partyGroup = getPartyControl().getPartyGroup(warehouse.getParty());
 
             String label = partyGroup.getName();
@@ -504,7 +504,7 @@ public class WarehouseControl
             }
         }
         
-        for(LocationUseType locationUseType: locationUseTypes) {
+        for(LocationUseType locationUseType : locationUseTypes) {
             String label = getBestLocationUseTypeDescription(locationUseType, language);
             String value = locationUseType.getLocationUseTypeName();
             

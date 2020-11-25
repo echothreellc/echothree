@@ -338,7 +338,7 @@ public class ChainControl
             }
         }
 
-        for(ChainKind chainKind: chainKinds) {
+        for(ChainKind chainKind : chainKinds) {
             ChainKindDetail chainKindDetail = chainKind.getLastDetail();
 
             String label = getBestChainKindDescription(chainKind, language);
@@ -782,7 +782,7 @@ public class ChainControl
             }
         }
 
-        for(ChainType chainType: chainTypes) {
+        for(ChainType chainType : chainTypes) {
             ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
             String label = getBestChainTypeDescription(chainType, language);
             String value = chainTypeDetail.getChainTypeName();
@@ -1549,7 +1549,7 @@ public class ChainControl
             }
         }
 
-        for(Chain chain: chains) {
+        for(Chain chain : chains) {
             ChainDetail chainDetail = chain.getLastDetail();
             String label = getBestChainDescription(chain, language);
             String value = chainDetail.getChainName();
@@ -1984,7 +1984,7 @@ public class ChainControl
             }
         }
 
-        for(ChainActionSet chainActionSet: chainActionSets) {
+        for(ChainActionSet chainActionSet : chainActionSets) {
             ChainActionSetDetail chainActionSetDetail = chainActionSet.getLastDetail();
             String label = getBestChainActionSetDescription(chainActionSet, language);
             String value = chainActionSetDetail.getChainActionSetName();
@@ -2403,7 +2403,7 @@ public class ChainControl
             }
         }
 
-        for(ChainActionType chainActionType: chainActionTypes) {
+        for(ChainActionType chainActionType : chainActionTypes) {
             ChainActionTypeDetail chainActionTypeDetail = chainActionType.getLastDetail();
 
             String label = getBestChainActionTypeDescription(chainActionType, language);

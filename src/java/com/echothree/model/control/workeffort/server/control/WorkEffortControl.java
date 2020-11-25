@@ -603,7 +603,7 @@ public class WorkEffortControl
             }
         }
         
-        for(WorkEffortScope workEffortScope: workEffortScopes) {
+        for(WorkEffortScope workEffortScope : workEffortScopes) {
             WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetail();
             String label = getBestWorkEffortScopeDescription(workEffortScope, language);
             String value = workEffortScopeDetail.getWorkEffortScopeName();
