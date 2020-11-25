@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import static java.lang.Math.toIntExact;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -38,16 +39,16 @@ public class ParameterUtils
         return ParameterUtils.ParameterUtilsHolder.instance;
     }
 
-    public long countNonNullParameters(Object... objects) {
-        return Arrays.stream(objects)
+    public int countNonNullParameters(Object... objects) {
+        return toIntExact(Arrays.stream(objects)
                 .filter(Objects::nonNull)
-                .count();
+                .count());
     }
 
-    public long countNullParameters(Object... objects) {
-        return Arrays.stream(objects)
+    public int countNullParameters(Object... objects) {
+        return toIntExact(Arrays.stream(objects)
                 .filter(Objects::isNull)
-                .count();
+                .count());
     }
 
     public boolean isExactlyOneBooleanTrue(Boolean... booleans) {
