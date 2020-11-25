@@ -483,7 +483,7 @@ public abstract class BaseCommand
 
         setupSession();
 
-        SecurityResult securityResult;
+        SecurityResult securityResult = null;
         ValidationResult validationResult = null;
         ExecutionResult executionResult;
         CommandResult commandResult;
