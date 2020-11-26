@@ -128,7 +128,7 @@ public class CreateSequenceTypeCommand
             result.setEntityRef(sequenceType.getPrimaryKey().getEntityRef());
         }
 
-        return null;
+        return result;
     }
     
 }
