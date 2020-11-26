@@ -20,8 +20,8 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.sequence.server.entity.SequenceTypeDetail;
+import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.sequence.server.entity.SequenceDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -29,78 +29,66 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("sequence type object")
-@GraphQLName("SequenceType")
-public class SequenceTypeObject
+@GraphQLDescription("sequence object")
+@GraphQLName("Sequence")
+public class SequenceObject
         extends BaseEntityInstanceObject {
 
-    private final SequenceType sequenceType; // Always Present
+    private final Sequence sequence; // Always Present
 
-    public SequenceTypeObject(SequenceType sequenceType) {
-        super(sequenceType.getPrimaryKey());
+    public SequenceObject(Sequence sequence) {
+        super(sequence.getPrimaryKey());
 
-        this.sequenceType = sequenceType;
+        this.sequence = sequence;
     }
 
-    private SequenceTypeDetail sequenceTypeDetail; // Optional, sequenceType getSequenceTypeDetail()
+    private SequenceDetail sequenceDetail; // Optional, sequence getSequenceDetail()
 
-    private SequenceTypeDetail getSequenceTypeDetail() {
-        if(sequenceTypeDetail == null) {
-            sequenceTypeDetail = sequenceType.getLastDetail();
+    private SequenceDetail getSequenceDetail() {
+        if(sequenceDetail == null) {
+            sequenceDetail = sequence.getLastDetail();
         }
 
-        return sequenceTypeDetail;
+        return sequenceDetail;
     }
 
     @GraphQLField
-    @GraphQLDescription("sequence type name")
-    public String getSequenceTypeName() {
-        return getSequenceTypeDetail().getSequenceTypeName();
+    @GraphQLDescription("sequence type")
+    public SequenceTypeObject getSequenceType(final DataFetchingEnvironment env) {
+        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getSequenceDetail().getSequenceType()) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("prefix")
-    public String getPrefix() {
-        return getSequenceTypeDetail().getPrefix();
+    @GraphQLDescription("sequence name")
+    public String getSequenceName() {
+        return getSequenceDetail().getSequenceName();
     }
 
     @GraphQLField
-    @GraphQLDescription("suffix")
-    public String getSuffix() {
-        return getSequenceTypeDetail().getSuffix();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("sequence encoder type")
-    public SequenceEncoderTypeObject getSequenceEncoderType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceEncoderTypeAccess(env) ? new SequenceEncoderTypeObject(getSequenceTypeDetail().getSequenceEncoderType()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("sequence checksum type")
-    public SequenceChecksumTypeObject getSequenceChecksumType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceChecksumTypeAccess(env) ? new SequenceChecksumTypeObject(getSequenceTypeDetail().getSequenceChecksumType()) : null;
+    @GraphQLDescription("mask")
+    public String getMask() {
+        return getSequenceDetail().getMask();
     }
 
     @GraphQLField
     @GraphQLDescription("chunk size")
     @GraphQLNonNull
     public int getChunkSize() {
-        return getSequenceTypeDetail().getChunkSize();
+        return getSequenceDetail().getChunkSize();
     }
 
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getSequenceTypeDetail().getIsDefault();
+        return getSequenceDetail().getIsDefault();
     }
 
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getSequenceTypeDetail().getSortOrder();
+        return getSequenceDetail().getSortOrder();
     }
 
     @GraphQLField
@@ -111,7 +99,7 @@ public class SequenceTypeObject
         var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
 
-        return sequenceControl.getBestSequenceTypeDescription(sequenceType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+        return sequenceControl.getBestSequenceDescription(sequence, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
 
 }

@@ -58,7 +58,9 @@ import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.server.graphql.SearchCustomersResultObject;
 import com.echothree.control.user.sequence.common.SequenceUtil;
+import com.echothree.control.user.sequence.common.result.CreateSequenceResult;
 import com.echothree.control.user.sequence.common.result.CreateSequenceTypeResult;
+import com.echothree.control.user.sequence.common.result.EditSequenceResult;
 import com.echothree.control.user.sequence.common.result.EditSequenceTypeResult;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
@@ -81,6 +83,149 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createSequence(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
+            @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
+            @GraphQLName("chunkSize") final String chunkSize,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("value") @GraphQLNonNull final String value,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = SequenceUtil.getHome().getCreateSequenceForm();
+
+            commandForm.setSequenceName(sequenceName);
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setChunkSize(chunkSize);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setValue(value);
+            commandForm.setDescription(description);
+
+            var commandResult = SequenceUtil.getHome().createSequence(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateSequenceResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteSequence(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
+            @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SequenceUtil.getHome().getDeleteSequenceForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setSequenceName(sequenceName);
+
+            var commandResult = SequenceUtil.getHome().deleteSequence(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editSequence(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
+            @GraphQLName("originalSequenceName") final String originalSequenceName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("sequenceName") final String sequenceName,
+            @GraphQLName("chunkSize") final String chunkSize,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = SequenceUtil.getHome().getSequenceUniversalSpec();
+
+            spec.setSequenceTypeName(sequenceTypeName);
+            spec.setSequenceName(originalSequenceName);
+            spec.setUlid(id);
+
+            var commandForm = SequenceUtil.getHome().getEditSequenceForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSequenceResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getSequence().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("sequenceName"))
+                    edit.setSequenceName(sequenceName);
+                if(arguments.containsKey("chunkSize"))
+                    edit.setChunkSize(chunkSize);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultSequence(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
+            @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SequenceUtil.getHome().getSetDefaultSequenceForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setSequenceName(sequenceName);
+
+            var commandResult = SequenceUtil.getHome().setDefaultSequence(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
 
     @GraphQLField
     @GraphQLRelayMutation
