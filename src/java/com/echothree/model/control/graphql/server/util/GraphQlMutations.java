@@ -226,6 +226,29 @@ public class GraphQlMutations
         return commandResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSequenceValue(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
+            @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
+            @GraphQLName("value") @GraphQLNonNull final String value) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SequenceUtil.getHome().getSetSequenceValueForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setSequenceName(sequenceName);
+            commandForm.setValue(value);
+
+            var commandResult = SequenceUtil.getHome().setSequenceValue(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation
