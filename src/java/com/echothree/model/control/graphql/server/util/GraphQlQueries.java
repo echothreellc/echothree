@@ -300,6 +300,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("sequence")
     public static SequenceObject sequence(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName,
             @GraphQLName("sequenceName") final String sequenceName,
             @GraphQLName("id") final String id) {
         Sequence sequence;
@@ -307,6 +308,7 @@ public final class GraphQlQueries
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceForm();
 
+            commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
             commandForm.setUlid(id);
 
@@ -320,12 +322,15 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequences")
-    public static Collection<SequenceObject> sequences(final DataFetchingEnvironment env) {
+    public static Collection<SequenceObject> sequences(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName) {
         Collection<Sequence> sequences;
         Collection<SequenceObject> sequenceObjects;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequencesForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
 
             sequences = new GetSequencesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
