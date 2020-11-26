@@ -92,6 +92,14 @@ public class SequenceObject
     }
 
     @GraphQLField
+    @GraphQLDescription("value")
+    public String getValue() {
+        var sequenceControl = Session.getModelController(SequenceControl.class);
+
+        return sequenceControl.getSequenceValue(sequence).getValue();
+    }
+
+    @GraphQLField
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
