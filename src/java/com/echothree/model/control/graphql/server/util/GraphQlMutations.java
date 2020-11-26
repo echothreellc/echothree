@@ -206,7 +206,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultSequence(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultSequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName) {
         var commandResultObject = new CommandResultObject();
@@ -361,7 +361,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultSequenceType(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultSequenceType(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName) {
         var commandResultObject = new CommandResultObject();
 
@@ -607,7 +607,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultOffer(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultOffer(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName) {
         var commandResultObject = new CommandResultObject();
 
@@ -739,7 +739,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultUse(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultUse(final DataFetchingEnvironment env,
             @GraphQLName("useName") @GraphQLNonNull final String useName) {
         var commandResultObject = new CommandResultObject();
 
@@ -1090,7 +1090,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultUseType(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultUseType(final DataFetchingEnvironment env,
             @GraphQLName("useTypeName") @GraphQLNonNull final String useTypeName) {
         var commandResultObject = new CommandResultObject();
 
@@ -1217,7 +1217,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultFreeOnBoard(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultFreeOnBoard(final DataFetchingEnvironment env,
             @GraphQLName("freeOnBoardName") @GraphQLNonNull final String freeOnBoardName) {
         var commandResultObject = new CommandResultObject();
 
@@ -1451,7 +1451,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultPaymentProcessorType(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultPaymentProcessorType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") @GraphQLNonNull final String paymentProcessorTypeName) {
         var commandResultObject = new CommandResultObject();
 
@@ -1578,7 +1578,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultPaymentMethodType(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultPaymentMethodType(final DataFetchingEnvironment env,
             @GraphQLName("paymentMethodTypeName") @GraphQLNonNull final String paymentMethodTypeName) {
         var commandResultObject = new CommandResultObject();
 
@@ -1705,7 +1705,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultPaymentProcessorResultCode(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultPaymentProcessorResultCode(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorResultCodeName") @GraphQLNonNull final String paymentProcessorResultCodeName) {
         var commandResultObject = new CommandResultObject();
 
@@ -1832,7 +1832,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultPaymentProcessorActionType(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultPaymentProcessorActionType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorActionTypeName") @GraphQLNonNull final String paymentProcessorActionTypeName) {
         var commandResultObject = new CommandResultObject();
 
@@ -1959,7 +1959,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultInventoryCondition(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultInventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName) {
         var commandResultObject = new CommandResultObject();
 
@@ -2086,7 +2086,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetDefaultContentPageLayout(final DataFetchingEnvironment env,
+    public static CommandResultObject setDefaultContentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("contentPageLayoutName") @GraphQLNonNull final String contentPageLayoutName) {
         var commandResultObject = new CommandResultObject();
 
@@ -2106,7 +2106,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetUserVisitPreferredLanguage(final DataFetchingEnvironment env,
+    public static CommandResultObject setUserVisitPreferredLanguage(final DataFetchingEnvironment env,
             @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
         var commandResultObject = new CommandResultObject();
 
@@ -2126,7 +2126,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetUserVisitPreferredCurrency(final DataFetchingEnvironment env,
+    public static CommandResultObject setUserVisitPreferredCurrency(final DataFetchingEnvironment env,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
         var commandResultObject = new CommandResultObject();
 
@@ -2146,7 +2146,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetUserVisitPreferredTimeZone(final DataFetchingEnvironment env,
+    public static CommandResultObject setUserVisitPreferredTimeZone(final DataFetchingEnvironment env,
             @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName) {
         var commandResultObject = new CommandResultObject();
 
@@ -2166,7 +2166,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setSetUserVisitPreferredDateTimeFormat(final DataFetchingEnvironment env,
+    public static CommandResultObject setUserVisitPreferredDateTimeFormat(final DataFetchingEnvironment env,
             @GraphQLName("dateTimeFormatName") @GraphQLNonNull final String dateTimeFormatName) {
         var commandResultObject = new CommandResultObject();
 
