@@ -1,5 +1,13 @@
 # Changelog
 
+## 2020-11-29-01
+
+* jOOQ 3.14.3 Upgrade [179](https://gitlab.echothree.com/echothree/echothree/-/issues/179)
+* WildFly 21.0.1 Upgrade [180](https://gitlab.echothree.com/echothree/echothree/-/issues/180)
+* AssertJ 3.18.1 Upgrade [181](https://gitlab.echothree.com/echothree/echothree/-/issues/181)
+* graphql-java-annotations 8.3 Upgrade [183](https://gitlab.echothree.com/echothree/echothree/-/issues/183)
+* MySQL Connector/J 8.0.22 Upgrade [185](https://gitlab.echothree.com/echothree/echothree/-/issues/185)
+
 ## 2020-11-15-01
 
 * GraphQL Objects and Mutations for Sequence Types [171](https://gitlab.echothree.com/echothree/echothree/-/issues/171)

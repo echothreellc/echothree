@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class EntityIdGenerator {
     
@@ -30,7 +31,9 @@ public class EntityIdGenerator {
     
     static private final int defaultChunkSize = 100;
     static private final int retryCount = 5;
-    
+
+    private final ReentrantLock lock = new ReentrantLock(true);
+
     private String componentVendorName;
     private String entityTypeName;
     private int chunkSize;
@@ -128,23 +131,29 @@ public class EntityIdGenerator {
         }
     }
     
-    public synchronized long getNextEntityId() {
-        if(currentValue == guardedValue) {
-            try {
-                for(var iter = 0; iter <= retryCount; iter++) {
-                    if(getNewChunk())
-                        break;
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        }
-        
-        if(currentValue == guardedValue) {
-            throw new PersistenceDatabaseException("Could not get next increment value");
-        }
+    public long getNextEntityId() {
+        lock.lock();
 
-        return ++currentValue;
+        try {
+            if(currentValue == guardedValue) {
+                try {
+                    for(var iter = 0; iter <= retryCount; iter++) {
+                        if(getNewChunk())
+                            break;
+                    }
+                } catch (SQLException se) {
+                    throw new PersistenceDatabaseException(se);
+                }
+            }
+
+            if(currentValue == guardedValue) {
+                throw new PersistenceDatabaseException("Could not get next increment value");
+            }
+
+            return ++currentValue;
+        } finally {
+            lock.unlock();
+        }
     }
     
 }
