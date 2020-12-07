@@ -291,7 +291,7 @@ public class PaymentMethodControl
             values.add("");
         }
 
-        for(PaymentMethod paymentMethod: paymentMethods) {
+        for(var paymentMethod : paymentMethods) {
             PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetail();
             String label = getBestPaymentMethodDescription(paymentMethod, language);
             String value = paymentMethodDetail.getPaymentMethodName();

@@ -17,16 +17,17 @@
 package com.echothree.control.user.sequence.server.command;
 
 import com.echothree.control.user.sequence.common.form.CreateSequenceForm;
+import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,24 +69,31 @@ public class CreateSequenceCommand
     
     @Override
     protected BaseResult execute() {
-        String sequenceTypeName = form.getSequenceTypeName();
-        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, sequenceTypeName);
-        
+        var result = SequenceResultFactory.getCreateSequenceResult();
+        var sequenceTypeName = form.getSequenceTypeName();
+        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, sequenceTypeName);
+        Sequence sequence = null;
+
         if(!hasExecutionErrors()) {
-            String sequenceName = form.getSequenceName();
-            String mask = form.getMask();
-            String value = form.getValue();
-            String rawChunkSize = form.getChunkSize();
-            Integer chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
+            var sequenceName = form.getSequenceName();
+            var mask = form.getMask();
+            var value = form.getValue();
+            var rawChunkSize = form.getChunkSize();
+            var chunkSize = rawChunkSize == null? null: Integer.valueOf(rawChunkSize);
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
 
-            SequenceLogic.getInstance().createSequence(this, sequenceType, sequenceName, value, mask, chunkSize, isDefault,
+            sequence = SequenceLogic.getInstance().createSequence(this, sequenceType, sequenceName, value, mask, chunkSize, isDefault,
                     sortOrder, description, getPreferredLanguage(), getPartyPK());
         }
-        
-        return null;
+
+        if(sequence != null && !hasExecutionErrors()) {
+            result.setSequenceName(sequence.getLastDetail().getSequenceName());
+            result.setEntityRef(sequence.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

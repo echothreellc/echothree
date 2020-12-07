@@ -286,7 +286,7 @@ public class TaxControl
             }
         }
         
-        for(TaxClassification taxClassification: taxClassificationes) {
+        for(var taxClassification : taxClassificationes) {
             TaxClassificationDetail taxClassificationDetail = taxClassification.getLastDetail();
             String taxClassificationName = taxClassificationDetail.getTaxClassificationName();
             TaxClassificationTranslation taxClassificationTranslation = getBestTaxClassificationTranslation(taxClassification, language);
@@ -1157,7 +1157,7 @@ public class TaxControl
         if(taxDescriptions != null) {
             taxDescriptionTransfers = new ArrayList<>(taxDescriptions.size());
             
-            for(TaxDescription taxDescription : taxDescriptions) {
+            for(var taxDescription : taxDescriptions) {
                 taxDescriptionTransfers.add(getTaxTransferCaches(userVisit).getTaxDescriptionTransferCache().getTransfer(taxDescription));
             }
         }

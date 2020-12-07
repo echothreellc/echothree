@@ -53,7 +53,7 @@ public class IndexSpellCheck
     private boolean hasNonNullElements(Collection<?> collection) {
         boolean result = false;
         
-        for(Object o : collection) {
+        for(var o : collection) {
             if(o != null) {
                 result = true;
                 break;
@@ -90,7 +90,7 @@ public class IndexSpellCheck
 
         suggestions = new ArrayList<>(words.size());
 
-        for(String word : words) {
+        for(var word : words) {
             List<CheckSpellingSuggestionTransfer> checkSpellingSuggestions = null;
             String analyzedWord = analyzedWordsIter.next();
 
@@ -117,7 +117,7 @@ public class IndexSpellCheck
                         getLog().info("    Suggestions:");
                     }
 
-                    for(SuggestWord suggestWord : suggestWords) {
+                    for(var suggestWord : suggestWords) {
                         if(EvaluatorDebugFlags.LogCheckSpelling) {
                             getLog().info("      " + suggestWord.string + ", " + suggestWord.freq + ", " + suggestWord.score);
                         }

@@ -233,7 +233,7 @@ public class OrderAliasControl
             }
         }
 
-        for(OrderAliasType orderAliasType: orderAliasTypes) {
+        for(var orderAliasType : orderAliasTypes) {
             OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
 
             String label = getBestOrderAliasTypeDescription(orderAliasType, language);

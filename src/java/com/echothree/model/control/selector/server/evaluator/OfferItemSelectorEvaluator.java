@@ -155,12 +155,12 @@ public class OfferItemSelectorEvaluator
                 // New item in this offer, create it, don't worry about sync'ing prices.
                 offerItem = OfferItemLogic.getInstance().createOfferItem(offer, item, evaluatedBy);
                 
-                for(ItemPrice itemPrice: itemPrices) {
+                for(var itemPrice : itemPrices) {
                     createOfferItemPrice(offer, offerItem, itemPriceType, itemPrice);
                 }
             } else {
                 HashSet<OfferItemPrice> offerItemPrices = new HashSet<>(offerItemControl.getOfferItemPricesByOfferItem(offerItem));
-                for(ItemPrice itemPrice: itemPrices) {
+                for(var itemPrice : itemPrices) {
                     InventoryCondition inventoryCondition = itemPrice.getInventoryCondition();
                     UnitOfMeasureType unitOfMeasureType = itemPrice.getUnitOfMeasureType();
                     Currency currency = itemPrice.getCurrency();
@@ -197,7 +197,7 @@ public class OfferItemSelectorEvaluator
         long entityCount = 0;
         Long selectionTime = null;
         
-        for(EntityTime entityTime: entityTimes) {
+        for(var entityTime : entityTimes) {
             entityCount++;
             if(!(entityCount % 10 == 0)) {
                 if((System.currentTimeMillis() - startTime) > remainingTime)
@@ -232,7 +232,7 @@ public class OfferItemSelectorEvaluator
         long entityCount = 0;
         Long selectionTime = null;
         
-        for(EntityTime entityTime: entityTimes) {
+        for(var entityTime : entityTimes) {
             entityCount++;
             if(!(entityCount % 10 == 0)) {
                 if((System.currentTimeMillis() - startTime) > remainingTime)
@@ -270,7 +270,7 @@ public class OfferItemSelectorEvaluator
         long entityCount = 0;
         Long selectionTime = null;
         
-        for(EntityTime entityTime: entityTimes) {
+        for(var entityTime : entityTimes) {
             entityCount++;
             if(!(entityCount % 10 == 0)) {
                 if((System.currentTimeMillis() - startTime) > remainingTime)
@@ -305,7 +305,7 @@ public class OfferItemSelectorEvaluator
             if(entityType != null) {
                 List<Selector> offerItemSelectors = offerControl.getDistinctOfferItemSelectors();
                 
-                for(Selector offerItemSelector: offerItemSelectors) {
+                for(var offerItemSelector : offerItemSelectors) {
                     List<Offer> offers = offerControl.getOffersByOfferItemSelector(offerItemSelector);
                     CachedSelectorWithTime cachedSelectorWithTime = new CachedSelectorWithTime(offerItemSelector);
                     

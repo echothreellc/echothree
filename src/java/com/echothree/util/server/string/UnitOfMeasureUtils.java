@@ -57,7 +57,7 @@ public class UnitOfMeasureUtils {
         List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents = uomControl.getUnitOfMeasureEquivalentsByToUnitOfMeasureType(unitOfMeasureType);
         boolean appended = false;
         
-        for(UnitOfMeasureEquivalent unitOfMeasureEquivalent: unitOfMeasureEquivalents) {
+        for(var unitOfMeasureEquivalent : unitOfMeasureEquivalents) {
             long toQuantity = unitOfMeasureEquivalent.getToQuantity();
             
             if(measure > toQuantity) {

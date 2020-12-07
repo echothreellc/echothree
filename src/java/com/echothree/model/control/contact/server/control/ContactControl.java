@@ -268,7 +268,7 @@ public class ContactControl
             values.add("");
         }
         
-        for(ContactMechanismType contactMechanismType: contactMechanismTypes) {
+        for(var contactMechanismType : contactMechanismTypes) {
             String label = getBestContactMechanismTypeDescription(contactMechanismType, language);
             String value = contactMechanismType.getContactMechanismTypeName();
             
@@ -565,7 +565,7 @@ public class ContactControl
             }
         }
 
-        for(ContactMechanismAliasType contactMechanismAliasType: contactMechanismAliasTypes) {
+        for(var contactMechanismAliasType : contactMechanismAliasTypes) {
             ContactMechanismAliasTypeDetail contactMechanismAliasTypeDetail = contactMechanismAliasType.getLastDetail();
 
             String label = getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
@@ -883,7 +883,7 @@ public class ContactControl
             values.add("");
         }
         
-        for(ContactMechanismPurpose contactMechanismPurpose: contactMechanismPurposes) {
+        for(var contactMechanismPurpose : contactMechanismPurposes) {
             String label = getBestContactMechanismPurposeDescription(contactMechanismPurpose, language) + " ("
                     + getBestContactMechanismTypeDescription(contactMechanismPurpose.getContactMechanismType(), language) + ")";
             String value = contactMechanismPurpose.getContactMechanismPurposeName();
@@ -915,7 +915,7 @@ public class ContactControl
             values.add("");
         }
         
-        for(ContactMechanismPurpose contactMechanismPurpose: contactMechanismPurposes) {
+        for(var contactMechanismPurpose : contactMechanismPurposes) {
             String label = getBestContactMechanismPurposeDescription(contactMechanismPurpose, language);
             String value = contactMechanismPurpose.getContactMechanismPurposeName();
             
@@ -949,7 +949,7 @@ public class ContactControl
             }
         }
 
-        for(ContactListContactMechanismPurpose contactListContactMechanismPurpose: contactListContactMechanismPurposes) {
+        for(var contactListContactMechanismPurpose : contactListContactMechanismPurposes) {
             ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
             ContactMechanismPurpose contactMechanismPurpose = contactListContactMechanismPurposeDetail.getContactMechanismPurpose();
 
@@ -2531,7 +2531,7 @@ public class ContactControl
             values.add("");
         }
 
-        for(PartyContactMechanism partyContactMechanism : partyContactMechanisms) {
+        for(var partyContactMechanism : partyContactMechanisms) {
             PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetail();
             String label = partyContactMechanismDetail.getDescription();
             String value = partyContactMechanismDetail.getContactMechanism().getLastDetail().getContactMechanismName();
@@ -2562,7 +2562,7 @@ public class ContactControl
             values.add("");
         }
 
-        for(PartyContactMechanism partyContactMechanism : partyContactMechanisms) {
+        for(var partyContactMechanism : partyContactMechanisms) {
             PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetail();
             String label = partyContactMechanismDetail.getDescription();
             String value = partyContactMechanismDetail.getContactMechanism().getLastDetail().getContactMechanismName();
@@ -3518,7 +3518,7 @@ public class ContactControl
             values.add("");
         }
         
-        for(PostalAddressElementType postalAddressElementType: postalAddressElementTypes) {
+        for(var postalAddressElementType : postalAddressElementTypes) {
             String label = getBestPostalAddressElementTypeDescription(postalAddressElementType, language);
             String value = postalAddressElementType.getPostalAddressElementTypeName();
             
@@ -3740,7 +3740,7 @@ public class ContactControl
             }
         }
         
-        for(PostalAddressFormat postalAddressFormat: postalAddressFormats) {
+        for(var postalAddressFormat : postalAddressFormats) {
             PostalAddressFormatDetail postalAddressFormatDetail = postalAddressFormat.getLastDetail();
             String label = getBestPostalAddressFormatDescription(postalAddressFormat, language);
             String value = postalAddressFormatDetail.getPostalAddressFormatName();

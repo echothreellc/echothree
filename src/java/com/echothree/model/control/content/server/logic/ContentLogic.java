@@ -127,7 +127,7 @@ public class ContentLogic
         Set<OfferUse> offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
         long unitPrice = Integer.MAX_VALUE;
 
-        for(OfferUse offerUse : offerUses) {
+        for(var offerUse : offerUses) {
             OfferItem offerItem = offerItemControl.getOfferItem(offerUse.getLastDetail().getOffer(), contentCatalogItem.getItem());
             OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, contentCatalogItem.getInventoryCondition(),
                     contentCatalogItem.getUnitOfMeasureType(), contentCatalogItem.getCurrency());
@@ -204,7 +204,7 @@ public class ContentLogic
 
     /** For all ContentCatalogItem in the Set, verify they have the lower price possible in their ContentCatalog. */
     public void updateContentCatalogItemPrices(final Iterable<ContentCatalogItem> contentCatalogItems, final BasePK updatedBy) {
-        for(ContentCatalogItem contentCatalogItem : contentCatalogItems) {
+        for(var contentCatalogItem : contentCatalogItems) {
             updateContentCatalogItemPriceByContentCatalogItem(contentCatalogItem, updatedBy);
         }
     }
@@ -213,7 +213,7 @@ public class ContentLogic
         var contentControl = Session.getModelController(ContentControl.class);
         Set<ContentCatalog> contentCatalogs = new HashSet<>();
 
-        for(OfferUse offerUse : offerUses) {
+        for(var offerUse : offerUses) {
             List<ContentCategory> contentCategories = contentControl.getContentCategoriesByDefaultOfferUse(offerUse);
 
             contentCategories.stream().forEach((contentCategory) -> {
@@ -228,7 +228,7 @@ public class ContentLogic
         var contentControl = Session.getModelController(ContentControl.class);
         Set<ContentCatalogItem> contentCatalogItems = new HashSet<>();
 
-        for(ContentCatalog contentCatalog : contentCatalogs) {
+        for(var contentCatalog : contentCatalogs) {
             ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, offerItemPrice.getOfferItem().getItem(),
                     offerItemPrice.getInventoryCondition(), offerItemPrice.getUnitOfMeasureType(), offerItemPrice.getCurrency());
 
@@ -254,11 +254,11 @@ public class ContentLogic
         Iterable<ContentCategoryItem> contentCategoryItems = contentControl.getContentCategoryItemsByContentCategory(parentContentCategory);
         Iterable<ContentCategory> childContentCategories = contentControl.getContentCategoriesByParentContentCategory(parentContentCategory);
 
-        for(ContentCategoryItem contentCategoryItem : contentCategoryItems) {
+        for(var contentCategoryItem : contentCategoryItems) {
             contentCatalogItems.add(contentCategoryItem.getContentCatalogItem());
         }
 
-        for(ContentCategory childContentCategory : childContentCategories) {
+        for(var childContentCategory : childContentCategories) {
             if(childContentCategory.getLastDetail().getDefaultOfferUse() == null) {
                 addContentCatalogItems(contentCatalogItems, childContentCategory);
             }
@@ -364,7 +364,7 @@ public class ContentLogic
     private Set<ContentCatalog> getContentCatalogsFromContentCategories(Iterable<ContentCategory> contentCategories) {
         Set<ContentCatalog> contentCatalogs = new HashSet<>();
 
-        for(ContentCategory contentCategory : contentCategories) {
+        for(var contentCategory : contentCategories) {
             contentCatalogs.add(contentCategory.getLastDetail().getContentCatalog());
         }
 
@@ -375,7 +375,7 @@ public class ContentLogic
         var contentControl = Session.getModelController(ContentControl.class);
         Set<ContentCatalogItem> contentCatalogItems = new HashSet<>();
 
-        for(ContentCatalog contentCatalog : contentCatalogs) {
+        for(var contentCatalog : contentCatalogs) {
             ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, offerItemPrice.getOfferItem().getItem(),
                     offerItemPrice.getInventoryCondition(), offerItemPrice.getUnitOfMeasureType(), offerItemPrice.getCurrency());
 
@@ -399,12 +399,12 @@ public class ContentLogic
         Iterable<ContentCatalogItem> contentCatalogItems = getPossibleContentCatalogItemsByOfferItemPrice(contentCatalogs, offerItemPrice);
 
         // Go through the list of all the ContentCategories...
-        for(ContentCategory contentCategory : contentCategories) {
+        for(var contentCategory : contentCategories) {
             List<ContentCategory> contentCategoriesToCheck = null;
             ContentCatalog contentCatalog = contentCategory.getLastDetail().getContentCatalog();
 
             // And the list of all the ContentCatalogItems...
-            for(ContentCatalogItem contentCatalogItem : contentCatalogItems) {
+            for(var contentCatalogItem : contentCatalogItems) {
                 // And where the ContentCatalogItem's Catalog is the one from the current ContentCategory...
                 if(contentCatalogItem.getContentCatalog().equals(contentCatalog)) {
                     if(contentCategoriesToCheck == null) {
@@ -412,7 +412,7 @@ public class ContentLogic
                         contentCategoriesToCheck = getChildContentCategoriesByContentCategory(contentCategory);
                     }
 
-                    for(ContentCategory contentCategoryToCheck : contentCategoriesToCheck) {
+                    for(var contentCategoryToCheck : contentCategoriesToCheck) {
                         ContentCategoryItem contentCategoryItem = contentControl.getContentCategoryItemForUpdate(contentCategoryToCheck, contentCatalogItem);
 
                         // If a ContentCategoryItem was found, delete it.

@@ -165,7 +165,7 @@ public class UpdateIndexesCommand
         EntityType entityType = entityInstance.getEntityType();
         List<BaseIndexer> baseIndexers = indexersMap.get(entityType);
         
-        for(BaseIndexer baseIndexer : baseIndexers) {
+        for(var baseIndexer : baseIndexers) {
             baseIndexer.updateIndex(entityInstance);
 
             if(hasExecutionErrors()) {

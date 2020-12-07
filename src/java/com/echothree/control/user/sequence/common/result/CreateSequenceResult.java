@@ -16,21 +16,13 @@
 
 package com.echothree.control.user.sequence.common.result;
 
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.sequence.common.spec.SequenceSpec;
 import com.echothree.util.common.command.BaseResult;
-import java.util.List;
 
-public interface GetSequencesResult
-        extends BaseResult {
+public interface CreateSequenceResult
+        extends SequenceSpec, EntityRefSpec, BaseResult {
     
-    SequenceTypeTransfer getSequenceType();
-    void setSequenceType(SequenceTypeTransfer sequenceType);
-
-    Long getSequenceCount();
-    void setSequenceCount(Long sequenceCount);
-
-    List<SequenceTransfer> getSequences();
-    void setSequences(List<SequenceTransfer> sequences);
+    // Nothing additional beyond SequenceSpec, EntityRefSpec, BaseResult
     
 }

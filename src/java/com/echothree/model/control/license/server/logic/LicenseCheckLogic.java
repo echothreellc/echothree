@@ -23,15 +23,12 @@ import com.google.common.io.CharStreams;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -55,14 +52,12 @@ public class LicenseCheckLogic
     
     final private Log log = LogFactory.getLog(this.getClass());
     final private AtomicBoolean executionPermitted = new AtomicBoolean(true);
-    final private long initializedTime;
     final private AtomicLong licenseValidUntilTime;
     private Long lastLicenseAttempt;
     
     private LicenseCheckLogic() {
-        super();
-        
-        initializedTime = System.currentTimeMillis();
+        long initializedTime = System.currentTimeMillis();
+
         licenseValidUntilTime = new AtomicLong(initializedTime + DEMO_LICENSE_DURATION);
         log.info("Demo license installed for this instance.");
     }
@@ -74,27 +69,21 @@ public class LicenseCheckLogic
     public static LicenseCheckLogic getInstance() {
         return LicenseCheckLogicLogicHolder.instance;
     }
-    
+
     public List<String> getFoundServerNames() {
-        List<String> foundServerNames = new ArrayList<>();
+        var foundServerNames = new ArrayList<String>();
 
         try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-
-            while(interfaces.hasMoreElements()) {
-                NetworkInterface nic = interfaces.nextElement();
-                Enumeration<InetAddress> addresses = nic.getInetAddresses();
-                
-                while(addresses.hasMoreElements()) {
-                    InetAddress address = addresses.nextElement();
-                    
-                    if(!address.isLoopbackAddress()) {
-                        foundServerNames.add(address.getCanonicalHostName());
-                    }
-                }
-            }
-        } catch(SocketException ex) {
+            NetworkInterface.networkInterfaces()
+                    .forEach(ni -> ni.inetAddresses()
+                            .forEach(ia -> {
+                                if(!ia.isLoopbackAddress()) {
+                                    foundServerNames.add(ia.getCanonicalHostName());
+                                }
+                            }));
+        } catch(SocketException se) {
             // Leave serverNames empty.
+            log.error("Exception determining server names: ", se);
         }
         
         return foundServerNames;
@@ -113,61 +102,54 @@ public class LicenseCheckLogic
                         .setConnectionRequestTimeout(5000)
                         .build())
                 .build()) {
-            for(String foundServerName : foundServerNames) {
-                HttpGet httpGet = null;
+            for(var foundServerName : foundServerNames) {
+                HttpGet httpGet = new HttpGet("https://www.echothree.com/licenses/v1/" + URLEncoder.encode(foundServerName, StandardCharsets.UTF_8) + ".xml");
+
+                log.info("Requesting license for: " + foundServerName);
 
                 try {
-                    httpGet = new HttpGet("https://www.echothree.com/licenses/v1/" + URLEncoder.encode(foundServerName, "UTF-8") + ".xml");
-                } catch(UnsupportedEncodingException uee) {
-                    // httpGet remains null.
-                }
+                    try(CloseableHttpResponse closeableHttpResponse = client.execute(httpGet)) {
+                        var statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
 
-                if(httpGet != null) {
-                    log.info("Requesting license for: " + foundServerName);
+                        if(statusCode == 200) {
+                            HttpEntity entity = closeableHttpResponse.getEntity();
 
-                    try {
-                        try(CloseableHttpResponse closeableHttpResponse = client.execute(httpGet)) {
-                            if(closeableHttpResponse.getStatusLine().getStatusCode() == 200) {
-                                HttpEntity entity = closeableHttpResponse.getEntity();
+                            if(entity != null) {
+                                String text = CharStreams.toString(new InputStreamReader(entity.getContent(), Charsets.UTF_8));
+                                Properties properties = new Properties();
 
-                                if(entity != null) {
-                                    String text = CharStreams.toString(new InputStreamReader(entity.getContent(), Charsets.UTF_8));
-                                    Properties properties = new Properties();
+                                properties.loadFromXML(new ByteArrayInputStream(text.getBytes(Charsets.UTF_8)));
 
-                                    properties.loadFromXML(new ByteArrayInputStream(text.getBytes(Charsets.UTF_8)));
-                                    
-                                    String retrievedServerName = properties.getProperty("serverName");
-                                    
-                                    if(foundServerName.equals(retrievedServerName)) {
-                                        String retrievedLicenseValidUntilTime = properties.getProperty("licenseValidUntilTime");
-                                        DateTimeFormatter fmt = DateTimeFormatter.ISO_DATE_TIME;
-                                        
-                                        licenseValidUntilTime.set(ZonedDateTime.parse(retrievedLicenseValidUntilTime).toInstant().toEpochMilli());
+                                String retrievedServerName = properties.getProperty("serverName");
 
-                                        log.info("License valid until: " + retrievedLicenseValidUntilTime);
+                                if(foundServerName.equals(retrievedServerName)) {
+                                    String retrievedLicenseValidUntilTime = properties.getProperty("licenseValidUntilTime");
 
-                                        licenseUpdated = true;
-                                    } else {
-                                        log.error("The detected server name is not equal to the retrieved server name.");
-                                    }
+                                    licenseValidUntilTime.set(ZonedDateTime.parse(retrievedLicenseValidUntilTime).toInstant().toEpochMilli());
+
+                                    log.info("License valid until: " + retrievedLicenseValidUntilTime);
+
+                                    licenseUpdated = true;
+                                } else {
+                                    log.error("The detected server name is not equal to the retrieved server name.");
                                 }
-
-                                EntityUtils.consume(entity);
-                                
-                                if(licenseUpdated) {
-                                    break;
-                                }
-                            } else {
-                                log.info("Request failed.");
                             }
+
+                            EntityUtils.consume(entity);
+
+                            if(licenseUpdated) {
+                                break;
+                            }
+                        } else {
+                            log.info("Request failed for " + foundServerName + ": " + statusCode);
                         }
-                    } catch(IOException ioe) {
-                        log.info("Request failed: IOException.");
                     }
+                } catch(IOException ioe) {
+                    log.error("Request failed: IOException.", ioe);
                 }
             }
         } catch(IOException ioe) {
-            log.info("HttpClientBuilder failed: IOException.");
+            log.error("HttpClientBuilder failed: IOException.", ioe);
         }
         
         return licenseUpdated;

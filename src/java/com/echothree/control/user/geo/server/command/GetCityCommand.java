@@ -83,7 +83,7 @@ public class GetCityCommand
         var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
         GeoCode countryGeoCode = null;
         var stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
-        for(GeoCodeRelationship geoCodeRelationship : stateRelationships) {
+        for(var geoCodeRelationship : stateRelationships) {
             GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;

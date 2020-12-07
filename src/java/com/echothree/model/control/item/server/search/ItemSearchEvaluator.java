@@ -266,7 +266,7 @@ public class ItemSearchEvaluator
                 if(itemStatusWorkflowSteps != null) {
                     EntityInstancePKHolder entityInstancePKHolder = null;
                     
-                    for(WorkflowStep workflowStep : itemStatusWorkflowSteps) {
+                    for(var workflowStep : itemStatusWorkflowSteps) {
                         EntityInstancePKHolder individualPKHolder = getEntityInstancePKHolderByItemStatusWorkflowStep(workflowStep);
                         
                         if(entityInstancePKHolder == null) {

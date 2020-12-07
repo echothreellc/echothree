@@ -168,7 +168,7 @@ public class WorkflowStepLogic
     public boolean isWorkflowStepInSet(Set<WorkflowEntityStatus> workflowEntityStatuses, String workflowStepName) {
         boolean result = false;
         
-        for(WorkflowEntityStatus workflowEntityStatus : workflowEntityStatuses) {
+        for(var workflowEntityStatus : workflowEntityStatuses) {
             if(result |= workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName().equals(workflowStepName)) {
                 break;
             }

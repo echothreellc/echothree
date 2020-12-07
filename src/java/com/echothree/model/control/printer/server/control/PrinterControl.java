@@ -305,7 +305,7 @@ public class PrinterControl
             }
         }
 
-        for(PrinterGroup printerGroup: printerGroups) {
+        for(var printerGroup : printerGroups) {
             PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetail();
 
             String label = getBestPrinterGroupDescription(printerGroup, language);
@@ -1556,7 +1556,7 @@ public class PrinterControl
             }
         }
 
-        for(PrinterGroupUseType printerGroupUseType: printerGroupUseTypes) {
+        for(var printerGroupUseType : printerGroupUseTypes) {
             PrinterGroupUseTypeDetail printerGroupUseTypeDetail = printerGroupUseType.getLastDetail();
 
             String label = getBestPrinterGroupUseTypeDescription(printerGroupUseType, language);

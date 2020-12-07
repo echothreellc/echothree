@@ -330,7 +330,7 @@ public abstract class BaseCommand
                         } else {
                             SecurityRoleLogic securityRoleLogic = SecurityRoleLogic.getInstance();
 
-                            for(SecurityRoleDefinition securityRoleDefinition : securityRoleDefinitions) {
+                            for(var securityRoleDefinition : securityRoleDefinitions) {
                                 String securityRoleGroupName = securityRoleDefinition.getSecurityRoleGroupName();
                                 String securityRoleName = securityRoleDefinition.getSecurityRoleName();
 
@@ -483,7 +483,7 @@ public abstract class BaseCommand
 
         setupSession();
 
-        SecurityResult securityResult;
+        SecurityResult securityResult = null;
         ValidationResult validationResult = null;
         ExecutionResult executionResult;
         CommandResult commandResult;

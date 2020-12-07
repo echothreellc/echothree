@@ -257,7 +257,7 @@ public class PeriodControl
             }
         }
         
-        for(PeriodKind periodKind: periodKinds) {
+        for(var periodKind : periodKinds) {
             PeriodKindDetail periodKindDetail = periodKind.getLastDetail();
             
             String label = getBestPeriodKindDescription(periodKind, language);
@@ -709,7 +709,7 @@ public class PeriodControl
             }
         }
         
-        for(PeriodType periodType: periodTypes) {
+        for(var periodType : periodTypes) {
             PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
             String label = getBestPeriodTypeDescription(periodType, language);
             String value = periodTypeDetail.getPeriodTypeName();

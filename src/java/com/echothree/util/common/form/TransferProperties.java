@@ -45,7 +45,7 @@ public class TransferProperties
     }
     
     public TransferProperties addClassAndProperties(Class clazz, String... properties) {
-        for(String property : properties) {
+        for(var property : properties) {
             addClassAndProperty(clazz, property);
         }
 

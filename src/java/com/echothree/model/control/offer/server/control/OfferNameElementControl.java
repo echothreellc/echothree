@@ -178,7 +178,7 @@ public class OfferNameElementControl
         List<OfferNameElementTransfer> offerNameElementTransfers = new ArrayList<>(offerNameElements.size());
         OfferNameElementTransferCache offerNameElementTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementTransferCache();
         
-        for(OfferNameElement offerNameElement: offerNameElements) {
+        for(var offerNameElement : offerNameElements) {
             offerNameElementTransfers.add(offerNameElementTransferCache.getOfferNameElementTransfer(offerNameElement));
         }
         

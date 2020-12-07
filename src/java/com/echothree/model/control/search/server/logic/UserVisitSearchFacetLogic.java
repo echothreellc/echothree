@@ -103,7 +103,7 @@ public class UserVisitSearchFacetLogic
 
             userVisitSearchFacetListItemTransfers = new ArrayList<>(entityListItemAttributeFacetResults.size());
 
-            for(EntityListItemAttributeFacetResult entityListItemAttributeFacetResult : entityListItemAttributeFacetResults) {
+            for(var entityListItemAttributeFacetResult : entityListItemAttributeFacetResults) {
                 userVisitSearchFacetListItemTransfers.add(
                         new UserVisitSearchFacetListItemTransfer(coreControl.getEntityListItemTransfer(userVisit, entityListItemAttributeFacetResult.getEntityListItem(), null),
                         entityListItemAttributeFacetResult.getCount()));
@@ -113,7 +113,7 @@ public class UserVisitSearchFacetLogic
 
             userVisitSearchFacetListItemTransfers = new ArrayList<>(entityMultipleListItemAttributeFacetResults.size());
 
-            for(EntityListItemAttributeFacetResult entityListItemAttributeFacetResult : entityMultipleListItemAttributeFacetResults) {
+            for(var entityListItemAttributeFacetResult : entityMultipleListItemAttributeFacetResults) {
                 userVisitSearchFacetListItemTransfers.add(
                         new UserVisitSearchFacetListItemTransfer(coreControl.getEntityListItemTransfer(userVisit, entityListItemAttributeFacetResult.getEntityListItem(), null),
                         entityListItemAttributeFacetResult.getCount()));
@@ -127,7 +127,7 @@ public class UserVisitSearchFacetLogic
             if(currentSize > 0) {
                 List<EntityIntegerAttributeFacetResult> entityIntegerAttributeFacetResults = new EntityIntegerAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
                 
-                for(EntityIntegerAttributeFacetResult entityIntegerAttributeFacetResult : entityIntegerAttributeFacetResults) {
+                for(var entityIntegerAttributeFacetResult : entityIntegerAttributeFacetResults) {
                     List<UserVisitSearchFacetIntegerTransfer> addedUserVisitSearchFacetIntegerTransfers = new ArrayList<>();
                     int integerAttribute = entityIntegerAttributeFacetResult.getIntegerAttribute();
                     
@@ -146,7 +146,7 @@ public class UserVisitSearchFacetLogic
                         }
                     }
                     
-                    for(UserVisitSearchFacetIntegerTransfer userVisitSearchFacetIntegerTransfer : userVisitSearchFacetIntegerTransfers) {
+                    for(var userVisitSearchFacetIntegerTransfer : userVisitSearchFacetIntegerTransfers) {
                         EntityIntegerRangeTransfer entityIntegerRange = userVisitSearchFacetIntegerTransfer.getEntityIntegerRange();
                         Integer minimumIntegerValue = entityIntegerRange.getMinimumIntegerValue();
                         Integer maximumIntegerValue = entityIntegerRange.getMaximumIntegerValue();
@@ -185,7 +185,7 @@ public class UserVisitSearchFacetLogic
             if(currentSize > 0) {
                 List<EntityLongAttributeFacetResult> entityLongAttributeFacetResults = new EntityLongAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
                 
-                for(EntityLongAttributeFacetResult entityLongAttributeFacetResult : entityLongAttributeFacetResults) {
+                for(var entityLongAttributeFacetResult : entityLongAttributeFacetResults) {
                     List<UserVisitSearchFacetLongTransfer> addedUserVisitSearchFacetLongTransfers = new ArrayList<>();
                     long longAttribute = entityLongAttributeFacetResult.getLongAttribute();
                     
@@ -204,7 +204,7 @@ public class UserVisitSearchFacetLogic
                         }
                     }
                     
-                    for(UserVisitSearchFacetLongTransfer userVisitSearchFacetLongTransfer : userVisitSearchFacetLongTransfers) {
+                    for(var userVisitSearchFacetLongTransfer : userVisitSearchFacetLongTransfers) {
                         EntityLongRangeTransfer entityLongRange = userVisitSearchFacetLongTransfer.getEntityLongRange();
                         Long minimumLongValue = entityLongRange.getMinimumLongValue();
                         Long maximumLongValue = entityLongRange.getMaximumLongValue();

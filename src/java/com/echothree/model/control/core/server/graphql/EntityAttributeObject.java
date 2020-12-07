@@ -472,7 +472,7 @@ public class EntityAttributeObject
             
             entityListItemObjects = new ArrayList<>(entityListItems.size());
             
-            for(EntityListItem entityListItem : entityListItems) {
+            for(var entityListItem : entityListItems) {
                 entityListItemObjects.add(new EntityListItemObject(entityListItem));
             }
         }
@@ -506,7 +506,7 @@ public class EntityAttributeObject
             
             entityMultipleListItemAttributeObjects = new ArrayList<>(entityMultipleListItemAttributes.size());
             
-            for(EntityMultipleListItemAttribute entityMultipleListItemAttribute : entityMultipleListItemAttributes) {
+            for(var entityMultipleListItemAttribute : entityMultipleListItemAttributes) {
                 entityMultipleListItemAttributeObjects.add(new EntityMultipleListItemAttributeObject(entityMultipleListItemAttribute));
             }
         }

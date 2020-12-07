@@ -296,7 +296,7 @@ public class CommunicationControl
             }
         }
         
-        for(CommunicationEventPurpose communicationEventPurpose: communicationEventPurposes) {
+        for(var communicationEventPurpose : communicationEventPurposes) {
             CommunicationEventPurposeDetail communicationEventPurposeDetail = communicationEventPurpose.getLastDetail();
             
             String label = getBestCommunicationEventPurposeDescription(communicationEventPurpose, language);

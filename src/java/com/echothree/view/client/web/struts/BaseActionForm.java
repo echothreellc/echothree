@@ -148,7 +148,7 @@ public class BaseActionForm
         BaseForm baseForm = BaseFormFactory.createForm(BaseForm.class);
         Class<?> clazz = this.getClass();
 
-        for(FieldDefinition fieldDefinition : fieldDefinitions) {
+        for(var fieldDefinition : fieldDefinitions) {
             String fieldName = fieldDefinition.getFieldName();
             
             try {

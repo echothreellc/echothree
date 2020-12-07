@@ -117,7 +117,7 @@ public class CreatePartyDocumentCommand
                 Integer maximumInstances = null;
                 boolean foundPartyTypeDocumentTypeUsageType = false;
 
-                for(DocumentTypeUsage documentTypeUsage : documentTypeUsages) {
+                for(var documentTypeUsage : documentTypeUsages) {
                     DocumentTypeUsageType documentTypeUsageType = documentTypeUsage.getDocumentTypeUsageType();
                     PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType = documentControl.getPartyTypeDocumentTypeUsageType(partyType, documentTypeUsageType);
 

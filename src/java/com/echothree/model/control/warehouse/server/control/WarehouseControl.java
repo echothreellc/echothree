@@ -335,7 +335,7 @@ public class WarehouseControl
             }
         }
 
-        for(Warehouse warehouse: partyCompanies) {
+        for(var warehouse : partyCompanies) {
             PartyGroup partyGroup = getPartyControl().getPartyGroup(warehouse.getParty());
 
             String label = partyGroup.getName();
@@ -504,7 +504,7 @@ public class WarehouseControl
             }
         }
         
-        for(LocationUseType locationUseType: locationUseTypes) {
+        for(var locationUseType : locationUseTypes) {
             String label = getBestLocationUseTypeDescription(locationUseType, language);
             String value = locationUseType.getLocationUseTypeName();
             
@@ -730,7 +730,7 @@ public class WarehouseControl
         if(locationTypes != null) {
             locationTypeTransfers = new ArrayList<>(locationTypes.size());
             
-            for(LocationType locationType : locationTypes) {
+            for(var locationType : locationTypes) {
                 locationTypeTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache().getLocationTypeTransfer(locationType));
             }
         }
@@ -1350,7 +1350,7 @@ public class WarehouseControl
         if(locationNameElementDescriptions != null) {
             locationNameElementDescriptionTransfers = new ArrayList<>(locationNameElementDescriptions.size());
             
-            for(LocationNameElementDescription locationNameElementDescription : locationNameElementDescriptions) {
+            for(var locationNameElementDescription : locationNameElementDescriptions) {
                 locationNameElementDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationNameElementDescriptionTransferCache().getLocationNameElementDescriptionTransfer(locationNameElementDescription));
             }
         }
@@ -1589,7 +1589,7 @@ public class WarehouseControl
         if(locations != null) {
             locationTransfers = new ArrayList<>(locations.size());
             
-            for(Location location : locations) {
+            for(var location : locations) {
                 locationTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTransferCache().getLocationTransfer(location));
             }
         }
@@ -1604,7 +1604,7 @@ public class WarehouseControl
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
-        for(Location location : locations) {
+        for(var location : locations) {
             LocationDetail locationDetail = location.getLastDetail();
             
             String label = getBestLocationDescription(location, language);
@@ -1853,7 +1853,7 @@ public class WarehouseControl
         if(locationDescriptions != null) {
             locationDescriptionTransfers = new ArrayList<>(locationDescriptions.size());
             
-            for(LocationDescription locationDescription : locationDescriptions) {
+            for(var locationDescription : locationDescriptions) {
                 locationDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationDescriptionTransferCache().getLocationDescriptionTransfer(locationDescription));
             }
         }

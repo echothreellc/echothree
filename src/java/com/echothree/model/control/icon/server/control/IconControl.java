@@ -181,7 +181,7 @@ public class IconControl
             values.add("");
         }
         
-        for(IconUsage iconUsage: iconUsages) {
+        for(var iconUsage : iconUsages) {
             IconDetail iconDetail = iconUsage.getIcon().getLastDetail();
             Document document = iconDetail.getDocument();
             String label = documentControl.getBestDocumentDescription(document, language);
@@ -377,7 +377,7 @@ public class IconControl
             }
         }
         
-        for(IconUsageType iconUsageType: iconUsageTypes) {
+        for(var iconUsageType : iconUsageTypes) {
             IconUsageTypeDetail iconUsageTypeDetail = iconUsageType.getLastDetail();
             
             String label = getBestIconUsageTypeDescription(iconUsageType, language);

@@ -257,7 +257,7 @@ public class SourceControl
             }
         }
 
-        for(Source source : sources) {
+        for(var source : sources) {
             SourceDetail sourceDetail = source.getLastDetail();
 
             String label = getBestSourceDescription(source, language);

@@ -494,7 +494,7 @@ public class FinancialControl
             }
         }
         
-        for(FinancialAccountType financialAccountType: financialAccountTypes) {
+        for(var financialAccountType : financialAccountTypes) {
             FinancialAccountTypeDetail financialAccountTypeDetail = financialAccountType.getLastDetail();
             
             String label = getBestFinancialAccountTypeDescription(financialAccountType, language);
@@ -1006,7 +1006,7 @@ public class FinancialControl
             }
         }
         
-        for(FinancialAccountTransactionType financialAccountTransactionType: financialAccountTransactionTypes) {
+        for(var financialAccountTransactionType : financialAccountTransactionTypes) {
             FinancialAccountTransactionTypeDetail financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetail();
             
             String label = getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, language);
@@ -1479,7 +1479,7 @@ public class FinancialControl
             }
         }
         
-        for(FinancialAccountAliasType financialAccountAliasType: financialAccountAliasTypes) {
+        for(var financialAccountAliasType : financialAccountAliasTypes) {
             FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
             
             String label = getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, language);

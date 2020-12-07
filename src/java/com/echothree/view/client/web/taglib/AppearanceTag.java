@@ -147,7 +147,7 @@ public class AppearanceTag
                 StringBuilder appliedStyle = new StringBuilder("text-decoration:");
                 boolean secondOrLater = false;
                 
-                for(AppearanceTextDecorationTransfer appearanceTextDecoration : appearanceTextDecorations) {
+                for(var appearanceTextDecoration : appearanceTextDecorations) {
                     if(secondOrLater) {
                         appliedStyle.append(' ');
                     } else {
@@ -165,7 +165,7 @@ public class AppearanceTag
                 StringBuilder appliedStyle = new StringBuilder("text-transform:");
                 boolean secondOrLater = false;
                 
-                for(AppearanceTextTransformationTransfer appearanceTextTransformation : appearanceTextTransformations) {
+                for(var appearanceTextTransformation : appearanceTextTransformations) {
                     if(secondOrLater) {
                         appliedStyle.append(' ');
                     } else {

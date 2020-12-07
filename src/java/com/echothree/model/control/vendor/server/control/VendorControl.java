@@ -304,7 +304,7 @@ public class VendorControl
             }
         }
         
-        for(VendorType vendorType: vendorTypes) {
+        for(var vendorType : vendorTypes) {
             VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
             String label = getBestVendorTypeDescription(vendorType, language);
             String value = vendorTypeDetail.getVendorTypeName();
@@ -334,7 +334,7 @@ public class VendorControl
             
             vendorTypeTransfers = new ArrayList<>(vendorTypes.size());
             
-            for(VendorType vendorType: vendorTypes) {
+            for(var vendorType : vendorTypes) {
                 vendorTypeTransfers.add(vendorTypeTransferCache.getVendorTypeTransfer(vendorType));
             }
         }
@@ -563,7 +563,7 @@ public class VendorControl
             
             vendorTypeDescriptionTransfers = new ArrayList<>(vendorTypeDescriptions.size());
             
-            for(VendorTypeDescription vendorTypeDescription: vendorTypeDescriptions) {
+            for(var vendorTypeDescription : vendorTypeDescriptions) {
                 vendorTypeDescriptionTransfers.add(vendorTypeDescriptionTransferCache.getVendorTypeDescriptionTransfer(vendorTypeDescription));
             }
         }
@@ -1370,7 +1370,7 @@ public class VendorControl
         List<VendorItemCostTransfer> vendorItemCostTransfers = vendorItemCostTransfers = new ArrayList<>(vendorItemCosts.size());
         VendorItemCostTransferCache vendorItemCostTransferCache = getVendorTransferCaches(userVisit).getVendorItemCostTransferCache();
         
-        for(VendorItemCost vendorItemCost: vendorItemCosts) {
+        for(var vendorItemCost : vendorItemCosts) {
             vendorItemCostTransfers.add(vendorItemCostTransferCache.getVendorItemCostTransfer(vendorItemCost));
         }
         
@@ -1635,7 +1635,7 @@ public class VendorControl
             }
         }
         
-        for(ItemPurchasingCategory itemPurchasingCategory: itemPurchasingCategories) {
+        for(var itemPurchasingCategory : itemPurchasingCategories) {
             ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
             
             String label = getBestItemPurchasingCategoryDescription(itemPurchasingCategory, language);

@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import static java.lang.Math.toIntExact;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -38,8 +39,19 @@ public class ParameterUtils
         return ParameterUtils.ParameterUtilsHolder.instance;
     }
 
-    public boolean isExactlyOneBooleanTrue(Boolean... booleans)
-    {
+    public int countNonNullParameters(Object... objects) {
+        return toIntExact(Arrays.stream(objects)
+                .filter(Objects::nonNull)
+                .count());
+    }
+
+    public int countNullParameters(Object... objects) {
+        return toIntExact(Arrays.stream(objects)
+                .filter(Objects::isNull)
+                .count());
+    }
+
+    public boolean isExactlyOneBooleanTrue(Boolean... booleans) {
         var areAnyTrue = false;
         var areTwoTrue = false;
 
@@ -51,9 +63,9 @@ public class ParameterUtils
         return areAnyTrue && !areTwoTrue;
     }
 
-    public boolean isExactlyOneBooleanTrue(final ExecutionErrorAccumulator eea, Boolean... booleans)
-    {
+    public boolean isExactlyOneBooleanTrue(final ExecutionErrorAccumulator eea, Boolean... booleans) {
         var result = isExactlyOneBooleanTrue(booleans);
+        
         if(!result) {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
@@ -61,8 +73,7 @@ public class ParameterUtils
         return result;
     }
 
-    public boolean isExactlyOneParameterPresent(String... parameters)
-    {
+    public boolean isExactlyOneParameterPresent(String... parameters) {
         var nullTestedParameters = Arrays.stream(parameters)
                 .map(Objects::nonNull)
                 .toArray(Boolean[]::new);
@@ -70,9 +81,9 @@ public class ParameterUtils
         return isExactlyOneBooleanTrue(nullTestedParameters);
     }
 
-    public boolean isExactlyOneParameterPresent(final ExecutionErrorAccumulator eea, String... parameters)
-    {
+    public boolean isExactlyOneParameterPresent(final ExecutionErrorAccumulator eea, String... parameters) {
         var result = isExactlyOneParameterPresent(parameters);
+
         if(!result) {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }

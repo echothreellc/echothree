@@ -83,7 +83,7 @@ public class CreatePartySecurityRoleTemplateRoleCommand
                     List<SecurityRole> securityRoles = securityControl.getSecurityRoles(securityRoleGroup);
 
                     // Pass 1: Check for duplicates.
-                    for(SecurityRole securityRole: securityRoles) {
+                    for(var securityRole : securityRoles) {
                         PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = securityControl.getPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
                                 securityRole);
 

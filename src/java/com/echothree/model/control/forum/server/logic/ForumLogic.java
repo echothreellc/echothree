@@ -129,7 +129,7 @@ public class ForumLogic
         List<ForumForumThread> forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
         boolean permitted = false;
 
-        for(ForumForumThread forumForumThread : forumForumThreads) {
+        for(var forumForumThread : forumForumThreads) {
             Forum forum = forumForumThread.getForum();
 
             permitted |= isForumRoleTypePermitted(eea, forum, party, forumRoleType);

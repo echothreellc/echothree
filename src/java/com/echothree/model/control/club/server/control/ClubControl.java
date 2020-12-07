@@ -583,7 +583,7 @@ public class ClubControl
             values.add("");
         }
         
-        for(ClubItemType clubItemType: clubItemTypes) {
+        for(var clubItemType : clubItemTypes) {
             String label = getBestClubItemTypeDescription(clubItemType, language);
             String value = clubItemType.getClubItemTypeName();
             

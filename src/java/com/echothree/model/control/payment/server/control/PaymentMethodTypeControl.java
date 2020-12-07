@@ -229,7 +229,7 @@ public class PaymentMethodTypeControl
             }
         }
 
-        for(PaymentMethodType paymentMethodType: paymentMethodTypes) {
+        for(var paymentMethodType : paymentMethodTypes) {
             var paymentMethodTypeDetail = paymentMethodType.getLastDetail();
 
             var label = getBestPaymentMethodTypeDescription(paymentMethodType, language);

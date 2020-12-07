@@ -156,7 +156,7 @@ public class OfferItemPriceFilterEvaluator
             List<FilterStepElementDetail> filterStepElementDetails = cachedFilter.getFilterStepElementDetailsByFilterStep(filterStep);
             TreeSet<FilteredItemFixedPrice> evaluatedPrices = new TreeSet<>();
             
-            for(FilterStepElementDetail filterStepElementDetail : filterStepElementDetails) {
+            for(var filterStepElementDetail : filterStepElementDetails) {
                 if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
                     log.info("--- filterStepElementName = " + filterStepElementDetail.getFilterStepElementName());
                 
@@ -185,7 +185,7 @@ public class OfferItemPriceFilterEvaluator
             log.info(">>> OfferItemPriceFilterEvaluator.evaluateFilterSteps, nextFilterSteps.size() = " + nextFilterSteps.size());
         
         TreeSet<FilteredItemFixedPrice> evaluatedPrices = new TreeSet<>();
-        for(FilterStep filterStep : nextFilterSteps) {
+        for(var filterStep : nextFilterSteps) {
             FilteredItemFixedPrice evaluatedPrice = evaluateFilterStep(filterStep, filteredItemFixedPrice);
             
             if(evaluatedPrice != null) {

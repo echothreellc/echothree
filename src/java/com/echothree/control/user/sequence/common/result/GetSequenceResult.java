@@ -23,9 +23,6 @@ import com.echothree.util.common.command.BaseResult;
 public interface GetSequenceResult
         extends BaseResult {
     
-    SequenceTypeTransfer getSequenceType();
-    void setSequenceType(SequenceTypeTransfer sequenceType);
-    
     SequenceTransfer getSequence();
     void setSequence(SequenceTransfer sequence);
     

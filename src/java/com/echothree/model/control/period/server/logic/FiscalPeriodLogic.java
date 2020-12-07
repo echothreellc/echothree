@@ -135,7 +135,7 @@ public class FiscalPeriodLogic {
                     yearStart.toInstant().toEpochMilli(), yearEnd.toInstant().toEpochMilli(), createdBy);
             
             List<PeriodKindDescription> periodKindDescriptions = periodControl.getPeriodKindDescriptionsByPeriodKind(periodKind);
-            for(PeriodKindDescription periodKindDescription: periodKindDescriptions) {
+            for(var periodKindDescription : periodKindDescriptions) {
                 Language language = periodKindDescription.getLanguage();
                 PeriodTypeDescription periodTypeDescription = periodControl.getPeriodTypeDescription(periodType, language);
                 

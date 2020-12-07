@@ -265,7 +265,7 @@ public class WishlistControl
             }
         }
         
-        for(WishlistType wishlistType: wishlistTypes) {
+        for(var wishlistType : wishlistTypes) {
             WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetail();
             String label = getBestWishlistTypeDescription(wishlistType, language);
             String value = wishlistTypeDetail.getWishlistTypeName();
@@ -725,7 +725,7 @@ public class WishlistControl
             }
         }
         
-        for(WishlistTypePriority wishlistTypePriority: wishlistTypePriorities) {
+        for(var wishlistTypePriority : wishlistTypePriorities) {
             WishlistTypePriorityDetail wishlistTypePriorityDetail = wishlistTypePriority.getLastDetail();
             String label = getBestWishlistTypePriorityDescription(wishlistTypePriority, language);
             String value = wishlistTypePriorityDetail.getWishlistTypePriorityName();

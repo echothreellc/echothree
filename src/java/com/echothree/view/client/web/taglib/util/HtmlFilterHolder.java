@@ -74,7 +74,7 @@ public class HtmlFilterHolder {
     public ElementRemover getElementRemover() {
         ElementRemover elementRemover = new ElementRemover();
 
-        for(HtmlTagHolder htmlTagHolder : htmlTagHolders) {
+        for(var htmlTagHolder : htmlTagHolders) {
             switch(htmlTagHolder.getHtmlFilterAction()) {
                 case ACCEPT:
                     Set<String> attributesSet = htmlTagHolder.getAttributes();

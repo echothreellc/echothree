@@ -117,7 +117,7 @@ public abstract class BaseSearchEvaluator
         EntityInstancePKHolder entityInstancePKHolder = new EntityInstancePKHolder(entityInstancePKs.size());
         int i = 0;
 
-        for(EntityInstancePK entityInstancePK : entityInstancePKs) {
+        for(var entityInstancePK : entityInstancePKs) {
             entityInstancePKHolder.add(entityInstancePK, i++);
         }
 
@@ -306,7 +306,7 @@ public abstract class BaseSearchEvaluator
                             if(entityInstancePKs.size() == cachedExecutedSearchResults.size()) {
                                 // Otherwise, get the existing results and compare them to the new ones. If there's any that aren't in there,
                                 // or any whose sort order is different, then the results have again, definately changed.
-                                for(CachedExecutedSearchResult cachedExecutedSearchResult : cachedExecutedSearchResults) {
+                                for(var cachedExecutedSearchResult : cachedExecutedSearchResults) {
                                     Integer sortOrder = entityInstancePKs.get(cachedExecutedSearchResult.getEntityInstancePK());
 
                                     if(sortOrder == null) {
@@ -481,7 +481,7 @@ public abstract class BaseSearchEvaluator
         IndexType indexType = index.getLastDetail().getIndexType();
         String[] fieldsToCheck = fields == null ? new String[] { field } : fields;
         
-        for(String fieldToCheck : fieldsToCheck) {
+        for(var fieldToCheck : fieldsToCheck) {
             searchControl.createCachedSearchIndexField(cachedSearch, getIndexControl().getIndexFieldByName(indexType, fieldToCheck), partyPK);
         }
     }
@@ -491,7 +491,7 @@ public abstract class BaseSearchEvaluator
         boolean result = true;
         String[] fieldsToCheck = fields == null ? new String[] { field } : fields;
         
-        for(String fieldToCheck : fieldsToCheck) {
+        for(var fieldToCheck : fieldsToCheck) {
             if(getIndexControl().getIndexFieldByName(indexType, fieldToCheck) == null) {
                 result = false;
                 break;

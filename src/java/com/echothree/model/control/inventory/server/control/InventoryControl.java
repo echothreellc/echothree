@@ -312,7 +312,7 @@ public class InventoryControl
         if(inventoryLocationGroups != null) {
             inventoryLocationGroupTransfers = new ArrayList<>(inventoryLocationGroups.size());
             
-            for(InventoryLocationGroup inventoryLocationGroup : inventoryLocationGroups) {
+            for(var inventoryLocationGroup : inventoryLocationGroups) {
                 inventoryLocationGroupTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache().getTransfer(inventoryLocationGroup));
             }
         }
@@ -607,7 +607,7 @@ public class InventoryControl
         if(inventoryLocationGroupDescriptions != null) {
             inventoryLocationGroupDescriptionTransfers = new ArrayList<>(inventoryLocationGroupDescriptions.size());
             
-            for(InventoryLocationGroupDescription inventoryLocationGroupDescription : inventoryLocationGroupDescriptions) {
+            for(var inventoryLocationGroupDescription : inventoryLocationGroupDescriptions) {
                 inventoryLocationGroupDescriptionTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupDescriptionTransferCache().getTransfer(inventoryLocationGroupDescription));
             }
         }
@@ -1074,7 +1074,7 @@ public class InventoryControl
             }
         }
         
-        for(InventoryCondition inventoryCondition: inventoryConditions) {
+        for(var inventoryCondition : inventoryConditions) {
             var inventoryConditionDetail = inventoryCondition.getLastDetail();
 
             var label = getBestInventoryConditionDescription(inventoryCondition, language);
@@ -1109,7 +1109,7 @@ public class InventoryControl
             }
         }
         
-        for(InventoryConditionUse inventoryConditionUse: inventoryConditionUses) {
+        for(var inventoryConditionUse : inventoryConditionUses) {
             var inventoryCondition = inventoryConditionUse.getInventoryCondition();
             var inventoryConditionDetail = inventoryCondition.getLastDetail();
 
@@ -1437,7 +1437,7 @@ public class InventoryControl
             
             inventoryConditionUseTypeTransfers = new ArrayList<>(inventoryConditionUseTypes.size());
             
-            for(InventoryConditionUseType inventoryConditionUseType: inventoryConditionUseTypes) {
+            for(var inventoryConditionUseType : inventoryConditionUseTypes) {
                 inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getTransfer(inventoryConditionUseType));
             }
         }
@@ -1704,7 +1704,7 @@ public class InventoryControl
             
             inventoryConditionUseTransfers = new ArrayList<>(inventoryConditionUses.size());
             
-            for(InventoryConditionUse inventoryConditionUse: inventoryConditionUses) {
+            for(var inventoryConditionUse : inventoryConditionUses) {
                 inventoryConditionUseTransfers.add(inventoryConditionUseTransferCache.getTransfer(inventoryConditionUse));
             }
         }
@@ -2461,7 +2461,7 @@ public class InventoryControl
             }
         }
 
-        for(AllocationPriority allocationPriority: allocationPriorities) {
+        for(var allocationPriority : allocationPriorities) {
             AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
 
             String label = getBestAllocationPriorityDescription(allocationPriority, language);

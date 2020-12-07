@@ -259,7 +259,7 @@ public class SubscriptionControl
             }
         }
 
-        for(SubscriptionKind subscriptionKind: subscriptionKinds) {
+        for(var subscriptionKind : subscriptionKinds) {
             SubscriptionKindDetail subscriptionKindDetail = subscriptionKind.getLastDetail();
 
             String label = getBestSubscriptionKindDescription(subscriptionKind, language);
@@ -695,7 +695,7 @@ public class SubscriptionControl
             values.add("");
         }
         
-        for(SubscriptionType subscriptionType: subscriptionTypes) {
+        for(var subscriptionType : subscriptionTypes) {
             SubscriptionTypeDetail subscriptionTypeDetail = subscriptionType.getLastDetail();
             String label = getBestSubscriptionTypeDescription(subscriptionType, language);
             String value = subscriptionTypeDetail.getSubscriptionTypeName();
@@ -954,7 +954,7 @@ public class SubscriptionControl
         if(subscriptionTypeDescriptions != null) {
             subscriptionTypeDescriptionTransfers = new ArrayList<>(subscriptionTypeDescriptions.size());
             
-            for(SubscriptionTypeDescription subscriptionTypeDescription: subscriptionTypeDescriptions) {
+            for(var subscriptionTypeDescription : subscriptionTypeDescriptions) {
                 subscriptionTypeDescriptionTransfers.add(getSubscriptionTransferCaches(userVisit).getSubscriptionTypeDescriptionTransferCache().getSubscriptionTypeDescriptionTransfer(subscriptionTypeDescription));
             }
         }

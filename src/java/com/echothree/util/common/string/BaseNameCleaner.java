@@ -97,7 +97,7 @@ public class BaseNameCleaner {
     private List<String> iterableToList(Iterable<String> pieces) {
         var list = new ArrayList<String>();
 
-        for(String str : pieces) {
+        for(var str : pieces) {
             list.add(str);
         }
 

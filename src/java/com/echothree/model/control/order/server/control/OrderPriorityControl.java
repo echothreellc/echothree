@@ -230,7 +230,7 @@ public class OrderPriorityControl
             }
         }
 
-        for(OrderPriority orderPriority: orderPriorities) {
+        for(var orderPriority : orderPriorities) {
             OrderPriorityDetail orderPriorityDetail = orderPriority.getLastDetail();
 
             String label = getBestOrderPriorityDescription(orderPriority, language);

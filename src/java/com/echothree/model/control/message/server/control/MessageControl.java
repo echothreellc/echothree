@@ -626,7 +626,7 @@ public class MessageControl
             }
         }
         
-        for(Message message: messages) {
+        for(var message : messages) {
             MessageDetail messageDetail = message.getLastDetail();
             String label = getBestMessageDescription(message, language);
             String value = messageDetail.getMessageName();

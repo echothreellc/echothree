@@ -409,7 +409,7 @@ public class ContactListControl
             }
         }
 
-        for(ContactListType contactListType: contactListTypes) {
+        for(var contactListType : contactListTypes) {
             ContactListTypeDetail contactListTypeDetail = contactListType.getLastDetail();
 
             String label = getBestContactListTypeDescription(contactListType, language);
@@ -842,7 +842,7 @@ public class ContactListControl
             }
         }
 
-        for(ContactListGroup contactListGroup: contactListGroups) {
+        for(var contactListGroup : contactListGroups) {
             ContactListGroupDetail contactListGroupDetail = contactListGroup.getLastDetail();
 
             String label = getBestContactListGroupDescription(contactListGroup, language);
@@ -1250,7 +1250,7 @@ public class ContactListControl
             }
         }
 
-        for(ContactListFrequency contactListFrequency: contactListFrequencies) {
+        for(var contactListFrequency : contactListFrequencies) {
             ContactListFrequencyDetail contactListFrequencyDetail = contactListFrequency.getLastDetail();
 
             String label = getBestContactListFrequencyDescription(contactListFrequency, language);
@@ -1788,7 +1788,7 @@ public class ContactListControl
             }
         }
 
-        for(ContactList contactList: contactLists) {
+        for(var contactList : contactLists) {
             ContactListDetail contactListDetail = contactList.getLastDetail();
 
             String label = getBestContactListDescription(contactList, language);
@@ -3277,7 +3277,7 @@ public class ContactListControl
             }
         }
 
-        for(ContactListContactMechanismPurpose contactListContactMechanismPurpose: contactListContactMechanismPurposes) {
+        for(var contactListContactMechanismPurpose : contactListContactMechanismPurposes) {
             ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
             ContactMechanismPurpose contactMechanismPurpose = contactListContactMechanismPurposeDetail.getContactMechanismPurpose();
 

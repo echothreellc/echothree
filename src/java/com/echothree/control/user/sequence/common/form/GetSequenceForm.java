@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.sequence.common.form;
 
-import com.echothree.control.user.sequence.common.spec.SequenceSpec;
+import com.echothree.control.user.sequence.common.spec.SequenceUniversalSpec;
 
 public interface GetSequenceForm
-        extends SequenceSpec {
+        extends SequenceUniversalSpec {
     
-    // Nothing additional beyond SequenceSpec
+    // Nothing additional beyond SequenceUniversalSpec
     
 }
