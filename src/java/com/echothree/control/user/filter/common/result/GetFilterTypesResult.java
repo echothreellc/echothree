@@ -26,7 +26,10 @@ public interface GetFilterTypesResult
     
     FilterKindTransfer getFilterKind();
     void setFilterKind(FilterKindTransfer filterKind);
-    
+
+    Long getFilterTypeCount();
+    void setFilterTypeCount(Long filterTypeCount);
+
     List<FilterTypeTransfer> getFilterTypes();
     void setFilterTypes(List<FilterTypeTransfer> filterTypes);
     
