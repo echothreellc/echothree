@@ -35,7 +35,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
-import static java.util.List.of;
 
 public class GetFilterTypeCommand
         extends BaseSingleEntityCommand<FilterType, GetFilterTypeForm> {
@@ -44,14 +43,14 @@ public class GetFilterTypeCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(of(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), of(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterType.name(), SecurityRoles.Review.name())
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = of(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
