@@ -20,24 +20,25 @@ import com.echothree.control.user.filter.common.form.GetFilterTypeForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
-import static java.util.List.*;
+import static java.util.List.of;
 
 public class GetFilterTypeCommand
-        extends BaseSimpleCommand<GetFilterTypeForm> {
+        extends BaseSingleEntityCommand<FilterType, GetFilterTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -51,8 +52,12 @@ public class GetFilterTypeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = of(
-                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
     
@@ -60,29 +65,27 @@ public class GetFilterTypeCommand
     public GetFilterTypeCommand(UserVisitPK userVisitPK, GetFilterTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected FilterType getEntity() {
+        var filterType = FilterTypeLogic.getInstance().getFilterTypeByUniversalSpec(this, form, true);
+
+        if(filterType != null) {
+            sendEventUsingNames(filterType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        }
+
+        return filterType;
+    }
+
+    @Override
+    protected BaseResult getTransfer(FilterType filterType) {
         var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterTypeResult();
-        var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
-            var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
-            if(filterType != null) {
-                result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
-                
-                sendEventUsingNames(filterType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+
+        if(filterType != null) {
+            result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
         }
-        
+
         return result;
     }
     
