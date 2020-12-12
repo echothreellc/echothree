@@ -593,6 +593,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("filterType")
     public static FilterTypeObject filterType(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") final String filterKindName,
             @GraphQLName("filterTypeName") final String filterTypeName,
             @GraphQLName("id") final String id) {
         FilterType filterType;
@@ -600,6 +601,7 @@ public final class GraphQlQueries
         try {
             var commandForm = FilterUtil.getHome().getGetFilterTypeForm();
 
+            commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.setUlid(id);
 
@@ -613,12 +615,15 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterTypes")
-    public static Collection<FilterTypeObject> filterTypes(final DataFetchingEnvironment env) {
+    public static Collection<FilterTypeObject> filterTypes(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") final String filterKindName) {
         Collection<FilterType> filterTypes;
         Collection<FilterTypeObject> filterTypeObjects;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterTypesForm();
+
+            commandForm.setFilterKindName(filterKindName);
 
             filterTypes = new GetFilterTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
