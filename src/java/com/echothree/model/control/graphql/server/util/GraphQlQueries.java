@@ -74,6 +74,8 @@ import com.echothree.control.user.core.server.command.GetTextTransformationsComm
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
+import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
@@ -180,6 +182,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
+import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
@@ -246,6 +249,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.server.entity.Item;
@@ -584,6 +588,54 @@ public final class GraphQlQueries
         }
 
         return filterKindObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterType")
+    public static FilterTypeObject filterType(final DataFetchingEnvironment env,
+            @GraphQLName("filterTypeName") final String filterTypeName,
+            @GraphQLName("id") final String id) {
+        FilterType filterType;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterTypeForm();
+
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setUlid(id);
+
+            filterType = new GetFilterTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterType == null ? null : new FilterTypeObject(filterType);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterTypes")
+    public static Collection<FilterTypeObject> filterTypes(final DataFetchingEnvironment env) {
+        Collection<FilterType> filterTypes;
+        Collection<FilterTypeObject> filterTypeObjects;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterTypesForm();
+
+            filterTypes = new GetFilterTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(filterTypes == null) {
+            filterTypeObjects = emptyList();
+        } else {
+            filterTypeObjects = new ArrayList<>(filterTypes.size());
+
+            filterTypes.stream()
+                    .map(FilterTypeObject::new)
+                    .forEachOrdered(filterTypeObjects::add);
+        }
+
+        return filterTypeObjects;
     }
 
     @GraphQLField

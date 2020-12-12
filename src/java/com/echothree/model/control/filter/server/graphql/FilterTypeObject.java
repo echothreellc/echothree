@@ -1,0 +1,95 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2020 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.filter.server.graphql;
+
+import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
+import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
+import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.filter.server.entity.FilterTypeDetail;
+import com.echothree.util.server.persistence.Session;
+import graphql.annotations.annotationTypes.GraphQLDescription;
+import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
+
+@GraphQLDescription("filter type object")
+@GraphQLName("FilterType")
+public class FilterTypeObject
+        extends BaseEntityInstanceObject {
+    
+    private final FilterType filterType; // Always Present
+    
+    public FilterTypeObject(FilterType filterType) {
+        super(filterType.getPrimaryKey());
+        
+        this.filterType = filterType;
+    }
+
+    private FilterTypeDetail filterTypeDetail; // Optional, use getFilterTypeDetail()
+    
+    private FilterTypeDetail getFilterTypeDetail() {
+        if(filterTypeDetail == null) {
+            filterTypeDetail = filterType.getLastDetail();
+        }
+        
+        return filterTypeDetail;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("filter kind")
+    public FilterKindObject getFilterKind(final DataFetchingEnvironment env) {
+        return FilterSecurityUtils.getInstance().getHasFilterKindAccess(env) ? new FilterKindObject(getFilterTypeDetail().getFilterKind()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("filter type name")
+    @GraphQLNonNull
+    public String getFilterTypeName() {
+        return getFilterTypeDetail().getFilterTypeName();
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("is default")
+    @GraphQLNonNull
+    public boolean getIsDefault() {
+        return getFilterTypeDetail().getIsDefault();
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("sort order")
+    @GraphQLNonNull
+    public int getSortOrder() {
+        return getFilterTypeDetail().getSortOrder();
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("description")
+    @GraphQLNonNull
+    public String getDescription(final DataFetchingEnvironment env) {
+        var filterControl = Session.getModelController(FilterControl.class);
+        var userControl = Session.getModelController(UserControl.class);
+        GraphQlContext context = env.getContext();
+        
+        return filterControl.getBestFilterTypeDescription(filterType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+    }
+    
+}
