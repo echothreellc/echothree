@@ -1,5 +1,13 @@
 # Changelog
 
+## 2020-12-13-01
+
+* GraphQL Objects for Filter Types [154](https://gitlab.echothree.com/echothree/echothree/-/issues/154)
+* GraphQL Objects and Mutations for Sequences [172](https://gitlab.echothree.com/echothree/echothree/-/issues/172)
+* Replace synchronized With ReentrantLock in EntityIdGenerator [184](https://gitlab.echothree.com/echothree/echothree/-/issues/184)
+* jOOQ 3.14.4 Upgrade [186](https://gitlab.echothree.com/echothree/echothree/-/issues/186)
+* Switch to Mattermost for Notifications [187](https://gitlab.echothree.com/echothree/echothree/-/issues/187)
+
 ## 2020-11-29-01
 
 * jOOQ 3.14.3 Upgrade [179](https://gitlab.echothree.com/echothree/echothree/-/issues/179)
