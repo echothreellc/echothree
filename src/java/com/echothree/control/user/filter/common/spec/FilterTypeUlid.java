@@ -14,23 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.filter.common.result;
+package com.echothree.control.user.filter.common.spec;
 
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface GetFilterTypesResult
-        extends BaseResult {
+public interface FilterTypeUlid
+        extends BaseSpec {
     
-    FilterKindTransfer getFilterKind();
-    void setFilterKind(FilterKindTransfer filterKind);
-
-    Long getFilterTypeCount();
-    void setFilterTypeCount(Long filterTypeCount);
-
-    List<FilterTypeTransfer> getFilterTypes();
-    void setFilterTypes(List<FilterTypeTransfer> filterTypes);
+    String getFilterTypeUlid();
+    void setFilterTypeUlid(String filterTypeUlid);
     
 }

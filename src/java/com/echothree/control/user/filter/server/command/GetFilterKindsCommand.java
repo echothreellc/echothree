@@ -18,7 +18,6 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterKindsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterKindsResult;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -70,14 +69,17 @@ public class GetFilterKindsCommand
 
     @Override
     protected BaseResult getTransfers(Collection<FilterKind> entities) {
-        GetFilterKindsResult result = FilterResultFactory.getGetFilterKindsResult();
-        var filterControl = Session.getModelController(FilterControl.class);
+        var result = FilterResultFactory.getGetFilterKindsResult();
 
-        if(session.hasLimit(FilterKindFactory.class)) {
-            result.setFilterKindCount(filterControl.countFilterKinds());
+        if(entities != null) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
+            if(session.hasLimit(FilterKindFactory.class)) {
+                result.setFilterKindCount(filterControl.countFilterKinds());
+            }
+
+            result.setFilterKinds(filterControl.getFilterKindTransfers(getUserVisit(), entities));
         }
-
-        result.setFilterKinds(filterControl.getFilterKindTransfers(getUserVisit(), entities));
 
         return result;
     }

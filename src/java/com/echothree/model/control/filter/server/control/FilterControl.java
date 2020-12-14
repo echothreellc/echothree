@@ -647,6 +647,30 @@ public class FilterControl
         return filterType;
     }
 
+    public long countFilterTypesByFilterKind(FilterKind filterKind) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM filtertypes, filtertypedetails "
+                + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ?",
+                filterKind);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterType */
+    public FilterType getFilterTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterTypePK(entityInstance.getEntityUniqueId());
+        var filterType = FilterTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return filterType;
+    }
+
+    public FilterType getFilterTypeByEntityInstance(EntityInstance entityInstance) {
+        return getFilterTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public FilterType getFilterTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getFilterTypesQueries;
 
     static {
@@ -697,7 +721,7 @@ public class FilterControl
         getDefaultFilterTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private FilterType getDefaultFilterType(FilterKind filterKind, EntityPermission entityPermission) {
+    public FilterType getDefaultFilterType(FilterKind filterKind, EntityPermission entityPermission) {
         return FilterTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultFilterTypeQueries,
                 filterKind);
     }
@@ -733,7 +757,7 @@ public class FilterControl
         getFilterTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private FilterType getFilterTypeByName(FilterKind filterKind, String filterTypeName, EntityPermission entityPermission) {
+    public FilterType getFilterTypeByName(FilterKind filterKind, String filterTypeName, EntityPermission entityPermission) {
         return FilterTypeFactory.getInstance().getEntityFromQuery(entityPermission, getFilterTypeByNameQueries,
                 filterKind, filterTypeName);
     }
@@ -792,16 +816,19 @@ public class FilterControl
         return getFilterTransferCaches(userVisit).getFilterTypeTransferCache().getFilterTypeTransfer(filterType);
     }
 
-    public List<FilterTypeTransfer> getFilterTypeTransfersByFilterKind(UserVisit userVisit, FilterKind filterKind) {
-        List<FilterType> filterTypes = getFilterTypes(filterKind);
-        List<FilterTypeTransfer> filterTypeTransfers = new ArrayList<>(filterTypes.size());
-        FilterTypeTransferCache filterTypeTransferCache = getFilterTransferCaches(userVisit).getFilterTypeTransferCache();
+    public List<FilterTypeTransfer> getFilterTypeTransfers(UserVisit userVisit, Collection<FilterType> filterTypes) {
+        var filterTypeTransfers = new ArrayList<FilterTypeTransfer>(filterTypes.size());
+        var filterTypeTransferCache = getFilterTransferCaches(userVisit).getFilterTypeTransferCache();
 
         filterTypes.forEach((filterType) ->
-                filterTypeTransfers.add(filterTypeTransferCache.getFilterTypeTransfer(filterType))
+            filterTypeTransfers.add(filterTypeTransferCache.getFilterTypeTransfer(filterType))
         );
 
         return filterTypeTransfers;
+    }
+
+    public List<FilterTypeTransfer> getFilterTypeTransfersByFilterKind(UserVisit userVisit, FilterKind filterKind) {
+        return getFilterTypeTransfers(userVisit, getFilterTypes(filterKind));
     }
 
     private void updateFilterTypeFromValue(FilterTypeDetailValue filterTypeDetailValue, boolean checkDefault,

@@ -84,10 +84,11 @@ public class GetSequencesCommand
 
     @Override
     protected BaseResult getTransfers(Collection<Sequence> entities) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequencesResult();
 
         if(entities != null) {
+            var sequenceControl = Session.getModelController(SequenceControl.class);
+
             if(session.hasLimit(SequenceFactory.class)) {
                 result.setSequenceCount(sequenceControl.countSequencesBySequenceType(sequenceType));
             }
