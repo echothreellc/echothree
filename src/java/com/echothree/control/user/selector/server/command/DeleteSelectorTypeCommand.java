@@ -20,19 +20,15 @@ import com.echothree.control.user.selector.common.form.DeleteSelectorTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.control.selector.server.logic.SelectorTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -64,23 +60,14 @@ public class DeleteSelectorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
-        if(selectorKind != null) {
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByNameForUpdate(selectorKind, selectorTypeName);
-            
-            if(selectorType != null) {
-                selectorControl.deleteSelectorType(selectorType, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorKindName, selectorTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateSelectorKindName.name(), selectorKindName);
+        var selectorKindName = form.getSelectorKindName();
+        var selectorTypeName = form.getSelectorTypeName();
+        var selectorType = SelectorTypeLogic.getInstance().getSelectorTypeByNameForUpdate(this, selectorKindName, selectorTypeName);
+
+        if(!hasExecutionErrors()) {
+            SelectorTypeLogic.getInstance().deleteSelectorType(this, selectorType, getPartyPK());
         }
-        
+
         return null;
     }
     
