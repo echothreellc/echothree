@@ -1131,7 +1131,7 @@ public class ContactControl
         List<ContactMechanismTransfer> contactMechanismTransfers = new ArrayList<>(partyContactMechanisms.size());
         ContactMechanismTransferCache contactMechanismTransferCache = getContactTransferCaches(userVisit).getContactMechanismTransferCache();
         
-        partyContactMechanisms.stream().forEach((partyContactMechanism) -> {
+        partyContactMechanisms.forEach((partyContactMechanism) -> {
             contactMechanismTransfers.add(contactMechanismTransferCache.getContactMechanismTransfer(partyContactMechanism.getLastDetail().getContactMechanism()));
         });
         

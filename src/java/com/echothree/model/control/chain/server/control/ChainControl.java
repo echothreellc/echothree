@@ -552,7 +552,7 @@ public class ChainControl
         List<ChainKindDescription> chainKindDescriptions = getChainKindDescriptionsByChainKind(chainKind);
         List<ChainKindDescriptionTransfer> chainKindDescriptionTransfers = new ArrayList<>(chainKindDescriptions.size());
 
-        chainKindDescriptions.stream().forEach((chainKindDescription) -> {
+        chainKindDescriptions.forEach((chainKindDescription) -> {
             chainKindDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainKindDescriptionTransferCache().getChainKindDescriptionTransfer(chainKindDescription));
         });
 
@@ -1015,7 +1015,7 @@ public class ChainControl
         List<ChainTypeDescription> chainTypeDescriptions = getChainTypeDescriptionsByChainType(chainType);
         List<ChainTypeDescriptionTransfer> chainTypeDescriptionTransfers = new ArrayList<>(chainTypeDescriptions.size());
 
-        chainTypeDescriptions.stream().forEach((chainTypeDescription) -> {
+        chainTypeDescriptions.forEach((chainTypeDescription) -> {
             chainTypeDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainTypeDescriptionTransferCache().getChainTypeDescriptionTransfer(chainTypeDescription));
         });
 
@@ -1319,7 +1319,7 @@ public class ChainControl
         List<ChainEntityRoleTypeDescription> chainEntityRoleTypeDescriptions = getChainEntityRoleTypeDescriptionsByChainEntityRoleType(chainEntityRoleType);
         List<ChainEntityRoleTypeDescriptionTransfer> chainEntityRoleTypeDescriptionTransfers = new ArrayList<>(chainEntityRoleTypeDescriptions.size());
 
-        chainEntityRoleTypeDescriptions.stream().forEach((chainEntityRoleTypeDescription) -> {
+        chainEntityRoleTypeDescriptions.forEach((chainEntityRoleTypeDescription) -> {
             chainEntityRoleTypeDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainEntityRoleTypeDescriptionTransferCache().getChainEntityRoleTypeDescriptionTransfer(chainEntityRoleTypeDescription));
         });
 
@@ -1788,7 +1788,7 @@ public class ChainControl
         List<ChainDescription> chainDescriptions = getChainDescriptionsByChain(chain);
         List<ChainDescriptionTransfer> chainDescriptionTransfers = new ArrayList<>(chainDescriptions.size());
 
-        chainDescriptions.stream().forEach((chainDescription) -> {
+        chainDescriptions.forEach((chainDescription) -> {
             chainDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainDescriptionTransferCache().getChainDescriptionTransfer(chainDescription));
         });
 
@@ -2212,7 +2212,7 @@ public class ChainControl
         List<ChainActionSetDescription> chainActionSetDescriptions = getChainActionSetDescriptionsByChainActionSet(chainActionSet);
         List<ChainActionSetDescriptionTransfer> chainActionSetDescriptionTransfers = new ArrayList<>(chainActionSetDescriptions.size());
 
-        chainActionSetDescriptions.stream().forEach((chainActionSetDescription) -> {
+        chainActionSetDescriptions.forEach((chainActionSetDescription) -> {
             chainActionSetDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainActionSetDescriptionTransferCache().getChainActionSetDescriptionTransfer(chainActionSetDescription));
         });
 
@@ -2617,7 +2617,7 @@ public class ChainControl
         List<ChainActionTypeDescription> chainActionTypeDescriptions = getChainActionTypeDescriptionsByChainActionType(chainActionType);
         List<ChainActionTypeDescriptionTransfer> chainActionTypeDescriptionTransfers = new ArrayList<>(chainActionTypeDescriptions.size());
 
-        chainActionTypeDescriptions.stream().forEach((chainActionTypeDescription) -> {
+        chainActionTypeDescriptions.forEach((chainActionTypeDescription) -> {
             chainActionTypeDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainActionTypeDescriptionTransferCache().getChainActionTypeDescriptionTransfer(chainActionTypeDescription));
         });
 
@@ -2956,7 +2956,7 @@ public class ChainControl
         List<ChainActionDescription> chainActionDescriptions = getChainActionDescriptionsByChainAction(chainAction);
         List<ChainActionDescriptionTransfer> chainActionDescriptionTransfers = new ArrayList<>(chainActionDescriptions.size());
 
-        chainActionDescriptions.stream().forEach((chainActionDescription) -> {
+        chainActionDescriptions.forEach((chainActionDescription) -> {
             chainActionDescriptionTransfers.add(getChainTransferCaches(userVisit).getChainActionDescriptionTransferCache().getChainActionDescriptionTransfer(chainActionDescription));
         });
 
@@ -3420,7 +3420,7 @@ public class ChainControl
     }
 
     public void deleteChainInstancesByNextChainActionSet(List<ChainInstanceStatus> chainInstanceStatuses, BasePK deletedBy) {
-        chainInstanceStatuses.stream().forEach((chainInstanceStatus) -> {
+        chainInstanceStatuses.forEach((chainInstanceStatus) -> {
             deleteChainInstance(chainInstanceStatus.getChainInstance(), deletedBy);
         });
     }

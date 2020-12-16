@@ -732,7 +732,7 @@ public class WorkEffortControl
     public void deleteWorkEffortScopesByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
         List<WorkEffortScope> workEffortScopes = getWorkEffortScopesForUpdate(workEffortType);
         
-        workEffortScopes.stream().forEach((workEffortScope) -> {
+        workEffortScopes.forEach((workEffortScope) -> {
             deleteWorkEffortScope(workEffortScope, false, deletedBy);
         });
     }

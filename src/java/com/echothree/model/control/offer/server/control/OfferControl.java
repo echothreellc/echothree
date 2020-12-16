@@ -290,7 +290,7 @@ public class OfferControl
     public List<OfferTransfer> getOfferTransfers(UserVisit userVisit, Collection<Offer> offers) {
         List<OfferTransfer> offerTransfers = new ArrayList<>(offers.size());
         
-        offers.stream().forEach((offer) -> {
+        offers.forEach((offer) -> {
             offerTransfers.add(getOfferTransferCaches(userVisit).getOfferTransferCache().getOfferTransfer(offer));
         });
         
@@ -547,7 +547,7 @@ public class OfferControl
         List<OfferDescription> offerDescriptions = getOfferDescriptionsByOffer(offer);
         List<OfferDescriptionTransfer> offerDescriptionTransfers = new ArrayList<>(offerDescriptions.size());
         
-        offerDescriptions.stream().forEach((offerDescription) -> {
+        offerDescriptions.forEach((offerDescription) -> {
             offerDescriptionTransfers.add(getOfferTransferCaches(userVisit).getOfferDescriptionTransferCache().getOfferDescriptionTransfer(offerDescription));
         });
         

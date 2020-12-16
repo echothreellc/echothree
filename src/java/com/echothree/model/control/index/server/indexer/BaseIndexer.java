@@ -136,7 +136,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
             if (!workflowEntityStatuses.isEmpty()) {
                 StringBuilder workflowStepNamesBuilder = new StringBuilder();
-                workflowEntityStatuses.stream().forEach((workflowEntityStatus) -> {
+                workflowEntityStatuses.forEach((workflowEntityStatus) -> {
                     if(workflowStepNamesBuilder.length() != 0) {
                         workflowStepNamesBuilder.append(' ');
                     }
@@ -171,7 +171,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     protected void indexEntityAttributes(final Document document, final EntityInstance entityInstance) {
-        entityAttributes.stream().forEach((entityAttribute) -> {
+        entityAttributes.forEach((entityAttribute) -> {
             EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
             String fieldName = entityAttributeDetail.getEntityAttributeName();
             String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
@@ -284,7 +284,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                 List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
                 if (entityMultipleListItemAttributes != null && !entityMultipleListItemAttributes.isEmpty()) {
                     StringBuilder entityListItemNamesBuilder = new StringBuilder();
-                    entityMultipleListItemAttributes.stream().forEach((entityMultipleListItemAttribute) -> {
+                    entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> {
                         if(entityListItemNamesBuilder.length() != 0) {
                             entityListItemNamesBuilder.append(' ');
                         }

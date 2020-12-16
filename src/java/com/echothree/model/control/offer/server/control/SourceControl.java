@@ -294,7 +294,7 @@ public class SourceControl
     public List<SourceTransfer> getSourceTransfers(UserVisit userVisit, Collection<Source> sources) {
         List<SourceTransfer> sourceTransfers = new ArrayList<>(sources.size());
 
-        sources.stream().forEach((source) -> {
+        sources.forEach((source) -> {
             sourceTransfers.add(getOfferTransferCaches(userVisit).getSourceTransferCache().getSourceTransfer(source));
         });
 

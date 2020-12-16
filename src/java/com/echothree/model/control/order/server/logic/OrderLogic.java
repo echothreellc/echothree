@@ -309,7 +309,7 @@ public class OrderLogic
         var orderLines = orderLineControl.getOrderLinesByOrder(order);
         var items = new HashSet<Item>(orderLines.size());
 
-        orderLines.stream().forEach((orderLine) -> {
+        orderLines.forEach((orderLine) -> {
             items.add(orderLine.getLastDetail().getItem());
         });
         
@@ -426,7 +426,7 @@ public class OrderLogic
         var orderPaymentPreferenceControl = Session.getModelController(OrderPaymentPreferenceControl.class);
         var orderPaymentPreferences = orderPaymentPreferenceControl.getOrderPaymentPreferencesByOrder(order);
         
-        orderPaymentPreferences.stream().forEach((orderPaymentPreference) -> {
+        orderPaymentPreferences.forEach((orderPaymentPreference) -> {
             PaymentMethodLogic.getInstance().checkAcceptanceOfItem(session, eea, orderPaymentPreference.getLastDetail().getPaymentMethod(), item, evaluatedBy);
         });
     }

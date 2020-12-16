@@ -853,7 +853,7 @@ public class GeoControl
         List<GeoCodeTypeDescription> geoCodeTypeDescriptions = getGeoCodeTypeDescriptionsByGeoCodeType(geoCodeType);
         List<GeoCodeTypeDescriptionTransfer> geoCodeTypeDescriptionTransfers = new ArrayList<>(geoCodeTypeDescriptions.size());
 
-        geoCodeTypeDescriptions.stream().forEach((geoCodeTypeDescription) -> {
+        geoCodeTypeDescriptions.forEach((geoCodeTypeDescription) -> {
             geoCodeTypeDescriptionTransfers.add(getGeoTransferCaches(userVisit).getGeoCodeTypeDescriptionTransferCache().getGeoCodeTypeDescriptionTransfer(geoCodeTypeDescription));
         });
 
@@ -1281,7 +1281,7 @@ public class GeoControl
         List<GeoCodeScopeDescription> geoCodeScopeDescriptions = getGeoCodeScopeDescriptionsByGeoCodeScope(geoCodeScope);
         List<GeoCodeScopeDescriptionTransfer> geoCodeScopeDescriptionTransfers = new ArrayList<>(geoCodeScopeDescriptions.size());
 
-        geoCodeScopeDescriptions.stream().forEach((geoCodeScopeDescription) -> {
+        geoCodeScopeDescriptions.forEach((geoCodeScopeDescription) -> {
             geoCodeScopeDescriptionTransfers.add(getGeoTransferCaches(userVisit).getGeoCodeScopeDescriptionTransferCache().getGeoCodeScopeDescriptionTransfer(geoCodeScopeDescription));
         });
 
@@ -1778,7 +1778,7 @@ public class GeoControl
         List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions = getGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(geoCodeAliasType);
         List<GeoCodeAliasTypeDescriptionTransfer> geoCodeAliasTypeDescriptionTransfers = new ArrayList<>(geoCodeAliasTypeDescriptions.size());
 
-        geoCodeAliasTypeDescriptions.stream().forEach((geoCodeAliasTypeDescription) -> {
+        geoCodeAliasTypeDescriptions.forEach((geoCodeAliasTypeDescription) -> {
             geoCodeAliasTypeDescriptionTransfers.add(getGeoTransferCaches(userVisit).getGeoCodeAliasTypeDescriptionTransferCache().getGeoCodeAliasTypeDescriptionTransfer(geoCodeAliasTypeDescription));
         });
         
@@ -2210,7 +2210,7 @@ public class GeoControl
         List<GeoCodeDescription> geoCodeDescriptions = getGeoCodeDescriptionsByGeoCode(geoCode);
         List<GeoCodeDescriptionTransfer> geoCodeDescriptionTransfers = new ArrayList<>(geoCodeDescriptions.size());
 
-        geoCodeDescriptions.stream().forEach((geoCodeDescription) -> {
+        geoCodeDescriptions.forEach((geoCodeDescription) -> {
             geoCodeDescriptionTransfers.add(getGeoTransferCaches(userVisit).getGeoCodeDescriptionTransferCache().getGeoCodeDescriptionTransfer(geoCodeDescription));
         });
 

@@ -266,7 +266,7 @@ public class UseControl
     public List<UseTransfer> getUseTransfers(UserVisit userVisit, Collection<Use> uses) {
         List<UseTransfer> useTransfers = new ArrayList<>(uses.size());
 
-        uses.stream().forEach((use) -> {
+        uses.forEach((use) -> {
             useTransfers.add(getOfferTransferCaches(userVisit).getUseTransferCache().getUseTransfer(use));
         });
 
@@ -527,7 +527,7 @@ public class UseControl
         List<UseDescription> useDescriptions = getUseDescriptionsByUse(use);
         List<UseDescriptionTransfer> useDescriptionTransfers = new ArrayList<>(useDescriptions.size());
 
-        useDescriptions.stream().forEach((useDescription) -> {
+        useDescriptions.forEach((useDescription) -> {
             useDescriptionTransfers.add(getOfferTransferCaches(userVisit).getUseDescriptionTransferCache().getUseDescriptionTransfer(useDescription));
         });
 

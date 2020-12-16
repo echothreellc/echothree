@@ -257,7 +257,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         List<EntityAttributeGroupTransfer> entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         MapWrapper<EntityAttributeGroupTransfer> mapWrapper = new MapWrapper<>(entityAttributeGroupTransfers.size());
 
-        entityAttributeGroupTransfers.stream().forEach((entityAttributeGroupTransfer) -> {
+        entityAttributeGroupTransfers.forEach((entityAttributeGroupTransfer) -> {
             mapWrapper.put(entityAttributeGroupTransfer.getEntityAttributeGroupName(), entityAttributeGroupTransfer);
         });
 

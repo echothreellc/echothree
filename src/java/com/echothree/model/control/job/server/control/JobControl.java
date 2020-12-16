@@ -381,7 +381,7 @@ public class JobControl
         List<JobDescription> jobDescriptions = getJobDescriptionsByJob(job);
         List<JobDescriptionTransfer> jobDescriptionTransfers = new ArrayList<>(jobDescriptions.size());
         
-        jobDescriptions.stream().forEach((jobDescription) -> {
+        jobDescriptions.forEach((jobDescription) -> {
             jobDescriptionTransfers.add(getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription));
         });
         

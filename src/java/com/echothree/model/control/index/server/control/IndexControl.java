@@ -976,7 +976,7 @@ public class IndexControl
         List<IndexFieldDescription> indexFieldDescriptions = getIndexFieldDescriptionsByIndexField(indexField);
         List<IndexFieldDescriptionTransfer> indexFieldDescriptionTransfers = new ArrayList<>(indexFieldDescriptions.size());
 
-        indexFieldDescriptions.stream().forEach((indexFieldDescription) -> {
+        indexFieldDescriptions.forEach((indexFieldDescription) -> {
             indexFieldDescriptionTransfers.add(getIndexTransferCaches(userVisit).getIndexFieldDescriptionTransferCache().getIndexFieldDescriptionTransfer(indexFieldDescription));
         });
 

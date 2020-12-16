@@ -73,7 +73,7 @@ public class UserLoginTransferCache
                 List<UserLoginPasswordTransfer> userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());
                 MapWrapper<UserLoginPasswordTransfer> userLoginPasswords = new MapWrapper<>(userLoginPasswordTransfers.size());
 
-                userLoginPasswordTransfers.stream().forEach((userLoginPasswordTransfer) -> {
+                userLoginPasswordTransfers.forEach((userLoginPasswordTransfer) -> {
                     userLoginPasswords.put(userLoginPasswordTransfer.getUserLoginPasswordType().getUserLoginPasswordTypeName(), userLoginPasswordTransfer);
                 });
 

@@ -103,7 +103,7 @@ public class CachedSelector {
         selectorNodes = new HashMap<>(size);
         
         if(size > 0) {
-            rawSelectorNodes.stream().forEach((selectorNode) -> {
+            rawSelectorNodes.forEach((selectorNode) -> {
                 SelectorNodeDetail selectorNodeDetail = selectorNode.getLastDetail();
                 
                 if(selectorNodeDetail.getIsRootSelectorNode()) {
@@ -125,7 +125,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeBooleans = new HashMap<>(size);
             
-            rawSelectorNodeBooleans.stream().forEach((selectorNodeBoolean) -> {
+            rawSelectorNodeBooleans.forEach((selectorNodeBoolean) -> {
                 selectorNodeBooleans.put(selectorNodeBoolean.getSelectorNode(), selectorNodeBoolean);
             });
         } else
@@ -142,7 +142,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeEntityListItems = new HashMap<>(size);
             
-            rawSelectorNodeEntityListItems.stream().forEach((selectorNodeEntityListItem) -> {
+            rawSelectorNodeEntityListItems.forEach((selectorNodeEntityListItem) -> {
                 selectorNodeEntityListItems.put(selectorNodeEntityListItem.getSelectorNode(), selectorNodeEntityListItem);
             });
         } else
@@ -159,7 +159,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeWorkflowSteps = new HashMap<>(size);
             
-            rawSelectorNodeWorkflowSteps.stream().forEach((selectorNodeWorkflowStep) -> {
+            rawSelectorNodeWorkflowSteps.forEach((selectorNodeWorkflowStep) -> {
                 selectorNodeWorkflowSteps.put(selectorNodeWorkflowStep.getSelectorNode(), selectorNodeWorkflowStep);
             });
         } else
@@ -176,7 +176,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeResponsibilityTypes = new HashMap<>(size);
             
-            rawSelectorNodeResponsibilityTypes.stream().forEach((selectorNodeResponsibilityType) -> {
+            rawSelectorNodeResponsibilityTypes.forEach((selectorNodeResponsibilityType) -> {
                 selectorNodeResponsibilityTypes.put(selectorNodeResponsibilityType.getSelectorNode(), selectorNodeResponsibilityType);
             });
         } else
@@ -193,7 +193,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeSkillTypes = new HashMap<>(size);
             
-            rawSelectorNodeSkillTypes.stream().forEach((selectorNodeSkillType) -> {
+            rawSelectorNodeSkillTypes.forEach((selectorNodeSkillType) -> {
                 selectorNodeSkillTypes.put(selectorNodeSkillType.getSelectorNode(), selectorNodeSkillType);
             });
         } else
@@ -210,7 +210,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeTrainingClasses = new HashMap<>(size);
             
-            rawSelectorNodeTrainingClasses.stream().forEach((selectorNodeTrainingClass) -> {
+            rawSelectorNodeTrainingClasses.forEach((selectorNodeTrainingClass) -> {
                 selectorNodeTrainingClasses.put(selectorNodeTrainingClass.getSelectorNode(), selectorNodeTrainingClass);
             });
         } else
@@ -227,7 +227,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeGeoCodes = new HashMap<>(size);
             
-            rawSelectorNodeGeoCodes.stream().forEach((selectorNodeGeoCode) -> {
+            rawSelectorNodeGeoCodes.forEach((selectorNodeGeoCode) -> {
                 selectorNodeGeoCodes.put(selectorNodeGeoCode.getSelectorNode(), selectorNodeGeoCode);
             });
         } else
@@ -244,7 +244,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeItemCategories = new HashMap<>(size);
             
-            rawSelectorNodeItemCategories.stream().forEach((selectorNodeItemCategory) -> {
+            rawSelectorNodeItemCategories.forEach((selectorNodeItemCategory) -> {
                 selectorNodeItemCategories.put(selectorNodeItemCategory.getSelectorNode(), selectorNodeItemCategory);
             });
         } else
@@ -261,7 +261,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeItemAccountingCategories = new HashMap<>(size);
             
-            rawSelectorNodeItemAccountingCategories.stream().forEach((selectorNodeItemAccountingCategory) -> {
+            rawSelectorNodeItemAccountingCategories.forEach((selectorNodeItemAccountingCategory) -> {
                 selectorNodeItemAccountingCategories.put(selectorNodeItemAccountingCategory.getSelectorNode(), selectorNodeItemAccountingCategory);
             });
         } else
@@ -278,7 +278,7 @@ public class CachedSelector {
         if(size > 0) {
             selectorNodeItemPurchasingCategories = new HashMap<>(size);
             
-            rawSelectorNodeItemPurchasingCategories.stream().forEach((selectorNodeItemPurchasingCategory) -> {
+            rawSelectorNodeItemPurchasingCategories.forEach((selectorNodeItemPurchasingCategory) -> {
                 selectorNodeItemPurchasingCategories.put(selectorNodeItemPurchasingCategory.getSelectorNode(), selectorNodeItemPurchasingCategory);
             });
         } else

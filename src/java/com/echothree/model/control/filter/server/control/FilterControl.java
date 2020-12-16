@@ -573,7 +573,7 @@ public class FilterControl
         List<FilterKindDescription> filterKindDescriptions = getFilterKindDescriptionsByFilterKind(filterKind);
         List<FilterKindDescriptionTransfer> filterKindDescriptionTransfers = new ArrayList<>(filterKindDescriptions.size());
 
-        filterKindDescriptions.stream().forEach((filterKindDescription) -> {
+        filterKindDescriptions.forEach((filterKindDescription) -> {
             filterKindDescriptionTransfers.add(getFilterTransferCaches(userVisit).getFilterKindDescriptionTransferCache().getFilterKindDescriptionTransfer(filterKindDescription));
         });
 
@@ -1023,7 +1023,7 @@ public class FilterControl
         List<FilterTypeDescription> filterTypeDescriptions = getFilterTypeDescriptionsByFilterType(filterType);
         List<FilterTypeDescriptionTransfer> filterTypeDescriptionTransfers = new ArrayList<>(filterTypeDescriptions.size());
 
-        filterTypeDescriptions.stream().forEach((filterTypeDescription) -> {
+        filterTypeDescriptions.forEach((filterTypeDescription) -> {
             filterTypeDescriptionTransfers.add(getFilterTransferCaches(userVisit).getFilterTypeDescriptionTransferCache().getFilterTypeDescriptionTransfer(filterTypeDescription));
         });
 

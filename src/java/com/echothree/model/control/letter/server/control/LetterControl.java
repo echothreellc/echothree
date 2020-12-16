@@ -1616,7 +1616,7 @@ public class LetterControl
     }
 
     private void removedQueuedLetters(List<QueuedLetter> queuedletters, boolean checkChainInstance, BasePK removedBy) {
-        queuedletters.stream().forEach((queuedLetter) -> {
+        queuedletters.forEach((queuedLetter) -> {
             removeQueuedLetter(queuedLetter, checkChainInstance, removedBy);
         });
     }

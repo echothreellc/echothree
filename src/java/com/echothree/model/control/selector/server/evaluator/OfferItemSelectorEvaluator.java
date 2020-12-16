@@ -147,7 +147,7 @@ public class OfferItemSelectorEvaluator
         if(BaseSelectorEvaluatorDebugFlags.OfferItemSelectorEvaluator)
             log.info("--- OfferItemSelectorEvaluator.createItemInOffers(offers = " + offers + ", item = " + item + ")");
         
-        offers.stream().forEach((offer) -> {
+        offers.forEach((offer) -> {
             OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
             ItemPriceType itemPriceType = item.getLastDetail().getItemPriceType();
             List<ItemPrice> itemPrices = itemControl.getItemPricesByItem(item);
@@ -174,7 +174,7 @@ public class OfferItemSelectorEvaluator
                         offerItemPrices.remove(offerItemPrice);
                     }
                 }
-                offerItemPrices.stream().forEach((offerItemPrice) -> {
+                offerItemPrices.forEach((offerItemPrice) -> {
                     OfferItemLogic.getInstance().deleteOfferItemPrice(offerItemPrice,  evaluatedBy);
                 });
             }

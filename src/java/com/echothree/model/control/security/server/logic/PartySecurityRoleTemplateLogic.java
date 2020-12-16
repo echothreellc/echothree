@@ -204,7 +204,7 @@ public class PartySecurityRoleTemplateLogic {
 
             partySecurityRoleTemplateUses.stream().map((partySecurityRoleTemplateUse) -> partySecurityRoleTemplateUse.getParty()).map((party) -> trainingControl.getPartyTrainingClassesByStatusesForUpdate(party, trainingClass,
                     PartyTrainingClassStatusConstants.WorkflowStep_ASSIGNED)).filter((partyTrainingClasses) -> (partyTrainingClasses.size() > 0)).forEach((partyTrainingClasses) -> {
-                        partyTrainingClasses.stream().forEach((partyTrainingClass) -> {
+                        partyTrainingClasses.forEach((partyTrainingClass) -> {
                             PartyTrainingClassLogic.getInstance().deletePartyTrainingClass(partyTrainingClass, deletedBy);
                 });
             });

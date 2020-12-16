@@ -85,7 +85,7 @@ public class CachedFilter {
             log.info("---   rawFilterSteps.size() = " + size);
         
         filterSteps = new ArrayList<>(size);
-        rawFilterSteps.stream().forEach((filterStep) -> {
+        rawFilterSteps.forEach((filterStep) -> {
             FilterStepDetail filterStepDetail = filterStep.getLastDetail();
             Selector filterItemSelector = filterStepDetail.getFilterItemSelector();
             filterSteps.add(filterStep);
@@ -130,7 +130,7 @@ public class CachedFilter {
         int filterStepsSize = filterSteps.size();
         filterStepDestinations = new HashMap<>(filterStepsSize);
         
-        filterSteps.stream().forEach((filterStep) -> {
+        filterSteps.forEach((filterStep) -> {
             List<FilterStepDestination> rawFilterStepDestinations = filterControl.getFilterStepDestinationsByFromFilterStep(filterStep);
             int rawFilterStepDestinationsSize = rawFilterStepDestinations.size();
             List<FilterStep> filterStepDestinationsList = new ArrayList<>(rawFilterStepDestinationsSize);
@@ -162,14 +162,14 @@ public class CachedFilter {
         int filterStepsSize = filterSteps.size();
         filterStepElements = new HashMap<>(filterStepsSize);
         
-        filterSteps.stream().forEach((filterStep) -> {
+        filterSteps.forEach((filterStep) -> {
             List<FilterStepElement> rawFilterStepElements = filterControl.getFilterStepElementsByFilterStep(filterStep);
             int rawFilterStepElementsSize = rawFilterStepElements.size();
             List<FilterStepElementDetail> filterStepElementsList = new ArrayList<>(rawFilterStepElementsSize);
             if(BaseFilterEvaluatorDebugFlags.CachedFilter)
                 log.info("---   filterStepName = " + filterStep.getLastDetail().getFilterStepName() + ", rawFilterStepElementsSize = " + rawFilterStepElementsSize);
             if (rawFilterStepElementsSize != 0) {
-                rawFilterStepElements.stream().forEach((filterStepElement) -> {
+                rawFilterStepElements.forEach((filterStepElement) -> {
                     Selector filterItemSelector = filterStepElement.getLastDetail().getFilterItemSelector();
                     if(BaseFilterEvaluatorDebugFlags.CachedFilter)
                         log.info("---     filterStepElementName = " + filterStepElement.getLastDetail().getFilterStepElementName());

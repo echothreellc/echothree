@@ -240,7 +240,7 @@ public class Validator {
         Set<String> options = form.getOptions();
 
         if(options != null) {
-            options.stream().forEach((option) -> {
+            options.forEach((option) -> {
                 Matcher m = Patterns.Option.matcher(option);
                 if (!m.matches()) {
                     formValidationMessages.add(option, new Message(Validator.ERROR_INVALID_OPTION));

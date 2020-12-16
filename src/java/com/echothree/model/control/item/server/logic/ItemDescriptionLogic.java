@@ -485,7 +485,7 @@ public class ItemDescriptionLogic
         var itemControl = Session.getModelController(ItemControl.class);
         List<ItemDescriptionType> childItemDescriptionTypes = itemControl.getItemDescriptionTypesByParentItemDescriptionType(itemDescriptionType);
 
-        childItemDescriptionTypes.stream().forEach((childItemDescriptionType) -> {
+        childItemDescriptionTypes.forEach((childItemDescriptionType) -> {
             ItemDescription childItemDescription = itemControl.getItemDescriptionForUpdate(childItemDescriptionType, item, language);
             boolean childWasScaled = true;
             if(childItemDescription != null) {

@@ -20,19 +20,15 @@ import com.echothree.control.user.selector.common.form.CreateSelectorTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.control.selector.server.logic.SelectorTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -67,32 +63,16 @@ public class CreateSelectorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
-        if(selectorKind != null) {
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
-            
-            if(selectorType == null) {
-                var partyPK = getPartyPK();
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
+        var selectorKindName = form.getSelectorKindName();
+        var selectorTypeName = form.getSelectorTypeName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var partyPK = getPartyPK();
 
-                selectorType = selectorControl.createSelectorType(selectorKind, selectorTypeName, isDefault, sortOrder, partyPK);
+        SelectorTypeLogic.getInstance().createSelectorType(this, selectorKindName, selectorTypeName, isDefault, sortOrder,
+                getPreferredLanguage(), description, partyPK);
 
-                if(description != null) {
-                    selectorControl.createSelectorTypeDescription(selectorType, getPreferredLanguage(), description, partyPK);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.DuplicateSelectorTypeName.name(), selectorKindName, selectorTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateSelectorKindName.name(), selectorKindName);
-        }
-        
         return null;
     }
     

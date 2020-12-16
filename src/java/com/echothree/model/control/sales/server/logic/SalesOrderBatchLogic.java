@@ -245,7 +245,7 @@ public class SalesOrderBatchLogic
         List<BatchEntity> batchEntities = batchControl.getBatchEntitiesByBatch(batch);
         List<Order> orders = new ArrayList<>(batchEntities.size());
 
-        batchEntities.stream().forEach((batchEntity) -> {
+        batchEntities.forEach((batchEntity) -> {
             orders.add(orderControl.convertEntityInstanceToOrder(batchEntity.getEntityInstance()));
         });
 

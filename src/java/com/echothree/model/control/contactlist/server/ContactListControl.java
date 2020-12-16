@@ -651,7 +651,7 @@ public class ContactListControl
         List<ContactListTypeDescription> contactListTypeDescriptions = getContactListTypeDescriptionsByContactListType(contactListType);
         List<ContactListTypeDescriptionTransfer> contactListTypeDescriptionTransfers = new ArrayList<>(contactListTypeDescriptions.size());
 
-        contactListTypeDescriptions.stream().forEach((contactListTypeDescription) -> {
+        contactListTypeDescriptions.forEach((contactListTypeDescription) -> {
             contactListTypeDescriptionTransfers.add(getContactListTransferCaches(userVisit).getContactListTypeDescriptionTransferCache().getContactListTypeDescriptionTransfer(contactListTypeDescription));
         });
 
@@ -1059,7 +1059,7 @@ public class ContactListControl
         List<ContactListGroupDescription> contactListGroupDescriptions = getContactListGroupDescriptionsByContactListGroup(contactListGroup);
         List<ContactListGroupDescriptionTransfer> contactListGroupDescriptionTransfers = new ArrayList<>(contactListGroupDescriptions.size());
 
-        contactListGroupDescriptions.stream().forEach((contactListGroupDescription) -> {
+        contactListGroupDescriptions.forEach((contactListGroupDescription) -> {
             contactListGroupDescriptionTransfers.add(getContactListTransferCaches(userVisit).getContactListGroupDescriptionTransferCache().getContactListGroupDescriptionTransfer(contactListGroupDescription));
         });
 
@@ -1464,7 +1464,7 @@ public class ContactListControl
         List<ContactListFrequencyDescription> contactListFrequencyDescriptions = getContactListFrequencyDescriptionsByContactListFrequency(contactListFrequency);
         List<ContactListFrequencyDescriptionTransfer> contactListFrequencyDescriptionTransfers = new ArrayList<>(contactListFrequencyDescriptions.size());
 
-        contactListFrequencyDescriptions.stream().forEach((contactListFrequencyDescription) -> {
+        contactListFrequencyDescriptions.forEach((contactListFrequencyDescription) -> {
             contactListFrequencyDescriptionTransfers.add(getContactListTransferCaches(userVisit).getContactListFrequencyDescriptionTransferCache().getContactListFrequencyDescriptionTransfer(contactListFrequencyDescription));
         });
 
@@ -2034,7 +2034,7 @@ public class ContactListControl
         List<ContactListDescription> contactListDescriptions = getContactListDescriptionsByContactList(contactList);
         List<ContactListDescriptionTransfer> contactListDescriptionTransfers = new ArrayList<>(contactListDescriptions.size());
 
-        contactListDescriptions.stream().forEach((contactListDescription) -> {
+        contactListDescriptions.forEach((contactListDescription) -> {
             contactListDescriptionTransfers.add(getContactListTransferCaches(userVisit).getContactListDescriptionTransferCache().getContactListDescriptionTransfer(contactListDescription));
         });
 

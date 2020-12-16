@@ -96,7 +96,7 @@ public class CreatePartySecurityRoleTemplateRoleCommand
 
                     // Pass 2: Add Security Roles if there were no errors.
                     if(!hasExecutionErrors()) {
-                        securityRoles.stream().forEach((securityRole) -> {
+                        securityRoles.forEach((securityRole) -> {
                             PartySecurityRoleTemplateLogic.getInstance().createPartySecurityRoleTemplateRole(partySecurityRoleTemplate, securityRole, getPartyPK());
                         });
                     }

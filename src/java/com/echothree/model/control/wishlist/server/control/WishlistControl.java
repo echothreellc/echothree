@@ -1499,7 +1499,7 @@ public class WishlistControl
         var orderControl = Session.getModelController(OrderControl.class);
         List<Order> orders = getOrdersByWishlistTypeForUpdate(wishlistType);
         
-        orders.stream().forEach((order) -> {
+        orders.forEach((order) -> {
             orderControl.deleteOrder(order, deletedBy);
         });
     }
@@ -1737,7 +1737,7 @@ public class WishlistControl
         var orderLineControl = Session.getModelController(OrderLineControl.class);
         List<OrderLine> orderLines = getOrderLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
-        orderLines.stream().forEach((orderLine) -> {
+        orderLines.forEach((orderLine) -> {
             orderLineControl.deleteOrderLine(orderLine, deletedBy);
         });
     }

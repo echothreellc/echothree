@@ -244,7 +244,7 @@ public class Messages
         // property/key was added to Messages.
         Collections.sort(actionItems, (MessageItem o1, MessageItem o2) -> o1.getOrder() - o2.getOrder());
         
-        actionItems.stream().forEach((ami) -> {
+        actionItems.forEach((ami) -> {
             for(Iterator<Message> messages = ami.getHashMap().values().iterator(); messages.hasNext();) {
                 results.add(messages.next());
             }

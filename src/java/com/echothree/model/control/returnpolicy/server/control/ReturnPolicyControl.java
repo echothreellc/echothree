@@ -688,7 +688,7 @@ public class ReturnPolicyControl
         List<ReturnKindDescription> returnKindDescriptions = getReturnKindDescriptionsByReturnKind(returnKind);
         List<ReturnKindDescriptionTransfer> returnKindDescriptionTransfers = new ArrayList<>(returnKindDescriptions.size());
         
-        returnKindDescriptions.stream().forEach((returnKindDescription) -> {
+        returnKindDescriptions.forEach((returnKindDescription) -> {
             returnKindDescriptionTransfers.add(getReturnPolicyTransferCaches(userVisit).getReturnKindDescriptionTransferCache().getReturnKindDescriptionTransfer(returnKindDescription));
         });
         
@@ -1901,7 +1901,7 @@ public class ReturnPolicyControl
         List<ReturnReasonDescription> returnReasonDescriptions = getReturnReasonDescriptionsByReturnReason(returnReason);
         List<ReturnReasonDescriptionTransfer> returnReasonDescriptionTransfers = new ArrayList<>(returnReasonDescriptions.size());
         
-        returnReasonDescriptions.stream().forEach((returnReasonDescription) -> {
+        returnReasonDescriptions.forEach((returnReasonDescription) -> {
             returnReasonDescriptionTransfers.add(getReturnPolicyTransferCaches(userVisit).getReturnReasonDescriptionTransferCache().getReturnReasonDescriptionTransfer(returnReasonDescription));
         });
         
@@ -2628,7 +2628,7 @@ public class ReturnPolicyControl
         List<ReturnTypeDescription> returnTypeDescriptions = getReturnTypeDescriptionsByReturnType(returnType);
         List<ReturnTypeDescriptionTransfer> returnTypeDescriptionTransfers = new ArrayList<>(returnTypeDescriptions.size());
         
-        returnTypeDescriptions.stream().forEach((returnTypeDescription) -> {
+        returnTypeDescriptions.forEach((returnTypeDescription) -> {
             returnTypeDescriptionTransfers.add(getReturnPolicyTransferCaches(userVisit).getReturnTypeDescriptionTransferCache().getReturnTypeDescriptionTransfer(returnTypeDescription));
         });
         

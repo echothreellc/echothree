@@ -716,7 +716,7 @@ public class QueueControl
     }
 
     private void removedQueuedEntities(List<QueuedEntity> queuedentities) {
-        queuedentities.stream().forEach((queuedEntity) -> {
+        queuedentities.forEach((queuedEntity) -> {
             removeQueuedEntity(queuedEntity);
         });
     }

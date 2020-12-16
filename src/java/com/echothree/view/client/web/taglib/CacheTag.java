@@ -252,7 +252,7 @@ public class CacheTag
                 if(size != 0) {
                     Set<String> entityRefs = new HashSet<>(cacheEntryDependencies.size());
 
-                    cacheEntryDependencies.stream().forEach((cacheEntryDependency) -> {
+                    cacheEntryDependencies.forEach((cacheEntryDependency) -> {
                         entityRefs.add(cacheEntryDependency.getEntityInstance().getEntityRef());
                     });
 

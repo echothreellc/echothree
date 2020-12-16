@@ -114,7 +114,7 @@ public class ContentLogic
         Set<OfferUse> offerUses = new HashSet<>();
         List<ContentCategoryItem> contentCategoryItems = contentControl.getContentCategoryItemsByContentCatalogItem(contentCatalogItem);
 
-        contentCategoryItems.stream().forEach((contentCategoryItem) -> {
+        contentCategoryItems.forEach((contentCategoryItem) -> {
             offerUses.add(getContentCategoryDefaultOfferUse(contentCategoryItem.getContentCategory()));
         });
 
@@ -216,7 +216,7 @@ public class ContentLogic
         for(var offerUse : offerUses) {
             List<ContentCategory> contentCategories = contentControl.getContentCategoriesByDefaultOfferUse(offerUse);
 
-            contentCategories.stream().forEach((contentCategory) -> {
+            contentCategories.forEach((contentCategory) -> {
                 contentCatalogs.add(contentCategory.getLastDetail().getContentCatalog());
             });
         }

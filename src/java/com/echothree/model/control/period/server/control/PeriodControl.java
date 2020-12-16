@@ -488,7 +488,7 @@ public class PeriodControl
         List<PeriodKindDescription> periodKindDescriptions = getPeriodKindDescriptionsByPeriodKind(periodKind);
         List<PeriodKindDescriptionTransfer> periodKindDescriptionTransfers = new ArrayList<>(periodKindDescriptions.size());
         
-        periodKindDescriptions.stream().forEach((periodKindDescription) -> {
+        periodKindDescriptions.forEach((periodKindDescription) -> {
             periodKindDescriptionTransfers.add(getPeriodTransferCaches(userVisit).getPeriodKindDescriptionTransferCache().getPeriodKindDescriptionTransfer(periodKindDescription));
         });
         
@@ -974,7 +974,7 @@ public class PeriodControl
         List<PeriodTypeDescription> periodTypeDescriptions = getPeriodTypeDescriptionsByPeriodType(periodType);
         List<PeriodTypeDescriptionTransfer> periodTypeDescriptionTransfers = new ArrayList<>(periodTypeDescriptions.size());
         
-        periodTypeDescriptions.stream().forEach((periodTypeDescription) -> {
+        periodTypeDescriptions.forEach((periodTypeDescription) -> {
             periodTypeDescriptionTransfers.add(getPeriodTransferCaches(userVisit).getPeriodTypeDescriptionTransferCache().getPeriodTypeDescriptionTransfer(periodTypeDescription));
         });
         
@@ -1159,7 +1159,7 @@ public class PeriodControl
         List<Period> newPeriods = getPeriodsByParentPeriod(period);
         List<Period> periods = new ArrayList<>(newPeriods);
 
-        newPeriods.stream().forEach((newPeriod) -> {
+        newPeriods.forEach((newPeriod) -> {
             periods.addAll(getPeriodsContainedByPeriod(newPeriod));
         });
         
@@ -1432,7 +1432,7 @@ public class PeriodControl
         List<PeriodDescription> periodDescriptions = getPeriodDescriptionsByPeriod(period);
         List<PeriodDescriptionTransfer> periodDescriptionTransfers = new ArrayList<>(periodDescriptions.size());
         
-        periodDescriptions.stream().forEach((periodDescription) -> {
+        periodDescriptions.forEach((periodDescription) -> {
             periodDescriptionTransfers.add(getPeriodTransferCaches(userVisit).getPeriodDescriptionTransferCache().getPeriodDescriptionTransfer(periodDescription));
         });
         

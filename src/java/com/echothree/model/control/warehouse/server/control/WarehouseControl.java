@@ -365,7 +365,7 @@ public class WarehouseControl
         List<Warehouse> warehouses = getWarehouses();
         List<WarehouseTransfer> warehouseTransfers = new ArrayList<>(warehouses.size());
         
-        warehouses.stream().forEach((warehouse) -> {
+        warehouses.forEach((warehouse) -> {
             warehouseTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse));
         });
         
@@ -862,7 +862,7 @@ public class WarehouseControl
     public void deleteLocationTypesByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
         List<LocationType> locationTypes = getLocationTypesByWarehousePartyForUpdate(warehouseParty);
         
-        locationTypes.stream().forEach((locationType) -> {
+        locationTypes.forEach((locationType) -> {
             deleteLocationType(locationType, deletedBy, false);
         });
     }
@@ -1152,7 +1152,7 @@ public class WarehouseControl
         List<LocationNameElement> locationNameElements = getLocationNameElementsByLocationTypeForUpdate(locationType);
         List<LocationNameElementValue> locationNameElementValues = new ArrayList<>(locationNameElements.size());
         
-        locationNameElements.stream().forEach((locationNameElement) -> {
+        locationNameElements.forEach((locationNameElement) -> {
             locationNameElementValues.add(locationNameElement.getLocationNameElementValue().clone());
         });
         

@@ -740,7 +740,7 @@ public class TrackControl
     }
     
     public void deleteUserVisitTracks(List<UserVisitTrack> userVisitTracks) {
-        userVisitTracks.stream().forEach((userVisitTrack) -> {
+        userVisitTracks.forEach((userVisitTrack) -> {
             deleteUserVisitTrack(userVisitTrack);
         });
     }
@@ -758,7 +758,7 @@ public class TrackControl
     }
     
     public void removeUserVisitTracks(List<UserVisitTrack> userVisitTracks) {
-        userVisitTracks.stream().forEach((userVisitTrack) -> {
+        userVisitTracks.forEach((userVisitTrack) -> {
             removeUserVisitTrack(userVisitTrack);
         });
     }

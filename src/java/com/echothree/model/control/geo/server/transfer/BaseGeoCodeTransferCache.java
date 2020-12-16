@@ -37,7 +37,7 @@ public abstract class BaseGeoCodeTransferCache<K extends BaseEntity, V extends B
         List<GeoCodeAliasTransfer> geoCodeAliasTransfers = geoControl.getGeoCodeAliasTransfersByGeoCode(userVisit, geoCode);
         MapWrapper<GeoCodeAliasTransfer> geoCodeAliases = new MapWrapper<>(geoCodeAliasTransfers.size());
 
-        geoCodeAliasTransfers.stream().forEach((geoCodeAliasTransfer) -> {
+        geoCodeAliasTransfers.forEach((geoCodeAliasTransfer) -> {
             geoCodeAliases.put(geoCodeAliasTransfer.getGeoCodeAliasType().getGeoCodeAliasTypeName(), geoCodeAliasTransfer);
         });
 

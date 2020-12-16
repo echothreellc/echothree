@@ -260,7 +260,7 @@ public class OrderRoleControl
     public List<OrderRoleTransfer> getOrderRoleTransfers(UserVisit userVisit, List<OrderRole> orderRoles) {
         List<OrderRoleTransfer> orderRoleTransfers = new ArrayList<>(orderRoles.size());
 
-        orderRoles.stream().forEach((orderRole) -> {
+        orderRoles.forEach((orderRole) -> {
             orderRoleTransfers.add(getOrderRoleTransfer(userVisit, orderRole));
         });
 

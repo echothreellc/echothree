@@ -597,7 +597,7 @@ public class SelectorControl
         List<SelectorKindDescription> selectorKindDescriptions = getSelectorKindDescriptionsBySelectorKind(selectorKind);
         List<SelectorKindDescriptionTransfer> selectorKindDescriptionTransfers = new ArrayList<>(selectorKindDescriptions.size());
 
-        selectorKindDescriptions.stream().forEach((selectorKindDescription) -> {
+        selectorKindDescriptions.forEach((selectorKindDescription) -> {
             selectorKindDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(selectorKindDescription));
         });
 
@@ -671,6 +671,30 @@ public class SelectorControl
         return selectorType;
     }
 
+    public long countSelectorTypesBySelectorKind(SelectorKind selectorKind) {
+        return session.queryForLong(
+                "SELECT _ALL_ "
+                + "FROM selectortypes, selectortypedetails "
+                + "WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?",
+                selectorKind);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SelectorType */
+    public SelectorType getSelectorTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SelectorTypePK(entityInstance.getEntityUniqueId());
+        var selectorType = SelectorTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return selectorType;
+    }
+
+    public SelectorType getSelectorTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSelectorTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SelectorType getSelectorTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSelectorTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getSelectorTypesQueries;
 
     static {
@@ -721,7 +745,7 @@ public class SelectorControl
         getDefaultSelectorTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SelectorType getDefaultSelectorType(SelectorKind selectorKind, EntityPermission entityPermission) {
+    public SelectorType getDefaultSelectorType(SelectorKind selectorKind, EntityPermission entityPermission) {
         return SelectorTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSelectorTypeQueries,
                 selectorKind);
     }
@@ -757,7 +781,7 @@ public class SelectorControl
         getSelectorTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SelectorType getSelectorTypeByName(SelectorKind selectorKind, String selectorTypeName, EntityPermission entityPermission) {
+    public SelectorType getSelectorTypeByName(SelectorKind selectorKind, String selectorTypeName, EntityPermission entityPermission) {
         return SelectorTypeFactory.getInstance().getEntityFromQuery(entityPermission, getSelectorTypeByNameQueries,
                 selectorKind, selectorTypeName);
     }
@@ -816,8 +840,7 @@ public class SelectorControl
         return getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache().getSelectorTypeTransfer(selectorType);
     }
 
-    public List<SelectorTypeTransfer> getSelectorTypeTransfersBySelectorKind(UserVisit userVisit, SelectorKind selectorKind) {
-        List<SelectorType> selectorTypes = getSelectorTypes(selectorKind);
+    public List<SelectorTypeTransfer> getSelectorTypeTransfers(UserVisit userVisit, Collection<SelectorType> selectorTypes) {
         List<SelectorTypeTransfer> selectorTypeTransfers = new ArrayList<>(selectorTypes.size());
         SelectorTypeTransferCache selectorTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
 
@@ -826,6 +849,10 @@ public class SelectorControl
         );
 
         return selectorTypeTransfers;
+    }
+
+    public List<SelectorTypeTransfer> getSelectorTypeTransfersBySelectorKind(UserVisit userVisit, SelectorKind selectorKind) {
+        return getSelectorTypeTransfers(userVisit, getSelectorTypes(selectorKind));
     }
 
     private void updateSelectorTypeFromValue(SelectorTypeDetailValue selectorTypeDetailValue, boolean checkDefault,
@@ -1021,7 +1048,7 @@ public class SelectorControl
         List<SelectorTypeDescription> selectorTypeDescriptions = getSelectorTypeDescriptionsBySelectorType(selectorType);
         List<SelectorTypeDescriptionTransfer> selectorTypeDescriptionTransfers = new ArrayList<>(selectorTypeDescriptions.size());
 
-        selectorTypeDescriptions.stream().forEach((selectorTypeDescription) -> {
+        selectorTypeDescriptions.forEach((selectorTypeDescription) -> {
             selectorTypeDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(selectorTypeDescription));
         });
 
@@ -2069,7 +2096,7 @@ public class SelectorControl
         List<SelectorDescription> selectorDescriptions = getSelectorDescriptionsBySelector(selector);
         List<SelectorDescriptionTransfer> selectorDescriptionTransfers = new ArrayList<>(selectorDescriptions.size());
         
-        selectorDescriptions.stream().forEach((selectorDescription) -> {
+        selectorDescriptions.forEach((selectorDescription) -> {
             selectorDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(selectorDescription));
         });
         
@@ -2351,7 +2378,7 @@ public class SelectorControl
         List<SelectorNode> selectorNodes = getSelectorNodesBySelector(selector);
         List<SelectorNodeTransfer> selectorNodeTransfers = new ArrayList<>(selectorNodes.size());
         
-        selectorNodes.stream().forEach((selectorNode) -> {
+        selectorNodes.forEach((selectorNode) -> {
             selectorNodeTransfers.add(getSelectorTransferCaches(userVisit).getSelectorNodeTransferCache().getSelectorNodeTransfer(selectorNode));
         });
         

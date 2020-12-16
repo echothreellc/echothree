@@ -1221,7 +1221,7 @@ public class UserControl
     /** Calls deleteUserSession(...) for each UserSession in the List.
      */
     public void deleteUserSessions(List<UserSession> userSessions) {
-        userSessions.stream().forEach((userSession) -> {
+        userSessions.forEach((userSession) -> {
             deleteUserSession(userSession);
         });
     }
