@@ -211,7 +211,7 @@ public abstract class BaseSpellCheckEvaluator
         Iterator<String> analyzedWordsIter = analyzedWords.iterator();
         Iterator<List<CheckSpellingSuggestionTransfer>> wordSuggestionsIter = suggestions.iterator();
         
-        words.stream().forEach((word) -> {
+        words.forEach((word) -> {
             String analyzedWord = analyzedWordsIter.next();
             List<CheckSpellingSuggestionTransfer> checkSpellingSuggestions = wordSuggestionsIter.next();
             String searchCheckSpellingActionTypeName;

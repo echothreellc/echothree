@@ -150,7 +150,7 @@ public class WorkflowStepLogic
             
             possibleWorkflowStepNames.addAll(Arrays.asList(workflowStepNames));
             
-            workflowEntityStatuses.stream().forEach((workflowEntityStatus) -> {
+            workflowEntityStatuses.forEach((workflowEntityStatus) -> {
                 WorkflowStepDetail workflowStepDetail = workflowEntityStatus.getWorkflowStep().getLastDetail();
                 if (workflowStepDetail.getWorkflow().equals(workflow)) {
                     String workflowStepName = workflowStepDetail.getWorkflowStepName();

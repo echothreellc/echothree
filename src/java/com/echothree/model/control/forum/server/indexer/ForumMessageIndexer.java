@@ -109,7 +109,7 @@ public class ForumMessageIndexer
         if(forumForumThreads.size() > 0) {
             StringBuilder forumNames = new StringBuilder();
 
-            forumForumThreads.stream().forEach((forumForumThread) -> {
+            forumForumThreads.forEach((forumForumThread) -> {
                 if(forumNames.length() > 0) {
                     forumNames.append(' ');
                 }

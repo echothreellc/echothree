@@ -107,7 +107,7 @@ public class WorkflowDestinationLogic
         List<WorkflowDestinationStep> workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Set<WorkflowStep> workflowSteps = new HashSet<>(workflowDestinationSteps.size());
         
-        workflowDestinationSteps.stream().forEach((workflowDestinationStep) -> {
+        workflowDestinationSteps.forEach((workflowDestinationStep) -> {
             workflowSteps.add(workflowDestinationStep.getWorkflowStep());
         });
         

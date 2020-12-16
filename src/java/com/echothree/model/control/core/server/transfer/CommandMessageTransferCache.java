@@ -63,7 +63,7 @@ public class CommandMessageTransferCache
                 List<CommandMessageTranslationTransfer> commandMessageTranslationTransfers = coreControl.getCommandMessageTranslationTransfersByCommandMessage(userVisit, commandMessage);
                 MapWrapper<CommandMessageTranslationTransfer> commandMessageTranslations = new MapWrapper<>();
 
-                commandMessageTranslationTransfers.stream().forEach((commandMessageTranslationTransfer) -> {
+                commandMessageTranslationTransfers.forEach((commandMessageTranslationTransfer) -> {
                     commandMessageTranslations.put(commandMessageTranslationTransfer.getLanguage().getLanguageIsoName(), commandMessageTranslationTransfer);
                 });
 

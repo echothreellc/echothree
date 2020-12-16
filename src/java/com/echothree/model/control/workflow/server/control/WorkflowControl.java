@@ -4093,7 +4093,7 @@ public class WorkflowControl
     public List<WorkflowEntityStatusTransfer> getWorkflowEntityStatusTransfers(UserVisit userVisit, Collection<WorkflowEntityStatus> workflowEntityStatuses) {
         List<WorkflowEntityStatusTransfer> workflowEntityStatusTransfers = new ArrayList<>(workflowEntityStatuses.size());
         
-        workflowEntityStatuses.stream().forEach((workflowEntityStatus) -> {
+        workflowEntityStatuses.forEach((workflowEntityStatus) -> {
             workflowEntityStatusTransfers.add(getWorkflowTransferCaches(userVisit).getWorkflowEntityStatusTransferCache().getWorkflowEntityStatusTransfer(workflowEntityStatus));
         });
         
@@ -4231,7 +4231,7 @@ public class WorkflowControl
             if (workEffortScope != null) {
                 List<WorkRequirementScope> workRequirementScopes = workRequirementControl.getWorkRequirementScopesByWorkRequirementType(workEffortScope,
                         workflowStep);
-                workRequirementScopes.stream().forEach((workRequirementScope) -> {
+                workRequirementScopes.forEach((workRequirementScope) -> {
                     WorkRequirementLogic.getInstance().createWorkRequirement(session, workEffort, workRequirementScope, null, null, null, createdBy);
                 });
             }

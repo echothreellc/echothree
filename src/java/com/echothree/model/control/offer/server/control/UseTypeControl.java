@@ -219,7 +219,7 @@ public class UseTypeControl
     public List<UseTypeTransfer> getUseTypeTransfers(UserVisit userVisit, Collection<UseType> useTypes) {
         List<UseTypeTransfer> useTypeTransfers = new ArrayList<>(useTypes.size());
         
-        useTypes.stream().forEach((useType) -> {
+        useTypes.forEach((useType) -> {
             useTypeTransfers.add(getOfferTransferCaches(userVisit).getUseTypeTransferCache().getUseTypeTransfer(useType));
         });
         
@@ -469,7 +469,7 @@ public class UseTypeControl
         List<UseTypeDescription> useTypeDescriptions = getUseTypeDescriptionsByUseType(useType);
         List<UseTypeDescriptionTransfer> useTypeDescriptionTransfers = new ArrayList<>(useTypeDescriptions.size());
         
-        useTypeDescriptions.stream().forEach((useTypeDescription) -> {
+        useTypeDescriptions.forEach((useTypeDescription) -> {
             useTypeDescriptionTransfers.add(getOfferTransferCaches(userVisit).getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(useTypeDescription));
         });
         

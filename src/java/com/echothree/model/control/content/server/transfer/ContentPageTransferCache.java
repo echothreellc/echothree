@@ -97,7 +97,7 @@ public class ContentPageTransferCache
                 List<ContentPageAreaTransfer> contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage());
                 Map<String, ContentPageAreaTransfer> contentPageAreas = new LinkedHashMap<>(contentPageAreaTransfers.size());
 
-                contentPageAreaTransfers.stream().forEach((contentPageAreaTransfer) -> {
+                contentPageAreaTransfers.forEach((contentPageAreaTransfer) -> {
                     contentPageAreas.put(contentPageAreaTransfer.getContentPageLayoutArea().getSortOrder().toString(), contentPageAreaTransfer);
                 });
 

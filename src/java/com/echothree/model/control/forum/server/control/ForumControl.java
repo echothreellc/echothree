@@ -744,7 +744,7 @@ public class ForumControl
     public void touchForumsByForumThread(ForumThread forumThread, BasePK relatedPK, String relatedEventTypeName, BasePK touchedBy) {
         List<ForumForumThread> forumForumThreads = getForumForumThreadsByForumThread(forumThread);
         
-        forumForumThreads.stream().forEach((forumForumThread) -> {
+        forumForumThreads.forEach((forumForumThread) -> {
             sendEventUsingNames(forumForumThread.getForum().getPrimaryKey(), EventTypes.TOUCH.name(), relatedPK, relatedEventTypeName, touchedBy);
         });
     }
@@ -2569,7 +2569,7 @@ public class ForumControl
     }
     
     private void deleteForumForumThreads(List<ForumForumThread> forumForumThreads, boolean checkForumThread, BasePK deletedBy) {
-        forumForumThreads.stream().forEach((forumForumThread) -> {
+        forumForumThreads.forEach((forumForumThread) -> {
             deleteForumForumThread(forumForumThread, checkForumThread, deletedBy);
         });
     }

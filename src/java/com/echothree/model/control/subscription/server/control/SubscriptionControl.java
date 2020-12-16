@@ -472,7 +472,7 @@ public class SubscriptionControl
         List<SubscriptionKindDescription> subscriptionKindDescriptions = getSubscriptionKindDescriptionsBySubscriptionKind(subscriptionKind);
         List<SubscriptionKindDescriptionTransfer> subscriptionKindDescriptionTransfers = new ArrayList<>(subscriptionKindDescriptions.size());
 
-        subscriptionKindDescriptions.stream().forEach((subscriptionKindDescription) -> {
+        subscriptionKindDescriptions.forEach((subscriptionKindDescription) -> {
             subscriptionKindDescriptionTransfers.add(getSubscriptionTransferCaches(userVisit).getSubscriptionKindDescriptionTransferCache().getSubscriptionKindDescriptionTransfer(subscriptionKindDescription));
         });
 

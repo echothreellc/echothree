@@ -1374,7 +1374,7 @@ public class PrinterControl
     }
 
     public void removePrinterGroupJobs(List<PrinterGroupJob> printerGroupJobs) {
-        printerGroupJobs.stream().forEach((printerGroupJob) -> {
+        printerGroupJobs.forEach((printerGroupJob) -> {
             removePrinterGroupJob(printerGroupJob);
         });
     }

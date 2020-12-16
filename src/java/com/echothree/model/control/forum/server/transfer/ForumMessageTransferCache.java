@@ -85,7 +85,7 @@ public class ForumMessageTransferCache
                 List<ForumMessagePartTransfer> forumMessagePartTransfers = forumControl.getForumMessagePartTransfersByForumMessageAndLanguage(userVisit, forumMessage, getLanguage());
                 MapWrapper<ForumMessagePartTransfer> forumMessageParts = new MapWrapper<>(forumMessagePartTransfers.size());
 
-                forumMessagePartTransfers.stream().forEach((forumMessagePartTransfer) -> {
+                forumMessagePartTransfers.forEach((forumMessagePartTransfer) -> {
                     forumMessageParts.put(forumMessagePartTransfer.getForumMessagePartType().getForumMessagePartTypeName(), forumMessagePartTransfer);
                 });
 

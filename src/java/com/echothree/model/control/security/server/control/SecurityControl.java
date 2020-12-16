@@ -2250,12 +2250,12 @@ public class SecurityControl
         List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles = getPartySecurityRoleTemplateRoles(partySecurityRoleTemplate);
         
         List<SecurityRole> currentSecurityRoles = new ArrayList<>(partySecurityRoles.size());
-        partySecurityRoles.stream().forEach((partySecurityRole) -> {
+        partySecurityRoles.forEach((partySecurityRole) -> {
             currentSecurityRoles.add(partySecurityRole.getSecurityRole());
         });
         
         List<SecurityRole> targetSecurityRoles = new ArrayList<>(partySecurityRoleTemplateRoles.size());
-        partySecurityRoleTemplateRoles.stream().forEach((partySecurityRoleTemplateRole) -> {
+        partySecurityRoleTemplateRoles.forEach((partySecurityRoleTemplateRole) -> {
             targetSecurityRoles.add(partySecurityRoleTemplateRole.getSecurityRole());
         });
         

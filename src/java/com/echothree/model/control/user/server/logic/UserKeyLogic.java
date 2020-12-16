@@ -72,7 +72,7 @@ public class UserKeyLogic {
     /** Calls clearUserKey(...) for each UserKey in the List.
      */
     public void clearUserKeys(List<UserKey> userKeys) {
-        userKeys.stream().forEach((userKey) -> {
+        userKeys.forEach((userKey) -> {
             clearUserKey(userKey);
         });
     }

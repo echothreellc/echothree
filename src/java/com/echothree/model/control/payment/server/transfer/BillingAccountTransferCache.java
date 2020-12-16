@@ -83,7 +83,7 @@ public class BillingAccountTransferCache
                 List<BillingAccountRoleTransfer> billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);
                 MapWrapper<BillingAccountRoleTransfer> billingAccountRoles = new MapWrapper<>(billingAccountRoleTransfers.size());
 
-                billingAccountRoleTransfers.stream().forEach((billingAccountRoleTransfer) -> {
+                billingAccountRoleTransfers.forEach((billingAccountRoleTransfer) -> {
                     billingAccountRoles.put(billingAccountRoleTransfer.getBillingAccountRoleType().getBillingAccountRoleTypeName(), billingAccountRoleTransfer);
                 });
 

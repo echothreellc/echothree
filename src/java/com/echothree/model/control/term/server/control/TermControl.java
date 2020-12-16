@@ -618,7 +618,7 @@ public class TermControl
         List<TermDescription> termDescriptions = getTermDescriptionsByTerm(term);
         List<TermDescriptionTransfer> termDescriptionTransfers = new ArrayList<>(termDescriptions.size());
         
-        termDescriptions.stream().forEach((termDescription) -> {
+        termDescriptions.forEach((termDescription) -> {
             termDescriptionTransfers.add(getTermTransferCaches(userVisit).getTermDescriptionTransferCache().getTermDescriptionTransfer(termDescription));
         });
         

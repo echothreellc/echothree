@@ -206,7 +206,7 @@ public class IconControl
         List<Icon> icons = getIcons();
         List<IconTransfer> iconTransfers = new ArrayList<>(icons.size());
         
-        icons.stream().forEach((icon) -> {
+        icons.forEach((icon) -> {
             iconTransfers.add(getIconTransfer(userVisit, icon));
         });
         
@@ -607,7 +607,7 @@ public class IconControl
         List<IconUsageTypeDescription> iconUsageTypeDescriptions = getIconUsageTypeDescriptionsByIconUsageType(iconUsageType);
         List<IconUsageTypeDescriptionTransfer> iconUsageTypeDescriptionTransfers = new ArrayList<>(iconUsageTypeDescriptions.size());
         
-        iconUsageTypeDescriptions.stream().forEach((iconUsageTypeDescription) -> {
+        iconUsageTypeDescriptions.forEach((iconUsageTypeDescription) -> {
             iconUsageTypeDescriptionTransfers.add(getIconTransferCaches(userVisit).getIconUsageTypeDescriptionTransferCache().getIconUsageTypeDescriptionTransfer(iconUsageTypeDescription));
         });
         

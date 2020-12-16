@@ -782,7 +782,7 @@ public class CarrierControl
         List<Carrier> carriers = getCarriers();
         List<CarrierTransfer> carrierTransfers = new ArrayList<>(carriers.size());
         
-        carriers.stream().forEach((carrier) -> {
+        carriers.forEach((carrier) -> {
             carrierTransfers.add(getCarrierTransferCaches(userVisit).getCarrierTransferCache().getCarrierTransfer(carrier));
         });
         
@@ -1209,7 +1209,7 @@ public class CarrierControl
     public void deleteCarrierServicesByCarrierParty(Party carrierParty, BasePK deletedBy) {
         List<CarrierService> carrierPartyPriorities = getCarrierServicesForUpdate(carrierParty);
         
-        carrierPartyPriorities.stream().forEach((carrierService) -> {
+        carrierPartyPriorities.forEach((carrierService) -> {
             deleteCarrierService(carrierService, false, deletedBy);
         });
     }
@@ -1700,7 +1700,7 @@ public class CarrierControl
     public void deleteCarrierOptionsByCarrierParty(Party carrierParty, BasePK deletedBy) {
         List<CarrierOption> carrierPartyPriorities = getCarrierOptionsForUpdate(carrierParty);
         
-        carrierPartyPriorities.stream().forEach((carrierOption) -> {
+        carrierPartyPriorities.forEach((carrierOption) -> {
             deleteCarrierOption(carrierOption, false, deletedBy);
         });
     }

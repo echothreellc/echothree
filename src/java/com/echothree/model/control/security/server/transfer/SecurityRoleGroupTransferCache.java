@@ -69,7 +69,7 @@ public class SecurityRoleGroupTransferCache
                 List<SecurityRoleTransfer> securityRoleTransfers = securityControl.getSecurityRoleTransfersBySecurityRoleGroup(userVisit, securityRoleGroup);
                 MapWrapper<SecurityRoleTransfer> securityRoles = new MapWrapper<>(securityRoleTransfers.size());
 
-                securityRoleTransfers.stream().forEach((securityRoleTransfer) -> {
+                securityRoleTransfers.forEach((securityRoleTransfer) -> {
                     securityRoles.put(securityRoleTransfer.getSecurityRoleName(), securityRoleTransfer);
                 });
 

@@ -180,7 +180,7 @@ public class AppearanceTag
             
             if(!appliedStyles.isEmpty()) {
                 style.append(" style=\"");
-                appliedStyles.stream().forEach((appliedStyle) -> {
+                appliedStyles.forEach((appliedStyle) -> {
                     style.append(appliedStyle);
                 });
                 style.append("\"");

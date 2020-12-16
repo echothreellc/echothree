@@ -74,7 +74,7 @@ public class GetForumsCommand
                 List<ForumGroupForum> forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
                 List<Forum> forums = new ArrayList<>(forumGroupForums.size());
                 
-                forumGroupForums.stream().forEach((forumGroupForum) -> {
+                forumGroupForums.forEach((forumGroupForum) -> {
                     forums.add(forumGroupForum.getForum());
                 });
                 

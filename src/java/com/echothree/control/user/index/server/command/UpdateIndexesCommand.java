@@ -111,7 +111,7 @@ public class UpdateIndexesCommand
 
         List<BaseIndexer> indexers = new ArrayList<>(size);
 
-        indexTypes.stream().forEach((indexType) -> {
+        indexTypes.forEach((indexType) -> {
             List<Index> indexes = indexControl.getIndexesByIndexType(indexType);
             String indexTypeName = indexType.getLastDetail().getIndexTypeName();
             indexes.stream().map((index) -> {

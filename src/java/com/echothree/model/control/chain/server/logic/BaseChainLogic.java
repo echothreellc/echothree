@@ -185,7 +185,7 @@ public class BaseChainLogic
         List<ChainInstanceEntityRole> chainInstanceEntityRoles = chainControl.getChainInstanceEntityRoles(chainEntityRoleType, entityInstance);
         Set<ChainInstance> chainInstances = new HashSet<>();
         
-        chainInstanceEntityRoles.stream().forEach((chainInstanceEntityRole) -> {
+        chainInstanceEntityRoles.forEach((chainInstanceEntityRole) -> {
             chainInstances.add(chainInstanceEntityRole.getChainInstanceForUpdate());
         });
         

@@ -329,7 +329,7 @@ public class OrderLineControl
         var wishlistControl = Session.getModelController(WishlistControl.class);
         List<WishlistLine> wishlistLines = wishlistControl.getWishlistLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
-        wishlistLines.stream().forEach((wishlistLine) -> {
+        wishlistLines.forEach((wishlistLine) -> {
             deleteOrderLine(wishlistLine.getOrderLineForUpdate(), deletedBy);
         });
     }

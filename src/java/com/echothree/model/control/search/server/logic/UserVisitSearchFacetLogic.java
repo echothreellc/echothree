@@ -70,7 +70,7 @@ public class UserVisitSearchFacetLogic
         final List<EntityIntegerRange> entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
         final List<EntityIntegerRangeDetail> entityIntegerRangeDetails = new ArrayList<>(entityIntegerRanges.size());
         
-        entityIntegerRanges.stream().forEach((entityIntegerRange) -> {
+        entityIntegerRanges.forEach((entityIntegerRange) -> {
             entityIntegerRangeDetails.add(entityIntegerRange.getLastDetail());
         });
         
@@ -82,7 +82,7 @@ public class UserVisitSearchFacetLogic
         final List<EntityLongRange> entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
         final List<EntityLongRangeDetail> entityLongRangeDetails = new ArrayList<>(entityLongRanges.size());
         
-        entityLongRanges.stream().forEach((entityLongRange) -> {
+        entityLongRanges.forEach((entityLongRange) -> {
             entityLongRangeDetails.add(entityLongRange.getLastDetail());
         });
         

@@ -313,7 +313,7 @@ public class AttributeQueryParserUtils
         } else {
             builder = newBooleanQuery();
             
-            clauses.stream().forEach((clause) -> {
+            clauses.forEach((clause) -> {
                 builder.add(clause);
             });
         }

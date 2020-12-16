@@ -597,7 +597,7 @@ public class SelectorControl
         List<SelectorKindDescription> selectorKindDescriptions = getSelectorKindDescriptionsBySelectorKind(selectorKind);
         List<SelectorKindDescriptionTransfer> selectorKindDescriptionTransfers = new ArrayList<>(selectorKindDescriptions.size());
 
-        selectorKindDescriptions.stream().forEach((selectorKindDescription) -> {
+        selectorKindDescriptions.forEach((selectorKindDescription) -> {
             selectorKindDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(selectorKindDescription));
         });
 
@@ -1048,7 +1048,7 @@ public class SelectorControl
         List<SelectorTypeDescription> selectorTypeDescriptions = getSelectorTypeDescriptionsBySelectorType(selectorType);
         List<SelectorTypeDescriptionTransfer> selectorTypeDescriptionTransfers = new ArrayList<>(selectorTypeDescriptions.size());
 
-        selectorTypeDescriptions.stream().forEach((selectorTypeDescription) -> {
+        selectorTypeDescriptions.forEach((selectorTypeDescription) -> {
             selectorTypeDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(selectorTypeDescription));
         });
 
@@ -2096,7 +2096,7 @@ public class SelectorControl
         List<SelectorDescription> selectorDescriptions = getSelectorDescriptionsBySelector(selector);
         List<SelectorDescriptionTransfer> selectorDescriptionTransfers = new ArrayList<>(selectorDescriptions.size());
         
-        selectorDescriptions.stream().forEach((selectorDescription) -> {
+        selectorDescriptions.forEach((selectorDescription) -> {
             selectorDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(selectorDescription));
         });
         
@@ -2378,7 +2378,7 @@ public class SelectorControl
         List<SelectorNode> selectorNodes = getSelectorNodesBySelector(selector);
         List<SelectorNodeTransfer> selectorNodeTransfers = new ArrayList<>(selectorNodes.size());
         
-        selectorNodes.stream().forEach((selectorNode) -> {
+        selectorNodes.forEach((selectorNode) -> {
             selectorNodeTransfers.add(getSelectorTransferCaches(userVisit).getSelectorNodeTransferCache().getSelectorNodeTransfer(selectorNode));
         });
         

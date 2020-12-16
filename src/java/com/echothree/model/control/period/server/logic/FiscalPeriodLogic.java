@@ -66,7 +66,7 @@ public class FiscalPeriodLogic {
         
         List<PeriodKindDescription> periodKindDescriptions = periodControl.getPeriodKindDescriptionsByPeriodKind(periodKind);
         PeriodType yearPeriodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_YEAR);
-        periodKindDescriptions.stream().forEach((periodKindDescription) -> {
+        periodKindDescriptions.forEach((periodKindDescription) -> {
             Language language = periodKindDescription.getLanguage();
             PeriodTypeDescription yearPeriodTypeDescription = periodControl.getPeriodTypeDescription(yearPeriodType, language);
             if (yearPeriodTypeDescription != null) {
@@ -98,7 +98,7 @@ public class FiscalPeriodLogic {
         
         List<PeriodKindDescription> periodKindDescriptions = periodControl.getPeriodKindDescriptionsByPeriodKind(periodKind);
         PeriodType yearPeriodType = periodControl.getPeriodTypeByName(periodKind, PeriodConstants.PeriodType_YEAR);
-        periodKindDescriptions.stream().forEach((periodKindDescription) -> {
+        periodKindDescriptions.forEach((periodKindDescription) -> {
             Language language = periodKindDescription.getLanguage();
             PeriodTypeDescription yearPeriodTypeDescription = periodControl.getPeriodTypeDescription(yearPeriodType, language);
             if (yearPeriodTypeDescription != null) {

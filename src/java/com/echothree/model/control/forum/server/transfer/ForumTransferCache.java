@@ -86,7 +86,7 @@ public class ForumTransferCache
                 List<ForumGroupForum> forumGroupForums = forumControl.getForumGroupForumsByForum(forum);
                 List<ForumGroup> forumGroups = new ArrayList<>(forumGroupForums.size());
                 
-                forumGroupForums.stream().forEach((forumGroupForum) -> {
+                forumGroupForums.forEach((forumGroupForum) -> {
                     forumGroups.add(forumGroupForum.getForumGroup());
                 });
                 

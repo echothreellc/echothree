@@ -2813,7 +2813,7 @@ public class SearchControl
         List<SearchKindDescription> searchKindDescriptions = getSearchKindDescriptionsBySearchKind(searchKind);
         List<SearchKindDescriptionTransfer> searchKindDescriptionTransfers = new ArrayList<>(searchKindDescriptions.size());
 
-        searchKindDescriptions.stream().forEach((searchKindDescription) -> {
+        searchKindDescriptions.forEach((searchKindDescription) -> {
             searchKindDescriptionTransfers.add(getSearchTransferCaches(userVisit).getSearchKindDescriptionTransferCache().getSearchKindDescriptionTransfer(searchKindDescription));
         });
 
@@ -3240,7 +3240,7 @@ public class SearchControl
         List<SearchTypeDescription> searchTypeDescriptions = getSearchTypeDescriptionsBySearchType(searchType);
         List<SearchTypeDescriptionTransfer> searchTypeDescriptionTransfers = new ArrayList<>(searchTypeDescriptions.size());
 
-        searchTypeDescriptions.stream().forEach((searchTypeDescription) -> {
+        searchTypeDescriptions.forEach((searchTypeDescription) -> {
             searchTypeDescriptionTransfers.add(getSearchTransferCaches(userVisit).getSearchTypeDescriptionTransferCache().getSearchTypeDescriptionTransfer(searchTypeDescription));
         });
 
@@ -3665,7 +3665,7 @@ public class SearchControl
         List<SearchSortOrderDescription> searchSortOrderDescriptions = getSearchSortOrderDescriptionsBySearchSortOrder(searchSortOrder);
         List<SearchSortOrderDescriptionTransfer> searchSortOrderDescriptionTransfers = new ArrayList<>(searchSortOrderDescriptions.size());
 
-        searchSortOrderDescriptions.stream().forEach((searchSortOrderDescription) -> {
+        searchSortOrderDescriptions.forEach((searchSortOrderDescription) -> {
             searchSortOrderDescriptionTransfers.add(getSearchTransferCaches(userVisit).getSearchSortOrderDescriptionTransferCache().getSearchSortOrderDescriptionTransfer(searchSortOrderDescription));
         });
 
@@ -4532,7 +4532,7 @@ public class SearchControl
     }
     
     public void removeUserVisitSearches(List<UserVisitSearch> userVisitSearches) {
-        userVisitSearches.stream().forEach((userVisitSearch) -> {
+        userVisitSearches.forEach((userVisitSearch) -> {
             removeUserVisitSearch(userVisitSearch);
         });
     }

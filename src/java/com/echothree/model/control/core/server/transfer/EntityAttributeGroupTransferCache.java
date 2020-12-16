@@ -68,7 +68,7 @@ public class EntityAttributeGroupTransferCache
                             entityAttributeGroup, entityInstance.getEntityType(), entityInstance);
                     MapWrapper<EntityAttributeTransfer> mapWrapper = new MapWrapper<>(entityAttributeTransfers.size());
 
-                    entityAttributeTransfers.stream().forEach((entityAttributeTransfer) -> {
+                    entityAttributeTransfers.forEach((entityAttributeTransfer) -> {
                         mapWrapper.put(entityAttributeTransfer.getEntityAttributeName(), entityAttributeTransfer);
                     });
 

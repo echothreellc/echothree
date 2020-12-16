@@ -2262,7 +2262,7 @@ public class ItemControl
         List<ItemShippingTime> itemShippingTimes = getItemShippingTimesByItem(item);
         List<ItemShippingTimeTransfer> itemShippingTimeTransfers = new ArrayList<>(itemShippingTimes.size());
         
-        itemShippingTimes.stream().forEach((itemShippingTime) -> {
+        itemShippingTimes.forEach((itemShippingTime) -> {
             itemShippingTimeTransfers.add(getItemTransferCaches(userVisit).getItemShippingTimeTransferCache().getTransfer(itemShippingTime));
         });
         
@@ -3132,7 +3132,7 @@ public class ItemControl
         List<ItemAlias> itemAliases = getItemAliasesByItem(item);
         List<ItemAliasTransfer> itemAliasTransfers = new ArrayList<>(itemAliases.size());
         
-        itemAliases.stream().forEach((itemAlias) -> {
+        itemAliases.forEach((itemAlias) -> {
             itemAliasTransfers.add(getItemTransferCaches(userVisit).getItemAliasTransferCache().getTransfer(itemAlias));
         });
         
@@ -7927,7 +7927,7 @@ public class ItemControl
     public void deleteItemDescriptionsByItemImageType(ItemImageType itemImageType, BasePK deletedBy) {
         List<ItemImageDescription> itemImageDescriptions = getItemImageDescriptionsByItemImageTypeForUpdate(itemImageType);
 
-        itemImageDescriptions.stream().forEach((itemImageDescription) -> {
+        itemImageDescriptions.forEach((itemImageDescription) -> {
             deleteItemDescription(itemImageDescription.getItemDescription(), deletedBy);
         });
     }
@@ -9966,7 +9966,7 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeTranslation> harmonizedTariffScheduleCodeTranslations = getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode);
         List<HarmonizedTariffScheduleCodeTranslationTransfer> harmonizedTariffScheduleCodeTranslationTransfers = new ArrayList<>(harmonizedTariffScheduleCodeTranslations.size());
 
-        harmonizedTariffScheduleCodeTranslations.stream().forEach((harmonizedTariffScheduleCodeTranslation) -> {
+        harmonizedTariffScheduleCodeTranslations.forEach((harmonizedTariffScheduleCodeTranslation) -> {
             harmonizedTariffScheduleCodeTranslationTransfers.add(getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTranslationTransferCache().getTransfer(harmonizedTariffScheduleCodeTranslation));
         });
 
@@ -10374,7 +10374,7 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeUseTypeDescription> harmonizedTariffScheduleCodeUseTypeDescriptions = getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseType(harmonizedTariffScheduleCodeUseType);
         List<HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer> harmonizedTariffScheduleCodeUseTypeDescriptionTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUseTypeDescriptions.size());
 
-        harmonizedTariffScheduleCodeUseTypeDescriptions.stream().forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> {
+        harmonizedTariffScheduleCodeUseTypeDescriptions.forEach((harmonizedTariffScheduleCodeUseTypeDescription) -> {
             harmonizedTariffScheduleCodeUseTypeDescriptionTransfers.add(getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache().getTransfer(harmonizedTariffScheduleCodeUseTypeDescription));
         });
 
@@ -10780,7 +10780,7 @@ public class ItemControl
         List<HarmonizedTariffScheduleCodeUnitDescription> harmonizedTariffScheduleCodeUnitDescriptions = getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnit(harmonizedTariffScheduleCodeUnit);
         List<HarmonizedTariffScheduleCodeUnitDescriptionTransfer> harmonizedTariffScheduleCodeUnitDescriptionTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUnitDescriptions.size());
 
-        harmonizedTariffScheduleCodeUnitDescriptions.stream().forEach((harmonizedTariffScheduleCodeUnitDescription) -> {
+        harmonizedTariffScheduleCodeUnitDescriptions.forEach((harmonizedTariffScheduleCodeUnitDescription) -> {
             harmonizedTariffScheduleCodeUnitDescriptionTransfers.add(getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUnitDescriptionTransferCache().getTransfer(harmonizedTariffScheduleCodeUnitDescription));
         });
 
@@ -10949,7 +10949,7 @@ public class ItemControl
     public List<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(UserVisit userVisit, List<HarmonizedTariffScheduleCodeUse> harmonizedTariffScheduleCodeUses) {
         List<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUseTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUses.size());
 
-        harmonizedTariffScheduleCodeUses.stream().forEach((harmonizedTariffScheduleCodeUse) -> {
+        harmonizedTariffScheduleCodeUses.forEach((harmonizedTariffScheduleCodeUse) -> {
             harmonizedTariffScheduleCodeUseTransfers.add(getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeUseTransferCache().getTransfer(harmonizedTariffScheduleCodeUse));
         });
 

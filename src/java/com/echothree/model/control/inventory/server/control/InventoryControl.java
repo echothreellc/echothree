@@ -475,7 +475,7 @@ public class InventoryControl
     public void deleteInventoryLocationGroupsByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
         List<InventoryLocationGroup> inventoryLocationGroups = getInventoryLocationGroupsByWarehousePartyForUpdate(warehouseParty);
         
-        inventoryLocationGroups.stream().forEach((inventoryLocationGroup) -> {
+        inventoryLocationGroups.forEach((inventoryLocationGroup) -> {
             deleteInventoryLocationGroup(inventoryLocationGroup, deletedBy, false);
         });
     }

@@ -513,7 +513,7 @@ public class TaxControl
         List<TaxClassificationTranslation> taxClassificationTranslations = getTaxClassificationTranslationsByTaxClassification(taxClassification);
         List<TaxClassificationTranslationTransfer> taxClassificationTranslationTransfers = new ArrayList<>(taxClassificationTranslations.size());
 
-        taxClassificationTranslations.stream().forEach((taxClassificationTranslation) -> {
+        taxClassificationTranslations.forEach((taxClassificationTranslation) -> {
             taxClassificationTranslationTransfers.add(getTaxTransferCaches(userVisit).getTaxClassificationTranslationTransferCache().getTransfer(taxClassificationTranslation));
         });
 
@@ -1349,7 +1349,7 @@ public class TaxControl
     private List<GeoCodeTaxTransfer> getGeoCodeTaxTransfers(UserVisit userVisit, List<GeoCodeTax> geoCodeTaxes) {
         List<GeoCodeTaxTransfer> geoCodeTaxTransfers = new ArrayList<>(geoCodeTaxes.size());
         
-        geoCodeTaxes.stream().forEach((geoCodeTax) -> {
+        geoCodeTaxes.forEach((geoCodeTax) -> {
             geoCodeTaxTransfers.add(getTaxTransferCaches(userVisit).getGeoCodeTaxTransferCache().getTransfer(geoCodeTax));
         });
         

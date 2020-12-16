@@ -77,7 +77,7 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
                     List<EntityAttribute> entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
                     Map<String, UserVisitSearchFacetTransfer> userVisitSearchFacets = new LinkedHashMap<>();
         
-                    entityAttributes.stream().forEach((entityAttribute) -> {
+                    entityAttributes.forEach((entityAttribute) -> {
                         String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
                         if (entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                                 || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())

@@ -85,8 +85,8 @@ public class PostingLogic {
         List<TransactionGlEntry> transactionGlEntries = accountingControl.getTransactionGlEntriesByTransaction(transaction);
         List<Period> periods = periodControl.getContainingPeriodsUsingNames(PeriodConstants.PeriodKind_FISCAL, postingTime);
         
-        transactionGlEntries.stream().forEach((transactionGlEntry) -> {
-            periods.stream().forEach((period) -> {
+        transactionGlEntries.forEach((transactionGlEntry) -> {
+            periods.forEach((period) -> {
                 postTransactionGlEntry(accountingControl, partyControl, transactionGlEntry, period);
             });
         });

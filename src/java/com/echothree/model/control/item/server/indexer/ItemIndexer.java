@@ -158,7 +158,7 @@ public class ItemIndexer
         indexEntityAttributes(document, entityInstance);
         indexEntityTags(document, entityInstance);
 
-        itemDescriptionTypes.stream().forEach((itemDescriptionType) -> {
+        itemDescriptionTypes.forEach((itemDescriptionType) -> {
             ItemDescription itemDescription = itemControl.getBestItemDescription(itemDescriptionType, item, language);
             if (itemDescription != null) {
                 ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();

@@ -88,7 +88,7 @@ public class LotTransferCache
                 var lotAliasTransfers = lotAliasControl.getLotAliasTransfersByLot(userVisit, lot);
                 var lotAliases = new MapWrapper<LotAliasTransfer>(lotAliasTransfers.size());
 
-                lotAliasTransfers.stream().forEach((lotAliasTransfer) -> {
+                lotAliasTransfers.forEach((lotAliasTransfer) -> {
                     lotAliases.put(lotAliasTransfer.getLotAliasType().getLotAliasTypeName(), lotAliasTransfer);
                 });
 
@@ -99,7 +99,7 @@ public class LotTransferCache
                 var lotTimeTransfers = lotTimeControl.getLotTimeTransfersByLot(userVisit, lot);
                 var lotTimes = new MapWrapper<LotTimeTransfer>(lotTimeTransfers.size());
 
-                lotTimeTransfers.stream().forEach((lotTimeTransfer) -> {
+                lotTimeTransfers.forEach((lotTimeTransfer) -> {
                     lotTimes.put(lotTimeTransfer.getLotTimeType().getLotTimeTypeName(), lotTimeTransfer);
                 });
 

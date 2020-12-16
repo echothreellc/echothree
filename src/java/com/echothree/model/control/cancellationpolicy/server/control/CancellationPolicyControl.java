@@ -702,7 +702,7 @@ public class CancellationPolicyControl
         List<CancellationKindDescription> cancellationKindDescriptions = getCancellationKindDescriptionsByCancellationKind(cancellationKind);
         List<CancellationKindDescriptionTransfer> cancellationKindDescriptionTransfers = new ArrayList<>(cancellationKindDescriptions.size());
         
-        cancellationKindDescriptions.stream().forEach((cancellationKindDescription) -> {
+        cancellationKindDescriptions.forEach((cancellationKindDescription) -> {
             cancellationKindDescriptionTransfers.add(getCancellationPolicyTransferCaches(userVisit).getCancellationKindDescriptionTransferCache().getCancellationKindDescriptionTransfer(cancellationKindDescription));
         });
         
@@ -1915,7 +1915,7 @@ public class CancellationPolicyControl
         List<CancellationReasonDescription> cancellationReasonDescriptions = getCancellationReasonDescriptionsByCancellationReason(cancellationReason);
         List<CancellationReasonDescriptionTransfer> cancellationReasonDescriptionTransfers = new ArrayList<>(cancellationReasonDescriptions.size());
         
-        cancellationReasonDescriptions.stream().forEach((cancellationReasonDescription) -> {
+        cancellationReasonDescriptions.forEach((cancellationReasonDescription) -> {
             cancellationReasonDescriptionTransfers.add(getCancellationPolicyTransferCaches(userVisit).getCancellationReasonDescriptionTransferCache().getCancellationReasonDescriptionTransfer(cancellationReasonDescription));
         });
         
@@ -2680,7 +2680,7 @@ public class CancellationPolicyControl
         List<CancellationTypeDescription> cancellationTypeDescriptions = getCancellationTypeDescriptionsByCancellationType(cancellationType);
         List<CancellationTypeDescriptionTransfer> cancellationTypeDescriptionTransfers = new ArrayList<>(cancellationTypeDescriptions.size());
         
-        cancellationTypeDescriptions.stream().forEach((cancellationTypeDescription) -> {
+        cancellationTypeDescriptions.forEach((cancellationTypeDescription) -> {
             cancellationTypeDescriptionTransfers.add(getCancellationPolicyTransferCaches(userVisit).getCancellationTypeDescriptionTransferCache().getCancellationTypeDescriptionTransfer(cancellationTypeDescription));
         });
         

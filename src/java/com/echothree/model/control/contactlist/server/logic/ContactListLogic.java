@@ -148,7 +148,7 @@ public class ContactListLogic
         }
 
         if(!hasExecutionErrors(eea)) {
-            contactLists.stream().forEach((contactList) -> {
+            contactLists.forEach((contactList) -> {
                 addContactListToParty(eea, party, contactList, null, createdBy);
             });
         }

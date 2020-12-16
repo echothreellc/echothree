@@ -105,7 +105,7 @@ public class ShippingMethodLogic
             SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
                     SelectorConstants.SelectorType_SHIPPING_METHOD);
             
-            items.stream().forEach((item) -> {
+            items.forEach((item) -> {
                 checkAcceptanceOfItem(session, eea, selectorCache, shippingMethod, item, evaluatedBy);
             });
         }

@@ -2959,7 +2959,7 @@ public class CampaignControl
     }
     
     public void deleteUserVisitCampaigns(List<UserVisitCampaign> userVisitCampaigns) {
-        userVisitCampaigns.stream().forEach((userVisitCampaign) -> {
+        userVisitCampaigns.forEach((userVisitCampaign) -> {
             deleteUserVisitCampaign(userVisitCampaign);
         });
     }
@@ -2993,7 +2993,7 @@ public class CampaignControl
     }
     
     public void removeUserVisitCampaigns(List<UserVisitCampaign> userVisitCampaigns) {
-        userVisitCampaigns.stream().forEach((userVisitCampaign) -> {
+        userVisitCampaigns.forEach((userVisitCampaign) -> {
             removeUserVisitCampaign(userVisitCampaign);
         });
     }

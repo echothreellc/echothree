@@ -1718,7 +1718,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkTimeUserVisits(List<WorkTimeUserVisit> workTimeUserVisits) {
-        workTimeUserVisits.stream().forEach((workTimeUserVisit) -> {
+        workTimeUserVisits.forEach((workTimeUserVisit) -> {
             deleteWorkTimeUserVisit(workTimeUserVisit);
         });
     }
@@ -1736,7 +1736,7 @@ public class WorkRequirementControl
     }
     
     public void removeWorkTimeUserVisits(List<WorkTimeUserVisit> workTimeUserVisits) {
-        workTimeUserVisits.stream().forEach((workTimeUserVisit) -> {
+        workTimeUserVisits.forEach((workTimeUserVisit) -> {
             removeWorkTimeUserVisit(workTimeUserVisit);
         });
     }

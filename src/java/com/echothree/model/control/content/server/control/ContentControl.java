@@ -1669,7 +1669,7 @@ public class ContentControl
         if(recursive) {
             List<ContentSection> subContentSections = getContentSectionsByParentContentSectionForUpdate(contentSection);
             
-            subContentSections.stream().forEach((subContentSection) -> {
+            subContentSections.forEach((subContentSection) -> {
                 deleteContentSection(subContentSection, deletedBy, true);
             });
         }
@@ -1719,7 +1719,7 @@ public class ContentControl
     public void deleteContentSectionsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
         List<ContentSection> contentSections = getContentSectionsForUpdate(contentCollection);
         
-        contentSections.stream().forEach((contentSection) -> {
+        contentSections.forEach((contentSection) -> {
             deleteContentSection(contentSection, deletedBy, false);
         });
     }

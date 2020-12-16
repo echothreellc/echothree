@@ -304,7 +304,7 @@ public class OrderControl
         var wishlistControl = Session.getModelController(WishlistControl.class);
         List<Wishlist> wishlists = wishlistControl.getWishlistsByWishlistTypeForUpdate(wishlistType);
         
-        wishlists.stream().forEach((wishlist) -> {
+        wishlists.forEach((wishlist) -> {
             deleteOrder(wishlist.getOrderForUpdate(), deletedBy);
         });
     }
@@ -478,7 +478,7 @@ public class OrderControl
     }
     
     public void deleteOrderUserVisits(List<OrderUserVisit> orderUserVisits) {
-        orderUserVisits.stream().forEach((orderUserVisit) -> {
+        orderUserVisits.forEach((orderUserVisit) -> {
             deleteOrderUserVisit(orderUserVisit);
         });
     }
@@ -496,7 +496,7 @@ public class OrderControl
     }
     
     public void removeOrderUserVisits(List<OrderUserVisit> orderUserVisits) {
-        orderUserVisits.stream().forEach((orderUserVisit) -> {
+        orderUserVisits.forEach((orderUserVisit) -> {
             removeOrderUserVisit(orderUserVisit);
         });
     }

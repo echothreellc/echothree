@@ -339,7 +339,7 @@ public class ItemTransferCache
                 List<ItemCountryOfOriginTransfer> itemCountryOfOriginTransfers = itemControl.getItemCountryOfOriginTransfersByItem(userVisit, item);
                 MapWrapper<ItemCountryOfOriginTransfer> itemCountryOfOrigins = new MapWrapper<>();
 
-                itemCountryOfOriginTransfers.stream().forEach((itemCountryOfOriginTransfer) -> {
+                itemCountryOfOriginTransfers.forEach((itemCountryOfOriginTransfer) -> {
                     itemCountryOfOrigins.put(itemCountryOfOriginTransfer.getCountryGeoCode().getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias(), itemCountryOfOriginTransfer);
                 });
 
@@ -370,7 +370,7 @@ public class ItemTransferCache
                 List<RelatedItemType> relatedItemTypes = itemControl.getRelatedItemTypes();
                 MapWrapper<ListWrapper<RelatedItemTransfer>> relatedItems = new MapWrapper<>(relatedItemTypes.size());
 
-                relatedItemTypes.stream().forEach((relatedItemType) -> {
+                relatedItemTypes.forEach((relatedItemType) -> {
                     relatedItems.put(relatedItemType.getLastDetail().getRelatedItemTypeName(), new ListWrapper<>(itemControl.getRelatedItemTransfersByRelatedItemTypeAndFromItem(userVisit, relatedItemType, item)));
                 });
 
