@@ -130,6 +130,8 @@ import com.echothree.control.user.search.server.command.GetCustomerResultsComman
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
+import com.echothree.control.user.selector.server.command.GetSelectorTypeCommand;
+import com.echothree.control.user.selector.server.command.GetSelectorTypesCommand;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypesCommand;
@@ -209,6 +211,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeOb
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
+import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceChecksumTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
@@ -275,6 +278,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
+import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
@@ -540,6 +544,59 @@ public final class GraphQlQueries
         }
 
         return selectorKindObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("selectorType")
+    public static SelectorTypeObject selectorType(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") final String selectorKindName,
+            @GraphQLName("selectorTypeName") final String selectorTypeName,
+            @GraphQLName("id") final String id) {
+        SelectorType selectorType;
+
+        try {
+            var commandForm = SelectorUtil.getHome().getGetSelectorTypeForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
+            commandForm.setUlid(id);
+
+            selectorType = new GetSelectorTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return selectorType == null ? null : new SelectorTypeObject(selectorType);
+    }
+
+    @GraphQLField
+    @GraphQLName("selectorTypes")
+    public static Collection<SelectorTypeObject> selectorTypes(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") final String selectorKindName) {
+        Collection<SelectorType> selectorTypes;
+        Collection<SelectorTypeObject> selectorTypeObjects;
+
+        try {
+            var commandForm = SelectorUtil.getHome().getGetSelectorTypesForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+
+            selectorTypes = new GetSelectorTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(selectorTypes == null) {
+            selectorTypeObjects = emptyList();
+        } else {
+            selectorTypeObjects = new ArrayList<>(selectorTypes.size());
+
+            selectorTypes.stream()
+                    .map(SelectorTypeObject::new)
+                    .forEachOrdered(selectorTypeObjects::add);
+        }
+
+        return selectorTypeObjects;
     }
 
     @GraphQLField

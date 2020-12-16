@@ -36,9 +36,9 @@ public final class SelectorSecurityUtils {
         return env.<GraphQlContext>getContext().hasAccess(GetSelectorKindCommand.class);
     }
 
-//    public boolean getHasSelectorTypeAccess(final DataFetchingEnvironment env) {
-//        return env.<GraphQlContext>getContext().hasAccess(GetSelectorTypeCommand.class);
-//    }
+    public boolean getHasSelectorTypeAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetSelectorTypeCommand.class);
+    }
 
 //    public boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
 //        return env.<GraphQlContext>getContext().hasAccess(GetSelectorCommand.class);

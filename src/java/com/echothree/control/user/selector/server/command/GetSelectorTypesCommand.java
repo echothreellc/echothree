@@ -17,66 +17,78 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorTypesForm;
-import com.echothree.control.user.selector.common.result.GetSelectorTypesResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
+import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
+import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.data.selector.server.factory.SelectorTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetSelectorTypesCommand
-        extends BaseSimpleCommand<GetSelectorTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<SelectorType, GetSelectorTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
-    static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.List.name())
-                    )))
-                )));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.SelectorType.name(), SecurityRoles.List.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
-    
+
     /** Creates a new instance of GetSelectorTypesCommand */
     public GetSelectorTypesCommand(UserVisitPK userVisitPK, GetSelectorTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    SelectorKind selectorKind;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<SelectorType> getEntities() {
         var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorTypesResult result = SelectorResultFactory.getGetSelectorTypesResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
-        if(selectorKind != null) {
+
+        selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(this, form.getSelectorKindName());
+
+        return hasExecutionErrors() ? null : selectorControl.getSelectorTypes(selectorKind);
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<SelectorType> entities) {
+        var result = SelectorResultFactory.getGetSelectorTypesResult();
+
+        if(entities != null) {
+            var selectorControl = Session.getModelController(SelectorControl.class);
+
+            if(session.hasLimit(SelectorTypeFactory.class)) {
+                result.setSelectorTypeCount(selectorControl.countSelectorTypesBySelectorKind(selectorKind));
+            }
+
             result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));
-            result.setSelectorTypes(selectorControl.getSelectorTypeTransfersBySelectorKind(getUserVisit(), selectorKind));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
+            result.setSelectorTypes(selectorControl.getSelectorTypeTransfers(getUserVisit(), entities));
         }
-        
+
         return result;
     }
-    
+
 }
