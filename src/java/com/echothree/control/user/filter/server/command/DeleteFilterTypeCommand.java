@@ -60,7 +60,7 @@ public class DeleteFilterTypeCommand
     protected BaseResult execute() {
         var filterKindName = form.getFilterKindName();
         var filterTypeName = form.getFilterTypeName();
-        var filterType = FilterTypeLogic.getInstance().getFilterTypeByName(this, filterKindName, filterTypeName);
+        var filterType = FilterTypeLogic.getInstance().getFilterTypeByNameForUpdate(this, filterKindName, filterTypeName);
 
         if(!hasExecutionErrors()) {
             FilterTypeLogic.getInstance().deleteFilterType(this, filterType, getPartyPK());
