@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
@@ -26,13 +25,11 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BaseFilterDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseFilterTransferCache<K, V> {
     
-    PartyControl partyControl;
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseFilterDescriptionTransferCache */
-    protected BaseFilterDescriptionTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected BaseFilterDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
 }

@@ -22,21 +22,24 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.filter.server.entity.FilterStepDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterStepDescriptionTransferCache
         extends BaseFilterDescriptionTransferCache<FilterStepDescription, FilterStepDescriptionTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterStepDescriptionTransferCache */
-    public FilterStepDescriptionTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterStepDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterStepDescriptionTransfer getFilterStepDescriptionTransfer(FilterStepDescription filterStepDescription) {
+
+    @Override
+    public FilterStepDescriptionTransfer getTransfer(FilterStepDescription filterStepDescription) {
         FilterStepDescriptionTransfer filterStepDescriptionTransfer = get(filterStepDescription);
         
         if(filterStepDescriptionTransfer == null) {
-            FilterStepTransferCache filterStepTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterStepTransferCache();
-            FilterStepTransfer filterStepTransfer = filterStepTransferCache.getFilterStepTransfer(filterStepDescription.getFilterStep());
+            FilterStepTransfer filterStepTransfer = filterControl.getFilterStepTransfer(userVisit, filterStepDescription.getFilterStep());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, filterStepDescription.getLanguage());
             
             filterStepDescriptionTransfer = new FilterStepDescriptionTransfer(languageTransfer, filterStepTransfer, filterStepDescription.getDescription());

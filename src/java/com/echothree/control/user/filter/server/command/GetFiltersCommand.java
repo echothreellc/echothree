@@ -61,7 +61,7 @@ public class GetFiltersCommand
             String filterTypeName = form.getFilterTypeName();
             FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
             
-            result.setFilterKind(filterControl.getFilterTransferCaches(getUserVisit()).getFilterKindTransferCache().getFilterKindTransfer(filterKind));
+            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
             
             if(filterType != null) {
                 result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));

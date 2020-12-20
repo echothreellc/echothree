@@ -32,24 +32,24 @@ import com.echothree.util.server.string.PercentUtils;
 
 public class FilterAdjustmentPercentTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentPercent, FilterAdjustmentPercentTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of FilterAdjustmentPercentTransferCache */
-    public FilterAdjustmentPercentTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterAdjustmentPercentTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterAdjustmentPercentTransfer getFilterAdjustmentPercentTransfer(FilterAdjustmentPercent filterAdjustmentPercent) {
+
+    @Override
+    public FilterAdjustmentPercentTransfer getTransfer(FilterAdjustmentPercent filterAdjustmentPercent) {
         FilterAdjustmentPercentTransfer filterAdjustmentPercentTransfer = get(filterAdjustmentPercent);
         
         if(filterAdjustmentPercentTransfer == null) {
-            AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-            UomControl uomControl = Session.getModelController(UomControl.class);
-            FilterAdjustmentTransferCache filterAdjustmentTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
-            FilterAdjustmentTransfer filterAdjustment = filterAdjustmentTransferCache.getFilterAdjustmentTransfer(filterAdjustmentPercent.getFilterAdjustment());
-            UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            UnitOfMeasureTypeTransfer unitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(filterAdjustmentPercent.getUnitOfMeasureType());
-            CurrencyTransferCache currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
-            CurrencyTransfer currency = currencyTransferCache.getTransfer(filterAdjustmentPercent.getCurrency());
+            FilterAdjustmentTransfer filterAdjustment = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentPercent.getFilterAdjustment());
+            UnitOfMeasureTypeTransfer unitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentPercent.getUnitOfMeasureType());
+            CurrencyTransfer currency = accountingControl.getCurrencyTransfer(userVisit, filterAdjustmentPercent.getCurrency());
             String percent = PercentUtils.getInstance().formatFractionalPercent(filterAdjustmentPercent.getPercent());
             
             filterAdjustmentPercentTransfer = new FilterAdjustmentPercentTransfer(filterAdjustment, unitOfMeasureType, currency, percent);

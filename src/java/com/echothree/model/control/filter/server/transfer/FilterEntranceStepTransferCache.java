@@ -22,23 +22,25 @@ import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterEntranceStepTransferCache
         extends BaseFilterTransferCache<FilterEntranceStep, FilterEntranceStepTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterEntranceStepTransferCache */
-    public FilterEntranceStepTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterEntranceStepTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterEntranceStepTransfer getFilterEntranceStepTransfer(FilterEntranceStep filterEntranceStep) {
+
+    @Override
+    public FilterEntranceStepTransfer getTransfer(FilterEntranceStep filterEntranceStep) {
         FilterEntranceStepTransfer filterEntranceStepTransfer = get(filterEntranceStep);
         
         if(filterEntranceStepTransfer == null) {
-            FilterTransferCache filterTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterTransferCache();
-            FilterTransfer filter = filterTransferCache.getFilterTransfer(filterEntranceStep.getFilter());
-            FilterStepTransferCache filterStepTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterStepTransferCache();
-            FilterStepTransfer filterStep = filterStepTransferCache.getFilterStepTransfer(filterEntranceStep.getFilterStep());
+            FilterTransfer filter = filterControl.getFilterTransfer(userVisit, filterEntranceStep.getFilter());
+            FilterStepTransfer filterStep = filterControl.getFilterStepTransfer(userVisit, filterEntranceStep.getFilterStep());
             
             filterEntranceStepTransfer = new FilterEntranceStepTransfer(filter, filterStep);
             put(filterEntranceStep, filterEntranceStepTransfer);

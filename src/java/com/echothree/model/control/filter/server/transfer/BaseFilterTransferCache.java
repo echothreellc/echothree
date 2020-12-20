@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
-import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -25,13 +24,11 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseFilterTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    FilterControl filterControl;
-    
     /** Creates a new instance of BaseFilterTransferCache */
-    protected BaseFilterTransferCache(UserVisit userVisit, FilterControl filterControl) {
+    protected BaseFilterTransferCache(UserVisit userVisit) {
         super(userVisit);
-        
-        this.filterControl = filterControl;
     }
-    
+
+    protected abstract V getTransfer(K key);
+
 }

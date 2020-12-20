@@ -22,17 +22,20 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterAdjustmentTransferCache
         extends BaseFilterTransferCache<FilterAdjustment, FilterAdjustmentTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     boolean includeFilterAdjustmentAmounts;
     boolean includeFilterAdjustmentFixedAmounts;
     boolean includeFilterAdjustmentPercents;
     
     /** Creates a new instance of FilterAdjustmentTransferCache */
-    public FilterAdjustmentTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterAdjustmentTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {
@@ -43,8 +46,9 @@ public class FilterAdjustmentTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
-    public FilterAdjustmentTransfer getFilterAdjustmentTransfer(FilterAdjustment filterAdjustment) {
+
+    @Override
+    public FilterAdjustmentTransfer getTransfer(FilterAdjustment filterAdjustment) {
         var filterAdjustmentTransfer = get(filterAdjustment);
         
         if(filterAdjustmentTransfer == null) {

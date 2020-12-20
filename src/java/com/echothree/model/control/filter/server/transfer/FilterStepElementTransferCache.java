@@ -30,13 +30,16 @@ import com.echothree.util.server.persistence.Session;
 
 public class FilterStepElementTransferCache
         extends BaseFilterTransferCache<FilterStepElement, FilterStepElementTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterStepElementTransferCache */
-    public FilterStepElementTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterStepElementTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterStepElementTransfer getFilterStepElementTransfer(FilterStepElement filterStepElement) {
+
+    @Override
+    public FilterStepElementTransfer getTransfer(FilterStepElement filterStepElement) {
         FilterStepElementTransfer filterStepElementTransfer = get(filterStepElement);
         
         if(filterStepElementTransfer == null) {

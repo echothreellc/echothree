@@ -32,18 +32,21 @@ import com.echothree.util.server.string.AmountUtils;
 
 public class FilterAdjustmentAmountTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentAmount, FilterAdjustmentAmountTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of FilterAdjustmentAmountTransferCache */
-    public FilterAdjustmentAmountTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterAdjustmentAmountTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterAdjustmentAmountTransfer getFilterAdjustmentAmountTransfer(FilterAdjustmentAmount filterAdjustmentAmount) {
+
+    @Override
+    public FilterAdjustmentAmountTransfer getTransfer(FilterAdjustmentAmount filterAdjustmentAmount) {
         FilterAdjustmentAmountTransfer filterAdjustmentAmountTransfer = get(filterAdjustmentAmount);
         
         if(filterAdjustmentAmountTransfer == null) {
-            AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-            UomControl uomControl = Session.getModelController(UomControl.class);
             FilterAdjustmentTransfer filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentAmount.getFilterAdjustment());
             UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentAmount.getUnitOfMeasureType());
             Currency currency = filterAdjustmentAmount.getCurrency();

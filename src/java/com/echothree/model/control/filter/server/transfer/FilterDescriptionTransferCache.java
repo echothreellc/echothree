@@ -22,21 +22,24 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.filter.server.entity.FilterDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterDescriptionTransferCache
         extends BaseFilterDescriptionTransferCache<FilterDescription, FilterDescriptionTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterDescriptionTransferCache */
-    public FilterDescriptionTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterDescriptionTransfer getFilterDescriptionTransfer(FilterDescription filterDescription) {
+
+    @Override
+    public FilterDescriptionTransfer getTransfer(FilterDescription filterDescription) {
         FilterDescriptionTransfer filterDescriptionTransfer = get(filterDescription);
         
         if(filterDescriptionTransfer == null) {
-            FilterTransferCache filterTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterTransferCache();
-            FilterTransfer filterTransfer = filterTransferCache.getFilterTransfer(filterDescription.getFilter());
+            FilterTransfer filterTransfer = filterControl.getFilterTransfer(userVisit, filterDescription.getFilter());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, filterDescription.getLanguage());
             
             filterDescriptionTransfer = new FilterDescriptionTransfer(languageTransfer, filterTransfer, filterDescription.getDescription());

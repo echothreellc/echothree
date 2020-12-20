@@ -22,21 +22,24 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterAdjustmentDescriptionTransferCache
         extends BaseFilterDescriptionTransferCache<FilterAdjustmentDescription, FilterAdjustmentDescriptionTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterAdjustmentDescriptionTransferCache */
-    public FilterAdjustmentDescriptionTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterAdjustmentDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterAdjustmentDescriptionTransfer getFilterAdjustmentDescriptionTransfer(FilterAdjustmentDescription filterAdjustmentDescription) {
+
+    @Override
+    public FilterAdjustmentDescriptionTransfer getTransfer(FilterAdjustmentDescription filterAdjustmentDescription) {
         FilterAdjustmentDescriptionTransfer filterAdjustmentDescriptionTransfer = get(filterAdjustmentDescription);
         
         if(filterAdjustmentDescriptionTransfer == null) {
-            FilterAdjustmentTransferCache filterAdjustmentTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
-            FilterAdjustmentTransfer filterAdjustmentTransfer = filterAdjustmentTransferCache.getFilterAdjustmentTransfer(filterAdjustmentDescription.getFilterAdjustment());
+            FilterAdjustmentTransfer filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentDescription.getFilterAdjustment());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, filterAdjustmentDescription.getLanguage());
             
             filterAdjustmentDescriptionTransfer = new FilterAdjustmentDescriptionTransfer(languageTransfer, filterAdjustmentTransfer, filterAdjustmentDescription.getDescription());
