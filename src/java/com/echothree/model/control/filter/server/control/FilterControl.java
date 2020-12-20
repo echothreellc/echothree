@@ -28,7 +28,9 @@ import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmount
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentDescriptionTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentFixedAmountTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentPercentTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterAdjustmentSourceTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTypeTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterDescriptionTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterEntranceStepTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterKindDescriptionTransfer;
@@ -1126,6 +1128,25 @@ public class FilterControl
         
         return new FilterAdjustmentSourceChoicesBean(labels, values, defaultValue);
     }
+
+    public FilterAdjustmentSourceTransfer getFilterAdjustmentSourceTransfer(UserVisit userVisit, FilterAdjustmentSource filterAdjustmentSource) {
+        return getFilterTransferCaches(userVisit).getFilterAdjustmentSourceTransferCache().getFilterAdjustmentSourceTransfer(filterAdjustmentSource);
+    }
+
+    public List<FilterAdjustmentSourceTransfer> getFilterAdjustmentSourceTransfers(UserVisit userVisit, Collection<FilterAdjustmentSource> filterAdjustmentSources) {
+        var filterAdjustmentSourceTransfers = new ArrayList<FilterAdjustmentSourceTransfer>(filterAdjustmentSources.size());
+        var filterAdjustmentSourceTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentSourceTransferCache();
+
+        filterAdjustmentSources.forEach((filterAdjustmentSource) ->
+                filterAdjustmentSourceTransfers.add(filterAdjustmentSourceTransferCache.getFilterAdjustmentSourceTransfer(filterAdjustmentSource))
+        );
+
+        return filterAdjustmentSourceTransfers;
+    }
+
+    public List<FilterAdjustmentSourceTransfer> getFilterAdjustmentSourceTransfers(UserVisit userVisit) {
+        return getFilterAdjustmentSourceTransfers(userVisit, getFilterAdjustmentSources());
+    }
     
     // --------------------------------------------------------------------------------
     //   Filter Adjustment Source Descriptions
@@ -1238,6 +1259,25 @@ public class FilterControl
         }
         
         return new FilterAdjustmentTypeChoicesBean(labels, values, defaultValue);
+    }
+
+    public FilterAdjustmentTypeTransfer getFilterAdjustmentTypeTransfer(UserVisit userVisit, FilterAdjustmentType filterAdjustmentType) {
+        return getFilterTransferCaches(userVisit).getFilterAdjustmentTypeTransferCache().getFilterAdjustmentTypeTransfer(filterAdjustmentType);
+    }
+
+    public List<FilterAdjustmentTypeTransfer> getFilterAdjustmentTypeTransfers(UserVisit userVisit, Collection<FilterAdjustmentType> filterAdjustmentTypes) {
+        var filterAdjustmentTypeTransfers = new ArrayList<FilterAdjustmentTypeTransfer>(filterAdjustmentTypes.size());
+        var filterAdjustmentTypeTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTypeTransferCache();
+
+        filterAdjustmentTypes.forEach((filterAdjustmentType) ->
+                filterAdjustmentTypeTransfers.add(filterAdjustmentTypeTransferCache.getFilterAdjustmentTypeTransfer(filterAdjustmentType))
+        );
+
+        return filterAdjustmentTypeTransfers;
+    }
+
+    public List<FilterAdjustmentTypeTransfer> getFilterAdjustmentTypeTransfers(UserVisit userVisit) {
+        return getFilterAdjustmentTypeTransfers(userVisit, getFilterAdjustmentTypes());
     }
     
     // --------------------------------------------------------------------------------
