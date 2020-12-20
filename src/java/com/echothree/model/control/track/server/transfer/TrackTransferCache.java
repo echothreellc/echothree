@@ -40,7 +40,7 @@ public class TrackTransferCache
     public TrackTransferCache(UserVisit userVisit, TrackControl trackControl) {
         super(userVisit, trackControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(TrackOptions.TrackIncludeKey));
             setIncludeGuid(options.contains(TrackOptions.TrackIncludeGuid));

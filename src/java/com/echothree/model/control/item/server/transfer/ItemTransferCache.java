@@ -157,7 +157,7 @@ public class ItemTransferCache
     public ItemTransferCache(UserVisit userVisit, ItemControl itemControl) {
         super(userVisit, itemControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeItemShippingTimes = options.contains(ItemOptions.ItemIncludeItemShippingTimes);
             includeItemAliases = options.contains(ItemOptions.ItemIncludeItemAliases);

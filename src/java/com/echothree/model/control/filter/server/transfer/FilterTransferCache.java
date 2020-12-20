@@ -44,7 +44,7 @@ public class FilterTransferCache
         
         selectorControl = Session.getModelController(SelectorControl.class);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeFilterEntranceSteps = options.contains(FilterOptions.FilterIncludeFilterEntranceSteps);
             includeFilterSteps = options.contains(FilterOptions.FilterIncludeFilterSteps);

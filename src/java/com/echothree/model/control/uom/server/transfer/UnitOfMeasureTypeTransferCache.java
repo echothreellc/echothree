@@ -54,7 +54,7 @@ public class UnitOfMeasureTypeTransferCache
     public UnitOfMeasureTypeTransferCache(UserVisit userVisit, UomControl uomControl) {
         super(userVisit, uomControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeVolume = options.contains(UomOptions.UnitOfMeasureTypeIncludeVolume);
             includeWeight = options.contains(UomOptions.UnitOfMeasureTypeIncludeWeight);

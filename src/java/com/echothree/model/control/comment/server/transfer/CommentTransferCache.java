@@ -58,7 +58,7 @@ public class CommentTransferCache
         partyControl = Session.getModelController(PartyControl.class);
         workflowControl = Session.getModelController(WorkflowControl.class);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(CommentOptions.CommentIncludeBlob);
             includeClob = options.contains(CommentOptions.CommentIncludeClob);

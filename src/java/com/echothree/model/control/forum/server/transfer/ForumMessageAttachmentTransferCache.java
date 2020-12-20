@@ -44,7 +44,7 @@ public class ForumMessageAttachmentTransferCache
     public ForumMessageAttachmentTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(ForumOptions.ForumMessageAttachmentIncludeBlob);
             includeClob = options.contains(ForumOptions.ForumMessageAttachmentIncludeClob);

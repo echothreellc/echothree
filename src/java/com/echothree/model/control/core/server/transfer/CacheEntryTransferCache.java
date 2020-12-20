@@ -51,7 +51,7 @@ public class CacheEntryTransferCache
     public CacheEntryTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(CoreOptions.CacheEntryIncludeBlob);
             includeClob = options.contains(CoreOptions.CacheEntryIncludeClob);

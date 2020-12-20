@@ -74,7 +74,7 @@ public class EntityTypeTransferCache
             }
         }
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeIndexTypesCount = options.contains(CoreOptions.EntityTypeIncludeIndexTypesCount);
             includeIndexTypes = options.contains(CoreOptions.EntityTypeIncludeIndexTypes);

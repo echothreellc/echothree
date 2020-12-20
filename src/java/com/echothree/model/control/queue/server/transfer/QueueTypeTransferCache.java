@@ -37,7 +37,7 @@ public class QueueTypeTransferCache
     public QueueTypeTransferCache(UserVisit userVisit, QueueControl queueControl) {
         super(userVisit, queueControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeQueuedEntityCount = options.contains(QueueOptions.QueueTypeIncludeQueuedEntitiesCount);
             includeOldestQueuedEntityTime = options.contains(QueueOptions.QueueTypeIncludeOldestQueuedEntityTime);

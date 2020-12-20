@@ -42,7 +42,7 @@ public class BillingAccountTransferCache
     public BillingAccountTransferCache(UserVisit userVisit) {
         super(userVisit);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeRoles = options.contains(PaymentOptions.BillingAccountIncludeRoles);
         }

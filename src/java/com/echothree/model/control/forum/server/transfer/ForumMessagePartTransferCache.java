@@ -54,7 +54,7 @@ public class ForumMessagePartTransferCache
         coreControl = Session.getModelController(CoreControl.class);
         partyControl = Session.getModelController(PartyControl.class);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(ForumOptions.ForumMessagePartIncludeBlob);
             includeClob = options.contains(ForumOptions.ForumMessagePartIncludeClob);

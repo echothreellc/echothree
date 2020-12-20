@@ -62,7 +62,7 @@ public class InvoiceTransferCache
     public InvoiceTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
         super(userVisit, invoiceControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeLines = options.contains(InvoiceOptions.InvoiceIncludeLines);
             includeRoles = options.contains(InvoiceOptions.InvoiceIncludeRoles);

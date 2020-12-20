@@ -69,7 +69,7 @@ public class OfferTransferCache
     public OfferTransferCache(UserVisit userVisit) {
         super(userVisit);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeOfferCustomerTypes = options.contains(OfferOptions.OfferIncludeOfferCustomerTypes);
             includeOfferNameElements = options.contains(OfferOptions.OfferIncludeOfferNameElements);

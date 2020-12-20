@@ -41,7 +41,7 @@ public class UserLoginTransferCache
     public UserLoginTransferCache(UserVisit userVisit, UserControl userControl) {
         super(userVisit, userControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeUserLoginPasswords = options.contains(UserOptions.UserLoginIncludeUserLoginPasswords);
         }

@@ -37,7 +37,7 @@ public class IndexTypeTransferCache
     public IndexTypeTransferCache(UserVisit userVisit, IndexControl indexControl) {
         super(userVisit, indexControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(IndexOptions.IndexTypeIncludeKey));
             setIncludeGuid(options.contains(IndexOptions.IndexTypeIncludeGuid));

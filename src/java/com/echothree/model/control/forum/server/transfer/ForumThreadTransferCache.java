@@ -44,7 +44,7 @@ public class ForumThreadTransferCache
         
         iconControl = Session.getModelController(IconControl.class);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeGuid(options.contains(ForumOptions.ForumThreadIncludeGuid));
             includeForumMessages = options.contains(ForumOptions.ForumThreadIncludeForumMessages);

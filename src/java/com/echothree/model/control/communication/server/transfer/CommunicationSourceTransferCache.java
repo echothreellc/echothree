@@ -36,7 +36,7 @@ public class CommunicationSourceTransferCache
     public CommunicationSourceTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
         super(userVisit, communicationControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeRelated = options.contains(CommunicationOptions.CommunicationSourceIncludeRelated);
         }

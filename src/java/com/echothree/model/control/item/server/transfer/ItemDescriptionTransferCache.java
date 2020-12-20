@@ -71,7 +71,7 @@ public class ItemDescriptionTransferCache
     public ItemDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
         super(userVisit, itemControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(ItemOptions.ItemDescriptionIncludeBlob);
             includeClob = options.contains(ItemOptions.ItemDescriptionIncludeClob);

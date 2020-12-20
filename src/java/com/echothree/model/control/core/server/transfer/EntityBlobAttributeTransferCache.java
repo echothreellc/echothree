@@ -43,7 +43,7 @@ public class EntityBlobAttributeTransferCache
     public EntityBlobAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(CoreOptions.EntityBlobAttributeIncludeBlob);
             includeETag = options.contains(CoreOptions.EntityBlobAttributeIncludeETag);

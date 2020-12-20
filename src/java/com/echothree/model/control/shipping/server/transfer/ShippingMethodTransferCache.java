@@ -40,7 +40,7 @@ public class ShippingMethodTransferCache
     public ShippingMethodTransferCache(UserVisit userVisit, ShippingControl shippingControl) {
         super(userVisit, shippingControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(ShippingOptions.ShippingMethodIncludeKey));
             setIncludeGuid(options.contains(ShippingOptions.ShippingMethodIncludeGuid));

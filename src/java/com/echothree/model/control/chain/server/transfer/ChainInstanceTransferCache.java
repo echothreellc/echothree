@@ -38,7 +38,7 @@ public class ChainInstanceTransferCache
     public ChainInstanceTransferCache(UserVisit userVisit, ChainControl chainControl) {
         super(userVisit, chainControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeChainInstanceStatus = options.contains(ChainOptions.ChainInstanceIncludeChainInstanceStatus);
             includeChainInstanceEntityRoles = options.contains(ChainOptions.ChainInstanceIncludeChainInstanceEntityRoles);

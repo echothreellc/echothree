@@ -47,7 +47,7 @@ public class PrinterGroupTransferCache
     public PrinterGroupTransferCache(UserVisit userVisit, PrinterControl printerControl) {
         super(userVisit, printerControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includePrinters = options.contains(PrinterOptions.PrinterGroupIncludePrinters);
         }

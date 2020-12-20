@@ -46,7 +46,7 @@ public class PartyTypeTransferCache
         
         sequenceControl = Session.getModelController(SequenceControl.class);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeAuditPolicy = options.contains(PartyOptions.PartyTypeIncludeAuditPolicy);
             includeLockoutPolicy = options.contains(PartyOptions.PartyTypeIncludeLockoutPolicy);

@@ -38,7 +38,7 @@ public class CommandMessageTransferCache
     public CommandMessageTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeTranslations = options.contains(CoreOptions.CommandMessageIncludeTranslations);
         }

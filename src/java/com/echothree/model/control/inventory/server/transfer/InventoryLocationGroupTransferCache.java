@@ -48,7 +48,7 @@ public class InventoryLocationGroupTransferCache
     public InventoryLocationGroupTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeCapacities = options.contains(InventoryOptions.InventoryLocationGroupIncludeCapacities);
             includeVolume = options.contains(InventoryOptions.InventoryLocationGroupIncludeVolume);

@@ -50,7 +50,7 @@ public class PartyContactListTransferCache
     public PartyContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
         super(userVisit, contactListControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(ContactListOptions.PartyContactListIncludeKey));
             setIncludeGuid(options.contains(ContactListOptions.PartyContactListIncludeGuid));

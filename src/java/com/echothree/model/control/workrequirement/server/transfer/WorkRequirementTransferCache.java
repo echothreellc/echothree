@@ -49,7 +49,7 @@ public class WorkRequirementTransferCache
     public WorkRequirementTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
         super(userVisit, workRequirementControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeWorkAssignments = options.contains(WorkRequirementOptions.WorkRequirementIncludeWorkAssignments);
             includeWorkTimes = options.contains(WorkRequirementOptions.WorkRequirementIncludeWorkTimes);

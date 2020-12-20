@@ -41,7 +41,7 @@ public class TransactionTransferCache
     public TransactionTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
         super(userVisit, accountingControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeTransactionGlEntries = options.contains(AccountingOptions.TransactionIncludeTransactionGlEntries);
             includeTransactionEntityRoles = options.contains(AccountingOptions.TransactionIncludeTransactionEntityRoles);

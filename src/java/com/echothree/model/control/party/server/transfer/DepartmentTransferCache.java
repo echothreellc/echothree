@@ -65,7 +65,7 @@ public class DepartmentTransferCache
     public DepartmentTransferCache(UserVisit userVisit, PartyControl partyControl) {
         super(userVisit, partyControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(PartyOptions.DepartmentIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(PartyOptions.DepartmentIncludeGuid));

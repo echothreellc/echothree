@@ -51,7 +51,7 @@ public class LocationTransferCache
     public LocationTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
         super(userVisit, warehouseControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeCapacities = options.contains(WarehouseOptions.LocationIncludeCapacities);
             includeVolume = options.contains(WarehouseOptions.LocationIncludeVolume);

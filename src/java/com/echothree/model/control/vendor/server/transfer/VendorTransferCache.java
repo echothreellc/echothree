@@ -129,7 +129,7 @@ public class VendorTransferCache
     public VendorTransferCache(UserVisit userVisit, VendorControl vendorControl) {
         super(userVisit, vendorControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(VendorOptions.VendorIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(VendorOptions.VendorIncludeGuid));

@@ -31,7 +31,7 @@ public class SearchSortDirectionTransferCache
     public SearchSortDirectionTransferCache(UserVisit userVisit, SearchControl searchControl) {
         super(userVisit, searchControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(SearchOptions.SearchSortDirectionIncludeKey));
             setIncludeGuid(options.contains(SearchOptions.SearchSortDirectionIncludeGuid));

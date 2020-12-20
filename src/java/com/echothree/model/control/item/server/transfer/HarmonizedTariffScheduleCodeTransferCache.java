@@ -44,7 +44,7 @@ public class HarmonizedTariffScheduleCodeTransferCache
     public HarmonizedTariffScheduleCodeTransferCache(UserVisit userVisit, ItemControl itemControl) {
         super(userVisit, itemControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeHarmonizedTariffScheduleCodeUses = options.contains(ItemOptions.HarmonizedTariffScheduleCodeIncludeHarmonizedTariffScheduleCodeUses);
         }

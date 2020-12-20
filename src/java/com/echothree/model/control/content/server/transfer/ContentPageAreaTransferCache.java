@@ -60,7 +60,7 @@ public class ContentPageAreaTransferCache
     public ContentPageAreaTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(ContentOptions.ContentPageAreaIncludeBlob);
             includeClob = options.contains(ContentOptions.ContentPageAreaIncludeClob);

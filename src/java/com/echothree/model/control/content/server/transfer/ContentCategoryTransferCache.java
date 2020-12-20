@@ -58,7 +58,7 @@ public class ContentCategoryTransferCache
     public ContentCategoryTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeContentCategoryItems = options.contains(ContentOptions.ContentCategoryIncludeContentCategoryItems);
             setIncludeKey(options.contains(ContentOptions.ContentCategoryIncludeKey));

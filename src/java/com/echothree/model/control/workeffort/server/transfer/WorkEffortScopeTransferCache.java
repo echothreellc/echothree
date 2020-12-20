@@ -48,7 +48,7 @@ public class WorkEffortScopeTransferCache
     public WorkEffortScopeTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
         super(userVisit, workEffortControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeWorkRequirementScopes = options.contains(WorkEffortOptions.WorkEffortScopeIncludeWorkRequirementScopes);
             includeWorkEfforts = options.contains(WorkEffortOptions.WorkEffortScopeIncludeWorkEfforts);

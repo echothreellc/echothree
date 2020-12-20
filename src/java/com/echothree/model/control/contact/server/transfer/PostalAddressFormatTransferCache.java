@@ -34,7 +34,7 @@ public class PostalAddressFormatTransferCache
     public PostalAddressFormatTransferCache(UserVisit userVisit, ContactControl contactControl) {
         super(userVisit, contactControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeLines = options.contains(ContactOptions.PostalAddressFormatIncludeLines);
         }

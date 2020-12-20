@@ -70,7 +70,7 @@ public class CarrierTransferCache
     public CarrierTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
         super(userVisit, carrierControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(CarrierOptions.CarrierIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(CarrierOptions.CarrierIncludeGuid));

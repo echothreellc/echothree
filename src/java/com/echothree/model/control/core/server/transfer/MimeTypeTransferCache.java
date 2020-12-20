@@ -45,7 +45,7 @@ public class MimeTypeTransferCache
     public MimeTypeTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeMimeTypeFileExtensions = options.contains(CoreOptions.MimeTypeIncludeMimeTypeFileExtensions);
         }
