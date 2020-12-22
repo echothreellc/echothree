@@ -62,7 +62,7 @@ public class CreateFilterAdjustmentSourceDescriptionCommand
     
     /** Creates a new instance of CreateFilterAdjustmentSourceDescriptionCommand */
     public CreateFilterAdjustmentSourceDescriptionCommand(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceDescriptionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
