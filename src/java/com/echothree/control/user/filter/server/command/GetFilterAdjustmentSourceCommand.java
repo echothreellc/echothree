@@ -16,28 +16,28 @@
 
 package com.echothree.control.user.filter.server.command;
 
-import com.echothree.control.user.filter.common.form.GetFilterAdjustmentSourceChoicesForm;
+import com.echothree.control.user.filter.common.form.GetFilterAdjustmentSourceForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentSourceChoicesResult;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterAdjustmentSourceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class GetFilterAdjustmentSourceChoicesCommand
-        extends BaseSimpleCommand<GetFilterAdjustmentSourceChoicesForm> {
+public class GetFilterAdjustmentSourceCommand
+        extends BaseSingleEntityCommand<FilterAdjustmentSource, GetFilterAdjustmentSourceForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,29 +46,35 @@ public class GetFilterAdjustmentSourceChoicesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.FilterAdjustmentSource.name(), SecurityRoles.Choices.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.FilterAdjustmentSource.name(), SecurityRoles.Review.name())
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("DefaultFilterAdjustmentSourceChoice", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("FilterAdjustmentSourceName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
-    
-    /** Creates a new instance of GetFilterAdjustmentSourceChoicesCommand */
-    public GetFilterAdjustmentSourceChoicesCommand(UserVisitPK userVisitPK, GetFilterAdjustmentSourceChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+
+    /** Creates a new instance of GetFilterAdjustmentSourceCommand */
+    public GetFilterAdjustmentSourceCommand(UserVisitPK userVisitPK, GetFilterAdjustmentSourceForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected FilterAdjustmentSource getEntity() {
+        return FilterAdjustmentSourceLogic.getInstance().getFilterAdjustmentSourceByName(this, form.getFilterAdjustmentSourceName());
+    }
+
+    @Override
+    protected BaseResult getTransfer(FilterAdjustmentSource filterAdjustmentSource) {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentSourceChoicesResult result = FilterResultFactory.getGetFilterAdjustmentSourceChoicesResult();
-        String defaultFilterAdjustmentSourceChoice = form.getDefaultFilterAdjustmentSourceChoice();
-        
-        result.setFilterAdjustmentSourceChoices(filterControl.getFilterAdjustmentSourceChoices(defaultFilterAdjustmentSourceChoice, getPreferredLanguage()));
-        
+        var result = FilterResultFactory.getGetFilterAdjustmentSourceResult();
+
+        if(filterAdjustmentSource != null) {
+            result.setFilterAdjustmentSource(filterControl.getFilterAdjustmentSourceTransfer(getUserVisit(), filterAdjustmentSource));
+        }
+
         return result;
     }
-    
+
 }

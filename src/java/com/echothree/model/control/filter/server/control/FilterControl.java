@@ -1069,7 +1069,13 @@ public class FilterControl
         return FilterAdjustmentSourceFactory.getInstance().create(filterAdjustmentSourceName, allowedForInitialAmount,
                 isDefault, sortOrder);
     }
-    
+
+    public long countFilterAdjustmentSources() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filteradjustmentsources");
+    }
+
     public List<FilterAdjustmentSource> getFilterAdjustmentSources() {
         PreparedStatement ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -1199,7 +1205,13 @@ public class FilterControl
     public FilterAdjustmentType createFilterAdjustmentType(String filterAdjustmentTypeName, Boolean isDefault, Integer sortOrder) {
         return FilterAdjustmentTypeFactory.getInstance().create(filterAdjustmentTypeName, isDefault, sortOrder);
     }
-    
+
+    public long countFilterAdjustmentTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filteradjustmenttypes");
+    }
+
     public List<FilterAdjustmentType> getFilterAdjustmentTypes() {
         PreparedStatement ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +

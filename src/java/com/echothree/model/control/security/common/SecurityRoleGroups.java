@@ -118,6 +118,8 @@ public enum SecurityRoleGroups {
     EntityType,
     EntityTag,
     Event,
+    FilterAdjustmentSource,
+    FilterAdjustmentType,
     FilterKind,
     FilterType,
     FiscalPeriodStatus,

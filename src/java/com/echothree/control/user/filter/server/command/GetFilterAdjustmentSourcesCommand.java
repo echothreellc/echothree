@@ -16,59 +16,72 @@
 
 package com.echothree.control.user.filter.server.command;
 
-import com.echothree.control.user.filter.common.form.GetFilterAdjustmentSourceChoicesForm;
+import com.echothree.control.user.filter.common.form.GetFilterAdjustmentSourcesForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentSourceChoicesResult;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
+import com.echothree.model.data.filter.server.factory.FilterAdjustmentSourceFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class GetFilterAdjustmentSourceChoicesCommand
-        extends BaseSimpleCommand<GetFilterAdjustmentSourceChoicesForm> {
+public class GetFilterAdjustmentSourcesCommand
+        extends BaseMultipleEntitiesCommand<FilterAdjustmentSource, GetFilterAdjustmentSourcesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.FilterAdjustmentSource.name(), SecurityRoles.Choices.name())
-                ))
-        ));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.FilterAdjustmentSource.name(), SecurityRoles.List.name())
+                )))
+        )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("DefaultFilterAdjustmentSourceChoice", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        ));
     }
-    
-    /** Creates a new instance of GetFilterAdjustmentSourceChoicesCommand */
-    public GetFilterAdjustmentSourceChoicesCommand(UserVisitPK userVisitPK, GetFilterAdjustmentSourceChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+
+    /** Creates a new instance of GetFilterAdjustmentSourcesCommand */
+    public GetFilterAdjustmentSourcesCommand(UserVisitPK userVisitPK, GetFilterAdjustmentSourcesForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<FilterAdjustmentSource> getEntities() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentSourceChoicesResult result = FilterResultFactory.getGetFilterAdjustmentSourceChoicesResult();
-        String defaultFilterAdjustmentSourceChoice = form.getDefaultFilterAdjustmentSourceChoice();
-        
-        result.setFilterAdjustmentSourceChoices(filterControl.getFilterAdjustmentSourceChoices(defaultFilterAdjustmentSourceChoice, getPreferredLanguage()));
-        
+
+        return filterControl.getFilterAdjustmentSources();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<FilterAdjustmentSource> entities) {
+        var result = FilterResultFactory.getGetFilterAdjustmentSourcesResult();
+
+        if(entities != null) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
+            if(session.hasLimit(FilterAdjustmentSourceFactory.class)) {
+                result.setFilterAdjustmentSourceCount(filterControl.countFilterAdjustmentSources());
+            }
+
+            result.setFilterAdjustmentSources(filterControl.getFilterAdjustmentSourceTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

@@ -72,6 +72,8 @@ import com.echothree.control.user.core.server.command.GetTextDecorationsCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationsCommand;
 import com.echothree.control.user.filter.common.FilterUtil;
+import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourceCommand;
+import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourcesCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
@@ -183,6 +185,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
+import com.echothree.model.control.filter.server.graphql.FilterAdjustmentSourceObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
@@ -251,6 +254,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
+import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -698,6 +702,52 @@ public final class GraphQlQueries
         }
 
         return filterTypeObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterAdjustmentSource")
+    public static FilterAdjustmentSourceObject filterAdjustmentSource(final DataFetchingEnvironment env,
+            @GraphQLName("filterAdjustmentSourceName") @GraphQLNonNull final String filterAdjustmentSourceName) {
+        FilterAdjustmentSource filterAdjustmentSource;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentSourceForm();
+
+            commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
+
+            filterAdjustmentSource = new GetFilterAdjustmentSourceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterAdjustmentSource == null ? null : new FilterAdjustmentSourceObject(filterAdjustmentSource);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterAdjustmentSources")
+    public static Collection<FilterAdjustmentSourceObject> filterAdjustmentSources(final DataFetchingEnvironment env) {
+        Collection<FilterAdjustmentSource> filterAdjustmentSources;
+        Collection<FilterAdjustmentSourceObject> filterAdjustmentSourceObjects;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentSourcesForm();
+
+            filterAdjustmentSources = new GetFilterAdjustmentSourcesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(filterAdjustmentSources == null) {
+            filterAdjustmentSourceObjects = emptyList();
+        } else {
+            filterAdjustmentSourceObjects = new ArrayList<>(filterAdjustmentSources.size());
+
+            filterAdjustmentSources.stream()
+                    .map(FilterAdjustmentSourceObject::new)
+                    .forEachOrdered(filterAdjustmentSourceObjects::add);
+        }
+
+        return filterAdjustmentSourceObjects;
     }
 
     @GraphQLField
