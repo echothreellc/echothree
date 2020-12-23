@@ -216,6 +216,16 @@ public class FilterBean
     }
 
     @Override
+    public CommandResult getFilterAdjustmentTypes(UserVisitPK userVisitPK, GetFilterAdjustmentTypesForm form) {
+        return new GetFilterAdjustmentTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getFilterAdjustmentType(UserVisitPK userVisitPK, GetFilterAdjustmentTypeForm form) {
+        return new GetFilterAdjustmentTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
     public CommandResult getFilterAdjustmentTypeChoices(UserVisitPK userVisitPK, GetFilterAdjustmentTypeChoicesForm form) {
         return new GetFilterAdjustmentTypeChoicesCommand(userVisitPK, form).run();
     }

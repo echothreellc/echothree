@@ -116,6 +116,10 @@ public interface FilterService
     // -------------------------------------------------------------------------
     
     CommandResult createFilterAdjustmentType(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeForm form);
+
+    CommandResult getFilterAdjustmentTypes(UserVisitPK userVisitPK, GetFilterAdjustmentTypesForm form);
+
+    CommandResult getFilterAdjustmentType(UserVisitPK userVisitPK, GetFilterAdjustmentTypeForm form);
     
     CommandResult getFilterAdjustmentTypeChoices(UserVisitPK userVisitPK, GetFilterAdjustmentTypeChoicesForm form);
     
