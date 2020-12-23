@@ -31,7 +31,7 @@ public class SearchResultActionTypeTransferCache
     public SearchResultActionTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
         super(userVisit, searchControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(SearchOptions.SearchResultActionTypeIncludeKey));
             setIncludeGuid(options.contains(SearchOptions.SearchResultActionTypeIncludeGuid));

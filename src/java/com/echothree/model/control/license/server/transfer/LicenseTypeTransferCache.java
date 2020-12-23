@@ -31,7 +31,7 @@ public class LicenseTypeTransferCache
     public LicenseTypeTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
         super(userVisit, licenseControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(LicenseOptions.LicenseTypeIncludeKey));
             setIncludeGuid(options.contains(LicenseOptions.LicenseTypeIncludeGuid));

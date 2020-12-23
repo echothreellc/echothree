@@ -56,7 +56,7 @@ public class GetFilterAdjustmentsCommand
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
         
         if(filterKind != null) {
-            result.setFilterKind(filterControl.getFilterTransferCaches(getUserVisit()).getFilterKindTransferCache().getFilterKindTransfer(filterKind));
+            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
             result.setFilterAdjustments(filterControl.getFilterAdjustmentTransfersByFilterKind(getUserVisit(), filterKind));
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);

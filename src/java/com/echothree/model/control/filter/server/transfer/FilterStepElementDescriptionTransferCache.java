@@ -22,21 +22,24 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.filter.server.entity.FilterStepElementDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterStepElementDescriptionTransferCache
         extends BaseFilterDescriptionTransferCache<FilterStepElementDescription, FilterStepElementDescriptionTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterStepElementDescriptionTransferCache */
-    public FilterStepElementDescriptionTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterStepElementDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterStepElementDescriptionTransfer getFilterStepElementDescriptionTransfer(FilterStepElementDescription filterStepElementDescription) {
+
+    @Override
+    public FilterStepElementDescriptionTransfer getTransfer(FilterStepElementDescription filterStepElementDescription) {
         FilterStepElementDescriptionTransfer filterStepElementDescriptionTransfer = get(filterStepElementDescription);
         
         if(filterStepElementDescriptionTransfer == null) {
-            FilterStepElementTransferCache filterStepElementTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterStepElementTransferCache();
-            FilterStepElementTransfer filterStepElementTransfer = filterStepElementTransferCache.getFilterStepElementTransfer(filterStepElementDescription.getFilterStepElement());
+            FilterStepElementTransfer filterStepElementTransfer = filterControl.getFilterStepElementTransfer(userVisit, filterStepElementDescription.getFilterStepElement());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, filterStepElementDescription.getLanguage());
             
             filterStepElementDescriptionTransfer = new FilterStepElementDescriptionTransfer(languageTransfer, filterStepElementTransfer, filterStepElementDescription.getDescription());

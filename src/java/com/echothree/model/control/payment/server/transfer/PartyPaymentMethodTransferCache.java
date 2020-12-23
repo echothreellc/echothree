@@ -71,7 +71,7 @@ public class PartyPaymentMethodTransferCache
     public PartyPaymentMethodTransferCache(UserVisit userVisit) {
         super(userVisit);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PaymentOptions.PartyPaymentMethodIncludeKey));
             setIncludeGuid(options.contains(PaymentOptions.PartyPaymentMethodIncludeGuid));

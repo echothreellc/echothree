@@ -61,7 +61,7 @@ public class VendorItemTransferCache
     public VendorItemTransferCache(UserVisit userVisit, VendorControl vendorControl) {
         super(userVisit, vendorControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeVendorItemCosts = options.contains(VendorOptions.VendorItemIncludeVendorItemCosts);
             includePurchasingComments = options.contains(VendorOptions.VendorItemIncludePurchasingComments);

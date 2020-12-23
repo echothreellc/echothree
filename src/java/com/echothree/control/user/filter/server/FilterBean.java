@@ -181,7 +181,17 @@ public class FilterBean
     public CommandResult createFilterAdjustmentSource(UserVisitPK userVisitPK, CreateFilterAdjustmentSourceForm form) {
         return new CreateFilterAdjustmentSourceCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getFilterAdjustmentSources(UserVisitPK userVisitPK, GetFilterAdjustmentSourcesForm form) {
+        return new GetFilterAdjustmentSourcesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getFilterAdjustmentSource(UserVisitPK userVisitPK, GetFilterAdjustmentSourceForm form) {
+        return new GetFilterAdjustmentSourceCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getFilterAdjustmentSourceChoices(UserVisitPK userVisitPK, GetFilterAdjustmentSourceChoicesForm form) {
         return new GetFilterAdjustmentSourceChoicesCommand(userVisitPK, form).run();
@@ -204,7 +214,7 @@ public class FilterBean
     public CommandResult createFilterAdjustmentType(UserVisitPK userVisitPK, CreateFilterAdjustmentTypeForm form) {
         return new CreateFilterAdjustmentTypeCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getFilterAdjustmentTypeChoices(UserVisitPK userVisitPK, GetFilterAdjustmentTypeChoicesForm form) {
         return new GetFilterAdjustmentTypeChoicesCommand(userVisitPK, form).run();

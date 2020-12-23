@@ -37,7 +37,7 @@ public class SecurityRoleGroupTransferCache
     public SecurityRoleGroupTransferCache(UserVisit userVisit, SecurityControl securityControl) {
         super(userVisit, securityControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeSecurityRolesCount = options.contains(SecurityOptions.SecurityRoleGroupIncludeSecurityRolesCount);
             includeSecurityRoles = options.contains(SecurityOptions.SecurityRoleGroupIncludeSecurityRoles);

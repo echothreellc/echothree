@@ -41,7 +41,7 @@ public class AppearanceTransferCache
     public AppearanceTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeTextDecorations = options.contains(CoreOptions.AppearanceIncludeTextDecorations);
             includeTextTransformations = options.contains(CoreOptions.AppearanceIncludeTextTransformations);

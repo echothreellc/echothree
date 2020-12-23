@@ -134,7 +134,7 @@ public class CustomerTransferCache
     public CustomerTransferCache(UserVisit userVisit, CustomerControl customerControl) {
         super(userVisit, customerControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(CustomerOptions.CustomerIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(CustomerOptions.CustomerIncludeGuid));

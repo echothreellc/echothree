@@ -40,7 +40,7 @@ public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
     public GenericBatchTransferCache(UserVisit userVisit, BatchControl batchControl) {
         super(userVisit, batchControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeAliases = options.contains(BatchOptions.BatchIncludeAliases);
             includeEntities = options.contains(BatchOptions.BatchIncludeEntities);

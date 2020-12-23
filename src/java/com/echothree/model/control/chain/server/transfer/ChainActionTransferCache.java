@@ -37,7 +37,7 @@ public class ChainActionTransferCache
     public ChainActionTransferCache(UserVisit userVisit, ChainControl chainControl) {
         super(userVisit, chainControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeRelated = options.contains(ChainOptions.ChainActionIncludeRelated);
         }

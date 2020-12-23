@@ -47,7 +47,7 @@ public class PaymentMethodTransferCache
     public PaymentMethodTransferCache(UserVisit userVisit) {
         super(userVisit);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PaymentOptions.PaymentMethodIncludeKey));
             setIncludeGuid(options.contains(PaymentOptions.PaymentMethodIncludeGuid));

@@ -40,7 +40,7 @@ public class ContentCollectionTransferCache
     public ContentCollectionTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeContentCatalogs = options.contains(ContentOptions.ContentCollectionIncludeContentCatalogs);
             includeContentForums = options.contains(ContentOptions.ContentCollectionIncludeContentForums);

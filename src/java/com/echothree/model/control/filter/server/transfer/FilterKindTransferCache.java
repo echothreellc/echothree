@@ -21,18 +21,22 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterKindDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterKindTransferCache
         extends BaseFilterTransferCache<FilterKind, FilterKindTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterKindTransferCache */
-    public FilterKindTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterKindTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }
-    
-    public FilterKindTransfer getFilterKindTransfer(FilterKind filterKind) {
+
+    @Override
+    public FilterKindTransfer getTransfer(FilterKind filterKind) {
         FilterKindTransfer filterKindTransfer = get(filterKind);
         
         if(filterKindTransfer == null) {

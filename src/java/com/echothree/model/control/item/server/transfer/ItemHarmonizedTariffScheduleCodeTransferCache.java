@@ -39,7 +39,7 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     public ItemHarmonizedTariffScheduleCodeTransferCache(UserVisit userVisit, ItemControl itemControl) {
         super(userVisit, itemControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeEntityAttributeGroups(options.contains(ItemOptions.ItemHarmonizedTariffScheduleCodeIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(ItemOptions.ItemHarmonizedTariffScheduleCodeIncludeTagScopes));

@@ -35,7 +35,7 @@ public class GeoCodeTransferCache
     public GeoCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
         super(userVisit, geoControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeAliases = options.contains(GeoOptions.GeoCodeIncludeAliases);
         }

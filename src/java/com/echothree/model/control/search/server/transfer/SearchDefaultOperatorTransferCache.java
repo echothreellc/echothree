@@ -31,7 +31,7 @@ public class SearchDefaultOperatorTransferCache
     public SearchDefaultOperatorTransferCache(UserVisit userVisit, SearchControl searchControl) {
         super(userVisit, searchControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(SearchOptions.SearchDefaultOperatorIncludeKey));
             setIncludeGuid(options.contains(SearchOptions.SearchDefaultOperatorIncludeGuid));

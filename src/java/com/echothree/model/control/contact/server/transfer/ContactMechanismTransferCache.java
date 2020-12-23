@@ -36,7 +36,7 @@ public class ContactMechanismTransferCache
     public ContactMechanismTransferCache(UserVisit userVisit, ContactControl contactControl) {
         super(userVisit, contactControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(ContactOptions.ContactMechanismIncludeKey));
             setIncludeGuid(options.contains(ContactOptions.ContactMechanismIncludeGuid));

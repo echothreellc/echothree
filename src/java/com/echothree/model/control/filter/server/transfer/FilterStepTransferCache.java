@@ -32,31 +32,31 @@ import java.util.Set;
 
 public class FilterStepTransferCache
         extends BaseFilterTransferCache<FilterStep, FilterStepTransfer> {
-    
-    SelectorControl selectorControl;
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     boolean includeFilterStepElements;
     boolean includeFilterStepDestinations;
     
     /** Creates a new instance of FilterStepTransferCache */
-    public FilterStepTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterStepTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
-        selectorControl = Session.getModelController(SelectorControl.class);
-        
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeFilterStepElements = options.contains(FilterOptions.FilterStepIncludeFilterStepElements);
             includeFilterStepDestinations = options.contains(FilterOptions.FilterStepIncludeFilterStepDestinations);
         }
     }
-    
-    public FilterStepTransfer getFilterStepTransfer(FilterStep filterStep) {
+
+    @Override
+    public FilterStepTransfer getTransfer(FilterStep filterStep) {
         FilterStepTransfer filterStepTransfer = get(filterStep);
         
         if(filterStepTransfer == null) {
             FilterStepDetail filterStepDetail = filterStep.getLastDetail();
-            FilterTransferCache filterTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterTransferCache();
-            FilterTransfer filter = filterTransferCache.getFilterTransfer(filterStepDetail.getFilter());
+            FilterTransfer filter = filterControl.getFilterTransfer(userVisit, filterStepDetail.getFilter());
             String filterStepName = filterStepDetail.getFilterStepName();
             Selector filterItemSelector = filterStepDetail.getFilterItemSelector();
             SelectorTransfer filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);

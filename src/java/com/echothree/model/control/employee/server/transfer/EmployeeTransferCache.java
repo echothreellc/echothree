@@ -95,7 +95,7 @@ public class EmployeeTransferCache
     public EmployeeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
         super(userVisit, employeeControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(EmployeeOptions.EmployeeIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(EmployeeOptions.EmployeeIncludeGuid));

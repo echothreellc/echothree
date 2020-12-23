@@ -35,7 +35,7 @@ public class PostalAddressLineTransferCache
     public PostalAddressLineTransferCache(UserVisit userVisit, ContactControl contactControl) {
         super(userVisit, contactControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeElements = options.contains(ContactOptions.PostalAddressLineIncludeElements);
         }

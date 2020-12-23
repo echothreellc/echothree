@@ -42,7 +42,7 @@ public class TransactionGroupTransferCache
     public TransactionGroupTransferCache(UserVisit userVisit, AccountingControl accountingControl) {
         super(userVisit, accountingControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeTransactions = options.contains(AccountingOptions.TransactionGroupIncludeTransactions);
         }

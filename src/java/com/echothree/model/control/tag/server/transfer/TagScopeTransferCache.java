@@ -34,7 +34,7 @@ public class TagScopeTransferCache
     public TagScopeTransferCache(UserVisit userVisit, TagControl tagControl) {
         super(userVisit, tagControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeTags = options.contains(TagOptions.TagScopeIncludeTags);
         }

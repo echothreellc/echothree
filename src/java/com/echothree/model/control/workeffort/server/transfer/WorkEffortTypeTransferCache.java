@@ -50,7 +50,7 @@ public class WorkEffortTypeTransferCache
     public WorkEffortTypeTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
         super(userVisit, workEffortControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeWorkRequirementTypes = options.contains(WorkEffortOptions.WorkEffortTypeIncludeWorkRequirementTypes);
             includeWorkEffortScopes = options.contains(WorkEffortOptions.WorkEffortTypeIncludeWorkEffortScopes);

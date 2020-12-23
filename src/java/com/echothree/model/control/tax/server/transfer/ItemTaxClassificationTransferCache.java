@@ -40,7 +40,7 @@ public class ItemTaxClassificationTransferCache
     public ItemTaxClassificationTransferCache(UserVisit userVisit, TaxControl taxControl) {
         super(userVisit, taxControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeEntityAttributeGroups(options.contains(TaxOptions.ItemTaxClassificationIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(TaxOptions.ItemTaxClassificationIncludeTagScopes));

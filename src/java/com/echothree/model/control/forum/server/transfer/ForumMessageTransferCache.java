@@ -46,7 +46,7 @@ public class ForumMessageTransferCache
     public ForumMessageTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeGuid(options.contains(ForumOptions.ForumMessageIncludeGuid));
             includeForumMessageRoles = options.contains(ForumOptions.ForumMessageIncludeForumMessageRoles);

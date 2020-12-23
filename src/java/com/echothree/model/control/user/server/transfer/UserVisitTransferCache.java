@@ -58,7 +58,7 @@ public class UserVisitTransferCache
     public UserVisitTransferCache(UserVisit userVisit, UserControl userControl) {
         super(userVisit, userControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeUserVisitCampaigns = options.contains(UserOptions.UserVisitIncludeUserVisitCampaigns);
         }

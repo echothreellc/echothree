@@ -42,7 +42,7 @@ public class EntityClobAttributeTransferCache
     public EntityClobAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeClob = options.contains(CoreOptions.EntityClobAttributeIncludeClob);
             includeETag = options.contains(CoreOptions.EntityClobAttributeIncludeETag);

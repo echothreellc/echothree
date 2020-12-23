@@ -43,7 +43,7 @@ public class PartyTrainingClassSessionTransferCache
     public PartyTrainingClassSessionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
         super(userVisit, trainingControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includePartyTrainingClassSessionPages = options.contains(TrainingOptions.PartyTrainingClassSessionIncludePartyTrainingClassSessionPages);
             includePartyTrainingClassSessionQuestions = options.contains(TrainingOptions.PartyTrainingClassSessionIncludePartyTrainingClassSessionQuestions);

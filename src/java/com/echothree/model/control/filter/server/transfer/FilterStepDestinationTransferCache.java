@@ -21,22 +21,25 @@ import com.echothree.model.control.filter.common.transfer.FilterStepTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterStepDestination;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterStepDestinationTransferCache
         extends BaseFilterTransferCache<FilterStepDestination, FilterStepDestinationTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterStepDestinationTransferCache */
-    public FilterStepDestinationTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterStepDestinationTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterStepDestinationTransfer getFilterStepDestinationTransfer(FilterStepDestination filterStepDestination) {
+
+    @Override
+    public FilterStepDestinationTransfer getTransfer(FilterStepDestination filterStepDestination) {
         FilterStepDestinationTransfer filterStepDestinationTransfer = get(filterStepDestination);
         
         if(filterStepDestinationTransfer == null) {
-            FilterStepTransferCache filterStepTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterStepTransferCache();
-            FilterStepTransfer fromFilterStep = filterStepTransferCache.getFilterStepTransfer(filterStepDestination.getFromFilterStep());
-            FilterStepTransfer toFilterStep = filterStepTransferCache.getFilterStepTransfer(filterStepDestination.getToFilterStep());
+            FilterStepTransfer fromFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getFromFilterStep());
+            FilterStepTransfer toFilterStep = filterControl.getFilterStepTransfer(userVisit, filterStepDestination.getToFilterStep());
             
             filterStepDestinationTransfer = new FilterStepDestinationTransfer(fromFilterStep, toFilterStep);
             put(filterStepDestination, filterStepDestinationTransfer);

@@ -80,7 +80,7 @@ public class EntityAttributeTransferCache
     public EntityAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeValue = options.contains(CoreOptions.EntityAttributeIncludeValue);
             includeEntityListItems = options.contains(CoreOptions.EntityAttributeIncludeEntityListItems);

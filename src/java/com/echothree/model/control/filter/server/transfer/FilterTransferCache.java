@@ -33,18 +33,18 @@ import java.util.Set;
 
 public class FilterTransferCache
         extends BaseFilterTransferCache<Filter, FilterTransfer> {
-    
-    SelectorControl selectorControl;
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     boolean includeFilterEntranceSteps;
     boolean includeFilterSteps;
     
     /** Creates a new instance of FilterTransferCache */
-    public FilterTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
-        
-        selectorControl = Session.getModelController(SelectorControl.class);
-        
-        Set<String> options = session.getOptions();
+    public FilterTransferCache(UserVisit userVisit) {
+        super(userVisit);
+
+        var options = session.getOptions();
         if(options != null) {
             includeFilterEntranceSteps = options.contains(FilterOptions.FilterIncludeFilterEntranceSteps);
             includeFilterSteps = options.contains(FilterOptions.FilterIncludeFilterSteps);
@@ -52,8 +52,9 @@ public class FilterTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
-    public FilterTransfer getFilterTransfer(Filter filter) {
+
+    @Override
+    public FilterTransfer getTransfer(Filter filter) {
         FilterTransfer filterTransfer = get(filter);
         
         if(filterTransfer == null) {

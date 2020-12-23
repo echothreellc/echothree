@@ -49,7 +49,7 @@ public class FinancialAccountTransferCache
         
         accountingControl = Session.getModelController(AccountingControl.class);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeRoles = options.contains(FinancialOptions.FinancialAccountIncludeRoles);
             includeTransactions = options.contains(FinancialOptions.FinancialAccountIncludeTransactions);

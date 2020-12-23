@@ -32,7 +32,7 @@ public class ContentWebAddressTransferCache
     public ContentWebAddressTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(ContentOptions.ContentWebAddressIncludeKey));
             setIncludeGuid(options.contains(ContentOptions.ContentWebAddressIncludeGuid));

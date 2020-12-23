@@ -50,7 +50,7 @@ public class ForumTransferCache
     public ForumTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeGuid(options.contains(ForumOptions.ForumIncludeGuid));
             includeForumGroups = options.contains(ForumOptions.ForumIncludeForumGroups);

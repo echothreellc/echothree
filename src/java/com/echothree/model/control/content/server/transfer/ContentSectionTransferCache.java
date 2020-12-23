@@ -46,7 +46,7 @@ public class ContentSectionTransferCache
     public ContentSectionTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeContentPages = options.contains(ContentOptions.ContentSectionIncludeContentPages);
             setIncludeKey(options.contains(ContentOptions.ContentSectionIncludeKey));

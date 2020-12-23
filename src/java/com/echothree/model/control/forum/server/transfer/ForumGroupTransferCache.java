@@ -43,7 +43,7 @@ public class ForumGroupTransferCache
     public ForumGroupTransferCache(UserVisit userVisit, ForumControl forumControl) {
         super(userVisit, forumControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeForums = options.contains(ForumOptions.ForumGroupIncludeForums);
             setIncludeEntityAttributeGroups(options.contains(ForumOptions.ForumGroupIncludeEntityAttributeGroups));

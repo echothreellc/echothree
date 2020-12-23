@@ -34,7 +34,7 @@ public class TagTransferCache
     public TagTransferCache(UserVisit userVisit, TagControl tagControl) {
         super(userVisit, tagControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeUsageCount = options.contains(TagOptions.TagIncludeUsageCount);
         }

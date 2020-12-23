@@ -94,7 +94,7 @@ public class EntityInstanceTransferCache
     public EntityInstanceTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeEntityAppearance = options.contains(CoreOptions.EntityInstanceIncludeEntityAppearance);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);

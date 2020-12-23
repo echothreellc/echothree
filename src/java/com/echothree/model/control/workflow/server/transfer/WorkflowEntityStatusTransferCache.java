@@ -43,7 +43,7 @@ public class WorkflowEntityStatusTransferCache
 
         workEffortControl = Session.getModelController(WorkEffortControl.class);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeTriggerTime = options.contains(WorkflowOptions.WorkflowEntityStatusIncludeTriggerTime);
         }

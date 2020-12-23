@@ -17,30 +17,27 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.filter.common.FilterOptions;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentSourceTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTypeTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentDetail;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterAdjustmentTransferCache
         extends BaseFilterTransferCache<FilterAdjustment, FilterAdjustmentTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     boolean includeFilterAdjustmentAmounts;
     boolean includeFilterAdjustmentFixedAmounts;
     boolean includeFilterAdjustmentPercents;
     
     /** Creates a new instance of FilterAdjustmentTransferCache */
-    public FilterAdjustmentTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterAdjustmentTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeFilterAdjustmentAmounts = options.contains(FilterOptions.FilterAdjustmentIncludeFilterAdjustmentAmounts);
             includeFilterAdjustmentFixedAmounts = options.contains(FilterOptions.FilterAdjustmentIncludeFilterAdjustmentFixedAmounts);
@@ -49,23 +46,21 @@ public class FilterAdjustmentTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
-    public FilterAdjustmentTransfer getFilterAdjustmentTransfer(FilterAdjustment filterAdjustment) {
-        FilterAdjustmentTransfer filterAdjustmentTransfer = get(filterAdjustment);
+
+    @Override
+    public FilterAdjustmentTransfer getTransfer(FilterAdjustment filterAdjustment) {
+        var filterAdjustmentTransfer = get(filterAdjustment);
         
         if(filterAdjustmentTransfer == null) {
-            FilterAdjustmentDetail filterAdjustmentDetail = filterAdjustment.getLastDetail();
-            FilterKindTransferCache filterKindTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterKindTransferCache();
-            FilterKindTransfer filterKindTransfer = filterKindTransferCache.getFilterKindTransfer(filterAdjustmentDetail.getFilterKind());
-            String filterAdjustmentName = filterAdjustmentDetail.getFilterAdjustmentName();
-            FilterAdjustmentSourceTransferCache filterAdjustmentSourceTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterAdjustmentSourceTransferCache();
-            FilterAdjustmentSourceTransfer filterAdjustmentSourceTransfer = filterAdjustmentSourceTransferCache.getFilterAdjustmentSourceTransfer(filterAdjustmentDetail.getFilterAdjustmentSource());
-            FilterAdjustmentTypeTransferCache filterAdjustmentTypeTransferCache = filterControl.getFilterTransferCaches(userVisit).getFilterAdjustmentTypeTransferCache();
-            FilterAdjustmentType filterAdjustmentType = filterAdjustmentDetail.getFilterAdjustmentType();
-            FilterAdjustmentTypeTransfer filterAdjustmentTypeTransfer = filterAdjustmentType == null? null: filterAdjustmentTypeTransferCache.getFilterAdjustmentTypeTransfer(filterAdjustmentType);
-            Boolean isDefault = filterAdjustmentDetail.getIsDefault();
-            Integer sortOrder = filterAdjustmentDetail.getSortOrder();
-            String description = filterControl.getBestFilterAdjustmentDescription(filterAdjustment, getLanguage());
+            var filterAdjustmentDetail = filterAdjustment.getLastDetail();
+            var filterKindTransfer = filterControl.getFilterKindTransfer(userVisit, filterAdjustmentDetail.getFilterKind());
+            var filterAdjustmentName = filterAdjustmentDetail.getFilterAdjustmentName();
+            var filterAdjustmentSourceTransfer = filterControl.getFilterAdjustmentSourceTransfer(userVisit, filterAdjustmentDetail.getFilterAdjustmentSource());
+            var filterAdjustmentType = filterAdjustmentDetail.getFilterAdjustmentType();
+            var filterAdjustmentTypeTransfer = filterAdjustmentType == null ? null : filterControl.getFilterAdjustmentTypeTransfer(userVisit, filterAdjustmentType);
+            var isDefault = filterAdjustmentDetail.getIsDefault();
+            var sortOrder = filterAdjustmentDetail.getSortOrder();
+            var description = filterControl.getBestFilterAdjustmentDescription(filterAdjustment, getLanguage());
             
             filterAdjustmentTransfer = new FilterAdjustmentTransfer(filterKindTransfer, filterAdjustmentName,
                     filterAdjustmentSourceTransfer, filterAdjustmentTypeTransfer, isDefault, sortOrder,
@@ -84,6 +79,7 @@ public class FilterAdjustmentTransferCache
                 filterAdjustmentTransfer.setFilterAdjustmentPercents(new ListWrapper<>(filterControl.getFilterAdjustmentPercentTransfers(userVisit, filterAdjustment)));
             }
         }
+
         return filterAdjustmentTransfer;
     }
     

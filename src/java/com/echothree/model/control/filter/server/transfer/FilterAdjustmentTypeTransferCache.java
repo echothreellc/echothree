@@ -20,16 +20,20 @@ import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTypeTr
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FilterAdjustmentTypeTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentType, FilterAdjustmentTypeTransfer> {
-    
+
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
     /** Creates a new instance of FilterAdjustmentTypeTransferCache */
-    public FilterAdjustmentTypeTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterAdjustmentTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterAdjustmentTypeTransfer getFilterAdjustmentTypeTransfer(FilterAdjustmentType filterAdjustmentType) {
+
+    @Override
+    public FilterAdjustmentTypeTransfer getTransfer(FilterAdjustmentType filterAdjustmentType) {
         FilterAdjustmentTypeTransfer filterAdjustmentTypeTransfer = get(filterAdjustmentType);
         
         if(filterAdjustmentTypeTransfer == null) {

@@ -32,18 +32,21 @@ import com.echothree.util.server.string.AmountUtils;
 
 public class FilterAdjustmentFixedAmountTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentFixedAmount, FilterAdjustmentFixedAmountTransfer> {
-    
+
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of FilterAdjustmentFixedAmountTransferCache */
-    public FilterAdjustmentFixedAmountTransferCache(UserVisit userVisit, FilterControl filterControl) {
-        super(userVisit, filterControl);
+    public FilterAdjustmentFixedAmountTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
-    
-    public FilterAdjustmentFixedAmountTransfer getFilterAdjustmentFixedAmountTransfer(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
+
+    @Override
+    public FilterAdjustmentFixedAmountTransfer getTransfer(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
         FilterAdjustmentFixedAmountTransfer filterAdjustmentFixedAmountTransfer = get(filterAdjustmentFixedAmount);
         
         if(filterAdjustmentFixedAmountTransfer == null) {
-            AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-            UomControl uomControl = Session.getModelController(UomControl.class);
             FilterAdjustmentTransfer filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustmentFixedAmount.getFilterAdjustment());
             UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, filterAdjustmentFixedAmount.getUnitOfMeasureType());
             Currency currency = filterAdjustmentFixedAmount.getCurrency();

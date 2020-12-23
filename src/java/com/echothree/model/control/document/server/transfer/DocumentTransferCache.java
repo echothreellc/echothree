@@ -44,7 +44,7 @@ public class DocumentTransferCache
     public DocumentTransferCache(UserVisit userVisit, DocumentControl documentControl) {
         super(userVisit, documentControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeBlob = options.contains(DocumentOptions.DocumentIncludeBlob);
             includeClob = options.contains(DocumentOptions.DocumentIncludeClob);

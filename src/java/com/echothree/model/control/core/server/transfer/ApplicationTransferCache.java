@@ -31,7 +31,7 @@ public class ApplicationTransferCache
     public ApplicationTransferCache(UserVisit userVisit, CoreControl coreControl) {
         super(userVisit, coreControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(CoreOptions.ApplicationIncludeKey));
             setIncludeGuid(options.contains(CoreOptions.ApplicationIncludeGuid));

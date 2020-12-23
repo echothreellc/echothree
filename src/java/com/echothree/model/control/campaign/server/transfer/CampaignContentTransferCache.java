@@ -40,7 +40,7 @@ public class CampaignContentTransferCache
     public CampaignContentTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
         super(userVisit, campaignControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(CampaignOptions.CampaignContentIncludeKey));
             setIncludeGuid(options.contains(CampaignOptions.CampaignContentIncludeGuid));

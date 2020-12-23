@@ -51,7 +51,7 @@ public class ContentPageTransferCache
     public ContentPageTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeContentPageAreas = options.contains(ContentOptions.ContentPageIncludeContentPageAreas);
             setIncludeKey(options.contains(ContentOptions.ContentPageIncludeKey));

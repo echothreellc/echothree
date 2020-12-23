@@ -37,7 +37,7 @@ public class MessageTransferCache
     public MessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
         super(userVisit, messageControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeString = options.contains(MessageOptions.MessageIncludeString);
             includeBlob = options.contains(MessageOptions.MessageIncludeBlob);

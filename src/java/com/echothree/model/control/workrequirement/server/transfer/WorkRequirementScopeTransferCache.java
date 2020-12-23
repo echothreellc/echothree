@@ -51,7 +51,7 @@ public class WorkRequirementScopeTransferCache
     public WorkRequirementScopeTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
         super(userVisit, workRequirementControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeWorkRequirements = options.contains(WorkRequirementOptions.WorkRequirementScopeIncludeWorkRequirements);
         }

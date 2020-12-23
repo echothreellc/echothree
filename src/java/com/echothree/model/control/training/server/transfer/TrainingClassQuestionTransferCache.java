@@ -35,7 +35,7 @@ public class TrainingClassQuestionTransferCache
     public TrainingClassQuestionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
         super(userVisit, trainingControl);
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeTrainingClassAnswers = options.contains(TrainingOptions.TrainingClassQuestionIncludeTrainingClassAnswers);
         }
