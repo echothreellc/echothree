@@ -30,14 +30,11 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("filter adjustment source object")
 @GraphQLName("FilterAdjustmentSource")
-public class FilterAdjustmentSourceObject
-        extends BaseEntityInstanceObject {
+public class FilterAdjustmentSourceObject {
     
     private final FilterAdjustmentSource filterAdjustmentSource; // Always Present
     
     public FilterAdjustmentSourceObject(FilterAdjustmentSource filterAdjustmentSource) {
-        super(filterAdjustmentSource.getPrimaryKey());
-        
         this.filterAdjustmentSource = filterAdjustmentSource;
     }
 
