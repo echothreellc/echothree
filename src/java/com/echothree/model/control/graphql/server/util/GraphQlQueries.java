@@ -74,6 +74,8 @@ import com.echothree.control.user.core.server.command.GetTextTransformationsComm
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourceCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourcesCommand;
+import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypeCommand;
+import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
@@ -186,6 +188,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentSourceObject;
+import com.echothree.model.control.filter.server.graphql.FilterAdjustmentTypeObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
@@ -255,6 +258,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
+import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -748,6 +752,52 @@ public final class GraphQlQueries
         }
 
         return filterAdjustmentSourceObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterAdjustmentType")
+    public static FilterAdjustmentTypeObject filterAdjustmentType(final DataFetchingEnvironment env,
+            @GraphQLName("filterAdjustmentTypeName") @GraphQLNonNull final String filterAdjustmentTypeName) {
+        FilterAdjustmentType filterAdjustmentType;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentTypeForm();
+
+            commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
+
+            filterAdjustmentType = new GetFilterAdjustmentTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterAdjustmentType == null ? null : new FilterAdjustmentTypeObject(filterAdjustmentType);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterAdjustmentTypes")
+    public static Collection<FilterAdjustmentTypeObject> filterAdjustmentTypes(final DataFetchingEnvironment env) {
+        Collection<FilterAdjustmentType> filterAdjustmentTypes;
+        Collection<FilterAdjustmentTypeObject> filterAdjustmentTypeObjects;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentTypesForm();
+
+            filterAdjustmentTypes = new GetFilterAdjustmentTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(filterAdjustmentTypes == null) {
+            filterAdjustmentTypeObjects = emptyList();
+        } else {
+            filterAdjustmentTypeObjects = new ArrayList<>(filterAdjustmentTypes.size());
+
+            filterAdjustmentTypes.stream()
+                    .map(FilterAdjustmentTypeObject::new)
+                    .forEachOrdered(filterAdjustmentTypeObjects::add);
+        }
+
+        return filterAdjustmentTypeObjects;
     }
 
     @GraphQLField
