@@ -25,6 +25,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -66,6 +67,7 @@ public abstract class BaseEntityInstanceObject {
     @GraphQLField
     @GraphQLDescription("id")
     @GraphQLNonNull
+    @GraphQLID
     public String getId() {
         var coreControl = Session.getModelController(CoreControl.class);
 

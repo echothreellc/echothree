@@ -301,6 +301,7 @@ import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
@@ -318,7 +319,7 @@ public final class GraphQlQueries
     public static SequenceObject sequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") final String sequenceTypeName,
             @GraphQLName("sequenceName") final String sequenceName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Sequence sequence;
 
         try {
@@ -370,7 +371,7 @@ public final class GraphQlQueries
     @GraphQLName("sequenceType")
     public static SequenceTypeObject sequenceType(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") final String sequenceTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         SequenceType sequenceType;
 
         try {
@@ -510,7 +511,7 @@ public final class GraphQlQueries
     @GraphQLName("selectorKind")
     public static SelectorKindObject selectorKind(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") final String selectorKindName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         SelectorKind selectorKind;
 
         try {
@@ -559,7 +560,7 @@ public final class GraphQlQueries
     public static SelectorTypeObject selectorType(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") final String selectorKindName,
             @GraphQLName("selectorTypeName") final String selectorTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         SelectorType selectorType;
 
         try {
@@ -611,7 +612,7 @@ public final class GraphQlQueries
     @GraphQLName("filterKind")
     public static FilterKindObject filterKind(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         FilterKind filterKind;
 
         try {
@@ -660,7 +661,7 @@ public final class GraphQlQueries
     public static FilterTypeObject filterType(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
             @GraphQLName("filterTypeName") final String filterTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         FilterType filterType;
 
         try {
@@ -857,7 +858,7 @@ public final class GraphQlQueries
     @GraphQLName("offer")
     public static OfferObject offer(final DataFetchingEnvironment env,
             @GraphQLName("offerName") final String offerName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Offer offer;
 
         try {
@@ -905,7 +906,7 @@ public final class GraphQlQueries
     @GraphQLName("use")
     public static UseObject use(final DataFetchingEnvironment env,
             @GraphQLName("useName") final String useName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Use use;
 
         try {
@@ -953,7 +954,7 @@ public final class GraphQlQueries
     @GraphQLName("offerNameElement")
     public static OfferNameElementObject offerNameElement(final DataFetchingEnvironment env,
             @GraphQLName("offerNameElementName") final String offerNameElementName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         OfferNameElement offerNameElement;
 
         try {
@@ -1001,7 +1002,7 @@ public final class GraphQlQueries
     @GraphQLName("useNameElement")
     public static UseNameElementObject useNameElement(final DataFetchingEnvironment env,
             @GraphQLName("useNameElementName") final String useNameElementName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         UseNameElement useNameElement;
 
         try {
@@ -1049,7 +1050,7 @@ public final class GraphQlQueries
     @GraphQLName("useType")
     public static UseTypeObject useType(final DataFetchingEnvironment env,
             @GraphQLName("useTypeName") final String useTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         UseType useType;
 
         try {
@@ -1097,7 +1098,7 @@ public final class GraphQlQueries
     @GraphQLName("freeOnBoard")
     public static FreeOnBoardObject freeOnBoard(final DataFetchingEnvironment env,
             @GraphQLName("freeOnBoardName") final String freeOnBoardName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         FreeOnBoard freeOnBoard;
 
         try {
@@ -1146,7 +1147,7 @@ public final class GraphQlQueries
     public static PaymentProcessorTypeCodeTypeObject paymentProcessorTypeCodeType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
             @GraphQLName("paymentProcessorTypeCodeTypeName") final String paymentProcessorTypeCodeTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType;
 
         try {
@@ -1170,7 +1171,7 @@ public final class GraphQlQueries
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
             @GraphQLName("paymentProcessorTypeCodeTypeName") final String paymentProcessorTypeCodeTypeName,
             @GraphQLName("paymentProcessorTypeCodeName") final String paymentProcessorTypeCodeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorTypeCode paymentProcessorTypeCode;
 
         try {
@@ -1193,7 +1194,7 @@ public final class GraphQlQueries
     @GraphQLName("paymentProcessorTransaction")
     public static PaymentProcessorTransactionObject paymentProcessorTransaction(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTransactionName") final String paymentProcessorTransactionName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorTransaction paymentProcessorTransaction;
 
         try {
@@ -1241,7 +1242,7 @@ public final class GraphQlQueries
     @GraphQLName("paymentProcessor")
     public static PaymentProcessorObject paymentProcessor(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorName") final String paymentProcessorName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessor paymentProcessor;
 
         try {
@@ -1289,7 +1290,7 @@ public final class GraphQlQueries
     @GraphQLName("paymentProcessorType")
     public static PaymentProcessorTypeObject paymentProcessorType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorType paymentProcessorType;
 
         try {
@@ -1337,7 +1338,7 @@ public final class GraphQlQueries
     @GraphQLName("paymentMethodType")
     public static PaymentMethodTypeObject paymentMethodType(final DataFetchingEnvironment env,
             @GraphQLName("paymentMethodTypeName") final String paymentMethodTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentMethodType paymentMethodType;
 
         try {
@@ -1385,7 +1386,7 @@ public final class GraphQlQueries
     @GraphQLName("paymentProcessorResultCode")
     public static PaymentProcessorResultCodeObject paymentProcessorResultCode(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorResultCodeName") final String paymentProcessorResultCodeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorResultCode paymentProcessorResultCode;
 
         try {
@@ -1433,7 +1434,7 @@ public final class GraphQlQueries
     @GraphQLName("paymentProcessorActionType")
     public static PaymentProcessorActionTypeObject paymentProcessorActionType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorActionTypeName") final String paymentProcessorActionTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorActionType paymentProcessorActionType;
 
         try {
@@ -1481,7 +1482,7 @@ public final class GraphQlQueries
     @GraphQLName("appearance")
     public static AppearanceObject appearance(final DataFetchingEnvironment env,
             @GraphQLName("appearanceName") final String appearanceName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Appearance appearance;
 
         try {
@@ -1526,7 +1527,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("entityInstance")
     public static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         EntityInstance entityInstance;
 
         try {
@@ -1577,7 +1578,7 @@ public final class GraphQlQueries
     public static EntityTypeObject entityType(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         EntityType entityType;
 
         try {
@@ -1627,7 +1628,7 @@ public final class GraphQlQueries
     @GraphQLName("componentVendor")
     public static ComponentVendorObject componentVendor(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         ComponentVendor componentVendor;
 
         try {
@@ -1673,7 +1674,7 @@ public final class GraphQlQueries
     @GraphQLName("inventoryCondition")
     public static InventoryConditionObject inventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("inventoryConditionName") final String inventoryConditionName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         InventoryCondition inventoryCondition;
 
         try {
@@ -1721,7 +1722,7 @@ public final class GraphQlQueries
     @GraphQLName("lot")
     public static LotObject lot(final DataFetchingEnvironment env,
             @GraphQLName("lotName") final String lotName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Lot lot;
 
         try {
@@ -1769,7 +1770,7 @@ public final class GraphQlQueries
     @GraphQLName("contentPageLayout")
     public static ContentPageLayoutObject contentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("contentPageLayoutName") final String contentPageLayoutName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         ContentPageLayout contentPageLayout;
 
         try {
@@ -1876,7 +1877,7 @@ public final class GraphQlQueries
     @GraphQLName("contentPageAreaType")
     public static ContentPageAreaTypeObject contentPageAreaType(final DataFetchingEnvironment env,
             @GraphQLName("contentPageAreaTypeName") final String contentPageAreaTypeName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         ContentPageAreaType contentPageAreaType;
 
         try {
@@ -2965,7 +2966,7 @@ public final class GraphQlQueries
     @GraphQLName("color")
     public static ColorObject color(final DataFetchingEnvironment env,
             @GraphQLName("colorName") final String colorName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Color color;
 
         try {
@@ -3013,7 +3014,7 @@ public final class GraphQlQueries
     @GraphQLName("fontStyle")
     public static FontStyleObject fontStyle(final DataFetchingEnvironment env,
             @GraphQLName("fontStyleName") final String fontStyleName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         FontStyle fontStyle;
 
         try {
@@ -3061,7 +3062,7 @@ public final class GraphQlQueries
     @GraphQLName("fontWeight")
     public static FontWeightObject fontWeight(final DataFetchingEnvironment env,
             @GraphQLName("fontWeightName") final String fontWeightName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         FontWeight fontWeight;
 
         try {
@@ -3109,7 +3110,7 @@ public final class GraphQlQueries
     @GraphQLName("textDecoration")
     public static TextDecorationObject textDecoration(final DataFetchingEnvironment env,
             @GraphQLName("textDecorationName") final String textDecorationName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         TextDecoration textDecoration;
 
         try {
@@ -3157,7 +3158,7 @@ public final class GraphQlQueries
     @GraphQLName("textTransformation")
     public static TextTransformationObject textTransformation(final DataFetchingEnvironment env,
             @GraphQLName("textTransformationName") final String textTransformationName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         TextTransformation textTransformation;
 
         try {
@@ -3229,7 +3230,7 @@ public final class GraphQlQueries
     @GraphQLName("recoveryQuestion")
     public static RecoveryQuestionObject recoveryQuestion(final DataFetchingEnvironment env,
             @GraphQLName("recoveryQuestionName") final String recoveryQuestionName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("username") final String username) {
         RecoveryQuestion recoveryQuestion;
 
@@ -3297,7 +3298,7 @@ public final class GraphQlQueries
     @GraphQLName("currency")
     public static CurrencyObject currency(final DataFetchingEnvironment env,
             @GraphQLName("currencyIsoName") final String currencyIsoName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Currency currency;
 
         try {
@@ -3345,7 +3346,7 @@ public final class GraphQlQueries
     @GraphQLName("language")
     public static LanguageObject language(final DataFetchingEnvironment env,
             @GraphQLName("languageIsoName") final String languageIsoName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Language language;
 
         try {
@@ -3393,7 +3394,7 @@ public final class GraphQlQueries
     @GraphQLName("dateTimeFormat")
     public static DateTimeFormatObject dateTimeFormat(final DataFetchingEnvironment env,
             @GraphQLName("dateTimeFormatName") final String dateTimeFormatName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         DateTimeFormat dateTimeFormat;
 
         try {
@@ -3441,7 +3442,7 @@ public final class GraphQlQueries
     @GraphQLName("timeZone")
     public static TimeZoneObject timeZone(final DataFetchingEnvironment env,
             @GraphQLName("javaTimeZoneName") final String javaTimeZoneName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         TimeZone timeZone;
 
         try {
@@ -3490,7 +3491,7 @@ public final class GraphQlQueries
     public static ItemObject item(final DataFetchingEnvironment env,
             @GraphQLName("itemName") final String itemName,
             @GraphQLName("itemNameOrAlias") final String itemNameOrAlias,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         Item item;
 
         try {
@@ -3512,7 +3513,7 @@ public final class GraphQlQueries
     @GraphQLName("itemCategory")
     public static ItemCategoryObject itemCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemCategoryName") final String itemCategoryName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         ItemCategory itemCategory;
 
         try {

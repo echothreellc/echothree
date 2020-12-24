@@ -73,6 +73,7 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.annotationTypes.GraphQLRelayMutation;
@@ -149,7 +150,7 @@ public class GraphQlMutations
     public static CommandResultWithIdObject editSequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("originalSequenceName") final String originalSequenceName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("sequenceName") final String sequenceName,
             @GraphQLName("chunkSize") final String chunkSize,
             @GraphQLName("isDefault") final String isDefault,
@@ -318,7 +319,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editSequenceType(final DataFetchingEnvironment env,
             @GraphQLName("originalSequenceTypeName") final String originalSequenceTypeName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("sequenceTypeName") final String sequenceTypeName,
             @GraphQLName("prefix") final String prefix,
             @GraphQLName("suffix") final String suffix,
@@ -571,7 +572,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editOffer(final DataFetchingEnvironment env,
             @GraphQLName("originalOfferName") final String originalOfferName,
-            //@GraphQLName("id") final String id,
+            //@GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("offerName") final String offerName,
             @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName,
             @GraphQLName("offerItemSelectorName") final String offerItemSelectorName,
@@ -710,7 +711,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editUse(final DataFetchingEnvironment env,
             @GraphQLName("originalUseName") final String originalUseName,
-            //@GraphQLName("id") final String id,
+            //@GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("useName") final String useName,
             @GraphQLName("useTypeName") final String useTypeName,
             @GraphQLName("isDefault") final String isDefault,
@@ -843,7 +844,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editOfferNameElement(final DataFetchingEnvironment env,
             @GraphQLName("originalOfferNameElementName") final String originalOfferNameElementName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("offerNameElementName") final String offerNameElementName,
             @GraphQLName("offset") final String offset,
             @GraphQLName("length") final String length,
@@ -955,7 +956,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editUseNameElement(final DataFetchingEnvironment env,
             @GraphQLName("originalUseNameElementName") final String originalUseNameElementName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("useNameElementName") final String useNameElementName,
             @GraphQLName("offset") final String offset,
             @GraphQLName("length") final String length,
@@ -1065,7 +1066,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editUseType(final DataFetchingEnvironment env,
             @GraphQLName("originalUseTypeName") final String originalUseTypeName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("useTypeName") final String useTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1193,7 +1194,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editFreeOnBoard(final DataFetchingEnvironment env,
             @GraphQLName("originalFreeOnBoardName") final String originalFreeOnBoardName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("freeOnBoardName") final String freeOnBoardName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1321,7 +1322,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editPaymentProcessor(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorName") final String originalPaymentProcessorName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorName") final String paymentProcessorName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1428,7 +1429,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editPaymentProcessorType(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorTypeName") final String originalPaymentProcessorTypeName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1556,7 +1557,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editPaymentMethodType(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentMethodTypeName") final String originalPaymentMethodTypeName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentMethodTypeName") final String paymentMethodTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1684,7 +1685,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editPaymentProcessorResultCode(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorResultCodeName") final String originalPaymentProcessorResultCodeName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorResultCodeName") final String paymentProcessorResultCodeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1812,7 +1813,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editPaymentProcessorActionType(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorActionTypeName") final String originalPaymentProcessorActionTypeName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorActionTypeName") final String paymentProcessorActionTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1940,7 +1941,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editInventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("originalInventoryConditionName") final String originalInventoryConditionName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("inventoryConditionName") final String inventoryConditionName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -2068,7 +2069,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editContentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("originalContentPageLayoutName") final String originalContentPageLayoutName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("contentPageLayoutName") final String contentPageLayoutName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -2227,7 +2228,7 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityListItemAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityListItemName") final String entityListItemName) {
         var commandResultObject = new CommandResultObject();
@@ -2251,7 +2252,7 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityMultipleListItemAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityListItemName") final String entityListItemName) {
         var commandResultObject = new CommandResultObject();
@@ -2484,7 +2485,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultWithIdObject editItemCategory(final DataFetchingEnvironment env,
             @GraphQLName("originalItemCategoryName") final String originalItemCategoryName,
-            @GraphQLName("id") final String id,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemCategoryName") final String itemCategoryName,
             @GraphQLName("parentItemCategoryName") final String parentItemCategoryName,
             @GraphQLName("isDefault") final String isDefault,
@@ -2542,7 +2543,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultObject deleteItemCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemCategoryName") final String itemCategoryName,
-            @GraphQLName("id") final String id) {
+            @GraphQLName("id") @GraphQLID final String id) {
         var commandResultObject = new CommandResultObject();
 
         try {
