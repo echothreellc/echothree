@@ -1,6 +1,6 @@
 Apache Ivy 2.5.0
 ASM 3.1 (used by PMD)
-Bootstrap 4.4.1
+Bootstrap 4.5.3
 cross-revalidator 1.0a
 displaytag 1.2
 Jakarta POI 3.2 (used by displaytag)
