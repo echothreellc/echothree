@@ -10,7 +10,7 @@ jQuery 3.5.1
 log4j 1.2.8
 logkit 1.2
 PMD 4.2.5
-Popper.js 1.16.1
+Popper.js 2.6.0
 Prism 1.6.0
 Prototype 1.6.0.3
 Struts 1.3.10

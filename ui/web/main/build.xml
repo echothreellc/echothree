@@ -190,6 +190,7 @@
             <!-- Popper.js -->
             <fileset dir="${lib.dir}/popper/dist/umd">
                 <include name="popper.min.js" />
+                <include name="popper.min.js.map" />
             </fileset>
             <!-- Bootstrap -->
             <fileset dir="${lib.dir}/bootstrap/css">
