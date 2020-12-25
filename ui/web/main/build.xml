@@ -194,9 +194,11 @@
             <!-- Bootstrap -->
             <fileset dir="${lib.dir}/bootstrap/css">
                 <include name="bootstrap.min.css" />
+                <include name="bootstrap.min.css.map" />
             </fileset>
             <fileset dir="${lib.dir}/bootstrap/js">
                 <include name="bootstrap.min.js" />
+                <include name="bootstrap.min.js.map" />
             </fileset>
         </war>
     </target>
