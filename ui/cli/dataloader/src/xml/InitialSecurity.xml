@@ -687,13 +687,13 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Filter Adjustment Description" />
             </securityRole>
-            <securityRole securityRoleName="Amount" isDefault="false" sortOrder="1">
+            <securityRole securityRoleName="FilterAdjustmentAmount" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Filter Adjustment Amount" />
             </securityRole>
-            <securityRole securityRoleName="FixedAmount" isDefault="false" sortOrder="1">
+            <securityRole securityRoleName="FilterAdjustmentFixedAmount" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Filter Adjustment Fixed Amount" />
             </securityRole>
-            <securityRole securityRoleName="Percent" isDefault="false" sortOrder="1">
+            <securityRole securityRoleName="FilterAdjustmentPercent" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Filter Adjustment Percent" />
             </securityRole>
         </securityRoleGroup>
@@ -7334,9 +7334,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Amount" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="FixedAmount" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Percent" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="FilterAdjustmentAmount" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="FilterAdjustmentFixedAmount" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="FilterAdjustmentPercent" />
             <partySecurityRoleTemplateRole securityRoleGroupName="IndexType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="IndexType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="IndexType" securityRoleName="Delete" />

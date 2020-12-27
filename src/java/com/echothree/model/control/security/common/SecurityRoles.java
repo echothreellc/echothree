@@ -18,7 +18,6 @@ package com.echothree.model.control.security.common;
 
 public enum SecurityRoles {
 
-    Amount,
     AppearanceTextDecoration,
     AppearanceTextTransformation,
     Change,
@@ -33,7 +32,9 @@ public enum SecurityRoles {
     Edit,
     EntityAttributeEntityAttributeGroup,
     EntityType,
-    FixedAmount,
+    FilterAdjustmentAmount,
+    FilterAdjustmentFixedAmount,
+    FilterAdjustmentPercent,
     HarmonizedTariffScheduleCodeUse,
     History,
     List,
@@ -45,7 +46,6 @@ public enum SecurityRoles {
     PaymentProcessorAction,
     PaymentProcessorTransactionCode,
     PaymentProcessorTypeAction,
-    Percent,
     Review,
     Search,
     SecurityRole,
